@@ -28,7 +28,8 @@
                 "/manifest.json",
                 "/assets-manifest.json",
                 "/favicon.ico",
-                "/service-worker.js"
+                "/service-worker.js",
+                "/bootstrap.min.css"
               ]
             }
           ]
