@@ -108,6 +108,7 @@
         <module>coverage-example-graphql-schema</module>
         <module>coverage-example-json-views</module>
         <module>coverage-example-klass-html</module>
+        <module>coverage-example-klass-macros</module>
         <module>coverage-example-klass-projections</module>
         <module>coverage-example-klass-services</module>
         <module>coverage-example-reladomo-ddls</module>

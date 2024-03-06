@@ -1,0 +1,16 @@
+package cool.klass.xample.coverage
+
+association EveryTypeKeyPropertyHasVersion
+{
+    everyTypeKeyProperty: EveryTypeKeyProperty[1..1];
+    version: EveryTypeKeyPropertyVersion[1..1] owned version;
+
+    relationship this.keyString == EveryTypeKeyPropertyVersion.keyString
+        && this.keyInteger == EveryTypeKeyPropertyVersion.keyInteger
+        && this.keyLong == EveryTypeKeyPropertyVersion.keyLong
+        && this.keyDouble == EveryTypeKeyPropertyVersion.keyDouble
+        && this.keyFloat == EveryTypeKeyPropertyVersion.keyFloat
+        && this.keyBoolean == EveryTypeKeyPropertyVersion.keyBoolean
+        && this.keyInstant == EveryTypeKeyPropertyVersion.keyInstant
+        && this.keyLocalDate == EveryTypeKeyPropertyVersion.keyLocalDate
+}

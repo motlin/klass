@@ -1,0 +1,9 @@
+package cool.klass.xample.coverage
+
+association PropertiesOptionalHasVersion
+{
+    propertiesOptional: PropertiesOptional[1..1];
+    version: PropertiesOptionalVersion[1..1] owned version;
+
+    relationship this.propertiesOptionalId == PropertiesOptionalVersion.propertiesOptionalId
+}

@@ -1,0 +1,14 @@
+package cool.klass.xample.coverage
+
+class EveryTypeKeyPropertyVersion systemTemporal audited
+{
+    keyString: String key;
+    keyInteger: Integer key;
+    keyLong: Long key;
+    keyDouble: Double key;
+    keyFloat: Float key;
+    keyBoolean: Boolean key;
+    keyInstant: Instant key;
+    keyLocalDate: LocalDate key;
+    number: Integer version;
+}

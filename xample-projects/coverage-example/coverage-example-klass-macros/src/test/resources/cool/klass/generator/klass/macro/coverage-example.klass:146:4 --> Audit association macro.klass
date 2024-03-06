@@ -1,0 +1,18 @@
+package cool.klass.xample.coverage
+
+association EveryTypeKeyPropertyHasCreatedBy
+{
+    everyTypeKeyPropertyCreatedBy: EveryTypeKeyProperty[0..*];
+    createdBy: User[1..1] createdBy final;
+
+    relationship this.createdById == User.userId
+}
+
+association EveryTypeKeyPropertyHasLastUpdatedBy
+{
+    everyTypeKeyPropertyLastUpdatedBy: EveryTypeKeyProperty[0..*];
+    lastUpdatedBy: User[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.userId
+}
+
