@@ -13,8 +13,8 @@ import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.finder.TransactionalDomainList;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
-import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.ClassifierModifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
@@ -535,12 +535,12 @@ public class KlassBootstrapWriter
 
     private void handleClassifierModifiers(@Nonnull Classifier classifier)
     {
-        for (ClassModifier classModifier : classifier.getClassModifiers())
+        for (ClassifierModifier classifierModifier : classifier.getModifiers())
         {
-            klass.model.meta.domain.ClassifierModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassifierModifier();
-            KlassBootstrapWriter.handleNamedElement(bootstrappedClassModifier, classModifier);
-            bootstrappedClassModifier.setClassifierName(classifier.getName());
-            bootstrappedClassModifier.insert();
+            klass.model.meta.domain.ClassifierModifier bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
+            KlassBootstrapWriter.handleNamedElement(bootstrappedClassifierModifier, classifierModifier);
+            bootstrappedClassifierModifier.setClassifierName(classifier.getName());
+            bootstrappedClassifierModifier.insert();
         }
     }
 

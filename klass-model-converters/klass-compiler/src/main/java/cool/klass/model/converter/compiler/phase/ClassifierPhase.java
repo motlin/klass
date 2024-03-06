@@ -7,13 +7,13 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -104,13 +104,13 @@ public class ClassifierPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        super.enterClassModifier(ctx);
+        super.enterClassifierModifier(ctx);
 
-        int ordinal = this.classifierState.getNumClassModifiers();
+        int ordinal = this.classifierState.getNumClassifierModifiers();
 
-        AntlrClassModifier classModifierState = new AntlrClassModifier(
+        AntlrClassifierModifier classifierModifierState = new AntlrClassifierModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
@@ -118,6 +118,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ordinal + 1,
                 this.classifierState);
 
-        this.classifierState.enterClassModifier(classModifierState);
+        this.classifierState.enterClassifierModifier(classifierModifierState);
     }
 }

@@ -18,11 +18,11 @@ import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -1175,17 +1175,17 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterClassModifier() not implemented yet");
+                + ".enterClassifierModifier() not implemented yet");
     }
 
     @Override
-    public void exitClassModifier(@Nonnull ClassModifierContext ctx)
+    public void exitClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitClassModifier() not implemented yet");
+                + ".exitClassifierModifier() not implemented yet");
     }
 
     @Override

@@ -39,7 +39,7 @@ public interface Klass
         return this.getDataTypeProperties().select(DataTypeProperty::isKey);
     }
 
-    ImmutableList<ClassModifier> getClassModifiers();
+    ImmutableList<ClassifierModifier> getClassifierModifiers();
 
     // ...
 }

@@ -11,7 +11,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -277,18 +277,18 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        super.enterClassModifier(ctx);
-        this.compilerState.asListener().enterClassModifier(ctx);
+        super.enterClassifierModifier(ctx);
+        this.compilerState.asListener().enterClassifierModifier(ctx);
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void exitClassModifier(@Nonnull ClassModifierContext ctx)
+    public void exitClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        this.compilerState.asListener().exitClassModifier(ctx);
-        super.exitClassModifier(ctx);
+        this.compilerState.asListener().exitClassifierModifier(ctx);
+        super.exitClassifierModifier(ctx);
     }
 
     @Override

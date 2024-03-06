@@ -33,7 +33,7 @@ public interface ColorScheme
         return this.getKeyword();
     }
 
-    default Color getClassModifier()
+    default Color getClassifierModifier()
     {
         return this.getModifier();
     }

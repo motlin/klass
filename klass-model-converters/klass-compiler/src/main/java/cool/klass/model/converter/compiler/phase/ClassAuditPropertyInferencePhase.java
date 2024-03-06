@@ -6,10 +6,10 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassModifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -30,9 +30,9 @@ public class ClassAuditPropertyInferencePhase
     }
 
     @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        super.enterClassModifier(ctx);
+        super.enterClassifierModifier(ctx);
 
         String modifierText = ctx.getText();
         // TODO: Inference happens for batches of three properties. It could check whether it needs to add each of the three individually
@@ -96,11 +96,12 @@ public class ClassAuditPropertyInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
-        ParseTreeListener  compilerPhase      = new PropertyPhase(this.compilerState);
+        AntlrClassifierModifier classifierModifierState =
+                this.compilerState.getCompilerWalkState().getClassifierModifierState();
+        ParseTreeListener       compilerPhase           = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                classModifierState,
+                classifierModifierState,
                 this,
                 sourceCodeText,
                 KlassParser::classMember,

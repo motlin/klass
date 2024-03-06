@@ -7,32 +7,32 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
-import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrClassModifier extends AntlrModifier
+public class AntlrClassifierModifier extends AntlrModifier
 {
-    public static final AntlrClassModifier NOT_FOUND = new AntlrClassModifier(
+    public static final AntlrClassifierModifier NOT_FOUND = new AntlrClassifierModifier(
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found class modifier",
+            "not found classifier modifier",
             -1,
-            AntlrClass.NOT_FOUND);
+            AntlrClassifier.NOT_FOUND);
 
-    public static final AntlrClassModifier AMBIGUOUS = new AntlrClassModifier(
+    public static final AntlrClassifierModifier AMBIGUOUS = new AntlrClassifierModifier(
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous class modifier",
+            "ambiguous classifier modifier",
             -1,
-            AntlrClass.AMBIGUOUS);
+            AntlrClassifier.AMBIGUOUS);
 
-    private final AntlrClassifier      owningClassifierState;
-    private       ClassModifierBuilder elementBuilder;
+    private final AntlrClassifier           owningClassifierState;
+    private       ClassifierModifierBuilder elementBuilder;
 
-    public AntlrClassModifier(
+    public AntlrClassifierModifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
@@ -46,9 +46,9 @@ public class AntlrClassModifier extends AntlrModifier
 
     @Nonnull
     @Override
-    public ClassModifierContext getElementContext()
+    public ClassifierModifierContext getElementContext()
     {
-        return (ClassModifierContext) super.getElementContext();
+        return (ClassifierModifierContext) super.getElementContext();
     }
 
     @Nonnull
@@ -77,13 +77,13 @@ public class AntlrClassModifier extends AntlrModifier
 
     @Override
     @Nonnull
-    public ClassModifierBuilder build()
+    public ClassifierModifierBuilder build()
     {
         if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new ClassModifierBuilder(
+        this.elementBuilder = new ClassifierModifierBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
@@ -96,7 +96,7 @@ public class AntlrClassModifier extends AntlrModifier
 
     @Nonnull
     @Override
-    public ClassModifierBuilder getElementBuilder()
+    public ClassifierModifierBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.elementBuilder);
     }

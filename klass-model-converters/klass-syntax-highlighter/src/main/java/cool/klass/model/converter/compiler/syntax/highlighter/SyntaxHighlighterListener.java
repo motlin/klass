@@ -12,9 +12,9 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -259,11 +259,11 @@ public class SyntaxHighlighterListener
     }
 
     @Override
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassifierModifier(ClassifierModifierContext ctx)
     {
         this.put(
                 ctx.getStart(),
-                this.colorScheme.getClassModifier());
+                this.colorScheme.getClassifierModifier());
     }
 
     @Override

@@ -25,7 +25,7 @@ import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImpl.MaxPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ListIterable;
@@ -371,7 +371,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     @Override
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
-        if (this.elementContext instanceof ClassModifierContext)
+        if (this.elementContext instanceof ClassifierModifierContext)
         {
             return;
         }

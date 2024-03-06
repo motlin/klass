@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
@@ -34,7 +34,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
@@ -95,13 +95,13 @@ public class CompilerWalkState
     private AntlrOrderByMemberReferencePath orderByMemberReferencePathState;
 
     @Nullable
-    private AntlrClassifier    thisReference;
+    private AntlrClassifier         thisReference;
     @Nullable
-    private AntlrOrderByOwner  orderByOwnerState;
+    private AntlrOrderByOwner       orderByOwnerState;
     @Nullable
-    private AntlrClassModifier classModifierState;
+    private AntlrClassifierModifier classifierModifierState;
     @Nullable
-    private PackageNameContext packageNameContext;
+    private PackageNameContext      packageNameContext;
 
     @Nullable
     private AntlrParameterOwner      parameterOwnerState;
@@ -208,9 +208,9 @@ public class CompilerWalkState
     }
 
     @Nullable
-    public AntlrClassModifier getClassModifierState()
+    public AntlrClassifierModifier getClassifierModifierState()
     {
-        return this.classModifierState;
+        return this.classifierModifierState;
     }
 
     @Nullable
@@ -282,7 +282,7 @@ public class CompilerWalkState
         compilerWalkState.orderByMemberReferencePathState = this.orderByMemberReferencePathState;
         compilerWalkState.thisReference                   = this.thisReference;
         compilerWalkState.orderByOwnerState               = this.orderByOwnerState;
-        compilerWalkState.classModifierState              = this.classModifierState;
+        compilerWalkState.classifierModifierState         = this.classifierModifierState;
         compilerWalkState.parameterOwnerState             = this.parameterOwnerState;
         compilerWalkState.classifierTypeOwnerState        = this.classifierTypeOwnerState;
         compilerWalkState.classTypeOwnerState             = this.classTypeOwnerState;
@@ -363,7 +363,7 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
-        if (this.classModifierState != null)
+        if (this.classifierModifierState != null)
         {
             throw new AssertionError();
         }
@@ -467,7 +467,7 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
-        if (this.classModifierState != other.classModifierState)
+        if (this.classifierModifierState != other.classifierModifierState)
         {
             throw new AssertionError();
         }
@@ -848,27 +848,27 @@ public class CompilerWalkState
         }
 
         @Override
-        public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+        public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.enterClassModifier(ctx);
+            super.enterClassifierModifier(ctx);
 
-            CompilerWalkState.assertNull(CompilerWalkState.this.classModifierState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.classifierModifierState);
 
             if (CompilerWalkState.this.classifierState == null)
             {
                 return;
             }
 
-            CompilerWalkState.this.classModifierState =
-                    CompilerWalkState.this.classifierState.getClassModifierByContext(ctx);
+            CompilerWalkState.this.classifierModifierState =
+                    CompilerWalkState.this.classifierState.getClassifierModifierByContext(ctx);
         }
 
         @Override
-        public void exitClassModifier(@Nonnull ClassModifierContext ctx)
+        public void exitClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.exitClassModifier(ctx);
+            super.exitClassifierModifier(ctx);
 
-            CompilerWalkState.this.classModifierState = null;
+            CompilerWalkState.this.classifierModifierState = null;
         }
 
         @Override

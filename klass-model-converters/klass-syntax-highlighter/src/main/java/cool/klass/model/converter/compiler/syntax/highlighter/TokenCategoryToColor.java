@@ -72,9 +72,9 @@ public final class TokenCategoryToColor
             {
                 return colorScheme.getModifier();
             }
-            case CLASS_MODIFIER:
+            case CLASSIFIER_MODIFIER:
             {
-                return colorScheme.getClassModifier();
+                return colorScheme.getClassifierModifier();
             }
             case DATA_TYPE_PROPERTY_MODIFIER:
             {

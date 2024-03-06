@@ -5,11 +5,11 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassModifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -29,9 +29,9 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        super.enterClassModifier(ctx);
+        super.enterClassifierModifier(ctx);
         String modifierText = ctx.getText();
         if (!"versioned".equals(modifierText))
         {
@@ -48,15 +48,16 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
-        String             klassSourceCode    = this.getSourceCode(keyProperties);
+        AntlrClassifierModifier classifierModifierState =
+                this.compilerState.getCompilerWalkState().getClassifierModifierState();
+        String                  klassSourceCode         = this.getSourceCode(keyProperties);
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new TopLevelElementsPhase(this.compilerState),
                 new AssociationPhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
-                classModifierState,
+                classifierModifierState,
                 this,
                 klassSourceCode,
                 KlassParser::compilationUnit,

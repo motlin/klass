@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
+import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
-import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.ClassifierModifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
@@ -25,7 +25,7 @@ public abstract class AbstractClassifier
         implements TopLevelElement, Classifier
 {
     private ImmutableList<DataTypeProperty>        dataTypeProperties;
-    private ImmutableList<ClassModifier>           classModifiers;
+    private ImmutableList<ClassifierModifier>      classifierModifiers;
     private ImmutableList<Interface>               interfaces;
     private ImmutableList<AssociationEndSignature> associationEndSignatures;
 
@@ -59,18 +59,18 @@ public abstract class AbstractClassifier
 
     @Nonnull
     @Override
-    public ImmutableList<ClassModifier> getDeclaredClassModifiers()
+    public ImmutableList<ClassifierModifier> getDeclaredModifiers()
     {
-        return this.classModifiers;
+        return this.classifierModifiers;
     }
 
-    protected void setClassModifiers(@Nonnull ImmutableList<ClassModifier> classModifiers)
+    protected void setClassifierModifiers(@Nonnull ImmutableList<ClassifierModifier> classifierModifiers)
     {
-        if (this.classModifiers != null)
+        if (this.classifierModifiers != null)
         {
             throw new IllegalStateException();
         }
-        this.classModifiers = Objects.requireNonNull(classModifiers);
+        this.classifierModifiers = Objects.requireNonNull(classifierModifiers);
     }
 
     @Override
@@ -103,7 +103,7 @@ public abstract class AbstractClassifier
             implements TypeGetter, TopLevelElementBuilder
     {
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
-        protected ImmutableList<ClassModifierBuilder>             classModifierBuilders;
+        protected ImmutableList<ClassifierModifierBuilder>        classifierModifierBuilders;
         protected ImmutableList<InterfaceBuilder>                 interfaceBuilders;
         protected ImmutableList<AssociationEndSignatureBuilder>   associationEndSignatureBuilders;
 
@@ -128,13 +128,13 @@ public abstract class AbstractClassifier
             this.dataTypePropertyBuilders = Objects.requireNonNull(dataTypePropertyBuilders);
         }
 
-        public void setClassModifierBuilders(@Nonnull ImmutableList<ClassModifierBuilder> classModifierBuilders)
+        public void setClassifierModifierBuilders(@Nonnull ImmutableList<ClassifierModifierBuilder> classifierModifierBuilders)
         {
-            if (this.classModifierBuilders != null)
+            if (this.classifierModifierBuilders != null)
             {
                 throw new IllegalStateException();
             }
-            this.classModifierBuilders = Objects.requireNonNull(classModifierBuilders);
+            this.classifierModifierBuilders = Objects.requireNonNull(classifierModifierBuilders);
         }
 
         public void setAssociationEndSignatureBuilders(@Nonnull ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders)
@@ -149,9 +149,9 @@ public abstract class AbstractClassifier
         @Override
         protected void buildChildren()
         {
-            ImmutableList<ClassModifier> classModifiers =
-                    this.classModifierBuilders.collect(ClassModifierBuilder::build);
-            this.element.setClassModifiers(classModifiers);
+            ImmutableList<ClassifierModifier> classifierModifiers =
+                    this.classifierModifierBuilders.collect(ClassifierModifierBuilder::build);
+            this.element.setClassifierModifiers(classifierModifiers);
 
             ImmutableList<DataTypeProperty> dataTypeProperties = this.dataTypePropertyBuilders
                     .<DataTypeProperty>collect(DataTypePropertyBuilder::build)

@@ -16,7 +16,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProper
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
-import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
+import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.InheritanceType;
@@ -160,13 +160,13 @@ public class AntlrClass
     }
 
     @Override
-    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrClassifierModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
-        ImmutableList<AntlrClassModifier> superClassModifiers = this.superClassState
-                .map(antlrClass -> antlrClass.getClassModifiers(visited)).orElseGet(Lists.immutable::empty);
+        ImmutableList<AntlrClassifierModifier> superClassModifiers = this.superClassState
+                .map(antlrClass -> antlrClass.getClassifierModifiers(visited)).orElseGet(Lists.immutable::empty);
 
-        ImmutableList<AntlrClassModifier> interfaceModifiers = this.interfaceStates
-                .flatCollectWith(AntlrClassifier::getClassModifiers, visited)
+        ImmutableList<AntlrClassifierModifier> interfaceModifiers = this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getClassifierModifiers, visited)
                 .toImmutable();
 
         return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrNamedElement::getName);
@@ -322,10 +322,10 @@ public class AntlrClass
                 this.isUser,
                 this.isTransient());
 
-        ImmutableList<ClassModifierBuilder> classModifierBuilders = this.classModifierStates
-                .collect(AntlrClassModifier::build)
+        ImmutableList<ClassifierModifierBuilder> classifierModifierBuilders = this.classifierModifierStates
+                .collect(AntlrClassifierModifier::build)
                 .toImmutable();
-        this.klassBuilder.setClassModifierBuilders(classModifierBuilders);
+        this.klassBuilder.setClassifierModifierBuilders(classifierModifierBuilders);
 
         ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
@@ -750,23 +750,23 @@ public class AntlrClass
     }
 
     @Override
-    public AntlrClassModifier getClassModifierByName(String name)
+    public AntlrClassifierModifier getClassifierModifierByName(String name)
     {
-        if (this.classModifiersByName.containsKey(name))
+        if (this.classifierModifiersByName.containsKey(name))
         {
-            return this.classModifiersByName.get(name);
+            return this.classifierModifiersByName.get(name);
         }
 
         if (this.superClassState.isPresent())
         {
-            AntlrClassModifier superClassProperty = this.superClassState.get().getClassModifierByName(name);
-            if (superClassProperty != AntlrClassModifier.NOT_FOUND)
+            AntlrClassifierModifier superClassProperty = this.superClassState.get().getClassifierModifierByName(name);
+            if (superClassProperty != AntlrClassifierModifier.NOT_FOUND)
             {
                 return superClassProperty;
             }
         }
 
-        return this.getInterfaceClassModifierByName(name);
+        return this.getInterfaceClassifierModifierByName(name);
     }
 
     @Nonnull

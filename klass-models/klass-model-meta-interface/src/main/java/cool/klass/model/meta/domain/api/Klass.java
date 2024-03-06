@@ -14,13 +14,13 @@ import org.eclipse.collections.impl.factory.Lists;
 public interface Klass extends Classifier
 {
     @Override
-    default ImmutableList<ClassModifier> getInheritedClassModifiers()
+    default ImmutableList<ClassifierModifier> getInheritedModifiers()
     {
-        ImmutableList<ClassModifier> superClassProperties = this.getSuperClass()
-                .map(Classifier::getClassModifiers)
+        ImmutableList<ClassifierModifier> superClassProperties = this.getSuperClass()
+                .map(Classifier::getModifiers)
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<ClassModifier> interfaceProperties = Classifier.super.getInheritedClassModifiers();
+        ImmutableList<ClassifierModifier> interfaceProperties = Classifier.super.getInheritedModifiers();
 
         return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
     }
@@ -133,7 +133,7 @@ public interface Klass extends Classifier
 
     default boolean isTransient()
     {
-        return this.getClassModifiers().anySatisfy(ClassModifier::isTransient);
+        return this.getModifiers().anySatisfy(ClassifierModifier::isTransient);
     }
 
     default boolean isVersioned()

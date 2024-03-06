@@ -25,15 +25,15 @@ topLevelDeclaration
     | serviceGroupDeclaration
     ;
 
-// TODO: Consider splitting separate interfaceModifiers from classModifiers
+// TODO: Consider splitting separate interfaceModifiers from classifierModifiers
 // interface
 interfaceDeclaration: interfaceHeader interfaceBody;
-interfaceHeader : 'interface' identifier implementsDeclaration? classModifier* ;
+interfaceHeader : 'interface' identifier implementsDeclaration? classifierModifier* ;
 interfaceBody: '{' interfaceMember* '}';
 
 // class
 classDeclaration: classHeader classBody;
-classHeader : classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classModifier* ;
+classHeader : classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classifierModifier* ;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
@@ -144,7 +144,7 @@ multiplicityBody: lowerBound=IntegerLiteral '..' upperBound=(IntegerLiteral | '*
 primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
 
 // modifiers
-classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient';
+classifierModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient';
 dataTypePropertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived';
 associationEndModifier: 'owned' | 'final' | 'version';
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
@@ -216,7 +216,7 @@ keywordValidAsIdentifier
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     | 'criteria'
-    // classModifier
+    // classifierModifier
     | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient'
     // dataTypePropertyModifier
     | 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived'
@@ -290,13 +290,13 @@ PRIMITIVE_TYPE_LOCAL_DATE       : 'LocalDate';
 PRIMITIVE_TYPE_TEMPORAL_INSTANT : 'TemporalInstant';
 PRIMITIVE_TYPE_TEMPORAL_RANGE   : 'TemporalRange';
 
-// classModifiers
-MODIFIER_CLASS_SYSTEM_TEMPORAL       : 'systemTemporal';
-MODIFIER_CLASS_VALID_TEMPORAL        : 'validTemporal';
-MODIFIER_CLASS_BITEMPORAL            : 'bitemporal';
-MODIFIER_CLASS_VERSIONED             : 'versioned';
-MODIFIER_CLASS_AUDITED               : 'audited';
-MODIFIER_CLASS_TRANSIENT             : 'transient';
+// classifierModifiers
+MODIFIER_CLASSIFIER_SYSTEM_TEMPORAL       : 'systemTemporal';
+MODIFIER_CLASSIFIER_VALID_TEMPORAL        : 'validTemporal';
+MODIFIER_CLASSIFIER_BITEMPORAL            : 'bitemporal';
+MODIFIER_CLASSIFIER_VERSIONED             : 'versioned';
+MODIFIER_CLASSIFIER_AUDITED               : 'audited';
+MODIFIER_CLASSIFIER_TRANSIENT             : 'transient';
 
 // propertyModifiers
 MODIFIER_PROPERTY_KEY             : 'key';

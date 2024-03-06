@@ -13,9 +13,9 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
@@ -260,11 +260,11 @@ public class ParserBasedTokenCategorizer
     }
 
     @Override
-    public void enterClassModifier(ClassModifierContext ctx)
+    public void enterClassifierModifier(ClassifierModifierContext ctx)
     {
         this.put(
                 ctx.getStart(),
-                TokenCategory.CLASS_MODIFIER);
+                TokenCategory.CLASSIFIER_MODIFIER);
     }
 
     @Override

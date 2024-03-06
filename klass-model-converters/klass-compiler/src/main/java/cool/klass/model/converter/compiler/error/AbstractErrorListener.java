@@ -47,12 +47,12 @@ public class AbstractErrorListener extends KlassThrowingListener
 
         switch (token.getType())
         {
-            case KlassLexer.MODIFIER_CLASS_SYSTEM_TEMPORAL:
-            case KlassLexer.MODIFIER_CLASS_VALID_TEMPORAL:
-            case KlassLexer.MODIFIER_CLASS_BITEMPORAL:
-            case KlassLexer.MODIFIER_CLASS_VERSIONED:
-            case KlassLexer.MODIFIER_CLASS_AUDITED:
-            case KlassLexer.MODIFIER_CLASS_TRANSIENT:
+            case KlassLexer.MODIFIER_CLASSIFIER_SYSTEM_TEMPORAL:
+            case KlassLexer.MODIFIER_CLASSIFIER_VALID_TEMPORAL:
+            case KlassLexer.MODIFIER_CLASSIFIER_BITEMPORAL:
+            case KlassLexer.MODIFIER_CLASSIFIER_VERSIONED:
+            case KlassLexer.MODIFIER_CLASSIFIER_AUDITED:
+            case KlassLexer.MODIFIER_CLASSIFIER_TRANSIENT:
             case KlassLexer.MODIFIER_PROPERTY_KEY:
             case KlassLexer.MODIFIER_PROPERTY_PRIVATE:
             case KlassLexer.MODIFIER_PROPERTY_VALID:

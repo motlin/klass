@@ -21,7 +21,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -467,19 +467,19 @@ public class CompilerState
         }
 
         @Override
-        public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+        public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.enterClassModifier(ctx);
+            super.enterClassifierModifier(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().enterClassModifier(ctx);
+            CompilerState.this.compilerWalkState.asListener().enterClassifierModifier(ctx);
         }
 
         @Override
-        public void exitClassModifier(@Nonnull ClassModifierContext ctx)
+        public void exitClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.exitClassModifier(ctx);
+            super.exitClassifierModifier(ctx);
 
-            CompilerState.this.compilerWalkState.asListener().exitClassModifier(ctx);
+            CompilerState.this.compilerWalkState.asListener().exitClassifierModifier(ctx);
         }
 
         @Override

@@ -8,8 +8,8 @@ Since the meta-model is part of the model, the bootstrap process populates meta-
   "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 1,
-  "sourceCode": "class Class\n    transient\n{\n    name                          : String key;\n    inferred                      : Boolean;\n    packageName                   : String;\n    ordinal                       : Integer;\n    sourceCode                    : String;\n    primitiveProperties: PrimitiveProperty[0..*] owned\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classModifiers: ClassModifier[0..*]\n        orderBy: this.ordinal;\n    associationEnds: AssociationEnd[0..*];\n    associationEndsResultTypeOf: AssociationEnd[0..*];\n    serviceGroup: ServiceGroup[0..1];\n}\n",
-  "classModifiers": [
+  "sourceCode": "class Class\n    transient\n{\n    name                          : String key;\n    inferred                      : Boolean;\n    packageName                   : String;\n    ordinal                       : Integer;\n    sourceCode                    : String;\n    primitiveProperties: PrimitiveProperty[0..*] owned\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n    associationEnds: AssociationEnd[0..*];\n    associationEndsResultTypeOf: AssociationEnd[0..*];\n    serviceGroup: ServiceGroup[0..1];\n}\n",
+  "classifierModifiers": [
     {
       "name": "transient",
       "inferred": false,
@@ -90,12 +90,12 @@ Since the meta-model is part of the model, the bootstrap process populates meta-
       "associationEndModifiers": []
     },
     {
-      "name": "classModifiers",
+      "name": "classifierModifiers",
       "inferred": false,
       "direction": "target",
       "multiplicity": "0..*",
       "resultType": {
-        "name": "ClassModifier"
+        "name": "ClassifierModifier"
       },
       "owningAssociation": {
         "name": "ClassHasModifiers"

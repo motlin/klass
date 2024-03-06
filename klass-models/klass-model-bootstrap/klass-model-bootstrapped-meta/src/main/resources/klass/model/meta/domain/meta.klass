@@ -1346,9 +1346,9 @@ projection ClassProjection on Klass
     */
     classifierModifiers    :
     {
-        name    : "Class modifier name",
-        inferred: "Class modifier inferred",
-        ordinal : "Class modifier ordinal",
+        name    : "Classifier modifier name",
+        inferred: "Classifier modifier inferred",
+        ordinal : "Classifier modifier ordinal",
     },
     primitiveProperties    : PrimitivePropertyProjection,
     enumerationProperties  : EnumerationPropertyProjection,
@@ -1374,7 +1374,7 @@ projection ClassSummaryProjection on Klass
     },
     classifierModifiers    :
     {
-        name    : "Class modifier name",
+        name    : "Classifier modifier name",
     },
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,

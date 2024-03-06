@@ -17,28 +17,28 @@ public interface Classifier
     ImmutableList<Interface> getInterfaces();
 
     @Nonnull
-    default ImmutableList<ClassModifier> getClassModifiers()
+    default ImmutableList<ClassifierModifier> getModifiers()
     {
-        Objects.requireNonNull(this.getDeclaredClassModifiers());
+        Objects.requireNonNull(this.getDeclaredModifiers());
 
-        MutableSet<String> propertyNames = this.getDeclaredClassModifiers().collect(NamedElement::getName).toSet();
+        MutableSet<String> propertyNames = this.getDeclaredModifiers().collect(NamedElement::getName).toSet();
 
-        ImmutableList<ClassModifier> inheritedProperties = this.getInheritedClassModifiers()
+        ImmutableList<ClassifierModifier> inheritedProperties = this.getInheritedModifiers()
                 .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
 
-        return this.getDeclaredClassModifiers().newWithAll(inheritedProperties);
+        return this.getDeclaredModifiers().newWithAll(inheritedProperties);
     }
 
-    default ImmutableList<ClassModifier> getInheritedClassModifiers()
+    default ImmutableList<ClassifierModifier> getInheritedModifiers()
     {
         return this.getInterfaces()
-                .flatCollect(Classifier::getClassModifiers)
+                .flatCollect(Classifier::getModifiers)
                 .distinctBy(NamedElement::getName)
                 .toImmutable();
     }
 
     @Nonnull
-    ImmutableList<ClassModifier> getDeclaredClassModifiers();
+    ImmutableList<ClassifierModifier> getDeclaredModifiers();
 
     @Nonnull
     ImmutableList<Property> getProperties();
@@ -114,7 +114,7 @@ public interface Classifier
 
     default String getModifiersSourceCode()
     {
-        return this.getClassModifiers()
+        return this.getModifiers()
                 .collect(Element::getSourceCode)
                 .collect(each -> "    " + each + '\n')
                 .makeString("");

@@ -4,12 +4,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassModifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierModifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
@@ -30,9 +30,9 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
     {
-        super.enterClassModifier(ctx);
+        super.enterClassifierModifier(ctx);
         String modifierText = ctx.getText();
         if (!"versioned".equals(modifierText))
         {
@@ -41,7 +41,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
         String klassSourceCode = this.getSourceCode();
 
-        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
+        AntlrClassifierModifier classifierModifierState = this.compilerState.getCompilerWalkState().getClassifierModifierState();
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new TopLevelElementsPhase(this.compilerState),
@@ -51,7 +51,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 new ClassAuditPropertyInferencePhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
-                classModifierState,
+                classifierModifierState,
                 this,
                 klassSourceCode,
                 KlassParser::compilationUnit,
@@ -69,10 +69,10 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
-        AntlrClassModifier auditedModifier   = classState.getClassModifierByName("audited");
-        String             auditedSourceCode = auditedModifier == AntlrClassModifier.NOT_FOUND ? "" : " audited";
+        AntlrClassifierModifier auditedModifier   = classState.getClassifierModifierByName("audited");
+        String                  auditedSourceCode = auditedModifier == AntlrClassifierModifier.NOT_FOUND ? "" : " audited";
 
-        // TODO: If main class is transient, version should also be transient, so copy class modifiers
+        // TODO: If main class is transient, version should also be transient, so copy classifier modifiers
         //language=Klass
         String sourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"

@@ -1,6 +1,6 @@
 ## Audit Model
 
-All four features are activated using class modifiers.
+All four features are activated using classifier modifiers.
 
 ```klass
 class Question
@@ -12,7 +12,7 @@ class Question
 }
 ```
 
-Most class modifiers are compiler macros that are shorthand for a longer syntax that you could write out if desired.
+Most classifier modifiers are compiler macros that are shorthand for a longer syntax that you could write out if desired.
 
 ### systemTemporal
 

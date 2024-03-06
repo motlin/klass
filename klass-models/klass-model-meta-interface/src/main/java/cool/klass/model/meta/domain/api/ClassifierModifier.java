@@ -1,6 +1,6 @@
 package cool.klass.model.meta.domain.api;
 
-public interface ClassModifier extends NamedElement
+public interface ClassifierModifier extends NamedElement
 {
     default boolean isTransient()
     {
