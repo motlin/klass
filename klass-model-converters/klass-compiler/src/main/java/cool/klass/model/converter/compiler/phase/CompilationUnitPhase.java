@@ -33,7 +33,7 @@ public class CompilationUnitPhase
     @Override
     public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
-        this.compilerState.getDomainModelState().exitCompilationUnit(compilationUnitState);
+        this.compilerState.getDomainModelState().exitCompilationUnit(this.compilationUnitState);
         this.compilationUnitState = null;
         super.exitCompilationUnit(ctx);
     }
@@ -43,7 +43,6 @@ public class CompilationUnitPhase
     {
         super.enterPackageDeclaration(ctx);
 
-        String packageName = ctx.packageName().getText();
         AntlrPackage packageState = new AntlrPackage(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
