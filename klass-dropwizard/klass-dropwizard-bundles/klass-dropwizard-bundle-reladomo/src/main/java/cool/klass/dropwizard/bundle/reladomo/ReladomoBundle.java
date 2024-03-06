@@ -11,6 +11,7 @@ import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactory;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
+import cool.klass.jackson.module.meta.MetaJacksonModule;
 import cool.klass.jackson.response.KlassResponse;
 import cool.klass.reladomo.configuration.ReladomoConfig;
 import cool.klass.serializer.json.KlassResponseReladomoJsonSerializer;
@@ -48,14 +49,16 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
         ReladomoJsonSerializer              serializer1 = new ReladomoJsonSerializer(dataStore);
         KlassResponseReladomoJsonSerializer serializer2 = new KlassResponseReladomoJsonSerializer(dataStore);
 
+        // TODO: Split the three serializers into two modules
+        ReladomoConfig.addSerializer(environment.getObjectMapper(), MithraObject.class, serializer1);
+        ReladomoConfig.addSerializer(environment.getObjectMapper(), KlassResponse.class, serializer2);
+        environment.getObjectMapper().registerModule(new MetaJacksonModule());
+
         Duration     transactionTimeout         = reladomoFactory.getTransactionTimeout();
         int          transactionTimeoutSeconds  = Math.toIntExact(transactionTimeout.toSeconds());
         List<String> runtimeConfigurationPaths  = reladomoFactory.getRuntimeConfigurationPaths();
         boolean      enableRetrieveCountMetrics = reladomoFactory.isEnableRetrieveCountMetrics();
 
-        // TODO: Split the two serializers into two modules
-        ReladomoConfig.addSerializer(environment.getObjectMapper(), MithraObject.class, serializer1);
-        ReladomoConfig.addSerializer(environment.getObjectMapper(), KlassResponse.class, serializer2);
         ReladomoConfig.setTransactionTimeout(transactionTimeoutSeconds);
         // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
         ReladomoConfig.loadRuntimeConfigurations(runtimeConfigurationPaths);
