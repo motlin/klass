@@ -8,7 +8,7 @@ interface NamedElement
     implements Element
 {
     name: String key maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 class PackageableElement
@@ -55,7 +55,7 @@ class ClassifierInterfaceMapping
 {
     classifierName: String key private maximumLength(256);
     interfaceName: String key private maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association ClassifierHasClassifierInterfaceMapping
@@ -76,7 +76,7 @@ class ClassifierModifier
 {
     classifierName: String key maximumLength(256);
     keyword: String key maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association ClassifierHasModifiers
@@ -229,7 +229,7 @@ class PropertyModifier
     classifierName: String key maximumLength(256);
     propertyName: String key maximumLength(256);
     keyword: String key maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association DataTypePropertyHasModifiers
@@ -425,7 +425,7 @@ class AssociationEndModifier
     owningClassName   : String key maximumLength(256);
     associationEndName: String key maximumLength(256);
     keyword           : String key maximumLength(256);
-    ordinal           : Integer;
+    ordinal           : Integer private;
 }
 
 association AssociationEndHasModifiers
@@ -485,7 +485,7 @@ class MemberReferencePathAssociationEndMapping
     memberReferencePathId: Long key private;
     associationOwningClassName: String key private maximumLength(256);
     associationEndName: String key private maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association MemberReferencePathHasMemberReferencePathAssociationEndMapping
@@ -568,7 +568,7 @@ class AssociationEndOrderBy
     associationEndName: String key private maximumLength(256);
     thisMemberReferencePathId: Long key private;
     orderByDirection: OrderByDirection maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association AssociationEndHasOrderBy
@@ -616,7 +616,7 @@ class ParameterizedPropertyParameter implements NamedElement
 {
     classifierName                : String key private maximumLength(256);
     parameterizedPropertyName     : String key maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association ParameterizedPropertyHasParameters
@@ -758,7 +758,7 @@ class Url
 {
     className                     : String key maximumLength(256);
     url                           : String key maximumLength(8192);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 enumeration UrlParameterType
@@ -774,7 +774,7 @@ class UrlParameter
     urlString                     : String key private maximumLength(8192);
     parameterId                   : Long key private;
     type                          : UrlParameterType;
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association UrlHasUrlParameters
@@ -829,7 +829,7 @@ class Service
     validateCriteriaId            : Long? private;
     conflictCriteriaId            : Long? private;
     serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association UrlHasServices
@@ -889,7 +889,7 @@ class ServiceOrderBy
     serviceVerb: Verb key private;
     thisMemberReferencePathId     : Long key private;
     orderByDirection: OrderByDirection;
-    ordinal: Integer;
+    ordinal: Integer private;
 }
 
 association ServiceHasOrderBy

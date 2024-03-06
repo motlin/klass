@@ -1,11 +1,9 @@
 fragment AssociationEndModifierFragment on AssociationEndModifier {
   keyword
-  ordinal
 }
 
 fragment AssociationEndFragment on AssociationEnd {
   name
-  ordinal
   direction
   multiplicity
   resultType {
@@ -28,7 +26,6 @@ fragment AssociationEndOrderByFragment on AssociationEndOrderBy {
 
 fragment AssociationFragment on Association {
   name
-  ordinal
   packageName
   associationEnds {
     ...AssociationEndFragment

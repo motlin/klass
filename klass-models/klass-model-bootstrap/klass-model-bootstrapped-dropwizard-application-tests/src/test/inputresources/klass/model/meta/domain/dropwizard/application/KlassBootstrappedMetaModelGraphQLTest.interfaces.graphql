@@ -17,7 +17,6 @@ fragment MaxPropertyValidationFragment on MaxPropertyValidation {
 fragment DataTypePropertyFragment on DataTypeProperty {
   __typename
   name
-  ordinal
   optional
   minLengthValidation {
     ...MinLengthPropertyValidationFragment
@@ -52,7 +51,6 @@ fragment ClassifierInterfaceMappingFragment on ClassifierInterfaceMapping {
 
 fragment InterfaceFragment on Interface {
   name
-  ordinal
   packageName
   superInterfaces {
     ...ClassifierInterfaceMappingFragment

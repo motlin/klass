@@ -1,6 +1,5 @@
 fragment ServiceGroupFragment on ServiceGroup {
     name
-    ordinal
     packageName
     owningClass {
       name
@@ -30,7 +29,6 @@ fragment UrlParameterFragment on UrlParameter {
 fragment ParameterFragment on Parameter {
   __typename
   id
-  ordinal
   name
   multiplicity
   ... on EnumerationParameter {

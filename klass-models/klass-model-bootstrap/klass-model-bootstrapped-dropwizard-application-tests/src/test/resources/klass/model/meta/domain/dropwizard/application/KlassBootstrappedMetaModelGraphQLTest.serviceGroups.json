@@ -3,7 +3,6 @@
     "serviceGroups": [
       {
         "name": "PackageableElementResource",
-        "ordinal": 131,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "PackageableElement"
@@ -17,7 +16,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 1,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -65,7 +63,6 @@
       },
       {
         "name": "EnumerationResource",
-        "ordinal": 132,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Enumeration"
@@ -79,7 +76,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 2,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -127,7 +123,6 @@
       },
       {
         "name": "InterfaceResource",
-        "ordinal": 135,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Interface"
@@ -141,7 +136,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 3,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -189,7 +183,6 @@
       },
       {
         "name": "KlassResource",
-        "ordinal": 140,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Klass"
@@ -203,7 +196,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 4,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -251,7 +243,6 @@
       },
       {
         "name": "ClassifierResource",
-        "ordinal": 142,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Classifier"
@@ -265,7 +256,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 5,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -313,7 +303,6 @@
       },
       {
         "name": "AssociationResource",
-        "ordinal": 157,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Association"
@@ -327,7 +316,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 6,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -375,7 +363,6 @@
       },
       {
         "name": "NamedProjectionResource",
-        "ordinal": 158,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "NamedProjection"
@@ -389,7 +376,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 7,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
@@ -437,7 +423,6 @@
       },
       {
         "name": "ServiceGroupResource",
-        "ordinal": 160,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "ServiceGroup"
@@ -451,7 +436,6 @@
                 "parameter": {
                   "__typename": "PrimitiveParameter",
                   "id": 8,
-                  "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"

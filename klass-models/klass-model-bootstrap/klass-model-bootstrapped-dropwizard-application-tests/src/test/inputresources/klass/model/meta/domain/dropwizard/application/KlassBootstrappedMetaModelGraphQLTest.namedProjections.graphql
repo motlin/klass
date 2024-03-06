@@ -1,6 +1,5 @@
 fragment NamedProjectionFragment on NamedProjection {
   name
-  ordinal
   packageName
   rootProjection {
     id

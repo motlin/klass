@@ -1,12 +1,10 @@
 fragment EnumerationLiteralFragment on EnumerationLiteral {
   name
-  ordinal
   prettyName
 }
 
 fragment EnumerationFragment on Enumeration {
   name
-  ordinal
   packageName
   enumerationLiterals {
     ...EnumerationLiteralFragment

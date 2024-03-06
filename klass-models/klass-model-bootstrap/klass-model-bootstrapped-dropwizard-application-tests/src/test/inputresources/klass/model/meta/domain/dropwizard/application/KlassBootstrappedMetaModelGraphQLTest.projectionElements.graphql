@@ -1,7 +1,6 @@
 fragment ProjectionElementFragment on ProjectionElement {
   __typename
   id
-  ordinal
   name
   parent {
     id

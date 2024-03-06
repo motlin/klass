@@ -249,7 +249,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -463,7 +467,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -534,7 +542,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -972,7 +984,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -1776,7 +1792,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -1862,7 +1882,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -2081,7 +2105,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -2220,7 +2248,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -2634,7 +2666,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -2743,7 +2779,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -2921,7 +2961,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null
@@ -3054,7 +3098,11 @@
             "optional": false,
             "minLengthValidation": null,
             "maxLengthValidation": null,
-            "propertyModifiers": [],
+            "propertyModifiers": [
+              {
+                "keyword": "private"
+              }
+            ],
             "primitiveType": "INTEGER",
             "minValidation": null,
             "maxValidation": null

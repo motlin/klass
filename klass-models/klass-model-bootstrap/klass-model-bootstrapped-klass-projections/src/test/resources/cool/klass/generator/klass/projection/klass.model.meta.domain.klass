@@ -8,13 +8,11 @@ package klass.model.meta.domain.inference
 projection NamedElementProjection on NamedElement
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
 }
 
 projection PackageableElementProjection on PackageableElement
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     Enumeration.enumerationLiterals: EnumerationLiteralProjection,
     Classifier.superInterfaces: ClassifierInterfaceMappingProjection,
@@ -44,7 +42,6 @@ projection PackageableElementProjection on PackageableElement
 projection EnumerationProjection on Enumeration
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     enumerationLiterals: EnumerationLiteralProjection,
 }
@@ -52,14 +49,12 @@ projection EnumerationProjection on Enumeration
 projection EnumerationLiteralProjection on EnumerationLiteral
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     prettyName: "EnumerationLiteral prettyName",
 }
 
 projection ClassifierProjection on Classifier
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     classifierModifiers: ClassifierModifierProjection,
@@ -77,7 +72,6 @@ projection ClassifierProjection on Classifier
 projection InterfaceProjection on Interface
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     classifierModifiers: ClassifierModifierProjection,
@@ -86,7 +80,6 @@ projection InterfaceProjection on Interface
 
 projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 {
-    ordinal: "ClassifierInterfaceMapping ordinal",
     superInterface: {
         name: "NamedElement name",
     },
@@ -95,13 +88,11 @@ projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 projection ClassifierModifierProjection on ClassifierModifier
 {
     keyword: "ClassifierModifier keyword",
-    ordinal: "ClassifierModifier ordinal",
 }
 
 projection KlassProjection on Klass
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     abstractClass: "Klass abstractClass",
     superInterfaces: ClassifierInterfaceMappingProjection,
@@ -119,7 +110,6 @@ projection KlassProjection on Klass
 projection DataTypePropertyProjection on DataTypeProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     optional: "DataTypeProperty optional",
     minLengthValidation: MinLengthPropertyValidationProjection,
     maxLengthValidation: MaxLengthPropertyValidationProjection,
@@ -137,7 +127,6 @@ projection DataTypePropertyProjection on DataTypeProperty
 projection PrimitivePropertyProjection on PrimitiveProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     optional: "DataTypeProperty optional",
     primitiveType: "PrimitiveProperty primitiveType",
     minLengthValidation: MinLengthPropertyValidationProjection,
@@ -152,7 +141,6 @@ projection PrimitivePropertyProjection on PrimitiveProperty
 projection EnumerationPropertyProjection on EnumerationProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     optional: "DataTypeProperty optional",
     minLengthValidation: MinLengthPropertyValidationProjection,
     maxLengthValidation: MaxLengthPropertyValidationProjection,
@@ -192,13 +180,11 @@ projection MaxPropertyValidationProjection on MaxPropertyValidation
 projection PropertyModifierProjection on PropertyModifier
 {
     keyword: "PropertyModifier keyword",
-    ordinal: "PropertyModifier ordinal",
 }
 
 projection ParameterProjection on Parameter
 {
     id: "Parameter id",
-    ordinal: "NamedElement ordinal",
     name: "Parameter name",
     multiplicity: "Parameter multiplicity",
     EnumerationParameter.enumeration: {
@@ -210,7 +196,6 @@ projection ParameterProjection on Parameter
 projection EnumerationParameterProjection on EnumerationParameter
 {
     id: "Parameter id",
-    ordinal: "NamedElement ordinal",
     name: "Parameter name",
     multiplicity: "Parameter multiplicity",
     enumeration: {
@@ -221,7 +206,6 @@ projection EnumerationParameterProjection on EnumerationParameter
 projection PrimitiveParameterProjection on PrimitiveParameter
 {
     id: "Parameter id",
-    ordinal: "NamedElement ordinal",
     name: "Parameter name",
     multiplicity: "Parameter multiplicity",
     primitiveType: "PrimitiveParameter primitiveType",
@@ -346,7 +330,6 @@ projection EdgePointCriteriaProjection on EdgePointCriteria
 projection AssociationProjection on Association
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     associationEnds: AssociationEndProjection,
     criteria: {
@@ -357,7 +340,6 @@ projection AssociationProjection on Association
 projection AssociationEndProjection on AssociationEnd
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     direction: "AssociationEnd direction",
     multiplicity: "AssociationEnd multiplicity",
     resultType: {
@@ -370,12 +352,10 @@ projection AssociationEndProjection on AssociationEnd
 projection AssociationEndModifierProjection on AssociationEndModifier
 {
     keyword: "AssociationEndModifier keyword",
-    ordinal: "AssociationEndModifier ordinal",
 }
 
 projection MemberReferencePathAssociationEndMappingProjection on MemberReferencePathAssociationEndMapping
 {
-    ordinal: "MemberReferencePathAssociationEndMapping ordinal",
     associationEnd: {
         name: "NamedElement name",
     },
@@ -408,7 +388,6 @@ projection TypeMemberReferencePathProjection on TypeMemberReferencePath
 projection ParameterizedPropertyProjection on ParameterizedProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     multiplicity: "ParameterizedProperty multiplicity",
     resultType: {
         name: "NamedElement name",
@@ -422,7 +401,6 @@ projection ParameterizedPropertyProjection on ParameterizedProperty
 projection AssociationEndOrderByProjection on AssociationEndOrderBy
 {
     orderByDirection: "AssociationEndOrderBy orderByDirection",
-    ordinal: "AssociationEndOrderBy ordinal",
     thisMemberReferencePath: {
         id: "ExpressionValue id",
     },
@@ -436,13 +414,11 @@ projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrder
 projection ParameterizedPropertyParameterProjection on ParameterizedPropertyParameter
 {
     name: "NamedElement name",
-    ordinal: "ParameterizedPropertyParameter ordinal",
 }
 
 projection ProjectionElementProjection on ProjectionElement
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -467,7 +443,6 @@ projection ProjectionElementProjection on ProjectionElement
 projection RootProjectionProjection on RootProjection
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -483,7 +458,6 @@ projection RootProjectionProjection on RootProjection
 projection NamedProjectionProjection on NamedProjection
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     rootProjection: {
         id: "ProjectionElement id",
@@ -493,7 +467,6 @@ projection NamedProjectionProjection on NamedProjection
 projection ProjectionWithAssociationEndProjection on ProjectionWithAssociationEnd
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -512,7 +485,6 @@ projection ProjectionWithAssociationEndProjection on ProjectionWithAssociationEn
 projection ProjectionReferencePropertyProjection on ProjectionReferenceProperty
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -528,7 +500,6 @@ projection ProjectionReferencePropertyProjection on ProjectionReferenceProperty
 projection ProjectionProjectionReferenceProjection on ProjectionProjectionReference
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -547,7 +518,6 @@ projection ProjectionProjectionReferenceProjection on ProjectionProjectionRefere
 projection ProjectionDataTypePropertyProjection on ProjectionDataTypeProperty
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: {
         id: "ProjectionElement id",
@@ -563,7 +533,6 @@ projection ProjectionDataTypePropertyProjection on ProjectionDataTypeProperty
 projection ServiceGroupProjection on ServiceGroup
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     owningClass: {
         name: "NamedElement name",
@@ -574,7 +543,6 @@ projection ServiceGroupProjection on ServiceGroup
 projection UrlProjection on Url
 {
     url: "Url url",
-    ordinal: "Url ordinal",
     parameters: UrlParameterProjection,
     services: ServiceProjection,
 }
@@ -582,7 +550,6 @@ projection UrlProjection on Url
 projection UrlParameterProjection on UrlParameter
 {
     type: "UrlParameter type",
-    ordinal: "UrlParameter ordinal",
     parameter: {
         id: "Parameter id",
     },
@@ -592,7 +559,6 @@ projection ServiceProjection on Service
 {
     verb: "Service verb",
     serviceMultiplicity: "Service serviceMultiplicity",
-    ordinal: "Service ordinal",
     projection: {
         name: "NamedElement name",
     },
@@ -606,7 +572,6 @@ projection ServiceProjection on Service
 projection ServiceOrderByProjection on ServiceOrderBy
 {
     orderByDirection: "ServiceOrderBy orderByDirection",
-    ordinal: "ServiceOrderBy ordinal",
     thisMemberReferencePath: {
         id: "ExpressionValue id",
     },
