@@ -20,9 +20,11 @@ import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
+import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -383,21 +385,28 @@ public class AntlrClass
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
                 .collect(AntlrAssociationEnd::getElementBuilder)
                 .toImmutable();
-
         this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
 
         ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
                 .collect(AntlrAssociationEndSignature::build)
                 .toImmutable();
-
         this.klassBuilder.setAssociationEndSignatureBuilders(associationEndSignatureBuilders);
+
+        ImmutableList<ReferencePropertyBuilder<?, ?, ?>> referencePropertyBuilders = this.referencePropertyStates
+                .<ReferencePropertyBuilder<?, ?, ?>>collect(AntlrReferenceProperty::getElementBuilder)
+                .toImmutable();
+        this.klassBuilder.setReferencePropertyBuilders(referencePropertyBuilders);
+
+        ImmutableList<PropertyBuilder<?, ?, ?>> propertyBuilders = this.propertyStates
+                .<PropertyBuilder<?, ?, ?>>collect(AntlrProperty::getElementBuilder)
+                .toImmutable();
+        this.klassBuilder.setPropertyBuilders(propertyBuilders);
 
         this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
 
         ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
                 .collect(AntlrInterface::getElementBuilder)
                 .toImmutable();
-
         this.klassBuilder.setInterfaceBuilders(interfaceBuilders);
 
         Optional<KlassBuilder> superClassBuilder = this.superClassState.map(AntlrClass::getElementBuilder);

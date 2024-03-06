@@ -7,7 +7,6 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -102,13 +101,11 @@ public final class GraphQLFragmentSourceCodeGenerator
 
     private static ImmutableList<String> getReferencePropertiesSourceCode(Classifier classifier, boolean subClassMode)
     {
-        // TODO: Implement getReferenceProperties() and getDeclaredReferenceProperties()
-        ImmutableList<Property> properties = subClassMode
-                ? classifier.getDeclaredProperties()
-                : classifier.getProperties();
+        ImmutableList<ReferenceProperty> properties = subClassMode
+                ? classifier.getDeclaredReferenceProperties()
+                : classifier.getReferenceProperties();
 
         return properties
-                .selectInstancesOf(ReferenceProperty.class)
                 .select(GraphQLFragmentSourceCodeGenerator::includeInProjection)
                 .reject(ReferenceProperty::isPrivate)
                 .collectWith(GraphQLFragmentSourceCodeGenerator::getReferencePropertySourceCode, subClassMode);

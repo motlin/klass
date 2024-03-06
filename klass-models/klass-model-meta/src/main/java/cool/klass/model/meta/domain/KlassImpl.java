@@ -185,7 +185,7 @@ public final class KlassImpl
         private final boolean isTransient;
 
         @Nullable
-        private ImmutableList<AssociationEndBuilder> associationEndBuilders;
+        private ImmutableList<AssociationEndBuilder> declaredAssociationEndBuilders;
 
         private Optional<KlassBuilder>      superClassBuilder;
         private ImmutableList<KlassBuilder> subClassBuilders;
@@ -207,13 +207,13 @@ public final class KlassImpl
             this.isTransient = isTransient;
         }
 
-        public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders)
+        public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> declaredAssociationEndBuilders)
         {
-            if (this.associationEndBuilders != null)
+            if (this.declaredAssociationEndBuilders != null)
             {
                 throw new IllegalStateException();
             }
-            this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
+            this.declaredAssociationEndBuilders = Objects.requireNonNull(declaredAssociationEndBuilders);
         }
 
         @Override
@@ -255,7 +255,7 @@ public final class KlassImpl
         {
             super.build2();
 
-            ImmutableList<AssociationEnd> declaredAssociationEnds = this.associationEndBuilders
+            ImmutableList<AssociationEnd> declaredAssociationEnds = this.declaredAssociationEndBuilders
                     .<AssociationEnd>collect(AssociationEndBuilder::getElement)
                     .toImmutable();
             this.element.setDeclaredAssociationEnds(declaredAssociationEnds);

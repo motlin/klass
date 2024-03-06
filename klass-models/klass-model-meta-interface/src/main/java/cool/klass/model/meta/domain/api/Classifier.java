@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -64,6 +65,10 @@ public interface Classifier
     ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties();
 
     DataTypeProperty getDataTypePropertyByName(String name);
+
+    ImmutableList<ReferenceProperty> getDeclaredReferenceProperties();
+
+    ImmutableList<ReferenceProperty> getReferenceProperties();
 
     default boolean isTemporal()
     {
