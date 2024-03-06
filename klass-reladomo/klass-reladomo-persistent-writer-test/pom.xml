@@ -54,21 +54,18 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid-seed</artifactId>
-            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
-            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
-            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 

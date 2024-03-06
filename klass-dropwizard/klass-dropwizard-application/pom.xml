@@ -25,7 +25,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -80,49 +79,42 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-logging-config</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-ddl-executor</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-h2</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-logging-http</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-object-mapper</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-reladomo</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 

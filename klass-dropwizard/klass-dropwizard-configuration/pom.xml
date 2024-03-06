@@ -48,73 +48,61 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-http</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-h2</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-ddl-executor</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-cors</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-object-mapper</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-reladomo</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock-fixed</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-enabled</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-config</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>

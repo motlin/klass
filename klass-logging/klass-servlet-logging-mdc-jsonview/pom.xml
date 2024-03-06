@@ -31,7 +31,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-logging-mdc-closeable</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>

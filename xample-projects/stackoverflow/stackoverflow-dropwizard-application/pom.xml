@@ -184,7 +184,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-connection-manager-h2</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -248,7 +247,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -328,7 +326,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -342,7 +339,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock-system</artifactId>
-            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -372,7 +368,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
-            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 

@@ -19,7 +19,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-prioritized-api</artifactId>
-            <version>0.1.0</version>
         </dependency>
 
         <dependency>
