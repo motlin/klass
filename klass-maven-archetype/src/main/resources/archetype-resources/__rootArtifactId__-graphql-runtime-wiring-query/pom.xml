@@ -12,27 +12,51 @@
 
     <artifactId>${artifactId}</artifactId>
 
-    <name>${app.name} Klass Services</name>
+    <name>${app.name} GraphQL Query Runtime Wiring</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-data-fetchers</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+        </dependency>
+
+    </dependencies>
 
     <build>
+
         <plugins>
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-klass-service-plugin</artifactId>
+                <artifactId>klass-generator-graphql-runtime-wiring-query-plugin</artifactId>
                 <version>${klass.version}</version>
 
                 <configuration>
+                    <rootPackageName>${app.rootPackageName}</rootPackageName>
+                    <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
+                        <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
 
                 <executions>
                     <execution>
-                        <id>generate-klass-service</id>
                         <goals>
-                            <goal>generate-klass-service</goal>
+                            <goal>generate-graphql-query-runtime-wiring</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -45,17 +69,17 @@
                         <version>${project.version}</version>
                     </dependency>
 
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-klass-projections</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
+                    <!--<dependency>-->
+                        <!--<groupId>cool.klass</groupId>-->
+                        <!--<artifactId>klass-model-bootstrapped-meta</artifactId>-->
+                        <!--<version>${klass.version}</version>-->
+                    <!--</dependency>-->
 
                 </dependencies>
-
             </plugin>
 
         </plugins>
+
     </build>
 
 </project>

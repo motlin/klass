@@ -24,13 +24,18 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-data-fetchers</artifactId>
+            <artifactId>${app.artifactId}-graphql-runtime-wiring-query</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-graphql-data-fetcher</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
         </dependency>
 
         <dependency>

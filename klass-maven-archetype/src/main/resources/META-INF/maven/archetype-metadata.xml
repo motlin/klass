@@ -125,8 +125,19 @@
                 dir="__rootArtifactId__-graphql-runtime-wiring"
                 name="${rootArtifactId}-graphql-runtime-wiring">
             <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-graphql-runtime-wiring-query"
+                dir="__rootArtifactId__-graphql-runtime-wiring-query"
+                name="${rootArtifactId}-graphql-runtime-wiring-query">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
                 </fileSet>
             </fileSets>
         </module>
