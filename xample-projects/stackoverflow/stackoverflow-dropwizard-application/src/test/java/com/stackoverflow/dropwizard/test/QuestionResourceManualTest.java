@@ -166,7 +166,7 @@ public class QuestionResourceManualTest
                         "Error at Question.title. Expected property with type 'Question.title: String' but got '1' with type 'number'.",
                         "Error at Question.status. Expected enumerated property with type 'Question.status: Status' but got \"Invalid Choice\" with type 'string'. Expected one of \"Open\", \"On hold\", \"Closed\".",
                         "Error at Question.deleted. Expected property with type 'Question.deleted: Boolean' but got '[]' with type 'array'.",
-                        "Error at Question.extra. No such property 'Question.extra' but got \"extra\". Expected properties: id, title, body, status, deleted, system, systemFrom, systemTo, createdById, createdOn, lastUpdatedById, answers, tags, version.",
+                        "Error at Question.extra. No such property 'Question.extra' but got \"extra\". Expected properties: id, title, body, status, deleted, system, systemFrom, systemTo, createdById, createdOn, lastUpdatedById, answers, votes, tags, version.",
                         "Error at Question.answers[0].body. Expected property with type 'Answer.body: String' but got '2' with type 'number'.",
                         "Error at Question.answers[0].nestedExtra. No such property 'Answer.nestedExtra' but got \"nestedExtra\". Expected properties: id, body, deleted, questionId, system, systemFrom, systemTo, question, version.",
                         "Error at Question.answers[0].nestedExtraNull. No such property 'Answer.nestedExtraNull' but got null. Expected properties: id, body, deleted, questionId, system, systemFrom, systemTo, question, version.",

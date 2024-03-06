@@ -157,7 +157,7 @@ public class KlassBootstrapWriter
             this.bootstrapAssociationEnd(targetAssociationEnd, "target");
         }
 
-        // TODO: Services
+        // TODO: Bootstrapped meta-model of projections and services
         // for (ServiceGroup serviceGroup: this.domainModel.getServiceGroups())
         // {
         // }

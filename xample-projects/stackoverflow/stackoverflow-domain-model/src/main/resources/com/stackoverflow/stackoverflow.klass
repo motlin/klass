@@ -68,6 +68,23 @@ class Question
             && Answer.deleted == false
     }
 
+    /*
+    voteBy(userId: String[1..1] userId): QuestionVote[0..1]
+    {
+        this.id == QuestionVote.questionId
+    }
+
+    upvotes: Integer
+    {
+        count(this.votes.direction == VoteDirection.UP)
+    }
+
+    downvotes: Integer
+    {
+        count(this.votes.direction == VoteDirection.DOWN)
+    }
+    */
+
     // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
     system            : TemporalRange system;
 
@@ -175,6 +192,51 @@ enumeration VoteDirection
     UP("up"),
     DOWN("down"),
 }
+
+association QuestionHasVotes
+{
+    question: Question[1..1] final;
+    votes: QuestionVote[0..*];
+
+    relationship this.id == QuestionVote.questionId
+}
+
+association UserHasQuestionVotes
+{
+    user: User[1..1] final;
+    votes: QuestionVote[0..*];
+
+    relationship this.userId == QuestionVote.createdById
+}
+
+projection QuestionVoteWriteProjection on QuestionVote
+{
+}
+
+/*
+service QuestionVote
+{
+    /api/question/vote/{questionId: Long[1..1]}
+        PUT
+        {
+            multiplicity: one;
+            criteria    : this.questionId == questionId && this.createdById == userId;
+            validate    : this.question.createdById != userId
+                && (this == null
+                || this.systemFrom > now - (5 * 60 * 1000)
+                || this.systemFrom < this.question.systemFrom);
+            projection  : QuestionVoteWriteProjection;
+        }
+        DELETE
+        {
+            multiplicity: one;
+            criteria    : this.questionId == questionId && this.createdById == userId;
+            validate    : this.systemFrom > now - (5 * 60 * 1000)
+                    || this.systemFrom < this.question.systemFrom);
+            projection  : QuestionVoteWriteProjection;
+        }
+}
+*/
 
 class Tag
     systemTemporal
