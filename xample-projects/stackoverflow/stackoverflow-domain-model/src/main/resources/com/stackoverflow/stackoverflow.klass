@@ -422,6 +422,7 @@ service Question
         }
 
     // TODO: Test urls containing unusual characters like emoji, and %20
+    /*
     /api/question/firstTwo
         GET
         {
@@ -430,18 +431,21 @@ service Question
             criteria    : this.id in (1, 2);
             projection  : QuestionReadProjection;
         }
+    */
     /api/question
         POST
         {
             multiplicity: one;
             projection  : QuestionWriteProjection;
         }
+        /*
         GET
         {
             multiplicity: many;
             criteria    : this.title startsWith "Why do";
             projection  : QuestionReadProjection;
         }
+        */
 
     // TODO: Type inference on url parameters
     // TODO: Consider adding a primitive type UserId
