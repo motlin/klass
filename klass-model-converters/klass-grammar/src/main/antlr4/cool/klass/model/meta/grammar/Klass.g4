@@ -202,6 +202,7 @@ keywordValidAsIdentifier
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
+    | 'criteria'
     | classModifier
     | propertyModifier
     | parameterModifier
