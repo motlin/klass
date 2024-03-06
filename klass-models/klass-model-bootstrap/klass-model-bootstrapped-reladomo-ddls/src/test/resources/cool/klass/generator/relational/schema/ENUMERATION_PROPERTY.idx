@@ -1,0 +1,8 @@
+alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_PK primary key (name, classifier_name);
+
+create index ENUMERATION_PROPERTY_IDX_OWNING_CLASSIFIER on ENUMERATION_PROPERTY(classifier_name);
+
+create index ENUMERATION_PROPERTY_IDX_OWNING_CLASSIFIER on ENUMERATION_PROPERTY(classifier_name);
+
+create index ENUMERATION_PROPERTY_IDX_ENUMERATION on ENUMERATION_PROPERTY(enumeration_name);
+

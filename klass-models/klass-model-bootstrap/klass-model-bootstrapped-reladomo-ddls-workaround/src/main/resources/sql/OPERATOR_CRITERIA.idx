@@ -1,8 +1,0 @@
-alter table OPERATOR_CRITERIA add constraint OPERATOR_CRITERIA_PK primary key (id);
-
-drop index if exists OPERATOR_CRITERIA_IDX0;
-create index OPERATOR_CRITERIA_IDX0 on OPERATOR_CRITERIA(source_expression_id);
-
-drop index if exists OPERATOR_CRITERIA_IDX1;
-create index OPERATOR_CRITERIA_IDX1 on OPERATOR_CRITERIA(target_expression_id);
-

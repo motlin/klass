@@ -116,6 +116,7 @@
         <module>stackoverflow-reladomo-merge-hooks</module>
         <module>stackoverflow-reladomo-pojos</module>
         <module>stackoverflow-reladomo-runtime-configuration</module>
+        <module>stackoverflow-relational-schema</module>
         <module>stackoverflow-services</module>
         <module>stackoverflow-uml-nomnoml</module>
     </modules>

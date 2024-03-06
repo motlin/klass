@@ -1,1 +1,0 @@
-alter table PROJECTION_PROJECTION_REFERENCE add constraint PROJECTION_PROJECTION_REFERENCE_PK primary key (id);

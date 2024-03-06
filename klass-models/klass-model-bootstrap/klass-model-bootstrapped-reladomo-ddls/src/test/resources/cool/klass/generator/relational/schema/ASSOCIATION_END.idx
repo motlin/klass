@@ -1,0 +1,8 @@
+alter table ASSOCIATION_END add constraint ASSOCIATION_END_PK primary key (name, owning_class_name);
+
+create index ASSOCIATION_END_IDX_OWNING_CLASS on ASSOCIATION_END(owning_class_name);
+
+create index ASSOCIATION_END_IDX_OWNING_ASSOCIATION on ASSOCIATION_END(association_name);
+
+create index ASSOCIATION_END_IDX_RESULT_TYPE on ASSOCIATION_END(result_type_name);
+

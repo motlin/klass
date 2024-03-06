@@ -1,0 +1,6 @@
+alter table TYPE_MEMBER_REFERENCE_PATH add constraint TYPE_MEMBER_REFERENCE_PATH_PK primary key (id);
+
+create index TYPE_MEMBER_REFERENCE_PATH_IDX_KLASS on TYPE_MEMBER_REFERENCE_PATH(class_name);
+
+create index TYPE_MEMBER_REFERENCE_PATH_IDX_DATA_TYPE_PROPERTY on TYPE_MEMBER_REFERENCE_PATH(property_class_name, property_name);
+

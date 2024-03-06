@@ -1,7 +1,0 @@
-alter table PARAMETERIZED_PROPERTY_ORDERING add constraint PARAMETERIZED_PROPERTY_ORDERING_fk_0 foreign key (
-    owning_class_name,name
-)
-references PARAMETERIZED_PROPERTY(
-    owning_class_name,name
-);
-

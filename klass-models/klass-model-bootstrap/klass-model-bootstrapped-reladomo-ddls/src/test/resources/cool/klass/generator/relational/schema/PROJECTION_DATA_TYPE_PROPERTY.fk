@@ -1,0 +1,14 @@
+alter table PROJECTION_DATA_TYPE_PROPERTY add constraint PROJECTION_DATA_TYPE_PROPERTY_FK_PARENT foreign key (
+    parent_id
+)
+references PROJECTION_ELEMENT(
+    id
+);
+
+alter table PROJECTION_DATA_TYPE_PROPERTY add constraint PROJECTION_DATA_TYPE_PROPERTY_FK_DATA_TYPE_PROPERTY foreign key (
+    property_classifier_name, property_name
+)
+references DATA_TYPE_PROPERTY(
+    classifier_name, name
+);
+

@@ -1,0 +1,4 @@
+alter table URL_PARAMETER add constraint URL_PARAMETER_PK primary key (url_class_name, url_string, parameter_id);
+
+create index URL_PARAMETER_IDX_PARAMETER on URL_PARAMETER(parameter_id);
+

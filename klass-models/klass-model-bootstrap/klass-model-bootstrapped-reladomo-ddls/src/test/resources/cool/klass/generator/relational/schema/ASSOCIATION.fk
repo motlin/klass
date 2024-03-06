@@ -1,0 +1,7 @@
+alter table ASSOCIATION add constraint ASSOCIATION_FK_CRITERIA foreign key (
+    criteria_id
+)
+references CRITERIA(
+    id
+);
+

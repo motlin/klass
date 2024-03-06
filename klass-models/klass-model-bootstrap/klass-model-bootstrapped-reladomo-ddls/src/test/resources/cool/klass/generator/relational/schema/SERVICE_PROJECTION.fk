@@ -1,0 +1,14 @@
+alter table SERVICE_PROJECTION add constraint SERVICE_PROJECTION_FK_PARENT foreign key (
+    parent_id
+)
+references PROJECTION_ELEMENT(
+    id
+);
+
+alter table SERVICE_PROJECTION add constraint SERVICE_PROJECTION_FK_KLASS foreign key (
+    class_name
+)
+references KLASS(
+    name
+);
+

@@ -1,0 +1,6 @@
+alter table DATA_TYPE_PROPERTY add constraint DATA_TYPE_PROPERTY_PK primary key (name, classifier_name);
+
+create index DATA_TYPE_PROPERTY_IDX_OWNING_CLASSIFIER on DATA_TYPE_PROPERTY(classifier_name);
+
+create index DATA_TYPE_PROPERTY_IDX_OWNING_CLASSIFIER on DATA_TYPE_PROPERTY(classifier_name);
+

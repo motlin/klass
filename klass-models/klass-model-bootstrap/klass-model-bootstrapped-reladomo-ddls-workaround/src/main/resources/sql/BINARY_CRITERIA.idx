@@ -1,8 +1,0 @@
-alter table BINARY_CRITERIA add constraint BINARY_CRITERIA_PK primary key (id);
-
-drop index if exists BINARY_CRITERIA_IDX0;
-create index BINARY_CRITERIA_IDX0 on BINARY_CRITERIA(left_id);
-
-drop index if exists BINARY_CRITERIA_IDX1;
-create index BINARY_CRITERIA_IDX1 on BINARY_CRITERIA(right_id);
-

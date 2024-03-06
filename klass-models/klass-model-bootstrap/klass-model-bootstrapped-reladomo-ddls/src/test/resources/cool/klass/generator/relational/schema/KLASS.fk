@@ -1,0 +1,7 @@
+alter table KLASS add constraint KLASS_FK_SUPER_CLASS foreign key (
+    super_class_name
+)
+references KLASS(
+    name
+);
+

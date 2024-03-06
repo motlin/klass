@@ -1,5 +1,0 @@
-alter table KLASS add constraint KLASS_PK primary key (name);
-
-drop index if exists KLASS_IDX0;
-create index KLASS_IDX0 on KLASS(super_class_name);
-

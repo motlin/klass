@@ -1,0 +1,42 @@
+alter table SERVICE add constraint SERVICE_FK_URL foreign key (
+    class_name, url_string
+)
+references URL(
+    class_name, url
+);
+
+alter table SERVICE add constraint SERVICE_FK_PROJECTION foreign key (
+    projection_name
+)
+references SERVICE_PROJECTION(
+    name
+);
+
+alter table SERVICE add constraint SERVICE_FK_QUERY_CRITERIA foreign key (
+    query_criteria_id
+)
+references CRITERIA(
+    id
+);
+
+alter table SERVICE add constraint SERVICE_FK_AUTHORIZE_CRITERIA foreign key (
+    authorize_criteria_id
+)
+references CRITERIA(
+    id
+);
+
+alter table SERVICE add constraint SERVICE_FK_VALIDATE_CRITERIA foreign key (
+    validate_criteria_id
+)
+references CRITERIA(
+    id
+);
+
+alter table SERVICE add constraint SERVICE_FK_CONFLICT_CRITERIA foreign key (
+    conflict_criteria_id
+)
+references CRITERIA(
+    id
+);
+

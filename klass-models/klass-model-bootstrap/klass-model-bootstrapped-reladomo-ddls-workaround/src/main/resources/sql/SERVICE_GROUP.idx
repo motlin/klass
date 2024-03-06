@@ -1,5 +1,0 @@
-alter table SERVICE_GROUP add constraint SERVICE_GROUP_PK primary key (name, class_name);
-
-drop index if exists SERVICE_GROUP_IDX0;
-create index SERVICE_GROUP_IDX0 on SERVICE_GROUP(class_name);
-

@@ -1,0 +1,7 @@
+alter table ASSOCIATION_END_MODIFIER add constraint ASSOCIATION_END_MODIFIER_FK_ASSOCIATION_END foreign key (
+    owning_class_name, association_end_name
+)
+references ASSOCIATION_END(
+    owning_class_name, name
+);
+

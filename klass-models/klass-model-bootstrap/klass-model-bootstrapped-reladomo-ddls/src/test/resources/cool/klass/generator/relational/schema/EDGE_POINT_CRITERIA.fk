@@ -1,0 +1,7 @@
+alter table EDGE_POINT_CRITERIA add constraint EDGE_POINT_CRITERIA_FK_MEMBER_REFERENCE_PATH foreign key (
+    member_reference_path_id
+)
+references MEMBER_REFERENCE_PATH(
+    id
+);
+

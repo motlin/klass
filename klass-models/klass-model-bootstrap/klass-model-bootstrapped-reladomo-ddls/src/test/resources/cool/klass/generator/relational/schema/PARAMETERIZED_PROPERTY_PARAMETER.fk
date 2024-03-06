@@ -1,0 +1,7 @@
+alter table PARAMETERIZED_PROPERTY_PARAMETER add constraint PARAMETERIZED_PROPERTY_PARAMETER_FK_PARAMETERIZED_PROPERTY foreign key (
+    classifier_name, parameterized_property_name
+)
+references PARAMETERIZED_PROPERTY(
+    owning_class_name, name
+);
+

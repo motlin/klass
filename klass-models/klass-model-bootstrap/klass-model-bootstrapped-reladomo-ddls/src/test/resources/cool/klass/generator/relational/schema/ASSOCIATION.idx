@@ -1,0 +1,4 @@
+alter table ASSOCIATION add constraint ASSOCIATION_PK primary key (name);
+
+create index ASSOCIATION_IDX_CRITERIA on ASSOCIATION(criteria_id);
+

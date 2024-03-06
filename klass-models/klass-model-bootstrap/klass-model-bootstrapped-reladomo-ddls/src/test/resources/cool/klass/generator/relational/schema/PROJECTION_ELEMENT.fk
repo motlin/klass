@@ -1,0 +1,7 @@
+alter table PROJECTION_ELEMENT add constraint PROJECTION_ELEMENT_FK_PARENT foreign key (
+    parent_id
+)
+references PROJECTION_ELEMENT(
+    id
+);
+

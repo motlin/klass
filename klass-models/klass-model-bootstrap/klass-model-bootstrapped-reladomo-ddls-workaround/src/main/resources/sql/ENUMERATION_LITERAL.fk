@@ -1,7 +1,0 @@
-alter table ENUMERATION_LITERAL add constraint ENUMERATION_LITERAL_fk_0 foreign key (
-    enumeration_name
-)
-references ENUMERATION(
-    name
-);
-

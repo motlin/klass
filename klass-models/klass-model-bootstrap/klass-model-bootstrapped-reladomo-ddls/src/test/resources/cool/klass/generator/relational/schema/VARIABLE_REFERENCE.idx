@@ -1,0 +1,4 @@
+alter table VARIABLE_REFERENCE add constraint VARIABLE_REFERENCE_PK primary key (id);
+
+create index VARIABLE_REFERENCE_IDX_PARAMETER on VARIABLE_REFERENCE(parameter_id);
+

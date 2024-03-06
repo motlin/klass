@@ -1,5 +1,0 @@
-alter table PROJECTION_WITH_ASSOCIATION_END add constraint PROJECTION_WITH_ASSOCIATION_END_PK primary key (id);
-
-drop index if exists PROJECTION_WITH_ASSOCIATION_END_IDX0;
-create index PROJECTION_WITH_ASSOCIATION_END_IDX0 on PROJECTION_WITH_ASSOCIATION_END(association_end_class, association_end_name);
-

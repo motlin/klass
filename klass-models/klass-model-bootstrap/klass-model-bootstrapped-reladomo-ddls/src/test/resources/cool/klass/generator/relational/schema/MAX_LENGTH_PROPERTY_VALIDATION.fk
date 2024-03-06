@@ -1,0 +1,28 @@
+alter table MAX_LENGTH_PROPERTY_VALIDATION add constraint MAX_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY foreign key (
+    classifier_name, property_name
+)
+references DATA_TYPE_PROPERTY(
+    classifier_name, name
+);
+
+alter table MAX_LENGTH_PROPERTY_VALIDATION add constraint MAX_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY foreign key (
+    classifier_name, property_name
+)
+references DATA_TYPE_PROPERTY(
+    classifier_name, name
+);
+
+alter table MAX_LENGTH_PROPERTY_VALIDATION add constraint MAX_LENGTH_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY foreign key (
+    classifier_name, property_name
+)
+references PRIMITIVE_PROPERTY(
+    classifier_name, name
+);
+
+alter table MAX_LENGTH_PROPERTY_VALIDATION add constraint MAX_LENGTH_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY foreign key (
+    classifier_name, property_name
+)
+references PRIMITIVE_PROPERTY(
+    classifier_name, name
+);
+

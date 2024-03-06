@@ -143,7 +143,7 @@
 
         <dependency>
             <groupId>cool.klass.xample.coverage</groupId>
-            <artifactId>coverage-example-reladomo-ddls</artifactId>
+            <artifactId>coverage-example-relational-schema</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>

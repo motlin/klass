@@ -1,5 +1,0 @@
-alter table PROJECTION_DATA_TYPE_PROPERTY add constraint PROJECTION_DATA_TYPE_PROPERTY_PK primary key (id);
-
-drop index if exists PROJECTION_DATA_TYPE_PROPERTY_IDX0;
-create index PROJECTION_DATA_TYPE_PROPERTY_IDX0 on PROJECTION_DATA_TYPE_PROPERTY(property_classifier_name, property_name);
-

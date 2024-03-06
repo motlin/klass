@@ -1,7 +1,0 @@
-alter table PROJECTION_ELEMENT add constraint PROJECTION_ELEMENT_fk_0 foreign key (
-    parent_id
-)
-references PROJECTION_ELEMENT(
-    id
-);
-

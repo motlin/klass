@@ -1,1 +1,0 @@
-alter table THIS_MEMBER_REFERENCE_PATH add constraint THIS_MEMBER_REFERENCE_PATH_PK primary key (id);

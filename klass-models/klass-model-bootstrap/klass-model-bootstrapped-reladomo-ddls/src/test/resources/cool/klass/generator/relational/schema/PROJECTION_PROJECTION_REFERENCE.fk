@@ -1,0 +1,21 @@
+alter table PROJECTION_PROJECTION_REFERENCE add constraint PROJECTION_PROJECTION_REFERENCE_FK_PARENT foreign key (
+    parent_id
+)
+references PROJECTION_ELEMENT(
+    id
+);
+
+alter table PROJECTION_PROJECTION_REFERENCE add constraint PROJECTION_PROJECTION_REFERENCE_FK_ASSOCIATION_END foreign key (
+    association_end_class, association_end_name
+)
+references ASSOCIATION_END(
+    owning_class_name, name
+);
+
+alter table PROJECTION_PROJECTION_REFERENCE add constraint PROJECTION_PROJECTION_REFERENCE_FK_PROJECTION foreign key (
+    projection_name
+)
+references SERVICE_PROJECTION(
+    name
+);
+

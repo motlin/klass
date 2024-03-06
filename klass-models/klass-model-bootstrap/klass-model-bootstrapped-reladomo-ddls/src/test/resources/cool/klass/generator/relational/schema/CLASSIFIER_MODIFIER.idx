@@ -1,0 +1,4 @@
+alter table CLASSIFIER_MODIFIER add constraint CLASSIFIER_MODIFIER_PK primary key (keyword, classifier_name);
+
+create index CLASSIFIER_MODIFIER_IDX_OWNING_CLASSIFIER on CLASSIFIER_MODIFIER(classifier_name);
+

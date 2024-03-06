@@ -1,0 +1,6 @@
+alter table OPERATOR_CRITERIA add constraint OPERATOR_CRITERIA_PK primary key (id);
+
+create index OPERATOR_CRITERIA_IDX_SOURCE_EXPRESSION_VALUE on OPERATOR_CRITERIA(source_expression_id);
+
+create index OPERATOR_CRITERIA_IDX_TARGET_EXPRESSION_VALUE on OPERATOR_CRITERIA(target_expression_id);
+

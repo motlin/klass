@@ -1,0 +1,14 @@
+alter table DATA_TYPE_PROPERTY add constraint DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER foreign key (
+    classifier_name
+)
+references CLASSIFIER(
+    name
+);
+
+alter table DATA_TYPE_PROPERTY add constraint DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER foreign key (
+    classifier_name
+)
+references CLASSIFIER(
+    name
+);
+

@@ -1,0 +1,14 @@
+alter table PARAMETERIZED_PROPERTY add constraint PARAMETERIZED_PROPERTY_FK_OWNING_CLASS foreign key (
+    owning_class_name
+)
+references KLASS(
+    name
+);
+
+alter table PARAMETERIZED_PROPERTY add constraint PARAMETERIZED_PROPERTY_FK_RESULT_TYPE foreign key (
+    result_type_name
+)
+references KLASS(
+    name
+);
+

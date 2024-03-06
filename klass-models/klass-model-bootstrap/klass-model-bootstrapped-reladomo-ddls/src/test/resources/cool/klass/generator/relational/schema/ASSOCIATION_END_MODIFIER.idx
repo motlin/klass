@@ -1,0 +1,4 @@
+alter table ASSOCIATION_END_MODIFIER add constraint ASSOCIATION_END_MODIFIER_PK primary key (keyword, owning_class_name, association_end_name);
+
+create index ASSOCIATION_END_MODIFIER_IDX_ASSOCIATION_END on ASSOCIATION_END_MODIFIER(owning_class_name, association_end_name);
+

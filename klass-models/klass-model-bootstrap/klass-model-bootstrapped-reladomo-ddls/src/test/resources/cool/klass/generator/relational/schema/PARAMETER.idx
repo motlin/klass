@@ -1,0 +1,2 @@
+alter table PARAMETER add constraint PARAMETER_PK primary key (name, id);
+

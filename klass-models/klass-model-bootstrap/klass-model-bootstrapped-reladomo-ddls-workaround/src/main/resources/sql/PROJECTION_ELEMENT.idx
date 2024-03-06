@@ -1,5 +1,0 @@
-alter table PROJECTION_ELEMENT add constraint PROJECTION_ELEMENT_PK primary key (id);
-
-drop index if exists PROJECTION_ELEMENT_IDX0;
-create index PROJECTION_ELEMENT_IDX0 on PROJECTION_ELEMENT(parent_id);
-

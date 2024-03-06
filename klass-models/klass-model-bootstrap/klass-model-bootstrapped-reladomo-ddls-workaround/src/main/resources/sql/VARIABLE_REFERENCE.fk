@@ -1,7 +1,0 @@
-alter table VARIABLE_REFERENCE add constraint VARIABLE_REFERENCE_fk_0 foreign key (
-    parameter_id
-)
-references PARAMETER(
-    id
-);
-
