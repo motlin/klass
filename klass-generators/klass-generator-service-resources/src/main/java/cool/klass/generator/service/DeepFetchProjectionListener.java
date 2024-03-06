@@ -30,10 +30,10 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
             {
                 throw new AssertionError();
             }
-            this.owningClassifier = projectionAssociationEnd.getAssociationEnd().getOwningClassifier();
+            this.owningClassifier = projectionAssociationEnd.getProperty().getOwningClassifier();
         }
         this.associationEndStack.push(projectionAssociationEnd);
-        this.stringStack.push(projectionAssociationEnd.getAssociationEnd().getName());
+        this.stringStack.push(projectionAssociationEnd.getProperty().getName());
     }
 
     @Override

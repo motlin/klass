@@ -42,7 +42,7 @@ public final class ProjectionAssociationEndImpl
 
     @Override
     @Nonnull
-    public AssociationEndImpl getAssociationEnd()
+    public AssociationEndImpl getProperty()
     {
         return this.associationEnd;
     }

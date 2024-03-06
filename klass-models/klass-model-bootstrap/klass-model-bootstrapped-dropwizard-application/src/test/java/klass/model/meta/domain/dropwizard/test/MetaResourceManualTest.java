@@ -573,7 +573,10 @@ public class MetaResourceManualTest
                 + "        }\n"
                 + "      ]\n"
                 + "    }\n"
-                + "  ]\n"
+                + "  ],\n"
+                + "  \"criteria\": {\n"
+                + "    \"id\": 2\n"
+                + "  }\n"
                 + "}";
         JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
     }

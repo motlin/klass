@@ -19,20 +19,14 @@ public interface ProjectionAssociationEnd extends ProjectionParent, ProjectionCh
         listener.exitProjectionAssociationEnd(this);
     }
 
+    @Override
     @Nonnull
-    AssociationEnd getAssociationEnd();
+    AssociationEnd getProperty();
 
     @Nonnull
     @Override
     default Klass getKlass()
     {
-        return this.getAssociationEnd().getType();
-    }
-
-    default boolean isPolymorphic()
-    {
-        Klass projectionParentClass = this.getParent().get().getKlass();
-        Klass propertyOwner         = this.getAssociationEnd().getOwningClassifier();
-        return projectionParentClass.isSuperTypeOf(propertyOwner);
+        return this.getProperty().getType();
     }
 }

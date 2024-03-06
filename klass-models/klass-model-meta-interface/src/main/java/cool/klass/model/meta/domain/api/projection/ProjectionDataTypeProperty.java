@@ -29,6 +29,7 @@ public interface ProjectionDataTypeProperty extends ProjectionChild
     @Nonnull
     String getHeaderText();
 
+    @Override
     @Nonnull
     DataTypeProperty getProperty();
 }

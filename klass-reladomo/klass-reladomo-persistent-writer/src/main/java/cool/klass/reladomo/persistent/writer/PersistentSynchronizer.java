@@ -132,7 +132,7 @@ public abstract class PersistentSynchronizer
     {
         for (ProjectionAssociationEnd projectionAssociationEnd : projection.getAssociationEndChildren())
         {
-            AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+            AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
             Multiplicity   multiplicity   = associationEnd.getMultiplicity();
 
             JsonNode jsonNode = incomingObjectNode.path(associationEnd.getName());
@@ -181,7 +181,7 @@ public abstract class PersistentSynchronizer
             JsonNode incomingChildInstance,
             ProjectionAssociationEnd projectionAssociationEnd)
     {
-        AssociationEnd associationEnd          = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd          = projectionAssociationEnd.getProperty();
         Object         persistentChildInstance = this.dataStore.getToOne(persistentParentInstance, associationEnd);
 
         if (persistentChildInstance == null
@@ -231,7 +231,7 @@ public abstract class PersistentSynchronizer
             ProjectionAssociationEnd projectionAssociationEnd,
             ImmutableList<Object> keys)
     {
-        AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
         Klass          resultType     = associationEnd.getType();
         Object         newInstance    = this.dataStore.instantiate(resultType, keys);
         PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
@@ -254,7 +254,7 @@ public abstract class PersistentSynchronizer
     {
         // TODO: Test null where an array goes
 
-        AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
 
         MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingChildInstances,

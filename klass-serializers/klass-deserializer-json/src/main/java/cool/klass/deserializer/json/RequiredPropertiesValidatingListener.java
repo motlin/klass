@@ -54,7 +54,7 @@ public class RequiredPropertiesValidatingListener extends BaseProjectionListener
     @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
     {
-        AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
         Multiplicity   multiplicity   = associationEnd.getMultiplicity();
 
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
@@ -78,7 +78,7 @@ public class RequiredPropertiesValidatingListener extends BaseProjectionListener
             ProjectionAssociationEnd projectionAssociationEnd,
             JsonNode jsonNode)
     {
-        this.contextStack.push(projectionAssociationEnd.getAssociationEnd().getName());
+        this.contextStack.push(projectionAssociationEnd.getProperty().getName());
         try
         {
             if (jsonNode instanceof ObjectNode)
@@ -105,7 +105,7 @@ public class RequiredPropertiesValidatingListener extends BaseProjectionListener
         {
             String contextString = String.format(
                     "%s[%d]",
-                    projectionAssociationEnd.getAssociationEnd().getName(),
+                    projectionAssociationEnd.getProperty().getName(),
                     index);
             this.contextStack.push(contextString);
 
@@ -126,7 +126,7 @@ public class RequiredPropertiesValidatingListener extends BaseProjectionListener
 
     public void handleEach(ProjectionAssociationEnd projectionAssociationEnd, ObjectNode objectNode)
     {
-        OperationMode nextMode = this.getNextMode(this.operationMode, projectionAssociationEnd.getAssociationEnd());
+        OperationMode nextMode = this.getNextMode(this.operationMode, projectionAssociationEnd.getProperty());
 
         ProjectionListener listener = new RequiredPropertiesValidatingListener(
                 objectNode,

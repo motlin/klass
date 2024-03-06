@@ -27,7 +27,7 @@ public interface ProjectionParent extends ProjectionElement
 
     default ImmutableList<AssociationEnd> getAssociationEnds()
     {
-        return this.getAssociationEndChildren().collect(ProjectionAssociationEnd::getAssociationEnd);
+        return this.getAssociationEndChildren().collect(ProjectionAssociationEnd::getProperty);
     }
 
     default ImmutableList<AssociationEnd> getAssociationEndsOutsideProjection()
@@ -36,7 +36,7 @@ public interface ProjectionParent extends ProjectionElement
 
         ImmutableList<AssociationEnd> optionalReturnPath = Lists.immutable.with(this)
                 .selectInstancesOf(ProjectionAssociationEnd.class)
-                .collect(ProjectionAssociationEnd::getAssociationEnd)
+                .collect(ProjectionAssociationEnd::getProperty)
                 .collect(AssociationEnd::getOpposite);
 
         return this.getKlass()

@@ -76,7 +76,7 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
     @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
     {
-        AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
         Multiplicity   multiplicity   = associationEnd.getMultiplicity();
 
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
@@ -100,14 +100,14 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
             ProjectionAssociationEnd projectionAssociationEnd,
             JsonNode jsonNode)
     {
-        this.contextStack.push(projectionAssociationEnd.getAssociationEnd().getName());
+        this.contextStack.push(projectionAssociationEnd.getProperty().getName());
         try
         {
             if (jsonNode instanceof ObjectNode)
             {
                 Object childPersistentInstance = this.dataStore.getToOne(
                         this.persistentInstance,
-                        projectionAssociationEnd.getAssociationEnd());
+                        projectionAssociationEnd.getProperty());
                 this.handleEach(projectionAssociationEnd, (ObjectNode) jsonNode, childPersistentInstance);
             }
         }
@@ -123,7 +123,7 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
     {
         if (!(jsonNode instanceof ArrayNode))
         {
-            this.contextStack.push(projectionAssociationEnd.getAssociationEnd().getName());
+            this.contextStack.push(projectionAssociationEnd.getProperty().getName());
             String error = String.format(
                     "Error at %s. Expected json array but value was %s.",
                     this.getContextString(),
@@ -134,13 +134,13 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
 
         List<Object> childPersistentInstances = this.dataStore.getToMany(
                 this.persistentInstance,
-                projectionAssociationEnd.getAssociationEnd());
+                projectionAssociationEnd.getProperty());
 
         for (int index = 0; index < jsonNode.size(); index++)
         {
             String contextString = String.format(
                     "%s[%d]",
-                    projectionAssociationEnd.getAssociationEnd().getName(),
+                    projectionAssociationEnd.getProperty().getName(),
                     index);
             this.contextStack.push(contextString);
 

@@ -740,7 +740,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public Optional<Klass> getSuperClass()\n"
                 + "    {\n"
-                + "        return Optional.empty();\n"
+                + "        return " + this.getSuperClassSourceCode(klass) + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -807,6 +807,19 @@ public class JavaConstantsMetaModelGenerator
                 + this.getAssociationEndsSourceCode(klass)
                 + "}\n";
         // @formatter:on
+    }
+
+    private String getSuperClassSourceCode(Klass klass)
+    {
+        if (!klass.getSuperClass().isPresent())
+        {
+            return "Optional.empty()";
+        }
+
+        return String.format(
+                "Optional.of(%sDomainModel.%s)",
+                this.applicationName,
+                klass.getSuperClass().get().getName());
     }
 
     private String getAssociationEndsSourceCode(Klass klass)
@@ -1432,9 +1445,7 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:off
         //language=JAVA
         return ""
-                + "        public static final AssociationEndModifier "
-                + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName())
-                + "_MODIFIER = new AssociationEndModifier()\n"
+                + "        public static final AssociationEndModifier " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new AssociationEndModifier()\n"
                 + "        {\n"
                 + "            @Override\n"
                 + "            public AssociationEnd getAssociationEnd()\n"
@@ -1604,7 +1615,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                + \"" + this.wrapSourceCode(projection.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + this.getProjectionChildrenSourceCode(projection)
+                + this.getProjectionChildrenSourceCode(projection, projection.getName() + "_Projection")
                 + "}\n";
         // @formatter:on
     }
@@ -1629,32 +1640,36 @@ public class JavaConstantsMetaModelGenerator
                 name);
     }
 
-    private String getProjectionChildrenSourceCode(ProjectionParent projectionParent)
+    private String getProjectionChildrenSourceCode(
+            ProjectionParent projectionParent,
+            String projectionParentName)
     {
         return projectionParent.getChildren()
-                .collect(this::getProjectionChildSourceCode)
+                .collectWith(this::getProjectionChildSourceCode, projectionParentName)
                 .makeString("\n")
                 // https://stackoverflow.com/questions/15888934/how-to-indent-a-multi-line-paragraph-being-written-to-the-console-in-java
                 .replaceAll("(?m)^", "    ");
     }
 
     @Nonnull
-    private String getProjectionChildSourceCode(ProjectionElement projectionElement)
+    private String getProjectionChildSourceCode(ProjectionElement projectionElement, String projectionParentName)
     {
         if (projectionElement instanceof ProjectionDataTypeProperty)
         {
             ProjectionDataTypeProperty projectionDataTypeProperty = (ProjectionDataTypeProperty) projectionElement;
-            return this.getProjectionDataTypePropertySourceCode(projectionDataTypeProperty);
+            return this.getProjectionDataTypePropertySourceCode(projectionDataTypeProperty, projectionParentName);
         }
         if (projectionElement instanceof ProjectionAssociationEnd)
         {
             ProjectionAssociationEnd projectionAssociationEnd = (ProjectionAssociationEnd) projectionElement;
-            return this.getProjectionAssociationEndSourceCode(projectionAssociationEnd);
+            return this.getProjectionAssociationEndSourceCode(projectionAssociationEnd, projectionParentName);
         }
         throw new AssertionError();
     }
 
-    private String getProjectionDataTypePropertySourceCode(ProjectionDataTypeProperty projectionDataTypeProperty)
+    private String getProjectionDataTypePropertySourceCode(
+            ProjectionDataTypeProperty projectionDataTypeProperty,
+            String projectionParentName)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionDataTypeProperty.getName()) + projectionDataTypeProperty.getDepth();
 
@@ -1705,7 +1720,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public Optional<ProjectionParent> getParent()\n"
                 + "    {\n"
-                + "        return Optional.empty();\n"
+                + "        return Optional.of(" + projectionParentName + ".INSTANCE);\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1724,11 +1739,13 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:on
     }
 
-    private String getProjectionAssociationEndSourceCode(ProjectionAssociationEnd projectionAssociationEnd)
+    private String getProjectionAssociationEndSourceCode(
+            ProjectionAssociationEnd projectionAssociationEnd,
+            String projectionParentName)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionAssociationEnd.getName()) + projectionAssociationEnd.getDepth();
 
-        AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
 
         // @formatter:off
         //language=JAVA
@@ -1762,7 +1779,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public Optional<ProjectionParent> getParent()\n"
                 + "    {\n"
-                + "        return Optional.empty();\n"
+                + "        return Optional.of(" + projectionParentName + ".INSTANCE);\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1773,7 +1790,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public AssociationEnd getAssociationEnd()\n"
+                + "    public AssociationEnd getProperty()\n"
                 + "    {\n"
                 + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
                 + "    }\n"
@@ -1791,7 +1808,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                + \"" + this.wrapSourceCode(projectionAssociationEnd.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + this.getProjectionChildrenSourceCode(projectionAssociationEnd)
+                + this.getProjectionChildrenSourceCode(projectionAssociationEnd, uppercaseName + "_ProjectionAssociationEnd")
                 + "}\n";
         // @formatter:on
     }

@@ -55,13 +55,13 @@ public class KlassBootstrapWriter
         for (Enumeration enumeration : this.domainModel.getEnumerations())
         {
             klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
-            this.handlePackageableElement(bootstrappedEnumeration, enumeration);
+            KlassBootstrapWriter.handlePackageableElement(bootstrappedEnumeration, enumeration);
             bootstrappedEnumeration.insert();
 
             for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
             {
                 klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
-                this.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
+                KlassBootstrapWriter.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
                 enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
                 bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
                 bootstrappedEnumerationLiteral.insert();
@@ -71,7 +71,7 @@ public class KlassBootstrapWriter
         for (Interface anInterface : this.domainModel.getInterfaces())
         {
             klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
-            this.handlePackageableElement(bootstrappedInterface, anInterface);
+            KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
             // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
             bootstrappedInterface.insert();
 
@@ -83,7 +83,7 @@ public class KlassBootstrapWriter
         for (Klass klass : this.domainModel.getClasses())
         {
             klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
-            this.handlePackageableElement(bootstrappedClass, klass);
+            KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
             // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
             bootstrappedClass.insert();
 
@@ -100,8 +100,11 @@ public class KlassBootstrapWriter
 
         for (Association association : this.domainModel.getAssociations())
         {
+            klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(association.getCriteria());
+
             klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
-            this.handlePackageableElement(bootstrappedAssociation, association);
+            KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
+            bootstrappedAssociation.setCriteria(bootstrappedCriteria);
             bootstrappedAssociation.insert();
 
             AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
@@ -163,7 +166,7 @@ public class KlassBootstrapWriter
             DataTypeProperty dataTypeProperty,
             klass.model.meta.domain.DataTypeProperty bootstrappedDataTypeProperty)
     {
-        this.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
+        KlassBootstrapWriter.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
         bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
         bootstrappedDataTypeProperty.setKey(dataTypeProperty.isKey());
         bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
@@ -174,7 +177,7 @@ public class KlassBootstrapWriter
         for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
         {
             klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
-            this.handleNamedElement(bootstrappedPropertyModifier, propertyModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedPropertyModifier, propertyModifier);
             bootstrappedPropertyModifier.setClassifierName(classifier.getName());
             bootstrappedPropertyModifier.setPropertyName(dataTypeProperty.getName());
             bootstrappedPropertyModifier.insert();
@@ -229,7 +232,7 @@ public class KlassBootstrapWriter
         for (ClassModifier classModifier : classifier.getClassModifiers())
         {
             klass.model.meta.domain.ClassifierModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassifierModifier();
-            this.handleNamedElement(bootstrappedClassModifier, classModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedClassModifier, classModifier);
             bootstrappedClassModifier.setClassifierName(classifier.getName());
             bootstrappedClassModifier.insert();
         }
@@ -249,7 +252,7 @@ public class KlassBootstrapWriter
     private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
     {
         klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
-        this.handleNamedElement(bootstrappedAssociationEnd, associationEnd);
+        KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEnd, associationEnd);
         bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningClassifier().getName());
         bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
         bootstrappedAssociationEnd.setDirection(direction);
@@ -262,32 +265,32 @@ public class KlassBootstrapWriter
             klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
-            this.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
+            KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
             bootstrappedAssociationEndModifier.insert();
         }
     }
 
-    private void handleElement(ElementAbstract bootstrappedNamedElement, Element namedElement)
+    public static void handleElement(ElementAbstract bootstrappedElement, Element element)
     {
-        bootstrappedNamedElement.setInferred(namedElement.isInferred());
-        bootstrappedNamedElement.setSourceCode(namedElement.getSourceCode());
-        bootstrappedNamedElement.setSourceCodeWithInference(namedElement.getSourceCodeWithInference());
+        bootstrappedElement.setInferred(element.isInferred());
+        bootstrappedElement.setSourceCode(element.getSourceCode());
+        bootstrappedElement.setSourceCodeWithInference(element.getSourceCodeWithInference());
     }
 
-    private void handleNamedElement(
+    public static void handleNamedElement(
             NamedElementAbstract bootstrappedNamedElement,
             NamedElement namedElement)
     {
-        this.handleElement(bootstrappedNamedElement, namedElement);
+        KlassBootstrapWriter.handleElement(bootstrappedNamedElement, namedElement);
         bootstrappedNamedElement.setName(namedElement.getName());
         bootstrappedNamedElement.setOrdinal(namedElement.getOrdinal());
     }
 
-    private void handlePackageableElement(
+    public static void handlePackageableElement(
             PackageableElementAbstract bootstrappedPackageableElement,
             PackageableElement packageableElement)
     {
-        this.handleNamedElement(bootstrappedPackageableElement, packageableElement);
+        KlassBootstrapWriter.handleNamedElement(bootstrappedPackageableElement, packageableElement);
         bootstrappedPackageableElement.setPackageName(packageableElement.getPackageName());
     }
 }

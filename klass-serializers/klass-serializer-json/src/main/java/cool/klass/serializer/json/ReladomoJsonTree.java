@@ -12,9 +12,11 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
@@ -90,6 +92,15 @@ public class ReladomoJsonTree implements JsonSerializable
             MithraObject mithraObject,
             ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
+        if (projectionPrimitiveMember.isPolymorphic())
+        {
+            Classifier classifier = projectionPrimitiveMember.getProperty().getOwningClassifier();
+            if (!this.dataStore.isInstanceOf(mithraObject, classifier))
+            {
+                return;
+            }
+        }
+
         DataTypeProperty property     = projectionPrimitiveMember.getProperty();
         String           propertyName = property.getName();
         DataType         dataType     = property.getType();
@@ -118,12 +129,20 @@ public class ReladomoJsonTree implements JsonSerializable
             MithraObject mithraObject,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
-        ImmutableList<? extends ProjectionChild> children = projectionAssociationEnd.getChildren();
+        if (projectionAssociationEnd.isPolymorphic())
+        {
+            Klass klass = projectionAssociationEnd.getProperty().getOwningClassifier();
+            if (!this.dataStore.isInstanceOf(mithraObject, klass))
+            {
+                return;
+            }
+        }
 
-        AssociationEnd associationEnd     = projectionAssociationEnd.getAssociationEnd();
+        AssociationEnd associationEnd     = projectionAssociationEnd.getProperty();
         Multiplicity   multiplicity       = associationEnd.getMultiplicity();
         String         associationEndName = associationEnd.getName();
 
+        ImmutableList<? extends ProjectionChild> children = projectionAssociationEnd.getChildren();
         if (multiplicity.isToMany())
         {
             Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);
