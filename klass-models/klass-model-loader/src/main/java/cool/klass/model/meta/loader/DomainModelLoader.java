@@ -40,6 +40,7 @@ public class DomainModelLoader
     @Nonnull
     public DomainModel load()
     {
+        LOGGER.info("Running domain model compiler in packages: {}", this.klassSourcePackages);
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
 
         MutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(klassSourcePackagesImmutable);
@@ -47,7 +48,11 @@ public class DomainModelLoader
         CompilerState     compilerState     = new CompilerState(compilationUnits);
         KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
         CompilationResult compilationResult = klassCompiler.compile();
-        return this.handleResult(compilationResult);
+        DomainModel domainModel = this.handleResult(compilationResult);
+
+        LOGGER.info("Completing domain model compilation.");
+
+        return domainModel;
     }
 
     @Nonnull
@@ -59,6 +64,8 @@ public class DomainModelLoader
                 .setUrls(urls.castToList());
         Reflections reflections    = new Reflections(configurationBuilder);
         Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
+
+        LOGGER.debug("Found source files on classpath: {}", klassLocations);
 
         MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
                 .collect(CompilationUnit::createFromClasspathLocation);
