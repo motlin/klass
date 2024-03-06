@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -70,22 +71,26 @@ public final class DataFetcherSourceCodePropertyVisitor
     public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
     {
         PrimitiveType primitiveType = primitiveProperty.getType();
-        this.dataFetcherSourceCode = this.getPrimitiveDataFetcherSourceCode(primitiveType);
+        this.dataFetcherSourceCode = this.getAttributeDataFetcherSourceCode(primitiveProperty, primitiveType);
     }
 
     @Nonnull
-    private String getPrimitiveDataFetcherSourceCode(@Nonnull PrimitiveType primitiveType)
+    private String getAttributeDataFetcherSourceCode(@Nonnull DataTypeProperty property, @Nonnull PrimitiveType primitiveType)
     {
-        if (SPECIAL_PRIMITIVE_TYPES.contains(primitiveType))
+        if (property.isDerived())
         {
-            return this.getCustomDataFetcherSourceCode(primitiveType.getPrettyName());
+            return this.getSimplePropertyDataFetcherSourceCode();
         }
 
-        return this.getSimplePropertyDataFetcherSourceCode();
+        String primitiveName = SPECIAL_PRIMITIVE_TYPES.contains(primitiveType)
+                ? primitiveType.getPrettyName()
+                : "Attribute";
+
+        return this.getAttributeDataFetcherSourceCode(primitiveName);
     }
 
     @Nonnull
-    private String getCustomDataFetcherSourceCode(String type)
+    private String getAttributeDataFetcherSourceCode(String type)
     {
         return String.format(
                 "new Reladomo%sDataFetcher(%sFinder.%s())",
@@ -94,10 +99,19 @@ public final class DataFetcherSourceCodePropertyVisitor
                 this.property.getName());
     }
 
+    @Nonnull
+    private String getSimplePropertyDataFetcherSourceCode()
+    {
+        return String.format(
+                "PropertyDataFetcher.fetching(%s::%s)",
+                this.getOwningClassifierName(),
+                this.getMethodName());
+    }
+
     @Override
     public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
     {
-        this.dataFetcherSourceCode = this.getSimplePropertyDataFetcherSourceCode();
+        this.dataFetcherSourceCode = this.getAttributeDataFetcherSourceCode(enumerationProperty, PrimitiveType.STRING);
     }
 
     @Override
@@ -116,15 +130,6 @@ public final class DataFetcherSourceCodePropertyVisitor
     public void visitParameterizedProperty(ParameterizedProperty parameterizedProperty)
     {
         this.dataFetcherSourceCode = this.getReferencePropertyDataFetcherSourceCode(parameterizedProperty);
-    }
-
-    @Nonnull
-    private String getSimplePropertyDataFetcherSourceCode()
-    {
-        return String.format(
-                "PropertyDataFetcher.fetching(%s::%s)",
-                this.getOwningClassifierName(),
-                this.getMethodName());
     }
 
     private String getReferencePropertyDataFetcherSourceCode(ReferenceProperty referenceProperty)

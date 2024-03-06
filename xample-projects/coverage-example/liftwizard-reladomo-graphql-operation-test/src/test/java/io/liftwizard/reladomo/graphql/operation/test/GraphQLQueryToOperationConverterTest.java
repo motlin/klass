@@ -389,10 +389,10 @@ public class GraphQLQueryToOperationConverterTest
     {
         RuntimeWiring runtimeWiring = this.getRuntimeWiring();
 
-        TypeDefinitionRegistry typeRegistry = this.getTypeDefinitionRegistry();
+        TypeDefinitionRegistry typeRegistry = this.getRegistry();
 
-        var           schemaGenerator = new SchemaGenerator();
-        GraphQLSchema graphQLSchema   = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+        SchemaGenerator schemaGenerator = new SchemaGenerator();
+        GraphQLSchema   graphQLSchema   = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
         GraphQL graphQL = GraphQL.newGraphQL(graphQLSchema).build();
 
@@ -430,33 +430,24 @@ public class GraphQLQueryToOperationConverterTest
     }
 
     @Nonnull
-    private TypeDefinitionRegistry getTypeDefinitionRegistry()
+    private TypeDefinitionRegistry getRegistry()
     {
-        InputStream reladomoAttributeSchemaFile = this.getResource(
-                "/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls");
-        InputStream querySchemaFile = this.getResource(
-                "/cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls");
-        InputStream findersSchemaFile = this.getResource(
-                "/cool/klass/xample/coverage/graphql/schema/CoverageExampleFinders.graphqls");
-        InputStream schemaFile = this.getResource(
-                "/cool/klass/xample/coverage/graphql/schema/CoverageExample.graphqls");
-
-        var                    schemaParser          = new SchemaParser();
-        TypeDefinitionRegistry attributeTypeRegistry = schemaParser.parse(reladomoAttributeSchemaFile);
-        TypeDefinitionRegistry queryTypeRegistry     = schemaParser.parse(querySchemaFile);
-        TypeDefinitionRegistry findersTypeRegistry   = schemaParser.parse(findersSchemaFile);
-        TypeDefinitionRegistry typeRegistry          = schemaParser.parse(schemaFile);
+        var typeRegistry          = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/CoverageExample.graphqls");
+        var attributeTypeRegistry = this.getRegistry("/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls");
+        var queryTypeRegistry     = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls");
+        var findersTypeRegistry   = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/CoverageExampleFinders.graphqls");
         typeRegistry.merge(attributeTypeRegistry);
         typeRegistry.merge(queryTypeRegistry);
         typeRegistry.merge(findersTypeRegistry);
         return typeRegistry;
     }
 
-    private InputStream getResource(String resourceName)
+    private TypeDefinitionRegistry getRegistry(String resourceName)
     {
         InputStream result = this.getClass().getResourceAsStream(resourceName);
         Objects.requireNonNull(result, resourceName);
-        return result;
+        SchemaParser schemaParser = new SchemaParser();
+        return schemaParser.parse(result);
     }
 
     private static final class FakeReladomoFinderDataFetcher<T>
