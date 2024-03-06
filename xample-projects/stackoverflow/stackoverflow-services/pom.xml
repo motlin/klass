@@ -26,12 +26,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-meta-model-constants</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-json-views</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -39,6 +33,12 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-deserializer-json</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

@@ -42,6 +42,8 @@ import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
@@ -51,7 +53,6 @@ import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
-import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
@@ -62,14 +63,20 @@ import org.eclipse.collections.impl.utility.Iterate;
 public class QuestionResourceManual
 {
     @Nonnull
-    private final DataStore dataStore;
+    private final DomainModel domainModel;
     @Nonnull
-    private final Clock     clock;
+    private final DataStore   dataStore;
+    @Nonnull
+    private final Clock       clock;
 
-    public QuestionResourceManual(@Nonnull DataStore dataStore, @Nonnull Clock clock)
+    public QuestionResourceManual(
+            @Nonnull DomainModel domainModel,
+            @Nonnull DataStore dataStore,
+            @Nonnull Clock clock)
     {
-        this.dataStore = Objects.requireNonNull(dataStore);
-        this.clock     = Objects.requireNonNull(clock);
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore   = Objects.requireNonNull(dataStore);
+        this.clock       = Objects.requireNonNull(clock);
     }
 
     @Nonnull
@@ -115,11 +122,13 @@ public class QuestionResourceManual
             @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
             @Nonnull @NotNull ObjectNode incomingInstance)
     {
+        Klass klass = this.domainModel.getClassByName("Question");
+
         MutableList<String> errors   = Lists.mutable.empty();
         MutableList<String> warnings = Lists.mutable.empty();
-        JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
+        JsonTypeCheckingValidator.validate(incomingInstance, klass, errors);
         RequiredPropertiesValidator.validate(
-                StackOverflowDomainModel.Question,
+                klass,
                 incomingInstance,
                 OperationMode.REPLACE,
                 errors,
@@ -161,7 +170,7 @@ public class QuestionResourceManual
 
         IncomingUpdateDataModelValidator.validate(
                 this.dataStore,
-                StackOverflowDomainModel.Question,
+                klass,
                 persistentInstance,
                 incomingInstance,
                 errors,
@@ -178,7 +187,7 @@ public class QuestionResourceManual
         Instant            transactionInstant = Instant.now(this.clock);
         MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
-        replacer.synchronize(StackOverflowDomainModel.Question, persistentInstance, incomingInstance);
+        replacer.synchronize(klass, persistentInstance, incomingInstance);
     }
 
     @Nonnull
@@ -341,11 +350,13 @@ public class QuestionResourceManual
     @Produces(MediaType.APPLICATION_JSON)
     public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
     {
+        Klass klass = this.domainModel.getClassByName("Question");
+
         MutableList<String> errors   = Lists.mutable.empty();
         MutableList<String> warnings = Lists.mutable.empty();
-        JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
+        JsonTypeCheckingValidator.validate(incomingInstance, klass, errors);
         RequiredPropertiesValidator.validate(
-                StackOverflowDomainModel.Question,
+                klass,
                 incomingInstance,
                 OperationMode.CREATE,
                 errors,
@@ -371,7 +382,7 @@ public class QuestionResourceManual
             Instant           transactionInstant = Instant.now(this.clock);
             MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
             PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
-            creator.synchronize(StackOverflowDomainModel.Question, question, incomingInstance);
+            creator.synchronize(klass, question, incomingInstance);
             question.insert();
             return question;
         });

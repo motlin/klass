@@ -54,6 +54,8 @@ public class AbstractApplicationGenerator
                 + "\n"
                 + "import cool.klass.data.store.DataStore;\n"
                 + "import io.liftwizard.dropwizard.application.AbstractLiftwizardApplication;\n"
+                + "import cool.klass.dropwizard.configuration.KlassFactory;\n"
+                + "import cool.klass.model.meta.domain.api.DomainModel;\n"
                 + "import io.dropwizard.setup.Environment;\n"
                 + this.getResourceImports()
                 + "import org.slf4j.Logger;\n"
@@ -79,9 +81,10 @@ public class AbstractApplicationGenerator
                 + "    {\n"
                 + "        super.run(configuration, environment);\n"
                 + "\n"
-                + "        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().create"
-                + "DataStore();\n"
-                + "        Clock     clock     = configuration.getKlassFactory().getClockFactory().createClock();\n"
+                + "        KlassFactory klassFactory = configuration.getKlassFactory();\n"
+                + "        DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();\n"
+                + "        Clock        clock        = klassFactory.getClockFactory().createClock();\n"
+                + "        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();\n"
                 + "\n"
                 + this.getRegisterResourcesSourceCode()
                 + "    }\n"
@@ -110,7 +113,7 @@ public class AbstractApplicationGenerator
     private String getResourceImport(ServiceGroup serviceGroup)
     {
         return String.format(
-                "import %s.service.resource.%sResource;;\n",
+                "import %s.service.resource.%sResource;\n",
                 serviceGroup.getPackageName(),
                 serviceGroup.getName());
     }
@@ -118,7 +121,7 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(dataStore, clock));\n",
+                "        environment.jersey().register(new %sResource(domainModel, dataStore, clock));\n",
                 serviceGroup.getKlass().getName());
     }
 

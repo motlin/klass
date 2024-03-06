@@ -136,15 +136,17 @@ public class ServiceResourceGenerator
                 + "import javax.ws.rs.core.Response.Status;\n"
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
-                + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
                 + "import " + this.rootPackageName + ".json.view.*;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
                 + "import com.fasterxml.jackson.annotation.JsonView;\n"
                 + "import com.gs.fw.common.mithra.finder.*;\n"
                 + "import cool.klass.data.store.*;\n"
+                + "import cool.klass.model.meta.domain.api.DomainModel;\n"
+                + "import cool.klass.model.meta.domain.api.Klass;\n"
                 + jsr310Import
                 + writeImports
                 + "\n"
+                + "import org.eclipse.collections.api.factory.Maps;\n"
                 + "import org.eclipse.collections.api.list.MutableList;\n"
                 + "import org.eclipse.collections.impl.factory.Lists;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.LongSets;\n"
@@ -158,14 +160,20 @@ public class ServiceResourceGenerator
                 + "public class " + serviceResourceName + "\n"
                 + "{\n"
                 + "    @Nonnull\n"
-                + "    private final DataStore dataStore;\n"
+                + "    private final DomainModel domainModel;\n"
                 + "    @Nonnull\n"
-                + "    private final Clock     clock;\n"
+                + "    private final DataStore   dataStore;\n"
+                + "    @Nonnull\n"
+                + "    private final Clock       clock;\n"
                 + "\n"
-                + "    public " + serviceResourceName + "(@Nonnull DataStore dataStore, @Nonnull Clock clock)\n"
+                + "    public " + serviceResourceName + "(\n"
+                + "            @Nonnull DomainModel domainModel,\n"
+                + "            @Nonnull DataStore dataStore,\n"
+                + "            @Nonnull Clock clock)\n"
                 + "    {\n"
-                + "        this.dataStore = Objects.requireNonNull(dataStore);\n"
-                + "        this.clock = Objects.requireNonNull(clock);\n"
+                + "        this.domainModel = Objects.requireNonNull(domainModel);\n"
+                + "        this.dataStore   = Objects.requireNonNull(dataStore);\n"
+                + "        this.clock       = Objects.requireNonNull(clock);\n"
                 + "    }\n"
                 + "\n"
                 + ""
@@ -230,7 +238,8 @@ public class ServiceResourceGenerator
         ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
                 .collectWith(PrimitiveTuples::pair, false);
 
-        String klassName = serviceGroup.getKlass().getName();
+        Klass  klass     = serviceGroup.getKlass();
+        String klassName = this.getKlassName(klass);
         String returnType = service.getServiceMultiplicity() == ServiceMultiplicity.ONE
                 ? klassName
                 : "List<" + klassName + ">";
@@ -319,6 +328,16 @@ public class ServiceResourceGenerator
         // @formatter:on
     }
 
+    private String getKlassName(Klass klass)
+    {
+        String klassName = klass.getName();
+        if (klassName.equals("Klass"))
+        {
+            return klass.getFullyQualifiedName();
+        }
+        return klassName;
+    }
+
     @Nonnull
     private String getPostSourceCode()
     {
@@ -336,8 +355,6 @@ public class ServiceResourceGenerator
                 .collectWith(PrimitiveTuples::pair, true);
         ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
                 .collectWith(PrimitiveTuples::pair, false);
-
-        String klassName = serviceGroup.getKlass().getName();
 
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
@@ -367,6 +384,7 @@ public class ServiceResourceGenerator
 
         String parametersSourceCode = parameterStrings.makeString(",\n");
 
+        String klassName                = serviceGroup.getKlass().getName();
         String finderName               = klassName + "Finder";
         String queryOperationSourceCode = this.getOperation(finderName, service.getQueryCriteria(), "query");
         String authorizeOperationSourceCode = this.getOperation(
@@ -419,6 +437,7 @@ public class ServiceResourceGenerator
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
                 + "    public void method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
                 + "    {\n"
+                + "        Klass klass = this.domainModel.getClassByName(\"" + klassName + "\");\n"
                 + userPrincipalNameLocalVariable
                 + queryOperationSourceCode
                 + authorizeOperationSourceCode
@@ -449,7 +468,7 @@ public class ServiceResourceGenerator
                 + "        Instant           transactionInstant = Instant.now(this.clock);\n"
                 + "        MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant);\n"
                 + "        PersistentDeleter deleter            = new PersistentDeleter(mutationContext, this.dataStore);\n"
-                + "        deleter.deleteOrTerminate(" + this.applicationName + "DomainModel." + klassName + ", persistentInstance);\n"
+                + "        deleter.deleteOrTerminate(klass, persistentInstance);\n"
                 + "    }\n";
         // @formatter:on
     }
@@ -465,8 +484,6 @@ public class ServiceResourceGenerator
                 .collectWith(PrimitiveTuples::pair, true);
         ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
                 .collectWith(PrimitiveTuples::pair, false);
-
-        String klassName = serviceGroup.getKlass().getName();
 
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
@@ -497,6 +514,7 @@ public class ServiceResourceGenerator
 
         String parametersSourceCode = parameterStrings.makeString(",\n");
 
+        String klassName                = serviceGroup.getKlass().getName();
         String finderName               = klassName + "Finder";
         String queryOperationSourceCode = this.getOperation(finderName, service.getQueryCriteria(), "query");
         String authorizeOperationSourceCode = this.getOperation(
@@ -549,13 +567,13 @@ public class ServiceResourceGenerator
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
                 + "    public void method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
                 + "    {\n"
-                + "        // " + klassName + "\n"
+                + "        Klass klass = this.domainModel.getClassByName(\"" + klassName + "\");\n"
                 + "\n"
                 + "        MutableList<String> errors = Lists.mutable.empty();\n"
                 + "        MutableList<String> warnings = Lists.mutable.empty();\n"
-                + "        JsonTypeCheckingValidator.validate(incomingInstance, " + this.applicationName + "DomainModel." + klassName + ", errors);\n"
+                + "        JsonTypeCheckingValidator.validate(incomingInstance, klass, errors);\n"
                 + "        RequiredPropertiesValidator.validate(\n"
-                + "                " + this.applicationName + "DomainModel." + klassName + ",\n"
+                + "                klass,\n"
                 + "                incomingInstance,\n"
                 + "                OperationMode.REPLACE,\n"
                 + "                errors,\n"
@@ -606,7 +624,7 @@ public class ServiceResourceGenerator
                 + "\n"
                 + "        IncomingUpdateDataModelValidator.validate(\n"
                 + "                this.dataStore,\n"
-                + "                " + this.applicationName + "DomainModel." + klassName + ",\n"
+                + "                klass,\n"
                 + "                persistentInstance,\n"
                 + "                incomingInstance,\n"
                 + "                errors,\n"
@@ -631,7 +649,7 @@ public class ServiceResourceGenerator
                 + "        Instant            transactionInstant = Instant.now(this.clock);\n"
                 + "        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant);\n"
                 + "        PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);\n"
-                + "        replacer.synchronize(" + this.applicationName + "DomainModel." + klassName + ", persistentInstance, incomingInstance);\n"
+                + "        replacer.synchronize(klass, persistentInstance, incomingInstance);\n"
                 + "    }\n";
         // @formatter:on
     }

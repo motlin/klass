@@ -5,6 +5,8 @@ import java.time.Clock;
 import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.configuration.KlassFactory;
+import cool.klass.model.meta.domain.api.DomainModel;
 import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
@@ -34,9 +36,11 @@ public class StackOverflowApplication
     {
         super.run(configuration, environment);
 
-        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().createDataStore();
-        Clock     clock     = configuration.getKlassFactory().getClockFactory().createClock();
+        KlassFactory klassFactory = configuration.getKlassFactory();
+        DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
+        Clock        clock        = klassFactory.getClockFactory().createClock();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
 
-        environment.jersey().register(new QuestionResourceManual(dataStore, clock));
+        environment.jersey().register(new QuestionResourceManual(domainModel, dataStore, clock));
     }
 }
