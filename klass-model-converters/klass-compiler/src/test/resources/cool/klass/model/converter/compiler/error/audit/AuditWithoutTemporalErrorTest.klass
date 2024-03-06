@@ -2,7 +2,7 @@ package com.errors
 
 user User
 {
-    userId: String key userId;
+    userId: String key userId maximumLength(256);
 }
 
 class DummyClass versioned audited

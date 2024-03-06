@@ -2,14 +2,14 @@ package com.errors
 
 user User systemTemporal versioned
 {
-    id: String id key userId;
+    id: String id key userId maximumLength(256);
 }
 
 class DummyClass systemTemporal versioned
 {
     id: Long id key;
-    createdById: String createdBy userId final private;
-    lastUpdatedById: String lastUpdatedBy userId private;
+    createdById: String createdBy userId final private maximumLength(256);
+    lastUpdatedById: String lastUpdatedBy userId private maximumLength(256);
 }
 
 association CreatedBy

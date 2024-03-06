@@ -12,15 +12,15 @@ class DummyClass
     systemFrom2     : TemporalInstant? system from;
     systemTo1       : TemporalInstant? system to;
     systemTo2       : TemporalInstant? system to;
-    createdById1    : String createdBy userId final;
-    lastUpdatedById1: String lastUpdatedBy userId;
-    createdById2    : String createdBy userId final;
-    lastUpdatedById2: String lastUpdatedBy userId;
+    createdById1    : String createdBy userId final maximumLength(256);
+    lastUpdatedById1: String lastUpdatedBy userId maximumLength(256);
+    createdById2    : String createdBy userId final maximumLength(256);
+    lastUpdatedById2: String lastUpdatedBy userId maximumLength(256);
 }
 
 user User
     systemTemporal
     versioned
 {
-    id              : String id key userId;
+    id              : String id key userId maximumLength(256);
 }

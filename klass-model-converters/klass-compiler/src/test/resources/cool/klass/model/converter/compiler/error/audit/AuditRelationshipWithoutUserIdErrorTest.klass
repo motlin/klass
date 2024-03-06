@@ -2,7 +2,7 @@ package com.errors
 
 user User systemTemporal versioned
 {
-    userId: String id key userId;
+    userId: String id key userId maximumLength(256);
     otherProperty: String;
 }
 

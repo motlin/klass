@@ -2,10 +2,10 @@ package com.errors
 
 user User1
 {
-    userId: String key userId;
+    userId: String key userId maximumLength(256);
 }
 
 user User2
 {
-    userId: String key userId;
+    userId: String key userId maximumLength(256);
 }

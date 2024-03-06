@@ -2,14 +2,14 @@ package com.errors
 
 class NotUserClass systemTemporal versioned
 {
-    id: String id key;
+    id: String id key maximumLength(256);
 }
 
 class DummyClass systemTemporal versioned
 {
     id                 : Long id key;
-    createdById        : String createdBy userId final private;
-    lastUpdatedById    : String lastUpdatedBy userId private;
+    createdById        : String createdBy userId final private maximumLength(256);
+    lastUpdatedById    : String lastUpdatedBy userId private maximumLength(256);
 }
 
 association CreatedBy
@@ -30,5 +30,5 @@ association LastUpdatedBy
 
 user User systemTemporal versioned
 {
-    id: String key userId;
+    id: String key userId maximumLength(256);
 }

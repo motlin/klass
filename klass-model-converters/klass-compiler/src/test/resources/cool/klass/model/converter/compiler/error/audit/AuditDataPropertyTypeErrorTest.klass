@@ -7,7 +7,7 @@ enumeration DummyEnumeration
 
 user User systemTemporal versioned
 {
-    id: DummyEnumeration key userId;
+    id: DummyEnumeration key userId maximumLength(256);
 }
 
 class DummyClass systemTemporal versioned audited
@@ -16,9 +16,9 @@ class DummyClass systemTemporal versioned audited
     system         : DummyEnumeration system;
     systemFrom     : DummyEnumeration system from;
     systemTo       : DummyEnumeration system to;
-    createdById    : DummyEnumeration createdBy userId final;
+    createdById    : DummyEnumeration createdBy userId final maximumLength(256);
     createdOn      : DummyEnumeration createdOn final;
-    lastUpdatedById: DummyEnumeration lastUpdatedBy userId;
+    lastUpdatedById: DummyEnumeration lastUpdatedBy userId maximumLength(256);
 }
 
 class DummyClass2

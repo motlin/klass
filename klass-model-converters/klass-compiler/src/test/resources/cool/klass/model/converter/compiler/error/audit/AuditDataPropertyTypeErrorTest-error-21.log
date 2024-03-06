@@ -1,12 +1,12 @@
 ════════════════════════════════════════ [35mERR_AUD_DTP[m ════════════════════════════════════════
-[31mError: Expected type 'String' but was 'DummyEnumeration' for 'createdBy' property 'DummyClassVersion.createdById: DummyEnumeration createdBy userId final'.[m
+[31mError: Expected type 'String' but was 'DummyEnumeration' for 'createdBy' property 'DummyClassVersion.createdById: DummyEnumeration createdBy userId final maximumLength(256)'.[m
 
 At (Version class macro)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m 3║ [35mclass [39mDummyClassVersion [33msystemTemporal [33maudited
 [39m 4║ [36m{
-[39m 9║     [39mcreatedById[36m: [39mDummyEnumeration [33mcreatedBy [33muserId [33mfinal[36m;
+[39m 9║     [39mcreatedById[36m: [39mDummyEnumeration [33mcreatedBy [33muserId [33mfinal [33mmaximumLength[36m([34m256[36m)[36m;
 [39m  ║ [31m                 ^^^^^^^^^^^^^^^^ ^^^^^^^^^
 [39m13║ [36m}
 [m
