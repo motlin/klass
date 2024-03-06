@@ -986,16 +986,22 @@ projection ProjectionElementProjection on ProjectionElement
     name: "ProjectionElement name",
     children: ProjectionElementProjection,
     RootProjection.classifier: {
-        NamedElement.name: "NamedElement name",
+        name: "NamedElement name",
     },
     ProjectionWithAssociationEnd.associationEnd: {
-        NamedElement.name: "NamedElement name",
+        owningClass: {
+            name: "NamedElement name",
+        },
+        name: "NamedElement name",
     },
     ProjectionProjectionReference.projection: {
-        NamedElement.name: "NamedElement name",
+        name: "NamedElement name",
     },
     ProjectionDataTypeProperty.dataTypeProperty: {
-        NamedElement.name: "NamedElement name",
+        owningClassifier: {
+            name: "NamedElement name",
+        },
+        name: "NamedElement name",
     },
 }
 

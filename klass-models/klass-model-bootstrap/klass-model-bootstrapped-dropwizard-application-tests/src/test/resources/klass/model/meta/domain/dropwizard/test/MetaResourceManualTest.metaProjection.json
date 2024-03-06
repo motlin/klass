@@ -11,6 +11,9 @@
         "name": "id",
         "children": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ProjectionElement"
+          },
           "name": "id"
         }
       },
@@ -20,6 +23,9 @@
         "name": "name",
         "children": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "ProjectionElement"
+          },
           "name": "name"
         }
       },
@@ -29,6 +35,9 @@
         "name": "children",
         "children": [],
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionElement"
+          },
           "name": "children"
         },
         "projection": {
@@ -46,11 +55,17 @@
             "name": "name",
             "children": [],
             "dataTypeProperty": {
+              "owningClassifier": {
+                "name": "NamedElement"
+              },
               "name": "name"
             }
           }
         ],
         "associationEnd": {
+          "owningClass": {
+            "name": "RootProjection"
+          },
           "name": "classifier"
         }
       },
@@ -60,42 +75,54 @@
         "name": "associationEnd",
         "children": [
           {
-            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
             "id": 69,
-            "name": "name",
-            "children": [],
-            "dataTypeProperty": {
-              "name": "name"
+            "name": "owningClass",
+            "children": [
+              {
+                "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+                "id": 70,
+                "name": "name",
+                "children": [],
+                "dataTypeProperty": {
+                  "owningClassifier": {
+                    "name": "NamedElement"
+                  },
+                  "name": "name"
+                }
+              }
+            ],
+            "associationEnd": {
+              "owningClass": {
+                "name": "AssociationEnd"
+              },
+              "name": "owningClass"
             }
-          }
-        ],
-        "associationEnd": {
-          "name": "associationEnd"
-        }
-      },
-      {
-        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 70,
-        "name": "projection",
-        "children": [
+          },
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
             "id": 71,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
+              "owningClassifier": {
+                "name": "NamedElement"
+              },
               "name": "name"
             }
           }
         ],
         "associationEnd": {
-          "name": "projection"
+          "owningClass": {
+            "name": "ProjectionWithAssociationEnd"
+          },
+          "name": "associationEnd"
         }
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
         "id": 72,
-        "name": "dataTypeProperty",
+        "name": "projection",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
@@ -103,11 +130,67 @@
             "name": "name",
             "children": [],
             "dataTypeProperty": {
+              "owningClassifier": {
+                "name": "NamedElement"
+              },
               "name": "name"
             }
           }
         ],
         "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionProjectionReference"
+          },
+          "name": "projection"
+        }
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "id": 74,
+        "name": "dataTypeProperty",
+        "children": [
+          {
+            "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+            "id": 75,
+            "name": "owningClassifier",
+            "children": [
+              {
+                "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+                "id": 76,
+                "name": "name",
+                "children": [],
+                "dataTypeProperty": {
+                  "owningClassifier": {
+                    "name": "NamedElement"
+                  },
+                  "name": "name"
+                }
+              }
+            ],
+            "associationEnd": {
+              "owningClass": {
+                "name": "DataTypeProperty"
+              },
+              "name": "owningClassifier"
+            }
+          },
+          {
+            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "id": 77,
+            "name": "name",
+            "children": [],
+            "dataTypeProperty": {
+              "owningClassifier": {
+                "name": "NamedElement"
+              },
+              "name": "name"
+            }
+          }
+        ],
+        "associationEnd": {
+          "owningClass": {
+            "name": "ProjectionDataTypeProperty"
+          },
           "name": "dataTypeProperty"
         }
       }
