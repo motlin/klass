@@ -163,24 +163,13 @@ public class CompilerState
 
         CompilerWalkState compilerWalk = this.macroCompilerWalks.get(compilationUnit);
 
-        if (compilerWalk == null)
+        if (compilerWalk != null)
         {
-            runnable.run();
-            this.compilerWalk.assertEmpty();
-            return;
+            throw new AssertionError();
         }
 
-        try
-        {
-            CompilerWalkState copy = compilerWalk.withCompilationUnit(compilationUnit);
-            this.compilerWalk = copy;
-            runnable.run();
-            this.compilerWalk.assertEquals(copy);
-        }
-        finally
-        {
-            this.compilerWalk = new CompilerWalkState(this.domainModel);
-        }
+        runnable.run();
+        this.compilerWalk.assertEmpty();
     }
 
     public Integer getOrdinal(@Nonnull ParserRuleContext ctx)

@@ -290,38 +290,6 @@ public class CompilerWalkState
         }
     }
 
-    @Nonnull
-    public CompilerWalkState withCompilationUnit(CompilationUnit compilationUnit)
-    {
-        // TODO: It's too easy for this list to get out of sync with the declared fields
-        CompilerWalkState compilerWalkState = new CompilerWalkState(this.domainModel);
-        compilerWalkState.currentCompilationUnit     = compilationUnit;
-        compilerWalkState.compilationUnit            = this.compilationUnit;
-        compilerWalkState.packageNameContext         = this.packageNameContext;
-        compilerWalkState.packageName                = this.packageName;
-        compilerWalkState.topLevelDeclaration        = this.topLevelDeclaration;
-        compilerWalkState.enumeration                = this.enumeration;
-        compilerWalkState.classifier                 = this.classifier;
-        compilerWalkState.iface                      = this.iface;
-        compilerWalkState.klass                      = this.klass;
-        compilerWalkState.association                = this.association;
-        compilerWalkState.associationEnd             = this.associationEnd;
-        compilerWalkState.parameterizedProperty      = this.parameterizedProperty;
-        compilerWalkState.parameter                  = this.parameter;
-        compilerWalkState.projection                 = this.projection;
-        compilerWalkState.serviceGroup               = this.serviceGroup;
-        compilerWalkState.url                        = this.url;
-        compilerWalkState.service                    = this.service;
-        compilerWalkState.orderBy                    = this.orderBy;
-        compilerWalkState.orderByMemberReferencePath = this.orderByMemberReferencePath;
-        compilerWalkState.thisReference              = this.thisReference;
-        compilerWalkState.orderByOwner               = this.orderByOwner;
-        compilerWalkState.classifierModifier         = this.classifierModifier;
-        compilerWalkState.parameterOwner             = this.parameterOwner;
-        compilerWalkState.numClassifierMembers       = this.numClassifierMembers;
-        return compilerWalkState;
-    }
-
     public void assertEmpty()
     {
         if (this.packageNameContext != null)
