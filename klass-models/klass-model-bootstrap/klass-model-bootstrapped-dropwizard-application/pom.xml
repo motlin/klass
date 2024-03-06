@@ -288,7 +288,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-source-code-meta-interface</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
