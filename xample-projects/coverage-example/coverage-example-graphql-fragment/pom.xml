@@ -49,7 +49,7 @@
 
                     <dependency>
                         <groupId>cool.klass</groupId>
-                        <artifactId>klass-model-bootstrapped-meta</artifactId>
+                        <artifactId>klass-model-bootstrapped-domain-model</artifactId>
                         <version>${klass.version}</version>
                     </dependency>
 

@@ -11,8 +11,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <!--TODO: Consider renaming this module from klass-model-bootstrapped-meta to klass-model-bootstrapped-domain-model-->
-    <artifactId>klass-model-bootstrapped-meta</artifactId>
+    <artifactId>klass-model-bootstrapped-domain-model</artifactId>
 
     <name>Klass Bootstrapped Meta Model</name>
 

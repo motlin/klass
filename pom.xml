@@ -137,7 +137,7 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-compiler</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-constant</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-meta</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-domain-model</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-connection-manager-holder</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-ddl-executor</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-h2</ignoredUnusedDeclaredDependency>

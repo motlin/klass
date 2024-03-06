@@ -75,7 +75,7 @@
 
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-meta</artifactId>
+                        <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
 
@@ -105,7 +105,7 @@
         <!--region Project runtime dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-meta</artifactId>
+            <artifactId>${app.artifactId}-domain-model</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
