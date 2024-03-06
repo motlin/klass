@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,31 +12,31 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 
 public class RequiredPropertiesValidator
 {
     @Nonnull
-    private final Klass                    klass;
+    protected final Klass                    klass;
     @Nonnull
-    private final ObjectNode               objectNode;
+    protected final ObjectNode               objectNode;
     @Nonnull
-    private final OperationMode            operationMode;
+    protected final OperationMode            operationMode;
     @Nonnull
-    private final MutableList<String>      errors;
+    protected final MutableList<String>      errors;
     @Nonnull
-    private final MutableList<String>      warnings;
+    protected final MutableList<String>      warnings;
     @Nonnull
-    private final MutableStack<String>     contextStack;
+    protected final MutableStack<String>     contextStack;
     @Nonnull
-    private final Optional<AssociationEnd> pathHere;
-    private final boolean                  isRoot;
+    protected final Optional<AssociationEnd> pathHere;
+    protected final boolean                  isRoot;
 
     public RequiredPropertiesValidator(
             @Nonnull Klass klass,
@@ -99,7 +98,7 @@ public class RequiredPropertiesValidator
     }
 
     //region DataTypeProperties
-    private void handleDataTypeProperties()
+    protected void handleDataTypeProperties()
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
         for (DataTypeProperty dataTypeProperty : dataTypeProperties)
@@ -108,7 +107,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleDataTypeProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    protected void handleDataTypeProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty.isID())
         {
@@ -140,7 +139,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleIdProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    protected void handleIdProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
         if (this.operationMode == OperationMode.CREATE)
         {
@@ -152,21 +151,33 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        // TODO: Keep track of path used to get here. Key properties should be required for final to-one required properties
-        return;
+        if (this.pathHere.isPresent() && this.pathHere.get().getMultiplicity() == Multiplicity.ONE_TO_ONE)
+        {
+            JsonNode jsonNode = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonNode.isMissingNode() || jsonNode.isNull())
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for required id property '%s.%s: %s%s' but value was %s.",
+                        this.getContextString(),
+                        dataTypeProperty.getOwningClassifier().getName(),
+                        dataTypeProperty.getName(),
+                        dataTypeProperty.getType(),
+                        dataTypeProperty.isOptional() ? "?" : "",
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
+            }
+        }
     }
 
-    private void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    protected void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
         // TODO: Handle foreign key properties that are also key properties at the root
-
         if (this.isForeignKeyMatchingKeyOnPath(dataTypeProperty))
         {
             this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key on path");
             return;
         }
 
-        // TODO: Exclude path here
         if (this.isForeignKeyMatchingRequiredNested(dataTypeProperty))
         {
             this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key of required nested object");
@@ -179,58 +190,39 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        if (this.isForeignKeyWithOpposite(dataTypeProperty))
+        if (dataTypeProperty.isForeignKeyWithOpposite())
         {
             this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            return;
+        }
+
+        if (this.pathHere.isPresent() && dataTypeProperty.isForeignKeyMatchingKeyOnPath(this.pathHere.get()))
+        {
+            this.handleWarnIfPresent(this.pathHere.get(), dataTypeProperty.getName());
             return;
         }
 
         this.handlePlainProperty(dataTypeProperty);
     }
 
-    private boolean isForeignKeyMatchingRequiredNested(DataTypeProperty dataTypeProperty)
+    protected boolean isForeignKeyMatchingRequiredNested(DataTypeProperty dataTypeProperty)
     {
         // TODO: Exclude path here
         return dataTypeProperty.getKeysMatchingThisForeignKey().keysView().anySatisfy(this::isToOneRequired);
     }
 
-    private boolean isToOneRequired(AssociationEnd associationEnd)
+    protected boolean isToOneRequired(AssociationEnd associationEnd)
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
         return multiplicity.isToOne() && multiplicity.isRequired();
     }
 
-    private boolean isForeignKeyMatchingKeyOnPath(DataTypeProperty dataTypeProperty)
+    protected boolean isForeignKeyMatchingKeyOnPath(DataTypeProperty dataTypeProperty)
     {
-        Optional<AssociationEnd>                                    opposite                   = this.pathHere.map(AssociationEnd::getOpposite);
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = dataTypeProperty.getKeysMatchingThisForeignKey();
-        return opposite
-                .map(keysMatchingThisForeignKey::containsKey)
-                .orElse(false);
+        return this.pathHere.map(dataTypeProperty::isForeignKeyMatchingKeyOnPath).orElse(false);
     }
 
-    private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
-    {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
-        ImmutableList<DataTypeProperty> dataTypeProperties = keysMatchingThisForeignKey
-                .valuesView()
-                .flatCollect(x -> x)
-                .toList()
-                .toImmutable();
-        return dataTypeProperties
-                .anySatisfyWith(this::isOppositeKey, keyProperty);
-    }
-
-    private boolean isOppositeKey(
-            @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull DataTypeProperty keyProperty)
-    {
-        return dataTypeProperty
-                .getForeignKeysMatchingThisKey()
-                .containsValue(Lists.immutable.with(keyProperty));
-    }
-
-    private void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
+    protected void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -265,7 +257,7 @@ public class RequiredPropertiesValidator
         this.warnings.add(warning);
     }
 
-    private void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
+    protected void handleWarnIfPresent(@Nonnull AssociationEnd property, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -300,7 +292,7 @@ public class RequiredPropertiesValidator
         this.warnings.add(warning);
     }
 
-    private void handlePlainProperty(@Nonnull DataTypeProperty property)
+    protected void handlePlainProperty(@Nonnull DataTypeProperty property)
     {
         if (!property.isRequired())
         {
@@ -329,39 +321,305 @@ public class RequiredPropertiesValidator
     //endregion
 
     //region AssociationEnds
-    private void handleAssociationEnds()
+    protected void handleAssociationEnds()
     {
         for (AssociationEnd associationEnd : this.klass.getAssociationEnds())
         {
-            if (this.isBackward(associationEnd))
-            {
-                this.handleWarnIfPresent(associationEnd, "opposite");
-            }
-            else if (associationEnd.isVersion())
-            {
-                this.handleVersionAssociationEnd(associationEnd);
-            }
-            else if (associationEnd.isOwned())
-            {
-                this.handleAssociationEnd(associationEnd);
-            }
+            this.handleAssociationEnd(associationEnd);
         }
-
-        /*
-        ImmutableList<AssociationEnd> sharedAssociationEnds = this.klass.getAssociationEnds()
-                .reject(AssociationEnd::isOwned);
-        for (AssociationEnd sharedAssociationEnd : sharedAssociationEnds)
-        {
-            if (sharedAssociationEnd.getMultiplicity().isToOne() && sharedAssociationEnd.isRequired())
-            {
-                throw new AssertionError(
-                        "TODO: Required, shared, to-one, that's not opposite the path here requires embedded object with primary key present");
-            }
-        }
-        */
     }
 
-    private void handleErrorIfAbsent(@Nonnull AssociationEnd associationEnd, String propertyKind)
+    protected void handleAssociationEnd(AssociationEnd associationEnd)
+    {
+        if (this.isBackward(associationEnd))
+        {
+            this.handleWarnIfPresent(associationEnd, "opposite");
+        }
+        else if (associationEnd.isVersion())
+        {
+            this.handleVersionAssociationEnd(associationEnd);
+        }
+        else if (associationEnd.isCreatedBy())
+        {
+            this.handleCreatedByAssociationEnd(associationEnd);
+        }
+        else if (associationEnd.isLastUpdatedBy())
+        {
+            this.handleLastUpdatedByAssociationEnd(associationEnd);
+        }
+        else if (associationEnd.isOwned())
+        {
+            this.handleOwnedAssociationEnd(associationEnd);
+        }
+        else
+        {
+            this.handleAssociationEndOutsideProjection(associationEnd);
+        }
+    }
+
+    public void handleToOne(
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode jsonNode)
+    {
+        this.contextStack.push(associationEnd.getName());
+        try
+        {
+            if (jsonNode instanceof ObjectNode)
+            {
+                this.handleOwnedAssociationEnd(associationEnd, (ObjectNode) jsonNode);
+            }
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    public void handleToMany(
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode jsonNode)
+    {
+        if (!(jsonNode instanceof ArrayNode))
+        {
+            return;
+        }
+
+        for (int index = 0; index < jsonNode.size(); index++)
+        {
+            String contextString = String.format(
+                    "%s[%d]",
+                    associationEnd.getName(),
+                    index);
+            this.contextStack.push(contextString);
+
+            try
+            {
+                JsonNode childJsonNode = jsonNode.path(index);
+                if (childJsonNode instanceof ObjectNode)
+                {
+                    this.handleOwnedAssociationEnd(associationEnd, (ObjectNode) childJsonNode);
+                }
+            }
+            finally
+            {
+                this.contextStack.pop();
+            }
+        }
+    }
+
+    protected void handleAssociationEndOutsideProjection(AssociationEnd associationEnd)
+    {
+        Multiplicity multiplicity = associationEnd.getMultiplicity();
+
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+
+        if ((jsonNode.isMissingNode() || jsonNode.isNull()) && multiplicity.isRequired())
+        {
+            if (this.operationMode == OperationMode.CREATE && associationEnd.isVersion())
+            {
+                return;
+            }
+
+            if (this.operationMode == OperationMode.REPLACE && associationEnd.isFinal())
+            {
+                String warning = String.format(
+                        "Warning at %s. Expected value for required final property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.warnings.add(warning);
+                return;
+            }
+
+            if (this.operationMode == OperationMode.REPLACE && associationEnd.isPrivate())
+            {
+                String warning = String.format(
+                        "Warning at %s. Expected value for required private property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.warnings.add(warning);
+                return;
+            }
+
+            if (this.operationMode == OperationMode.CREATE
+                    || this.operationMode == OperationMode.REPLACE
+                    || this.operationMode == OperationMode.PATCH && jsonNode.isNull())
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
+                return;
+            }
+        }
+
+        if (multiplicity.isToOne())
+        {
+            this.handleToOneOutsideProjection(associationEnd, jsonNode);
+        }
+        else
+        {
+            this.handleToManyOutsideProjection(associationEnd, jsonNode);
+        }
+    }
+
+    protected void handleToOneOutsideProjection(
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode jsonNode)
+    {
+        if (associationEnd.isOwned())
+        {
+            throw new AssertionError("Assumption is that all owned association ends are inside projection, all unowned are outside projection");
+        }
+
+        if (jsonNode.isMissingNode()
+                || jsonNode.isNull())
+        {
+            if (associationEnd.isRequired())
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
+            }
+            return;
+        }
+
+        if (!associationEnd.hasRealKeys())
+        {
+            String warning = String.format(
+                    "Error at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
+                    this.getContextString(),
+                    associationEnd.getOwningClassifier().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getType(),
+                    associationEnd.getMultiplicity().getPrettyName());
+            this.warnings.add(warning);
+        }
+
+        this.contextStack.push(associationEnd.getName());
+        try
+        {
+            if (!(jsonNode instanceof ObjectNode))
+            {
+                return;
+            }
+            OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
+
+            RequiredPropertiesValidator validator = new OutsideProjectionRequiredPropertiesValidator(
+                    associationEnd.getType(),
+                    (ObjectNode) jsonNode,
+                    nextMode,
+                    this.errors,
+                    this.warnings,
+                    this.contextStack,
+                    Optional.of(associationEnd),
+                    false);
+            validator.validate();
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    protected void handleToManyOutsideProjection(
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode jsonNode)
+    {
+        if (associationEnd.isOwned())
+        {
+            throw new AssertionError("Assumption is that all owned association ends are inside projection, all unowned are outside projection");
+        }
+
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            if (associationEnd.isRequired())
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
+            }
+            return;
+        }
+
+        if (!associationEnd.hasRealKeys())
+        {
+            String warning = String.format(
+                    "Error at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
+                    this.getContextString(),
+                    associationEnd.getOwningClassifier().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getType(),
+                    associationEnd.getMultiplicity().getPrettyName());
+            this.warnings.add(warning);
+        }
+
+        if (!(jsonNode instanceof ArrayNode))
+        {
+            return;
+        }
+
+        for (int index = 0; index < jsonNode.size(); index++)
+        {
+            String contextString = String.format(
+                    "%s[%d]",
+                    associationEnd.getName(),
+                    index);
+            this.contextStack.push(contextString);
+
+            try
+            {
+                JsonNode childJsonNode = jsonNode.path(index);
+                if (!(childJsonNode instanceof ObjectNode))
+                {
+                    return;
+                }
+
+                OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
+
+                RequiredPropertiesValidator validator = new OutsideProjectionRequiredPropertiesValidator(
+                        associationEnd.getType(),
+                        (ObjectNode) childJsonNode,
+                        nextMode,
+                        this.errors,
+                        this.warnings,
+                        this.contextStack,
+                        Optional.of(associationEnd),
+                        false);
+                validator.validate();
+            }
+            finally
+            {
+                this.contextStack.pop();
+            }
+        }
+    }
+
+    protected void handleErrorIfAbsent(@Nonnull AssociationEnd associationEnd, String propertyKind)
     {
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
         if (!jsonNode.isMissingNode() && !jsonNode.isNull())
@@ -381,7 +639,7 @@ public class RequiredPropertiesValidator
         this.errors.add(error);
     }
 
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, @Nonnull ObjectNode objectNode)
+    protected void handleOwnedAssociationEnd(@Nonnull AssociationEnd associationEnd, @Nonnull ObjectNode objectNode)
     {
         OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
 
@@ -395,7 +653,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    protected void handleOwnedAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
@@ -463,57 +721,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    public void handleToOne(
-            @Nonnull AssociationEnd associationEnd,
-            JsonNode jsonNode)
-    {
-        this.contextStack.push(associationEnd.getName());
-        try
-        {
-            if (jsonNode instanceof ObjectNode)
-            {
-                this.handleAssociationEnd(associationEnd, (ObjectNode) jsonNode);
-            }
-        }
-        finally
-        {
-            this.contextStack.pop();
-        }
-    }
-
-    public void handleToMany(
-            @Nonnull AssociationEnd associationEnd,
-            JsonNode jsonNode)
-    {
-        if (!(jsonNode instanceof ArrayNode))
-        {
-            return;
-        }
-
-        for (int index = 0; index < jsonNode.size(); index++)
-        {
-            String contextString = String.format(
-                    "%s[%d]",
-                    associationEnd.getName(),
-                    index);
-            this.contextStack.push(contextString);
-
-            try
-            {
-                JsonNode childJsonNode = jsonNode.path(index);
-                if (childJsonNode instanceof ObjectNode)
-                {
-                    this.handleAssociationEnd(associationEnd, (ObjectNode) childJsonNode);
-                }
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
-        }
-    }
-
-    private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    protected void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         if (this.operationMode == OperationMode.CREATE)
         {
@@ -530,6 +738,11 @@ public class RequiredPropertiesValidator
 
             // Classes without ID properties use a single endpoint for create and replace. We won't know if we're performing a replacement until querying from the data store. At this point, it's too early to validate anything.
         }
+        else if (this.operationMode == OperationMode.REFERENCE_OUTSIDE_PROJECTION)
+        {
+            // TODO: Recurse and check that it matches if present
+            this.handleWarnIfPresent(associationEnd, "version");
+        }
         else
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -537,7 +750,22 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handlePlainAssociationEnd(
+    protected void handleCreatedByAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        if (this.operationMode == OperationMode.CREATE)
+        {
+            // TODO: recurse and error only if the user isn't the current user principal
+            this.handleWarnIfPresent(associationEnd, "createdBy");
+        }
+    }
+
+    protected void handleLastUpdatedByAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        // TODO: recurse and error only if the user isn't the current user principal
+        this.handleWarnIfPresent(associationEnd, "lastUpdatedBy");
+    }
+
+    protected void handlePlainAssociationEnd(
             @Nonnull AssociationEnd associationEnd,
             @Nonnull ObjectNode objectNode,
             @Nonnull OperationMode nextMode)
@@ -555,13 +783,12 @@ public class RequiredPropertiesValidator
     }
 
     @Nonnull
-    private OperationMode getNextMode(OperationMode operationMode, @Nonnull AssociationEnd associationEnd)
+    protected OperationMode getNextMode(OperationMode operationMode, @Nonnull AssociationEnd associationEnd)
     {
         if (operationMode == OperationMode.CREATE && associationEnd.isOwned())
         {
             return OperationMode.CREATE;
         }
-
         if (operationMode == OperationMode.REPLACE && associationEnd.isOwned())
         {
             return OperationMode.REPLACE;
@@ -571,11 +798,19 @@ public class RequiredPropertiesValidator
         {
             return OperationMode.PATCH;
         }
+        if ((operationMode == OperationMode.CREATE || operationMode == OperationMode.PATCH) && !associationEnd.isOwned())
+        {
+            return OperationMode.REFERENCE_OUTSIDE_PROJECTION;
+        }
+        if (operationMode == OperationMode.REFERENCE_OUTSIDE_PROJECTION)
+        {
+            return OperationMode.REFERENCE_OUTSIDE_PROJECTION;
+        }
 
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet: " + operationMode);
     }
 
-    private String getContextString()
+    protected String getContextString()
     {
         return this.contextStack
                 .toList()
@@ -583,19 +818,7 @@ public class RequiredPropertiesValidator
                 .makeString(".");
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
-            @Nonnull JsonNode jsonNode,
-            @Nonnull Klass klass)
-    {
-        return klass
-                .getKeyProperties()
-                .reject(DataTypeProperty::isID)
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode));
-    }
-
-    private ImmutableList<Object> getKeysFromJsonNode(
+    protected ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
@@ -611,35 +834,7 @@ public class RequiredPropertiesValidator
                         parentJsonNode));
     }
 
-    @Nullable
-    private Object getKeyFromJsonNode(
-            @Nonnull DataTypeProperty keyProperty,
-            @Nonnull JsonNode jsonNode)
-    {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
-
-        if (keysMatchingThisForeignKey.notEmpty())
-        {
-            if (keysMatchingThisForeignKey.size() != 1)
-            {
-                throw new AssertionError();
-            }
-
-            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
-
-            JsonNode childNode = jsonNode.path(pair.getOne().getName());
-            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo().getOnly(),
-                    (ObjectNode) childNode);
-            return Objects.requireNonNull(result);
-        }
-
-        return JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                keyProperty,
-                (ObjectNode) jsonNode);
-    }
-
-    private Object getKeyFromJsonNode(
+    protected Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
@@ -649,7 +844,9 @@ public class RequiredPropertiesValidator
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getOrDefault(
+                opposite,
+                Lists.immutable.empty());
 
         if (oppositeForeignKeys.notEmpty())
         {
@@ -681,7 +878,7 @@ public class RequiredPropertiesValidator
         return Objects.requireNonNull(result);
     }
 
-    private boolean isBackward(@Nonnull AssociationEnd associationEnd)
+    protected boolean isBackward(@Nonnull AssociationEnd associationEnd)
     {
         return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }

@@ -6,4 +6,5 @@ public enum OperationMode
     REPLACE,
     PATCH,
     DELETE,
+    REFERENCE_OUTSIDE_PROJECTION,
 }

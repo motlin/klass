@@ -22,7 +22,6 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                   "value": "value",
                   "target": {
                     "key": "key",
-                    "value": "value",
                   },
                 }
                 """;
@@ -53,8 +52,11 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
+        ImmutableList<String> expectedWarnings = Lists.immutable.with(
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was string: \"value\".",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for opposite association end 'SharedNaturalManyToOneTarget.sources: SharedNaturalManyToOneSource[0..*]' but value was array: [{\"key\":\"key\",\"value\":\"value\"}].");
 
-        this.validate(incomingJson, expectedErrors);
+        this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
 
     @Test
@@ -78,7 +80,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 "Error at SharedNaturalManyToOneSource.target.sourceKey. No such property 'SharedNaturalManyToOneTarget.sourceKey' but got \"key\". Expected properties: key, value, sources.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was string: \"key\".",
-                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was string: \"key\".");
+                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was string: \"key\".",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was string: \"value\".");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
@@ -93,7 +96,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 }""";
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
-                "Error at SharedNaturalManyToOneSource. Expected value for required property 'SharedNaturalManyToOneSource.value: String' but value was missing.");
+                "Error at SharedNaturalManyToOneSource. Expected value for required property 'SharedNaturalManyToOneSource.value: String' but value was missing.",
+                "Error at SharedNaturalManyToOneSource.target. Expected key property 'SharedNaturalManyToOneTarget.key' but it was missing.");
 
         this.validate(incomingJson, expectedErrors);
     }
@@ -122,7 +126,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 "Error at SharedNaturalManyToOneSource.target.value. Expected property with type 'SharedNaturalManyToOneTarget.value: String' but got '[]' with type 'array'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was array: [].",
-                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was array: [].");
+                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was array: [].",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was array: [].");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
@@ -151,7 +156,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 "Error at SharedNaturalManyToOneSource.target.value. Expected property with type 'SharedNaturalManyToOneTarget.value: String' but got '{}' with type 'object'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was object: {}.",
-                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was object: {}.");
+                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was object: {}.",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was object: {}.");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
@@ -176,7 +182,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 "Error at SharedNaturalManyToOneSource. Expected value for required property 'SharedNaturalManyToOneSource.value: String' but value was null.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was null.",
-                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was null.");
+                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was null.",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was null.");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
@@ -205,7 +212,8 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
                 "Error at SharedNaturalManyToOneSource.target.value. Expected property with type 'SharedNaturalManyToOneTarget.value: String' but got 'true' with type 'boolean'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was boolean: true.",
-                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was boolean: true.");
+                "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was boolean: true.",
+                "Warning at SharedNaturalManyToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalManyToOneTarget.value: String' but value was boolean: true.");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }
