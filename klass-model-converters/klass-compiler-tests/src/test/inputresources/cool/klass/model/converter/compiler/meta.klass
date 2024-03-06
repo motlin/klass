@@ -470,7 +470,7 @@ association ClassHasParameterizedProperties
 {
     owningClass: Klass[1..1];
     parameterizedProperties: ParameterizedProperty[0..*] owned
-    // TODO: Sorting by the same property ascending and descending is an interesting test, move it out of the meta model
+    // TODO: Sorting by the same property ascending and descending is an interesting test
         orderBy: this.ordinal ascending, this.ordinal descending;
     relationship this.name == ParameterizedProperty.owningClassName
 }
