@@ -8,7 +8,8 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 
-public interface ReferenceProperty extends Property
+public interface ReferenceProperty
+        extends Property
 {
     @Nonnull
     Multiplicity getMultiplicity();
@@ -17,6 +18,13 @@ public interface ReferenceProperty extends Property
     default boolean isRequired()
     {
         return this.getMultiplicity().isRequired();
+    }
+
+    @Override
+    default boolean isDerived()
+    {
+        // TODO: ReferenceType derived properties
+        return false;
     }
 
     @Nonnull

@@ -123,6 +123,7 @@ public interface DataTypeProperty extends Property
 
     boolean isVersion();
 
+    @Override
     default boolean isDerived()
     {
         return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isDerived);
