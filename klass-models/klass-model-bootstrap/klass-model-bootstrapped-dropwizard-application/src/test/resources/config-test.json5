@@ -82,7 +82,6 @@
       },
       "logValidationErrors"   : true,
       "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
     },
     {
       "name"                  : "h2-tcp",
@@ -96,7 +95,6 @@
       },
       "logValidationErrors"   : true,
       "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
     },
     {
       "name"                  : "h2-file",
@@ -110,7 +108,6 @@
       },
       "logValidationErrors"   : true,
       "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
     }
   ],
   "ddlExecutors"      : [

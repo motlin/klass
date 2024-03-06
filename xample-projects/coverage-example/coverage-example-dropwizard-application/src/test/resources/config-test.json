@@ -80,8 +80,7 @@
         "charSet": "UTF-8"
       },
       "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
+      "maxWaitForConnection"  : "1 second"
     },
     {
       "name"                  : "h2-tcp",
@@ -94,8 +93,7 @@
         "charSet": "UTF-8"
       },
       "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
+      "maxWaitForConnection"  : "1 second"
     },
     {
       "name"                  : "h2-file",
@@ -108,8 +106,7 @@
         "charSet": "UTF-8"
       },
       "logValidationErrors"   : true,
-      "maxWaitForConnection"  : "1 second",
-      "validationQueryTimeout": "3 seconds"
+      "maxWaitForConnection"  : "1 second"
     }
   ],
   "ddlExecutors"      : [
