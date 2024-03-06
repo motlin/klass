@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.base.CaseFormat;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributePureType;
@@ -39,6 +40,7 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and generate order-bys on association ends.
 public class ReladomoObjectFileGenerator
@@ -258,8 +260,7 @@ public class ReladomoObjectFileGenerator
         relationshipType.setCardinality(this.getCardinality(associationEnd, opposite));
         relationshipType.setRelatedIsDependent(associationEnd.isOwned());
         relationshipType.setRelatedObject(associationEnd.getType().getName());
-        // TODO: Reladomo Order-By generation
-        relationshipType.setOrderBy(associationEnd.getOrderBy().map(this::convertOrderBy).orElse(null));
+        relationshipType.setOrderBy(this.getOrderBy(associationEnd));
         String relationshipString = this.getRelationshipString(
                 associationEnd.getOwningAssociation().getCriteria(),
                 reverse);
@@ -276,12 +277,16 @@ public class ReladomoObjectFileGenerator
         return stringBuilder.toString();
     }
 
-    private String convertOrderBy(@Nonnull OrderBy orderBy)
+    @Nullable
+    private String getOrderBy(@Nonnull AssociationEnd associationEnd)
     {
-        return orderBy.getOrderByMemberReferencePaths()
+        ImmutableList<String> orderByStrings = associationEnd
+                .getOrderBy()
+                .map(OrderBy::getOrderByMemberReferencePaths)
+                .orElseGet(Lists.immutable::empty)
                 .select(this::isConvertibleToOrderBy)
-                .collect(this::convertOrderByMemberReferencePath)
-                .makeString();
+                .collect(this::convertOrderByMemberReferencePath);
+        return orderByStrings.isEmpty() ? null : orderByStrings.makeString();
     }
 
     private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
