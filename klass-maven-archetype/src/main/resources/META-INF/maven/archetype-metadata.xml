@@ -60,6 +60,17 @@
         </module>
 
         <module
+                id="${rootArtifactId}-reladomo-merge-hooks"
+                dir="__rootArtifactId__-reladomo-merge-hooks"
+                name="${rootArtifactId}-reladomo-merge-hooks">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
                 id="${rootArtifactId}-reladomo-pojos"
                 dir="__rootArtifactId__-reladomo-pojos"
                 name="${rootArtifactId}-reladomo-pojos">
@@ -67,6 +78,17 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
                 </fileSet>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-readable-interfaces"
+                dir="__rootArtifactId__-reladomo-readable-interfaces"
+                name="${rootArtifactId}-reladomo-readable-interfaces">
+            <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
                 </fileSet>
@@ -239,6 +261,17 @@
                 id="${rootArtifactId}-meta-model-constants"
                 dir="__rootArtifactId__-meta-model-constants"
                 name="${rootArtifactId}-meta-model-constants">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-uml-nomnoml"
+                dir="__rootArtifactId__-uml-nomnoml"
+                name="${rootArtifactId}-uml-nomnoml">
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>

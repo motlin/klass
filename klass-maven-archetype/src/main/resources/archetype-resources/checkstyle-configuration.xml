@@ -179,6 +179,7 @@
             <property name="tokens" value="LITERAL_IF" />
             <property name="tokens" value="LITERAL_TRY" />
             <property name="tokens" value="ANNOTATION_DEF" />
+            <property name="tokens" value="ENUM_DEF" />
             <property name="option" value="alone" />
         </module>
         <module name="RightCurly">
@@ -203,6 +204,7 @@
 
         <!-- Coding -->
         <module name="ArrayTrailingComma" />
+        <!--<module name="AvoidNoArgumentSuperConstructorCall" />-->
         <module name="CovariantEquals" />
         <module name="DeclarationOrder" />
         <module name="DefaultComesLast" />
@@ -219,36 +221,29 @@
             <property name="severity" value="warning" />
         </module>
         <module name="IllegalCatch">
-            <property
-                    name="illegalClassNames"
-                    value="
-                        java.lang.Error,
-                        java.lang.NullPointerException,
-                        java.lang.Throwable" />
+            <property name="illegalClassNames" value="java.lang.Error" />
+            <property name="illegalClassNames" value="java.lang.NullPointerException" />
+            <property name="illegalClassNames" value="java.lang.Throwable" />
         </module>
         <!-- Effective Java Item 4 - Avoid creating duplicate objects -->
         <module name="IllegalInstantiation">
-            <property
-                    name="classes"
-                    value="
-                            antlr.ANTLRException,
-                            antlr.RecognitionException,
-                            antlr.TokenStreamException,
-                            antlr.TokenStreamRecognitionException,
-                            java.lang.Boolean,
-                            java.lang.Byte,
-                            java.lang.Character,
-                            java.lang.Integer,
-                            java.lang.Long,
-                            java.lang.Short,
-                            java.lang.StringBuffer,
-                            java.util.Timer,
-                            java.util.TimerTask,
-                            org.antlr.v4.runtime.misc.ParseCancellationException,
-                            org.apache.commons.beanutils.ConversionException,
-                            org.xml.sax.SAXException,
-                            org.xml.sax.SAXParseException,
-                    " />
+
+            <property name="classes" value="antlr.ANTLRException" />
+            <property name="classes" value="antlr.RecognitionException" />
+            <property name="classes" value="antlr.TokenStreamException" />
+            <property name="classes" value="antlr.TokenStreamRecognitionException" />
+            <property name="classes" value="java.lang.Boolean" />
+            <property name="classes" value="java.lang.Byte" />
+            <property name="classes" value="java.lang.Character" />
+            <property name="classes" value="java.lang.Integer" />
+            <property name="classes" value="java.lang.Long" />
+            <property name="classes" value="java.lang.Short" />
+            <property name="classes" value="java.lang.StringBuffer" />
+            <property name="classes" value="java.util.Timer" />
+            <property name="classes" value="java.util.TimerTask" />
+            <property name="classes" value="org.apache.commons.beanutils.ConversionException" />
+            <property name="classes" value="org.xml.sax.SAXException" />
+            <property name="classes" value="org.xml.sax.SAXParseException" />
         </module>
         <module name="IllegalThrows" />
         <module name="IllegalToken">
@@ -341,18 +336,13 @@
             <property name="allowStaticMemberImports" value="true" />
         </module>
         <module name="AvoidStaticImport">
-            <property
-                    name="excludes"
-                    value="
-                        org.junit.Assert.*,
-                        org.junit.Assume.*,
-                        org.hamcrest.CoreMatchers.*,
-                        org.hamcrest.Matchers.*,
-                        org.hamcrest.MatcherAssert.*,
-                        org.eclipse.collections.impl.test.Verify.*,
-                        org.fusesource.jansi.Ansi.Color.*,
-                        org.fusesource.jansi.Ansi.*
-                    " />
+            <property name="excludes" value="org.fusesource.jansi.Ansi.*" />
+            <property name="excludes" value="org.fusesource.jansi.Ansi.Color.*" />
+            <property name="excludes" value="org.hamcrest.CoreMatchers.*" />
+            <property name="excludes" value="org.hamcrest.MatcherAssert.*" />
+            <property name="excludes" value="org.hamcrest.Matchers.*" />
+            <property name="excludes" value="org.junit.Assert.*" />
+            <property name="excludes" value="org.junit.Assume.*" />
         </module>
         <module name="CustomImportOrder">
             <property
@@ -392,14 +382,10 @@
             <property name="validateThrows" value="true" />
         </module>
         <module name="JavadocParagraph" />
-        <module name="JavadocStyle">
-            <property name="scope" value="public" />
-        </module>
         <module name="JavadocTagContinuationIndentation" />
         <module name="MissingJavadocPackage" />
         <module name="NonEmptyAtclauseDescription" />
         <module name="SingleLineJavadoc" />
-        <module name="SummaryJavadoc" />
 
         <!-- Misc -->
         <module name="ArrayTypeStyle" />
@@ -417,9 +403,6 @@
         </module>
         <module name="OuterTypeFilename" />
         <module name="TrailingComment" />
-        <module name="UncommentedMain">
-            <property name="severity" value="warning" />
-        </module>
         <module name="UpperEll" />
 
         <!-- Modifiers -->
@@ -427,9 +410,6 @@
         <module name="RedundantModifier" />
 
         <!-- Naming Conventions -->
-        <module name="AbstractClassName">
-            <property name="severity" value="warning" />
-        </module>
         <module name="ClassTypeParameterName">
             <!--Instead of single letter names like T, allow words like Type-->
             <property name="format" value="^[A-Z][a-zA-Z0-9]*$" />
@@ -549,7 +529,7 @@
         </module>
         <module name="ParenPad" />
         <module name="SeparatorWrap">
-            <property name="id" value="SeparatorWrapDot" />
+            <property name="id" value="SeparatorWrapNl" />
             <property name="tokens" value="DOT" />
             <property name="tokens" value="AT" />
             <property name="tokens" value="METHOD_REF" />
@@ -558,6 +538,7 @@
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapEol" />
             <property name="tokens" value="COMMA" />
+            <property name="tokens" value="RPAREN" />
             <property name="tokens" value="RBRACK" />
             <property name="tokens" value="ARRAY_DECLARATOR" />
             <property name="tokens" value="ELLIPSIS" />
