@@ -505,7 +505,7 @@ public class RequiredPropertiesValidator
         if (!associationEnd.hasRealKeys())
         {
             String warning = String.format(
-                    "Error at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
+                    "Warning at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
                     this.getContextString(),
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
@@ -569,7 +569,7 @@ public class RequiredPropertiesValidator
         if (!associationEnd.hasRealKeys())
         {
             String warning = String.format(
-                    "Error at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
+                    "Warning at %s. Did not expect value for property '%s.%s: %s[%s]' because it's outside the owned projection and it has no keys other than foreign keys.",
                     this.getContextString(),
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
