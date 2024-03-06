@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
@@ -20,93 +19,94 @@ import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 import klass.model.meta.domain.MemberReferencePath;
-import klass.model.meta.domain.NullLiteralFinder;
-import klass.model.meta.domain.NullLiteralList;
-import klass.model.meta.domain.UserLiteralFinder;
-import klass.model.meta.domain.UserLiteralList;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 
-public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
+public class BootstrapExpressionValueVisitor2
+        implements ExpressionValueVisitor
 {
-    private final ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter;
+    private final ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> expressionValuesByExpressionValue;
 
-    private klass.model.meta.domain.ExpressionValue bootstrappedExpressionValue;
+    private final MutableList<klass.model.meta.domain.MemberReferencePath>     bootstrappedMemberReferencePaths     = Lists.mutable.empty();
+    private final MutableList<klass.model.meta.domain.TypeMemberReferencePath> bootstrappedTypeMemberReferencePaths = Lists.mutable.empty();
+    private final MutableList<klass.model.meta.domain.ThisMemberReferencePath> bootstrappedThisMemberReferencePaths = Lists.mutable.empty();
 
-    public BootstrapExpressionValueVisitor(ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+    public BootstrapExpressionValueVisitor2(ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> expressionValuesByExpressionValue)
     {
-        this.bootstrappedParametersByParameter = bootstrappedParametersByParameter;
+        this.expressionValuesByExpressionValue = Objects.requireNonNull(expressionValuesByExpressionValue);
     }
 
-    public static klass.model.meta.domain.ExpressionValue convert(
-            ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameterId,
-            @Nonnull ExpressionValue expressionValue)
+    public MutableList<MemberReferencePath> getBootstrappedMemberReferencePaths()
     {
-        var visitor = new BootstrapExpressionValueVisitor(bootstrappedParametersByParameterId);
-        expressionValue.visit(visitor);
-        return visitor.getResult();
+        return this.bootstrappedMemberReferencePaths;
     }
 
-    private klass.model.meta.domain.ExpressionValue getResult()
+    public MutableList<klass.model.meta.domain.TypeMemberReferencePath> getBootstrappedTypeMemberReferencePaths()
     {
-        return Objects.requireNonNull(this.bootstrappedExpressionValue);
+        return this.bootstrappedTypeMemberReferencePaths;
+    }
+
+    public MutableList<klass.model.meta.domain.ThisMemberReferencePath> getBootstrappedThisMemberReferencePaths()
+    {
+        return this.bootstrappedThisMemberReferencePaths;
     }
 
     @Override
     public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        bootstrappedExpressionValue.insert();
+        var bootstrappedExpressionValue = this.expressionValuesByExpressionValue.get(typeMemberExpressionValue);
 
         Klass            klass    = typeMemberExpressionValue.getKlass();
         DataTypeProperty property = typeMemberExpressionValue.getProperty();
 
         var bootstrappedMemberReferencePath = new MemberReferencePath();
-        bootstrappedMemberReferencePath.setExpressionValueSuperClass(bootstrappedExpressionValue);
+        this.bootstrappedMemberReferencePaths.add(bootstrappedMemberReferencePath);
+        bootstrappedMemberReferencePath.setId(bootstrappedExpressionValue.getId());
         bootstrappedMemberReferencePath.setClassName(klass.getName());
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
         bootstrappedMemberReferencePath.setPropertyName(property.getName());
 
         var bootstrappedTypeMemberReferencePath = new klass.model.meta.domain.TypeMemberReferencePath();
-        bootstrappedTypeMemberReferencePath.setMemberReferencePathSuperClass(bootstrappedMemberReferencePath);
+        this.bootstrappedTypeMemberReferencePaths.add(bootstrappedTypeMemberReferencePath);
+        bootstrappedTypeMemberReferencePath.setId(bootstrappedExpressionValue.getId());
 
-        this.bootstrappedExpressionValue = bootstrappedExpressionValue;
+        if (typeMemberExpressionValue.getAssociationEnds().notEmpty())
+        {
+            throw new AssertionError("TODO");
+        }
     }
 
     @Override
     public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        bootstrappedExpressionValue.insert();
+        var bootstrappedExpressionValue = this.expressionValuesByExpressionValue.get(thisMemberExpressionValue);
 
         Klass            klass    = thisMemberExpressionValue.getKlass();
         DataTypeProperty property = thisMemberExpressionValue.getProperty();
 
         var bootstrappedMemberReferencePath = new MemberReferencePath();
-        bootstrappedMemberReferencePath.setExpressionValueSuperClass(bootstrappedExpressionValue);
+        this.bootstrappedMemberReferencePaths.add(bootstrappedMemberReferencePath);
+        bootstrappedMemberReferencePath.setId(bootstrappedExpressionValue.getId());
         bootstrappedMemberReferencePath.setClassName(klass.getName());
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
         bootstrappedMemberReferencePath.setPropertyName(property.getName());
 
         var bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
-        bootstrappedThisMemberReferencePath.setMemberReferencePathSuperClass(bootstrappedMemberReferencePath);
+        this.bootstrappedThisMemberReferencePaths.add(bootstrappedThisMemberReferencePath);
+        bootstrappedThisMemberReferencePath.setId(bootstrappedExpressionValue.getId());
 
-        this.bootstrappedExpressionValue = bootstrappedExpressionValue;
+        if (thisMemberExpressionValue.getAssociationEnds().notEmpty())
+        {
+            throw new AssertionError("TODO");
+        }
     }
 
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        bootstrappedExpressionValue.insert();
-
-        Parameter                         parameter             = variableReference.getParameter();
-        klass.model.meta.domain.Parameter bootstrappedParameter = this.bootstrappedParametersByParameter.get(parameter);
-
-        var bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
-        bootstrappedVariableReference.setExpressionValueSuperClass(bootstrappedExpressionValue);
-        bootstrappedVariableReference.setParameter(bootstrappedParameter);
-
-        this.bootstrappedExpressionValue = bootstrappedExpressionValue;
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitVariableReference() not implemented yet");
     }
 
     @Override
@@ -147,38 +147,14 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
     @Override
     public void visitUserLiteral(@Nonnull UserLiteral userLiteral)
     {
-        UserLiteralList userLiterals = UserLiteralFinder.findMany(UserLiteralFinder.all());
-        if (userLiterals.notEmpty())
-        {
-            this.bootstrappedExpressionValue = userLiterals.asEcList().getOnly().getExpressionValueSuperClass();
-            return;
-        }
-
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        bootstrappedExpressionValue.insert();
-
-        var bootstrappedUserLiteral = new klass.model.meta.domain.UserLiteral();
-        bootstrappedUserLiteral.setExpressionValueSuperClass(bootstrappedExpressionValue);
-
-        this.bootstrappedExpressionValue = bootstrappedExpressionValue;
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitUserLiteral() not implemented yet");
     }
 
     @Override
     public void visitNullLiteral(@Nonnull NullLiteral nullLiteral)
     {
-        NullLiteralList nullLiterals = NullLiteralFinder.findMany(NullLiteralFinder.all());
-        if (nullLiterals.notEmpty())
-        {
-            this.bootstrappedExpressionValue = nullLiterals.asEcList().getOnly().getExpressionValueSuperClass();
-            return;
-        }
-
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        bootstrappedExpressionValue.insert();
-
-        var bootstrappedNullLiteral = new klass.model.meta.domain.NullLiteral();
-        bootstrappedNullLiteral.setExpressionValueSuperClass(bootstrappedExpressionValue);
-
-        this.bootstrappedExpressionValue = bootstrappedExpressionValue;
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitNullLiteral() not implemented yet");
     }
 }

@@ -22,19 +22,24 @@ import org.eclipse.collections.api.map.ImmutableMap;
 public class BootstrapCriteriaVisitor implements CriteriaVisitor
 {
     private final ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter;
+    private final ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> bootstrappedExpressionValues;
 
     private klass.model.meta.domain.Criteria bootstrappedCriteria;
 
-    public BootstrapCriteriaVisitor(ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+    public BootstrapCriteriaVisitor(
+            ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter,
+            ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> bootstrappedExpressionValues)
     {
-        this.bootstrappedParametersByParameter = bootstrappedParametersByParameter;
+        this.bootstrappedParametersByParameter = Objects.requireNonNull(bootstrappedParametersByParameter);
+        this.bootstrappedExpressionValues      = Objects.requireNonNull(bootstrappedExpressionValues);
     }
 
     public static klass.model.meta.domain.Criteria convert(
             ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter,
+            ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> bootstrappedExpressionValues,
             @Nonnull Criteria criteria)
     {
-        var visitor = new BootstrapCriteriaVisitor(bootstrappedParametersByParameter);
+        var visitor = new BootstrapCriteriaVisitor(bootstrappedParametersByParameter, bootstrappedExpressionValues);
         criteria.visit(visitor);
         return visitor.getResult();
     }
@@ -48,10 +53,9 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     public void visitAll(@Nonnull AllCriteria allCriteria)
     {
         var bootstrappedCriteria = new klass.model.meta.domain.Criteria();
-        bootstrappedCriteria.insert();
 
         var bootstrappedAllCriteria = new klass.model.meta.domain.AllCriteria();
-        bootstrappedAllCriteria.setCriteriaSuperClass(bootstrappedCriteria);
+        bootstrappedAllCriteria.setId(bootstrappedCriteria.getId());
         this.bootstrappedCriteria = bootstrappedCriteria;
     }
 
@@ -61,7 +65,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         var bootstrappedBinaryCriteria = this.handleBinaryCriteria(andCriteria);
 
         var bootstrappedAndCriteria = new klass.model.meta.domain.AndCriteria();
-        bootstrappedAndCriteria.setBinaryCriteriaSuperClass(bootstrappedBinaryCriteria);
+        bootstrappedAndCriteria.setId(bootstrappedBinaryCriteria.getId());
     }
 
     @Override
@@ -70,7 +74,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         var bootstrappedBinaryCriteria = this.handleBinaryCriteria(orCriteria);
 
         var bootstrappedAndCriteria = new klass.model.meta.domain.OrCriteria();
-        bootstrappedAndCriteria.setBinaryCriteriaSuperClass(bootstrappedBinaryCriteria);
+        bootstrappedAndCriteria.setId(bootstrappedBinaryCriteria.getId());
     }
 
     @Nonnull
@@ -78,9 +82,11 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     {
         var bootstrappedLeft = BootstrapCriteriaVisitor.convert(
                 this.bootstrappedParametersByParameter,
+                this.bootstrappedExpressionValues,
                 binaryCriteria.getLeft());
         var bootstrappedRight = BootstrapCriteriaVisitor.convert(
                 this.bootstrappedParametersByParameter,
+                this.bootstrappedExpressionValues,
                 binaryCriteria.getRight());
 
         var bootstrappedCriteria = new klass.model.meta.domain.Criteria();
@@ -88,7 +94,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         this.bootstrappedCriteria = bootstrappedCriteria;
 
         var bootstrappedBinaryCriteria = new klass.model.meta.domain.BinaryCriteria();
-        bootstrappedBinaryCriteria.setCriteriaSuperClass(bootstrappedCriteria);
+        bootstrappedBinaryCriteria.setId(bootstrappedCriteria.getId());
         bootstrappedBinaryCriteria.setLeft(bootstrappedLeft);
         bootstrappedBinaryCriteria.setRight(bootstrappedRight);
         return bootstrappedBinaryCriteria;
@@ -100,16 +106,14 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         ExpressionValue sourceValue = operatorCriteria.getSourceValue();
         ExpressionValue targetValue = operatorCriteria.getTargetValue();
 
-        var bootstrappedSourceValue =
-                BootstrapExpressionValueVisitor.convert(this.bootstrappedParametersByParameter, sourceValue);
-        var bootstrappedTargetValue =
-                BootstrapExpressionValueVisitor.convert(this.bootstrappedParametersByParameter, targetValue);
+        var bootstrappedSourceValue = this.bootstrappedExpressionValues.get(sourceValue);
+        var bootstrappedTargetValue = this.bootstrappedExpressionValues.get(targetValue);
 
         var bootstrappedCriteria = new klass.model.meta.domain.Criteria();
         bootstrappedCriteria.insert();
 
         var bootstrappedOperatorCriteria = new klass.model.meta.domain.OperatorCriteria();
-        bootstrappedOperatorCriteria.setCriteriaSuperClass(bootstrappedCriteria);
+        bootstrappedOperatorCriteria.setId(bootstrappedCriteria.getId());
         bootstrappedOperatorCriteria.setOperator(operatorCriteria.getOperator().getOperatorText());
         long sourceValueId = bootstrappedSourceValue.getId();
         long targetValueId = bootstrappedTargetValue.getId();
@@ -126,7 +130,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         bootstrappedExpressionValue.insert();
 
         var bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
-        bootstrappedMemberReferencePath.setExpressionValueSuperClass(bootstrappedExpressionValue);
+        bootstrappedMemberReferencePath.setId(bootstrappedExpressionValue.getId());
 
         MemberReferencePath memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
         Klass               klass                 = memberExpressionValue.getKlass();
@@ -141,7 +145,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         bootstrappedCriteria.insert();
 
         var bootstrappedEdgePointCriteria = new klass.model.meta.domain.EdgePointCriteria();
-        bootstrappedEdgePointCriteria.setCriteriaSuperClass(bootstrappedCriteria);
+        bootstrappedEdgePointCriteria.setId(bootstrappedCriteria.getId());
         bootstrappedEdgePointCriteria.setMemberReferencePath(bootstrappedMemberReferencePath);
 
         this.bootstrappedCriteria = bootstrappedCriteria;
