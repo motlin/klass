@@ -88,7 +88,7 @@ class Klass
     extends Classifier
 {
     superClassName: String? private maximumLength(256);
-    inheritanceType: InheritanceType private maximumLength(256);
+    inheritanceType: InheritanceType maximumLength(256);
 }
 
 // TODO: Why isn't subClasses showing up in generated code? Reladomo bug?

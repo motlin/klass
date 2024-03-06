@@ -308,11 +308,7 @@
         "enumeration": {
           "name": "InheritanceType"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
