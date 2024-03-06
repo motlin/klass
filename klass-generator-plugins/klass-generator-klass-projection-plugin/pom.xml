@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-generator-projection-plugin</artifactId>
+    <artifactId>klass-generator-klass-projection-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
     <name>Klass Generator Plugin: Projections</name>
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-generator-projection</artifactId>
+            <artifactId>klass-generator-klass-projection</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -19,7 +19,7 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-projection-plugin</artifactId>
+                <artifactId>klass-generator-klass-projection-plugin</artifactId>
                 <version>${klass.version}</version>
 
                 <configuration>
