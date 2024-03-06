@@ -17,6 +17,7 @@
     <name>Klass Utility (Module Group)</name>
 
     <modules>
+        <module>klass-clock-incrementing</module>
     </modules>
 
     <dependencyManagement>
