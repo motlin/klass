@@ -312,17 +312,13 @@ public class IncomingCreateDataModelValidator
         String associationEndName = associationEnd.getName();
         this.contextStack.push(associationEndName);
 
-        ImmutableList<Object> keys = this.getKeysFromJsonNode(
-                childJsonNode,
-                associationEnd,
-                parentJsonNode);
-
         try
         {
             if ((childJsonNode.isMissingNode() || childJsonNode.isNull())
                     && associationEnd.isRequired())
             {
-                throw new AssertionError(associationEnd.toString());
+                // TODO: Check for non-private foreign key properties
+                return;
             }
 
             Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(
@@ -331,6 +327,11 @@ public class IncomingCreateDataModelValidator
                     associationEnd);
             if (childPersistentInstanceWithKey == null)
             {
+                ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                        childJsonNode,
+                        associationEnd,
+                        parentJsonNode);
+
                 String error = String.format(
                         "Error at '%s'. Could not find existing persistent instance for association end '%s' with key %s.",
                         this.getContextString(),
@@ -645,14 +646,15 @@ public class IncomingCreateDataModelValidator
             return Objects.requireNonNull(result);
         }
 
-        if (!(jsonNode instanceof ObjectNode))
+        if (jsonNode instanceof ObjectNode)
         {
-            throw new AssertionError();
+            ObjectNode objectNode = (ObjectNode) jsonNode;
+            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                    keyProperty,
+                    objectNode);
+            return Objects.requireNonNull(result);
         }
-        ObjectNode objectNode = (ObjectNode) jsonNode;
-        Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                keyProperty,
-                objectNode);
-        return Objects.requireNonNull(result);
+
+        throw new AssertionError();
     }
 }

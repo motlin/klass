@@ -143,10 +143,7 @@ public abstract class PersistentSynchronizer
                 incomingJson);
         boolean mutationOccurred = propertyMutationOccurred || associatedMutationOccurred;
 
-        if (propertyMutationOccurred)
-        {
-            this.synchronizeUpdatedDataTypeProperties(klass, persistentInstance);
-        }
+        this.synchronizeUpdatedDataTypeProperties(klass, persistentInstance, propertyMutationOccurred);
 
         if (mutationOccurred)
         {
@@ -158,7 +155,12 @@ public abstract class PersistentSynchronizer
         return mutationOccurred;
     }
 
-    protected void synchronizeUpdatedDataTypeProperties(@Nonnull Klass klass, Object persistentInstance)
+    protected abstract void synchronizeUpdatedDataTypeProperties(
+            @Nonnull Klass klass,
+            Object persistentInstance,
+            boolean propertyMutationOccurred);
+
+    protected void synchronizeUpdatedDataTypeProperties(Klass klass, Object persistentInstance)
     {
         Optional<PrimitiveProperty> lastUpdatedByProperty = klass.getLastUpdatedByProperty();
         lastUpdatedByProperty.ifPresent(primitiveProperty ->
@@ -185,6 +187,8 @@ public abstract class PersistentSynchronizer
                 this::shouldSkipDataTypeProperty,
                 klass);
 
+        this.validateSetIdDataTypeProperties(klass, persistentInstance);
+
         boolean mutationOccurred = false;
         for (DataTypeProperty dataTypeProperty : simpleDataTypeProperties)
         {
@@ -196,9 +200,11 @@ public abstract class PersistentSynchronizer
         return mutationOccurred;
     }
 
+    protected abstract void validateSetIdDataTypeProperties(Klass klass, Object persistentInstance);
+
     protected abstract void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance);
 
-    private boolean synchronizeDataTypeProperty(
+    protected boolean synchronizeDataTypeProperty(
             @Nonnull DataTypeProperty dataTypeProperty,
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
@@ -258,11 +264,19 @@ public abstract class PersistentSynchronizer
 
             if (multiplicity.isToOne())
             {
-                mutationOccurred |= this.handleToOneOutsideProjection(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToOneOutsideProjection(
+                        associationEnd,
+                        persistentInstance,
+                        incomingObjectNode,
+                        jsonNode);
             }
             else
             {
-                mutationOccurred |= this.handleToManyOutsideProjection(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToManyOutsideProjection(
+                        associationEnd,
+                        persistentInstance,
+                        incomingObjectNode,
+                        jsonNode);
             }
         }
         return mutationOccurred;
@@ -313,12 +327,13 @@ public abstract class PersistentSynchronizer
     }
 
     protected abstract boolean handleToOneOutsideProjection(
-            AssociationEnd associationEnd,
-            Object persistentParentInstance,
-            JsonNode incomingChildInstance);
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull Object persistentParentInstance,
+            @Nonnull ObjectNode incomingParentNode,
+            @Nonnull JsonNode incomingChildInstance);
 
     protected Object findExistingChildPersistentInstance(
-            Object persistentParentInstance,
+            @Nonnull Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstance,
             @Nonnull AssociationEnd associationEnd)
     {
@@ -431,15 +446,11 @@ public abstract class PersistentSynchronizer
                 this.dataStore.setToOne(newInstance, associationEnd.getOpposite(), persistentParentInstance);
 
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
-                boolean result = synchronizer.synchronizeInTransaction(
+                synchronizer.synchronizeInTransaction(
                         associationEnd.getType(),
                         Optional.of(associationEnd),
                         newInstance,
                         (ObjectNode) incomingChildInstance);
-                if (!result)
-                {
-                    throw new AssertionError();
-                }
 
                 this.dataStore.insert(newInstance);
                 mutationOccurred = true;
@@ -480,9 +491,16 @@ public abstract class PersistentSynchronizer
 
     private boolean handleToManyOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
-            Object persistentParentInstance,
+            @Nonnull Object persistentParentInstance,
+            @Nonnull ObjectNode incomingParentNode,
             @Nonnull JsonNode incomingChildInstances)
     {
+        if (incomingChildInstances.isMissingNode())
+        {
+            // Arguably this should only be the behavior of PATCH, but these instances aren't even owned, so it would be normal to not want to edit them.
+            return false;
+        }
+
         boolean mutationOccurred = false;
 
         // TODO: Test null where an array goes
@@ -636,10 +654,21 @@ public abstract class PersistentSynchronizer
             Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
-            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo(),
-                    (ObjectNode) childNode);
-            return Objects.requireNonNull(result);
+            if (childNode instanceof ObjectNode)
+            {
+                Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                        pair.getTwo(),
+                        (ObjectNode) childNode);
+                return Objects.requireNonNull(result);
+            }
+
+            // Leniently allow a foreign key to be used in incoming json, instead of a nested object with a primary key
+            if (jsonNode.has(keyProperty.getName()) && !keyProperty.isPrivate())
+            {
+                return JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(keyProperty, (ObjectNode) jsonNode);
+            }
+
+            throw new AssertionError();
         }
 
         Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(

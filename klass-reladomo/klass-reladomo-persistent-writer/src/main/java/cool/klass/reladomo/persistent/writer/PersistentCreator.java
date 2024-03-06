@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
@@ -41,6 +42,29 @@ public class PersistentCreator extends PersistentSynchronizer
     protected boolean shouldWriteId()
     {
         return false;
+    }
+
+    @Override
+    protected void synchronizeUpdatedDataTypeProperties(
+            @Nonnull Klass klass,
+            Object persistentInstance,
+            boolean propertyMutationOccurred)
+    {
+        this.synchronizeUpdatedDataTypeProperties(klass, persistentInstance);
+    }
+
+    @Override
+    protected void validateSetIdDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        ImmutableList<DataTypeProperty> idProperties = klass.getDataTypeProperties().select(DataTypeProperty::isID);
+        for (DataTypeProperty idProperty : idProperties)
+        {
+            Object id = this.dataStore.getDataTypeProperty(persistentInstance, idProperty);
+            if (id.equals(0L) || id.equals(0))
+            {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     @Override
@@ -97,7 +121,8 @@ public class PersistentCreator extends PersistentSynchronizer
     @Override
     protected boolean handleToOneOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
-            Object persistentParentInstance,
+            @Nonnull Object persistentParentInstance,
+            @Nonnull ObjectNode incomingParentNode,
             @Nonnull JsonNode incomingChildInstance)
     {
         if (associationEnd.isOwned())

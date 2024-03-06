@@ -3,6 +3,7 @@ package cool.klass.reladomo.persistent.writer;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
@@ -40,6 +41,24 @@ public class PersistentReplacer extends PersistentSynchronizer
     }
 
     @Override
+    protected void synchronizeUpdatedDataTypeProperties(
+            @Nonnull Klass klass,
+            Object persistentInstance,
+            boolean propertyMutationOccurred)
+    {
+        if (propertyMutationOccurred)
+        {
+            this.synchronizeUpdatedDataTypeProperties(klass, persistentInstance);
+        }
+    }
+
+    @Override
+    protected void validateSetIdDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        // Deliberately empty for update operation
+    }
+
+    @Override
     protected void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance)
     {
         // Deliberately empty for update operation
@@ -66,7 +85,8 @@ public class PersistentReplacer extends PersistentSynchronizer
     @Override
     protected boolean handleToOneOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
-            Object persistentParentInstance,
+            @Nonnull Object persistentParentInstance,
+            @Nonnull ObjectNode incomingParentNode,
             @Nonnull JsonNode incomingChildInstance)
     {
         if (associationEnd.isOwned())
