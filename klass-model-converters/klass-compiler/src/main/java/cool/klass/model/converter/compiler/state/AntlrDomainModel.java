@@ -533,7 +533,7 @@ public class AntlrDomainModel
 
         for (AntlrAssociation association : this.associations)
         {
-            association.getRelationship().getCriteria().visit(criteriaVisitor);
+            association.visitCriteria(criteriaVisitor);
         }
 
         for (AntlrServiceGroup serviceGroup : this.serviceGroups)

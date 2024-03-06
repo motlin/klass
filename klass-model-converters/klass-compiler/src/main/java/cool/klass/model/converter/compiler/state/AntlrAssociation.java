@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
+import cool.klass.model.converter.compiler.state.criteria.AntlrCriteriaVisitor;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
@@ -78,6 +79,15 @@ public class AntlrAssociation
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
         super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
+    }
+
+    public void visitCriteria(AntlrCriteriaVisitor criteriaVisitor)
+    {
+        if (this.relationship == null)
+        {
+            return;
+        }
+        this.relationship.getCriteria().visit(criteriaVisitor);
     }
 
     @Nonnull
