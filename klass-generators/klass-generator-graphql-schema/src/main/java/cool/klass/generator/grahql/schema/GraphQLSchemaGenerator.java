@@ -123,8 +123,8 @@ public class GraphQLSchemaGenerator
     private String getOrderBySourceCode(Klass klass)
     {
         //language=GraphQL
-        return "input " + klass.getName() + "OrderBy {\n"
-                + "    attribute: " + klass.getName() + "Finder\n"
+        return "input _" + klass.getName() + "OrderBy {\n"
+                + "    attribute: _" + klass.getName() + "Finder\n"
                 + "    direction: OrderByDirection\n"
                 + "}\n\n";
     }

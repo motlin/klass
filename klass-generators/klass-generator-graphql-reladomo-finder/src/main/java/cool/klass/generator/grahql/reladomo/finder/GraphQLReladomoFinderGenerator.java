@@ -71,12 +71,12 @@ public class GraphQLReladomoFinderGenerator
     {
         String classifierName = classifier.getName();
         return ""
-                + "input " + classifierName + "Finder {\n"
-                + "    AND: [" + classifierName + "Finder!]\n"
-                + "    OR:  [" + classifierName + "Finder!]\n"
+                + "input _" + classifierName + "Finder {\n"
+                + "    AND: [_" + classifierName + "Finder!]\n"
+                + "    OR:  [_" + classifierName + "Finder!]\n"
                 + "    exists            : Empty\n"
-                + "    notExists         : " + classifierName + "Finder\n"
-                + "    recursiveNotExists: " + classifierName + "Finder\n"
+                + "    notExists         : _" + classifierName + "Finder\n"
+                + "    recursiveNotExists: _" + classifierName + "Finder\n"
                 + classifier.getProperties().collect(this::getSourceCode).makeString("")
                 + "}\n"
                 + "\n";
@@ -150,7 +150,7 @@ public class GraphQLReladomoFinderGenerator
         public void visitReferenceProperty(ReferenceProperty referenceProperty)
         {
             this.sourceCode = String.format(
-                    "    %s: %sFinder\n",
+                    "    %s: _%sFinder\n",
                     referenceProperty.getName(),
                     referenceProperty.getType().getName());
         }
