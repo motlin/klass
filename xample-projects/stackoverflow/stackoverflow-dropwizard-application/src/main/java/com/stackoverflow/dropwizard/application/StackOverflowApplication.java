@@ -67,6 +67,8 @@ public class StackOverflowApplication
             @Nonnull StackOverflowConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
+        super.run(configuration, environment);
+
         ObjectMapper objectMapper = environment.getObjectMapper();
         KlassFactory klassFactory = configuration.getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
@@ -76,7 +78,5 @@ public class StackOverflowApplication
         environment.jersey().register(new JsonViewDynamicFeature(domainModel));
 
         environment.jersey().register(new QuestionResourceManual(domainModel, dataStore, clock));
-
-        super.run(configuration, environment);
     }
 }
