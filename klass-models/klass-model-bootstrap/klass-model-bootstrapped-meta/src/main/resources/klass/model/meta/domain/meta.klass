@@ -1212,6 +1212,50 @@ service Klass
         }
 }
 
+projection ClassifierSummaryProjection on Classifier
+{
+    name                   : "Classifier name",
+    packageName            : "Classifier package name",
+    Klass.superClass             :
+    {
+        name           : "Super Class name",
+    },
+
+    // TODO: flat many-to-many, or parameterized property
+    superInterfaces        :
+    {
+        superInterface:
+        {
+            name           : "Super interface name",
+        },
+    },
+    classifierModifiers    :
+    {
+        name    : "Classifier modifier name",
+    },
+    primitiveProperties    : PrimitivePropertySummaryProjection,
+    enumerationProperties  : EnumerationPropertySummaryProjection,
+}
+
+service Classifier
+{
+    /api/meta/classifier/{classifierName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == classifierName;
+            projection  : ClassifierSummaryProjection;
+        }
+    /api/meta/classifier
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ClassifierSummaryProjection;
+            orderBy     : this.ordinal;
+        }
+}
+
 projection AssociationEndProjection on AssociationEnd
 {
     name                   : "Association end name",
@@ -1281,18 +1325,18 @@ projection MemberReferencePathProjection on MemberReferencePath
 {
     klass           :
     {
-        name       : "MemberReferencePath Class name",
+        name: "MemberReferencePath Class name",
     },
     associationEnds :
     {
         associationEnd:
         {
-            name        : "MemberReferencePath Association end name",
+            name: "MemberReferencePath Association end name",
         },
     },
     dataTypeProperty:
     {
-        name                           : "MemberReferencePath Property name",
+        name: "MemberReferencePath Property name",
     },
 }
 
@@ -1300,22 +1344,18 @@ projection MemberReferencePathSummaryProjection on MemberReferencePath
 {
     klass           :
     {
-        name       : "MemberReferencePath Class name",
+        name: "MemberReferencePath Class name",
     },
     associationEnds :
     {
         associationEnd:
         {
-            name        : "MemberReferencePath Association end name",
+            name: "MemberReferencePath Association end name",
         },
     },
     dataTypeProperty:
     {
-        name                           : "MemberReferencePath Property name",
-        EnumerationProperty.enumeration:
-        {
-            name    : "MemberReferencePath Property Enumeration name",
-        },
+        name: "MemberReferencePath Property name",
     },
 }
 
@@ -1323,23 +1363,18 @@ projection ExpressionValueProjection on ExpressionValue
 {
     MemberReferencePath.klass           :
     {
-        name       : "MemberReferencePath Class name",
+        name: "MemberReferencePath Class name",
     },
     MemberReferencePath.associationEnds :
     {
         associationEnd:
         {
-            name        : "MemberReferencePath Association end name",
+            name: "MemberReferencePath Association end name",
         },
     },
     MemberReferencePath.dataTypeProperty:
     {
-        name                           : "MemberReferencePath Property name",
-        PrimitiveProperty.primitiveType: "MemberReferencePath Property primitive type",
-        EnumerationProperty.enumeration:
-        {
-            name    : "MemberReferencePath Property Enumeration name",
-        },
+        name: "MemberReferencePath Property name",
     },
 }
 
@@ -1359,11 +1394,6 @@ projection ExpressionValueSummaryProjection on ExpressionValue
     MemberReferencePath.dataTypeProperty:
     {
         name                           : "MemberReferencePath Property name",
-        PrimitiveProperty.primitiveType: "MemberReferencePath Property primitive type",
-        EnumerationProperty.enumeration:
-        {
-            name    : "MemberReferencePath Property Enumeration name",
-        },
     },
 }
 

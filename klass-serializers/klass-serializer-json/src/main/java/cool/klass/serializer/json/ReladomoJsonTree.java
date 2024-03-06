@@ -112,9 +112,12 @@ public class ReladomoJsonTree implements JsonSerializable
         Object dataTypeValue = this.dataStore.getDataTypeProperty(mithraObject, property);
         if (dataTypeValue == null)
         {
-            jsonGenerator.writeNullField(propertyName);
+            // TODO: Make this configurable
+            return;
+            // jsonGenerator.writeNullField(propertyName);
         }
-        else if (dataType instanceof Enumeration)
+
+        if (dataType instanceof Enumeration)
         {
             EnumerationLiteral enumerationLiteral = (EnumerationLiteral) dataTypeValue;
             jsonGenerator.writeStringField(propertyName, enumerationLiteral.getPrettyName());
@@ -151,20 +154,25 @@ public class ReladomoJsonTree implements JsonSerializable
             Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);
             MithraList<MithraObject> mithraList = (MithraList<MithraObject>) Objects.requireNonNull(value);
 
-            jsonGenerator.writeArrayFieldStart(associationEndName);
-            try
+            // TODO: Make this configurable
+            if (mithraList.notEmpty())
             {
-                mithraList.forEachWithCursor(eachChildValue ->
-                        this.recurse(jsonGenerator, projectionWithAssociationEnd, (MithraObject) eachChildValue));
-            }
-            finally
-            {
-                jsonGenerator.writeEndArray();
+                jsonGenerator.writeArrayFieldStart(associationEndName);
+                try
+                {
+                    mithraList.forEachWithCursor(eachChildValue ->
+                            this.recurse(jsonGenerator, projectionWithAssociationEnd, (MithraObject) eachChildValue));
+                }
+                finally
+                {
+                    jsonGenerator.writeEndArray();
+                }
             }
         }
         else
         {
             Object value = this.dataStore.getToOne(mithraObject, associationEnd);
+            // TODO: Make this configurable
             if (value == null)
             {
                 // Should only happen for to-one optional relationships
