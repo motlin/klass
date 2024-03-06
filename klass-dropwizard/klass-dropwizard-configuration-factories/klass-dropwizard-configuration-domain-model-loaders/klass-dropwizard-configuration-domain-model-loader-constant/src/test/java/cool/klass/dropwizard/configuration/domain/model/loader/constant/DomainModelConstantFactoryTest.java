@@ -1,15 +1,12 @@
 package cool.klass.dropwizard.configuration.domain.model.loader.constant;
 
-import java.io.File;
-import java.net.URL;
-
 import javax.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import io.dropwizard.configuration.JsonConfigurationFactory;
+import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
@@ -46,9 +43,9 @@ public class DomainModelConstantFactoryTest
     @Test
     public void domainModelConstant() throws Exception
     {
-        URL                resource           = Resources.getResource("config-test.json5");
-        File               json               = new File(resource.toURI());
-        DomainModelFactory domainModelFactory = this.factory.build(json);
+        DomainModelFactory domainModelFactory = this.factory.build(
+                new ResourceConfigurationSourceProvider(),
+                "config-test.json5");
         assertThat(domainModelFactory, instanceOf(DomainModelConstantFactory.class));
     }
 
