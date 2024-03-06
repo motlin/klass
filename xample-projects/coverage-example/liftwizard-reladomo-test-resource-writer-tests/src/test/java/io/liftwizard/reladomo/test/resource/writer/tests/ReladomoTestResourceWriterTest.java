@@ -12,10 +12,8 @@ import cool.klass.model.meta.domain.api.NamedElement;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.reladomo.test.resource.writer.ReladomoTestResourceWriter;
-import io.liftwizard.reladomo.test.rule.ExecuteSqlTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoInitializeTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
-import io.liftwizard.reladomo.test.rule.ReladomoPurgeAllTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Rule;
@@ -31,12 +29,12 @@ public class ReladomoTestResourceWriterTest
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
-    private final ExecuteSqlTestRule executeSqlTestRule = new ExecuteSqlTestRule();
+    private final LiquibaseTestRule liquibaseTestRule = new LiquibaseTestRule(
+            "cool/klass/xample/coverage/migrations.xml");
 
     private final ReladomoInitializeTestRule initializeTestRule =
             new ReladomoInitializeTestRule("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
 
-    private final ReladomoPurgeAllTestRule purgeAllTestRule = new ReladomoPurgeAllTestRule();
     private final ReladomoLoadDataTestRule loadDataTestRule = new ReladomoLoadDataTestRule();
 
     private final ObjectMapper objectMapper = getObjectMapper();
@@ -44,9 +42,8 @@ public class ReladomoTestResourceWriterTest
 
     @Rule
     public final RuleChain ruleChain = RuleChain.emptyRuleChain()
-            .around(this.executeSqlTestRule)
+            .around(this.liquibaseTestRule)
             .around(this.initializeTestRule)
-            .around(this.purgeAllTestRule)
             .around(this.loadDataTestRule);
 
     @Test
