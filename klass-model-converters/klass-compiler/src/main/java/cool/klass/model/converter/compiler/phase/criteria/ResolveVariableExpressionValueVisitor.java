@@ -9,6 +9,8 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberValue;
 import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberValue;
@@ -31,26 +33,31 @@ import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValue>
+public class ResolveVariableExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValue>
 {
     @Nonnull
-    private final CompilationUnit  compilationUnit;
+    private final CompilationUnit                       compilationUnit;
     @Nonnull
-    private final AntlrClass       thisReference;
+    private final AntlrClass                            thisReference;
     @Nonnull
-    private final AntlrDomainModel domainModelState;
+    private final AntlrDomainModel                      domainModelState;
+    @Nonnull
+    private final OrderedMap<String, AntlrUrlParameter> formalParametersByName;
 
-    public ExpressionValueVisitor(
+    public ResolveVariableExpressionValueVisitor(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull AntlrClass thisReference,
-            @Nonnull AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull OrderedMap<String, AntlrUrlParameter> formalParametersByName)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.thisReference = Objects.requireNonNull(thisReference);
         this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.formalParametersByName = Objects.requireNonNull(formalParametersByName);
     }
 
     @Nonnull
@@ -92,6 +99,9 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         IdentifierContext identifier   = ctx.identifier();
         String            variableName = identifier.getText();
+        AntlrUrlParameter antlrUrlParameter = this.formalParametersByName.getIfAbsentValue(
+                variableName,
+                AntlrEnumerationUrlPathParameter.NOT_FOUND);
         return new AntlrVariableReference(ctx, this.compilationUnit, false, variableName);
     }
 
@@ -134,7 +144,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
-        AntlrClass                       currentClassState    = classState;
+        AntlrClass                       currentClassState     = classState;
         MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
         for (AssociationEndReferenceContext associationEndReferenceContext : ctx.associationEndReference())
         {

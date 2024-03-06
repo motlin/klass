@@ -301,6 +301,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
     }
 
+    @Nonnull
     @Override
     public KlassBuilder getTypeBuilder()
     {

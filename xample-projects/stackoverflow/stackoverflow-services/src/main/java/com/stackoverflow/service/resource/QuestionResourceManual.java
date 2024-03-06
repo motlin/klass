@@ -3,6 +3,7 @@ package com.stackoverflow.service.resource;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -42,6 +43,7 @@ public class QuestionResourceManual
         this.domainModel = domainModel;
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @GET
@@ -70,12 +72,13 @@ public class QuestionResourceManual
         return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @GET
     @Path("/api/question/in?{ids}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method1(@QueryParam("ids") Set<Long> ids)
+    public ReladomoJsonTree method1(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         Operation queryOperation = QuestionFinder.id().in(SetAdapter.adapt(ids).collectLong(
                 x -> x,
@@ -100,6 +103,7 @@ public class QuestionResourceManual
         return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @GET
@@ -128,6 +132,7 @@ public class QuestionResourceManual
         return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @GET
@@ -162,6 +167,7 @@ public class QuestionResourceManual
         return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @DELETE
@@ -170,7 +176,7 @@ public class QuestionResourceManual
     public ReladomoJsonTree method4(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
-            @Context SecurityContext securityContext)
+            @Nonnull @Context SecurityContext securityContext)
     {
         String    userPrincipalName  = securityContext.getUserPrincipal().getName();
         Operation queryOperation     = QuestionFinder.id().eq(id);
@@ -195,6 +201,7 @@ public class QuestionResourceManual
         return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @POST
@@ -242,7 +249,7 @@ public class QuestionResourceManual
         boolean    isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);
         boolean    hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         Projection projection   = this.domainModel.getProjectionByName("QuestionReadProjection");
-        return result.asEcList().<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(
+        return result.asEcList().collect(mithraObject -> new ReladomoJsonTree(
                 mithraObject,
                 projection.getProjectionMembers()));
     }
@@ -266,7 +273,7 @@ public class QuestionResourceManual
         boolean    isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);
         boolean    hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         Projection projection   = this.domainModel.getProjectionByName("QuestionWriteProjection");
-        return result.asEcList().<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(
+        return result.asEcList().collect(mithraObject -> new ReladomoJsonTree(
                 mithraObject,
                 projection.getProjectionMembers()));
     }

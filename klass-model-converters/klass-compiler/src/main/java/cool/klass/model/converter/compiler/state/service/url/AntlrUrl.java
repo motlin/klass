@@ -18,6 +18,7 @@ import cool.klass.model.meta.domain.service.url.Url.UrlBuilder;
 import cool.klass.model.meta.domain.service.url.UrlParameter.UrlParameterBuilder;
 import cool.klass.model.meta.domain.service.url.UrlPathSegment.UrlPathSegmentBuilder;
 import cool.klass.model.meta.domain.service.url.UrlQueryParameter.UrlQueryParameterBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -48,6 +49,9 @@ public class AntlrUrl extends AntlrElement
     private final MutableList<AntlrService>             serviceStates  = Lists.mutable.empty();
     private final MutableOrderedMap<Verb, AntlrService> servicesByVerb = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
+    private final MutableOrderedMap<ServiceDeclarationContext, AntlrService> servicesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
     @Nonnull
     private final AntlrServiceGroup serviceGroup;
 
@@ -69,9 +73,9 @@ public class AntlrUrl extends AntlrElement
         return this.serviceGroup;
     }
 
-    public boolean hasQueryParameters()
+    public MutableList<AntlrService> getServiceStates()
     {
-        return this.urlQueryParameterStates.notEmpty();
+        return this.serviceStates.asUnmodifiable();
     }
 
     public void enterUrlConstant(AntlrUrlConstant antlrUrlConstant)
@@ -112,6 +116,19 @@ public class AntlrUrl extends AntlrElement
                 (name, builder) -> builder == null
                         ? antlrService
                         : AntlrService.AMBIGUOUS);
+
+        AntlrService duplicate = this.servicesByContext.put(
+                antlrService.getElementContext(),
+                antlrService);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public AntlrService getServiceByContext(ServiceDeclarationContext ctx)
+    {
+        return this.servicesByContext.get(ctx);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -119,6 +136,11 @@ public class AntlrUrl extends AntlrElement
         this.reportDuplicateParameterErrors(compilerErrorHolder);
         this.reportDuplicateVerbErrors(compilerErrorHolder);
         this.reportNoVerbs(compilerErrorHolder);
+
+        for (AntlrService serviceState : this.serviceStates)
+        {
+            serviceState.reportErrors(compilerErrorHolder);
+        }
     }
 
     private void reportDuplicateParameterErrors(CompilerErrorHolder compilerErrorHolder)

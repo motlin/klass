@@ -1,5 +1,7 @@
 package cool.klass.dropwizard.bundle.objectmapper;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.jackson.ObjectMapperConfig;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
@@ -13,7 +15,7 @@ public class ObjectMapperBundle implements Bundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(@Nonnull Environment environment)
     {
         ObjectMapperConfig.configure(environment.getObjectMapper());
     }

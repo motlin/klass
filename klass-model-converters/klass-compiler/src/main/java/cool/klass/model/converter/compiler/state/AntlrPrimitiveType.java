@@ -13,7 +13,6 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
 {
-    public static final AntlrPrimitiveType ID               = new AntlrPrimitiveType(PrimitiveType.ID);
     public static final AntlrPrimitiveType INTEGER          = new AntlrPrimitiveType(PrimitiveType.INTEGER);
     public static final AntlrPrimitiveType LONG             = new AntlrPrimitiveType(PrimitiveType.LONG);
     public static final AntlrPrimitiveType DOUBLE           = new AntlrPrimitiveType(PrimitiveType.DOUBLE);
@@ -29,7 +28,6 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     public static final AntlrPrimitiveType AMBIGUOUS = new AntlrPrimitiveType(null);
 
     public static final ImmutableList<AntlrPrimitiveType> PRIMITIVE_TYPES = Lists.immutable.with(
-            ID,
             STRING,
             INTEGER,
             LONG,

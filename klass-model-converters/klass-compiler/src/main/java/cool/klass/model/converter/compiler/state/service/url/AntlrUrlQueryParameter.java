@@ -6,6 +6,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.meta.domain.service.url.UrlQueryParameter.UrlQueryParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AntlrUrlQueryParameter extends AntlrUrlParameter
 {
@@ -16,9 +17,18 @@ public abstract class AntlrUrlQueryParameter extends AntlrUrlParameter
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             @Nonnull AntlrMultiplicity multiplicityState,
-            @Nonnull AntlrUrl urlState)
+            @Nonnull AntlrUrl urlState,
+            ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, multiplicityState, urlState);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                nameContext,
+                name,
+                multiplicityState,
+                urlState,
+                parameterModifiers);
     }
 
     @Override

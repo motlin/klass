@@ -17,29 +17,10 @@ import org.eclipse.collections.impl.factory.Lists;
  */
 public abstract class PrimitiveType extends DataType
 {
-    public static final PrimitiveType ID               = new PrimitiveType("ID")
-    {
-        @Override
-        public void visit(PrimitiveTypeVisitor visitor)
-        {
-            try
-            {
-                visitor.visitID();
-            }
-            catch (RuntimeException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-    };
     public static final PrimitiveType INTEGER          = new PrimitiveType("Integer")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -58,7 +39,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType LONG             = new PrimitiveType("Long")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -77,7 +58,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType DOUBLE           = new PrimitiveType("Double")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -96,7 +77,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType FLOAT            = new PrimitiveType("Float")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -115,7 +96,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType BOOLEAN          = new PrimitiveType("Boolean")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -134,7 +115,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType STRING           = new PrimitiveType("String")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -153,7 +134,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType INSTANT          = new PrimitiveType("Instant")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -172,7 +153,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType LOCAL_DATE       = new PrimitiveType("LocalDate")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -191,7 +172,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType TEMPORAL_INSTANT = new PrimitiveType("TemporalInstant")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -210,7 +191,7 @@ public abstract class PrimitiveType extends DataType
     public static final PrimitiveType TEMPORAL_RANGE   = new PrimitiveType("TemporalRange")
     {
         @Override
-        public void visit(PrimitiveTypeVisitor visitor)
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
         {
             try
             {
@@ -228,7 +209,6 @@ public abstract class PrimitiveType extends DataType
     };
 
     public static final ImmutableList<PrimitiveType> PRIMITIVE_TYPES = Lists.immutable.with(
-            ID,
             STRING,
             INTEGER,
             LONG,
@@ -280,7 +260,6 @@ public abstract class PrimitiveType extends DataType
 
     public static final class PrimitiveTypeBuilder extends DataTypeBuilder
     {
-        public static final PrimitiveTypeBuilder ID               = new PrimitiveTypeBuilder(PrimitiveType.ID);
         public static final PrimitiveTypeBuilder INTEGER          = new PrimitiveTypeBuilder(PrimitiveType.INTEGER);
         public static final PrimitiveTypeBuilder LONG             = new PrimitiveTypeBuilder(PrimitiveType.LONG);
         public static final PrimitiveTypeBuilder DOUBLE           = new PrimitiveTypeBuilder(PrimitiveType.DOUBLE);
@@ -293,7 +272,6 @@ public abstract class PrimitiveType extends DataType
         public static final PrimitiveTypeBuilder TEMPORAL_RANGE   = new PrimitiveTypeBuilder(PrimitiveType.TEMPORAL_RANGE);
 
         public static final ImmutableList<PrimitiveTypeBuilder> PRIMITIVE_TYPE_BUILDERS = Lists.immutable.with(
-                ID,
                 STRING,
                 INTEGER,
                 LONG,

@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.service;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -16,13 +17,17 @@ import cool.klass.model.meta.domain.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatch.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.Verb;
 import cool.klass.model.meta.domain.service.url.Url.UrlBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrService extends AntlrElement
 {
@@ -37,7 +42,7 @@ public class AntlrService extends AntlrElement
 
     private static final ImmutableMap<Verb, ImmutableList<String>> ALLOWED_CRITERIA_TYPES =
             Maps.immutable.<Verb, ImmutableList<String>>empty()
-                    .newWithKeyValue(Verb.GET, Lists.immutable.with("authorize", "criteria"))
+                    .newWithKeyValue(Verb.GET, Lists.immutable.with("authorize", "criteria", "version"))
                     .newWithKeyValue(Verb.POST, Lists.immutable.with("authorize"))
                     .newWithKeyValue(Verb.PUT, Lists.immutable.with("authorize", "criteria", "conflict"))
                     .newWithKeyValue(Verb.PATCH, Lists.immutable.with("authorize", "criteria", "conflict"))
@@ -51,6 +56,9 @@ public class AntlrService extends AntlrElement
     private final AntlrServiceMultiplicity serviceMultiplicityState;
 
     private final MutableList<AntlrServiceCriteria> serviceCriteriaStates = Lists.mutable.empty();
+
+    private final MutableOrderedMap<ServiceCriteriaDeclarationContext, AntlrServiceCriteria> serviceCriteriaByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private AntlrServiceProjectionDispatch serviceProjectionDispatchState;
     private ServiceBuilder                 serviceBuilder;
@@ -75,6 +83,22 @@ public class AntlrService extends AntlrElement
         return this.urlState;
     }
 
+    @Nonnull
+    public AntlrServiceMultiplicity getServiceMultiplicityState()
+    {
+        return this.serviceMultiplicityState;
+    }
+
+    public MutableList<AntlrServiceCriteria> getServiceCriteriaStates()
+    {
+        return this.serviceCriteriaStates.asUnmodifiable();
+    }
+
+    public AntlrServiceCriteria getServiceCriteriaByContext(ServiceCriteriaDeclarationContext ctx)
+    {
+        return this.serviceCriteriaByContext.get(ctx);
+    }
+
     public void reportDuplicateVerb(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
@@ -87,9 +111,16 @@ public class AntlrService extends AntlrElement
                 this.urlState.getServiceGroup().getElementContext());
     }
 
-    public void enterServiceCriteriaDeclaration(AntlrServiceCriteria antlrServiceCriteria)
+    public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria antlrServiceCriteria)
     {
         this.serviceCriteriaStates.add(antlrServiceCriteria);
+        AntlrServiceCriteria duplicate = this.serviceCriteriaByContext.put(
+                antlrServiceCriteria.getElementContext(),
+                antlrServiceCriteria);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public void enterServiceProjectionDispatch(@Nonnull AntlrServiceProjectionDispatch projectionDispatch)
@@ -97,7 +128,7 @@ public class AntlrService extends AntlrElement
         this.serviceProjectionDispatchState = Objects.requireNonNull(projectionDispatch);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
                 .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
@@ -111,36 +142,20 @@ public class AntlrService extends AntlrElement
 
         // TODO: reportErrors: Find url parameters which are unused by any criteria
 
-        Verb                  verb                 = this.getVerbState().getVerb();
+        Verb                  verb                 = this.verbState.getVerb();
         ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
 
         for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
         {
-            String serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
             if (allowedCriteriaTypes == null)
             {
                 throw new AssertionError(verb);
             }
-            if (!allowedCriteriaTypes.contains(serviceCriteriaKeyword))
-            {
-                String error = String.format(
-                        "Critiera '%s' not allowed for verb '%s'. Must be one of %s.",
-                        serviceCriteriaKeyword,
-                        verb,
-                        allowedCriteriaTypes);
-                compilerErrorHolder.add(
-                        this.compilationUnit,
-                        error,
-                        serviceCriteriaState.getElementContext().serviceCriteriaKeyword(),
-                        this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
-            }
-        }
-    }
+            serviceCriteriaState.reportAllowedCriteriaTypes(compilerErrorHolder, allowedCriteriaTypes);
 
-    @Nonnull
-    public AntlrVerb getVerbState()
-    {
-        return this.verbState;
+            ImmutableList<ParserRuleContext> parserRuleContexts = this.getParserRuleContexts();
+            serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder, parserRuleContexts);
+        }
     }
 
     public ImmutableList<ParserRuleContext> getParserRuleContexts()
@@ -150,10 +165,17 @@ public class AntlrService extends AntlrElement
         return parserRuleContexts.toImmutable();
     }
 
-    private void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts)
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.getElementContext());
         this.urlState.getParserRuleContexts(parserRuleContexts);
+    }
+
+    @Nonnull
+    @Override
+    public ServiceDeclarationContext getElementContext()
+    {
+        return (ServiceDeclarationContext) super.getElementContext();
     }
 
     public ServiceBuilder build()
@@ -180,5 +202,45 @@ public class AntlrService extends AntlrElement
         this.serviceBuilder.setProjectionDispatch(projectionDispatchBuilder);
 
         return this.serviceBuilder;
+    }
+
+    public boolean needsVersionCriteriaInferred()
+    {
+        return this.needsVersionCriteria() && !this.hasServiceCriteriaKeyword("version");
+    }
+
+    public boolean needsVersionCriteria()
+    {
+        return this.urlState.getServiceGroup().getKlass().hasVersion()
+                && this.verbState.getVerb() == Verb.GET
+                && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE;
+    }
+
+    private boolean hasServiceCriteriaKeyword(String serviceCriteriaKeyword)
+    {
+        return this.serviceCriteriaStates
+                .asLazy()
+                .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
+                .contains(serviceCriteriaKeyword);
+    }
+
+    public boolean needsConflictCriteriaInferred()
+    {
+        // TODO: PUT many and PATCH many could get the version numbers from the body
+        // TODO: DELETE many would have to take a body too?
+        // TODO: Or maybe there's no such thing as DELETE many, and it's implied through a merge api
+        // TODO: Also the class should be opportunistically locked
+
+        return this.urlState.getServiceGroup().getKlass().hasVersion()
+                && this.verbState.getVerb() != Verb.GET
+                && this.verbState.getVerb() != Verb.POST
+                && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE
+                && !this.hasServiceCriteriaKeyword("conflict");
+    }
+
+    @Nonnull
+    public AntlrVerb getVerbState()
+    {
+        return this.verbState;
     }
 }

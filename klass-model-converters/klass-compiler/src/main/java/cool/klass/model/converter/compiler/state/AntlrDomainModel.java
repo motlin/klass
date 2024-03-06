@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -31,11 +32,13 @@ public class AntlrDomainModel
     private final MutableList<AntlrProjection>   projectionStates   = Lists.mutable.empty();
     private final MutableList<AntlrServiceGroup> serviceGroupStates = Lists.mutable.empty();
 
-    private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration> enumerationsByContext =
+    private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration>   enumerationsByContext  =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>             classesByContext      =
+    private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>               classesByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation> associationsByContext =
+    private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation>   associationsByContext  =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ServiceGroupDeclarationContext, AntlrServiceGroup> serviceGroupsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -117,6 +120,14 @@ public class AntlrDomainModel
                 (name, builder) -> builder == null
                         ? serviceGroupState
                         : AntlrServiceGroup.AMBIGUOUS);
+
+        AntlrServiceGroup duplicate = this.serviceGroupsByContext.put(
+                serviceGroupState.getElementContext(),
+                serviceGroupState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public AntlrEnumeration getEnumerationByName(String enumerationName)
@@ -147,6 +158,11 @@ public class AntlrDomainModel
     public AntlrProjection getProjectionByName(String projectionName)
     {
         return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
+    }
+
+    public AntlrServiceGroup getServiceGroupByContext(ServiceGroupDeclarationContext context)
+    {
+        return this.serviceGroupsByContext.get(context);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)

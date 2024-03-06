@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -39,7 +41,7 @@ public class ReladomoJsonTree implements JsonSerializable
 
     public ReladomoJsonTree(
             MithraObject mithraObject,
-            ImmutableList<ProjectionMember> projectionMembers)
+            @Nonnull ImmutableList<ProjectionMember> projectionMembers)
     {
         this.mithraObject = Objects.requireNonNull(mithraObject);
         this.projectionMembers = Objects.requireNonNull(projectionMembers);
@@ -52,7 +54,7 @@ public class ReladomoJsonTree implements JsonSerializable
     public static void serialize(
             JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            ImmutableList<ProjectionMember> projectionMembers) throws IOException
+            @Nonnull ImmutableList<ProjectionMember> projectionMembers) throws IOException
     {
         RelatedFinder finder = mithraObject.zGetPortal().getFinder();
 
@@ -95,9 +97,9 @@ public class ReladomoJsonTree implements JsonSerializable
     }
 
     public static void handleProjectionPrimitiveMember(
-            JsonGenerator jsonGenerator,
+            @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            RelatedFinder finder,
+            @Nonnull RelatedFinder finder,
             ProjectionPrimitiveMember projectionPrimitiveMember) throws IOException
     {
         DataTypeProperty<?> property     = projectionPrimitiveMember.getProperty();
@@ -123,7 +125,7 @@ public class ReladomoJsonTree implements JsonSerializable
     }
 
     public static void handleProjectionAssociationEnd(
-            JsonGenerator jsonGenerator,
+            @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
             RelatedFinder finder,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
@@ -166,9 +168,9 @@ public class ReladomoJsonTree implements JsonSerializable
     }
 
     public static boolean recurse(
-            JsonGenerator jsonGenerator,
-            ImmutableList<ProjectionMember> childrenProjectionMembers,
-            MithraObject eachChildValue)
+            @Nonnull JsonGenerator jsonGenerator,
+            @Nonnull ImmutableList<ProjectionMember> childrenProjectionMembers,
+            @Nonnull MithraObject eachChildValue)
     {
         try
         {
@@ -229,7 +231,7 @@ public class ReladomoJsonTree implements JsonSerializable
     }
 
     @Override
-    public void serialize(JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+    public void serialize(@Nonnull JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
     {
         try
         {

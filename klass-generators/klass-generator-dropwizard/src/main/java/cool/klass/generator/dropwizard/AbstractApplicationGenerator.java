@@ -18,7 +18,9 @@ public class AbstractApplicationGenerator
     private final DomainModel domainModel;
     private final String      rootPackageName;
     private final String      applicationName;
+    @Nonnull
     private final String      packageName;
+    @Nonnull
     private final String      relativePath;
 
     public AbstractApplicationGenerator(

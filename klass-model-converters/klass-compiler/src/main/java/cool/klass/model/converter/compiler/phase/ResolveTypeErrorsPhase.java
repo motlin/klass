@@ -118,7 +118,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterVersions(VersionsContext ctx)
+    public void enterVersions(@Nonnull VersionsContext ctx)
     {
         ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)

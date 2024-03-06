@@ -3,6 +3,8 @@ package cool.klass.reladomo.connectionmanager.h2;
 import java.sql.Connection;
 import java.util.TimeZone;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.bulkloader.BulkLoader;
 import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
 import com.gs.fw.common.mithra.connectionmanager.XAConnectionManager;
@@ -20,6 +22,7 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
 
     private static final H2ConnectionManager INSTANCE = new H2ConnectionManager();
 
+    @Nonnull
     private final XAConnectionManager xaConnectionManager;
     private final TimeZone            databaseTimeZone;
     private final String              schemaName;
@@ -63,12 +66,14 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
         this.xaConnectionManager = xaConnectionManager;
     }
 
+    @Nonnull
     @SuppressWarnings("unused")
     public static H2ConnectionManager getInstance()
     {
         return INSTANCE;
     }
 
+    @Nonnull
     @Override
     public BulkLoader createBulkLoader()
     {

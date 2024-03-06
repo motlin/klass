@@ -4,6 +4,7 @@ import java.util.IdentityHashMap;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.CaseFormat;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -22,7 +23,7 @@ import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 {
-    private final AntlrDomainModel domainModelState;
+    private final AntlrDomainModel            domainModelState;
     private final MutableSet<CompilationUnit> compilationUnits;
 
     public VersionAssociationInferencePhase(
@@ -59,25 +60,28 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        String className   = classState.getName();
+        String className = classState.getName();
 
         String relationshipKeyClauses = keyProperties
                 .collect(AntlrProperty::getName)
                 .collect(each -> "this." + each + " == " + className + "Version." + each)
                 .makeString("\n        ");
 
+        String associationEndName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, className);
+
         //language=Klass
         String klassSourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"
                 + "association " + className + "HasVersion versions(" + className + "Version)\n"
                 + "{\n"
-                + "    question: " + className + "[1..1]\n"
-                + "    version : " + className + "Version[1..1]\n"
+                + "    " + associationEndName + ": " + className + "[1..1]\n"
+                + "    version : " + className + "Version[1..1] owned\n"
                 + "\n"
                 + "    relationship " + relationshipKeyClauses + "\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText(VersionAssociationInferencePhase.class.getSimpleName() + " compiler macro",
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                VersionAssociationInferencePhase.class.getSimpleName() + " compiler macro",
                 klassSourceCode);
 
         MutableSet<CompilationUnit> compilationUnits = Sets.mutable.with(compilationUnit);

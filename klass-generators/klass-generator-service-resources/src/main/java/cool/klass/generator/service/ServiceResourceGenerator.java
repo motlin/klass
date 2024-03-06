@@ -69,7 +69,7 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    public String getServiceGroupSourceCode(ServiceGroup serviceGroup)
+    public String getServiceGroupSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         Klass  klass               = serviceGroup.getKlass();
         String packageName         = klass.getPackageName() + ".service.resource";
@@ -122,8 +122,8 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getServiceSourceCode(Service service, int index)
     {
-        Url                       url                 = service.getUrl();
-        Verb                      verb                = service.getVerb();
+        Url  url  = service.getUrl();
+        Verb verb = service.getVerb();
 
         if (verb == Verb.POST)
         {
@@ -161,12 +161,9 @@ public class ServiceResourceGenerator
         ImmutableList<String> parameterStrings1 = urlParameters
                 .collectWith(this::getParameterSourceCode, parameterIndent);
         // TODO: This version query parameter should be inferred during the compilation of the service
-        ImmutableList<String> parameterStrings2 = service.isVersionClauseRequired()
-                ? parameterStrings1.newWith(parameterIndent + "@QueryParam(\"version\") Integer version")
-                : parameterStrings1;
         ImmutableList<String> parameterStrings = hasAuthorizeCriteria
-                ? parameterStrings2.newWith(parameterIndent + "@Context SecurityContext securityContext")
-                : parameterStrings2;
+                ? parameterStrings1.newWith(parameterIndent + "@Context SecurityContext securityContext")
+                : parameterStrings1;
 
         String userPrincipalNameLocalVariable = hasAuthorizeCriteria
                 ? "        String    userPrincipalName  = securityContext.getUserPrincipal().getName();\n"
@@ -179,17 +176,16 @@ public class ServiceResourceGenerator
         String authorizeOperationSourceCode = this.getOperation(finderName, service.getAuthorizeCriteria(), "authorize");
         String validateOperationSourceCode  = this.getOperation(finderName, service.getValidateCriteria(), "validate");
         String conflictOperationSourceCode  = this.getOperation(finderName, service.getConflictCriteria(), "conflict");
+        String versionOperationSourceCode   = this.getOptionalOperation(finderName, service.getVersionCriteria(), "version");
 
         String authorizePredicateSourceCode = this.checkPredicate(service.getAuthorizeCriteria(), "authorize", "isAuthorized", "ForbiddenException()");
-        String validatePredicateSourceCode = this.checkPredicate(service.getValidateCriteria(), "validate", "isValidated", "BadRequestException()");
-        String conflictPredicateSourceCode = this.checkPredicate(service.getConflictCriteria(), "conflict", "hasConflict", "ClientErrorException(Response.Status.CONFLICT)");
+        String validatePredicateSourceCode  = this.checkPredicate(service.getValidateCriteria(), "validate", "isValidated", "BadRequestException()");
+        String conflictPredicateSourceCode  = this.checkPredicate(service.getConflictCriteria(), "conflict", "hasConflict", "ClientErrorException(Response.Status.CONFLICT)");
 
-        String executeOperationSourceCode = this.getExecuteOperationSourceCode(service.getQueryCriteria(), klassName, klass);
-
-        String versionOperation = service.isVersionClauseRequired()
-                ? "        Operation versionOperation = " + klassName + "Finder.system().equalsEdgePoint()\n"
-                + "                .and(" + klassName + "Finder.version().number().eq(version));\n"
-                : "";
+        String executeOperationSourceCode = this.getExecuteOperationSourceCode(
+                service.getQueryCriteria(),
+                service.getVersionCriteria(),
+                klassName);
 
         //language=JAVA
         String sourceCode = ""
@@ -204,10 +200,10 @@ public class ServiceResourceGenerator
                 + "\n"
                 + userPrincipalNameLocalVariable
                 + queryOperationSourceCode
-                + versionOperation
                 + authorizeOperationSourceCode
                 + validateOperationSourceCode
                 + conflictOperationSourceCode
+                + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
                 + "        // TODO: Deep fetch using projection " + projectionName + "\n"
@@ -219,23 +215,6 @@ public class ServiceResourceGenerator
                 + "    }\n";
 
         return sourceCode;
-    }
-
-    private String getExecuteOperationSourceCode(
-            Optional<Criteria> queryCriteria,
-            String klassName,
-            Klass klass)
-    {
-        if (!queryCriteria.isPresent())
-        {
-            return "";
-        }
-
-        String versionClause   = klass.getVersionClass().isPresent() ? "\n        .and(versionOperation)" : "";
-        return MessageFormat.format(
-                "        {0}List result = {0}Finder.findMany(queryOperation{1});\n",
-                klassName,
-                versionClause);
     }
 
     @Nonnull
@@ -286,20 +265,14 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getOperation(String finderName, Criteria criteria, String criteriaName)
+    private String getOptionalOperation(
+            String finderName,
+            Optional<Criteria> optionalCriteria,
+            String criteriaName)
     {
-        String operation = this.getOperation(finderName, criteria);
-        return ""
-                + "        // " + criteria.getSourceCode().replaceAll("\\s+", " ") + "\n" +
-                String.format("        Operation %-18s = ", criteriaName + "Operation") + operation + ";\n";
-    }
-
-    @Nonnull
-    private String getOperation(String finderName, Criteria criteria)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));
-        return stringBuilder.toString();
+        return optionalCriteria
+                .map(criteria -> this.getOptionalOperation(finderName, criteria, criteriaName))
+                .orElse("");
     }
 
     private String checkPredicate(
@@ -313,13 +286,68 @@ public class ServiceResourceGenerator
                 .orElse("");
     }
 
+    private String getExecuteOperationSourceCode(
+            Optional<Criteria> queryCriteria,
+            @Nonnull Optional<Criteria> versionCriteria,
+            String klassName)
+    {
+        if (!queryCriteria.isPresent())
+        {
+            return "";
+        }
+
+        String versionClause = versionCriteria.isPresent() ? ".and(versionOperation)" : "";
+        return MessageFormat.format(
+                "        {0}List result = {0}Finder.findMany(queryOperation{1});\n",
+                klassName,
+                versionClause);
+    }
+
+    @Nonnull
+    private String getOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
+    {
+        String operation           = this.getOperation(finderName, criteria);
+        String comment             = this.getComment(criteria);
+        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
+        return comment +
+                "        Operation " + paddedOperationName + " = " + operation + ";\n";
+    }
+
+    @Nonnull
+    private String getOptionalOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
+    {
+        String operation           = this.getOperation(finderName, criteria);
+        String comment             = this.getComment(criteria);
+        String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
+
+        return comment
+                + "        Operation " + paddedOperationName + " = " + criteriaName + " == null\n"
+                + "                ? " + finderName + ".all()\n"
+                + "                : " + operation + ";\n";
+    }
+
     private String checkPredicate(String criteriaName, String flagName, String exceptionName)
     {
-        return "        boolean is" + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
-                + "        if (!is" + flagName + ")\n"
+        return ""
+                + "        boolean " + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
+                + "        if (!" + flagName + ")\n"
                 + "        {\n"
                 + "            throw new " + exceptionName + ";\n"
                 + "        }\n";
+    }
+
+    @Nonnull
+    private String getOperation(String finderName, Criteria criteria)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));
+        return stringBuilder.toString();
+    }
+
+    @Nonnull
+    private String getComment(@Nonnull Criteria criteria)
+    {
+        return "        // " + criteria.getSourceCode().replaceAll("\\s+", " ") + "\n";
     }
 
     private String getParameterSourceCode(@Nonnull UrlParameter urlParameter, String indent)

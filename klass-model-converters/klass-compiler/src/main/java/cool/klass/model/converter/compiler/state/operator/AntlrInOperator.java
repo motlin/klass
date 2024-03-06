@@ -4,13 +4,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InOperator.InOperatorBuilder;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
-import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrInOperator extends AntlrOperator
 {
@@ -32,8 +31,8 @@ public class AntlrInOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts,
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {
@@ -42,12 +41,26 @@ public class AntlrInOperator extends AntlrOperator
             return;
         }
 
-        if (sourceTypes.equals(Lists.immutable.with(AntlrPrimitiveType.ID))
-                && targetTypes.contains(AntlrPrimitiveType.LONG))
+        if (sourceTypes.equals(targetTypes))
         {
             return;
         }
 
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".checkTypes() not implemented yet");
+        if (sourceTypes.size() == 1 && targetTypes.contains(sourceTypes.getOnly()))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Incompatible types: '%s' and '%s'.",
+                sourceTypes.getFirst(),
+                targetTypes.getFirst());
+        // Cast is a deliberate assertion
+        CriteriaOperatorContext criteriaOperatorContext = (CriteriaOperatorContext) this.elementContext.getParent().getParent();
+        compilerErrorHolder.add(
+                this.compilationUnit,
+                message,
+                criteriaOperatorContext,
+                parserRuleContexts.toArray(new ParserRuleContext[]{}));
     }
 }

@@ -18,6 +18,8 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
 {
     @Nonnull
     private final String serviceCriteriaKeyword;
+    @Nonnull
+    private final AntlrService serviceState;
 
     @Nonnull
     private AntlrCriteria antlrCriteria;
@@ -26,10 +28,12 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
             @Nonnull ServiceCriteriaDeclarationContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String serviceCriteriaKeyword)
+            @Nonnull String serviceCriteriaKeyword,
+            AntlrService serviceState)
     {
         super(elementContext, compilationUnit, inferred);
         this.serviceCriteriaKeyword = Objects.requireNonNull(serviceCriteriaKeyword);
+        this.serviceState = Objects.requireNonNull(serviceState);
     }
 
     @Override
@@ -46,10 +50,10 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
     }
 
     @Override
-    public void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts)
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getParserRuleContexts() not implemented yet");
+        parserRuleContexts.add(this.elementContext);
+        this.serviceState.getParserRuleContexts(parserRuleContexts);
     }
 
     public void reportDuplicateKeyword(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -77,5 +81,24 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
     public String getServiceCriteriaKeyword()
     {
         return this.serviceCriteriaKeyword;
+    }
+
+    public void reportAllowedCriteriaTypes(
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull ImmutableList<String> allowedCriteriaTypes)
+    {
+        if (!allowedCriteriaTypes.contains(this.serviceCriteriaKeyword))
+        {
+            String error = String.format(
+                    "Criteria '%s' not allowed for verb '%s'. Must be one of %s.",
+                    this.serviceCriteriaKeyword,
+                    this.serviceState.getVerbState().getVerb(),
+                    allowedCriteriaTypes);
+            compilerErrorHolder.add(
+                    this.compilationUnit,
+                    error,
+                    this.getElementContext().serviceCriteriaKeyword(),
+                    this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+        }
     }
 }

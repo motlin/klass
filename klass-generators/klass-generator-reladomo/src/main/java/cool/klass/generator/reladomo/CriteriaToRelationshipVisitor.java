@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.AndCriteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.criteria.OrCriteria;
 
@@ -42,8 +43,15 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitAll(AllCriteria allCriteria)
+    public void visitAll(@Nonnull AllCriteria allCriteria)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".visitAll() not implemented yet");
+    }
+
+    @Override
+    public void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitEdgePoint() not implemented yet");
     }
 }

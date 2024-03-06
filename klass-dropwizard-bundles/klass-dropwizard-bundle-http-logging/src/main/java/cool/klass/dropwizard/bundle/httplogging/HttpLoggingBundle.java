@@ -3,6 +3,8 @@ package cool.klass.dropwizard.bundle.httplogging;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
+
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -23,7 +25,7 @@ public class HttpLoggingBundle implements Bundle
     }
 
     @Override
-    public void run(Environment environment)
+    public void run(@Nonnull Environment environment)
     {
         Config config              = ConfigFactory.load();
         Config jerseyLoggingConfig = config.getConfig("jersey.logging");

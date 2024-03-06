@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,7 +15,7 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
     private AntlrType inferredType;
 
     public AbstractAntlrLiteralValue(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred)
     {
@@ -34,7 +33,8 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
 
     public void setInferredType(AntlrType inferredType)
     {
+        // TODO: set inferred type
         Objects.requireNonNull(inferredType);
-        this.inferredType = inferredType == AntlrPrimitiveType.ID ? AntlrPrimitiveType.LONG : inferredType;
+        this.inferredType = inferredType;
     }
 }

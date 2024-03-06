@@ -26,7 +26,7 @@ public class VersionReferencePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterVersions(VersionsContext ctx)
+    public void enterVersions(@Nonnull VersionsContext ctx)
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
         String className = classReferenceContext.getText();

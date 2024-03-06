@@ -8,7 +8,6 @@ public class AnswerVersionList extends AnswerVersionListAbstract
 {
     public AnswerVersionList()
     {
-        super();
     }
 
     public AnswerVersionList(int initialSize)

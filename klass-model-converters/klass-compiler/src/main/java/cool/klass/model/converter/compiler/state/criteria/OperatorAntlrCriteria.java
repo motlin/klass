@@ -9,12 +9,15 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
 import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
+import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.meta.domain.criteria.OperatorCriteria.OperatorCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
+import org.eclipse.collections.api.map.OrderedMap;
 
 public class OperatorAntlrCriteria extends AntlrCriteria
 {
@@ -68,5 +71,36 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         ListIterable<AntlrType> sourceTypes = this.sourceValue.getPossibleTypes();
         ListIterable<AntlrType> targetTypes = this.targetValue.getPossibleTypes();
         this.operator.checkTypes(compilerErrorHolder, parserRuleContexts, sourceTypes, targetTypes);
+    }
+
+    @Override
+    public void resolveServiceVariables(OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+    {
+        this.sourceValue.resolveServiceVariables(formalParametersByName);
+        this.targetValue.resolveServiceVariables(formalParametersByName);
+    }
+
+    @Override
+    public void resolveTypes()
+    {
+        ImmutableList<AntlrType> sourcePossibleTypes = this.sourceValue.getPossibleTypes();
+        ImmutableList<AntlrType> targetPossibleTypes = this.targetValue.getPossibleTypes();
+
+        if (this.sourceValue instanceof AbstractAntlrLiteralValue)
+        {
+            if (targetPossibleTypes.size() != 1)
+            {
+                throw new AssertionError();
+            }
+            ((AbstractAntlrLiteralValue) this.sourceValue).setInferredType(targetPossibleTypes.getOnly());
+        }
+        if (this.targetValue instanceof AbstractAntlrLiteralValue)
+        {
+            if (sourcePossibleTypes.size() != 1)
+            {
+                throw new AssertionError();
+            }
+            ((AbstractAntlrLiteralValue) this.targetValue).setInferredType(sourcePossibleTypes.getOnly());
+        }
     }
 }

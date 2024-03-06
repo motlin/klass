@@ -7,17 +7,17 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.criteria.AndAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.criteria.EdgePointAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OperatorAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OrAntlrCriteria;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
 import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
-import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
+import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
@@ -34,34 +34,47 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.OrderedMap;
 
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 {
     @Nonnull
-    private final CompilationUnit                       compilationUnit;
+    private final CompilationUnit  compilationUnit;
     @Nonnull
-    private final AntlrDomainModel                      domainModelState;
+    private final AntlrDomainModel domainModelState;
     @Nonnull
-    private final CriteriaOwner                         criteriaOwner;
+    private final CriteriaOwner    criteriaOwner;
     @Nonnull
-    private final AntlrClass                            thisReference;
-    @Nonnull
-    private final OrderedMap<String, AntlrUrlParameter> formalParametersByName;
+    private final AntlrClass       thisReference;
 
     public CriteriaVisitor(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull AntlrDomainModel domainModelState,
             @Nonnull CriteriaOwner criteriaOwner,
-            @Nonnull AntlrClass thisReference,
-            @Nonnull OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+            @Nonnull AntlrClass thisReference)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.domainModelState = Objects.requireNonNull(domainModelState);
         this.criteriaOwner = Objects.requireNonNull(criteriaOwner);
         this.thisReference = Objects.requireNonNull(thisReference);
-        this.formalParametersByName = Objects.requireNonNull(formalParametersByName);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrCriteria visitCriteriaEdgePoint(@Nonnull CriteriaEdgePointContext ctx)
+    {
+        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor();
+
+        AntlrMemberExpressionValue memberExpressionValue =
+                (AntlrMemberExpressionValue) expressionValueVisitor.visitExpressionMemberReference(ctx.expressionMemberReference());
+
+        EdgePointAntlrCriteria edgePointAntlrCriteria = new EdgePointAntlrCriteria(
+                ctx,
+                this.compilationUnit,
+                false,
+                this.criteriaOwner,
+                memberExpressionValue);
+        this.criteriaOwner.setCriteria(edgePointAntlrCriteria);
+        return edgePointAntlrCriteria;
     }
 
     @Nonnull
@@ -104,35 +117,10 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilationUnit);
         AntlrOperator               operator        = operatorVisitor.visitOperator(ctx.operator());
 
-        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = new ExpressionValueVisitor(
-                this.compilationUnit,
-                this.thisReference,
-                this.domainModelState,
-                this.formalParametersByName
-        );
+        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor();
 
         AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);
         AntlrExpressionValue targetValue = expressionValueVisitor.visitExpressionValue(ctx.target);
-
-        ImmutableList<AntlrType> sourcePossibleTypes = sourceValue.getPossibleTypes();
-        ImmutableList<AntlrType> targetPossibleTypes = targetValue.getPossibleTypes();
-
-        if (sourceValue instanceof AbstractAntlrLiteralValue)
-        {
-            if (targetPossibleTypes.size() != 1)
-            {
-                throw new AssertionError();
-            }
-            ((AbstractAntlrLiteralValue) sourceValue).setInferredType(targetPossibleTypes.getOnly());
-        }
-        if (targetValue instanceof AbstractAntlrLiteralValue)
-        {
-            if (sourcePossibleTypes.size() != 1)
-            {
-                throw new AssertionError();
-            }
-            ((AbstractAntlrLiteralValue) targetValue).setInferredType(sourcePossibleTypes.getOnly());
-        }
 
         OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
@@ -233,6 +221,15 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitLiteral() not implemented yet");
+    }
+
+    @Nonnull
+    private ExpressionValueVisitor getExpressionValueVisitor()
+    {
+        return new ExpressionValueVisitor(
+                this.compilationUnit,
+                this.thisReference,
+                this.domainModelState);
     }
 
     @Nonnull

@@ -33,8 +33,8 @@ enumerationPrettyName: StringLiteral;
 
 // association
 associationDeclaration: 'association' identifier versions? associationBody;
-associationBody: '{' associationEnd* relationship? '}';
-associationEnd: associationEndModifier* identifier ':' classType orderByDeclaration?;
+associationBody: '{' associationEnd? associationEnd? relationship? '}';
+associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration?;
 relationship: 'relationship' criteriaExpression;
 
 // projection
@@ -63,23 +63,22 @@ serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDecl
 serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity;
 serviceMultiplicity: one='one' | many='many';
 serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression;
-serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict';
+serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict' | 'version';
 serviceProjectionDispatch: 'projection' ':' projectionReference argumentList?;
 verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 // member
 classMember: dataTypeProperty | parameterizedProperty;
 dataTypeProperty : primitiveProperty | enumerationProperty;
-primitiveProperty : propertyModifier* escapedIdentifier ':' primitiveType optionalMarker?;
-enumerationProperty : propertyModifier* escapedIdentifier ':' enumerationReference optionalMarker?;
-parameterizedProperty: escapedIdentifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType orderByDeclaration? '{' criteriaExpression '}';
+primitiveProperty : identifier ':' primitiveType optionalMarker? propertyModifier*;
+enumerationProperty : identifier ':' enumerationReference optionalMarker? propertyModifier*;
+parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType orderByDeclaration? '{' criteriaExpression '}';
 optionalMarker: '?';
 
 // parameter
-parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration | versionParameterDeclaration;
-primitiveParameterDeclaration: identifier ':' primitiveType multiplicity;
-enumerationParameterDeclaration: identifier ':' enumerationReference multiplicity;
-versionParameterDeclaration: 'version';
+parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration;
+primitiveParameterDeclaration: identifier ':' primitiveType multiplicity parameterModifier*;
+enumerationParameterDeclaration: identifier ':' enumerationReference multiplicity parameterModifier*;
 parameterDeclarationList: '(' parameterDeclaration (',' parameterDeclaration)* ')';
 
 // argument
@@ -95,12 +94,14 @@ argument
 multiplicity: '[' multiplicityBody ']';
 multiplicityBody: lowerBound=IntegerLiteral '..' upperBound=(IntegerLiteral | '*');
 
-primitiveType: 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
+primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked';
-propertyModifier: 'key' | 'private';
+propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo';
+parameterModifier: 'version' | 'userId' | 'id';
 associationEndModifier: 'owned';
+
 versions: 'versions' '(' classReference ')';
 
 // order by
@@ -115,6 +116,7 @@ criteriaExpression
     | left=criteriaExpression '||' right=criteriaExpression  #CriteriaExpressionOr
     | '(' criteriaExpression ')'                             #CriteriaExpressionGroup
     | source=expressionValue operator target=expressionValue #CriteriaOperator
+    | expressionMemberReference 'equalsEdgePoint'            #CriteriaEdgePoint
     | 'native' '(' identifier ')'                            #CriteriaNative
     ;
 expressionValue
@@ -125,6 +127,7 @@ expressionValue
     | nativeLiteral
     | variableReference
     ;
+expressionMemberReference: thisMemberReference | typeMemberReference;
 literalList: '(' literal (',' literal)* ')';
 nativeLiteral: 'user';
 operator
@@ -146,30 +149,30 @@ classReference: identifier;
 enumerationReference: identifier;
 projectionReference: identifier;
 memberReference: identifier;
+associationEndReference: identifier;
 variableReference: identifier;
 
-thisMemberReference: 'this' '.' memberReference;
-typeMemberReference: classReference '.' memberReference;
+thisMemberReference: 'this' ('.' associationEndReference)* '.' memberReference;
+typeMemberReference: classReference ('.' associationEndReference)* '.' memberReference;
 
 identifier
     : keywordValidAsIdentifier
     | Identifier
     ;
 
-escapedIdentifier: identifier | '`' keywordValidAsIdentifier '`';
-
 keywordValidAsIdentifier
     : 'package'
     | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
     | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'versions'
-    | 'key' | 'private' | 'owned'
+    | 'key' | 'private' | 'owned' | 'userId' | 'id'
+    | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo'
     | 'read' | 'write' | 'create' | 'update' | 'delete'
     | 'in' | 'contains' | 'startsWith' | 'endsWith'
     | 'native' | 'version'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     // TODO: Split these keywords out, since they're really only ok as enumeration literals
-    | 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange'
+    | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange'
     ;
 
 literal

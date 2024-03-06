@@ -23,10 +23,12 @@ import cool.klass.model.converter.compiler.state.service.AntlrServiceProjectionD
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
 import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlQueryParameter;
+import cool.klass.model.converter.compiler.state.service.url.AntlrParameterModifier;
 import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlPathParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlQueryParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.service.Verb;
@@ -37,6 +39,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclaration
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
@@ -50,13 +53,13 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
-import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.api.map.OrderedMap;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ServicePhase extends AbstractCompilerPhase
 {
@@ -116,10 +119,34 @@ public class ServicePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitUrlDeclaration(UrlDeclarationContext ctx)
+    public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        // TODO: Move this for consistency with other phases
-        this.urlState.reportErrors(this.compilerErrorHolder);
+        // TODO: It no longer makes sense to share one url for a bunch of services, because of inference like this
+        if (this.urlState.getServiceStates().anySatisfy(AntlrService::needsVersionCriteria))
+        {
+            this.inQueryParameterList = true;
+
+            this.runCompilerMacro(
+                    ctx.getStart(),
+                    ServicePhase.class.getSimpleName(),
+                    // TODO: Query parameters should be generated with @NonNull or @Nullable
+                    "{version: Integer[0..1] version}",
+                    KlassParser::urlParameterDeclaration);
+        }
+
+        // Resolve service variable references after inferring additional parameters like version
+        OrderedMap<String, AntlrUrlParameter> formalParametersByName = this.urlState.getFormalParametersByName();
+        for (AntlrService antlrService : this.urlState.getServiceStates())
+        {
+            for (AntlrServiceCriteria antlrServiceCriteria : antlrService.getServiceCriteriaStates())
+            {
+                AntlrCriteria criteria = antlrServiceCriteria.getCriteria();
+                criteria.resolveServiceVariables(formalParametersByName);
+                // TODO: Type inference here?
+                criteria.resolveTypes();
+            }
+        }
+
         this.urlState = null;
         this.inQueryParameterList = null;
     }
@@ -174,24 +201,32 @@ public class ServicePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitServiceDeclaration(ServiceDeclarationContext ctx)
+    public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
+        if (this.serviceState.needsVersionCriteriaInferred())
+        {
+            // TODO: Get names from model (system, version, number, version)
+            String sourceCodeText = "            version: this.system equalsEdgePoint && this.version.number == version";
+            this.runCompilerMacro(
+                    ctx.getStart(),
+                    ServicePhase.class.getSimpleName(),
+                    sourceCodeText,
+                    KlassParser::serviceCriteriaDeclaration);
+        }
+
+        if (this.serviceState.needsConflictCriteriaInferred())
+        {
+            // TODO: Get names from model (version, version)
+            String sourceCodeText = "            conflict: this.version.number == version";
+            this.runCompilerMacro(
+                    ctx.getStart(),
+                    ServicePhase.class.getSimpleName(),
+                    sourceCodeText,
+                    KlassParser::serviceCriteriaDeclaration);
+        }
+
         this.urlState.exitServiceDeclaration(this.serviceState);
         this.serviceState = null;
-    }
-
-    @Override
-    public void exitUrl(UrlContext ctx)
-    {
-        if (this.serviceGroupState.getKlass().hasVersionedModifier())
-        {
-            this.inQueryParameterList = true;
-
-            this.runCompilerMacro(
-                    ServicePhase.class.getSimpleName(),
-                    "{version}",
-                    KlassParser::urlParameterDeclaration);
-        }
     }
 
     @Override
@@ -223,32 +258,22 @@ public class ServicePhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                serviceCriteriaKeyword);
+                serviceCriteriaKeyword,
+                this.serviceState);
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
 
-        ImmutableList<ParserRuleContext> parserRuleContexts = Lists.immutable.with(
-                this.serviceState.getElementContext(),
-                this.urlState.getElementContext(),
-                this.serviceGroupState.getElementContext());
-
         CriteriaVisitor criteriaVisitor = new CriteriaVisitor(
                 this.currentCompilationUnit,
-                this.domainModelState, antlrServiceCriteria, this.serviceGroupState.getKlass(),
-                this.urlState.getFormalParametersByName());
+                this.domainModelState,
+                antlrServiceCriteria,
+                this.serviceGroupState.getKlass());
 
         AntlrCriteria antlrCriteria = criteriaVisitor.visit(criteriaExpressionContext);
-        antlrCriteria.reportErrors(this.compilerErrorHolder, parserRuleContexts);
 
         antlrServiceCriteria.setCriteria(antlrCriteria);
 
         this.serviceState.enterServiceCriteriaDeclaration(antlrServiceCriteria);
-    }
-
-    @Override
-    public void exitServiceCriteriaDeclaration(ServiceCriteriaDeclarationContext ctx)
-    {
-        this.serviceState.reportErrors(this.compilerErrorHolder);
     }
 
     @Override
@@ -296,6 +321,10 @@ public class ServicePhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false);
 
+        ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
+                .collect(this::getAntlrParameterModifier)
+                .toImmutable();
+
         if (this.inQueryParameterList)
         {
             AntlrPrimitiveUrlQueryParameter antlrPrimitiveUrlPathParameter = new AntlrPrimitiveUrlQueryParameter(
@@ -306,7 +335,8 @@ public class ServicePhase extends AbstractCompilerPhase
                     identifier.getText(),
                     primitiveTypeState,
                     multiplicityState,
-                    this.urlState);
+                    this.urlState,
+                    parameterModifiers);
 
             this.urlState.enterQueryParameterDeclaration(antlrPrimitiveUrlPathParameter);
         }
@@ -320,7 +350,8 @@ public class ServicePhase extends AbstractCompilerPhase
                     identifier.getText(),
                     primitiveTypeState,
                     multiplicityState,
-                    this.urlState);
+                    this.urlState,
+                    parameterModifiers);
 
             this.urlState.enterPathParameterDeclaration(antlrPrimitiveUrlPathParameter);
         }
@@ -340,6 +371,10 @@ public class ServicePhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false);
 
+        ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
+                .collect(this::getAntlrParameterModifier)
+                .toImmutable();
+
         if (this.inQueryParameterList)
         {
             AntlrEnumerationUrlQueryParameter antlrEnumerationUrlPathParameter = new AntlrEnumerationUrlQueryParameter(
@@ -350,7 +385,8 @@ public class ServicePhase extends AbstractCompilerPhase
                     identifier.getText(),
                     antlrEnumeration,
                     antlrMultiplicity,
-                    this.urlState);
+                    this.urlState,
+                    parameterModifiers);
 
             this.urlState.enterQueryParameterDeclaration(antlrEnumerationUrlPathParameter);
         }
@@ -364,16 +400,16 @@ public class ServicePhase extends AbstractCompilerPhase
                     identifier.getText(),
                     antlrEnumeration,
                     antlrMultiplicity,
-                    this.urlState);
+                    this.urlState,
+                    parameterModifiers);
 
             this.urlState.enterPathParameterDeclaration(antlrEnumerationUrlPathParameter);
         }
     }
 
-    @Override
-    public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    @Nonnull
+    public AntlrParameterModifier getAntlrParameterModifier(@Nonnull ParameterModifierContext context)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitEnumerationParameterDeclaration() not implemented yet");
+        return new AntlrParameterModifier(context, this.currentCompilationUnit, false, context.getText());
     }
 }

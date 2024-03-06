@@ -119,7 +119,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterVersions(VersionsContext ctx)
+    public void enterVersions(@Nonnull VersionsContext ctx)
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(classReferenceContext);

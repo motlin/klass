@@ -11,6 +11,8 @@ import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.service.url.PrimitiveUrlQueryParameter.PrimitiveUrlQueryParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
 {
@@ -23,10 +25,11 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
             "ambiguous primitive url parameter",
             AntlrPrimitiveType.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrUrl.AMBIGUOUS);
+            AntlrUrl.AMBIGUOUS,
+            Lists.immutable.empty());
 
     @Nonnull
-    private final AntlrPrimitiveType                primitiveTypeState;
+    private final AntlrPrimitiveType primitiveTypeState;
     private       PrimitiveUrlQueryParameterBuilder primitiveUrlQueryParameterBuilder;
 
     public AntlrPrimitiveUrlQueryParameter(
@@ -37,17 +40,19 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
             @Nonnull String name,
             @Nonnull AntlrPrimitiveType primitiveTypeState,
             @Nonnull AntlrMultiplicity multiplicityState,
-            @Nonnull AntlrUrl urlState)
+            @Nonnull AntlrUrl urlState,
+            ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, multiplicityState, urlState);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                nameContext,
+                name,
+                multiplicityState,
+                urlState,
+                parameterModifiers);
         this.primitiveTypeState = Objects.requireNonNull(primitiveTypeState);
-    }
-
-    @Nonnull
-    @Override
-    public PrimitiveUrlQueryParameterBuilder getUrlParameterBuilder()
-    {
-        return Objects.requireNonNull(this.primitiveUrlQueryParameterBuilder);
     }
 
     @Nonnull
@@ -55,6 +60,13 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
     public AntlrType getType()
     {
         return this.primitiveTypeState;
+    }
+
+    @Nonnull
+    @Override
+    public PrimitiveUrlQueryParameterBuilder getUrlParameterBuilder()
+    {
+        return Objects.requireNonNull(this.primitiveUrlQueryParameterBuilder);
     }
 
     @Override

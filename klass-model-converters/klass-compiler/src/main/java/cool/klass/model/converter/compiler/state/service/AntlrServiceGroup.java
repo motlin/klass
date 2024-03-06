@@ -58,7 +58,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         return this.klass;
     }
 
-    public void enterUrlDeclaration(AntlrUrl url)
+    public void enterUrlDeclaration(@Nonnull AntlrUrl url)
     {
         this.urls.add(url);
     }
@@ -80,6 +80,11 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         this.reportDuplicateUrls(compilerErrorHolder);
         this.reportNoUrls(compilerErrorHolder);
 
+        for (AntlrUrl url : this.urls)
+        {
+            url.reportErrors(compilerErrorHolder);
+        }
+
         // TODO: Not here, but report if there are more than one service group for a class.
     }
 
@@ -88,7 +93,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         // TODO: reportDuplicateUrls
         HashBagWithHashingStrategy<AntlrUrl> antlrUrls = new HashBagWithHashingStrategy<>(HashingStrategies.fromFunction(AntlrUrl::getNormalizedPathSegments));
 
-        MutableBag<AntlrUrl>                 duplicateUrls = antlrUrls.selectByOccurrences(occurrences -> occurrences > 1);
+        MutableBag<AntlrUrl> duplicateUrls = antlrUrls.selectByOccurrences(occurrences -> occurrences > 1);
         if (duplicateUrls.notEmpty())
         {
             throw new AssertionError();

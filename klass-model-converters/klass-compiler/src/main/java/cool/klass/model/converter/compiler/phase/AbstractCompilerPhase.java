@@ -21,6 +21,7 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.map.MutableMap;
@@ -30,7 +31,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     @Nonnull
     protected final MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext;
     @Nonnull
-    protected final CompilerErrorHolder                                 compilerErrorHolder;
+    protected final CompilerErrorHolder                            compilerErrorHolder;
 
     @Nullable
     protected String          packageName;
@@ -194,12 +195,15 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     }
 
     public <T extends ParserRuleContext> void runCompilerMacro(
-            String macroName,
-            String sourceCodeText,
-            Function<KlassParser, T> parserRule)
+            @Nonnull Token contextToken,
+            @Nonnull String macroName,
+            @Nonnull String sourceCodeText,
+            @Nonnull Function<KlassParser, T> parserRule)
     {
+        String contextMessage = this.getContextMessage(contextToken);
+        String sourceName     = String.format("%s compiler macro (%s)", macroName, contextMessage);
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
-                macroName + " compiler macro",
+                sourceName,
                 sourceCodeText,
                 parserRule);
 
@@ -219,5 +223,18 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
             this.currentCompilationUnit = oldCompilationUnit;
             this.isInference = oldIsInference;
         }
+    }
+
+    private String getContextMessage(Token contextToken)
+    {
+        String sourceName         = contextToken.getInputStream().getSourceName();
+        int    line               = contextToken.getLine();
+        int    charPositionInLine = contextToken.getCharPositionInLine();
+
+        return String.format(
+                "File: %s Line: %d Char: %d",
+                sourceName,
+                line,
+                charPositionInLine + 1);
     }
 }

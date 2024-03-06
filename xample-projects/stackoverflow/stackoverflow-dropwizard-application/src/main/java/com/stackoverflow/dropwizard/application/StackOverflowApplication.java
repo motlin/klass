@@ -1,5 +1,7 @@
 package com.stackoverflow.dropwizard.application;
 
+import javax.annotation.Nonnull;
+
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -22,7 +24,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     @Override
     public void run(
             StackOverflowConfiguration configuration,
-            Environment environment)
+            @Nonnull Environment environment)
     {
         super.run(configuration, environment);
 

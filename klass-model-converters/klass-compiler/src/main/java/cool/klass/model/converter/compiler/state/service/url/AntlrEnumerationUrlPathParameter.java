@@ -11,6 +11,8 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.service.url.EnumerationUrlPathParameter.EnumerationUrlPathParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
 {
@@ -23,7 +25,8 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             "ambiguous enumeration url parameter",
             AntlrEnumeration.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrUrl.AMBIGUOUS);
+            AntlrUrl.AMBIGUOUS,
+            Lists.immutable.empty());
 
     @Nonnull
     public static final AntlrEnumerationUrlPathParameter NOT_FOUND = new AntlrEnumerationUrlPathParameter(
@@ -34,7 +37,8 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             "not found enumeration url parameter",
             AntlrEnumeration.NOT_FOUND,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrUrl.AMBIGUOUS);
+            AntlrUrl.AMBIGUOUS,
+            Lists.immutable.empty());
 
     @Nonnull
     private final AntlrEnumeration antlrEnumeration;
@@ -47,9 +51,10 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             @Nonnull String name,
             @Nonnull AntlrEnumeration antlrEnumeration,
             @Nonnull AntlrMultiplicity antlrMultiplicity,
-            @Nonnull AntlrUrl url)
+            @Nonnull AntlrUrl url,
+            ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, antlrMultiplicity, url);
+        super(elementContext, compilationUnit, inferred, nameContext, name, antlrMultiplicity, url, parameterModifiers);
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }
 

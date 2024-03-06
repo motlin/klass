@@ -2,13 +2,17 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.AndCriteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.criteria.OrCriteria;
 import cool.klass.model.meta.domain.operator.Operator;
 import cool.klass.model.meta.domain.value.ExpressionValue;
+import cool.klass.model.meta.domain.value.MemberExpressionValue;
 
 public class OperationCriteriaVisitor implements CriteriaVisitor
 {
@@ -22,13 +26,13 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitAll(AllCriteria allCriteria)
+    public void visitAll(@Nonnull AllCriteria allCriteria)
     {
         this.stringBuilder.append(this.finderName).append(".all()");
     }
 
     @Override
-    public void visitAnd(AndCriteria andCriteria)
+    public void visitAnd(@Nonnull AndCriteria andCriteria)
     {
         andCriteria.getLeft().visit(this);
         this.stringBuilder.append(".and(");
@@ -37,7 +41,7 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitOr(OrCriteria orCriteria)
+    public void visitOr(@Nonnull OrCriteria orCriteria)
     {
         orCriteria.getLeft().visit(this);
         this.stringBuilder.append(".or(");
@@ -46,7 +50,7 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     }
 
     @Override
-    public void visitOperator(OperatorCriteria operatorCriteria)
+    public void visitOperator(@Nonnull OperatorCriteria operatorCriteria)
     {
         ExpressionValue sourceValue = operatorCriteria.getSourceValue();
         Operator        operator    = operatorCriteria.getOperator();
@@ -63,5 +67,15 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
                 this.stringBuilder));
 
         this.stringBuilder.append(")");
+    }
+
+    @Override
+    public void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria)
+    {
+        MemberExpressionValue memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
+        memberExpressionValue.visit(new OperationExpressionValueVisitor(
+                this.finderName,
+                this.stringBuilder));
+        this.stringBuilder.append(".equalsEdgePoint()");
     }
 }

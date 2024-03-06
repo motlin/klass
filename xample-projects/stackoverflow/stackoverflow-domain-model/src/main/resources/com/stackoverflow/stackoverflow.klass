@@ -11,7 +11,7 @@ user User
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
-    key userId        : String
+    userId        : String key userId
 
     // TODO: String max lengths
     firstName         : String?
@@ -43,7 +43,7 @@ class Question
     audited
     optimisticallyLocked
 {
-    key id            : ID
+    id                : Long key id
     title             : String
     body              : String
 
@@ -151,7 +151,7 @@ class Answer
     audited
     optimisticallyLocked
 {
-    key id            : ID
+    id                : Long key id
     body              : String
     deleted           : Boolean
     // TODO: private *final* questionId: Long
@@ -166,8 +166,8 @@ class QuestionVote
     systemTemporal
     audited
 {
-    key questionId    : Long
-    key createdById   : String
+    questionId    : Long key
+    createdById   : String key
     direction         : VoteDirection
 }
 
@@ -243,6 +243,17 @@ service Question
                 projection  : QuestionReadProjection
             }
     */
+    // TODO: Service syntax
+    /*
+    service getById(id: Long[1..1]): QuestionReadProjection[1]
+    {
+        resource: QuestionResource
+        verb    : GET
+        url     : /api/question/{id: Long[1..1]}
+        criteria: this.id == id
+    }
+    */
+
     // TODO: Consider forcing exact type matches. Meaning id's type here would be ID, not Long.
     /api/question/{id: Long[1..1]}
         GET
@@ -250,7 +261,6 @@ service Question
             multiplicity: one
             criteria    : this.id == id
             projection  : QuestionReadProjection
-
             // TODO: format: json
         }
         PUT
@@ -259,11 +269,7 @@ service Question
             // TODO Version should be a primitive type, as in {version: Version[1..1]}
             multiplicity: one
             criteria    : this.id == id
-
-            // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409
-            // Consider 412 Precondition Failed or 417 Expectation Failed instead of 400, and leave bad request for problems like invalid json, or mismatches with the meta model
-            conflict    : this.id == QuestionVersion.id
-                    && QuestionVersion.number == version
+            // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed
             // TODO: Allow anonymous/undeclared projections created from all owned association ends
             projection  : QuestionWriteProjection
         }
@@ -273,14 +279,9 @@ service Question
             // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
             multiplicity: one
             criteria    : this.id == id
-
             // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400
             // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`
             authorize   : this.createdById == user
-
-            // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409
-            conflict    : this.id == QuestionVersion.id
-                    && QuestionVersion.number == version
             projection  : QuestionWriteProjection
         }
     /api/question/in?{ids: Long[0..*]}

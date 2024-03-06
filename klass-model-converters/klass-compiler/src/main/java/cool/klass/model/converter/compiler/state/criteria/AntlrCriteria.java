@@ -9,10 +9,12 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 
 public abstract class AntlrCriteria extends AntlrElement
@@ -43,4 +45,8 @@ public abstract class AntlrCriteria extends AntlrElement
         this.criteriaOwner.getParserRuleContexts(parserRuleContexts);
         return parserRuleContexts.toImmutable();
     }
+
+    public abstract void resolveServiceVariables(OrderedMap<String, AntlrUrlParameter> formalParametersByName);
+
+    public abstract void resolveTypes();
 }

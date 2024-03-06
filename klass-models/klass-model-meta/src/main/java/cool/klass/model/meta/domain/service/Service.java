@@ -25,6 +25,7 @@ public final class Service extends Element
     private       Optional<Criteria>        authorizeCriteria;
     private       Optional<Criteria>        validateCriteria;
     private       Optional<Criteria>        conflictCriteria;
+    private       Optional<Criteria>        versionCriteria;
     private       ServiceProjectionDispatch projectionDispatch;
 
     private Service(
@@ -113,6 +114,20 @@ public final class Service extends Element
         this.conflictCriteria = Objects.requireNonNull(conflictCriteria);
     }
 
+    public Optional<Criteria> getVersionCriteria()
+    {
+        return this.versionCriteria;
+    }
+
+    private void setVersionCriteria(@Nonnull Optional<Criteria> versionCriteria)
+    {
+        if (this.versionCriteria != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.versionCriteria = Objects.requireNonNull(versionCriteria);
+    }
+
     public ServiceProjectionDispatch getProjectionDispatch()
     {
         return Objects.requireNonNull(this.projectionDispatch);
@@ -161,6 +176,7 @@ public final class Service extends Element
         private Optional<CriteriaBuilder> authorize = Optional.empty();
         private Optional<CriteriaBuilder> validate  = Optional.empty();
         private Optional<CriteriaBuilder> conflict  = Optional.empty();
+        private Optional<CriteriaBuilder> version   = Optional.empty();
         private Service                   service;
 
         public ServiceBuilder(
@@ -210,6 +226,13 @@ public final class Service extends Element
                     }
                     this.conflict = Optional.of(criteriaBuilder);
                     return;
+                case "version":
+                    if (this.version.isPresent())
+                    {
+                        throw new IllegalStateException();
+                    }
+                    this.version = Optional.of(criteriaBuilder);
+                    return;
                 default:
                     throw new AssertionError();
             }
@@ -239,11 +262,13 @@ public final class Service extends Element
             Optional<Criteria> authorizeCriteria = this.authorize.map(CriteriaBuilder::build);
             Optional<Criteria> validateCriteria  = this.validate.map(CriteriaBuilder::build);
             Optional<Criteria> conflictCriteria  = this.conflict.map(CriteriaBuilder::build);
+            Optional<Criteria> versionCriteria   = this.version.map(CriteriaBuilder::build);
 
             this.service.setQueryCriteria(queryCriteria);
             this.service.setAuthorizeCriteria(authorizeCriteria);
             this.service.setValidateCriteria(validateCriteria);
             this.service.setConflictCriteria(conflictCriteria);
+            this.service.setVersionCriteria(versionCriteria);
 
             return this.service;
         }

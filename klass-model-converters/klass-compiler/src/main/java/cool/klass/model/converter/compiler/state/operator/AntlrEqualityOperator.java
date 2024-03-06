@@ -4,13 +4,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.EqualityOperator.EqualityOperatorBuilder;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
-import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEqualityOperator extends AntlrOperator
 {
@@ -47,14 +46,7 @@ public class AntlrEqualityOperator extends AntlrOperator
             return;
         }
 
-        if (sourceTypes.equals(Lists.immutable.with(AntlrPrimitiveType.ID))
-                && targetTypes.contains(AntlrPrimitiveType.LONG))
-        {
-            return;
-        }
-
-        if (targetTypes.equals(Lists.immutable.with(AntlrPrimitiveType.ID))
-                && sourceTypes.contains(AntlrPrimitiveType.LONG))
+        if (sourceTypes.size() == 1 && targetTypes.contains(sourceTypes.getOnly()))
         {
             return;
         }
@@ -63,10 +55,12 @@ public class AntlrEqualityOperator extends AntlrOperator
                 "Incompatible types: '%s' and '%s'.",
                 sourceTypes.getFirst(),
                 targetTypes.getFirst());
+        // Cast is a deliberate assertion
+        CriteriaOperatorContext criteriaOperatorContext = (CriteriaOperatorContext) this.elementContext.getParent().getParent();
         compilerErrorHolder.add(
                 this.compilationUnit,
                 message,
-                this.elementContext,
+                criteriaOperatorContext,
                 parserRuleContexts.toArray(new ParserRuleContext[]{}));
     }
 }

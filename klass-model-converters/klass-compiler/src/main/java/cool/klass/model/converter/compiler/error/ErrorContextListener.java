@@ -32,7 +32,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionValueContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -1242,20 +1241,6 @@ public class ErrorContextListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitIdentifier() not implemented yet");
-    }
-
-    @Override
-    public void enterEscapedIdentifier(EscapedIdentifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterEscapedIdentifier() not implemented yet");
-    }
-
-    @Override
-    public void exitEscapedIdentifier(EscapedIdentifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitEscapedIdentifier() not implemented yet");
     }
 
     @Override

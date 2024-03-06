@@ -3,6 +3,8 @@ package cool.klass.model.meta.loader;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -26,6 +28,7 @@ public class DomainModelLoader
         this.rootPackageName = rootPackageName;
     }
 
+    @Nullable
     public DomainModel load()
     {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()

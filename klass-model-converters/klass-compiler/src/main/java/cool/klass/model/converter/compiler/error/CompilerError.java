@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassListener;
+import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -32,6 +33,10 @@ public class CompilerError implements Comparable<CompilerError>
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.message = Objects.requireNonNull(message);
         this.offendingParserRuleContext = Objects.requireNonNull(offendingParserRuleContext);
+        if (offendingParserRuleContext instanceof EqualityOperatorContext)
+        {
+            throw new AssertionError();
+        }
         this.parserRuleContexts = Lists.immutable.with(parserRuleContexts);
         this.offendingToken = this.offendingParserRuleContext.getStart();
     }

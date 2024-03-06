@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.service.url.UrlParameter.UrlParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AntlrUrlParameter extends AntlrNamedElement
 {
@@ -18,6 +19,7 @@ public abstract class AntlrUrlParameter extends AntlrNamedElement
     protected final AntlrMultiplicity multiplicityState;
     @Nonnull
     protected final AntlrUrl          urlState;
+    private final ImmutableList<AntlrParameterModifier> parameterModifiers;
 
     public AntlrUrlParameter(
             @Nonnull ParserRuleContext elementContext,
@@ -26,11 +28,13 @@ public abstract class AntlrUrlParameter extends AntlrNamedElement
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             @Nonnull AntlrMultiplicity multiplicityState,
-            @Nonnull AntlrUrl urlState)
+            @Nonnull AntlrUrl urlState,
+            ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name);
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.urlState = Objects.requireNonNull(urlState);
+        this.parameterModifiers = Objects.requireNonNull(parameterModifiers);
     }
 
     public void reportDuplicateParameterName(@Nonnull CompilerErrorHolder compilerErrorHolder)

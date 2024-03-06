@@ -2,6 +2,8 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.operator.EqualityOperator;
 import cool.klass.model.meta.domain.operator.InOperator;
 import cool.klass.model.meta.domain.operator.InequalityOperator;
@@ -24,7 +26,7 @@ public class OperationOperatorVisitor implements OperatorVisitor
     }
 
     @Override
-    public void visitInequality(InequalityOperator inequalityOperator)
+    public void visitInequality(@Nonnull InequalityOperator inequalityOperator)
     {
         switch (inequalityOperator.getOperatorText())
         {
@@ -52,7 +54,7 @@ public class OperationOperatorVisitor implements OperatorVisitor
     }
 
     @Override
-    public void visitString(StringOperator stringOperator)
+    public void visitString(@Nonnull StringOperator stringOperator)
     {
         this.stringBuilder.append(".");
         this.stringBuilder.append(stringOperator.getOperatorText());

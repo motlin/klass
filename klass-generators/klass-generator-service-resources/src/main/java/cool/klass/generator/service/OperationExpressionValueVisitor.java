@@ -2,9 +2,13 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.Multiplicity;
+import cool.klass.model.meta.domain.NamedElement;
+import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.url.UrlParameter;
 import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
@@ -16,6 +20,7 @@ import cool.klass.model.meta.domain.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.value.literal.LiteralValue;
 import cool.klass.model.meta.domain.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.value.literal.UserLiteral;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class OperationExpressionValueVisitor implements ExpressionValueVisitor
 {
@@ -29,27 +34,47 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitTypeMember(TypeMemberExpressionValue typeMemberExpressionValue)
+    public void visitTypeMember(@Nonnull TypeMemberExpressionValue typeMemberExpressionValue)
     {
+        ImmutableList<AssociationEnd> associationEnds = typeMemberExpressionValue.getAssociationEnds();
+
+        String associationEndsString = associationEnds.isEmpty()
+                ? ""
+                : "." + associationEnds
+                        .collect(NamedElement::getName)
+                        .collect(string -> string + "()")
+                        .makeString(".");
+
         String attribute = String.format(
-                "%sFinder.%s()",
+                "%sFinder%s.%s()",
                 typeMemberExpressionValue.getKlass().getName(),
+                associationEndsString,
                 typeMemberExpressionValue.getProperty().getName());
         this.stringBuilder.append(attribute);
     }
 
     @Override
-    public void visitThisMember(ThisMemberExpressionValue thisMemberExpressionValue)
+    public void visitThisMember(@Nonnull ThisMemberExpressionValue thisMemberExpressionValue)
     {
+        ImmutableList<AssociationEnd> associationEnds = thisMemberExpressionValue.getAssociationEnds();
+
+        String associationEndsString = associationEnds.isEmpty()
+                ? ""
+                : "." + associationEnds
+                        .collect(NamedElement::getName)
+                        .collect(string -> string + "()")
+                        .makeString(".");
+
         String attribute = String.format(
-                "%s.%s()",
+                "%s%s.%s()",
                 this.finderName,
+                associationEndsString,
                 thisMemberExpressionValue.getProperty().getName());
         this.stringBuilder.append(attribute);
     }
 
     @Override
-    public void visitVariableReference(VariableReference variableReference)
+    public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
         UrlParameter urlParameter = variableReference.getUrlParameter();
         DataType     dataType     = urlParameter.getType();
@@ -71,13 +96,13 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitIntegerLiteral(IntegerLiteralValue integerLiteralValue)
+    public void visitIntegerLiteral(@Nonnull IntegerLiteralValue integerLiteralValue)
     {
         this.stringBuilder.append(integerLiteralValue.getValue());
     }
 
     @Override
-    public void visitStringLiteral(StringLiteralValue stringLiteralValue)
+    public void visitStringLiteral(@Nonnull StringLiteralValue stringLiteralValue)
     {
         this.stringBuilder.append('"');
         this.stringBuilder.append(stringLiteralValue.getValue());
@@ -85,7 +110,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitLiteralList(LiteralListValue literalListValue)
+    public void visitLiteralList(@Nonnull LiteralListValue literalListValue)
     {
         this.stringBuilder.append(literalListValue.getType().getName());
         this.stringBuilder.append("Sets.immutable.with(");

@@ -90,7 +90,7 @@ public class KlassCompiler
     }
 
     private ImmutableList<KlassListener> getCompilerPhases(
-            MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             MutableSet<CompilationUnit> compilationUnits)
     {
         KlassListener phase1 = new EnumerationsPhase(

@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
+import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -32,7 +34,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionValueContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -98,6 +99,8 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class ErrorUnderlineListener extends BaseErrorListener
 {
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
+
     public ErrorUnderlineListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
     {
         super(compilationUnit, contextualStrings);
@@ -359,7 +362,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterServiceCriteriaKeyword(ServiceCriteriaKeywordContext ctx)
+    public void enterServiceCriteriaKeyword(@Nonnull ServiceCriteriaKeywordContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
@@ -394,13 +397,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     @Override
     public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
-        this.handleEscapedIdentifier(ctx.escapedIdentifier());
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        this.handleEscapedIdentifier(ctx.escapedIdentifier());
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
@@ -502,8 +505,8 @@ public class ErrorUnderlineListener extends BaseErrorListener
             if (i == offendingLine)
             {
                 String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(
-                        offendingToken
-                );
+                        offendingToken,
+                        offendingToken);
                 this.contextualStrings.add(errorStringUnderlined);
             }
         }
@@ -572,10 +575,9 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterCriteriaOperator(CriteriaOperatorContext ctx)
+    public void enterCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterCriteriaOperator() not implemented yet");
+        this.addUnderlinedRange(ctx);
     }
 
     @Override
@@ -676,7 +678,15 @@ public class ErrorUnderlineListener extends BaseErrorListener
     @Override
     public void enterVariableReference(@Nonnull VariableReferenceContext ctx)
     {
-        this.addUnderlinedToken(ctx.getStart());
+        ServiceCriteriaDeclarationContext serviceCriteriaDeclarationContext = this.getParentOfType(
+                ctx,
+                ServiceCriteriaDeclarationContext.class);
+        if (serviceCriteriaDeclarationContext == null)
+        {
+            throw new AssertionError();
+        }
+
+        this.addUnderlinedToken(serviceCriteriaDeclarationContext, ctx.getStart());
     }
 
     @Override
@@ -697,13 +707,6 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterIdentifier(@Nonnull IdentifierContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
-    }
-
-    @Override
-    public void enterEscapedIdentifier(EscapedIdentifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterEscapedIdentifier() not implemented yet");
     }
 
     @Override
@@ -741,39 +744,46 @@ public class ErrorUnderlineListener extends BaseErrorListener
                 + ".visitErrorNode() not implemented yet");
     }
 
-    protected void handleEscapedIdentifier(@Nonnull EscapedIdentifierContext escapedIdentifierContext)
+    private void addUnderlinedRange(ParserRuleContext ctx)
     {
-        IdentifierContext identifier = escapedIdentifierContext.identifier();
-        if (identifier != null)
-        {
-            this.addUnderlinedToken(identifier.getStart());
-            return;
-        }
-        KeywordValidAsIdentifierContext keyword = escapedIdentifierContext.keywordValidAsIdentifier();
-        if (keyword != null)
-        {
-            this.addUnderlinedToken(keyword.getStart());
-            return;
-        }
+        Token startToken = ctx.getStart();
+        Token stopToken  = ctx.getStop();
+        int   startLine  = startToken.getLine();
+        int   stopLine   = stopToken.getLine();
 
-        throw new AssertionError();
+        if (startLine == stopLine)
+        {
+            this.addUnderlinedContext(startToken, stopToken, startLine);
+        }
+        else
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".addUnderlinedRange() not implemented yet");
+        }
     }
 
-    protected void addUnderlinedToken(@Nonnull Token offendingToken)
+    private void addUnderlinedToken(@Nonnull Token offendingToken)
     {
-        int    line      = offendingToken.getLine();
-        String errorLine = this.compilationUnit.getLines()[line - 1];
+        this.addUnderlinedContext(offendingToken, offendingToken, offendingToken.getLine());
+    }
 
-        String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(offendingToken);
+    private void addUnderlinedContext(@Nonnull Token startToken, @Nonnull Token stopToken, int startLine)
+    {
+        String   sourceCodeText        = startToken.getInputStream().toString();
+        String[] lines                 = NEWLINE_PATTERN.split(sourceCodeText);
+        String   errorLine             = lines[startLine - 1];
+        String   errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(startToken, stopToken);
+
         this.contextualStrings.add(errorLine);
         this.contextualStrings.add(errorStringUnderlined);
     }
 
-    public static String getErrorLineStringUnderlined(Token offendingToken)
+    @Nonnull
+    private static String getErrorLineStringUnderlined(Token startToken, Token stopToken)
     {
-        int start              = offendingToken.getStartIndex();
-        int stop               = offendingToken.getStopIndex();
-        int charPositionInLine = offendingToken.getCharPositionInLine();
+        int start              = startToken.getStartIndex();
+        int stop               = stopToken.getStopIndex();
+        int charPositionInLine = startToken.getCharPositionInLine();
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < charPositionInLine; i++)
@@ -785,5 +795,43 @@ public class ErrorUnderlineListener extends BaseErrorListener
             stringBuilder.append('^');
         }
         return stringBuilder.toString();
+    }
+
+    private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull Token offendingToken)
+    {
+        Token    startToken     = ctx.getStart();
+        Token    stopToken      = ctx.getStop();
+        int      startLine      = startToken.getLine();
+        int      stopLine       = stopToken.getLine();
+        String   sourceCodeText = startToken.getInputStream().toString();
+        String[] lines          = NEWLINE_PATTERN.split(sourceCodeText);
+
+        for (int lineNumber = startLine; lineNumber <= stopLine; lineNumber++)
+        {
+            if (lineNumber == offendingToken.getLine())
+            {
+                this.addUnderlinedContext(offendingToken, offendingToken, offendingToken.getLine());
+            }
+            else
+            {
+                this.contextualStrings.add(lines[lineNumber - 1]);
+            }
+        }
+    }
+
+    private <T> T getParentOfType(@Nonnull ParserRuleContext ctx, Class<T> aClass /* klass? */)
+    {
+        if (aClass.isInstance(ctx))
+        {
+            return aClass.cast(ctx);
+        }
+
+        ParserRuleContext parent = ctx.getParent();
+        if (parent == null)
+        {
+            return null;
+        }
+
+        return this.getParentOfType(parent, aClass);
     }
 }

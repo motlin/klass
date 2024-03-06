@@ -135,7 +135,7 @@ public final class Klass extends Type
                     this.nameContext,
                     this.name,
                     this.packageName,
-                    isUser);
+                    this.isUser);
 
             ImmutableList<DataTypeProperty<?>> dataTypeProperties = this.dataTypePropertyBuilders
                     .<DataTypeProperty<?>>collect(DataTypePropertyBuilder::build)

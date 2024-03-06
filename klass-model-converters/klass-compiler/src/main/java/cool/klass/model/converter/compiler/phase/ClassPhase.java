@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
@@ -19,7 +18,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
@@ -77,13 +76,12 @@ public class ClassPhase extends AbstractCompilerPhase
     @Override
     public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
-        EscapedIdentifierContext escapedIdentifierContext = ctx.escapedIdentifier();
-        PrimitiveTypeContext     primitiveTypeContext     = ctx.primitiveType();
-        OptionalMarkerContext    optionalMarkerContext    = ctx.optionalMarker();
+        IdentifierContext     identifier            = ctx.identifier();
+        PrimitiveTypeContext  primitiveTypeContext  = ctx.primitiveType();
+        OptionalMarkerContext optionalMarkerContext = ctx.optionalMarker();
 
-        ParserRuleContext nameContext  = EscapedIdentifierVisitor.getNameContext(escapedIdentifierContext);
-        String            propertyName = nameContext.getText();
-        boolean           isOptional   = optionalMarkerContext != null;
+        String  propertyName = identifier.getText();
+        boolean isOptional   = optionalMarkerContext != null;
 
         PrimitiveType      primitiveType      = PrimitiveType.valueOf(primitiveTypeContext.getText());
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
@@ -96,7 +94,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                nameContext,
+                identifier,
                 propertyName,
                 isOptional,
                 propertyModifiers,
@@ -109,13 +107,11 @@ public class ClassPhase extends AbstractCompilerPhase
     @Override
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        EscapedIdentifierContext    escapedIdentifierContext    = ctx.escapedIdentifier();
+        IdentifierContext           identifier                  = ctx.identifier();
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
         OptionalMarkerContext       optionalMarkerContext       = ctx.optionalMarker();
 
-        ParserRuleContext nameContext = EscapedIdentifierVisitor.getNameContext(escapedIdentifierContext);
-
-        String           propertyName     = nameContext.getText();
+        String           propertyName     = identifier.getText();
         AntlrEnumeration antlrEnumeration = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
         boolean          isOptional       = optionalMarkerContext != null;
 
@@ -127,7 +123,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                nameContext,
+                identifier,
                 propertyName,
                 isOptional,
                 propertyModifiers,
@@ -138,13 +134,13 @@ public class ClassPhase extends AbstractCompilerPhase
     }
 
     @Nonnull
-    public AntlrClassModifier getAntlrClassModifier(ClassModifierContext context)
+    public AntlrClassModifier getAntlrClassModifier(@Nonnull ClassModifierContext context)
     {
         return new AntlrClassModifier(context, this.currentCompilationUnit, false, context.getText());
     }
 
     @Nonnull
-    public AntlrPropertyModifier getAntlrPropertyModifier(PropertyModifierContext context)
+    public AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context)
     {
         return new AntlrPropertyModifier(context, this.currentCompilationUnit, false, context.getText());
     }

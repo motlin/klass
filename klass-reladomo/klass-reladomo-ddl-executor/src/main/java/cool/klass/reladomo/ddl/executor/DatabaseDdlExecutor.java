@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
 import cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager;
 import org.eclipse.collections.api.set.MutableSet;
@@ -48,7 +50,7 @@ public final class DatabaseDdlExecutor
         idxLocations.forEachWith(DatabaseDdlExecutor::runScript, connection);
     }
 
-    private static void runScript(String ddlLocation, Connection connection)
+    private static void runScript(String ddlLocation, @Nonnull Connection connection)
     {
         LOGGER.info("Running sql script {}.", ddlLocation);
         InputStream inputStream = DatabaseDdlExecutor.class.getResourceAsStream("/" + ddlLocation);
@@ -62,7 +64,7 @@ public final class DatabaseDdlExecutor
         {
             RunScript.execute(connection, reader);
         }
-        catch (IOException | SQLException e)
+        catch (@Nonnull IOException | SQLException e)
         {
             LOGGER.error("Failed to run sql script {}.", ddlLocation, e);
             throw new RuntimeException(e);

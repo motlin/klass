@@ -11,7 +11,7 @@ import org.eclipse.collections.api.list.MutableList;
 public class BaseErrorListener extends KlassBaseListener
 {
     protected final MutableList<String> contextualStrings;
-    protected final CompilationUnit compilationUnit;
+    protected final CompilationUnit     compilationUnit;
 
     protected BaseErrorListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
     {
@@ -28,6 +28,6 @@ public class BaseErrorListener extends KlassBaseListener
     protected String getTextInclusive(@Nonnull Token startToken, @Nonnull Token stopToken)
     {
         Interval interval = new Interval(startToken.getStartIndex(), stopToken.getStopIndex());
-        return this.compilationUnit.getCharStream().getText(interval);
+        return startToken.getInputStream().getText(interval);
     }
 }

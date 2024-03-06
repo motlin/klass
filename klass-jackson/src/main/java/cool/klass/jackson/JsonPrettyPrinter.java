@@ -2,6 +2,8 @@ package cool.klass.jackson;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -13,6 +15,7 @@ public class JsonPrettyPrinter extends DefaultPrettyPrinter
         this._arrayIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE;
     }
 
+    @Nonnull
     @Override
     public DefaultPrettyPrinter createInstance()
     {

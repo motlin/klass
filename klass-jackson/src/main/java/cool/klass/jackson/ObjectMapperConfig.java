@@ -1,5 +1,7 @@
 package cool.klass.jackson;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +24,7 @@ public final class ObjectMapperConfig
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void configure(ObjectMapper objectMapper)
+    public static void configure(@Nonnull ObjectMapper objectMapper)
     {
         Config config             = ConfigFactory.load();
         Config objectMapperConfig = config.getConfig("jackson.objectmapper");
