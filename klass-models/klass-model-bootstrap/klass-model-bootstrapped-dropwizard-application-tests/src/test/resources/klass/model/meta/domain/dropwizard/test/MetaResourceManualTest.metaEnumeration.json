@@ -5,53 +5,53 @@
   "enumerationLiterals": [
     {
       "name": "INTEGER",
-      "prettyName": "Integer",
-      "ordinal": 1
+      "ordinal": 1,
+      "prettyName": "Integer"
     },
     {
       "name": "LONG",
-      "prettyName": "Long",
-      "ordinal": 2
+      "ordinal": 2,
+      "prettyName": "Long"
     },
     {
       "name": "DOUBLE",
-      "prettyName": "Double",
-      "ordinal": 3
+      "ordinal": 3,
+      "prettyName": "Double"
     },
     {
       "name": "FLOAT",
-      "prettyName": "Float",
-      "ordinal": 4
+      "ordinal": 4,
+      "prettyName": "Float"
     },
     {
       "name": "BOOLEAN",
-      "prettyName": "Boolean",
-      "ordinal": 5
+      "ordinal": 5,
+      "prettyName": "Boolean"
     },
     {
       "name": "STRING",
-      "prettyName": "String",
-      "ordinal": 6
+      "ordinal": 6,
+      "prettyName": "String"
     },
     {
       "name": "INSTANT",
-      "prettyName": "Instant",
-      "ordinal": 7
+      "ordinal": 7,
+      "prettyName": "Instant"
     },
     {
       "name": "LOCAL_DATE",
-      "prettyName": "LocalDate",
-      "ordinal": 8
+      "ordinal": 8,
+      "prettyName": "LocalDate"
     },
     {
       "name": "TEMPORAL_INSTANT",
-      "prettyName": "TemporalInstant",
-      "ordinal": 9
+      "ordinal": 9,
+      "prettyName": "TemporalInstant"
     },
     {
       "name": "TEMPORAL_RANGE",
-      "prettyName": "TemporalRange",
-      "ordinal": 10
+      "ordinal": 10,
+      "prettyName": "TemporalRange"
     }
   ]
 }

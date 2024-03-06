@@ -1,9 +1,14 @@
 {
   "name": "ServiceGroupResource",
+  "ordinal": 158,
   "packageName": "klass.model.meta.domain",
+  "owningClass": {
+    "name": "ServiceGroup"
+  },
   "urls": [
     {
       "url": "/meta/serviceGroup",
+      "parameters": [],
       "services": [
         {
           "verb": "GET",
@@ -12,16 +17,26 @@
             "name": "ServiceGroupSummaryProjection"
           },
           "queryCriteria": {
-            "__typename": "klass.model.meta.domain.AllCriteria"
+            "__typename": "klass.model.meta.domain.AllCriteria",
+            "id": 108
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
-          "conflictCriteria": null
+          "conflictCriteria": null,
+          "orderBys": []
         }
       ]
     },
     {
       "url": "/meta/serviceGroup/{name}",
+      "parameters": [
+        {
+          "type": "path",
+          "parameter": {
+            "id": 13
+          }
+        }
+      ],
       "services": [
         {
           "verb": "GET",
@@ -31,6 +46,7 @@
           },
           "queryCriteria": {
             "__typename": "klass.model.meta.domain.OperatorCriteria",
+            "id": 106,
             "operator": "==",
             "sourceExpressionValue": {
               "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -45,18 +61,30 @@
             "targetExpressionValue": {
               "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
-                "name": "name"
+                "__typename": "klass.model.meta.domain.PrimitiveParameter",
+                "name": "name",
+                "primitiveType": "String",
+                "multiplicity": "1..1"
               }
             }
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
-          "conflictCriteria": null
+          "conflictCriteria": null,
+          "orderBys": []
         }
       ]
     },
     {
       "url": "/meta/serviceGroup/{name}/summary",
+      "parameters": [
+        {
+          "type": "path",
+          "parameter": {
+            "id": 14
+          }
+        }
+      ],
       "services": [
         {
           "verb": "GET",
@@ -66,6 +94,7 @@
           },
           "queryCriteria": {
             "__typename": "klass.model.meta.domain.OperatorCriteria",
+            "id": 107,
             "operator": "==",
             "sourceExpressionValue": {
               "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -80,13 +109,17 @@
             "targetExpressionValue": {
               "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
-                "name": "name"
+                "__typename": "klass.model.meta.domain.PrimitiveParameter",
+                "name": "name",
+                "primitiveType": "String",
+                "multiplicity": "1..1"
               }
             }
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
-          "conflictCriteria": null
+          "conflictCriteria": null,
+          "orderBys": []
         }
       ]
     }

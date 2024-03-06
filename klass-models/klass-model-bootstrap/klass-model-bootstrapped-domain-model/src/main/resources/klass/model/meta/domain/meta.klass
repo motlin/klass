@@ -889,8 +889,8 @@ association ServiceOrderByHasMemberReferencePath
 projection EnumerationLiteralProjection on EnumerationLiteral
 {
     name                   : "Enumeration literal name",
-    prettyName             : "Enumeration literal pretty name",
     ordinal                : "Enumeration literal ordinal",
+    prettyName             : "Enumeration literal pretty name",
 }
 
 projection EnumerationProjection on Enumeration
@@ -975,6 +975,45 @@ projection ParameterizedPropertyProjection on ParameterizedProperty
 projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrdering
 {
     orderingId: "ParameterizedPropertyOrdering orderingId",
+}
+
+projection ProjectionElementProjection on ProjectionElement
+{
+    id: "ProjectionElement id",
+    ordinal: "NamedElement ordinal",
+    name: "ProjectionElement name",
+    children: ProjectionElementProjection,
+    RootProjection.klass: {
+        NamedElement.name: "NamedElement name",
+    },
+    ProjectionWithAssociationEnd.associationEnd: {
+        NamedElement.name: "NamedElement name",
+    },
+    ProjectionProjectionReference.projection: {
+        NamedElement.name: "NamedElement name",
+    },
+    ProjectionDataTypeProperty.dataTypeProperty: {
+        NamedElement.name: "NamedElement name",
+    },
+}
+
+projection NamedProjectionProjection on NamedProjection
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    rootProjection: ProjectionElementProjection,
+}
+
+projection ServiceGroupProjection on ServiceGroup
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    owningClass: {
+        name: "NamedElement name",
+        },
+    urls: UrlProjection,
 }
 
 projection UrlProjection on Url
@@ -1533,28 +1572,6 @@ service AssociationResource on Association
         }
 }
 
-projection ProjectionElementProjection on ProjectionElement
-{
-    name                                    : "Projection name",
-    RootProjection.klass                    :
-    {
-        name: "Projection klass name",
-    },
-    ProjectionProjectionReference.projection:
-    {
-        name: "Projection reference name",
-    },
-    children                                : ProjectionElementProjection,
-}
-
-
-projection NamedProjectionProjection on NamedProjection
-{
-    name          : "Projection name",
-    packageName   : "Projection package name",
-    rootProjection: ProjectionElementProjection,
-}
-
 service NamedProjectionResource on NamedProjection
 {
     /meta/projection/{projectionName: String[1..1]}
@@ -1579,29 +1596,6 @@ service NamedProjectionResource on NamedProjection
             projection  : NamedProjectionProjection;
             orderBy     : this.ordinal ascending;
         }
-}
-
-projection ServiceGroupProjection on ServiceGroup
-{
-    name       : "ServiceGroup name",
-    packageName: "ServiceGroup package name",
-    urls       :
-    {
-        url     : "ServiceGroup url",
-        services:
-        {
-            verb               : "ServiceGroup Url Service verb",
-            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
-            projection         :
-            {
-                name: "ServiceGroup Url Service Projection name",
-            },
-            queryCriteria      : CriteriaSummaryProjection,
-            authorizeCriteria  : CriteriaSummaryProjection,
-            validateCriteria   : CriteriaSummaryProjection,
-            conflictCriteria   : CriteriaSummaryProjection,
-        },
-    },
 }
 
 projection ServiceGroupSummaryProjection on ServiceGroup

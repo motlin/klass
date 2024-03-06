@@ -7,53 +7,53 @@
     "enumerationLiterals": [
       {
         "name": "INTEGER",
-        "prettyName": "Integer",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "Integer"
       },
       {
         "name": "LONG",
-        "prettyName": "Long",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "Long"
       },
       {
         "name": "DOUBLE",
-        "prettyName": "Double",
-        "ordinal": 3
+        "ordinal": 3,
+        "prettyName": "Double"
       },
       {
         "name": "FLOAT",
-        "prettyName": "Float",
-        "ordinal": 4
+        "ordinal": 4,
+        "prettyName": "Float"
       },
       {
         "name": "BOOLEAN",
-        "prettyName": "Boolean",
-        "ordinal": 5
+        "ordinal": 5,
+        "prettyName": "Boolean"
       },
       {
         "name": "STRING",
-        "prettyName": "String",
-        "ordinal": 6
+        "ordinal": 6,
+        "prettyName": "String"
       },
       {
         "name": "INSTANT",
-        "prettyName": "Instant",
-        "ordinal": 7
+        "ordinal": 7,
+        "prettyName": "Instant"
       },
       {
         "name": "LOCAL_DATE",
-        "prettyName": "LocalDate",
-        "ordinal": 8
+        "ordinal": 8,
+        "prettyName": "LocalDate"
       },
       {
         "name": "TEMPORAL_INSTANT",
-        "prettyName": "TemporalInstant",
-        "ordinal": 9
+        "ordinal": 9,
+        "prettyName": "TemporalInstant"
       },
       {
         "name": "TEMPORAL_RANGE",
-        "prettyName": "TemporalRange",
-        "ordinal": 10
+        "ordinal": 10,
+        "prettyName": "TemporalRange"
       }
     ]
   },
@@ -65,23 +65,23 @@
     "enumerationLiterals": [
       {
         "name": "ZERO_TO_ONE",
-        "prettyName": "0..1",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "0..1"
       },
       {
         "name": "ONE_TO_ONE",
-        "prettyName": "1..1",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "1..1"
       },
       {
         "name": "ZERO_TO_MANY",
-        "prettyName": "0..*",
-        "ordinal": 3
+        "ordinal": 3,
+        "prettyName": "0..*"
       },
       {
         "name": "ONE_TO_MANY",
-        "prettyName": "1..*",
-        "ordinal": 4
+        "ordinal": 4,
+        "prettyName": "1..*"
       }
     ]
   },
@@ -93,53 +93,53 @@
     "enumerationLiterals": [
       {
         "name": "EQUALS",
-        "prettyName": "==",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "=="
       },
       {
         "name": "NOT_EQUALS",
-        "prettyName": "!=",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "!="
       },
       {
         "name": "LESS_THAN",
-        "prettyName": "<",
-        "ordinal": 3
+        "ordinal": 3,
+        "prettyName": "<"
       },
       {
         "name": "GREATER_THAN",
-        "prettyName": ">",
-        "ordinal": 4
+        "ordinal": 4,
+        "prettyName": ">"
       },
       {
         "name": "LESS_THAN_EQUAL",
-        "prettyName": "<=",
-        "ordinal": 5
+        "ordinal": 5,
+        "prettyName": "<="
       },
       {
         "name": "GREATER_THAN_EQUAL",
-        "prettyName": ">=",
-        "ordinal": 6
+        "ordinal": 6,
+        "prettyName": ">="
       },
       {
         "name": "IN",
-        "prettyName": "in",
-        "ordinal": 7
+        "ordinal": 7,
+        "prettyName": "in"
       },
       {
         "name": "CONTAINS",
-        "prettyName": "contains",
-        "ordinal": 8
+        "ordinal": 8,
+        "prettyName": "contains"
       },
       {
         "name": "STARTS_WITH",
-        "prettyName": "startsWith",
-        "ordinal": 9
+        "ordinal": 9,
+        "prettyName": "startsWith"
       },
       {
         "name": "ENDS_WITH",
-        "prettyName": "endsWith",
-        "ordinal": 10
+        "ordinal": 10,
+        "prettyName": "endsWith"
       }
     ]
   },
@@ -151,13 +151,13 @@
     "enumerationLiterals": [
       {
         "name": "SOURCE",
-        "prettyName": "source",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "source"
       },
       {
         "name": "TARGET",
-        "prettyName": "target",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "target"
       }
     ]
   },
@@ -169,13 +169,13 @@
     "enumerationLiterals": [
       {
         "name": "ASCENDING",
-        "prettyName": "ascending",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "ascending"
       },
       {
         "name": "DESCENDING",
-        "prettyName": "descending",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "descending"
       }
     ]
   },
@@ -187,13 +187,13 @@
     "enumerationLiterals": [
       {
         "name": "QUERY",
-        "prettyName": "query",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "query"
       },
       {
         "name": "PATH",
-        "prettyName": "path",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "path"
       }
     ]
   },
@@ -205,13 +205,13 @@
     "enumerationLiterals": [
       {
         "name": "ONE",
-        "prettyName": "one",
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": "one"
       },
       {
         "name": "MANY",
-        "prettyName": "many",
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": "many"
       }
     ]
   },
@@ -223,28 +223,28 @@
     "enumerationLiterals": [
       {
         "name": "GET",
-        "prettyName": null,
-        "ordinal": 1
+        "ordinal": 1,
+        "prettyName": null
       },
       {
         "name": "POST",
-        "prettyName": null,
-        "ordinal": 2
+        "ordinal": 2,
+        "prettyName": null
       },
       {
         "name": "PUT",
-        "prettyName": null,
-        "ordinal": 3
+        "ordinal": 3,
+        "prettyName": null
       },
       {
         "name": "PATCH",
-        "prettyName": null,
-        "ordinal": 4
+        "ordinal": 4,
+        "prettyName": null
       },
       {
         "name": "DELETE",
-        "prettyName": null,
-        "ordinal": 5
+        "ordinal": 5,
+        "prettyName": null
       }
     ]
   },
@@ -5408,7 +5408,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "UrlProjection",
+    "name": "ProjectionElementProjection",
     "ordinal": 125,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5417,7 +5417,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "UrlParameterProjection",
+    "name": "NamedProjectionProjection",
     "ordinal": 126,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5426,7 +5426,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ServiceProjection",
+    "name": "ServiceGroupProjection",
     "ordinal": 127,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5435,7 +5435,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ServiceOrderByProjection",
+    "name": "UrlProjection",
     "ordinal": 128,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5444,8 +5444,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "InterfaceProjection",
-    "ordinal": 131,
+    "name": "UrlParameterProjection",
+    "ordinal": 129,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 13
@@ -5453,8 +5453,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "InterfaceSummaryProjection",
-    "ordinal": 132,
+    "name": "ServiceProjection",
+    "ordinal": 130,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 14
@@ -5462,8 +5462,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "DataTypePropertyProjection",
-    "ordinal": 134,
+    "name": "ServiceOrderByProjection",
+    "ordinal": 131,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 15
@@ -5471,8 +5471,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ClassProjection",
-    "ordinal": 135,
+    "name": "InterfaceProjection",
+    "ordinal": 134,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 16
@@ -5480,8 +5480,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ClassSummaryProjection",
-    "ordinal": 136,
+    "name": "InterfaceSummaryProjection",
+    "ordinal": 135,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 17
@@ -5489,8 +5489,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ClassifierSummaryProjection",
-    "ordinal": 138,
+    "name": "DataTypePropertyProjection",
+    "ordinal": 137,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 18
@@ -5498,8 +5498,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ThisMemberReferencePathProjection",
-    "ordinal": 140,
+    "name": "ClassProjection",
+    "ordinal": 138,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 19
@@ -5507,8 +5507,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "AssociationEndProjection",
-    "ordinal": 141,
+    "name": "ClassSummaryProjection",
+    "ordinal": 139,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 20
@@ -5516,8 +5516,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "MemberReferencePathAssociationEndMappingProjection",
-    "ordinal": 142,
+    "name": "ClassifierSummaryProjection",
+    "ordinal": 141,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 21
@@ -5525,7 +5525,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "MemberReferencePathSummaryProjection",
+    "name": "ThisMemberReferencePathProjection",
     "ordinal": 143,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5534,7 +5534,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "AssociationEndSummaryProjection",
+    "name": "AssociationEndProjection",
     "ordinal": 144,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5543,7 +5543,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ExpressionValueProjection",
+    "name": "MemberReferencePathAssociationEndMappingProjection",
     "ordinal": 145,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5552,7 +5552,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ExpressionValueSummaryProjection",
+    "name": "MemberReferencePathSummaryProjection",
     "ordinal": 146,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5561,7 +5561,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "MemberReferencePathProjection",
+    "name": "AssociationEndSummaryProjection",
     "ordinal": 147,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5570,7 +5570,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "CriteriaProjection",
+    "name": "ExpressionValueProjection",
     "ordinal": 148,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5579,7 +5579,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "CriteriaSummaryProjection",
+    "name": "ExpressionValueSummaryProjection",
     "ordinal": 149,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5588,7 +5588,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "AssociationProjection",
+    "name": "MemberReferencePathProjection",
     "ordinal": 150,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5597,7 +5597,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "AssociationSummaryProjection",
+    "name": "CriteriaProjection",
     "ordinal": 151,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
@@ -5606,8 +5606,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ProjectionElementProjection",
-    "ordinal": 153,
+    "name": "CriteriaSummaryProjection",
+    "ordinal": 152,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 31
@@ -5615,8 +5615,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "NamedProjectionProjection",
-    "ordinal": 154,
+    "name": "AssociationProjection",
+    "ordinal": 153,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 32
@@ -5624,8 +5624,8 @@
   },
   {
     "__typename": "klass.model.meta.domain.NamedProjection",
-    "name": "ServiceGroupProjection",
-    "ordinal": 156,
+    "name": "AssociationSummaryProjection",
+    "ordinal": 154,
     "packageName": "klass.model.meta.domain",
     "rootProjection": {
       "id": 33
@@ -5643,7 +5643,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "PackageableElementResource",
-    "ordinal": 129,
+    "ordinal": 132,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "PackageableElement"
@@ -5723,7 +5723,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "EnumerationResource",
-    "ordinal": 130,
+    "ordinal": 133,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Enumeration"
@@ -5851,7 +5851,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "InterfaceResource",
-    "ordinal": 133,
+    "ordinal": 136,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Interface"
@@ -5979,7 +5979,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "KlassResource",
-    "ordinal": 137,
+    "ordinal": 140,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Klass"
@@ -6107,7 +6107,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "ClassifierResource",
-    "ordinal": 139,
+    "ordinal": 142,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Classifier"
@@ -6187,7 +6187,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "AssociationResource",
-    "ordinal": 152,
+    "ordinal": 155,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Association"
@@ -6315,7 +6315,7 @@
   {
     "__typename": "klass.model.meta.domain.ServiceGroup",
     "name": "NamedProjectionResource",
-    "ordinal": 155,
+    "ordinal": 156,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "NamedProjection"

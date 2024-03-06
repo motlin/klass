@@ -3,7 +3,7 @@
     "serviceGroups": [
       {
         "name": "PackageableElementResource",
-        "ordinal": 129,
+        "ordinal": 132,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "PackageableElement"
@@ -65,7 +65,7 @@
       },
       {
         "name": "EnumerationResource",
-        "ordinal": 130,
+        "ordinal": 133,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Enumeration"
@@ -159,7 +159,7 @@
       },
       {
         "name": "InterfaceResource",
-        "ordinal": 133,
+        "ordinal": 136,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Interface"
@@ -253,7 +253,7 @@
       },
       {
         "name": "KlassResource",
-        "ordinal": 137,
+        "ordinal": 140,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Klass"
@@ -347,7 +347,7 @@
       },
       {
         "name": "ClassifierResource",
-        "ordinal": 139,
+        "ordinal": 142,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Classifier"
@@ -409,7 +409,7 @@
       },
       {
         "name": "AssociationResource",
-        "ordinal": 152,
+        "ordinal": 155,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Association"
@@ -503,7 +503,7 @@
       },
       {
         "name": "NamedProjectionResource",
-        "ordinal": 155,
+        "ordinal": 156,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "NamedProjection"

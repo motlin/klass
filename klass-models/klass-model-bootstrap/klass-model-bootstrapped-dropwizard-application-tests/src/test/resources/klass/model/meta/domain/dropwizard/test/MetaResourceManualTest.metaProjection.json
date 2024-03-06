@@ -1,47 +1,142 @@
 {
   "name": "ProjectionElementProjection",
+  "ordinal": 125,
   "packageName": "klass.model.meta.domain",
   "rootProjection": {
+    "id": 9,
+    "ordinal": 125,
     "name": "ProjectionElementProjection",
-    "klass": {
-      "name": "ProjectionElement"
-    },
     "children": [
       {
         "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "id": 79,
+        "ordinal": 1,
+        "name": "id",
+        "children": [],
+        "dataTypeProperty": {
+          "name": "id"
+        }
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "id": 80,
+        "ordinal": 2,
+        "name": "ordinal",
+        "children": [],
+        "dataTypeProperty": {
+          "name": "ordinal"
+        }
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "id": 81,
+        "ordinal": 3,
         "name": "name",
-        "children": []
+        "children": [],
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
+        "id": 82,
+        "ordinal": 4,
+        "name": "children",
+        "children": [],
+        "associationEnd": {
+          "name": "children"
+        },
+        "projection": {
+          "name": "ProjectionElementProjection"
+        }
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "id": 83,
+        "ordinal": 5,
         "name": "klass",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "id": 84,
+            "ordinal": 1,
             "name": "name",
-            "children": []
+            "children": [],
+            "dataTypeProperty": {
+              "name": "name"
+            }
           }
-        ]
+        ],
+        "associationEnd": {
+          "name": "klass"
+        }
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "id": 85,
+        "ordinal": 6,
+        "name": "associationEnd",
+        "children": [
+          {
+            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "id": 86,
+            "ordinal": 1,
+            "name": "name",
+            "children": [],
+            "dataTypeProperty": {
+              "name": "name"
+            }
+          }
+        ],
+        "associationEnd": {
+          "name": "associationEnd"
+        }
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "id": 87,
+        "ordinal": 7,
         "name": "projection",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "id": 88,
+            "ordinal": 1,
             "name": "name",
-            "children": []
+            "children": [],
+            "dataTypeProperty": {
+              "name": "name"
+            }
           }
-        ]
+        ],
+        "associationEnd": {
+          "name": "projection"
+        }
       },
       {
-        "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
-        "name": "children",
-        "projection": {
-          "name": "ProjectionElementProjection"
-        },
-        "children": []
+        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "id": 89,
+        "ordinal": 8,
+        "name": "dataTypeProperty",
+        "children": [
+          {
+            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "id": 90,
+            "ordinal": 1,
+            "name": "name",
+            "children": [],
+            "dataTypeProperty": {
+              "name": "name"
+            }
+          }
+        ],
+        "associationEnd": {
+          "name": "dataTypeProperty"
+        }
       }
-    ]
+    ],
+    "klass": {
+      "name": "ProjectionElement"
+    }
   }
 }
