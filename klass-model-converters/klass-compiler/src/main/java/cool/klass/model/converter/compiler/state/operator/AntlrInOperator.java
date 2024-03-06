@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InOperatorImpl.InOperatorBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrInOperator extends AntlrOperator
@@ -17,7 +17,7 @@ public class AntlrInOperator extends AntlrOperator
     private InOperatorBuilder elementBuilder;
 
     public AntlrInOperator(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InOperatorContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String operatorText)
     {
@@ -33,7 +33,7 @@ public class AntlrInOperator extends AntlrOperator
             throw new IllegalStateException();
         }
         this.elementBuilder = new InOperatorBuilder(
-                this.elementContext,
+                (InOperatorContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.operatorText);

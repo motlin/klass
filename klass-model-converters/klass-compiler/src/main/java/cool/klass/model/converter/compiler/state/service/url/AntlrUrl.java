@@ -39,7 +39,7 @@ public class AntlrUrl extends AntlrElement
 {
     @Nonnull
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
-            new ParserRuleContext(),
+            new UrlDeclarationContext(null, -1),
             Optional.empty(),
             AntlrServiceGroup.AMBIGUOUS);
 
@@ -62,7 +62,7 @@ public class AntlrUrl extends AntlrElement
     private       UrlBuilder        elementBuilder;
 
     public AntlrUrl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull UrlDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrServiceGroup serviceGroup)
     {
@@ -249,7 +249,7 @@ public class AntlrUrl extends AntlrElement
         }
 
         this.elementBuilder = new UrlBuilder(
-                this.elementContext,
+                (UrlDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.serviceGroup.getElementBuilder());

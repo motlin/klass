@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.EqualityOperatorImpl.EqualityOperatorBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrEqualityOperator
@@ -18,7 +18,7 @@ public class AntlrEqualityOperator
     private EqualityOperatorBuilder elementBuilder;
 
     public AntlrEqualityOperator(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull EqualityOperatorContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String operatorText)
     {
@@ -34,7 +34,7 @@ public class AntlrEqualityOperator
             throw new IllegalStateException();
         }
         this.elementBuilder = new EqualityOperatorBuilder(
-                this.elementContext,
+                (EqualityOperatorContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.operatorText);

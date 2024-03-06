@@ -15,8 +15,8 @@ import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class AssociationImpl
@@ -31,7 +31,7 @@ public final class AssociationImpl
     private AssociationEnd                targetAssociationEnd;
 
     private AssociationImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull AssociationDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -41,6 +41,13 @@ public final class AssociationImpl
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         this.criteria = Objects.requireNonNull(criteria);
+    }
+
+    @Nonnull
+    @Override
+    public AssociationDeclarationContext getElementContext()
+    {
+        return (AssociationDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -89,7 +96,7 @@ public final class AssociationImpl
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
 
         public AssociationBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull AssociationDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -111,7 +118,7 @@ public final class AssociationImpl
         protected AssociationImpl buildUnsafe()
         {
             return new AssociationImpl(
-                    this.elementContext,
+                    (AssociationDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

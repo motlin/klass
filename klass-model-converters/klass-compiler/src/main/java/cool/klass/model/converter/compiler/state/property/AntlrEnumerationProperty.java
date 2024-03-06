@@ -24,7 +24,7 @@ public class AntlrEnumerationProperty
 {
     @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
-            new ParserRuleContext(),
+            new EnumerationPropertyContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -39,7 +39,7 @@ public class AntlrEnumerationProperty
     private EnumerationPropertyBuilder elementBuilder;
 
     public AntlrEnumerationProperty(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull EnumerationPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -86,7 +86,7 @@ public class AntlrEnumerationProperty
         }
 
         this.elementBuilder = new EnumerationPropertyBuilder(
-                this.elementContext,
+                (EnumerationPropertyContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

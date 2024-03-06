@@ -15,7 +15,7 @@ import cool.klass.model.meta.domain.order.OrderByDirectionDeclarationImpl.OrderB
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl;
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 
 public final class OrderByMemberReferencePathImpl
         extends AbstractElement
@@ -31,7 +31,7 @@ public final class OrderByMemberReferencePathImpl
     private OrderByDirectionDeclarationImpl orderByDirectionDeclaration;
 
     private OrderByMemberReferencePathImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull OrderByMemberReferencePathContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull OrderByImpl orderBy,
@@ -42,6 +42,13 @@ public final class OrderByMemberReferencePathImpl
         this.orderBy                 = Objects.requireNonNull(orderBy);
         this.ordinal                 = ordinal;
         this.thisMemberReferencePath = Objects.requireNonNull(thisMemberReferencePath);
+    }
+
+    @Nonnull
+    @Override
+    public OrderByMemberReferencePathContext getElementContext()
+    {
+        return (OrderByMemberReferencePathContext) super.getElementContext();
     }
 
     @Override
@@ -76,7 +83,7 @@ public final class OrderByMemberReferencePathImpl
         private OrderByDirectionDeclarationBuilder orderByDirectionBuilder;
 
         public OrderByMemberReferencePathBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull OrderByMemberReferencePathContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull OrderByBuilder orderByBuilder,
@@ -99,7 +106,7 @@ public final class OrderByMemberReferencePathImpl
         protected OrderByMemberReferencePathImpl buildUnsafe()
         {
             return new OrderByMemberReferencePathImpl(
-                    this.elementContext,
+                    (OrderByMemberReferencePathContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.orderByBuilder.getElement(),

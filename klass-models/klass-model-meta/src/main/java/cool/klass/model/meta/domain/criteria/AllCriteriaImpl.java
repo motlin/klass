@@ -9,25 +9,32 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.AllCriteria;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 
 public final class AllCriteriaImpl
         extends AbstractCriteria
         implements AllCriteria
 {
     public AllCriteriaImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull CriteriaAllContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
 
+    @Nonnull
+    @Override
+    public CriteriaAllContext getElementContext()
+    {
+        return (CriteriaAllContext) super.getElementContext();
+    }
+
     public static final class AllCriteriaBuilder
             extends AbstractCriteriaBuilder<AllCriteriaImpl>
     {
         public AllCriteriaBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaAllContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode)
         {
@@ -39,7 +46,7 @@ public final class AllCriteriaImpl
         protected AllCriteriaImpl buildUnsafe()
         {
             return new AllCriteriaImpl(
-                    this.elementContext,
+                    (CriteriaAllContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build());
         }

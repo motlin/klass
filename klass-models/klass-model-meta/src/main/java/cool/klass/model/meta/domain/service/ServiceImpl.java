@@ -21,7 +21,7 @@ import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 
 public final class ServiceImpl
         extends AbstractElement
@@ -45,7 +45,7 @@ public final class ServiceImpl
     private Optional<OrderBy> orderBy = Optional.empty();
 
     private ServiceImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull UrlImpl url,
@@ -56,6 +56,13 @@ public final class ServiceImpl
         this.url                 = Objects.requireNonNull(url);
         this.verb                = Objects.requireNonNull(verb);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
+    }
+
+    @Nonnull
+    @Override
+    public ServiceDeclarationContext getElementContext()
+    {
+        return (ServiceDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -213,7 +220,7 @@ public final class ServiceImpl
         private Optional<AbstractCriteriaBuilder<?>> conflict  = Optional.empty();
 
         public ServiceBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ServiceDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull UrlBuilder urlBuilder,
@@ -293,7 +300,7 @@ public final class ServiceImpl
         protected ServiceImpl buildUnsafe()
         {
             ServiceImpl service = new ServiceImpl(
-                    this.elementContext,
+                    (ServiceDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.urlBuilder.getElement(),

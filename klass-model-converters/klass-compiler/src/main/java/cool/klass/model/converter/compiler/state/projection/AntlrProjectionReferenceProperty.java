@@ -77,7 +77,7 @@ public class AntlrProjectionReferenceProperty
         }
 
         this.projectionReferencePropertyBuilder = new ProjectionReferencePropertyBuilder(
-                this.elementContext,
+                (ProjectionReferencePropertyContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

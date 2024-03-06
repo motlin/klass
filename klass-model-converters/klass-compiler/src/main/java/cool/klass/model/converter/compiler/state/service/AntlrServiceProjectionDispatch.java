@@ -15,7 +15,6 @@ import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
@@ -29,7 +28,7 @@ public class AntlrServiceProjectionDispatch
     private       ServiceProjectionDispatchBuilder elementBuilder;
 
     public AntlrServiceProjectionDispatch(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceProjectionDispatchContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrService serviceState,
             @Nonnull AntlrProjection projection)
@@ -125,7 +124,7 @@ public class AntlrServiceProjectionDispatch
             throw new IllegalStateException();
         }
         this.elementBuilder = new ServiceProjectionDispatchBuilder(
-                this.elementContext,
+                (ServiceProjectionDispatchContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.projection.getElementBuilder());

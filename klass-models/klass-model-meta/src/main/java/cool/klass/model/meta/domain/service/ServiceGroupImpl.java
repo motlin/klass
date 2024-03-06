@@ -17,7 +17,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ServiceGroupImpl
@@ -30,7 +30,7 @@ public final class ServiceGroupImpl
     private ImmutableList<Url> urls;
 
     private ServiceGroupImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceGroupDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -40,6 +40,13 @@ public final class ServiceGroupImpl
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         this.klass = Objects.requireNonNull(klass);
+    }
+
+    @Nonnull
+    @Override
+    public ServiceGroupDeclarationContext getElementContext()
+    {
+        return (ServiceGroupDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -75,7 +82,7 @@ public final class ServiceGroupImpl
         private ImmutableList<UrlBuilder> urlBuilders;
 
         public ServiceGroupBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ServiceGroupDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -97,7 +104,7 @@ public final class ServiceGroupImpl
         protected ServiceGroupImpl buildUnsafe()
         {
             return new ServiceGroupImpl(
-                    this.elementContext,
+                    (ServiceGroupDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

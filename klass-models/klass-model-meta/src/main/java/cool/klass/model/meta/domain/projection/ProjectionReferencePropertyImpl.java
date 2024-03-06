@@ -14,7 +14,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 
 public final class ProjectionReferencePropertyImpl
         extends AbstractProjectionParent
@@ -26,7 +26,7 @@ public final class ProjectionReferencePropertyImpl
     private final ReferenceProperty referenceProperty;
 
     private ProjectionReferencePropertyImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ProjectionReferencePropertyContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -37,6 +37,13 @@ public final class ProjectionReferencePropertyImpl
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.parent            = Objects.requireNonNull(parent);
         this.referenceProperty = Objects.requireNonNull(referenceProperty);
+    }
+
+    @Nonnull
+    @Override
+    public ProjectionReferencePropertyContext getElementContext()
+    {
+        return (ProjectionReferencePropertyContext) super.getElementContext();
     }
 
     @Override
@@ -63,7 +70,7 @@ public final class ProjectionReferencePropertyImpl
         private final ReferencePropertyBuilder<?, ?, ?>  referencePropertyBuilder;
 
         public ProjectionReferencePropertyBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ProjectionReferencePropertyContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -81,7 +88,7 @@ public final class ProjectionReferencePropertyImpl
         protected ProjectionReferencePropertyImpl buildUnsafe()
         {
             return new ProjectionReferencePropertyImpl(
-                    this.elementContext,
+                    (ProjectionReferencePropertyContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

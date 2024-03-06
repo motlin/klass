@@ -9,14 +9,14 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.StringOperator;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 
 public final class StringOperatorImpl
         extends AbstractOperator
         implements StringOperator
 {
     private StringOperatorImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull StringOperatorContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull String operatorText)
@@ -24,11 +24,18 @@ public final class StringOperatorImpl
         super(elementContext, macroElement, sourceCode, operatorText);
     }
 
+    @Nonnull
+    @Override
+    public StringOperatorContext getElementContext()
+    {
+        return (StringOperatorContext) super.getElementContext();
+    }
+
     public static final class StringOperatorBuilder
             extends AbstractOperatorBuilder<StringOperatorImpl>
     {
         public StringOperatorBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull StringOperatorContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull String operatorText)
@@ -41,7 +48,7 @@ public final class StringOperatorImpl
         protected StringOperatorImpl buildUnsafe()
         {
             return new StringOperatorImpl(
-                    this.elementContext,
+                    (StringOperatorContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.operatorText);

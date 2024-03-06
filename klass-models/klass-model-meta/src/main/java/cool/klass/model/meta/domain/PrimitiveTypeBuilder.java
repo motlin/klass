@@ -40,4 +40,3 @@ public class PrimitiveTypeBuilder
         return this.primitiveType;
     }
 }
-

@@ -11,14 +11,14 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 
 public final class InterfaceImpl
         extends AbstractClassifier
         implements Interface
 {
     private InterfaceImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InterfaceDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -28,11 +28,18 @@ public final class InterfaceImpl
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
     }
 
+    @Nonnull
+    @Override
+    public InterfaceDeclarationContext getElementContext()
+    {
+        return (InterfaceDeclarationContext) super.getElementContext();
+    }
+
     public static final class InterfaceBuilder
             extends ClassifierBuilder<InterfaceImpl>
     {
         public InterfaceBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull InterfaceDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -47,7 +54,7 @@ public final class InterfaceImpl
         protected InterfaceImpl buildUnsafe()
         {
             return new InterfaceImpl(
-                    this.elementContext,
+                    (InterfaceDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

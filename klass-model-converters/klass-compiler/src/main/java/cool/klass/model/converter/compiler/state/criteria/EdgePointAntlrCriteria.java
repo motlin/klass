@@ -63,7 +63,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
             throw new IllegalStateException();
         }
         this.elementBuilder = new EdgePointCriteriaBuilder(
-                this.elementContext,
+                (CriteriaEdgePointContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.memberExpressionValue.build());

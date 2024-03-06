@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.meta.domain.value.VariableReferenceImpl.VariableReferenceBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
@@ -28,7 +28,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
     private VariableReferenceBuilder elementBuilder;
 
     public AntlrVariableReference(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull VariableReferenceContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String variableName,
             @Nonnull IAntlrElement expressionValueOwner)
@@ -46,7 +46,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
             throw new IllegalStateException();
         }
         this.elementBuilder = new VariableReferenceBuilder(
-                this.elementContext,
+                (VariableReferenceContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.antlrParameter.getElementBuilder());

@@ -9,14 +9,14 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.InOperator;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 
 public final class InOperatorImpl
         extends AbstractOperator
         implements InOperator
 {
     private InOperatorImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InOperatorContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull String operatorText)
@@ -24,11 +24,18 @@ public final class InOperatorImpl
         super(elementContext, macroElement, sourceCode, operatorText);
     }
 
+    @Nonnull
+    @Override
+    public InOperatorContext getElementContext()
+    {
+        return (InOperatorContext) super.getElementContext();
+    }
+
     public static final class InOperatorBuilder
             extends AbstractOperatorBuilder<InOperatorImpl>
     {
         public InOperatorBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull InOperatorContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull String operatorText)
@@ -41,7 +48,7 @@ public final class InOperatorImpl
         protected InOperatorImpl buildUnsafe()
         {
             return new InOperatorImpl(
-                    this.elementContext,
+                    (InOperatorContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.operatorText);

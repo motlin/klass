@@ -15,7 +15,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 
 public final class ProjectionImpl
         extends AbstractProjectionParent
@@ -27,7 +27,7 @@ public final class ProjectionImpl
     private final AbstractClassifier classifier;
 
     private ProjectionImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ProjectionDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -38,6 +38,13 @@ public final class ProjectionImpl
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.packageName = Objects.requireNonNull(packageName);
         this.classifier  = Objects.requireNonNull(classifier);
+    }
+
+    @Nonnull
+    @Override
+    public ProjectionDeclarationContext getElementContext()
+    {
+        return (ProjectionDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -70,7 +77,7 @@ public final class ProjectionImpl
         private final ClassifierBuilder<?> classifierBuilder;
 
         public ProjectionBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ProjectionDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -88,7 +95,7 @@ public final class ProjectionImpl
         protected ProjectionImpl buildUnsafe()
         {
             return new ProjectionImpl(
-                    this.elementContext,
+                    (ProjectionDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

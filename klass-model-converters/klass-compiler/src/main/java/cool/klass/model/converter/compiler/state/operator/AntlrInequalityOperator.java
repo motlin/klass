@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InequalityOperatorImpl.InequalityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrInequalityOperator extends AntlrOperator
@@ -18,7 +18,7 @@ public class AntlrInequalityOperator extends AntlrOperator
     private InequalityOperatorBuilder elementBuilder;
 
     public AntlrInequalityOperator(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InequalityOperatorContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String operatorText)
     {
@@ -34,7 +34,7 @@ public class AntlrInequalityOperator extends AntlrOperator
             throw new IllegalStateException();
         }
         this.elementBuilder = new InequalityOperatorBuilder(
-                this.elementContext,
+                (InequalityOperatorContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.operatorText);

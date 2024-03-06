@@ -11,8 +11,8 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationLiteralImpl
         extends AbstractTypedElement<EnumerationImpl>
@@ -22,7 +22,7 @@ public final class EnumerationLiteralImpl
     private final Optional<String> prettyName;
 
     private EnumerationLiteralImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull EnumerationLiteralContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -32,6 +32,13 @@ public final class EnumerationLiteralImpl
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, enumeration);
         this.prettyName = Objects.requireNonNull(prettyName);
+    }
+
+    @Nonnull
+    @Override
+    public EnumerationLiteralContext getElementContext()
+    {
+        return (EnumerationLiteralContext) super.getElementContext();
     }
 
     @Nonnull
@@ -50,7 +57,7 @@ public final class EnumerationLiteralImpl
         private final EnumerationBuilder enumerationBuilder;
 
         public EnumerationLiteralBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull EnumerationLiteralContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -68,7 +75,7 @@ public final class EnumerationLiteralImpl
         protected EnumerationLiteralImpl buildUnsafe()
         {
             return new EnumerationLiteralImpl(
-                    this.elementContext,
+                    (EnumerationLiteralContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

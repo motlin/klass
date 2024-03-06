@@ -9,12 +9,12 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 
 public class AntlrServiceMultiplicity extends AntlrElement
 {
     public static final AntlrServiceMultiplicity AMBIGUOUS = new AntlrServiceMultiplicity(
-            new ParserRuleContext(),
+            new ServiceMultiplicityContext(null, -1),
             Optional.empty(),
             ServiceMultiplicity.ONE);
 
@@ -22,7 +22,7 @@ public class AntlrServiceMultiplicity extends AntlrElement
     private final ServiceMultiplicity serviceMultiplicity;
 
     public AntlrServiceMultiplicity(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceMultiplicityContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {

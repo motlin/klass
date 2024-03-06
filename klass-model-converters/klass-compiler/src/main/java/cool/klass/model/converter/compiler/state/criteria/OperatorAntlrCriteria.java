@@ -92,7 +92,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         }
         // TODO: Refactor to build the parent before the children
         this.elementBuilder = new OperatorCriteriaBuilder(
-                this.elementContext,
+                (CriteriaOperatorContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.operator.build(),

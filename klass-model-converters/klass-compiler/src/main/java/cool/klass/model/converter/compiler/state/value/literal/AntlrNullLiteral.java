@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.value.literal.NullLiteralImpl.NullLiteralBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.NullLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -21,7 +21,7 @@ public class AntlrNullLiteral
     private NullLiteralBuilder elementBuilder;
 
     public AntlrNullLiteral(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull NullLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement expressionValueOwner)
     {
@@ -42,7 +42,7 @@ public class AntlrNullLiteral
             throw new IllegalStateException();
         }
         this.elementBuilder = new NullLiteralBuilder(
-                this.elementContext,
+                (NullLiteralContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder());
         return this.elementBuilder;

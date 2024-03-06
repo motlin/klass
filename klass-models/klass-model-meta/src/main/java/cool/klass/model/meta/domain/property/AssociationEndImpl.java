@@ -16,8 +16,8 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEndImpl
@@ -28,7 +28,7 @@ public final class AssociationEndImpl
     private final AssociationImpl owningAssociation;
 
     private AssociationEndImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -48,6 +48,13 @@ public final class AssociationEndImpl
                 owningKlass,
                 multiplicity);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
+    }
+
+    @Nonnull
+    @Override
+    public AssociationEndContext getElementContext()
+    {
+        return (AssociationEndContext) super.getElementContext();
     }
 
     @Nonnull
@@ -82,7 +89,7 @@ public final class AssociationEndImpl
         private final AssociationBuilder owningAssociation;
 
         public AssociationEndBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull AssociationEndContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -109,7 +116,7 @@ public final class AssociationEndImpl
         protected AssociationEndImpl buildUnsafe()
         {
             return new AssociationEndImpl(
-                    this.elementContext,
+                    (AssociationEndContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

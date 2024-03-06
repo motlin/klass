@@ -37,7 +37,7 @@ public class AntlrPrimitiveProperty
     private PrimitivePropertyBuilder elementBuilder;
 
     public AntlrPrimitiveProperty(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull PrimitivePropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -84,7 +84,7 @@ public class AntlrPrimitiveProperty
         }
 
         this.elementBuilder = new PrimitivePropertyBuilder(
-                this.elementContext,
+                (PrimitivePropertyContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

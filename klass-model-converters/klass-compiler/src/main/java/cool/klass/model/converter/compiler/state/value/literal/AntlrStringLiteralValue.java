@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.value.literal.StringLiteralValueImpl.StringLiteralValueBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.StringLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -21,7 +21,7 @@ public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
     private       StringLiteralValueBuilder elementBuilder;
 
     public AntlrStringLiteralValue(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull StringLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull String value,
             @Nonnull IAntlrElement expressionValueOwner)
@@ -44,7 +44,7 @@ public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
             throw new IllegalStateException();
         }
         this.elementBuilder = new StringLiteralValueBuilder(
-                this.elementContext,
+                (StringLiteralContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.value);

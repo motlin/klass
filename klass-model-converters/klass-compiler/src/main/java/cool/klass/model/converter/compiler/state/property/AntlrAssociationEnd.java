@@ -86,7 +86,7 @@ public class AntlrAssociationEnd
 
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
-                this.elementContext,
+                (AssociationEndContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

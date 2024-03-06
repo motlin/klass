@@ -28,13 +28,14 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 
+// TODO: Specific subclasses for the specific antlr context types
 public final class AntlrParameter
         extends AntlrIdentifierElement
         implements AntlrMultiplicityOwner
 {
     @Nonnull
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
-            new ParserRuleContext(),
+            new ParserRuleContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -43,7 +44,7 @@ public final class AntlrParameter
 
     @Nonnull
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
-            new ParserRuleContext(),
+            new ParserRuleContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),

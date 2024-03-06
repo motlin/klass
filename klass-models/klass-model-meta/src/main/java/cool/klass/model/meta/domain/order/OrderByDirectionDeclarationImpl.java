@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.api.order.OrderByDirection;
 import cool.klass.model.meta.domain.api.order.OrderByDirectionDeclaration;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 
 public final class OrderByDirectionDeclarationImpl
         extends AbstractElement
@@ -22,13 +22,20 @@ public final class OrderByDirectionDeclarationImpl
     private final OrderByDirection orderByDirection;
 
     private OrderByDirectionDeclarationImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull OrderByDirectionContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull OrderByDirection orderByDirection)
     {
         super(elementContext, macroElement, sourceCode);
         this.orderByDirection = Objects.requireNonNull(orderByDirection);
+    }
+
+    @Nonnull
+    @Override
+    public OrderByDirectionContext getElementContext()
+    {
+        return (OrderByDirectionContext) super.getElementContext();
     }
 
     @Override
@@ -45,7 +52,7 @@ public final class OrderByDirectionDeclarationImpl
         private final OrderByDirection orderByDirection;
 
         public OrderByDirectionDeclarationBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull OrderByDirectionContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull OrderByDirection orderByDirection)
@@ -59,7 +66,7 @@ public final class OrderByDirectionDeclarationImpl
         protected OrderByDirectionDeclarationImpl buildUnsafe()
         {
             return new OrderByDirectionDeclarationImpl(
-                    this.elementContext,
+                    (OrderByDirectionContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.orderByDirection);

@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class LiteralListValueImpl
@@ -26,13 +26,20 @@ public final class LiteralListValueImpl
     private ImmutableList<LiteralValue> literalValues;
 
     private LiteralListValueImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull LiteralListContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull Type type)
     {
         super(elementContext, macroElement, sourceCode);
         this.type = Objects.requireNonNull(type);
+    }
+
+    @Nonnull
+    @Override
+    public LiteralListContext getElementContext()
+    {
+        return (LiteralListContext) super.getElementContext();
     }
 
     @Override
@@ -66,7 +73,7 @@ public final class LiteralListValueImpl
         private       ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders;
 
         public LiteralListValueBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull LiteralListContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull TypeGetter typeBuilder)
@@ -89,7 +96,7 @@ public final class LiteralListValueImpl
         protected LiteralListValueImpl buildUnsafe()
         {
             return new LiteralListValueImpl(
-                    this.elementContext,
+                    (LiteralListContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.typeBuilder.getType());

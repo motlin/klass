@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.parameter.ParameterImpl;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 
 public final class VariableReferenceImpl
         extends AbstractExpressionValue
@@ -22,13 +22,20 @@ public final class VariableReferenceImpl
     private final ParameterImpl parameter;
 
     private VariableReferenceImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull VariableReferenceContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParameterImpl parameter)
     {
         super(elementContext, macroElement, sourceCode);
         this.parameter = Objects.requireNonNull(parameter);
+    }
+
+    @Nonnull
+    @Override
+    public VariableReferenceContext getElementContext()
+    {
+        return (VariableReferenceContext) super.getElementContext();
     }
 
     @Override
@@ -45,7 +52,7 @@ public final class VariableReferenceImpl
         private final ParameterBuilder parameterBuilder;
 
         public VariableReferenceBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull VariableReferenceContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParameterBuilder parameterBuilder)
@@ -59,7 +66,7 @@ public final class VariableReferenceImpl
         protected VariableReferenceImpl buildUnsafe()
         {
             return new VariableReferenceImpl(
-                    this.elementContext,
+                    (VariableReferenceContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.parameterBuilder.getElement());

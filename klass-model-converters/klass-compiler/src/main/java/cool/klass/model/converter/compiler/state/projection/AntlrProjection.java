@@ -90,7 +90,7 @@ public class AntlrProjection
         }
 
         this.projectionBuilder = new ProjectionBuilder(
-                this.elementContext,
+                (ProjectionDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

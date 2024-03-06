@@ -79,7 +79,7 @@ public class AntlrAssociationEndSignature
 
         // TODO: 🔗 Set association end's opposite
         this.associationEndSignatureBuilder = new AssociationEndSignatureBuilder(
-                this.elementContext,
+                (AssociationEndSignatureContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

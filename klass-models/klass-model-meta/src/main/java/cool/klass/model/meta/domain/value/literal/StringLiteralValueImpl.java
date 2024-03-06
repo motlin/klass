@@ -10,7 +10,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.StringLiteralContext;
 
 public final class StringLiteralValueImpl
         extends AbstractLiteralValue
@@ -20,13 +20,20 @@ public final class StringLiteralValueImpl
     private final String value;
 
     private StringLiteralValueImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull StringLiteralContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull String value)
     {
         super(elementContext, macroElement, sourceCode);
         this.value = Objects.requireNonNull(value);
+    }
+
+    @Nonnull
+    @Override
+    public StringLiteralContext getElementContext()
+    {
+        return (StringLiteralContext) super.getElementContext();
     }
 
     @Override
@@ -43,7 +50,7 @@ public final class StringLiteralValueImpl
         private final String value;
 
         public StringLiteralValueBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull StringLiteralContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull String value)
@@ -57,7 +64,7 @@ public final class StringLiteralValueImpl
         protected StringLiteralValueImpl buildUnsafe()
         {
             return new StringLiteralValueImpl(
-                    this.elementContext,
+                    (StringLiteralContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.value);

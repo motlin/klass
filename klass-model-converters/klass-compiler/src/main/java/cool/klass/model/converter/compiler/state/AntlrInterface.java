@@ -16,7 +16,6 @@ import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -33,7 +32,7 @@ public class AntlrInterface extends AntlrClassifier
 {
     @Nonnull
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
-            new ClassDeclarationContext(null, -1),
+            new InterfaceDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -51,7 +50,7 @@ public class AntlrInterface extends AntlrClassifier
 
     @Nonnull
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
-            new ClassDeclarationContext(null, -1),
+            new InterfaceDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -84,7 +83,7 @@ public class AntlrInterface extends AntlrClassifier
     private InterfaceBuilder interfaceBuilder;
 
     public AntlrInterface(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InterfaceDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -110,7 +109,7 @@ public class AntlrInterface extends AntlrClassifier
         }
 
         this.interfaceBuilder = new InterfaceBuilder(
-                this.elementContext,
+                (InterfaceDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

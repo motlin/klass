@@ -28,6 +28,7 @@ import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImpl.MaxPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -44,7 +45,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 {
     @Nonnull
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
-            new ParserRuleContext(null, -1),
+            new ClassDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -110,7 +111,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     @Nonnull
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
-            new ParserRuleContext(null, -1),
+            new ClassDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),

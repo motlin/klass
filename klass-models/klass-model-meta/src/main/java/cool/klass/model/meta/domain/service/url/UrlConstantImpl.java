@@ -10,13 +10,13 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 
 public final class UrlConstantImpl
         extends AbstractIdentifierElement
 {
     private UrlConstantImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull UrlConstantContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -25,11 +25,18 @@ public final class UrlConstantImpl
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
     }
 
+    @Nonnull
+    @Override
+    public UrlConstantContext getElementContext()
+    {
+        return (UrlConstantContext) super.getElementContext();
+    }
+
     public static final class UrlConstantBuilder
             extends IdentifierElementBuilder<UrlConstantImpl>
     {
         public UrlConstantBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull UrlConstantContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -43,7 +50,7 @@ public final class UrlConstantImpl
         protected UrlConstantImpl buildUnsafe()
         {
             return new UrlConstantImpl(
-                    this.elementContext,
+                    (UrlConstantContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

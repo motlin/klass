@@ -39,7 +39,7 @@ public class AntlrOrCriteria extends AntlrBinaryCriteria
             throw new IllegalStateException();
         }
         this.elementBuilder = new OrCriteriaBuilder(
-                this.elementContext,
+                (CriteriaExpressionOrContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.left.build(),

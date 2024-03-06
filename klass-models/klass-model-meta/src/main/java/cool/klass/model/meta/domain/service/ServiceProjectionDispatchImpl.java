@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 
 public final class ServiceProjectionDispatchImpl
         extends AbstractElement
@@ -23,13 +23,20 @@ public final class ServiceProjectionDispatchImpl
     private final ProjectionImpl projection;
 
     private ServiceProjectionDispatchImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceProjectionDispatchContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ProjectionImpl projection)
     {
         super(elementContext, macroElement, sourceCode);
         this.projection = Objects.requireNonNull(projection);
+    }
+
+    @Nonnull
+    @Override
+    public ServiceProjectionDispatchContext getElementContext()
+    {
+        return (ServiceProjectionDispatchContext) super.getElementContext();
     }
 
     @Override
@@ -46,7 +53,7 @@ public final class ServiceProjectionDispatchImpl
         private final ProjectionBuilder projectionBuilder;
 
         public ServiceProjectionDispatchBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ServiceProjectionDispatchContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ProjectionBuilder projectionBuilder)
@@ -60,7 +67,7 @@ public final class ServiceProjectionDispatchImpl
         protected ServiceProjectionDispatchImpl buildUnsafe()
         {
             return new ServiceProjectionDispatchImpl(
-                    this.elementContext,
+                    (ServiceProjectionDispatchContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.projectionBuilder.getElement());

@@ -17,7 +17,6 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
@@ -30,7 +29,7 @@ public class AntlrAssociation
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
-            new ParserRuleContext(),
+            new AssociationDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -54,7 +53,7 @@ public class AntlrAssociation
     private AssociationBuilder associationBuilder;
 
     public AntlrAssociation(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull AssociationDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -149,7 +148,7 @@ public class AntlrAssociation
         AbstractCriteriaBuilder<?> criteriaBuilder = this.relationship.getCriteria().build();
 
         this.associationBuilder = new AssociationBuilder(
-                this.elementContext,
+                (AssociationDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

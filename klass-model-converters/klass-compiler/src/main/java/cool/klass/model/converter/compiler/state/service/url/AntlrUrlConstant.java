@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 
 public class AntlrUrlConstant
         extends AntlrIdentifierElement
@@ -20,7 +20,7 @@ public class AntlrUrlConstant
     private UrlConstantBuilder elementBuilder;
 
     public AntlrUrlConstant(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull UrlConstantContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext)
@@ -44,7 +44,7 @@ public class AntlrUrlConstant
             throw new IllegalStateException();
         }
         this.elementBuilder = new UrlConstantBuilder(
-                this.elementContext,
+                (UrlConstantContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

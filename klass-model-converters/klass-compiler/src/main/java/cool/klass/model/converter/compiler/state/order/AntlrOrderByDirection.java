@@ -44,7 +44,7 @@ public class AntlrOrderByDirection extends AntlrElement
             throw new IllegalStateException();
         }
         this.elementBuilder = new OrderByDirectionDeclarationBuilder(
-                this.elementContext,
+                (OrderByDirectionContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.orderByDirection);

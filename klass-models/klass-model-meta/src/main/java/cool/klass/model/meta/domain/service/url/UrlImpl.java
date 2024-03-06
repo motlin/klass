@@ -17,7 +17,7 @@ import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class UrlImpl
@@ -33,13 +33,20 @@ public final class UrlImpl
     private       ImmutableList<Service>   services;
 
     private UrlImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull UrlDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ServiceGroupImpl serviceGroup)
     {
         super(elementContext, macroElement, sourceCode);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
+    }
+
+    @Nonnull
+    @Override
+    public UrlDeclarationContext getElementContext()
+    {
+        return (UrlDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -137,7 +144,7 @@ public final class UrlImpl
         private ImmutableList<ServiceBuilder>    serviceBuilders;
 
         public UrlBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull UrlDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ServiceGroupBuilder serviceGroupBuilder)
@@ -176,7 +183,7 @@ public final class UrlImpl
         protected UrlImpl buildUnsafe()
         {
             return new UrlImpl(
-                    this.elementContext,
+                    (UrlDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.serviceGroupBuilder.getElement());

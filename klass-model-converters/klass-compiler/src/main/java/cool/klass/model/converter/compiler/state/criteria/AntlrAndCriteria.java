@@ -39,7 +39,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
             throw new IllegalStateException();
         }
         this.elementBuilder = new AndCriteriaBuilder(
-                this.elementContext,
+                (CriteriaExpressionAndContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.left.build(),

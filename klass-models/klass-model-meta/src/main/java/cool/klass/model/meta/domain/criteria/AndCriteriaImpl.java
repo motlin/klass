@@ -9,14 +9,14 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.AndCriteria;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 
 public final class AndCriteriaImpl
         extends AbstractBinaryCriteria
         implements AndCriteria
 {
     private AndCriteriaImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull CriteriaExpressionAndContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractCriteria left,
@@ -25,11 +25,18 @@ public final class AndCriteriaImpl
         super(elementContext, macroElement, sourceCode, left, right);
     }
 
+    @Nonnull
+    @Override
+    public CriteriaExpressionAndContext getElementContext()
+    {
+        return (CriteriaExpressionAndContext) super.getElementContext();
+    }
+
     public static final class AndCriteriaBuilder
             extends AbstractBinaryCriteriaBuilder<AndCriteriaImpl>
     {
         public AndCriteriaBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaExpressionAndContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractCriteriaBuilder<?> left,
@@ -43,7 +50,7 @@ public final class AndCriteriaImpl
         protected AndCriteriaImpl buildUnsafe()
         {
             return new AndCriteriaImpl(
-                    this.elementContext,
+                    (CriteriaExpressionAndContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.left.build(),

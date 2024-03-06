@@ -13,8 +13,8 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class KlassImpl
@@ -34,7 +34,7 @@ public final class KlassImpl
     private Optional<Klass>          superClass;
 
     private KlassImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ClassDeclarationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -48,6 +48,13 @@ public final class KlassImpl
         this.inheritanceType = Objects.requireNonNull(inheritanceType);
         this.isUser          = isUser;
         this.isTransient     = isTransient;
+    }
+
+    @Nonnull
+    @Override
+    public ClassDeclarationContext getElementContext()
+    {
+        return (ClassDeclarationContext) super.getElementContext();
     }
 
     @Override
@@ -144,7 +151,7 @@ public final class KlassImpl
         private Optional<KlassBuilder> superClassBuilder;
 
         public KlassBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ClassDeclarationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -192,7 +199,7 @@ public final class KlassImpl
         protected KlassImpl buildUnsafe()
         {
             return new KlassImpl(
-                    this.elementContext,
+                    (ClassDeclarationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

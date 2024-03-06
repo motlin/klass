@@ -12,8 +12,8 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEndSignatureImpl
@@ -21,7 +21,7 @@ public final class AssociationEndSignatureImpl
         implements AssociationEndSignature
 {
     private AssociationEndSignatureImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -41,6 +41,13 @@ public final class AssociationEndSignatureImpl
                 multiplicity);
     }
 
+    @Nonnull
+    @Override
+    public AssociationEndSignatureContext getElementContext()
+    {
+        return (AssociationEndSignatureContext) super.getElementContext();
+    }
+
     @Override
     public String toString()
     {
@@ -56,7 +63,7 @@ public final class AssociationEndSignatureImpl
             extends ReferencePropertyBuilder<AbstractClassifier, ClassifierBuilder<?>, AssociationEndSignatureImpl>
     {
         public AssociationEndSignatureBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull AssociationEndSignatureContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -81,7 +88,7 @@ public final class AssociationEndSignatureImpl
         protected AssociationEndSignatureImpl buildUnsafe()
         {
             return new AssociationEndSignatureImpl(
-                    this.elementContext,
+                    (AssociationEndSignatureContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

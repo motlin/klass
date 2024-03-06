@@ -9,18 +9,21 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.service.Verb;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 
 public class AntlrVerb extends AntlrElement
 {
     @Nonnull
-    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(new ParserRuleContext(), Optional.empty(), Verb.GET);
+    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(
+            new VerbContext(null, -1),
+            Optional.empty(),
+            Verb.GET);
 
     @Nonnull
     private final Verb verb;
 
     public AntlrVerb(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull VerbContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull Verb verb)
     {

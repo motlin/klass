@@ -41,7 +41,7 @@ public class AllAntlrCriteria extends AntlrCriteria
             throw new IllegalStateException();
         }
         this.elementBuilder = new AllCriteriaBuilder(
-                this.elementContext,
+                (CriteriaAllContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder());
         return this.elementBuilder;

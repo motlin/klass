@@ -9,14 +9,14 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 
 public final class OrCriteriaImpl
         extends AbstractBinaryCriteria
         implements OrCriteria
 {
     private OrCriteriaImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull CriteriaExpressionOrContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractCriteria left,
@@ -25,11 +25,18 @@ public final class OrCriteriaImpl
         super(elementContext, macroElement, sourceCode, left, right);
     }
 
+    @Nonnull
+    @Override
+    public CriteriaExpressionOrContext getElementContext()
+    {
+        return (CriteriaExpressionOrContext) super.getElementContext();
+    }
+
     public static final class OrCriteriaBuilder
             extends AbstractBinaryCriteriaBuilder<OrCriteriaImpl>
     {
         public OrCriteriaBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaExpressionOrContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractCriteriaBuilder<?> left,
@@ -43,7 +50,7 @@ public final class OrCriteriaImpl
         protected OrCriteriaImpl buildUnsafe()
         {
             return new OrCriteriaImpl(
-                    this.elementContext,
+                    (CriteriaExpressionOrContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.left.build(),

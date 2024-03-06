@@ -16,7 +16,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty
 import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
@@ -26,7 +26,7 @@ public class AntlrProjectionDataTypeProperty
 {
     @Nonnull
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
-            new ParserRuleContext(),
+            new ProjectionPrimitiveMemberContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -47,7 +47,7 @@ public class AntlrProjectionDataTypeProperty
     private ProjectionDataTypePropertyBuilder projectionDataTypePropertyBuilder;
 
     public AntlrProjectionDataTypeProperty(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ProjectionPrimitiveMemberContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -78,7 +78,7 @@ public class AntlrProjectionDataTypeProperty
             throw new IllegalStateException();
         }
         this.projectionDataTypePropertyBuilder = new ProjectionDataTypePropertyBuilder(
-                this.elementContext,
+                (ProjectionPrimitiveMemberContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

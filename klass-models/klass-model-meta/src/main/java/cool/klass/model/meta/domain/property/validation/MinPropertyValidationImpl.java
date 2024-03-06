@@ -11,14 +11,14 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 
 public class MinPropertyValidationImpl
         extends AbstractNumericPropertyValidation
         implements MinPropertyValidation
 {
     public MinPropertyValidationImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull MinValidationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty,
@@ -27,11 +27,18 @@ public class MinPropertyValidationImpl
         super(elementContext, macroElement, sourceCode, owningProperty, number);
     }
 
+    @Nonnull
+    @Override
+    public MinValidationContext getElementContext()
+    {
+        return (MinValidationContext) super.getElementContext();
+    }
+
     public static class MinPropertyValidationBuilder
             extends NumericPropertyValidationBuilder<MinPropertyValidationImpl>
     {
         public MinPropertyValidationBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull MinValidationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
@@ -45,7 +52,7 @@ public class MinPropertyValidationImpl
         protected MinPropertyValidationImpl buildUnsafe()
         {
             return new MinPropertyValidationImpl(
-                    this.elementContext,
+                    (MinValidationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.owningPropertyBuilder.getElement(),

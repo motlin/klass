@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 
 public class AntlrOrderByMemberReferencePath extends AntlrElement
 {
@@ -29,7 +29,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
     private OrderByMemberReferencePathBuilder elementBuilder;
 
     public AntlrOrderByMemberReferencePath(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull OrderByMemberReferencePathContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrOrderBy orderByState,
             int ordinal,
@@ -81,7 +81,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         ThisMemberReferencePathBuilder thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
-                this.elementContext,
+                (OrderByMemberReferencePathContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.orderByState.getElementBuilder(),

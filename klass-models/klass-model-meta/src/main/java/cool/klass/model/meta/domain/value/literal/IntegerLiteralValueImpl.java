@@ -9,7 +9,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 
 public final class IntegerLiteralValueImpl
         extends AbstractLiteralValue
@@ -18,13 +18,20 @@ public final class IntegerLiteralValueImpl
     private final int value;
 
     private IntegerLiteralValueImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull IntegerLiteralContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int value)
     {
         super(elementContext, macroElement, sourceCode);
         this.value = value;
+    }
+
+    @Nonnull
+    @Override
+    public IntegerLiteralContext getElementContext()
+    {
+        return (IntegerLiteralContext) super.getElementContext();
     }
 
     @Override
@@ -39,7 +46,7 @@ public final class IntegerLiteralValueImpl
         private final int value;
 
         public IntegerLiteralValueBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull IntegerLiteralContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int value)
@@ -53,7 +60,7 @@ public final class IntegerLiteralValueImpl
         protected IntegerLiteralValueImpl buildUnsafe()
         {
             return new IntegerLiteralValueImpl(
-                    this.elementContext,
+                    (IntegerLiteralContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.value);

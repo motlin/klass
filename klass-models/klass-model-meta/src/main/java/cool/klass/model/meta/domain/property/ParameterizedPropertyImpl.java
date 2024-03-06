@@ -14,7 +14,7 @@ import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 
 // TODO: Super class for reference-type-property?
 public final class ParameterizedPropertyImpl
@@ -25,7 +25,7 @@ public final class ParameterizedPropertyImpl
     // private final ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers;
 
     private ParameterizedPropertyImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -47,6 +47,13 @@ public final class ParameterizedPropertyImpl
 
     @Nonnull
     @Override
+    public ParameterizedPropertyContext getElementContext()
+    {
+        return (ParameterizedPropertyContext) super.getElementContext();
+    }
+
+    @Nonnull
+    @Override
     public Klass getOwningClassifier()
     {
         return (Klass) super.getOwningClassifier();
@@ -56,7 +63,7 @@ public final class ParameterizedPropertyImpl
             extends ReferencePropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
     {
         public ParameterizedPropertyBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ParameterizedPropertyContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -81,7 +88,7 @@ public final class ParameterizedPropertyImpl
         protected ParameterizedPropertyImpl buildUnsafe()
         {
             return new ParameterizedPropertyImpl(
-                    this.elementContext,
+                    (ParameterizedPropertyContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

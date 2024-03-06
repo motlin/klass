@@ -14,7 +14,7 @@ import cool.klass.model.meta.domain.operator.AbstractOperator;
 import cool.klass.model.meta.domain.operator.AbstractOperator.AbstractOperatorBuilder;
 import cool.klass.model.meta.domain.value.AbstractExpressionValue;
 import cool.klass.model.meta.domain.value.AbstractExpressionValue.AbstractExpressionValueBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 
 public final class OperatorCriteriaImpl
         extends AbstractCriteria
@@ -28,7 +28,7 @@ public final class OperatorCriteriaImpl
     private final AbstractExpressionValue targetValue;
 
     private OperatorCriteriaImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull CriteriaOperatorContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractOperator operator,
@@ -39,6 +39,13 @@ public final class OperatorCriteriaImpl
         this.operator    = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
+    }
+
+    @Nonnull
+    @Override
+    public CriteriaOperatorContext getElementContext()
+    {
+        return (CriteriaOperatorContext) super.getElementContext();
     }
 
     @Override
@@ -73,7 +80,7 @@ public final class OperatorCriteriaImpl
         private final AbstractExpressionValueBuilder<?> targetValue;
 
         public OperatorCriteriaBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaOperatorContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractOperatorBuilder<?> operator,
@@ -91,7 +98,7 @@ public final class OperatorCriteriaImpl
         protected OperatorCriteriaImpl buildUnsafe()
         {
             return new OperatorCriteriaImpl(
-                    this.elementContext,
+                    (CriteriaOperatorContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.operator.build(),

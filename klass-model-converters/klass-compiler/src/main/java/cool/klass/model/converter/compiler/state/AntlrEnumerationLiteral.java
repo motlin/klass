@@ -11,7 +11,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
@@ -20,7 +19,7 @@ public class AntlrEnumerationLiteral
 {
     @Nonnull
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
-            new ParserRuleContext(),
+            new EnumerationLiteralContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -28,7 +27,7 @@ public class AntlrEnumerationLiteral
             AntlrEnumeration.AMBIGUOUS);
     @Nonnull
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
-            new ParserRuleContext(),
+            new EnumerationLiteralContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -43,7 +42,7 @@ public class AntlrEnumerationLiteral
     private EnumerationLiteralBuilder elementBuilder;
 
     public AntlrEnumerationLiteral(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull EnumerationLiteralContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,

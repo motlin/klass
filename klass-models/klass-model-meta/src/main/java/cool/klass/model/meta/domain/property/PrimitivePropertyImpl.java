@@ -13,14 +13,14 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 
 public final class PrimitivePropertyImpl
         extends AbstractDataTypeProperty<PrimitiveType>
         implements PrimitiveProperty
 {
     private PrimitivePropertyImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull PrimitivePropertyContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -40,11 +40,18 @@ public final class PrimitivePropertyImpl
                 isOptional);
     }
 
+    @Nonnull
+    @Override
+    public PrimitivePropertyContext getElementContext()
+    {
+        return (PrimitivePropertyContext) super.getElementContext();
+    }
+
     public static final class PrimitivePropertyBuilder
             extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
     {
         public PrimitivePropertyBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull PrimitivePropertyContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -69,7 +76,7 @@ public final class PrimitivePropertyImpl
         protected PrimitivePropertyImpl buildUnsafe()
         {
             return new PrimitivePropertyImpl(
-                    this.elementContext,
+                    (PrimitivePropertyContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

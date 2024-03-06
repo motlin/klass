@@ -42,7 +42,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 {
     @Nonnull
     public static final AntlrService AMBIGUOUS = new AntlrService(
-            new ParserRuleContext(),
+            new ServiceDeclarationContext(null, -1),
             Optional.empty(),
             AntlrUrl.AMBIGUOUS,
             AntlrVerb.AMBIGUOUS);
@@ -75,7 +75,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     private ServiceBuilder                           elementBuilder;
 
     public AntlrService(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrUrl urlState,
             @Nonnull AntlrVerb verbState)
@@ -271,7 +271,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         Verb                verb                = this.verbState.getVerb();
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
         this.elementBuilder = new ServiceBuilder(
-                this.elementContext,
+                (ServiceDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 urlBuilder,

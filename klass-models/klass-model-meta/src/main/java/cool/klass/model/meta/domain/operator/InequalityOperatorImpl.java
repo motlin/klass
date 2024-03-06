@@ -9,14 +9,14 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.InequalityOperator;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 
 public final class InequalityOperatorImpl
         extends AbstractOperator
         implements InequalityOperator
 {
     private InequalityOperatorImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull InequalityOperatorContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull String operatorText)
@@ -24,11 +24,18 @@ public final class InequalityOperatorImpl
         super(elementContext, macroElement, sourceCode, operatorText);
     }
 
+    @Nonnull
+    @Override
+    public InequalityOperatorContext getElementContext()
+    {
+        return (InequalityOperatorContext) super.getElementContext();
+    }
+
     public static final class InequalityOperatorBuilder
             extends AbstractOperatorBuilder<InequalityOperatorImpl>
     {
         public InequalityOperatorBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull InequalityOperatorContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull String operatorText)
@@ -41,7 +48,7 @@ public final class InequalityOperatorImpl
         protected InequalityOperatorImpl buildUnsafe()
         {
             return new InequalityOperatorImpl(
-                    this.elementContext,
+                    (InequalityOperatorContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.operatorText);

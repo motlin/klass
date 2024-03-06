@@ -10,14 +10,13 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationKeywordContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMinPropertyValidation extends AbstractAntlrNumericPropertyValidation
 {
     private MinPropertyValidationBuilder elementBuilder;
 
     public AntlrMinPropertyValidation(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull MinValidationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrDataTypeProperty<?> owningPropertyState,
             int number)
@@ -33,7 +32,7 @@ public class AntlrMinPropertyValidation extends AbstractAntlrNumericPropertyVali
             throw new IllegalStateException();
         }
         this.elementBuilder = new MinPropertyValidationBuilder(
-                this.elementContext,
+                (MinValidationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.owningPropertyState.getElementBuilder(),

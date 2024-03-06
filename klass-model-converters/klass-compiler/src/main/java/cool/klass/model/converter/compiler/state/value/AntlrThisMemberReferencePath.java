@@ -56,7 +56,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
                 .collect(AntlrAssociationEnd::getElementBuilder);
 
         this.elementBuilder = new ThisMemberReferencePathBuilder(
-                this.elementContext,
+                (ThisMemberReferencePathContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.classState.getElementBuilder(),

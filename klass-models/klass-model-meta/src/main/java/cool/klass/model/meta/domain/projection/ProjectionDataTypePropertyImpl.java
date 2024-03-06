@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.projection.AbstractProjectionParent.Abstract
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionDataTypePropertyImpl
@@ -32,7 +33,7 @@ public final class ProjectionDataTypePropertyImpl
     private final AbstractDataTypeProperty<?> property;
 
     private ProjectionDataTypePropertyImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ProjectionPrimitiveMemberContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -47,6 +48,13 @@ public final class ProjectionDataTypePropertyImpl
         this.headerText    = Objects.requireNonNull(headerText);
         this.parent        = Objects.requireNonNull(parent);
         this.property      = Objects.requireNonNull(property);
+    }
+
+    @Nonnull
+    @Override
+    public ProjectionPrimitiveMemberContext getElementContext()
+    {
+        return (ProjectionPrimitiveMemberContext) super.getElementContext();
     }
 
     @Nonnull
@@ -84,7 +92,7 @@ public final class ProjectionDataTypePropertyImpl
         private final DataTypePropertyBuilder<?, ?, ?>   propertyBuilder;
 
         public ProjectionDataTypePropertyBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull ProjectionPrimitiveMemberContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -106,7 +114,7 @@ public final class ProjectionDataTypePropertyImpl
         protected ProjectionDataTypePropertyImpl buildUnsafe()
         {
             return new ProjectionDataTypePropertyImpl(
-                    this.elementContext,
+                    (ProjectionPrimitiveMemberContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

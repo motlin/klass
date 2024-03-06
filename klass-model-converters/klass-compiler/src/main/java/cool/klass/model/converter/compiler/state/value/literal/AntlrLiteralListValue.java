@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import cool.klass.model.meta.domain.value.literal.LiteralListValueImpl.LiteralListValueBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class AntlrLiteralListValue
@@ -22,7 +22,7 @@ public class AntlrLiteralListValue
     private LiteralListValueBuilder                  elementBuilder;
 
     public AntlrLiteralListValue(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull LiteralListContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull IAntlrElement expressionValueOwner)
     {
@@ -47,7 +47,7 @@ public class AntlrLiteralListValue
             throw new IllegalStateException();
         }
         this.elementBuilder = new LiteralListValueBuilder(
-                this.elementContext,
+                (LiteralListContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.getInferredType().getTypeGetter());

@@ -84,7 +84,7 @@ public class AntlrProjectionProjectionReference
         }
 
         this.projectionProjectionReferenceBuilder = new ProjectionProjectionReferenceBuilder(
-                this.elementContext,
+                (ProjectionProjectionReferenceContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

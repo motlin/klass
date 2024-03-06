@@ -11,14 +11,14 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
 
 public class MaxPropertyValidationImpl
         extends AbstractNumericPropertyValidation
         implements MaxPropertyValidation
 {
     public MaxPropertyValidationImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull MaxValidationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty,
@@ -27,11 +27,18 @@ public class MaxPropertyValidationImpl
         super(elementContext, macroElement, sourceCode, owningProperty, number);
     }
 
+    @Nonnull
+    @Override
+    public MaxValidationContext getElementContext()
+    {
+        return (MaxValidationContext) super.getElementContext();
+    }
+
     public static class MaxPropertyValidationBuilder
             extends NumericPropertyValidationBuilder<MaxPropertyValidationImpl>
     {
         public MaxPropertyValidationBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull MaxValidationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
@@ -45,7 +52,7 @@ public class MaxPropertyValidationImpl
         protected MaxPropertyValidationImpl buildUnsafe()
         {
             return new MaxPropertyValidationImpl(
-                    this.elementContext,
+                    (MaxValidationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.owningPropertyBuilder.getElement(),

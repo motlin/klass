@@ -132,7 +132,7 @@ public class AntlrParameterizedProperty
         */
 
         this.parameterizedPropertyBuilder = new ParameterizedPropertyBuilder(
-                this.elementContext,
+                (ParameterizedPropertyContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

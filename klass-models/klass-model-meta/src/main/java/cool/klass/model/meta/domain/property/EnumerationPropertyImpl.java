@@ -13,15 +13,15 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationPropertyImpl
         extends AbstractDataTypeProperty<EnumerationImpl>
         implements EnumerationProperty
 {
     private EnumerationPropertyImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull EnumerationPropertyContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
@@ -41,11 +41,18 @@ public final class EnumerationPropertyImpl
                 isOptional);
     }
 
+    @Nonnull
+    @Override
+    public EnumerationPropertyContext getElementContext()
+    {
+        return (EnumerationPropertyContext) super.getElementContext();
+    }
+
     public static final class EnumerationPropertyBuilder
             extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
     {
         public EnumerationPropertyBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull EnumerationPropertyContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
@@ -70,7 +77,7 @@ public final class EnumerationPropertyImpl
         protected EnumerationPropertyImpl buildUnsafe()
         {
             return new EnumerationPropertyImpl(
-                    this.elementContext,
+                    (EnumerationPropertyContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,

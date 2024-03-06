@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
+// TODO: Specific subclasses for the specific antlr context types
 public class AntlrModifier
         extends AntlrNamedElement
 {
@@ -27,7 +28,7 @@ public class AntlrModifier
             AntlrClassifier.NOT_FOUND);
 
     public static final AntlrModifier AMBIGUOUS = new AntlrModifier(
-            new ParserRuleContext(),
+            new ParserRuleContext(null, -1),
             Optional.empty(),
             -1,
             new ParserRuleContext(),

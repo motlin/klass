@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.value.AbstractMemberReferencePath;
 import cool.klass.model.meta.domain.value.AbstractMemberReferencePath.AbstractMemberReferencePathBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 
 public final class EdgePointCriteriaImpl
         extends AbstractCriteria
@@ -22,13 +22,20 @@ public final class EdgePointCriteriaImpl
     private final AbstractMemberReferencePath memberExpressionValue;
 
     private EdgePointCriteriaImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull CriteriaEdgePointContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractMemberReferencePath memberExpressionValue)
     {
         super(elementContext, macroElement, sourceCode);
         this.memberExpressionValue = Objects.requireNonNull(memberExpressionValue);
+    }
+
+    @Nonnull
+    @Override
+    public CriteriaEdgePointContext getElementContext()
+    {
+        return (CriteriaEdgePointContext) super.getElementContext();
     }
 
     @Override
@@ -45,7 +52,7 @@ public final class EdgePointCriteriaImpl
         private final AbstractMemberReferencePathBuilder<?> memberExpressionValue;
 
         public EdgePointCriteriaBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull CriteriaEdgePointContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractMemberReferencePathBuilder<?> memberExpressionValue)
@@ -59,7 +66,7 @@ public final class EdgePointCriteriaImpl
         protected EdgePointCriteriaImpl buildUnsafe()
         {
             return new EdgePointCriteriaImpl(
-                    this.elementContext,
+                    (CriteriaEdgePointContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.memberExpressionValue.build());

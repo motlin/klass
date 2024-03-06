@@ -11,14 +11,14 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
 
 public class MinLengthPropertyValidationImpl
         extends AbstractNumericPropertyValidation
         implements MinLengthPropertyValidation
 {
     public MinLengthPropertyValidationImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull MinLengthValidationContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty,
@@ -27,11 +27,18 @@ public class MinLengthPropertyValidationImpl
         super(elementContext, macroElement, sourceCode, owningProperty, number);
     }
 
+    @Nonnull
+    @Override
+    public MinLengthValidationContext getElementContext()
+    {
+        return (MinLengthValidationContext) super.getElementContext();
+    }
+
     public static class MinLengthPropertyValidationBuilder
             extends NumericPropertyValidationBuilder<MinLengthPropertyValidationImpl>
     {
         public MinLengthPropertyValidationBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull MinLengthValidationContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
@@ -45,7 +52,7 @@ public class MinLengthPropertyValidationImpl
         protected MinLengthPropertyValidationImpl buildUnsafe()
         {
             return new MinLengthPropertyValidationImpl(
-                    this.elementContext,
+                    (MinLengthValidationContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.owningPropertyBuilder.getElement(),

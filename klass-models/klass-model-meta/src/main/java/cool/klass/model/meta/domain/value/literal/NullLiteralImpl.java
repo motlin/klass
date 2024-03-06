@@ -9,25 +9,32 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.NullLiteralContext;
 
 public final class NullLiteralImpl
         extends AbstractLiteralValue
         implements NullLiteral
 {
     private NullLiteralImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull NullLiteralContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
 
+    @Nonnull
+    @Override
+    public NullLiteralContext getElementContext()
+    {
+        return (NullLiteralContext) super.getElementContext();
+    }
+
     public static final class NullLiteralBuilder
             extends AbstractLiteralValueBuilder<NullLiteralImpl>
     {
         public NullLiteralBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull NullLiteralContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode)
         {
@@ -39,7 +46,7 @@ public final class NullLiteralImpl
         protected NullLiteralImpl buildUnsafe()
         {
             return new NullLiteralImpl(
-                    this.elementContext,
+                    (NullLiteralContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build());
         }

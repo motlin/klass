@@ -29,7 +29,6 @@ import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -127,7 +126,7 @@ public class AntlrClass
     private Optional<AntlrClass> superClassState = Optional.empty();
 
     public AntlrClass(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ClassDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -326,7 +325,7 @@ public class AntlrClass
         }
 
         this.klassBuilder = new KlassBuilder(
-                this.elementContext,
+                (ClassDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

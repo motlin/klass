@@ -35,7 +35,7 @@ public class AntlrServiceGroup
 {
     @Nonnull
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
-            new ParserRuleContext(),
+            new ServiceGroupDeclarationContext(null, -1),
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
@@ -52,7 +52,7 @@ public class AntlrServiceGroup
     private ServiceGroupBuilder serviceGroupBuilder;
 
     public AntlrServiceGroup(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull ServiceGroupDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
             @Nonnull IdentifierContext nameContext,
@@ -171,7 +171,7 @@ public class AntlrServiceGroup
         }
 
         this.serviceGroupBuilder = new ServiceGroupBuilder(
-                this.elementContext,
+                (ServiceGroupDeclarationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,

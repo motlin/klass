@@ -15,7 +15,7 @@ import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class TypeMemberReferencePathImpl
@@ -23,7 +23,7 @@ public final class TypeMemberReferencePathImpl
         implements TypeMemberReferencePath
 {
     private TypeMemberReferencePathImpl(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull TypeMemberReferencePathContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull KlassImpl klass,
@@ -33,11 +33,18 @@ public final class TypeMemberReferencePathImpl
         super(elementContext, macroElement, sourceCode, klass, associationEnds, property);
     }
 
+    @Nonnull
+    @Override
+    public TypeMemberReferencePathContext getElementContext()
+    {
+        return (TypeMemberReferencePathContext) super.getElementContext();
+    }
+
     public static final class TypeMemberReferencePathBuilder
             extends AbstractMemberReferencePathBuilder<TypeMemberReferencePathImpl>
     {
         public TypeMemberReferencePathBuilder(
-                @Nonnull ParserRuleContext elementContext,
+                @Nonnull TypeMemberReferencePathContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull KlassBuilder klassBuilder,
@@ -52,7 +59,7 @@ public final class TypeMemberReferencePathImpl
         protected TypeMemberReferencePathImpl buildUnsafe()
         {
             return new TypeMemberReferencePathImpl(
-                    this.elementContext,
+                    (TypeMemberReferencePathContext) this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.klassBuilder.getElement(),

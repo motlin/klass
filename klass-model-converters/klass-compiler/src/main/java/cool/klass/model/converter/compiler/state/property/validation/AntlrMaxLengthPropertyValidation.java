@@ -10,14 +10,13 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationKeywordContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMaxLengthPropertyValidation extends AbstractAntlrNumericPropertyValidation
 {
     private MaxLengthPropertyValidationBuilder elementBuilder;
 
     public AntlrMaxLengthPropertyValidation(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull MaxLengthValidationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrDataTypeProperty<?> owningPropertyState,
             int number)
@@ -33,7 +32,7 @@ public class AntlrMaxLengthPropertyValidation extends AbstractAntlrNumericProper
             throw new IllegalStateException();
         }
         this.elementBuilder = new MaxLengthPropertyValidationBuilder(
-                this.elementContext,
+                (MaxLengthValidationContext) this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.owningPropertyState.getElementBuilder(),

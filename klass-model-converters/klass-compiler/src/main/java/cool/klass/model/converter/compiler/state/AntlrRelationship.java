@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
 
@@ -20,7 +20,7 @@ public class AntlrRelationship
     private AntlrCriteria criteria;
 
     public AntlrRelationship(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull RelationshipContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             AntlrAssociation association)
     {

@@ -40,6 +40,13 @@ public final class ParameterImpl
         this.dataType     = Objects.requireNonNull(dataType);
     }
 
+    @Nonnull
+    @Override
+    public ParserRuleContext getElementContext()
+    {
+        return super.getElementContext();
+    }
+
     @Override
     public String toString()
     {
