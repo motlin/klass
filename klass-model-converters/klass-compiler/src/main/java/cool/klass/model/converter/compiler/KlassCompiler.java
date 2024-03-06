@@ -5,6 +5,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
+import cool.klass.model.converter.compiler.phase.AuditAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.AuditPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassifierPhase;
@@ -50,6 +51,7 @@ public class KlassCompiler
                     AuditPropertyInferencePhase::new,
                     AssociationPhase::new,
                     VersionAssociationInferencePhase::new,
+                    AuditAssociationInferencePhase::new,
                     RelationshipPhase::new,
                     ProjectionDeclarationPhase::new,
                     ProjectionPhase::new,

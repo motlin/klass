@@ -41,8 +41,9 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import org.eclipse.collections.api.list.ImmutableList;
 
-// TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
-public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
+// TODO: ⬆ Generate default order-bys (or infer default order-bys) and generate order-bys on association ends.
+public class ReladomoObjectFileGenerator
+        extends AbstractReladomoGenerator
 {
     public ReladomoObjectFileGenerator(@Nonnull DomainModel domainModel)
     {
@@ -198,17 +199,56 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 
     private List<RelationshipType> convertRelationships(@Nonnull Klass klass)
     {
-        return klass
-                .getAssociationEnds()
-                .select(associationEnd ->
-                        associationEnd == associationEnd.getOwningAssociation().getTargetAssociationEnd())
-                .collect(this::convertRelationship)
-                .castToList();
+        ImmutableList<AssociationEnd> associationEnds = klass.getDeclaredAssociationEnds();
+
+        ImmutableList<AssociationEnd> forward = associationEnds.select(this::isForwardRelationship);
+        ImmutableList<AssociationEnd> reverse = associationEnds.select(this::isReverseRelationship);
+
+        // TODO: There's a third set of association ends where both sides are abstract types. For those, we should generate a forward-only relationship
+
+        ImmutableList<RelationshipType> relationshipTypes = forward
+                .collectWith(this::convertRelationship, false);
+        ImmutableList<RelationshipType> reverseAbstractRelationshipTypes = reverse
+                .collectWith(this::convertRelationship, true);
+
+        return relationshipTypes.newWithAll(reverseAbstractRelationshipTypes).castToList();
+    }
+
+    private boolean isForwardRelationship(AssociationEnd associationEnd)
+    {
+        return this.isForwardDeclared(associationEnd) && !this.mustBeOnResultType(associationEnd);
+    }
+
+    private boolean isReverseRelationship(AssociationEnd associationEnd)
+    {
+        return this.isReverseDeclared(associationEnd) && this.mustBeOnResultType(associationEnd.getOpposite());
+    }
+
+    private boolean isForwardDeclared(AssociationEnd associationEnd)
+    {
+        return associationEnd == associationEnd.getOwningAssociation().getTargetAssociationEnd();
+    }
+
+    private boolean isReverseDeclared(AssociationEnd associationEnd)
+    {
+        return associationEnd == associationEnd.getOwningAssociation().getSourceAssociationEnd();
+    }
+
+    private boolean mustBeOnResultType(AssociationEnd associationEnd)
+    {
+        return !associationEnd.getOwningClassifier().isAbstract()
+                && associationEnd.getType().isAbstract()
+                && associationEnd.getMultiplicity().isToMany();
     }
 
     @Nonnull
-    private RelationshipType convertRelationship(@Nonnull AssociationEnd associationEnd)
+    private RelationshipType convertRelationship(@Nonnull AssociationEnd associationEnd, boolean reverse)
     {
+        if (this.isForwardRelationship(associationEnd) && this.isReverseRelationship(associationEnd))
+        {
+            throw new AssertionError(associationEnd);
+        }
+
         AssociationEnd   opposite         = associationEnd.getOpposite();
         RelationshipType relationshipType = new RelationshipType();
         relationshipType.setName(associationEnd.getName());
@@ -221,7 +261,10 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         relationshipType.setRelatedObject(associationEnd.getType().getName());
         // TODO: Reladomo Order-By generation
         relationshipType.setOrderBy(associationEnd.getOrderBy().map(this::convertOrderBy).orElse(null));
-        relationshipType._setValue(this.getRelationshipString(associationEnd.getOwningAssociation().getCriteria()));
+        String relationshipString = this.getRelationshipString(
+                associationEnd.getOwningAssociation().getCriteria(),
+                reverse);
+        relationshipType._setValue(relationshipString);
         return relationshipType;
     }
 
@@ -257,10 +300,10 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private String getRelationshipString(@Nonnull Criteria criteria)
+    private String getRelationshipString(@Nonnull Criteria criteria, boolean reverse)
     {
         StringBuilder   stringBuilder = new StringBuilder();
-        CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder);
+        CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder, reverse);
         criteria.visit(visitor);
         return stringBuilder.toString();
     }

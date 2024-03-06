@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.base.CaseFormat;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributeInterfaceType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributeInterfaceType;
 import com.gs.fw.common.mithra.generator.metamodel.CardinalityType;
@@ -32,7 +31,8 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
+public class ReladomoInterfaceFileGenerator
+        extends AbstractReladomoGenerator
 {
     public ReladomoInterfaceFileGenerator(@Nonnull DomainModel domainModel)
     {
@@ -106,19 +106,22 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         return associationEnds
                 .select(associationEnd ->
                         associationEnd == associationEnd.getOwningAssociation().getTargetAssociationEnd())
-                .collect(this::convertRelationship)
+                .collectWith(this::convertRelationship, true)
                 .castToList();
     }
 
     @Nonnull
-    private RelationshipInterfaceType convertRelationship(@Nonnull AssociationEnd associationEnd)
+    private RelationshipInterfaceType convertRelationship(@Nonnull AssociationEnd associationEnd, boolean reverse)
     {
         AssociationEnd            opposite         = associationEnd.getOpposite();
         RelationshipInterfaceType relationshipType = new RelationshipInterfaceType();
         relationshipType.setName(associationEnd.getName());
         relationshipType.setCardinality(this.getCardinality(associationEnd, opposite));
         relationshipType.setRelatedObject(associationEnd.getType().getName());
-        relationshipType._setValue(this.getRelationshipString(associationEnd.getOwningAssociation().getCriteria()));
+        String relationshipString = this.getRelationshipString(
+                associationEnd.getOwningAssociation().getCriteria(),
+                reverse);
+        relationshipType._setValue(relationshipString);
         return relationshipType;
     }
 
@@ -154,10 +157,10 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private String getRelationshipString(@Nonnull Criteria criteria)
+    private String getRelationshipString(@Nonnull Criteria criteria, boolean reverse)
     {
         StringBuilder   stringBuilder = new StringBuilder();
-        CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder);
+        CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder, reverse);
         criteria.visit(visitor);
         return stringBuilder.toString();
     }
@@ -227,8 +230,6 @@ public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
         // TODO: Use actual temporal properties
         String fromName       = propertyName + "From";
         String toName         = propertyName + "To";
-        String fromColumnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, fromName);
-        String toColumnName   = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, toName);
 
         asOfAttributeType.setName(propertyName);
         asOfAttributeType.setToIsInclusive(false);

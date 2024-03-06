@@ -14,29 +14,49 @@ import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
-class ExpressionValueToRelationshipVisitor implements ExpressionValueVisitor
+class ExpressionValueToRelationshipVisitor
+        implements ExpressionValueVisitor
 {
     @Nonnull
     private final StringBuilder stringBuilder;
+    private final boolean       reverse;
 
-    ExpressionValueToRelationshipVisitor(@Nonnull StringBuilder stringBuilder)
+    ExpressionValueToRelationshipVisitor(@Nonnull StringBuilder stringBuilder, boolean reverse)
     {
         this.stringBuilder = Objects.requireNonNull(stringBuilder);
+        this.reverse       = reverse;
     }
 
     @Override
     public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
-        this.stringBuilder.append(typeMemberExpressionValue.getKlass().getName());
-        this.stringBuilder.append('.');
-        this.stringBuilder.append(typeMemberExpressionValue.getProperty().getName());
+        if (this.reverse)
+        {
+            this.stringBuilder.append("this.");
+            this.stringBuilder.append(typeMemberExpressionValue.getProperty().getName());
+        }
+        else
+        {
+            this.stringBuilder.append(typeMemberExpressionValue.getKlass().getName());
+            this.stringBuilder.append('.');
+            this.stringBuilder.append(typeMemberExpressionValue.getProperty().getName());
+        }
     }
 
     @Override
     public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
-        this.stringBuilder.append("this.");
-        this.stringBuilder.append(thisMemberExpressionValue.getProperty().getName());
+        if (this.reverse)
+        {
+            this.stringBuilder.append(thisMemberExpressionValue.getKlass().getName());
+            this.stringBuilder.append('.');
+            this.stringBuilder.append(thisMemberExpressionValue.getProperty().getName());
+        }
+        else
+        {
+            this.stringBuilder.append("this.");
+            this.stringBuilder.append(thisMemberExpressionValue.getProperty().getName());
+        }
     }
 
     @Override

@@ -18,10 +18,12 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
 {
     @Nonnull
     private final StringBuilder stringBuilder;
+    private final boolean reverse;
 
-    public CriteriaToRelationshipVisitor(@Nonnull StringBuilder stringBuilder)
+    public CriteriaToRelationshipVisitor(@Nonnull StringBuilder stringBuilder, boolean reverse)
     {
         this.stringBuilder = Objects.requireNonNull(stringBuilder);
+        this.reverse       = reverse;
     }
 
     @Override
@@ -55,16 +57,16 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
 
         if (targetValue instanceof NullLiteral)
         {
-            sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+            sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder, this.reverse));
             String reladomoNullOperator = this.getReladomoNullOperator(operator);
             this.stringBuilder.append(" ");
             this.stringBuilder.append(reladomoNullOperator);
             return;
         }
 
-        sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+        sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder, this.reverse));
         operator.visit(new OperatorToRelationshipVisitor(this.stringBuilder));
-        targetValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+        targetValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder, this.reverse));
     }
 
     @Nonnull

@@ -148,7 +148,7 @@ classifierModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'version
     | identifier {notifyErrorListeners("Unrecognized Classifier modifier: " + _input.LT(-1).getText());};
 dataTypePropertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived' | 'final'
     | identifier {notifyErrorListeners("Unrecognized DataTypeProperty modifier: " + _input.LT(-1).getText());};
-associationEndModifier: 'owned' | 'final' | 'version' | 'private'
+associationEndModifier: 'owned' | 'final' | 'version' | 'private' | 'createdBy' | 'lastUpdatedBy'
     | identifier {notifyErrorListeners("Unrecognized AssociationEnd modifier: " + _input.LT(-1).getText());};
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy'
     | identifier {notifyErrorListeners("Unrecognized ParameterizedProperty modifier: " + _input.LT(-1).getText());};

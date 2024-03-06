@@ -239,6 +239,7 @@ public abstract class PersistentSynchronizer
         PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = klass.getAssociationEnds()
                 .reject(associationEnd -> pathHere.equals(Optional.of(associationEnd.getOpposite())))
                 .reject(AssociationEnd::isVersion)
+                .reject(AssociationEnd::isAudit)
                 .partition(AssociationEnd::isOwned);
 
         boolean mutationOccurred = false;

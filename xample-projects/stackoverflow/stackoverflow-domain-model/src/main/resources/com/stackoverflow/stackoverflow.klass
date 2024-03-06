@@ -108,15 +108,15 @@ class Question
     createdOn              : Instant createdOn;
     lastUpdatedById        : String private lastUpdatedBy;
 
-    createdBy(): User[1..1] createdBy
-    {
-        this.createdById == User.userId
-    }
-
-    lastUpdatedBy(): User[1..1] lastUpdatedBy
-    {
-        this.lastUpdatedById == User.userId
-    }
+    // createdBy(): User[1..1] createdBy
+    // {
+    //     this.createdById == User.userId
+    // }
+    //
+    // lastUpdatedBy(): User[1..1] lastUpdatedBy
+    // {
+    //     this.lastUpdatedById == User.userId
+    // }
 }
 
 // The _Version class is implied by the versioned annotation, and not supposed to actually be declared
@@ -218,14 +218,6 @@ association QuestionHasVotes
     votes                  : QuestionVote[0..*];
 
     relationship this.id == QuestionVote.questionId
-}
-
-association UserHasQuestionVotes
-{
-    user: User[1..1] final;
-    votes                  : QuestionVote[0..*];
-
-    relationship this.userId == QuestionVote.createdById
 }
 
 projection QuestionVoteWriteProjection on QuestionVote
