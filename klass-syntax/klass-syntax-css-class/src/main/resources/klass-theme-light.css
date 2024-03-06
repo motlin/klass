@@ -1,0 +1,25 @@
+.theme-light {
+    --color-foreground: Black;
+    --color-background: White;
+
+    --color-comment: Gray;
+    --color-keyword: Purple;
+    --color-identifier: Black;
+    --color-package-name: Maroon;
+    --color-top-level-element-name: Maroon;
+    /* DeepSkyBlue */
+    --color-interface-name: #0080C0;
+    /* DarkBlue */
+    --color-enumeration-literal-name: #000080;
+    /* Chocolate */
+    --color-parameter-name: #b55700;
+    --color-property-name: #5555ff;
+    --color-literal: Blue;
+    --color-string-literal: Green;
+
+    /* DarkBlue */
+    --color-url-constant: #000572;
+
+    /* Silver */
+    --color-semicolon: #cccccc;
+}

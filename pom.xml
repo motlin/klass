@@ -31,6 +31,7 @@
         <module>klass-reladomo</module>
         <module>klass-serialization-jackson</module>
         <module>klass-serializers</module>
+        <module>klass-syntax</module>
         <module>klass-test-modules</module>
         <module>xample-projects</module>
     </modules>

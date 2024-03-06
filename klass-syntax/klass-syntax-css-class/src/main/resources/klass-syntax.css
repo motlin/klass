@@ -1,0 +1,306 @@
+.comment {
+    color: var(--color-comment, --color-foreground);
+}
+.block-comment {
+    color: var(--color-block-comment, var(--color-comment, --color-foreground));
+}
+.line-comment {
+    color: var(--color-line-comment, var(--color-comment, --color-foreground));
+}
+.keyword {
+    color: var(--color-keyword, --color-foreground);
+}
+.package-keyword {
+    color: var(--color-package-keyword, var(--color-keyword, --color-foreground));
+}
+.keyword-enumeration {
+    color: var(--color-keyword-enumeration, var(--color-keyword, --color-foreground));
+}
+.keyword-interface {
+    color: var(--color-keyword-interface, var(--color-keyword, --color-foreground));
+}
+.keyword-user {
+    color: var(--color-keyword-user, var(--color-keyword, --color-foreground));
+}
+.keyword-class {
+    color: var(--color-keyword-class, var(--color-keyword, --color-foreground));
+}
+.keyword-projection {
+    color: var(--color-keyword-projection, var(--color-keyword, --color-foreground));
+}
+.keyword-service {
+    color: var(--color-keyword-service, var(--color-keyword, --color-foreground));
+}
+.keyword-abstract {
+    color: var(--color-keyword-abstract, var(--color-keyword, --color-foreground));
+}
+.keyword-extends {
+    color: var(--color-keyword-extends, var(--color-keyword, --color-foreground));
+}
+.keyword-implements {
+    color: var(--color-keyword-implements, var(--color-keyword, --color-foreground));
+}
+.keyword-inheritance-type {
+    color: var(--color-keyword-inheritance-type, var(--color-keyword, --color-foreground));
+}
+.keyword-association {
+    color: var(--color-keyword-association, var(--color-keyword, --color-foreground));
+}
+.keyword-relationship {
+    color: var(--color-keyword-relationship, var(--color-keyword, --color-foreground));
+}
+.keyword-order-by {
+    color: var(--color-keyword-order-by, var(--color-keyword, --color-foreground));
+}
+.keyword-order-by-direction {
+    color: var(--color-keyword-order-by-direction, var(--color-keyword, --color-foreground));
+}
+.keyword-on {
+    color: var(--color-keyword-on, var(--color-keyword, --color-foreground));
+}
+.keyword-multiplicity {
+    color: var(--color-keyword-multiplicity, var(--color-keyword, --color-foreground));
+}
+.keyword-multiplicity-choice {
+    color: var(--color-keyword-multiplicity-choice, var(--color-keyword-multiplicity, var(--color-keyword, --color-foreground)));
+}
+.keyword-service-criteria {
+    color: var(--color-keyword-service-criteria, var(--color-keyword-multiplicity, var(--color-keyword, --color-foreground)));
+}
+.primitive-type {
+    color: var(--color-primitive-type, var(--color-keyword, --color-foreground));
+}
+.verb {
+    color: var(--color-verb, var(--color-keyword, --color-foreground));
+}
+.verb-get {
+    color: var(--color-verb-get, var(--color-verb, var(--color-keyword, --color-foreground)));
+}
+.verb-post {
+    color: var(--color-verb-post, var(--color-verb, var(--color-keyword, --color-foreground)));
+}
+.verb-put {
+    color: var(--color-verb-put, var(--color-verb, var(--color-keyword, --color-foreground)));
+}
+.verb-patch {
+    color: var(--color-verb-patch, var(--color-verb, var(--color-keyword, --color-foreground)));
+}
+.verb-delete {
+    color: var(--color-verb-delete, var(--color-verb, var(--color-keyword, --color-foreground)));
+}
+.modifier {
+    color: var(--color-modifier, var(--color-keyword, --color-foreground));
+}
+.class-modifier {
+    color: var(--color-class-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.data-type-property-modifier {
+    color: var(--color-data-type-property-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.association-end-modifier {
+    color: var(--color-association-end-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.parameterized-property-modifier {
+    color: var(--color-parameterized-property-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.parameter-modifier {
+    color: var(--color-parameter-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.validation-modifier {
+    color: var(--color-validation-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.service-category-modifier {
+    color: var(--color-service-category-modifier, var(--color-modifier, var(--color-keyword, --color-foreground)));
+}
+.identifier {
+    color: var(--color-identifier, --color-foreground);
+}
+.package-name {
+    color: var(--color-package-name, var(--color-identifier, --color-foreground));
+}
+.top-level-element-name {
+    color: var(--color-top-level-element-name, var(--color-identifier, --color-foreground));
+}
+.enumeration-name {
+    color: var(--color-enumeration-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)));
+}
+.classifier-name {
+    color: var(--color-classifier-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)));
+}
+.interface-name {
+    color: var(--color-interface-name, var(--color-classifier-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground))));
+}
+.class-name {
+    color: var(--color-class-name, var(--color-classifier-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground))));
+}
+.association-name {
+    color: var(--color-association-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)));
+}
+.projection-name {
+    color: var(--color-projection-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)));
+}
+.enumeration-literal-name {
+    color: var(--color-enumeration-literal-name, var(--color-identifier, --color-foreground));
+}
+.parameter-name {
+    color: var(--color-parameter-name, var(--color-identifier, --color-foreground));
+}
+.property-name {
+    color: var(--color-property-name, var(--color-identifier, --color-foreground));
+}
+.data-type-property-name {
+    color: var(--color-data-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground)));
+}
+.primitive-property-name {
+    color: var(--color-primitive-property-name, var(--color-data-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground))));
+}
+.enumeration-property-name {
+    color: var(--color-enumeration-property-name, var(--color-data-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground))));
+}
+.reference-type-property-name {
+    color: var(--color-reference-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground)));
+}
+.parameterized-property-name {
+    color: var(--color-parameterized-property-name, var(--color-reference-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground))));
+}
+.association-end-name {
+    color: var(--color-association-end-name, var(--color-reference-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground))));
+}
+.enumeration-reference {
+    color: var(--color-enumeration-reference, var(--color-enumeration-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground))));
+}
+.interface-reference {
+    color: var(--color-interface-reference, var(--color-interface-name, var(--color-classifier-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)))));
+}
+.class-reference {
+    color: var(--color-class-reference, var(--color-class-name, var(--color-classifier-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground)))));
+}
+.projection-reference {
+    color: var(--color-projection-reference, var(--color-projection-name, var(--color-top-level-element-name, var(--color-identifier, --color-foreground))));
+}
+.data-type-property-reference {
+    color: var(--color-data-type-property-reference, var(--color-data-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground))));
+}
+.association-end-reference {
+    color: var(--color-association-end-reference, var(--color-association-end-name, var(--color-reference-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground)))));
+}
+.parameterized-property-reference {
+    color: var(--color-parameterized-property-reference, var(--color-parameterized-property-name, var(--color-reference-type-property-name, var(--color-property-name, var(--color-identifier, --color-foreground)))));
+}
+.property-reference {
+    color: var(--color-property-reference, var(--color-property-name, var(--color-identifier, --color-foreground)));
+}
+.parameter-reference {
+    color: var(--color-parameter-reference, var(--color-parameter-name, var(--color-identifier, --color-foreground)));
+}
+.literal {
+    color: var(--color-literal, var(--color-keyword, --color-foreground));
+}
+.literal-this {
+    color: var(--color-literal-this, var(--color-keyword, --color-foreground));
+}
+.literal-native {
+    color: var(--color-literal-native, var(--color-keyword, --color-foreground));
+}
+.string-literal {
+    color: var(--color-string-literal, var(--color-literal, var(--color-keyword, --color-foreground)));
+}
+.integer-literal {
+    color: var(--color-integer-literal, var(--color-literal, var(--color-keyword, --color-foreground)));
+}
+.boolean-literal {
+    color: var(--color-boolean-literal, var(--color-literal, var(--color-keyword, --color-foreground)));
+}
+.character-literal {
+    color: var(--color-character-literal, var(--color-literal, var(--color-keyword, --color-foreground)));
+}
+.floating-point-literal {
+    color: var(--color-floating-point-literal, var(--color-literal, var(--color-keyword, --color-foreground)));
+}
+.asterisk-literal {
+    color: var(--color-asterisk-literal, var(--color-integer-literal, var(--color-literal, var(--color-keyword, --color-foreground))));
+}
+.punctuation {
+    color: var(--color-punctuation, --color-foreground);
+}
+.comma {
+    color: var(--color-comma, var(--color-punctuation, --color-foreground));
+}
+.dot {
+    color: var(--color-dot, var(--color-punctuation, --color-foreground));
+}
+.dotdot {
+    color: var(--color-dotdot, var(--color-punctuation, --color-foreground));
+}
+.semicolon {
+    color: var(--color-semicolon, var(--color-punctuation, --color-foreground));
+}
+.operator {
+    color: var(--color-operator, var(--color-punctuation, --color-foreground));
+}
+.operator-eq {
+    color: var(--color-operator-eq, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.operator-ne {
+    color: var(--color-operator-ne, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.operator-lt {
+    color: var(--color-operator-lt, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.operator-gt {
+    color: var(--color-operator-gt, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.operator-le {
+    color: var(--color-operator-le, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.operator-ge {
+    color: var(--color-operator-ge, var(--color-operator, var(--color-punctuation, --color-foreground)));
+}
+.word-operator {
+    color: var(--color-word-operator, var(--color-keyword, --color-foreground));
+}
+.operator-in {
+    color: var(--color-operator-in, var(--color-word-operator, var(--color-keyword, --color-foreground)));
+}
+.operator-string {
+    color: var(--color-operator-string, var(--color-word-operator, var(--color-keyword, --color-foreground)));
+}
+.colon {
+    color: var(--color-colon, var(--color-punctuation, --color-foreground));
+}
+.slash {
+    color: var(--color-slash, var(--color-punctuation, --color-foreground));
+}
+.question {
+    color: var(--color-question, var(--color-punctuation, --color-foreground));
+}
+.paired-punctuation {
+    color: var(--color-paired-punctuation, var(--color-punctuation, --color-foreground));
+}
+.parentheses {
+    color: var(--color-parentheses, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground)));
+}
+.parenthesis-left {
+    color: var(--color-parenthesis-left, var(--color-parentheses, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
+.parenthesis-right {
+    color: var(--color-parenthesis-right, var(--color-parentheses, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
+.curly-braces {
+    color: var(--color-curly-braces, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground)));
+}
+.curly-left {
+    color: var(--color-curly-left, var(--color-curly-braces, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
+.curly-right {
+    color: var(--color-curly-right, var(--color-curly-braces, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
+.square-brackets {
+    color: var(--color-square-brackets, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground)));
+}
+.square-bracket-left {
+    color: var(--color-square-bracket-left, var(--color-square-brackets, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
+.square-bracket-right {
+    color: var(--color-square-bracket-right, var(--color-square-brackets, var(--color-paired-punctuation, var(--color-punctuation, --color-foreground))));
+}
