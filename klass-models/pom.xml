@@ -16,9 +16,9 @@
     <name>Klass Models (Module Group)</name>
 
     <modules>
+        <module>klass-model-meta-interface</module>
         <module>klass-model-meta</module>
         <module>klass-model-loader</module>
         <module>klass-model-bootstrap</module>
-        <module>klass-model-meta-interface</module>
     </modules>
 </project>

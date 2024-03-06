@@ -13,7 +13,7 @@
     <name>Klass (Root Module Group)</name>
 
     <modules>
-        <module>xample-projects</module>
+        <module>klass-maven-archetype</module>
         <module>klass-models</module>
         <module>klass-model-converters</module>
         <module>klass-generators</module>
@@ -24,7 +24,7 @@
         <module>klass-dropwizard-bundles</module>
         <module>klass-test-modules</module>
         <module>klass-data-store</module>
-        <module>klass-maven-archetype</module>
+        <module>xample-projects</module>
     </modules>
 
     <properties>
