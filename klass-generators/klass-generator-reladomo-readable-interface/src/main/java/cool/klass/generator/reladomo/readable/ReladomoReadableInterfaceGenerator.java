@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.reladomo.primitive.visitor.PrimitiveToReladomoTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -95,7 +95,7 @@ public class ReladomoReadableInterfaceGenerator
 
     private String getPropertySourceCode(PrimitiveProperty property)
     {
-        ImmutableList<String> propertyModifierNames = property.getModifiers().collect(NamedElement::getName);
+        ImmutableList<String> propertyModifierNames = property.getModifiers().collect(Modifier::getKeyword);
 
         String comment = propertyModifierNames.isEmpty()
                 ? ""

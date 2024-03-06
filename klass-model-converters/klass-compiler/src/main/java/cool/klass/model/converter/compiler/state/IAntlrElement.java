@@ -94,7 +94,7 @@ public interface IAntlrElement
 
         String message = String.format(
                 "Modifiers %s require one 'user' class in the domain model.",
-                offendingModifiers);
+                offendingModifiers.collect(AntlrModifier::getKeyword));
         compilerErrorHolder.add(
                 "ERR_ADT_MOD",
                 message,

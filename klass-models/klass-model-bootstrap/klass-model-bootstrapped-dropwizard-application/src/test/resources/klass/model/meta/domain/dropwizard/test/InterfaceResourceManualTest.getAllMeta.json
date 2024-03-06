@@ -25,7 +25,7 @@
         "optional": false,
         "propertyModifiers": [
           {
-            "name": "key"
+            "keyword": "key"
           }
         ],
         "minLengthValidation": null,

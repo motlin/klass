@@ -24,10 +24,10 @@ public interface Classifier
     {
         Objects.requireNonNull(this.getDeclaredModifiers());
 
-        MutableSet<String> propertyNames = this.getDeclaredModifiers().collect(NamedElement::getName).toSet();
+        MutableSet<String> propertyNames = this.getDeclaredModifiers().collect(Modifier::getKeyword).toSet();
 
         ImmutableList<Modifier> inheritedProperties = this.getInheritedModifiers()
-                .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
+                .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getKeyword()));
 
         return this.getDeclaredModifiers().newWithAll(inheritedProperties);
     }
@@ -36,7 +36,7 @@ public interface Classifier
     {
         return this.getInterfaces()
                 .flatCollect(Classifier::getModifiers)
-                .distinctBy(NamedElement::getName)
+                .distinctBy(Modifier::getKeyword)
                 .toImmutable();
     }
 

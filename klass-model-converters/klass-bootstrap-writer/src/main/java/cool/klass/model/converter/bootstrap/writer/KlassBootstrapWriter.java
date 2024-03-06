@@ -475,7 +475,8 @@ public class KlassBootstrapWriter
         for (Modifier modifier : dataTypeProperty.getModifiers())
         {
             klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
-            KlassBootstrapWriter.handleNamedElement(bootstrappedPropertyModifier, modifier);
+            bootstrappedPropertyModifier.setKeyword(modifier.getKeyword());
+            bootstrappedPropertyModifier.setOrdinal(modifier.getOrdinal());
             bootstrappedPropertyModifier.setClassifierName(classifier.getName());
             bootstrappedPropertyModifier.setPropertyName(dataTypeProperty.getName());
             bootstrappedPropertyModifier.insert();
@@ -526,7 +527,8 @@ public class KlassBootstrapWriter
         for (Modifier modifier : classifier.getModifiers())
         {
             var bootstrappedClassifierModifier = new klass.model.meta.domain.ClassifierModifier();
-            KlassBootstrapWriter.handleNamedElement(bootstrappedClassifierModifier, modifier);
+            bootstrappedClassifierModifier.setKeyword(modifier.getKeyword());
+            bootstrappedClassifierModifier.setOrdinal(modifier.getOrdinal());
             bootstrappedClassifierModifier.setClassifierName(classifier.getName());
             bootstrappedClassifierModifier.insert();
         }
@@ -559,7 +561,8 @@ public class KlassBootstrapWriter
             var bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
-            KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, modifier);
+            bootstrappedAssociationEndModifier.setKeyword(modifier.getKeyword());
+            bootstrappedAssociationEndModifier.setOrdinal(modifier.getOrdinal());
             bootstrappedAssociationEndModifier.insert();
         }
 

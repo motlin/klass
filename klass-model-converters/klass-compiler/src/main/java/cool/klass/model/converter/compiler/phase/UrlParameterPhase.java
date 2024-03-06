@@ -140,7 +140,6 @@ public class UrlParameterPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ordinal,
-                ctx,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
     }

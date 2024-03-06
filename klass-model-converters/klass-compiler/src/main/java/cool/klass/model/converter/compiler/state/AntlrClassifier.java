@@ -213,10 +213,10 @@ public abstract class AntlrClassifier
         }
         visited.add(this);
 
-        MutableSet<String> modifierNames = this.modifierStates.collect(AntlrNamedElement::getName).toSet();
+        MutableSet<String> modifierNames = this.modifierStates.collect(AntlrModifier::getKeyword).toSet();
 
         ImmutableList<AntlrModifier> inheritedModifiers = this.getInheritedModifiers(visited)
-                .reject(inheritedProperty -> modifierNames.contains(inheritedProperty.getName()));
+                .reject(inheritedProperty -> modifierNames.contains(inheritedProperty.getKeyword()));
 
         return this.modifierStates.toImmutable().newWithAll(inheritedModifiers);
     }
@@ -225,7 +225,7 @@ public abstract class AntlrClassifier
     {
         return this.interfaceStates
                 .flatCollectWith(AntlrClassifier::getModifiers, visited)
-                .distinctBy(AntlrNamedElement::getName)
+                .distinctBy(AntlrModifier::getKeyword)
                 .toImmutable();
     }
 
@@ -296,7 +296,7 @@ public abstract class AntlrClassifier
         Objects.requireNonNull(modifierState);
         this.modifierStates.add(modifierState);
         this.modifiersByName.compute(
-                modifierState.getName(),
+                modifierState.getKeyword(),
                 (name, builder) -> builder == null
                         ? modifierState
                         : AntlrModifier.AMBIGUOUS);

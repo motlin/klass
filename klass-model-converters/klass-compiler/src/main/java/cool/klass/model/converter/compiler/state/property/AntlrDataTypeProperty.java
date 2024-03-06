@@ -11,7 +11,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -450,7 +449,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     associationEnd.getOwningClassifierState().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifierState(),
+                    this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.isOptional ? "not " : "");
             compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
@@ -477,7 +476,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 "Expected type '%s' but was '%s' for '%s' property '%s'.",
                 PrimitiveType.STRING,
                 antlrType.getName(),
-                modifier,
+                modifier.getKeyword(),
                 this);
         compilerErrorHolder.add(
                 "ERR_USR_DTP",
@@ -506,7 +505,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 "Expected types %s but was '%s' for '%s' property '%s'.",
                 ALLOWED_VERSION_TYPES,
                 antlrType.getName(),
-                modifier,
+                modifier.getKeyword(),
                 this);
         compilerErrorHolder.add(
                 "ERR_VER_DTP",
@@ -615,7 +614,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         "Expected type '%s' but was '%s' for '%s' property '%s'.",
                         PrimitiveType.STRING,
                         antlrType.getName(),
-                        modifier,
+                        modifier.getKeyword(),
                         this);
                 compilerErrorHolder.add(
                         "ERR_AUD_DTP",
@@ -638,7 +637,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         "Expected type '%s' but was '%s' for '%s' property '%s'.",
                         PrimitiveType.INSTANT,
                         antlrType.getName(),
-                        modifier,
+                        modifier.getKeyword(),
                         this);
                 compilerErrorHolder.add(
                         "ERR_AUD_DTP",
@@ -662,7 +661,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 "%s: %s %s",
                 this.getName(),
                 this.getType(),
-                this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
+                this.getModifiers().collect(AntlrModifier::getKeyword).makeString(" "));
     }
 
     public void reportIdPropertyWithKeyProperties(CompilerErrorState compilerErrorHolder)

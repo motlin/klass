@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -91,7 +90,7 @@ public abstract class AntlrProperty
     {
         Objects.requireNonNull(modifierState);
         this.modifierStates.add(modifierState);
-        this.modifiersByName.getIfAbsentPut(modifierState.getName(), Lists.mutable::empty).add(modifierState);
+        this.modifiersByName.getIfAbsentPut(modifierState.getKeyword(), Lists.mutable::empty).add(modifierState);
 
         AntlrModifier duplicate = this.modifiersByContext.put(
                 modifierState.getElementContext(),
@@ -119,17 +118,17 @@ public abstract class AntlrProperty
     {
         MutableBag<String> duplicateModifiers = this.getModifiers()
                 .asLazy()
-                .collect(AntlrNamedElement::getName)
+                .collect(AntlrModifier::getKeyword)
                 .toBag()
                 .selectDuplicates();
 
         for (AntlrModifier modifier : this.getModifiers())
         {
-            if (duplicateModifiers.contains(modifier.getName()))
+            if (duplicateModifiers.contains(modifier.getKeyword()))
             {
                 String message = String.format(
                         "Duplicate modifier '%s'.",
-                        modifier.getName());
+                        modifier.getKeyword());
                 compilerErrorHolder.add("ERR_DUP_MOD", message, modifier);
             }
         }
@@ -202,7 +201,7 @@ public abstract class AntlrProperty
                 this.getOwningClassifierState().getName(),
                 this.getName(),
                 this.getType().getName(),
-                this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
+                this.getModifiers().collect(AntlrModifier::getKeyword).makeString(" "));
     }
 
     @Override

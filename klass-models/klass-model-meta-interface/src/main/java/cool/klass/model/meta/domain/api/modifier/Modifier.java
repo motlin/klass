@@ -1,12 +1,13 @@
 package cool.klass.model.meta.domain.api.modifier;
 
-import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.OrdinalElement;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface Modifier extends NamedElement
+public interface Modifier
+        extends OrdinalElement
 {
-    String CREATED_BY      = "createdBy";
+    String                CREATED_BY           = "createdBy";
     String                CREATED_ON           = "createdOn";
     String                LAST_UPDATED_BY      = "lastUpdatedBy";
     ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
@@ -16,9 +17,11 @@ public interface Modifier extends NamedElement
 
     ModifierOwner getModifierOwner();
 
+    String getKeyword();
+
     default boolean is(String name)
     {
-        return this.getName().equals(name);
+        return this.getKeyword().equals(name);
     }
 
     default boolean isKey()
@@ -63,7 +66,7 @@ public interface Modifier extends NamedElement
 
     default boolean isAudit()
     {
-        return Modifier.AUDIT_PROPERTY_NAMES.contains(this.getName());
+        return Modifier.AUDIT_PROPERTY_NAMES.contains(this.getKeyword());
     }
 
     default boolean isCreatedBy()

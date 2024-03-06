@@ -34,7 +34,7 @@
       },
       "associationEndModifiers": [
         {
-          "name": "owned",
+          "keyword": "owned",
           "ordinal": 1
         }
       ]

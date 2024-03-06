@@ -205,7 +205,6 @@ public class ParameterizedPropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ordinal,
-                ctx,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
     }

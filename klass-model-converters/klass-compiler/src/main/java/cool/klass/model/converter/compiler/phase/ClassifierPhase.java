@@ -111,7 +111,6 @@ public class ClassifierPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ordinal + 1,
-                ctx,
                 this.classifierState);
 
         this.classifierState.enterModifier(modifierState);

@@ -180,7 +180,7 @@ public class AntlrClass
                 .flatCollectWith(AntlrClassifier::getModifiers, visited)
                 .toImmutable();
 
-        return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrNamedElement::getName);
+        return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrModifier::getKeyword);
     }
 
     @Override

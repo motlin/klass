@@ -1021,7 +1021,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("\n");
 
         ImmutableList<String> variableNames = modifiers
-                .collect(NamedElement::getName)
+                .collect(Modifier::getKeyword)
                 .collect(each -> each + "_" + Modifier.class.getSimpleName());
 
         return variablesSourceCode
@@ -1038,7 +1038,7 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:off
         //language=JAVA
         return ""
-                + "            " + className + " " + modifier.getName() + "_" + className + " = new " + className + "()\n"
+                + "            " + className + " " + modifier.getKeyword() + "_" + className + " = new " + className + "()\n"
                 + "            {\n"
                 + "                @Override\n"
                 + "                public DataTypeProperty getModifierOwner()\n"
@@ -1050,7 +1050,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                @Override\n"
                 + "                public String getName()\n"
                 + "                {\n"
-                + "                    return \"" + StringEscapeUtils.escapeJava(modifier.getName()) + "\";\n"
+                + "                    return \"" + StringEscapeUtils.escapeJava(modifier.getKeyword()) + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
@@ -1353,7 +1353,7 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public ImmutableList<Modifier> getModifiers()\n"
                 + "        {\n"
-                + "            return Lists.immutable.with(" + associationEnd.getModifiers().collect(NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
+                + "            return Lists.immutable.with(" + associationEnd.getModifiers().collect(Modifier::getKeyword).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -1404,7 +1404,7 @@ public class JavaConstantsMetaModelGenerator
         // @formatter:off
         //language=JAVA
         return ""
-                + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, modifier.getName()) + "_MODIFIER = new " + className + "()\n"
+                + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, modifier.getKeyword()) + "_MODIFIER = new " + className + "()\n"
                 + "        {\n"
                 + "            @Override\n"
                 + "            public AssociationEnd getModifierOwner()\n"
@@ -1416,7 +1416,7 @@ public class JavaConstantsMetaModelGenerator
                 + "            @Override\n"
                 + "            public String getName()\n"
                 + "            {\n"
-                + "                return \"" + modifier.getName() + "\";\n"
+                + "                return \"" + modifier.getKeyword() + "\";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"

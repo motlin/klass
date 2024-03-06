@@ -11,7 +11,6 @@ import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -199,7 +198,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
         String isOptionalString = this.optional ? "?" : "";
         String propertyModifiersString = this.getModifiers().isEmpty()
                 ? ""
-                : this.getModifiers().collect(NamedElement::getName).makeString(" ", " ", "");
+                : this.getModifiers().collect(Modifier::getKeyword).makeString(" ", " ", "");
         return String.format(
                 "%s: %s%s%s",
                 this.getName(),

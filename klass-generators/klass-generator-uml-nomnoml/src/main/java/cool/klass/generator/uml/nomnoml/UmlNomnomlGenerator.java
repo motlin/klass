@@ -256,7 +256,7 @@ public class UmlNomnomlGenerator
             String propertyModifiersString = relevantModifiers.isEmpty()
                     ? ""
                     :  relevantModifiers
-                            .collect(NamedElement::getName)
+                            .collect(Modifier::getKeyword)
                             .makeString(" // ", " ", "");
             return String.format(
                     "%s: %s%s%s",

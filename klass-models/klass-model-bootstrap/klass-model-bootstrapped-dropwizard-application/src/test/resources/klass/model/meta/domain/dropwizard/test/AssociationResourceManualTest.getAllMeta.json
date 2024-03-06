@@ -81,7 +81,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []
@@ -1237,7 +1237,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []
@@ -1727,7 +1727,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": [
@@ -2761,7 +2761,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []
@@ -2813,7 +2813,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []
@@ -2865,7 +2865,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []
@@ -2917,7 +2917,7 @@
         },
         "associationEndModifiers": [
           {
-            "name": "owned"
+            "keyword": "owned"
           }
         ],
         "orderBys": []

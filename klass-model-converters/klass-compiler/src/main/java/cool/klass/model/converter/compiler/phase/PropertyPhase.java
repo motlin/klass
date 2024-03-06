@@ -198,7 +198,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.dataTypePropertyState.getNumModifiers() + 1,
-                ctx,
                 this.dataTypePropertyState);
         this.dataTypePropertyState.enterModifier(modifierState);
     }
@@ -256,7 +255,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.associationEndSignatureState.getNumModifiers() + 1,
-                ctx,
                 this.associationEndSignatureState);
         this.associationEndSignatureState.enterModifier(antlrAssociationEndModifier);
     }

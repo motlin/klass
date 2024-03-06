@@ -30,7 +30,7 @@ public interface Klass
 
         ImmutableList<Modifier> interfaceProperties = Classifier.super.getInheritedModifiers();
 
-        return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
+        return superClassProperties.newWithAll(interfaceProperties).distinctBy(Modifier::getKeyword);
     }
 
     @Override

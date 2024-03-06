@@ -250,10 +250,12 @@ association PrimitivePropertyHasMaxPropertyValidation
 }
 
 class PropertyModifier
-    implements NamedElement
+    implements Element
 {
-    classifierName                : String key maximumLength(256);
-    propertyName                  : String key maximumLength(256);
+    keyword: String key maximumLength(256);
+    ordinal: Integer;
+    classifierName: String key maximumLength(256);
+    propertyName: String key maximumLength(256);
 }
 
 association DataTypePropertyHasModifiers
@@ -267,8 +269,10 @@ association DataTypePropertyHasModifiers
 }
 
 class ClassifierModifier
-    implements NamedElement
+    implements Element
 {
+    keyword: String key maximumLength(256);
+    ordinal: Integer;
     classifierName: String key maximumLength(256);
 }
 
@@ -342,10 +346,12 @@ association AssociationEndHasResultType
 }
 
 class AssociationEndModifier
-    implements NamedElement
+    implements Element
 {
-    owningClassName               : String key maximumLength(256);
-    associationEndName            : String key maximumLength(256);
+    keyword           : String key maximumLength(256);
+    ordinal           : Integer;
+    owningClassName   : String key maximumLength(256);
+    associationEndName: String key maximumLength(256);
 }
 
 association AssociationEndHasModifiers
@@ -1025,8 +1031,8 @@ projection InterfaceProjection on Interface
     },
     classifierModifiers    :
     {
-        name    : "Interface modifier name",
-        ordinal : "Interface modifier ordinal",
+        keyword: "Interface modifier keyword",
+        ordinal: "Interface modifier ordinal",
     },
     primitiveProperties    :
     {
@@ -1036,8 +1042,8 @@ projection InterfaceProjection on Interface
         ordinal            : "Primitive property ordinal",
         propertyModifiers  :
         {
-            name    : "Primitive property modifier name",
-            ordinal : "Primitive property modifier ordinal",
+            keyword: "Primitive property modifier keyword",
+            ordinal: "Primitive property modifier ordinal",
         },
         minLengthValidation:
         {
@@ -1067,8 +1073,8 @@ projection InterfaceProjection on Interface
         },
         propertyModifiers  :
         {
-            name    : "Enumeration property modifier name",
-            ordinal : "Enumeration property modifier ordinal",
+            keyword: "Enumeration property modifier keyword",
+            ordinal: "Enumeration property modifier ordinal",
         },
         minLengthValidation:
         {
@@ -1094,7 +1100,7 @@ projection InterfaceSummaryProjection on Interface
     },
     classifierModifiers    :
     {
-        name    : "Interface modifier name",
+        keyword: "Interface modifier keyword",
     },
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
@@ -1138,8 +1144,8 @@ projection DataTypePropertyProjection on DataTypeProperty
     },
     propertyModifiers              :
     {
-        name    : "Property modifier name",
-        ordinal : "Property modifier ordinal",
+        keyword: "Property modifier keyword",
+        ordinal: "Property modifier ordinal",
     },
     minLengthValidation            :
     {
@@ -1167,8 +1173,8 @@ projection PrimitivePropertyProjection on PrimitiveProperty
     ordinal            : "Primitive property ordinal",
     propertyModifiers  :
     {
-        name    : "Primitive property modifier name",
-        ordinal : "Primitive property modifier ordinal",
+        keyword: "Primitive property modifier keyword",
+        ordinal: "Primitive property modifier ordinal",
     },
     minLengthValidation:
     {
@@ -1195,7 +1201,7 @@ projection PrimitivePropertySummaryProjection on PrimitiveProperty
     optional           : "Primitive property is optional",
     propertyModifiers  :
     {
-        name    : "Primitive property modifier name",
+        keyword: "Primitive property modifier keyword",
     },
     minLengthValidation:
     {
@@ -1226,8 +1232,8 @@ projection EnumerationPropertyProjection on EnumerationProperty
     },
     propertyModifiers  :
     {
-        name    : "Enumeration property modifier name",
-        ordinal : "Enumeration property modifier ordinal",
+        keyword: "Enumeration property modifier keyword",
+        ordinal: "Enumeration property modifier ordinal",
     },
     minLengthValidation:
     {
@@ -1249,7 +1255,7 @@ projection EnumerationPropertySummaryProjection on EnumerationProperty
     },
     propertyModifiers  :
     {
-        name    : "Enumeration property modifier name",
+        keyword: "Enumeration property modifier keyword",
     },
     minLengthValidation:
     {
@@ -1299,8 +1305,8 @@ projection ClassProjection on Klass
     },
     classifierModifiers    :
     {
-        name    : "Classifier modifier name",
-        ordinal : "Classifier modifier ordinal",
+        keyword: "Classifier modifier keyword",
+        ordinal: "Classifier modifier ordinal",
     },
     primitiveProperties    : PrimitivePropertyProjection,
     enumerationProperties  : EnumerationPropertyProjection,
@@ -1328,7 +1334,7 @@ projection ClassSummaryProjection on Klass
     },
     classifierModifiers    :
     {
-        name    : "Classifier modifier name",
+        keyword: "Classifier modifier keyword",
     },
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
@@ -1379,7 +1385,7 @@ projection ClassifierSummaryProjection on Classifier
     },
     classifierModifiers    :
     {
-        name    : "Classifier modifier name",
+        keyword: "Classifier modifier keyword",
     },
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
@@ -1426,8 +1432,8 @@ projection AssociationEndProjection on AssociationEnd
     },
     associationEndModifiers:
     {
-        name    : "Association end modifier name",
-        ordinal : "Association end modifier ordinal",
+        keyword: "Association end modifier keyword",
+        ordinal: "Association end modifier ordinal",
     },
 }
 
@@ -1441,7 +1447,7 @@ projection AssociationEndSummaryProjection on AssociationEnd
     },
     associationEndModifiers:
     {
-        name: "Association end modifier name",
+        keyword: "Association end modifier keyword",
     },
     orderBys               :
     {

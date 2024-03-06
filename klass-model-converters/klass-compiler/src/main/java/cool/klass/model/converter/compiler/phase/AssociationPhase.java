@@ -110,7 +110,6 @@ public class AssociationPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.associationEndState.getNumModifiers() + 1,
-                ctx,
                 this.associationEndState);
         this.associationEndState.enterModifier(antlrAssociationEndModifier);
     }

@@ -234,7 +234,7 @@ public class AntlrInterface extends AntlrClassifier
         AntlrModifier transientModifier = maybeTransientModifier.get();
         String message = String.format(
                 "'%s' keyword not applicable to interfaces.",
-                transientModifier.getName());
+                transientModifier.getKeyword());
         compilerErrorHolder.add("ERR_INT_TRN", message, transientModifier);
     }
 

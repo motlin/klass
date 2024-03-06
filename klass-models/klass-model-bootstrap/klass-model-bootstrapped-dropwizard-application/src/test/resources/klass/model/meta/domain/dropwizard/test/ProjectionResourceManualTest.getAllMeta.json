@@ -144,7 +144,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -184,7 +184,7 @@
             "children": [
               {
                 "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-                "name": "name",
+                "name": "keyword",
                 "children": []
               },
               {
@@ -276,7 +276,7 @@
             "children": [
               {
                 "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-                "name": "name",
+                "name": "keyword",
                 "children": []
               },
               {
@@ -353,7 +353,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]
@@ -421,7 +421,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -511,7 +511,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -596,7 +596,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]
@@ -687,7 +687,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -756,7 +756,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]
@@ -895,7 +895,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -993,7 +993,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]
@@ -1068,7 +1068,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]
@@ -1168,7 +1168,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           },
           {
@@ -1215,7 +1215,7 @@
         "children": [
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "name",
+            "name": "keyword",
             "children": []
           }
         ]

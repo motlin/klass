@@ -6,16 +6,17 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.AbstractOrdinalElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 
 public final class ModifierImpl
-        extends AbstractNamedElement
+        extends AbstractOrdinalElement
         implements Modifier
 {
     @Nonnull
@@ -26,11 +27,27 @@ public final class ModifierImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             int ordinal,
-            @Nonnull ParserRuleContext nameContext,
             @Nonnull ModifierOwner modifierOwner)
     {
-        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
+        super(elementContext, macroElement, sourceCode, ordinal);
         this.modifierOwner = Objects.requireNonNull(modifierOwner);
+    }
+
+    public Token getKeywordToken()
+    {
+        ParserRuleContext elementContext = this.getElementContext();
+        int               childCount     = elementContext.getChildCount();
+        if (childCount != 1)
+        {
+            throw new AssertionError();
+        }
+        return elementContext.getStart();
+    }
+
+    @Override
+    public String getKeyword()
+    {
+        return this.getKeywordToken().getText();
     }
 
     @Override
@@ -40,7 +57,7 @@ public final class ModifierImpl
     }
 
     public static final class ModifierBuilder
-            extends NamedElementBuilder<ModifierImpl>
+            extends OrdinalElementBuilder<ModifierImpl>
     {
         @Nonnull
         private final ElementBuilder<?> surroundingElementBuilder;
@@ -50,10 +67,9 @@ public final class ModifierImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 int ordinal,
-                @Nonnull ParserRuleContext nameContext,
                 @Nonnull ElementBuilder<?> surroundingElementBuilder)
         {
-            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
+            super(elementContext, macroElement, sourceCode, ordinal);
             this.surroundingElementBuilder = Objects.requireNonNull(surroundingElementBuilder);
         }
 
@@ -66,7 +82,6 @@ public final class ModifierImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.ordinal,
-                    this.getNameContext(),
                     (ModifierOwner) this.surroundingElementBuilder.getElement());
         }
     }

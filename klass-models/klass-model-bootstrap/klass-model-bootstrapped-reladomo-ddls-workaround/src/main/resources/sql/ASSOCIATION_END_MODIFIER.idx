@@ -1,5 +1,5 @@
-alter table ASSOCIATION_END_MODIFIER add constraint ASSOCIATION_END_MODIFIER_PK primary key (name, owning_class_name, association_end_name);
+ALTER TABLE ASSOCIATION_END_MODIFIER
+    ADD CONSTRAINT ASSOCIATION_END_MODIFIER_PK PRIMARY KEY (keyword, owning_class_name, association_end_name);
 
-drop index if exists ASSOCIATION_END_MODIFIER_IDX0;
-create index ASSOCIATION_END_MODIFIER_IDX0 on ASSOCIATION_END_MODIFIER(association_end_name, owning_class_name);
-
+DROP INDEX IF EXISTS ASSOCIATION_END_MODIFIER_IDX0;
+CREATE INDEX ASSOCIATION_END_MODIFIER_IDX0 ON ASSOCIATION_END_MODIFIER (association_end_name, owning_class_name);

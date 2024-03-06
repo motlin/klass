@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -90,7 +89,7 @@ public class VersionClassInferencePhase
         ListIterable<AntlrModifier> modifiers = dataTypeProperty.getModifiers().reject(AntlrModifier::isId);
         String modifierSourceCode = modifiers.isEmpty()
                 ? ""
-                : modifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");
+                : modifiers.collect(AntlrModifier::getKeyword).makeString(" ", " ", "");
 
         return String.format(
                 "%s: %s%s%s;",

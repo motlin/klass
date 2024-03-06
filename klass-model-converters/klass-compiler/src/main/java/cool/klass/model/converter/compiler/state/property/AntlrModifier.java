@@ -2,36 +2,35 @@ package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrOrdinalElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: Specific subclasses for the specific antlr context types
 public class AntlrModifier
-        extends AntlrNamedElement
+        extends AntlrOrdinalElement
 {
     public static final AntlrModifier NOT_FOUND = new AntlrModifier(
-            new ParserRuleContext(null, -1),
+            new ClassifierModifierContext(null, -1),
             Optional.empty(),
             -1,
-            new ParserRuleContext(),
             AntlrClassifier.NOT_FOUND);
 
     public static final AntlrModifier AMBIGUOUS = new AntlrModifier(
-            new ParserRuleContext(null, -1),
+            new ClassifierModifierContext(null, -1),
             Optional.empty(),
             -1,
-            new ParserRuleContext(),
             AntlrClassifier.AMBIGUOUS);
 
     public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
@@ -46,10 +45,9 @@ public class AntlrModifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,
-            @Nonnull ParserRuleContext nameContext,
             @Nonnull AntlrNamedElement surroundingElement)
     {
-        super(elementContext, compilationUnit, ordinal, nameContext);
+        super(elementContext, compilationUnit, ordinal);
         this.surroundingElement = surroundingElement;
     }
 
@@ -60,28 +58,30 @@ public class AntlrModifier
         return Optional.of(this.surroundingElement);
     }
 
-    @Nonnull
-    @Override
-    public Pattern getNamePattern()
+    public Token getKeywordToken()
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getNamePattern() not implemented yet");
+        ParserRuleContext elementContext = this.getElementContext();
+        int               childCount     = elementContext.getChildCount();
+        if (childCount != 1)
+        {
+            throw new AssertionError();
+        }
+        return elementContext.getStart();
     }
 
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public String getKeyword()
     {
-        // intentionally blank
+        return this.getKeywordToken().getText();
     }
 
     public boolean is(String name)
     {
-        return this.getName().equals(name);
+        return this.getKeyword().equals(name);
     }
 
     public boolean isAudit()
     {
-        return this.is("audited") || AUDIT_PROPERTY_NAMES.contains(this.getName());
+        return this.is("audited") || AUDIT_PROPERTY_NAMES.contains(this.getKeyword());
     }
 
     public boolean isCreatedBy()
@@ -161,7 +161,7 @@ public class AntlrModifier
 
     public boolean isTransient()
     {
-        return this.getName().equals("transient");
+        return this.getKeyword().equals("transient");
     }
 
     @Nonnull
@@ -172,11 +172,10 @@ public class AntlrModifier
             throw new IllegalStateException();
         }
         this.elementBuilder = new ModifierBuilder(
-                this.elementContext,
+                this.getElementContext(),
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.ordinal,
-                this.getNameContext(),
                 this.surroundingElement.getElementBuilder());
         return this.elementBuilder;
     }
