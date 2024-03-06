@@ -1,5 +1,5 @@
-[33m════════════════════════════════════════[m [35mERR_TMP_RNG[m [33m════════════════════════════════════════[m
-[31mError: Expected type 'TemporalRange' for temporal property but found 'TemporalInstant'.[m
+[33m════════════════════════════════════════[m [35mERR_TMP_SYS[m [33m════════════════════════════════════════[m
+[31mError: Property 'DummyClass2.systemTo: TemporalInstant to' with temporal modifier(s) [to] must be marked as 'system' or 'valid'.[m
 
 At (AuditDataPropertyTypeErrorTest.klass:29)
 
@@ -7,11 +7,11 @@ At (AuditDataPropertyTypeErrorTest.klass:29)
 [39m24║ [35mclass [39mDummyClass2
 [39m25║ [36m{
 [39m29║     [39msystemTo       [36m: [35mTemporalInstant[36m? [33mto[36m;
-[39m  ║ [31m                     ^^^^^^^^^^^^^^^
+[39m  ║ [31m                                      ^^
 [39m33║ [36m}
 [m
 [36mLocation:  [mAuditDataPropertyTypeErrorTest.klass:29[m
 [36mFile:      [mAuditDataPropertyTypeErrorTest.klass[m
 [36mLine:      [m29[m
-[36mCharacter: [m22
+[36mCharacter: [m39
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

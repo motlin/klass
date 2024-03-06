@@ -80,6 +80,11 @@ public abstract class AntlrProperty
         return this.getModifiers().anySatisfy(AntlrModifier::isCreatedBy);
     }
 
+    public boolean isFinal()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isFinal);
+    }
+
     public boolean isLastUpdatedBy()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isLastUpdatedBy);
@@ -122,6 +127,7 @@ public abstract class AntlrProperty
     {
         this.reportDuplicateModifiers(compilerErrorHolder);
         this.reportDuplicateAuditModifiers(compilerErrorHolder);
+        this.reportInvalidAuditProperties(compilerErrorHolder);
     }
 
     private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -144,7 +150,7 @@ public abstract class AntlrProperty
         }
     }
 
-    private void reportDuplicateAuditModifiers(CompilerErrorState compilerErrorHolder)
+    protected void reportDuplicateAuditModifiers(CompilerErrorState compilerErrorHolder)
     {
         if (this.isCreatedBy() && this.isLastUpdatedBy())
         {
@@ -160,6 +166,48 @@ public abstract class AntlrProperty
                     message,
                     this,
                     modifierContexts);
+        }
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    protected void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isCreatedBy() && this.isLastUpdatedBy())
+        {
+            return;
+        }
+
+        if (this.isCreatedBy() && !this.isFinal())
+        {
+            AntlrModifier modifier = this
+                    .getModifiers()
+                    .detect(AntlrModifier::isCreatedBy);
+
+            String message = String.format(
+                    "Expected createdBy property '%s' to be final.",
+                    this);
+            compilerErrorHolder.add(
+                    "ERR_CRT_FIN",
+                    message,
+                    this,
+                    Lists.immutable.with(modifier.getElementContext()));
+        }
+
+        if (this.isLastUpdatedBy() && this.isFinal())
+        {
+            ImmutableList<ParserRuleContext> parserRuleContexts = this
+                    .getModifiers()
+                    .select(antlrModifier -> antlrModifier.isLastUpdatedBy() || antlrModifier.isFinal())
+                    .collect(AntlrElement::getElementContext)
+                    .toImmutable();
+            String message = String.format(
+                    "Expected lastUpdatedBy property '%s' to not be final.",
+                    this);
+            compilerErrorHolder.add(
+                    "ERR_LUB_NFI",
+                    message,
+                    this,
+                    parserRuleContexts);
         }
     }
 

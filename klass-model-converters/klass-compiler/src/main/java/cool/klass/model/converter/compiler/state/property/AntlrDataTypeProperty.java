@@ -401,7 +401,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.reportInvalidUserIdProperties(compilerErrorHolder);
         this.reportInvalidVersionProperties(compilerErrorHolder);
         this.reportInvalidTemporalProperties(compilerErrorHolder);
-        this.reportInvalidAuditProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
     }
@@ -573,23 +572,19 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             if (!this.isValid() && !this.isSystem())
             {
-                ParserRuleContext offendingToken = this.getTypeParserRuleContext();
-                String message = String.format(
-                        "Expected type '%s' for temporal property but found '%s'.",
-                        AntlrPrimitiveType.TEMPORAL_RANGE,
-                        offendingToken.getText());
-                ListIterable<AntlrModifier> modifiers = this
+                ImmutableList<AntlrModifier> modifiers = this
                         .getModifiers()
-                        .select(antlrModifier -> antlrModifier.isSystem() || antlrModifier.isVersion());
-                ListIterable<ParserRuleContext> modifierContexts = modifiers
-                        .collect(AntlrElement::getElementContext);
+                        .select(modifier -> modifier.isFrom() || modifier.isTo())
+                        .toImmutable();
+                String message = String.format(
+                        "Property '%s' with temporal modifier(s) %s must be marked as 'system' or 'valid'.",
+                        this,
+                        modifiers);
                 compilerErrorHolder.add(
-                        "ERR_TMP_RNG",
+                        "ERR_TMP_SYS",
                         message,
                         this,
-                        Lists.immutable
-                                .with(offendingToken)
-                                .newWithAll(modifierContexts));
+                        modifiers.collect(AntlrElement::getElementContext));
             }
             else if (this.getType() != AntlrPrimitiveType.TEMPORAL_INSTANT)
             {
@@ -629,8 +624,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    private void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
     {
+        super.reportInvalidAuditProperties(compilerErrorHolder);
+
         if (this.isCreatedBy() || this.isLastUpdatedBy())
         {
             AntlrType antlrType = this.getType();
@@ -651,6 +648,21 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         message,
                         this,
                         Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
+            }
+            else if (!this.isUserId())
+            {
+                AntlrModifier modifier = this
+                        .getModifiers()
+                        .detect(antlrModifier -> antlrModifier.isCreatedBy() || antlrModifier.isLastUpdatedBy());
+                String message = String.format(
+                        "Expected property '%s' with modifier '%s' to also have the userId modifier.",
+                        this,
+                        modifier.getKeyword());
+                compilerErrorHolder.add(
+                        "ERR_AUD_UID",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
             }
         }
 
@@ -674,6 +686,58 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         message,
                         this,
                         Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
+            }
+            else if (!this.isFinal())
+            {
+                AntlrModifier modifier = this
+                        .getModifiers()
+                        .detect(AntlrModifier::isCreatedOn);
+
+                String message = String.format(
+                        "Expected createdOn property '%s' to be final.",
+                        this);
+                compilerErrorHolder.add(
+                        "ERR_CON_FIN",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
+            }
+        }
+
+        // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
+        if (this.isCreatedBy())
+        {
+            AntlrModifier modifier = this
+                    .getModifiers()
+                    .detect(AntlrModifier::isCreatedBy);
+            if (this.getName().equals("createdBy"))
+            {
+                String message = String.format(
+                        "Expected createdBy property '%s' to be named 'createdById'.",
+                        this);
+                compilerErrorHolder.add(
+                        "ERR_CRT_NAM",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
+            }
+        }
+
+        if (this.isLastUpdatedBy())
+        {
+            AntlrModifier modifier = this
+                    .getModifiers()
+                    .detect(AntlrModifier::isLastUpdatedBy);
+            if (this.getName().equals("lastUpdatedBy"))
+            {
+                String message = String.format(
+                        "Expected lastUpdatedBy property '%s' to be named 'lastUpdatedById'.",
+                        this);
+                compilerErrorHolder.add(
+                        "ERR_LUB_NAM",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
             }
         }
     }

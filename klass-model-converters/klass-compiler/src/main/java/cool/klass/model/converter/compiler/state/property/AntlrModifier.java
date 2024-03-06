@@ -109,6 +109,11 @@ public class AntlrModifier
         return this.is("private");
     }
 
+    public boolean isFinal()
+    {
+        return this.is("final");
+    }
+
     public boolean isSystem()
     {
         return this.is("system");
