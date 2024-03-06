@@ -23,10 +23,10 @@ public class AntlrPrimitiveProperty
         extends AntlrDataTypeProperty<PrimitiveType>
 {
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
-            new PrimitivePropertyContext(null, -1),
+            new PrimitivePropertyContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrClassifier.AMBIGUOUS,
             false,
             AntlrPrimitiveType.AMBIGUOUS);

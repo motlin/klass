@@ -8,12 +8,18 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
 
 public abstract class AntlrElement
         implements IAntlrElement
 {
+    public static final ParserRuleContext AMBIGUOUS_PARENT = new ParserRuleContext();
+    public static final ParserRuleContext NOT_FOUND_PARENT = new ParserRuleContext();
+
     @Nonnull
     protected final ParserRuleContext         elementContext;
     // TODO: Consider creating a "native" source file with native declarations of PrimitiveTypes
@@ -43,6 +49,71 @@ public abstract class AntlrElement
         ParserRuleContext nextParent = childContext.getParent();
         Objects.requireNonNull(nextParent);
         AntlrElement.assertContextContains(parentContext, nextParent);
+    }
+
+    /**
+     * This method is meant to be used by data renderers in the IntelliJ debugger. It is lenient to accept sentinels like AMBIGUOUS and NOT_FOUND.
+     *
+     * @param parserRuleContext the parserRuleContext to get the source text of
+     *
+     * @return the source text of the given parserRuleContext, or "AMBIGUOUS" or "NOT_FOUND" if the parserRuleContext is a sentinel
+     *
+     * @throws AssertionError if the parserRuleContext is not a sentinel but looks too much like a sentinel
+     */
+    public static String getSourceTextLenient(ParserRuleContext parserRuleContext)
+    {
+        Objects.requireNonNull(parserRuleContext);
+
+        Token             start       = parserRuleContext.getStart();
+        Token             stop        = parserRuleContext.getStop();
+        ParserRuleContext parent      = parserRuleContext.getParent();
+        RuleContext       payload     = parserRuleContext.getPayload();
+        RuleContext       ruleContext = parserRuleContext.getRuleContext();
+        int               childCount  = parserRuleContext.getChildCount();
+
+        if (start == null
+                || stop == null
+                || parent == null && !(parserRuleContext instanceof CompilationUnitContext)
+                || payload != parserRuleContext
+                || ruleContext != parserRuleContext
+                || childCount == 0)
+        {
+            if (start != null)
+            {
+                throw new AssertionError();
+            }
+            if (stop != null)
+            {
+                throw new AssertionError();
+            }
+            if (payload != parserRuleContext)
+            {
+                throw new AssertionError();
+            }
+            if (ruleContext != parserRuleContext)
+            {
+                throw new AssertionError();
+            }
+            if (childCount != 0)
+            {
+                throw new AssertionError();
+            }
+            if (parent == AMBIGUOUS_PARENT)
+            {
+                return "AMBIGUOUS";
+            }
+            if (parent == NOT_FOUND_PARENT)
+            {
+                return "NOT_FOUND";
+            }
+
+            throw new AssertionError();
+        }
+
+        int      startIndex = start.getStartIndex();
+        int      stopIndex  = stop.getStopIndex();
+        Interval interval   = new Interval(startIndex, stopIndex);
+        return start.getInputStream().getText(interval);
     }
 
     protected static String getSourceText(ParserRuleContext parserRuleContext)

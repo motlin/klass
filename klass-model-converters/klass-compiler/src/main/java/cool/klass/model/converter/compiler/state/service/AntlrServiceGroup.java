@@ -35,10 +35,10 @@ public class AntlrServiceGroup
         implements AntlrTopLevelElement
 {
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
-            new ServiceGroupDeclarationContext(null, -1),
+            new ServiceGroupDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClass.AMBIGUOUS);
 

@@ -29,10 +29,10 @@ public class AntlrAssociation
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
-            new AssociationDeclarationContext(null, -1),
+            new AssociationDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -46,10 +46,10 @@ public class AntlrAssociation
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrAssociation NOT_FOUND = new AntlrAssociation(
-            new AssociationDeclarationContext(null, -1),
+            new AssociationDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND)
     {
         @Override

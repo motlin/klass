@@ -21,17 +21,17 @@ import org.eclipse.collections.impl.factory.Lists;
 public class AntlrModifier
         extends AntlrOrdinalElement
 {
-    public static final AntlrModifier NOT_FOUND = new AntlrModifier(
-            new ClassifierModifierContext(null, -1),
-            Optional.empty(),
-            -1,
-            AntlrClassifier.NOT_FOUND);
-
     public static final AntlrModifier AMBIGUOUS = new AntlrModifier(
-            new ClassifierModifierContext(null, -1),
+            new ClassifierModifierContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
             AntlrClassifier.AMBIGUOUS);
+
+    public static final AntlrModifier NOT_FOUND = new AntlrModifier(
+            new ClassifierModifierContext(NOT_FOUND_PARENT, -1),
+            Optional.empty(),
+            -1,
+            AntlrClassifier.NOT_FOUND);
 
     public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
             "createdBy",

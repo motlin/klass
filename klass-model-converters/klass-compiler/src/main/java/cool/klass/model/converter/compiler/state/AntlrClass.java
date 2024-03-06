@@ -48,10 +48,10 @@ public class AntlrClass
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS,
             false)
     {
@@ -86,10 +86,10 @@ public class AntlrClass
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrClass NOT_FOUND = new AntlrClass(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND,
             false)
     {

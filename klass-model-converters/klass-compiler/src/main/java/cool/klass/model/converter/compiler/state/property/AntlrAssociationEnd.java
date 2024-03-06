@@ -29,10 +29,10 @@ public class AntlrAssociationEnd
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
-            new AssociationEndContext(null, -1),
+            new AssociationEndContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrAssociation.AMBIGUOUS)
     {
         @Nonnull
@@ -52,10 +52,10 @@ public class AntlrAssociationEnd
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
-            new AssociationEndContext(null, -1),
+            new AssociationEndContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrAssociation.NOT_FOUND)
     {
         @Nonnull

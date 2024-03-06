@@ -24,10 +24,10 @@ public class AntlrEnumerationProperty
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumerationProperty AMBIGUOUS = new AntlrEnumerationProperty(
-            new EnumerationPropertyContext(null, -1),
+            new EnumerationPropertyContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrClassifier.AMBIGUOUS,
             false,
             AntlrEnumeration.AMBIGUOUS)
@@ -42,10 +42,10 @@ public class AntlrEnumerationProperty
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
-            new EnumerationPropertyContext(null, -1),
+            new EnumerationPropertyContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrClassifier.NOT_FOUND,
             false,
             AntlrEnumeration.NOT_FOUND)

@@ -25,17 +25,17 @@ public class AntlrParameterizedProperty
         implements AntlrParameterOwner
 {
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
-            new ParameterizedPropertyContext(null, -1),
+            new ParameterizedPropertyContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrClass.AMBIGUOUS);
 
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
-            new ParameterizedPropertyContext(null, -1),
+            new ParameterizedPropertyContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrClass.AMBIGUOUS);
 
     // @Nonnull

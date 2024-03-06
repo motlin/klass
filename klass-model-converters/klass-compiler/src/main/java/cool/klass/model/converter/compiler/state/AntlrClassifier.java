@@ -39,10 +39,10 @@ public abstract class AntlrClassifier
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -67,10 +67,10 @@ public abstract class AntlrClassifier
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override

@@ -26,10 +26,10 @@ public class AntlrEnumeration
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
-            new EnumerationDeclarationContext(null, -1),
+            new EnumerationDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            new IdentifierContext(AMBIGUOUS_PARENT, -1),
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -42,10 +42,10 @@ public class AntlrEnumeration
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
-            new EnumerationDeclarationContext(null, -1),
+            new EnumerationDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND)
     {
         @Override

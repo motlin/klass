@@ -38,7 +38,7 @@ public class AntlrUrl
         extends AntlrElement
 {
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
-            new UrlDeclarationContext(null, -1),
+            new UrlDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             AntlrServiceGroup.AMBIGUOUS);
 

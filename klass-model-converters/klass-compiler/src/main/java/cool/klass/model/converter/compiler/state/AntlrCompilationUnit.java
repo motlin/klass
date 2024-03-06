@@ -17,11 +17,11 @@ public class AntlrCompilationUnit
         extends AntlrElement
 {
     public static final AntlrCompilationUnit AMBIGUOUS = new AntlrCompilationUnit(
-            new CompilationUnitContext(null, -1),
+            new CompilationUnitContext(AMBIGUOUS_PARENT, -1),
             Optional.empty());
 
     public static final AntlrCompilationUnit NOT_FOUND = new AntlrCompilationUnit(
-            new CompilationUnitContext(null, -1),
+            new CompilationUnitContext(NOT_FOUND_PARENT, -1),
             Optional.empty());
 
     private AntlrPackage packageState;

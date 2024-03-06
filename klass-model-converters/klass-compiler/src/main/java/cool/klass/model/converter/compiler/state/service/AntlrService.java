@@ -43,7 +43,7 @@ public class AntlrService
         implements AntlrOrderByOwner
 {
     public static final AntlrService AMBIGUOUS = new AntlrService(
-            new ServiceDeclarationContext(null, -1),
+            new ServiceDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             AntlrUrl.AMBIGUOUS,
             AntlrVerb.AMBIGUOUS);

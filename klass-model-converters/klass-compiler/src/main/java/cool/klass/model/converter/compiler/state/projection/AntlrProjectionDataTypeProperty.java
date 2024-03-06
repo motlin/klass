@@ -27,11 +27,11 @@ public class AntlrProjectionDataTypeProperty
         implements AntlrProjectionChild
 {
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
-            new ProjectionPrimitiveMemberContext(null, -1),
+            new ProjectionPrimitiveMemberContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
-            new HeaderContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
+            new HeaderContext(AMBIGUOUS_PARENT, -1),
             "ambiguous header",
             AntlrProjection.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,

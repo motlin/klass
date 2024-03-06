@@ -29,10 +29,10 @@ public class AntlrProjection
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
-            new ProjectionDeclarationContext(null, -1),
+            new ProjectionDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
             null)
@@ -47,10 +47,10 @@ public class AntlrProjection
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
-            new ProjectionDeclarationContext(null, -1),
+            new ProjectionDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
             null)

@@ -18,18 +18,18 @@ public class AntlrEnumerationLiteral
         extends AntlrIdentifierElement
 {
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
-            new EnumerationLiteralContext(null, -1),
+            new EnumerationLiteralContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             Optional.empty(),
             AntlrEnumeration.AMBIGUOUS);
 
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
-            new EnumerationLiteralContext(null, -1),
+            new EnumerationLiteralContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             Optional.empty(),
             AntlrEnumeration.NOT_FOUND);
 

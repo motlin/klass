@@ -34,10 +34,10 @@ public class AntlrInterface
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
-            new InterfaceDeclarationContext(null, -1),
+            new InterfaceDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -51,10 +51,10 @@ public class AntlrInterface
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
-            new InterfaceDeclarationContext(null, -1),
+            new InterfaceDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND)
     {
         @Override

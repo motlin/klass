@@ -24,10 +24,10 @@ public class AntlrAssociationEndSignature
         implements AntlrClassifierReferenceOwner
 {
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
-            new AssociationEndSignatureContext(null, -1),
+            new AssociationEndSignatureContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrClassifier.AMBIGUOUS);
 
     @Nonnull

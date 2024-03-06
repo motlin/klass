@@ -12,17 +12,17 @@ import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 public class AntlrClassReference
         extends AntlrElement
 {
-    public static final AntlrClassReference NOT_FOUND = new AntlrClassReference(
-            new ClassReferenceContext(null, -1),
-            Optional.empty(),
-            AntlrAssociationEnd.NOT_FOUND,
-            AntlrClass.NOT_FOUND);
-
     public static final AntlrClassReference AMBIGUOUS = new AntlrClassReference(
-            new ClassReferenceContext(null, -1),
+            new ClassReferenceContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             AntlrAssociationEnd.AMBIGUOUS,
             AntlrClass.AMBIGUOUS);
+
+    public static final AntlrClassReference NOT_FOUND = new AntlrClassReference(
+            new ClassReferenceContext(NOT_FOUND_PARENT, -1),
+            Optional.empty(),
+            AntlrAssociationEnd.NOT_FOUND,
+            AntlrClass.NOT_FOUND);
 
     @Nonnull
     private final AntlrClassReferenceOwner classReferenceOwnerState;

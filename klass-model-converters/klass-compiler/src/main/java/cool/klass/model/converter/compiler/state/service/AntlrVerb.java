@@ -15,7 +15,7 @@ public class AntlrVerb
         extends AntlrElement
 {
     public static final AntlrVerb AMBIGUOUS = new AntlrVerb(
-            new VerbContext(null, -1),
+            new VerbContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             Verb.GET);
 

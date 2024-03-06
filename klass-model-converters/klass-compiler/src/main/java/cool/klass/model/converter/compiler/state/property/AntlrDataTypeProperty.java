@@ -47,10 +47,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrClassifier.AMBIGUOUS,
             false)
     {
@@ -101,10 +101,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     //<editor-fold desc="NOT_FOUND">
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
-            new ClassDeclarationContext(null, -1),
+            new ClassDeclarationContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrClassifier.NOT_FOUND,
             false)
     {

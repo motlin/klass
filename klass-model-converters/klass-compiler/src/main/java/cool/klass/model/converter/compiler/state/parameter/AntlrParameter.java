@@ -34,18 +34,18 @@ public final class AntlrParameter
         implements AntlrMultiplicityOwner
 {
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
-            new ParserRuleContext(null, -1),
+            new ParserRuleContext(AMBIGUOUS_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrEnumeration.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
 
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
-            new ParserRuleContext(null, -1),
+            new ParserRuleContext(NOT_FOUND_PARENT, -1),
             Optional.empty(),
             -1,
-            new IdentifierContext(null, -1),
+            NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrEnumeration.NOT_FOUND,
             AntlrParameterizedProperty.AMBIGUOUS);
 
