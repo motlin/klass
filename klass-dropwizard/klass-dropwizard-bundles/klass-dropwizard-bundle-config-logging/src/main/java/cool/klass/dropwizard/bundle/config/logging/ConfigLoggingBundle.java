@@ -49,14 +49,14 @@ public class ConfigLoggingBundle implements PrioritizedBundle<ConfigLoggingFacto
     }
 
     private static void logConfiguration(
-            @Nonnull ConfigLoggingFactoryProvider configuration,
-            ObjectMapper objectMapper) throws JsonProcessingException, ReflectiveOperationException
+            @Nonnull Object configuration,
+            @Nonnull ObjectMapper objectMapper) throws JsonProcessingException, ReflectiveOperationException
     {
         String configurationString = objectMapper.writeValueAsString(configuration);
         LOGGER.debug("Inferred Dropwizard configuration:\n{}", configurationString);
 
-        ConfigLoggingFactoryProvider defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
-        String                     defaultConfigurationString = objectMapper.writeValueAsString(defaultConfiguration);
+        Object defaultConfiguration       = configuration.getClass().getConstructor().newInstance();
+        String defaultConfigurationString = objectMapper.writeValueAsString(defaultConfiguration);
         LOGGER.debug("Default Dropwizard configuration:\n{}", defaultConfigurationString);
     }
 }
