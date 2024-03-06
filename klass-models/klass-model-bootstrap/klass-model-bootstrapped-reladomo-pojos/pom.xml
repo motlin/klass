@@ -42,9 +42,9 @@
         <plugins>
 
             <plugin>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-reladomo-code-plugin</artifactId>
-                <version>${klass.version}</version>
+                <groupId>io.liftwizard</groupId>
+                <artifactId>liftwizard-generator-reladomo-code-plugin</artifactId>
+                <version>${liftwizard.version}</version>
                 <configuration>
                     <definitionsXmlFile>
                         ${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml

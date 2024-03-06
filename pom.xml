@@ -225,7 +225,6 @@
                                                 cool.klass:klass-generator-klass-with-inference-plugin,
                                                 cool.klass:klass-generator-meta-constants-plugin,
                                                 cool.klass:klass-generator-react-prop-type-plugin,
-                                                cool.klass:klass-generator-reladomo-code-plugin,
                                                 cool.klass:klass-generator-reladomo-database-plugin,
                                                 cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
