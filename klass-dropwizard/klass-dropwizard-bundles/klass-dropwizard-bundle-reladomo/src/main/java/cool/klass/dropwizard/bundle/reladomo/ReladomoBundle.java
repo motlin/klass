@@ -16,10 +16,14 @@ import cool.klass.serializer.json.ReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider>
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoBundle.class);
+
     @Override
     public int getPriority()
     {
@@ -34,6 +38,8 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
     @Override
     public void run(@Nonnull ReladomoFactoryProvider configuration, @Nonnull Environment environment)
     {
+        LOGGER.info("Running {}.", ReladomoBundle.class.getSimpleName());
+
         DataStore       dataStore       = configuration.getDataStoreFactory().createDataStore();
         DomainModel     domainModel     = configuration.getDomainModelFactory().createDomainModel();
         ReladomoFactory reladomoFactory = configuration.getReladomoFactory();
@@ -53,6 +59,8 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
         {
             this.registerRetrieveCountMetrics(environment);
         }
+
+        LOGGER.info("Completing {}.", ReladomoBundle.class.getSimpleName());
     }
 
     public void registerRetrieveCountMetrics(@Nonnull Environment environment)
