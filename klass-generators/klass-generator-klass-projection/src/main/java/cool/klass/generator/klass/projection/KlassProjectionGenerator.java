@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.RichIterable;
@@ -101,7 +102,7 @@ public class KlassProjectionGenerator
         String referencePropertiesSourceCode = classifier
                 .getProperties()
                 .selectInstancesOf(ReferenceProperty.class)
-                .select(each -> each.getMultiplicity().isToMany() && each.isOwned())
+                .select(KlassProjectionGenerator::includeInProjection)
                 .reject(ReferenceProperty::isPrivate)
                 .collect(KlassProjectionGenerator::getSourceCode)
                 .makeString("");
@@ -126,6 +127,21 @@ public class KlassProjectionGenerator
     private static String getSourceCode(ReferenceProperty referenceProperty)
     {
         return String.format("    %s: %sProjection,\n", referenceProperty.getName(), referenceProperty.getType().getName());
+    }
+
+    private static boolean includeInProjection(ReferenceProperty referenceProperty)
+    {
+        // TODO: Instead of all these heuristics, consider including associations that go forward
+        if (referenceProperty.isOwned())
+        {
+            return true;
+        }
+        if (referenceProperty instanceof AssociationEnd)
+        {
+            AssociationEnd associationEnd = (AssociationEnd) referenceProperty;
+            return associationEnd.getMultiplicity().isToMany() && !associationEnd.getOpposite().isOwned();
+        }
+        return referenceProperty.getMultiplicity().isToMany();
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)
