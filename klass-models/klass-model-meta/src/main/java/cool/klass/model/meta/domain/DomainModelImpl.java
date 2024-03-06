@@ -345,8 +345,8 @@ public final class DomainModelImpl
             MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(sourceCodes);
             MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(sourceCodes);
 
-            DomainModelDeclarations domainModelDeclarations = this.getDomainModelDeclarations(sourceCodes, topLevelElements);
-            DomainModelReferences domainModelReferences = this.getDomainModelReferences(sourceCodes, topLevelElements);
+            DomainModelDeclarations domainModelDeclarations = this.getDomainModelDeclarations(topLevelElements);
+            DomainModelReferences domainModelReferences = this.getDomainModelReferences(topLevelElements);
 
             return new DomainModelImpl(
                     sourceCodes,
@@ -375,18 +375,15 @@ public final class DomainModelImpl
 
         private MapIterable<Token, TokenCategory> getTokenCategoriesFromParser(ImmutableList<SourceCode> sourceCodes)
         {
-            ParserBasedTokenCategorizer listener = new ParserBasedTokenCategorizer();
+            var listener = new ParserBasedTokenCategorizer();
 
             sourceCodes
                     .collect(SourceCode::getParserContext)
                     .forEachWith(ParserBasedTokenCategorizer::findTokenCategoriesFromParser, listener);
-            MapIterable<Token, TokenCategory> tokenCategoriesFromParser = listener.getTokenCategories();
-            return tokenCategoriesFromParser;
+            return listener.getTokenCategories();
         }
 
-        private DomainModelDeclarations getDomainModelDeclarations(
-                ImmutableList<SourceCode> sourceCodes,
-                ImmutableList<TopLevelElement> topLevelElements)
+        private DomainModelDeclarations getDomainModelDeclarations(ImmutableList<TopLevelElement> topLevelElements)
         {
             DomainModelDeclarations domainModelDeclarations = new DomainModelDeclarations();
             for (TopLevelElement topLevelElement : topLevelElements)
@@ -396,9 +393,7 @@ public final class DomainModelImpl
             return domainModelDeclarations;
         }
 
-        private DomainModelReferences getDomainModelReferences(
-                ImmutableList<SourceCode> sourceCodes,
-                ImmutableList<TopLevelElement> topLevelElements)
+        private DomainModelReferences getDomainModelReferences(ImmutableList<TopLevelElement> topLevelElements)
         {
             DomainModelReferences domainModelReferences = new DomainModelReferences();
             for (TopLevelElement topLevelElement : topLevelElements)
