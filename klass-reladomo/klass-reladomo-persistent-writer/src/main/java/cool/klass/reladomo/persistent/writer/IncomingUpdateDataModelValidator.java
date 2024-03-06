@@ -200,9 +200,9 @@ public class IncomingUpdateDataModelValidator
 
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
 
-        if ((jsonNode.isMissingNode() || jsonNode.isNull()) && multiplicity.isRequired())
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
         {
-            throw new AssertionError();
+            return;
         }
 
         if (multiplicity.isToOne())

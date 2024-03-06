@@ -302,8 +302,9 @@ public abstract class PersistentSynchronizer
         if (persistentChildInstance != null && incomingChildInstance != null)
         {
             PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-            return synchronizer.synchronize(
+            return synchronizer.synchronizeInTransaction(
                     associationEnd.getType(),
+                    Optional.of(associationEnd),
                     persistentChildInstance,
                     (ObjectNode) incomingChildInstance);
         }

@@ -403,7 +403,7 @@ public class RequiredPropertiesValidator
             if (this.operationMode == OperationMode.REPLACE && associationEnd.isFinal())
             {
                 String warning = String.format(
-                        "Error at %s. Expected value for required final property '%s.%s: %s[%s]' but value was %s.",
+                        "Warning at %s. Expected value for required final property '%s.%s: %s[%s]' but value was %s.",
                         this.getContextString(),
                         associationEnd.getOwningClassifier().getName(),
                         associationEnd.getName(),
@@ -417,7 +417,7 @@ public class RequiredPropertiesValidator
             if (this.operationMode == OperationMode.REPLACE && associationEnd.isPrivate())
             {
                 String warning = String.format(
-                        "Error at %s. Expected value for required private property '%s.%s: %s[%s]' but value was %s.",
+                        "Warning at %s. Expected value for required private property '%s.%s: %s[%s]' but value was %s.",
                         this.getContextString(),
                         associationEnd.getOwningClassifier().getName(),
                         associationEnd.getName(),
