@@ -22,7 +22,7 @@ public final class HerokuConnectionManager implements SourcelessConnectionManage
 
     private HerokuConnectionManager()
     {
-        this.schemaName = "klass-app-h2";
+        this.schemaName = "klass-app";
         this.databaseTimeZone = TimeZone.getTimeZone("UTC");
         XAConnectionManager xaConnectionManager = new XAConnectionManager();
         xaConnectionManager.setDriverClassName("org.postgresql.Driver");
