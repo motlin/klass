@@ -6,15 +6,18 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.eclipse.collections.api.block.predicate.Predicate;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
+import org.eclipse.collections.api.list.MutableList;
 
 // TODO: Only put audit properties onto version types
 public class AuditPropertyInferencePhase
@@ -33,46 +36,38 @@ public class AuditPropertyInferencePhase
     }
 
     @Override
-    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
+    public void exitInterfaceBody(InterfaceBodyContext ctx)
     {
-        super.enterClassifierModifier(ctx);
+        this.runCompilerMacro(ctx);
+        super.exitInterfaceBody(ctx);
+    }
 
-        String modifierText = ctx.getText();
-        if ("audited".equals(modifierText))
+    @Override
+    public void exitClassBody(ClassBodyContext ctx)
+    {
+        this.runCompilerMacro(ctx);
+        super.exitClassBody(ctx);
+    }
+
+    private void runCompilerMacro(ParserRuleContext inPlaceContext)
+    {
+        AntlrClassifier                         classifier            = this.compilerState.getCompilerWalk().getClassifier();
+        MutableList<AntlrModifier>              declaredModifiers     = classifier.getDeclaredModifiers();
+        ImmutableList<AntlrDataTypeProperty<?>> allDataTypeProperties = classifier.getAllDataTypeProperties();
+
+        MutableList<AntlrModifier> auditedModifiers = declaredModifiers.select(modifier -> modifier.is("audited"));
+        if (auditedModifiers.size() != 1)
         {
-            this.addAuditProperties();
+            return;
         }
-    }
+        AntlrModifier auditedModifier = auditedModifiers.getOnly();
 
-    private boolean hasAuditProperty(Predicate<AntlrDataTypeProperty> predicate)
-    {
-        return this.compilerState
-                .getCompilerWalk()
-                .getKlass()
-                .getAllDataTypeProperties()
-                .anySatisfy(predicate);
-    }
-
-    /*
-    private boolean hasAuditReferenceProperty(Predicate<AntlrParameterizedProperty> predicate)
-    {
-        return this.compilerState
-                .getCompilerWalkState()
-                .getKlass()
-                .getProperties()
-                .selectInstancesOf(AntlrParameterizedProperty.class)
-                .anySatisfy(predicate);
-    }
-    */
-
-    private void addAuditProperties()
-    {
         Optional<AntlrClass> maybeUserClass = this.compilerState.getDomainModel().getUserClass();
         if (maybeUserClass.isEmpty())
         {
             return;
         }
-        AntlrClass userClass        = maybeUserClass.get();
+        AntlrClass userClass = maybeUserClass.get();
         ImmutableList<AntlrDataTypeProperty<?>> userIdProperties = userClass
                 .getAllDataTypeProperties()
                 .select(AntlrDataTypeProperty::isUserId);
@@ -80,38 +75,26 @@ public class AuditPropertyInferencePhase
         {
             return;
         }
-        AntlrDataTypeProperty<?> userIdProperty = userIdProperties.getOnly();
+        AntlrDataTypeProperty<?>                      userIdProperty = userIdProperties.getOnly();
+        ListIterable<AbstractAntlrPropertyValidation> validations    = userIdProperty.getValidations();
 
-        ListIterable<AntlrModifier> modifiers = userIdProperty
-                .getModifiers()
-                .reject(AntlrModifier::isUserId)
-                .reject(AntlrModifier::isKey)
-                .reject(AntlrModifier::isId);
-        if (modifiers.notEmpty())
-        {
-            // TODO: Add test coverage for this line
-            throw new AssertionError(modifiers);
-        }
-        ListIterable<AbstractAntlrPropertyValidation> validations = userIdProperty.getValidations();
-        String validationSourceCode = validations.isEmpty() ? "" : validations.makeString(" ", " ", "");
+        String validationSourceCode = validations.isEmpty()
+                ? ""
+                : validations.makeString(" ", " ", "");
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        // TODO: Add validation that any userId is joined to another property that's also userId
-        if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
+        StringBuilder sourceCodeText = new StringBuilder();
+        if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isCreatedBy))
         {
-            stringBuilder.append("    createdById    : String createdBy private userId final"  + validationSourceCode + ";\n");
+            sourceCodeText.append("    createdById    : String createdBy private userId final" + validationSourceCode + ";\n");
         }
-        if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
+        if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isCreatedOn))
         {
-            stringBuilder.append("    createdOn      : Instant createdOn final;\n");
+            sourceCodeText.append("    createdOn      : Instant createdOn final;\n");
         }
-        if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
+        if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            stringBuilder.append("    lastUpdatedById: String lastUpdatedBy private userId"  + validationSourceCode + ";\n");
+            sourceCodeText.append("    lastUpdatedById: String lastUpdatedBy private userId" + validationSourceCode + ";\n");
         }
-
-        this.runCompilerMacro(stringBuilder.toString());
 
         /*
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy))
@@ -124,8 +107,7 @@ public class AuditPropertyInferencePhase
 
             this.runCompilerMacro(createdBySourceCodeText);
         }
-        */
-        /*
+
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy))
         {
             String lastUpdatedBySourceCodeText = ""
@@ -137,23 +119,27 @@ public class AuditPropertyInferencePhase
             this.runCompilerMacro(lastUpdatedBySourceCodeText);
         }
         */
+
+        this.runCompilerMacro(inPlaceContext, sourceCodeText.toString(), auditedModifier);
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText)
+    private void runCompilerMacro(
+            ParserRuleContext inPlaceContext,
+            @Nonnull String sourceCodeText,
+            AntlrModifier macroElement)
     {
         if (sourceCodeText.isEmpty())
         {
             return;
         }
-        AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalk().getClassifierModifier();
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
-        this.compilerState.runNonRootCompilerMacro(
-                classifierModifierState,
+        this.compilerState.runInPlaceCompilerMacro(
+                macroElement,
                 this,
                 sourceCodeText,
                 KlassParser::classBody,
+                inPlaceContext,
                 compilerPhase);
     }
 }

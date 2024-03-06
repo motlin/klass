@@ -1,2 +1,0 @@
-    createdOn      : Instant createdOn final;
-    lastUpdatedById: String lastUpdatedBy private userId;

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceBodyContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 public class ServiceMultiplicityInferencePhase
@@ -24,28 +24,34 @@ public class ServiceMultiplicityInferencePhase
     }
 
     @Override
-    public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
+    public void exitServiceBody(ServiceBodyContext ctx)
     {
-        super.enterServiceDeclaration(ctx);
-
-        AntlrService service = this.compilerState.getCompilerWalk().getService();
-        if (service.getServiceMultiplicity() == null)
-        {
-            String sourceCodeText = "            multiplicity: one;\n";
-            this.runCompilerMacro(sourceCodeText);
-        }
+        this.runCompilerMacro(ctx);
+        super.exitServiceBody(ctx);
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText)
+    private void runCompilerMacro(ServiceBodyContext inPlaceContext)
+    {
+        AntlrService service = this.compilerState.getCompilerWalk().getService();
+        if (service.getServiceMultiplicity() != null)
+        {
+            return;
+        }
+        String sourceCodeText = "            multiplicity: one;\n";
+        this.runCompilerMacro(inPlaceContext, sourceCodeText);
+    }
+
+    private void runCompilerMacro(ServiceBodyContext inPlaceContext, @Nonnull String sourceCodeText)
     {
         AntlrService      service       = this.compilerState.getCompilerWalk().getService();
         ParseTreeListener compilerPhase = new ServiceMultiplicityPhase(this.compilerState);
 
-        this.compilerState.runNonRootCompilerMacro(
+        this.compilerState.runInPlaceCompilerMacro(
                 service,
                 this,
                 sourceCodeText,
                 KlassParser::serviceMultiplicityDeclaration,
+                inPlaceContext,
                 compilerPhase);
     }
 }

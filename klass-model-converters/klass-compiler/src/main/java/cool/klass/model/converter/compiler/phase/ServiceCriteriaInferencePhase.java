@@ -6,7 +6,7 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceBodyContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 public class ServiceCriteriaInferencePhase
@@ -25,28 +25,34 @@ public class ServiceCriteriaInferencePhase
     }
 
     @Override
-    public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
+    public void exitServiceBody(ServiceBodyContext ctx)
     {
-        super.enterServiceDeclaration(ctx);
-
-        AntlrService service = this.compilerState.getCompilerWalk().getService();
-        if (service.getServiceCriterias().isEmpty() && service.getVerb().getVerb() == Verb.GET)
-        {
-            String sourceCodeText = "            criteria    : all;\n";
-            this.runCompilerMacro(sourceCodeText);
-        }
+        this.runCompilerMacro(ctx);
+        super.exitServiceBody(ctx);
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText)
+    private void runCompilerMacro(ServiceBodyContext inPlaceContext)
+    {
+        AntlrService service = this.compilerState.getCompilerWalk().getService();
+        if (service.getServiceCriterias().notEmpty() || service.getVerb().getVerb() != Verb.GET)
+        {
+            return;
+        }
+        String sourceCodeText = "            criteria    : all;\n";
+        this.runCompilerMacro(inPlaceContext, sourceCodeText);
+    }
+
+    private void runCompilerMacro(ServiceBodyContext inPlaceContext, @Nonnull String sourceCodeText)
     {
         AntlrService      service       = this.compilerState.getCompilerWalk().getService();
         ParseTreeListener compilerPhase = new ServiceCriteriaPhase(this.compilerState);
 
-        this.compilerState.runNonRootCompilerMacro(
+        this.compilerState.runInPlaceCompilerMacro(
                 service,
                 this,
                 sourceCodeText,
                 KlassParser::serviceCriteriaDeclaration,
+                inPlaceContext,
                 compilerPhase);
     }
 }

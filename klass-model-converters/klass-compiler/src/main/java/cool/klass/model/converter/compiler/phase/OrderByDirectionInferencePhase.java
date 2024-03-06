@@ -26,10 +26,14 @@ public class OrderByDirectionInferencePhase
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void enterOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
+    public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext inPlaceContext)
     {
-        super.enterOrderByMemberReferencePath(ctx);
+        this.runCompilerMacro(inPlaceContext);
+        super.exitOrderByMemberReferencePath(inPlaceContext);
+    }
 
+    private void runCompilerMacro(OrderByMemberReferencePathContext inPlaceContext)
+    {
         AntlrOrderByMemberReferencePath orderByMemberReferencePath =
                 this.compilerState.getCompilerWalk().getOrderByMemberReferencePath();
 
@@ -38,21 +42,15 @@ public class OrderByDirectionInferencePhase
             return;
         }
 
-        String sourceCodeText = "ascending";
-        this.runCompilerMacro(orderByMemberReferencePath, sourceCodeText);
-    }
+        String            sourceCodeText = "ascending";
+        ParseTreeListener compilerPhase  = new OrderByDirectionPhase(this.compilerState);
 
-    private void runCompilerMacro(
-            @Nonnull AntlrOrderByMemberReferencePath orderByMemberReferencePath,
-            @Nonnull String sourceCodeText)
-    {
-        ParseTreeListener compilerPhase = new OrderByDirectionPhase(this.compilerState);
-
-        this.compilerState.runNonRootCompilerMacro(
+        this.compilerState.runInPlaceCompilerMacro(
                 orderByMemberReferencePath,
                 this,
                 sourceCodeText,
                 KlassParser::orderByDirection,
+                inPlaceContext,
                 compilerPhase);
     }
 }

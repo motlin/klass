@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -35,46 +35,52 @@ public class RelationshipInferencePhase
     }
 
     @Override
-    public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
+    public void exitAssociationBody(AssociationBodyContext ctx)
     {
-        super.enterAssociationDeclaration(ctx);
+        this.runCompilerMacro(ctx);
+        super.exitAssociationBody(ctx);
+    }
 
-        RelationshipContext relationship = ctx.associationBodyDeclaration().associationBody().relationship();
-        if (relationship == null)
+    private void runCompilerMacro(AssociationBodyContext inPlaceContext)
+    {
+        RelationshipContext relationship = inPlaceContext.relationship();
+        if (relationship != null)
         {
-            AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
-            if (association.isManyToMany())
-            {
-                return;
-            }
+            return;
+        }
 
-            AntlrAssociationEnd sourceEnd = association.getSourceEnd();
-            AntlrAssociationEnd targetEnd = association.getTargetEnd();
+        AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
+        if (association.isManyToMany())
+        {
+            return;
+        }
 
-            if (targetEnd.isToOne() && sourceEnd.isToMany() || sourceEnd.isToOne() && sourceEnd.isOwned())
-            {
-                this.handleSourceAssociationEnd(sourceEnd);
-            }
-            else if (sourceEnd.isToOne() && targetEnd.isToMany() || targetEnd.isToOne() && targetEnd.isOwned())
-            {
-                this.handleTargetAssociationEnd(targetEnd);
-            }
-            else if (sourceEnd.isToOne() && targetEnd.isToOneRequired())
-            {
-                this.handleSourceAssociationEnd(sourceEnd);
-            }
-            else if (targetEnd.isToOne() && sourceEnd.isToOneRequired())
-            {
-                this.handleTargetAssociationEnd(targetEnd);
-            }
-            else
-            {
-                throw new IllegalStateException("Unhandled association end combination: " + association);
-            }
+        AntlrAssociationEnd sourceEnd = association.getSourceEnd();
+        AntlrAssociationEnd targetEnd = association.getTargetEnd();
+
+        if (targetEnd.isToOne() && sourceEnd.isToMany() || sourceEnd.isToOne() && sourceEnd.isOwned())
+        {
+            this.handleSourceAssociationEnd(inPlaceContext, sourceEnd);
+        }
+        else if (sourceEnd.isToOne() && targetEnd.isToMany() || targetEnd.isToOne() && targetEnd.isOwned())
+        {
+            this.handleTargetAssociationEnd(inPlaceContext, targetEnd);
+        }
+        else if (sourceEnd.isToOne() && targetEnd.isToOneRequired())
+        {
+            this.handleSourceAssociationEnd(inPlaceContext, sourceEnd);
+        }
+        else if (targetEnd.isToOne() && sourceEnd.isToOneRequired())
+        {
+            this.handleTargetAssociationEnd(inPlaceContext, targetEnd);
+        }
+        else
+        {
+            throw new IllegalStateException("Unhandled association end combination: " + association);
         }
     }
 
-    private void handleSourceAssociationEnd(AntlrAssociationEnd associationEnd)
+    private void handleSourceAssociationEnd(AssociationBodyContext inPlaceContext, AntlrAssociationEnd associationEnd)
     {
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
@@ -87,10 +93,10 @@ public class RelationshipInferencePhase
                         each.getName()))
                 .makeString("relationship ", " && ", "");
 
-        this.runCompilerMacro(sourceCodeText);
+        this.runInPlaceCompilerMacro(inPlaceContext, sourceCodeText);
     }
 
-    private void handleTargetAssociationEnd(AntlrAssociationEnd associationEnd)
+    private void handleTargetAssociationEnd(AssociationBodyContext inPlaceContext, AntlrAssociationEnd associationEnd)
     {
         AntlrClass oppositeType = associationEnd.getOpposite().getType();
 
@@ -103,20 +109,21 @@ public class RelationshipInferencePhase
                         LOWER_CAMEL_TO_UPPER_CAMEL.convert(each.getName())))
                 .makeString("relationship ", " && ", "");
 
-        this.runCompilerMacro(sourceCodeText);
+        this.runInPlaceCompilerMacro(inPlaceContext, sourceCodeText);
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText)
+    private void runInPlaceCompilerMacro(AssociationBodyContext inPlaceContext, @Nonnull String sourceCodeText)
     {
         AntlrAssociation association = this.compilerState.getCompilerWalk().getAssociation();
 
         ParseTreeListener compilerPhase = new RelationshipPhase(this.compilerState);
 
-        this.compilerState.runNonRootCompilerMacro(
+        this.compilerState.runInPlaceCompilerMacro(
                 association,
                 this,
                 sourceCodeText,
                 KlassParser::relationship,
+                inPlaceContext,
                 compilerPhase);
     }
 }
