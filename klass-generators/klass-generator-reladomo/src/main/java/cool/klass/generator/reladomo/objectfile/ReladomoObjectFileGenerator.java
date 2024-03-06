@@ -40,7 +40,6 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
@@ -199,14 +198,8 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 
     private List<RelationshipType> convertRelationships(@Nonnull Klass klass)
     {
-        ImmutableList<String> superClassAssociationEndNames = klass.getSuperClass()
-                .map(Klass::getAssociationEnds)
-                .orElseGet(Lists.immutable::empty)
-                .collect(NamedElement::getName);
-
         return klass
                 .getAssociationEnds()
-                .reject(associationEnd -> superClassAssociationEndNames.contains(associationEnd.getName()))
                 .select(associationEnd ->
                         associationEnd == associationEnd.getOwningAssociation().getTargetAssociationEnd())
                 .collect(this::convertRelationship)
