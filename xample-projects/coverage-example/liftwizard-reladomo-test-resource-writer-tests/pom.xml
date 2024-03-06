@@ -13,6 +13,8 @@
 
     <artifactId>liftwizard-reladomo-test-resource-writer-tests</artifactId>
 
+    <name>Liftwizard Reladomo: Test Resource Writer Tests</name>
+
     <dependencies>
 
         <dependency>

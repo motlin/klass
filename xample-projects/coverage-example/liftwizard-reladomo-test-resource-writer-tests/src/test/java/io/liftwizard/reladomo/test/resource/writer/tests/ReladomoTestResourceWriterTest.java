@@ -52,14 +52,14 @@ public class ReladomoTestResourceWriterTest
         String actual = ReladomoTestResourceWriter.generate();
         String expected = ""
                 + "class cool.klass.xample.coverage.PropertiesOptional\n"
-                + "propertiesOptionalId, optionalString                              , optionalInteger, optionalLong, optionalDouble, optionalFloat, optionalBoolean, optionalInstant        , optionalLocalDate, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
-                + "                   1, \"PropertiesOptional optionalString 1 \\u261D\",               1, 100000000000,   1.0123456789,     1.0123457,            true, \"1999-12-31 23:59:00.0\", \"1999-12-31\"     , \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n"
+                + "propertiesOptionalId, optionalString                         , optionalInteger, optionalLong, optionalDouble, optionalFloat, optionalBoolean, optionalInstant        , optionalLocalDate, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
+                + "                   1, \"PropertiesOptional optionalString 1 ☝\",               1, 100000000000,   1.0123456789,     1.0123457,            true, \"1999-12-31 23:59:00.0\", \"1999-12-31\"     , \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n"
                 + "class cool.klass.xample.coverage.PropertiesOptionalVersion\n"
                 + "propertiesOptionalId, number, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
                 + "                   1,      1, \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n"
                 + "class cool.klass.xample.coverage.PropertiesRequired\n"
-                + "propertiesRequiredId, requiredString                              , requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant        , requiredLocalDate, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
-                + "                   1, \"PropertiesRequired requiredString 1 \\u261D\",               1, 100000000000,   1.0123456789,     1.0123457,            true, \"1999-12-31 23:59:00.0\", \"1999-12-31\"     , \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n"
+                + "propertiesRequiredId, requiredString                         , requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant        , requiredLocalDate, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
+                + "                   1, \"PropertiesRequired requiredString 1 ☝\",               1, 100000000000,   1.0123456789,     1.0123457,            true, \"1999-12-31 23:59:00.0\", \"1999-12-31\"     , \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n"
                 + "class cool.klass.xample.coverage.PropertiesRequiredVersion\n"
                 + "propertiesRequiredId, number, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo               \n"
                 + "                   1,      1, \"test user 1\", \"1999-12-31 23:59:59.999\", \"test user 1\"  , \"1999-12-31 23:59:59.999\", \"9999-12-01 23:59:00.0\"\n";
