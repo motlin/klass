@@ -34,7 +34,8 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new ClassifierPhase(this.compilerState),
-                new ClassTemporalPropertyInferencePhase(this.compilerState));
+                new ClassTemporalPropertyInferencePhase(this.compilerState),
+                new ClassAuditPropertyInferencePhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
                 ctx,
