@@ -123,6 +123,12 @@ public final class CompilationUnit
     }
 
     @Nonnull
+    public String getSourceCodeText()
+    {
+        return this.sourceCodeText;
+    }
+
+    @Nonnull
     public BufferedTokenStream getTokenStream()
     {
         return this.tokenStream;
