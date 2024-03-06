@@ -76,6 +76,24 @@ service ClassifierInterfaceMapping
         }
 }
 
+service ClassifierModifier
+{
+    /classifierModifier/{classifierName: String[1..1]}/{keyword: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.classifierName == classifierName && this.keyword == keyword;
+            projection  : ClassifierModifierProjection;
+        }
+    /classifierModifier
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ClassifierModifierProjection;
+        }
+}
+
 service Klass
 {
     /klass/{name: String[1..1]}
@@ -217,24 +235,6 @@ service PropertyModifier
             multiplicity: many;
             criteria    : all;
             projection  : PropertyModifierProjection;
-        }
-}
-
-service ClassifierModifier
-{
-    /classifierModifier/{classifierName: String[1..1]}/{keyword: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.keyword == keyword;
-            projection  : ClassifierModifierProjection;
-        }
-    /classifierModifier
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ClassifierModifierProjection;
         }
 }
 

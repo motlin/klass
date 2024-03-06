@@ -42,8 +42,8 @@ projection ClassifierProjection on Classifier
     ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
-    dataTypeProperties: DataTypePropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 projection InterfaceProjection on Interface
@@ -52,13 +52,19 @@ projection InterfaceProjection on Interface
     ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
-    dataTypeProperties: DataTypePropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 {
     superInterface: InterfaceProjection,
+}
+
+projection ClassifierModifierProjection on ClassifierModifier
+{
+    keyword: "ClassifierModifier keyword",
+    ordinal: "ClassifierModifier ordinal",
 }
 
 projection KlassProjection on Klass
@@ -68,8 +74,8 @@ projection KlassProjection on Klass
     packageName: "PackageableElement packageName",
     abstractClass: "Klass abstractClass",
     superInterfaces: ClassifierInterfaceMappingProjection,
-    dataTypeProperties: DataTypePropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
+    dataTypeProperties: DataTypePropertyProjection,
     superClass: KlassProjection,
     associationEnds: AssociationEndProjection,
     parameterizedProperties: ParameterizedPropertyProjection,
@@ -138,12 +144,6 @@ projection PropertyModifierProjection on PropertyModifier
 {
     keyword: "PropertyModifier keyword",
     ordinal: "PropertyModifier ordinal",
-}
-
-projection ClassifierModifierProjection on ClassifierModifier
-{
-    keyword: "ClassifierModifier keyword",
-    ordinal: "ClassifierModifier ordinal",
 }
 
 projection ParameterProjection on Parameter

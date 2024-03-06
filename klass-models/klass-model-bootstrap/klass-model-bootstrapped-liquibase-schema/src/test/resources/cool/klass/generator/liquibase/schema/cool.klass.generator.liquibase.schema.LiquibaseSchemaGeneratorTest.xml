@@ -74,7 +74,23 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-6-KLASS">
+    <changeSet author="Klass" id="initial-table-6-CLASSIFIER_MODIFIER">
+        <createTable tableName="CLASSIFIER_MODIFIER">
+            <column name="CLASSIFIER_NAME" type="varchar(256)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CLASSIFIER_MODIFIER_PK" />
+            </column>
+
+            <column name="KEYWORD" type="varchar(256)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CLASSIFIER_MODIFIER_PK" />
+            </column>
+
+            <column name="ORDINAL" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-7-KLASS">
         <createTable tableName="KLASS">
             <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="KLASS_PK" />
@@ -88,7 +104,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-7-DATA_TYPE_PROPERTY">
+    <changeSet author="Klass" id="initial-table-8-DATA_TYPE_PROPERTY">
         <createTable tableName="DATA_TYPE_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="DATA_TYPE_PROPERTY_PK" />
@@ -108,7 +124,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-8-PRIMITIVE_PROPERTY">
+    <changeSet author="Klass" id="initial-table-9-PRIMITIVE_PROPERTY">
         <createTable tableName="PRIMITIVE_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PRIMITIVE_PROPERTY_PK" />
@@ -124,7 +140,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-9-ENUMERATION_PROPERTY">
+    <changeSet author="Klass" id="initial-table-10-ENUMERATION_PROPERTY">
         <createTable tableName="ENUMERATION_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ENUMERATION_PROPERTY_PK" />
@@ -140,7 +156,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-10-MIN_LENGTH_PROPERTY_VALIDATION">
+    <changeSet author="Klass" id="initial-table-11-MIN_LENGTH_PROPERTY_VALIDATION">
         <createTable tableName="MIN_LENGTH_PROPERTY_VALIDATION">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MIN_LENGTH_PROPERTY_VALIDATION_PK" />
@@ -156,7 +172,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-11-MAX_LENGTH_PROPERTY_VALIDATION">
+    <changeSet author="Klass" id="initial-table-12-MAX_LENGTH_PROPERTY_VALIDATION">
         <createTable tableName="MAX_LENGTH_PROPERTY_VALIDATION">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MAX_LENGTH_PROPERTY_VALIDATION_PK" />
@@ -172,7 +188,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-12-MIN_PROPERTY_VALIDATION">
+    <changeSet author="Klass" id="initial-table-13-MIN_PROPERTY_VALIDATION">
         <createTable tableName="MIN_PROPERTY_VALIDATION">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MIN_PROPERTY_VALIDATION_PK" />
@@ -188,7 +204,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-13-MAX_PROPERTY_VALIDATION">
+    <changeSet author="Klass" id="initial-table-14-MAX_PROPERTY_VALIDATION">
         <createTable tableName="MAX_PROPERTY_VALIDATION">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MAX_PROPERTY_VALIDATION_PK" />
@@ -204,7 +220,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-14-PROPERTY_MODIFIER">
+    <changeSet author="Klass" id="initial-table-15-PROPERTY_MODIFIER">
         <createTable tableName="PROPERTY_MODIFIER">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTY_MODIFIER_PK" />
@@ -216,22 +232,6 @@
 
             <column name="KEYWORD" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTY_MODIFIER_PK" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-table-15-CLASSIFIER_MODIFIER">
-        <createTable tableName="CLASSIFIER_MODIFIER">
-            <column name="CLASSIFIER_NAME" type="varchar(256)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="CLASSIFIER_MODIFIER_PK" />
-            </column>
-
-            <column name="KEYWORD" type="varchar(256)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="CLASSIFIER_MODIFIER_PK" />
             </column>
 
             <column name="ORDINAL" type="int">
@@ -838,7 +838,17 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
+    <changeSet author="Klass" id="initial-foreign-key-6-CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER"
+                baseTableName="CLASSIFIER_MODIFIER"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-8-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
         <addForeignKeyConstraint
                 constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
                 baseTableName="DATA_TYPE_PROPERTY"
@@ -848,7 +858,7 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_ENUMERATION">
+    <changeSet author="Klass" id="initial-foreign-key-10-ENUMERATION_PROPERTY_FK_ENUMERATION">
         <addForeignKeyConstraint
                 constraintName="ENUMERATION_PROPERTY_FK_ENUMERATION"
                 baseTableName="ENUMERATION_PROPERTY"
@@ -858,23 +868,13 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-14-PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY">
+    <changeSet author="Klass" id="initial-foreign-key-15-PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY">
         <addForeignKeyConstraint
                 constraintName="PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY"
                 baseTableName="PROPERTY_MODIFIER"
                 baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
                 referencedTableName="DATA_TYPE_PROPERTY"
                 referencedColumnNames="CLASSIFIER_NAME, NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-15-CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER"
-                baseTableName="CLASSIFIER_MODIFIER"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
         />
     </changeSet>
 
@@ -1266,7 +1266,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-6-KLASS_IDX_SUPER_CLASS">
+    <changeSet author="Klass" id="initial-indices-7-KLASS_IDX_SUPER_CLASS">
         <createIndex
                 indexName="KLASS_IDX_SUPER_CLASS"
                 tableName="KLASS">
@@ -1274,7 +1274,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-9-ENUMERATION_PROPERTY_IDX_ENUMERATION">
+    <changeSet author="Klass" id="initial-indices-10-ENUMERATION_PROPERTY_IDX_ENUMERATION">
         <createIndex
                 indexName="ENUMERATION_PROPERTY_IDX_ENUMERATION"
                 tableName="ENUMERATION_PROPERTY">

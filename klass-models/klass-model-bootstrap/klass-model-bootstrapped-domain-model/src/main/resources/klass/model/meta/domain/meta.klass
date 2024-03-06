@@ -67,6 +67,21 @@ association ClassifierInterfaceMappingHasInterface
     superInterface                : Interface[1..1];
 }
 
+class ClassifierModifier
+    implements Element
+{
+    classifierName: String key maximumLength(256);
+    keyword: String key maximumLength(256);
+    ordinal: Integer;
+}
+
+association ClassifierHasModifiers
+{
+    owningClassifier: Classifier[1..1];
+    classifierModifiers: ClassifierModifier[0..*]
+        orderBy: this.ordinal ascending;
+}
+
 class Klass
     extends Classifier
 {
@@ -221,21 +236,6 @@ association DataTypePropertyHasModifiers
 
     relationship this.classifierName == PropertyModifier.classifierName
             && this.name == PropertyModifier.propertyName
-}
-
-class ClassifierModifier
-    implements Element
-{
-    classifierName: String key maximumLength(256);
-    keyword: String key maximumLength(256);
-    ordinal: Integer;
-}
-
-association ClassifierHasModifiers
-{
-    owningClassifier: Classifier[1..1];
-    classifierModifiers: ClassifierModifier[0..*]
-        orderBy: this.ordinal ascending;
 }
 
 class Parameter
