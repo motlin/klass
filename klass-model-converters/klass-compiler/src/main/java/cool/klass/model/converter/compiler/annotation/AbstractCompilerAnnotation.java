@@ -42,14 +42,14 @@ public abstract class AbstractCompilerAnnotation
     @Nonnull
     protected final CompilationUnit                   compilationUnit;
     @Nonnull
+    protected final AnnotationSeverity                severity;
+    @Nonnull
     private final   Optional<CauseCompilerAnnotation> macroCause;
     // TODO: Change type of offendingContexts to also be SourceContexts
     @Nonnull
     private final   ImmutableList<ParserRuleContext>  offendingContexts;
     @Nonnull
     private final   ImmutableList<IAntlrElement>      sourceContexts;
-    @Nonnull
-    private final   AnnotationSeverity                severity;
 
     protected AbstractCompilerAnnotation(
             @Nonnull CompilationUnit compilationUnit,
@@ -374,12 +374,14 @@ public abstract class AbstractCompilerAnnotation
     @Nonnull
     private String getLocationMessage()
     {
+        // @formatter:off
         return ansi().a("\n")
                 .fg(CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a("\n")
                 .fg(CYAN).a("File:      ").reset().a(this.compilationUnit).reset().a("\n")
                 .fg(CYAN).a("Line:      ").reset().a(this.getLine()).reset().a("\n")
                 .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
                 .toString();
+        // @formatter:on
     }
 
     public abstract String toGitHubAnnotation();

@@ -56,17 +56,23 @@ public class RootCompilerAnnotation
         String contextString   = this.getContextString();
         String locationMessage = this.getOptionalLocationMessage();
         String causeString     = this.getCauseString();
+        String severityColor   = this.severity == AnnotationSeverity.ERROR ? "red" : "yellow";
+        String severityName    = this.severity == AnnotationSeverity.ERROR ? "Error" : "Warning";
+
+        String format = ""
+                + "════════════════════════════════════════ @|magenta %s|@ ════════════════════════════════════════\n"
+                + "@|%s %s: %s|@\n"
+                + "\n"
+                + "At %s\n"
+                + "\n"
+                + "%s%s%s\n"
+                + "═════════════════════════════════════════════════════════════════════════════════════════════\n";
 
         String ansi = String.format(
-                ""
-                        + "════════════════════════════════════════ @|magenta %s|@ ════════════════════════════════════════\n"
-                        + "@|red Error: %s|@\n"
-                        + "\n"
-                        + "At %s\n"
-                        + "\n"
-                        + "%s%s%s\n"
-                        + "═════════════════════════════════════════════════════════════════════════════════════════════\n",
+                format,
                 this.annotationCode,
+                severityColor,
+                severityName,
                 this.message,
                 this.getShortLocationString(),
                 contextString,
