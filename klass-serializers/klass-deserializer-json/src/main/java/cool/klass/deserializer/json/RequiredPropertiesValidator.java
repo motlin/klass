@@ -400,6 +400,34 @@ public class RequiredPropertiesValidator
                 return;
             }
 
+            if (this.operationMode == OperationMode.REPLACE && associationEnd.isFinal())
+            {
+                String warning = String.format(
+                        "Error at %s. Expected value for required final property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.warnings.add(warning);
+                return;
+            }
+
+            if (this.operationMode == OperationMode.REPLACE && associationEnd.isPrivate())
+            {
+                String warning = String.format(
+                        "Error at %s. Expected value for required private property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.warnings.add(warning);
+                return;
+            }
+
             String error = String.format(
                     "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
                     this.getContextString(),

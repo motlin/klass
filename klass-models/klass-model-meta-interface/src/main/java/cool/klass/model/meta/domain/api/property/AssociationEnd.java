@@ -42,6 +42,11 @@ public interface AssociationEnd extends ReferenceProperty
         return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isFinal);
     }
 
+    default boolean isPrivate()
+    {
+        return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isPrivate);
+    }
+
     @Nonnull
     default AssociationEnd getOpposite()
     {

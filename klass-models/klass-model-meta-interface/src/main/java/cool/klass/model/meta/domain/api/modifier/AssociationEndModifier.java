@@ -2,7 +2,8 @@ package cool.klass.model.meta.domain.api.modifier;
 
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
-public interface AssociationEndModifier extends Modifier
+public interface AssociationEndModifier
+        extends Modifier
 {
     AssociationEnd getModifierOwner();
 
@@ -19,5 +20,10 @@ public interface AssociationEndModifier extends Modifier
     default boolean isFinal()
     {
         return this.getName().equals("final");
+    }
+
+    default boolean isPrivate()
+    {
+        return this.getName().equals("private");
     }
 }
