@@ -1,5 +1,5 @@
-════════════════════════════════════════ [35mERR_PRJ_TYP[m ════════════════════════════════════════
-[31mError: Leaf projection nodes require a data type property, but found a reference property 'GoodClass.goodParameterizedProperty1' with type 'AmbiguousClass'[m
+════════════════════════════════════════ [35mERR_PRJ_DTP[m ════════════════════════════════════════
+[31mError: Cannot find member 'GoodClass.goodParameterizedProperty1'.[m
 
 At (AmbiguousTypesErrorTest.klass:142)
 

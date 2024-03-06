@@ -264,7 +264,7 @@ public class AntlrClass
 
     public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
     {
-        this.propertyStates.add(parameterizedPropertyState);
+        // this.propertyStates.add(parameterizedPropertyState);
         this.parameterizedPropertyStates.add(parameterizedPropertyState);
         this.parameterizedPropertiesByName.compute(
                 parameterizedPropertyState.getName(),
@@ -280,6 +280,7 @@ public class AntlrClass
             throw new AssertionError();
         }
 
+        /*
         this.referencePropertyStates.add(parameterizedPropertyState);
         this.referencePropertiesByName.compute(
                 parameterizedPropertyState.getName(),
@@ -293,6 +294,7 @@ public class AntlrClass
         {
             throw new AssertionError();
         }
+        */
     }
 
     public AntlrParameterizedProperty getParameterizedPropertyByContext(ParameterizedPropertyContext ctx)
