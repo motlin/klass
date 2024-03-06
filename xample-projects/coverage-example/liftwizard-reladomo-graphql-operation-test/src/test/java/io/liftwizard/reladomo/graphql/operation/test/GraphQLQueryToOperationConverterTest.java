@@ -4,12 +4,14 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
+import com.gs.fw.common.mithra.finder.orderby.OrderBy;
 import cool.klass.xample.coverage.OwnedNaturalOneToManySource;
 import cool.klass.xample.coverage.OwnedNaturalOneToManySourceFinder;
 import cool.klass.xample.coverage.PropertiesOptionalFinder;
@@ -39,6 +41,7 @@ import org.junit.rules.TestRule;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertTrue;
 
 public class GraphQLQueryToOperationConverterTest
 {
@@ -51,29 +54,59 @@ public class GraphQLQueryToOperationConverterTest
     @Test
     public void convertQueries()
     {
-        String query = ""
-                + "{\n"
-                + "  propertiesOptionalByFinder(operation: { optionalBoolean: { eq: true } }) {\n"
-                + "    propertiesOptionalId\n"
-                + "    optionalString\n"
-                + "    optionalInteger\n"
-                + "    optionalLong\n"
-                + "    optionalDouble\n"
-                + "    optionalFloat\n"
-                + "    optionalBoolean\n"
-                + "    optionalInstant\n"
-                + "    optionalLocalDate\n"
-                + "    system\n"
-                + "    systemFrom\n"
-                + "    systemTo\n"
-                + "    createdById\n"
-                + "    createdOn\n"
-                + "    lastUpdatedById\n"
-                + "    version {\n"
-                + "      number\n"
-                + "    }\n"
-                + "  }\n"
-                + "}\n";
+        //language=GraphQL
+        String query = """
+                {
+                  propertiesOptionalByFinder(
+                    operation: {
+                      optionalBoolean: { eq: true }
+                      optionalLong: { eq: 1 }
+                      optionalFloat: { eq: 1.0 }
+                      optionalDouble: { eq: 1.0 }
+                      optionalInteger: { eq: 1 }
+                      optionalString: { lower: { startsWith: "a" } }
+                      version: { number: { eq: 1 } }
+                    }
+                    orderBy: [
+                      {
+                        attribute: {
+                          optionalBoolean: {}
+                          optionalLong: {}
+                          optionalFloat: {}
+                          optionalDouble: {}
+                        }
+                        direction: DESCENDING
+                      }
+                      {
+                        attribute: {
+                          optionalInteger: {}
+                          optionalString: {}
+                          version: { number: {} }
+                        }
+                      }
+                    ]
+                  ) {
+                    propertiesOptionalId
+                    optionalString
+                    optionalInteger
+                    optionalLong
+                    optionalDouble
+                    optionalFloat
+                    optionalBoolean
+                    optionalInstant
+                    optionalLocalDate
+                    system
+                    systemFrom
+                    systemTo
+                    createdById
+                    createdOn
+                    lastUpdatedById
+                    version {
+                      number
+                    }
+                  }
+                }
+                """;
 
         this.assertCompiles(query);
     }
@@ -443,8 +476,16 @@ public class GraphQLQueryToOperationConverterTest
         {
             Map<String, Object> arguments      = environment.getArguments();
             Object              inputOperation = arguments.get("operation");
-            Operation           operation      = this.getOperation((Map<?, ?>) inputOperation);
+            Object              inputOrderBy   = arguments.get("orderBy");
+
+            Operation            operation     = this.getOperation((Map<?, ?>) inputOperation);
+            List<Map<String, ?>> inputOrderByList = (List<Map<String, ?>>) inputOrderBy;
+            Optional<OrderBy>    orderBy       = this.getOrderBys(inputOrderByList);
             assertThat(operation, notNullValue());
+            if (!inputOrderByList.isEmpty())
+            {
+                assertTrue(orderBy.isPresent());
+            }
             return Lists.mutable.empty();
         }
     }
