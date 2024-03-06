@@ -45,12 +45,6 @@
                         <version>${project.version}</version>
                     </dependency>
 
-                    <dependency>
-                        <groupId>cool.klass</groupId>
-                        <artifactId>klass-model-bootstrapped-domain-model</artifactId>
-                        <version>${klass.version}</version>
-                    </dependency>
-
                 </dependencies>
             </plugin>
 

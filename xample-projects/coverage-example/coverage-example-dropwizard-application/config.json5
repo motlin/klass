@@ -139,7 +139,7 @@
     ]
   },
   "bootstrap": {
-    "enabled": true
+    "enabled": false
   },
   "liquibase": {
     "enabled": true,
