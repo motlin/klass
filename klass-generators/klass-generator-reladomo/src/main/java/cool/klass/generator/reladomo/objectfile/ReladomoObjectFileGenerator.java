@@ -37,6 +37,7 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
+import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and generate order-bys on association ends.
@@ -283,10 +284,23 @@ public class ReladomoObjectFileGenerator
                 .makeString();
     }
 
-    private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath each)
+    private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
+        ThisMemberReferencePath thisMemberReferencePath = orderByMemberReferencePath.getThisMemberReferencePath();
+        DataTypeProperty        property                = thisMemberReferencePath.getProperty();
+
+        if (property.isDerived())
+        {
+            return false;
+        }
+
         // Reladomo only supports simple property orderBys, like (title asc), not paths like (question.title asc)
-        return each.getThisMemberReferencePath().getAssociationEnds().isEmpty();
+        if (thisMemberReferencePath.getAssociationEnds().notEmpty())
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private String convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
