@@ -33,5 +33,9 @@
         <module>klass-dropwizard-application</module>
         <module>klass-dropwizard-auth</module>
         <module>klass-dropwizard-bundles</module>
+        <module>klass-dropwizard-configuration</module>
+        <module>klass-dropwizard-configuration-clock</module>
+        <module>klass-dropwizard-configuration-clock-system</module>
+        <module>klass-dropwizard-configuration-clock-fixed</module>
     </modules>
 </project>

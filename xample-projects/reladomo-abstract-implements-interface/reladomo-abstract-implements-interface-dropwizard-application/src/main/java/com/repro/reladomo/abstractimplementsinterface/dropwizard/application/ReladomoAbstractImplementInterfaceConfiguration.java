@@ -1,8 +1,8 @@
 package com.repro.reladomo.abstractimplementsinterface.dropwizard.application;
 
-import io.dropwizard.Configuration;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 
-public class ReladomoAbstractImplementInterfaceConfiguration extends Configuration
+public class ReladomoAbstractImplementInterfaceConfiguration extends AbstractKlassConfiguration
 {
     // TODO: implement service configuration
 }

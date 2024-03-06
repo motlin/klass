@@ -1,5 +1,6 @@
-package cool.klass.dropwizard;
+package cool.klass.dropwizard.application;
 
+import java.time.Clock;
 import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -11,6 +12,9 @@ import cool.klass.data.store.DataStore;
 import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.configuration.KlassFactory;
+import cool.klass.dropwizard.configuration.clock.ClockFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import com.typesafe.config.Config;
@@ -18,7 +22,6 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Application;
 import io.dropwizard.Bundle;
-import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -26,7 +29,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractKlassApplication<T extends Configuration> extends Application<T>
+public abstract class AbstractKlassApplication<T extends AbstractKlassConfiguration> extends Application<T>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKlassApplication.class);
 
@@ -140,5 +143,9 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     @Override
     public void run(T configuration, Environment environment) throws Exception
     {
+        KlassFactory klassFactory = configuration.getKlassFactory();
+        ClockFactory clockFactory = klassFactory.getClockFactory();
+        Clock        clock        = clockFactory.createClock();
+        LOGGER.info("Clock type: {}", clock.getClass().getSimpleName());
     }
 }

@@ -1,8 +1,8 @@
 package klass.model.meta.domain.dropwizard.application;
 
-import io.dropwizard.Configuration;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 
-public class KlassBootstrappedMetaModelConfiguration extends Configuration
+public class KlassBootstrappedMetaModelConfiguration extends AbstractKlassConfiguration
 {
     // TODO: implement service configuration
 }

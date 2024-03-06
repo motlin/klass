@@ -21,7 +21,6 @@
         <module>klass-reladomo</module>
         <module>klass-jackson</module>
         <module>klass-serializers</module>
-        <module>klass-dropwizard-bundles</module>
         <module>klass-test-modules</module>
         <module>klass-data-store</module>
         <module>klass-dropwizard</module>
@@ -31,9 +30,6 @@
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
         <module>klass-jackson-response</module>
-        <module>klass-dropwizard-auth</module>
-        <module>klass-dropwizard-application</module>
-        <module>klass-dropwizard</module>
     </modules>
 
     <properties>
@@ -143,6 +139,8 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-object-mapper:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-clock-fixed:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-clock-system:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-meta:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls-workaround:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls:jar</ignoredUnusedDeclaredDependency>

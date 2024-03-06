@@ -1,8 +1,8 @@
 package com.repro.reladomo.bug.dropwizard.application;
 
-import io.dropwizard.Configuration;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 
-public class ReladomoBugConfiguration extends Configuration
+public class ReladomoBugConfiguration extends AbstractKlassConfiguration
 {
     // TODO: implement service configuration
 }

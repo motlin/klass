@@ -55,7 +55,7 @@ public class AbstractApplicationGenerator
                 + "\n"
                 + "import javax.annotation.Generated;\n"
                 + "\n"
-                + "import cool.klass.dropwizard.AbstractKlassApplication;\n"
+                + "import cool.klass.dropwizard.application.AbstractKlassApplication;\n"
                 + "import " + this.rootPackageName + ".service.resource.*;\n"
                 + "import io.dropwizard.setup.Environment;\n"
                 + "import klass.model.meta.domain.service.resource.*;\n"

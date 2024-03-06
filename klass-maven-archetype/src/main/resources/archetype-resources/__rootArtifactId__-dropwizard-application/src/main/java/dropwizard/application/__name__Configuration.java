@@ -1,8 +1,8 @@
 package ${package}.dropwizard.application;
 
-import io.dropwizard.Configuration;
+import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 
-public class ${name}Configuration extends Configuration
+public class ${name}Configuration extends AbstractKlassConfiguration
 {
     // TODO: implement service configuration
 }
