@@ -18,6 +18,8 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.order.OrderBy;
+import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -25,6 +27,8 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
+import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import klass.model.meta.domain.AssociationEndOrderBy;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
 import klass.model.meta.domain.ElementAbstract;
 import klass.model.meta.domain.MaxLengthPropertyValidation;
@@ -85,9 +89,8 @@ public class KlassBootstrapWriter
             klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
             KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
             // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
-            bootstrappedClass.insert();
-
             bootstrappedClass.setInheritanceType(klass.getInheritanceType().getPrettyName());
+            bootstrappedClass.insert();
 
             klass.getSuperClass()
                     .map(NamedElement::getName)
@@ -268,6 +271,43 @@ public class KlassBootstrapWriter
             KlassBootstrapWriter.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
             bootstrappedAssociationEndModifier.insert();
         }
+
+        associationEnd.getOrderBy().ifPresent(orderBy -> bootstrapAssociationEndOrderBy(associationEnd, orderBy));
+    }
+
+    private void bootstrapAssociationEndOrderBy(
+            AssociationEnd associationEnd,
+            OrderBy orderBy)
+    {
+        for (OrderByMemberReferencePath orderByMemberReferencePath : orderBy.getOrderByMemberReferencePaths())
+        {
+            ThisMemberReferencePath thisMemberReferencePath = orderByMemberReferencePath.getThisMemberReferencePath();
+
+            klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath =
+                    this.bootstrapThisMemberReferencePath(thisMemberReferencePath);
+
+            AssociationEndOrderBy associationEndOrderBy = new AssociationEndOrderBy();
+            associationEndOrderBy.setAssociationEndClassName(associationEnd.getOwningClassifier().getName());
+            associationEndOrderBy.setAssociationEndName(associationEnd.getName());
+            associationEndOrderBy.setThisMemberReferencePathId(bootstrappedThisMemberReferencePath.getId());
+            associationEndOrderBy.setOrderByDirection(orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection().name());
+            associationEndOrderBy.insert();
+        }
+    }
+
+    @Nonnull
+    private klass.model.meta.domain.ThisMemberReferencePath bootstrapThisMemberReferencePath(ThisMemberReferencePath thisMemberReferencePath)
+    {
+        klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
+        bootstrappedThisMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
+        bootstrappedThisMemberReferencePath.setPropertyClassName(thisMemberReferencePath.getProperty().getOwningClassifier().getName());
+        bootstrappedThisMemberReferencePath.setPropertyName(thisMemberReferencePath.getProperty().getName());
+        if (thisMemberReferencePath.getAssociationEnds().notEmpty())
+        {
+            throw new AssertionError("TODO");
+        }
+        bootstrappedThisMemberReferencePath.insert();
+        return bootstrappedThisMemberReferencePath;
     }
 
     public static void handleElement(ElementAbstract bootstrappedElement, Element element)

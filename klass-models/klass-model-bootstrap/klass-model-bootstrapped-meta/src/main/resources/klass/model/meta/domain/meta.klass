@@ -549,9 +549,40 @@ association ClassHasParameterizedProperties
 {
     owningClass: Klass[1..1];
     parameterizedProperties: ParameterizedProperty[0..*] owned
-        orderBy: this.ordinal;
+        orderBy: this.ordinal ascending, this.ordinal descending;
 
     relationship this.name == ParameterizedProperty.owningClassName
+}
+
+enumeration OrderByDirection
+{
+    ASCENDING("ascending"),
+    DESCENDING("descending"),
+ }
+
+class AssociationEndOrderBy
+{
+    associationEndClassName: String key private;
+    associationEndName: String key private;
+    thisMemberReferencePathId: Long key private;
+    orderByDirection: OrderByDirection;
+}
+
+association AssociationEndHasOrderBy
+{
+    associationEnd: AssociationEnd[1..1];
+    orderBys: AssociationEndOrderBy[0..*];
+
+    relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName
+            && this.name == AssociationEndOrderBy.associationEndName
+}
+
+association AssociationEndOrderByHasMemberReferencePath
+{
+    associationEndOrderBy: AssociationEndOrderBy[0..1];
+    thisMemberReferencePath: ThisMemberReferencePath[1..1];
+
+    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
 
 association ParameterizedPropertyHasResultType
@@ -564,12 +595,12 @@ association ParameterizedPropertyHasResultType
 
 class AssociationEndOrdering
 {
-    associationName               : String key private;
-    name                          : String;
-    inferred                      : Boolean;
-    multiplicity                  : Multiplicity;
-    direction                     : AssociationEndDirection key;
-    orderingId                    : Long private;
+    associationName: String key private;
+    name: String;
+    inferred: Boolean;
+    multiplicity: Multiplicity;
+    direction: AssociationEndDirection key;
+    orderingId: Long private;
 }
 
 class ParameterizedPropertyOrdering
@@ -1298,6 +1329,9 @@ projection AssociationEndSummaryProjection on AssociationEnd
     associationEndModifiers:
     {
         name    : "Association end modifier name",
+    },
+    orderBys:{
+
     },
 }
 
