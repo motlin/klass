@@ -161,6 +161,11 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-connection-manager</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
 
@@ -182,16 +187,6 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-servlet-logging-mdc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-servlet-logging-logstash-encoder</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-servlet-logging-typesafe</artifactId>
         </dependency>
 
         <dependency>
@@ -441,7 +436,17 @@
 
         <dependency>
             <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo</artifactId>
         </dependency>
 
         <dependency>
@@ -467,6 +472,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
         </dependency>
 
         <dependency>
