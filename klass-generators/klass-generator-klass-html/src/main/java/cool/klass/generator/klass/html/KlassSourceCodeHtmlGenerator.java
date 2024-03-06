@@ -44,8 +44,8 @@ public class KlassSourceCodeHtmlGenerator
     public static String getSourceCode(
             Token token,
             DomainModelWithSourceCode domainModel,
-            Optional<TopLevelElementWithSourceCode> topLevelElement,
-            Optional<String> memberName)
+            Optional<TopLevelElementWithSourceCode> topLevelElementToHighlight,
+            Optional<String> memberNameToHighlight)
     {
         Optional<TokenCategory>         maybeTokenCategory        = domainModel.getTokenCategory(token);
         Optional<ElementWithSourceCode> maybeElementByReference   = domainModel.getElementByReference(token);
@@ -83,10 +83,15 @@ public class KlassSourceCodeHtmlGenerator
                     linkForElement,
                     escapedName);
 
+            boolean shouldHighlight = matchesElementToHighlight(
+                    maybeElementByDeclaration.get(),
+                    topLevelElementToHighlight,
+                    memberNameToHighlight);
+
             return getSpan(
                     declarationAnchor,
                     tokenCategory,
-                    matchesHighlight(maybeElementByDeclaration.get(), topLevelElement, memberName));
+                    shouldHighlight);
         }
 
         if (maybeElementByDeclaration.isEmpty() && maybeElementByReference.isPresent())
@@ -102,36 +107,49 @@ public class KlassSourceCodeHtmlGenerator
 
     public static String getSourceCode(
             @Nonnull DomainModelWithSourceCode domainModel,
+            @Nonnull SourceCode sourceCode)
+    {
+        return getSourceCode(domainModel, sourceCode, Optional.empty(), Optional.empty());
+    }
+
+    public static String getSourceCode(
+            @Nonnull DomainModelWithSourceCode domainModel,
             @Nonnull SourceCode sourceCode,
-            @Nonnull Optional<TopLevelElementWithSourceCode> topLevelElement,
-            @Nonnull Optional<String> memberName)
+            @Nonnull Optional<TopLevelElementWithSourceCode> topLevelElementToHighlight,
+            @Nonnull Optional<String> memberNameToHighlight)
     {
         Objects.requireNonNull(domainModel);
         Objects.requireNonNull(sourceCode);
-        Objects.requireNonNull(topLevelElement);
-        Objects.requireNonNull(memberName);
+        Objects.requireNonNull(topLevelElementToHighlight);
+        Objects.requireNonNull(memberNameToHighlight);
 
         BufferedTokenStream tokenStream = sourceCode.getTokenStream();
         MutableList<Token>  tokens      = ListAdapter.adapt(tokenStream.getTokens());
 
         String body = tokens
                 .reject(token -> token.getType() == Token.EOF)
-                .collect(token -> getSourceCode(token, domainModel, topLevelElement, memberName))
+                .collect(token -> getSourceCode(token, domainModel, topLevelElementToHighlight, memberNameToHighlight))
                 .makeString("");
 
         //language=HTML
         String prefix = """
                 <html>
                 <head>
-                    <link rel="stylesheet" type="text/css" href="/static/css/light.css" media="(prefers-color-scheme: light)">
-                    <link rel="stylesheet" type="text/css" href="/static/css/dark.css" media="(prefers-color-scheme: dark)">
-                    <link rel="stylesheet" type="text/css" href="/static/css/slider.css">
-                    <link rel="stylesheet" type="text/css" href="/static/css/klass-syntax.css">
-                    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
+                    <link rel='stylesheet' type='text/css' href='/static/css/light.css' media='(prefers-color-scheme: light)'>
+                    <link rel='stylesheet' type='text/css' href='/static/css/dark.css' media='(prefers-color-scheme: dark)'>
+                    <link rel='stylesheet' type='text/css' href='/static/css/slider.css'>
+                    <link rel='stylesheet' type='text/css' href='/static/css/klass-syntax.css'>
+                    <script type='module' src='https://unpkg.com/dark-mode-toggle'></script>
+                    <style>
+                        :root {
+                            font-family: "Lucida Console", Courier, monospace;
+                            font-size: 16px;
+                        }
+                    </style>
                 </head>
-                <body class="klass">
+                <body class='klass'>
                 <aside>
-                  <dark-mode-toggle class="slider" legend="Dark Mode" appearance="toggle"></dark-mode-toggle>
+                    <dark-mode-toggle class='slider' legend='Dark Mode' appearance='toggle'></dark-mode-toggle>
                 </aside>
                 <pre>
                 """;
@@ -142,28 +160,28 @@ public class KlassSourceCodeHtmlGenerator
                + "</html>\n";
     }
 
-    private static boolean matchesHighlight(
+    private static boolean matchesElementToHighlight(
             ElementWithSourceCode element,
-            Optional<TopLevelElementWithSourceCode> topLevelElement,
-            Optional<String> memberName)
+            Optional<TopLevelElementWithSourceCode> topLevelElementToHighlight,
+            Optional<String> memberNameToHighlight)
     {
-        if (element instanceof TopLevelElement && memberName.isPresent())
+        if (element instanceof TopLevelElement && memberNameToHighlight.isPresent())
         {
             return false;
         }
-        if (memberName.isEmpty())
+        if (memberNameToHighlight.isEmpty())
         {
-            return Optional.of(element).equals(topLevelElement);
+            return Optional.of(element).equals(topLevelElementToHighlight);
         }
         if (element instanceof Property property)
         {
-            return Optional.of(property.getName()).equals(memberName)
-                   && Optional.of(property.getOwningClassifier()).equals(topLevelElement);
+            return Optional.of(property.getName()).equals(memberNameToHighlight)
+                   && Optional.of(property.getOwningClassifier()).equals(topLevelElementToHighlight);
         }
         if (element instanceof EnumerationLiteral enumerationLiteral)
         {
-            return Optional.of(enumerationLiteral.getName()).equals(memberName)
-                   && Optional.of(enumerationLiteral.getType()).equals(topLevelElement);
+            return Optional.of(enumerationLiteral.getName()).equals(memberNameToHighlight)
+                   && Optional.of(enumerationLiteral.getType()).equals(topLevelElementToHighlight);
         }
         return false;
     }
@@ -180,11 +198,7 @@ public class KlassSourceCodeHtmlGenerator
     private void writeHtmlFile(SourceCode sourceCode, Path outputPath)
     {
         Path htmlOutputPath = KlassSourceCodeHtmlGenerator.getOutputPath(outputPath, sourceCode);
-        String sourceCodeText = this.getSourceCode(
-                this.domainModel,
-                sourceCode,
-                Optional.empty(),
-                Optional.empty());
+        String sourceCodeText = getSourceCode(this.domainModel, sourceCode);
         KlassSourceCodeHtmlGenerator.printStringToFile(htmlOutputPath, sourceCodeText);
     }
 
@@ -240,49 +254,6 @@ public class KlassSourceCodeHtmlGenerator
                 // TODO: Graft in macros
                 .select(sourceCode -> sourceCode.getMacroSourceCode().isEmpty())
                 .forEachWith(this::writeHtmlFile, outputPath);
-    }
-
-    private static String getBody(Token token, DomainModelWithSourceCode domainModel)
-    {
-        Optional<ElementWithSourceCode> maybeElementByDeclaration = domainModel.getElementByDeclaration(token);
-        Optional<ElementWithSourceCode> maybeElementByReference   = domainModel.getElementByReference(token);
-
-        if (maybeElementByDeclaration.isPresent() && maybeElementByReference.isPresent())
-        {
-            throw new AssertionError();
-        }
-
-        String escapedText = StringEscapeUtils.escapeHtml4(token.getText());
-        if (maybeElementByDeclaration.isEmpty() && maybeElementByReference.isEmpty())
-        {
-            return escapedText;
-        }
-
-        if (maybeElementByDeclaration.isPresent())
-        {
-            ElementWithSourceCode element = maybeElementByDeclaration.get();
-
-            String idForElement       = getIdForElement(element);
-            String linkForElement     = getLinkForElement(element);
-            String elementName        = ((NamedElement) element).getName();
-            String escapedElementName = StringEscapeUtils.escapeHtml4(elementName);
-
-            return String.format(
-                    "<a id=\"%s\" href=\"%s\">%s</a>",
-                    idForElement,
-                    linkForElement,
-                    escapedElementName);
-        }
-
-        if (maybeElementByReference.isPresent())
-        {
-            ElementWithSourceCode element = maybeElementByReference.get();
-
-            String linkForElement = getLinkForElement(element);
-            return String.format("<a href=\"%s\">%s</a>", linkForElement, escapedText);
-        }
-
-        throw new AssertionError();
     }
 
     @Nullable
