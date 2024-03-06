@@ -54,6 +54,11 @@
             <artifactId>graphql-java</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
