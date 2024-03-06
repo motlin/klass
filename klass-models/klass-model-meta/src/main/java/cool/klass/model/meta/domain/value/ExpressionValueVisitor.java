@@ -7,9 +7,9 @@ import cool.klass.model.meta.domain.value.literal.UserLiteral;
 
 public interface ExpressionValueVisitor
 {
-    void visitTypeMember(TypeMemberExpressionValue typeMemberExpressionValue);
+    void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue);
 
-    void visitThisMember(ThisMemberExpressionValue thisMemberExpressionValue);
+    void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue);
 
     void visitVariableReference(VariableReference variableReference);
 

@@ -1,15 +1,18 @@
 package cool.klass.model.converter.compiler.state.order;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.order.OrderByDirection;
+import cool.klass.model.meta.domain.order.OrderByDirectionDeclaration.OrderByDirectionDeclarationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrOrderByDirection extends AntlrElement
 {
+    @Nonnull
     private final OrderByDirection orderByDirection;
 
     public AntlrOrderByDirection(
@@ -24,6 +27,7 @@ public class AntlrOrderByDirection extends AntlrElement
         this.orderByDirection = this.getOrderByDirection(orderByDirectionContext);
     }
 
+    @Nonnull
     private OrderByDirection getOrderByDirection(OrderByDirectionContext orderByDirectionContext)
     {
         if (orderByDirectionContext == null)
@@ -49,5 +53,10 @@ public class AntlrOrderByDirection extends AntlrElement
     public OrderByDirection getOrderByDirection()
     {
         return this.orderByDirection;
+    }
+
+    public OrderByDirectionDeclarationBuilder build()
+    {
+        return new OrderByDirectionDeclarationBuilder(this.elementContext, this.orderByDirection);
     }
 }

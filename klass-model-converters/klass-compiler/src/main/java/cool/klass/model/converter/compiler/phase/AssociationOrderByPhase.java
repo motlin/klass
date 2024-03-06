@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,10 +31,10 @@ public class AssociationOrderByPhase extends AbstractCompilerPhase
     private final AntlrDomainModel domainModelState;
 
     @Nullable
-    private AntlrAssociation    associationState;
-    private AntlrAssociationEnd associationEndState;
-    private AntlrClass          thisContext;
-    private AntlrOrderBy        orderByState;
+    private AntlrAssociation       associationState;
+    private AntlrAssociationEnd    associationEndState;
+    private AntlrClass             thisContext;
+    private Optional<AntlrOrderBy> orderByState = Optional.empty();
 
     public AssociationOrderByPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
@@ -78,11 +79,13 @@ public class AssociationOrderByPhase extends AbstractCompilerPhase
             return;
         }
 
-        this.orderByState = new AntlrOrderBy(
+        this.orderByState = Optional.of(new AntlrOrderBy(
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                this.thisContext);
+                this.thisContext,
+                this.associationEndState));
+        this.associationEndState.setOrderByState(this.orderByState);
     }
 
     @Override
@@ -100,20 +103,22 @@ public class AssociationOrderByPhase extends AbstractCompilerPhase
         }
 
         AntlrOrderByMemberReferencePath orderByMemberReferencePathState = this.convertOrderByMemberReferencePath(ctx);
-        this.orderByState.enterOrderByMemberReferencePath(orderByMemberReferencePathState);
+        this.orderByState.get().enterOrderByMemberReferencePath(orderByMemberReferencePathState);
     }
 
     private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
-        AntlrThisMemberReferencePath thisMemberReferencePath  = this.getAntlrThisMemberReferencePath(orderByMemberReferencePathContext);
-        AntlrOrderByDirection        orderByDirection = this.getAntlrOrderByDirection(orderByMemberReferencePathContext);
+        AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(
+                orderByMemberReferencePathContext);
+        AntlrOrderByDirection        orderByDirection        = this.getAntlrOrderByDirection(
+                orderByMemberReferencePathContext);
 
         return new AntlrOrderByMemberReferencePath(
                 orderByMemberReferencePathContext,
                 this.currentCompilationUnit,
                 false,
-                this.orderByState,
-                this.orderByState.getNumProperties(),
+                this.orderByState.get(),
+                this.orderByState.get().getNumProperties(),
                 thisMemberReferencePath,
                 orderByDirection);
     }

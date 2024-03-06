@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.criteria.OrCriteria;
 import cool.klass.model.meta.domain.operator.Operator;
 import cool.klass.model.meta.domain.value.ExpressionValue;
-import cool.klass.model.meta.domain.value.MemberExpressionValue;
+import cool.klass.model.meta.domain.value.MemberReferencePath;
 
 public class OperationCriteriaVisitor implements CriteriaVisitor
 {
@@ -72,7 +72,7 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     @Override
     public void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria)
     {
-        MemberExpressionValue memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
+        MemberReferencePath memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
         memberExpressionValue.visit(new OperationExpressionValueVisitor(
                 this.finderName,
                 this.stringBuilder));

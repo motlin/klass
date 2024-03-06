@@ -14,6 +14,8 @@ public abstract class Element
     @Nonnull
     private final ParserRuleContext elementContext;
 
+    // TODO: ❗️ Element.inferred: Boolean
+
     protected Element(@Nonnull ParserRuleContext elementContext)
     {
         this.elementContext = Objects.requireNonNull(elementContext);

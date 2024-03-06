@@ -11,9 +11,9 @@ import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class ThisMemberExpressionValue extends MemberExpressionValue
+public final class TypeMemberReferencePath extends MemberReferencePath
 {
-    private ThisMemberExpressionValue(
+    private TypeMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Klass klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
@@ -25,12 +25,12 @@ public final class ThisMemberExpressionValue extends MemberExpressionValue
     @Override
     public void visit(ExpressionValueVisitor visitor)
     {
-        visitor.visitThisMember(this);
+        visitor.visitTypeMember(this);
     }
 
-    public static class ThisMemberExpressionValueBuilder extends MemberExpressionValueBuilder
+    public static class TypeMemberReferencePathBuilder extends MemberReferencePathBuilder
     {
-        public ThisMemberExpressionValueBuilder(
+        public TypeMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
@@ -41,9 +41,9 @@ public final class ThisMemberExpressionValue extends MemberExpressionValue
 
         @Nonnull
         @Override
-        public ThisMemberExpressionValue build()
+        public TypeMemberReferencePath build()
         {
-            return new ThisMemberExpressionValue(
+            return new TypeMemberReferencePath(
                     this.elementContext,
                     this.klassBuilder.getKlass(),
                     this.associationEndBuilders.collect(AssociationEndBuilder::getAssociationEnd),

@@ -34,12 +34,13 @@ enumeration Multiplicity
 class PrimitiveProperty
     transient
 {
-    className: String key;
-    name: String key;
-    primitiveType: PrimitiveType;
-    key: Boolean;
-    id: Boolean;
-    optional: Boolean;
+    className                     : String key;
+    name                          : String key;
+    primitiveType                 : PrimitiveType;
+    optional                      : Boolean;
+    key                           : Boolean;
+    id                            : Boolean;
+    ordinal                       : Integer;
 }
 
 association ClassHasPrimitiveTypeProperties
@@ -79,10 +80,11 @@ class EnumerationProperty
     transient
 {
     className                     : String key;
-    name: String key;
-    enumerationName: String private;
+    name                          : String key;
+    enumerationName               : String private;
+    optional                      : Boolean;
     key                           : Boolean;
-    optional: Boolean;
+    ordinal                       : Integer;
 }
 
 association EnumerationPropertyHasEnumeration
@@ -360,6 +362,8 @@ projection ClassReadProjection on Class
         primitiveType: "Primitive property type",
         optional     : "Primitive property is optional",
         key          : "Primitive property is key",
+        id           : "Primitive property is id",
+        ordinal      : "Primitive property ordinal",
     },
     enumerationProperties:
     {

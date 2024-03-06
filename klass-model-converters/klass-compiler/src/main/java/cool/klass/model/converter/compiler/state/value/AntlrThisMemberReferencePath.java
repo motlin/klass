@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.value.ThisMemberExpressionValue.ThisMemberExpressionValueBuilder;
+import cool.klass.model.meta.domain.value.ThisMemberReferencePath.ThisMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
@@ -36,12 +36,12 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
 
     @Nonnull
     @Override
-    public ThisMemberExpressionValueBuilder build()
+    public ThisMemberReferencePathBuilder build()
     {
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates.collect(
                 AntlrAssociationEnd::getAssociationEndBuilder);
 
-        return new ThisMemberExpressionValueBuilder(
+        return new ThisMemberReferencePathBuilder(
                 this.elementContext,
                 this.classState.getKlassBuilder(),
                 associationEndBuilders,

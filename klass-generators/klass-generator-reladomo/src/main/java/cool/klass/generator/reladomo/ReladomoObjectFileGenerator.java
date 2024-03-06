@@ -24,6 +24,9 @@ import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.order.OrderBy;
+import cool.klass.model.meta.domain.order.OrderByDirection;
+import cool.klass.model.meta.domain.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.EnumerationProperty;
@@ -161,7 +164,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         relationshipType.setRelatedIsDependent(associationEnd.isOwned());
         relationshipType.setRelatedObject(associationEnd.getType().getName());
         // TODO: Reladomo Order-By generation
-        // relationshipType.setOrderBy(convertOrderBy(associationEnd.getOrderBy()));
+        relationshipType.setOrderBy(associationEnd.getOrderBy().map(this::convertOrderBy).orElse(null));
         relationshipType._setValue(this.getRelationshipString(associationEnd.getOwningAssociation().getCriteria()));
         return relationshipType;
     }
@@ -211,18 +214,45 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return cardinalityType.with(attributeValue, cardinalityType);
     }
 
+    private String convertOrderBy(OrderBy orderBy)
+    {
+        return orderBy.getOrderByMemberReferencePaths()
+                .select(this::isConvertibleToOrderBy)
+                .collect(this::convertOrderByMemberReferencePath)
+                .makeString();
+    }
+
+    private boolean isConvertibleToOrderBy(OrderByMemberReferencePath each)
+    {
+        // Reladomo only supports simple property orderBys, like (title asc), not paths like (question.title asc)
+        return each.getThisMemberReferencePath().getAssociationEnds().isEmpty();
+    }
+
+    private String convertOrderByMemberReferencePath(OrderByMemberReferencePath orderByMemberReferencePath)
+    {
+        String propertyName           = orderByMemberReferencePath.getThisMemberReferencePath().getProperty().getName();
+        String orderByDirectionString = this.getOrderByDirectionString(orderByMemberReferencePath);
+        return String.format("%s %s", propertyName, orderByDirectionString);
+    }
+
+    private String getOrderByDirectionString(OrderByMemberReferencePath orderByMemberReferencePath)
+    {
+        OrderByDirection orderByDirection = orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection();
+        switch (orderByDirection)
+        {
+            case ASCENDING:
+                return "asc";
+            case DESCENDING:
+                return "desc";
+            default:
+                throw new AssertionError();
+        }
+    }
+
     @Nonnull
     private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
         AsOfAttributeType asOfAttributeType = new AsOfAttributeType();
-        this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
-        return asOfAttributeType;
-    }
-
-    @Nonnull
-    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty<?> dataTypeProperty)
-    {
-        AsOfAttributePureType asOfAttributeType = new AsOfAttributePureType();
         this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
         return asOfAttributeType;
     }
@@ -266,6 +296,14 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         {
             throw new AssertionError(propertyName);
         }
+    }
+
+    @Nonnull
+    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty<?> dataTypeProperty)
+    {
+        AsOfAttributePureType asOfAttributeType = new AsOfAttributePureType();
+        this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
+        return asOfAttributeType;
     }
 
     @Nonnull

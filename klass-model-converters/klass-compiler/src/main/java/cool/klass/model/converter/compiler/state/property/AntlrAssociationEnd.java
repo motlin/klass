@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -9,8 +10,10 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -50,7 +53,10 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     @Nonnull
     private final ImmutableList<AntlrAssociationEndModifier> modifiers;
 
-    private AntlrClass            owningClassState;
+    @Nonnull
+    private Optional<AntlrOrderBy> orderByState = Optional.empty();
+    private AntlrClass             owningClassState;
+
     private AntlrAssociationEnd   opposite;
     private AssociationEndBuilder associationEndBuilder;
 
@@ -94,6 +100,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         {
             throw new IllegalStateException();
         }
+
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
                 this.elementContext,
@@ -104,6 +111,11 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
                 this.owningAssociationState.getAssociationBuilder(),
                 this.antlrMultiplicity.getMultiplicity(),
                 this.isOwned());
+
+        // TODO: OrderByOwner?
+        Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
+        this.associationEndBuilder.setOrderByBuilder(orderByBuilder);
+
         return this.associationEndBuilder;
     }
 
@@ -121,6 +133,11 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     public boolean isOwned()
     {
         return this.modifiers.anySatisfy(AntlrAssociationEndModifier::isOwned);
+    }
+
+    public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
+    {
+        this.orderByState = Objects.requireNonNull(orderByState);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
@@ -155,6 +172,11 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
+
+        if (this.orderByState != null)
+        {
+            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+        }
     }
 
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)

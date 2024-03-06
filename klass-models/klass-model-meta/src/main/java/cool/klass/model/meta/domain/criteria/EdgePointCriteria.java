@@ -4,25 +4,25 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.value.MemberExpressionValue;
-import cool.klass.model.meta.domain.value.MemberExpressionValue.MemberExpressionValueBuilder;
+import cool.klass.model.meta.domain.value.MemberReferencePath;
+import cool.klass.model.meta.domain.value.MemberReferencePath.MemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EdgePointCriteria extends Criteria
 {
     @Nonnull
-    private final MemberExpressionValue memberExpressionValue;
+    private final MemberReferencePath memberExpressionValue;
 
     private EdgePointCriteria(
             @Nonnull ParserRuleContext elementContext,
-            @Nonnull MemberExpressionValue memberExpressionValue)
+            @Nonnull MemberReferencePath memberExpressionValue)
     {
         super(elementContext);
         this.memberExpressionValue = Objects.requireNonNull(memberExpressionValue);
     }
 
     @Nonnull
-    public MemberExpressionValue getMemberExpressionValue()
+    public MemberReferencePath getMemberExpressionValue()
     {
         return this.memberExpressionValue;
     }
@@ -36,11 +36,11 @@ public final class EdgePointCriteria extends Criteria
     public static final class EdgePointCriteriaBuilder extends CriteriaBuilder
     {
         @Nonnull
-        private final MemberExpressionValueBuilder memberExpressionValue;
+        private final MemberReferencePathBuilder memberExpressionValue;
 
         public EdgePointCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                @Nonnull MemberExpressionValueBuilder memberExpressionValue)
+                @Nonnull MemberReferencePathBuilder memberExpressionValue)
         {
             super(elementContext);
             this.memberExpressionValue = Objects.requireNonNull(memberExpressionValue);

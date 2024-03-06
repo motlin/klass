@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class MemberExpressionValue extends ExpressionValue
+public abstract class MemberReferencePath extends ExpressionValue
 {
     @Nonnull
     private final Klass                         klass;
@@ -22,7 +22,7 @@ public abstract class MemberExpressionValue extends ExpressionValue
     @Nonnull
     private final DataTypeProperty<?>           property;
 
-    protected MemberExpressionValue(
+    protected MemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Klass klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
@@ -52,7 +52,7 @@ public abstract class MemberExpressionValue extends ExpressionValue
         return this.property;
     }
 
-    public abstract static class MemberExpressionValueBuilder extends ExpressionValueBuilder
+    public abstract static class MemberReferencePathBuilder extends ExpressionValueBuilder
     {
         @Nonnull
         protected final KlassBuilder                         klassBuilder;
@@ -61,7 +61,7 @@ public abstract class MemberExpressionValue extends ExpressionValue
         @Nonnull
         protected final DataTypePropertyBuilder<?, ?>        propertyBuilder;
 
-        protected MemberExpressionValueBuilder(
+        protected MemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
@@ -75,6 +75,6 @@ public abstract class MemberExpressionValue extends ExpressionValue
 
         @Nonnull
         @Override
-        public abstract MemberExpressionValue build();
+        public abstract MemberReferencePath build();
     }
 }

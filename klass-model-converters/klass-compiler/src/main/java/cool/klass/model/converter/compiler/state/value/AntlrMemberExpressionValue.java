@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.meta.domain.value.MemberExpressionValue.MemberExpressionValueBuilder;
+import cool.klass.model.meta.domain.value.MemberReferencePath.MemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -42,7 +42,7 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
 
     @Nonnull
     @Override
-    public abstract MemberExpressionValueBuilder build();
+    public abstract MemberReferencePathBuilder build();
 
     @Nullable
     protected AntlrClass reportErrorsAssociationEnds(

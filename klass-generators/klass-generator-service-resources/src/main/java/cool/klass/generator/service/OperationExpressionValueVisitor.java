@@ -12,8 +12,8 @@ import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.url.UrlParameter;
 import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
-import cool.klass.model.meta.domain.value.ThisMemberExpressionValue;
-import cool.klass.model.meta.domain.value.TypeMemberExpressionValue;
+import cool.klass.model.meta.domain.value.ThisMemberReferencePath;
+import cool.klass.model.meta.domain.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.value.VariableReference;
 import cool.klass.model.meta.domain.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.value.literal.LiteralListValue;
@@ -34,7 +34,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitTypeMember(@Nonnull TypeMemberExpressionValue typeMemberExpressionValue)
+    public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = typeMemberExpressionValue.getAssociationEnds();
 
@@ -54,7 +54,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitThisMember(@Nonnull ThisMemberExpressionValue thisMemberExpressionValue)
+    public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = thisMemberExpressionValue.getAssociationEnds();
 
