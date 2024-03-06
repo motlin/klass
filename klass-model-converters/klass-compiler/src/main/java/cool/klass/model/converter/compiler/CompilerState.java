@@ -44,13 +44,9 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.OrderedMaps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CompilerState
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompilerState.class);
-
     @Nonnull
     private final CompilerInputState      compilerInputState;
     private final CompilerAnnotationState compilerAnnotationHolder = new CompilerAnnotationState();
