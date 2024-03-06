@@ -153,7 +153,12 @@ public class ReladomoJsonViewSerializer
                     throw new AssertionError("Expected subclass of " + owningClassifier + " to be " + type);
                 }
                 Object subClass = this.dataStore.getSubClass(mithraObject, (Klass) owningClassifier, (Klass) type);
-                this.handleObjectMembers((MithraObject) subClass, jsonGenerator, subClassReladomoNode);
+                // TODO: There are two separate concepts of definite subclasses and polymorphic projections.
+                // In other words, we should know in advance whether null is ok here.
+                if (subClass != null)
+                {
+                    this.handleObjectMembers((MithraObject) subClass, jsonGenerator, subClassReladomoNode);
+                }
             }
             else
             {

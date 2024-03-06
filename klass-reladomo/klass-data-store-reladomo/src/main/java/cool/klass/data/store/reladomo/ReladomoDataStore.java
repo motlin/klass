@@ -881,12 +881,14 @@ public class ReladomoDataStore
         }
 
         Object result = relationshipFinder.valueOf(persistentInstance);
+        /*
         Objects.requireNonNull(
                 result,
                 () -> "Expected result to not be null for superClass: %s, subClass: %s, persistentInstance: %s".formatted(
                         superClass,
                         subClass,
                         persistentInstance));
+        */
         return result;
     }
 
