@@ -13,7 +13,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class SampleDataFactory
 {
-    private boolean enabled = false;
+    private boolean enabled;
 
     private @Valid @NotNull Instant      dataInstant     = Instant.parse("1999-12-31T23:59:00Z");
     private @Valid @NotNull List<String> skippedPackages = Arrays.asList("klass.model.meta.domain");

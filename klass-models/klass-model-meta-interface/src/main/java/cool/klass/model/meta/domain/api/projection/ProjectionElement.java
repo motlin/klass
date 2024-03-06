@@ -16,11 +16,11 @@ public interface ProjectionElement extends NamedElement
         return 1 + this.getParent().map(ProjectionElement::getDepth).orElse(0);
     }
 
-    void visit(ProjectionVisitor visitor);
-
     void enter(ProjectionListener listener);
 
     void exit(ProjectionListener listener);
+
+    void visit(ProjectionVisitor visitor);
 
     default void visit(ProjectionListener listener)
     {

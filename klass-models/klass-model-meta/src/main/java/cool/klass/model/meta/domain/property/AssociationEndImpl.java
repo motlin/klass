@@ -103,6 +103,17 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         this.associationEndModifiers = associationEndModifiers;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s.%s: %s[%s]",
+                this.getOwningClassifier().getName(),
+                this.getName(),
+                this.getType().getName(),
+                this.multiplicity.getPrettyName());
+    }
+
     public static final class AssociationEndBuilder extends PropertyBuilder<KlassImpl, KlassBuilder, AssociationEndImpl>
     {
         @Nonnull
@@ -171,16 +182,5 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
             this.element.setOrderBy(orderBy);
         }
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.format(
-                "%s.%s: %s[%s]",
-                this.getOwningClassifier().getName(),
-                this.getName(),
-                this.getType().getName(),
-                this.multiplicity.getPrettyName());
     }
 }

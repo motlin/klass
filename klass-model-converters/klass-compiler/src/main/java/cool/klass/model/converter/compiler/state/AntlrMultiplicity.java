@@ -24,7 +24,7 @@ public class AntlrMultiplicity extends AntlrElement
             @Nonnull Optional<CompilationUnit> compilationUnit)
     {
         super(context, compilationUnit);
-        this.multiplicity = this.getMultiplicity(context);
+        this.multiplicity = this.findMultiplicity(context);
     }
 
     private AntlrMultiplicity()
@@ -34,7 +34,7 @@ public class AntlrMultiplicity extends AntlrElement
     }
 
     @Nullable
-    private Multiplicity getMultiplicity(@Nonnull MultiplicityContext multiplicityContext)
+    private Multiplicity findMultiplicity(@Nonnull MultiplicityContext multiplicityContext)
     {
         MultiplicityBodyContext multiplicityBodyContext = multiplicityContext.multiplicityBody();
 

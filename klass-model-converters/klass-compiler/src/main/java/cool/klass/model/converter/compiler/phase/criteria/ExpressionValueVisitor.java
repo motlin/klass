@@ -20,7 +20,6 @@ import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralListV
 import cool.klass.model.converter.compiler.state.value.literal.AntlrUserLiteral;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
@@ -51,8 +50,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
             @Nonnull AntlrClassifier thisReference,
             IAntlrElement expressionValueOwner)
     {
-        this.compilerState = Objects.requireNonNull(compilerState);
-        this.thisReference = Objects.requireNonNull(thisReference);
+        this.compilerState        = Objects.requireNonNull(compilerState);
+        this.thisReference        = Objects.requireNonNull(thisReference);
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 
@@ -99,12 +98,16 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         switch (keyword)
         {
             case "user":
+            {
                 return new AntlrUserLiteral(
                         ctx,
                         Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                         this.expressionValueOwner);
+            }
             default:
+            {
                 throw new AssertionError(keyword);
+            }
         }
     }
 
@@ -154,9 +157,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     @Override
     public AntlrTypeMemberReferencePath visitTypeMemberReferencePath(@Nonnull TypeMemberReferencePathContext ctx)
     {
-        ClassReferenceContext classReferenceContext = ctx.classReference();
-        String                className             = classReferenceContext.identifier().getText();
-        AntlrClass            classState            = this.compilerState.getDomainModelState().getClassByName(className);
+        String     className  = ctx.classReference().identifier().getText();
+        AntlrClass classState = this.compilerState.getDomainModelState().getClassByName(className);
 
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 

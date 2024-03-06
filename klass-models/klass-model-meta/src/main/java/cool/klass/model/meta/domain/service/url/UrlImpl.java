@@ -138,7 +138,7 @@ public final class UrlImpl extends AbstractElement implements Url
             this.serviceGroupBuilder = Objects.requireNonNull(serviceGroupBuilder);
         }
 
-        public void setPathSegments(@Nonnull ImmutableList<ElementBuilder<?>> pathSegmentBuilders)
+        public void setPathSegmentBuilders(@Nonnull ImmutableList<ElementBuilder<?>> pathSegmentBuilders)
         {
             this.pathSegmentBuilders = Objects.requireNonNull(pathSegmentBuilders);
         }

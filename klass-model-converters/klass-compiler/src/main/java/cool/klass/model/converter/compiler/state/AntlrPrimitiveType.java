@@ -105,27 +105,49 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         switch (this.primitiveType)
         {
             case INTEGER:
+            {
                 return Lists.immutable.with(INTEGER, LONG, FLOAT, DOUBLE);
+            }
             case LONG:
+            {
                 return Lists.immutable.with(LONG, DOUBLE);
+            }
             case DOUBLE:
+            {
                 return Lists.immutable.with(DOUBLE);
+            }
             case FLOAT:
+            {
                 return Lists.immutable.with(FLOAT, DOUBLE);
+            }
             case BOOLEAN:
+            {
                 return Lists.immutable.with(BOOLEAN);
+            }
             case STRING:
+            {
                 return Lists.immutable.with(STRING);
+            }
             case INSTANT:
+            {
                 return Lists.immutable.with(INSTANT, TEMPORAL_INSTANT, TEMPORAL_RANGE);
+            }
             case LOCAL_DATE:
+            {
                 return Lists.immutable.with(LOCAL_DATE);
+            }
             case TEMPORAL_INSTANT:
+            {
                 return Lists.immutable.with(TEMPORAL_INSTANT);
+            }
             case TEMPORAL_RANGE:
+            {
                 return Lists.immutable.with(TEMPORAL_RANGE);
+            }
             default:
+            {
                 throw new AssertionError();
+            }
         }
     }
 

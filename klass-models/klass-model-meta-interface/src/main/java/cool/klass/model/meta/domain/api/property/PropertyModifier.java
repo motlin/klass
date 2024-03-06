@@ -7,10 +7,14 @@ import org.eclipse.collections.impl.factory.Lists;
 // TODO: Split for location specific modifiers?
 public interface PropertyModifier extends NamedElement
 {
+    String CREATED_BY      = "createdBy";
+    String CREATED_ON      = "createdOn";
+    String LAST_UPDATED_BY = "lastUpdatedBy";
+
     ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
-            "createdBy",
-            "createdOn",
-            "lastUpdatedBy");
+            CREATED_BY,
+            CREATED_ON,
+            LAST_UPDATED_BY);
 
     default boolean isKey()
     {
@@ -59,17 +63,17 @@ public interface PropertyModifier extends NamedElement
 
     default boolean isCreatedBy()
     {
-        return this.getName().equals("createdBy");
+        return this.getName().equals(CREATED_BY);
     }
 
     default boolean isCreatedOn()
     {
-        return this.getName().equals("createdOn");
+        return this.getName().equals(CREATED_ON);
     }
 
     default boolean isLastUpdatedBy()
     {
-        return this.getName().equals("lastUpdatedBy");
+        return this.getName().equals(LAST_UPDATED_BY);
     }
 
     default boolean isVersion()

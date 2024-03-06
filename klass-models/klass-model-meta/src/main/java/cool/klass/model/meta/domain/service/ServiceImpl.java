@@ -228,39 +228,49 @@ public final class ServiceImpl extends AbstractElement implements Service
             switch (criteriaKeyword)
             {
                 case "criteria":
+                {
                     if (this.criteria.isPresent())
                     {
                         throw new IllegalStateException();
                     }
                     this.criteria = Optional.of(criteriaBuilder);
                     return;
+                }
                 case "authorize":
+                {
                     if (this.authorize.isPresent())
                     {
                         throw new IllegalStateException();
                     }
                     this.authorize = Optional.of(criteriaBuilder);
                     return;
+                }
                 case "validate":
+                {
                     if (this.validate.isPresent())
                     {
                         throw new IllegalStateException();
                     }
                     this.validate = Optional.of(criteriaBuilder);
                     return;
+                }
                 case "conflict":
+                {
                     if (this.conflict.isPresent())
                     {
                         throw new IllegalStateException();
                     }
                     this.conflict = Optional.of(criteriaBuilder);
                     return;
+                }
                 default:
+                {
                     throw new AssertionError();
+                }
             }
         }
 
-        public void setProjectionDispatch(@Nonnull Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder)
+        public void setProjectionDispatchBuilder(@Nonnull Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder)
         {
             this.projectionDispatchBuilder = Objects.requireNonNull(projectionDispatchBuilder);
         }
