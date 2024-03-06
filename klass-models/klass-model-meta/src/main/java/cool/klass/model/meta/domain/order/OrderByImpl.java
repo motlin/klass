@@ -24,7 +24,7 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
 
     private OrderByImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull AbstractClassifier thisContext)
     {
         super(elementContext, macroElement);
@@ -51,7 +51,7 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
 
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ClassifierBuilder<?> thisContextBuilder)
         {
             super(elementContext, macroElement);

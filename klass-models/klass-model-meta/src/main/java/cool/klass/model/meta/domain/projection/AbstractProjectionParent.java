@@ -18,7 +18,7 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
 
     protected AbstractProjectionParent(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
@@ -45,7 +45,7 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
 
         protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)

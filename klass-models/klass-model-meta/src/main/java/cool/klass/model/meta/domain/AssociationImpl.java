@@ -16,6 +16,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class AssociationImpl extends AbstractPackageableElement implements TopLevelElement, Association
 {
+    @Nonnull
     private final AbstractCriteria criteria;
 
     private ImmutableList<AssociationEnd> associationEnds;
@@ -24,18 +25,19 @@ public final class AssociationImpl extends AbstractPackageableElement implements
 
     private AssociationImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
-            AbstractCriteria criteria)
+            @Nonnull AbstractCriteria criteria)
     {
         super(elementContext, macroElement, nameContext, name, ordinal, packageName);
-        this.criteria = criteria;
+        this.criteria = Objects.requireNonNull(criteria);
     }
 
     @Override
+    @Nonnull
     public AbstractCriteria getCriteria()
     {
         return this.criteria;
@@ -79,7 +81,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
 
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

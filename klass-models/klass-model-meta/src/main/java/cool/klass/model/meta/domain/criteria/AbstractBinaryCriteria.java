@@ -18,7 +18,7 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
 
     protected AbstractBinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull AbstractCriteria left,
             @Nonnull AbstractCriteria right)
     {
@@ -51,7 +51,7 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
 
         protected AbstractBinaryCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractCriteriaBuilder<?> left,
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {

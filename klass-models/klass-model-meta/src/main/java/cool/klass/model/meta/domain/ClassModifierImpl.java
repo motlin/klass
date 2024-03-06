@@ -1,5 +1,6 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -11,18 +12,19 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ClassModifierImpl extends AbstractNamedElement implements ClassModifier
 {
+    @Nonnull
     private final AbstractClassifier owningClassifier;
 
     private ClassModifierImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AbstractClassifier owningClassifier)
+            @Nonnull AbstractClassifier owningClassifier)
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
-        this.owningClassifier = owningClassifier;
+        this.owningClassifier = Objects.requireNonNull(owningClassifier);
     }
 
     public static final class ClassModifierBuilder extends NamedElementBuilder<ClassModifierImpl>
@@ -32,14 +34,14 @@ public final class ClassModifierImpl extends AbstractNamedElement implements Cla
 
         public ClassModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.owningClassifierBuilder = owningClassifierBuilder;
+            this.owningClassifierBuilder = Objects.requireNonNull(owningClassifierBuilder);
         }
 
         @Override

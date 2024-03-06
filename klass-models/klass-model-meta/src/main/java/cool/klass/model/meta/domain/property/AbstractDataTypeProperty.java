@@ -54,7 +54,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
 
     protected AbstractDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -215,7 +215,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
 
         protected DataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

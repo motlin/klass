@@ -42,7 +42,7 @@ public final class ServiceImpl extends AbstractElement implements Service
 
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull UrlImpl url,
             @Nonnull Verb verb,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
@@ -225,7 +225,7 @@ public final class ServiceImpl extends AbstractElement implements Service
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull Verb verb,
                 @Nonnull ServiceMultiplicity serviceMultiplicity)

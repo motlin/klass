@@ -22,7 +22,7 @@ public abstract class AbstractProperty<T extends Type> extends AbstractTypedElem
 
     protected AbstractProperty(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -47,7 +47,7 @@ public abstract class AbstractProperty<T extends Type> extends AbstractTypedElem
 
         protected PropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

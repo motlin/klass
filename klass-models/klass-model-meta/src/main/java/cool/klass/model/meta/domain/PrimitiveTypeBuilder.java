@@ -13,12 +13,13 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class PrimitiveTypeBuilder extends ElementBuilder<PrimitiveType>
         implements DataTypeGetter
 {
+    @Nonnull
     private final PrimitiveType primitiveType;
 
     public PrimitiveTypeBuilder(
             @Nonnull ParserRuleContext elementContext,
-            Optional<ElementBuilder<?>> macroElement,
-            PrimitiveType primitiveType)
+            @Nonnull Optional<ElementBuilder<?>> macroElement,
+            @Nonnull PrimitiveType primitiveType)
     {
         super(elementContext, macroElement);
         this.primitiveType = Objects.requireNonNull(primitiveType);

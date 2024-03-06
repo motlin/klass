@@ -19,7 +19,7 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
 
     private ServiceProjectionDispatchImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ProjectionImpl projection)
     {
         super(elementContext, macroElement);
@@ -40,7 +40,7 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
 
         public ServiceProjectionDispatchBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ProjectionBuilder projectionBuilder)
         {
             super(elementContext, macroElement);

@@ -20,8 +20,8 @@ public abstract class AbstractPropertyValidation
 
     protected AbstractPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
-            AbstractDataTypeProperty<?> owningProperty)
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull AbstractDataTypeProperty<?> owningProperty)
     {
         super(elementContext, macroElement);
         this.owningProperty = Objects.requireNonNull(owningProperty);
@@ -34,8 +34,8 @@ public abstract class AbstractPropertyValidation
 
         protected PropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
-                DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
         {
             super(elementContext, macroElement);
             this.owningPropertyBuilder = Objects.requireNonNull(owningPropertyBuilder);

@@ -26,7 +26,7 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
 
     private OrderByMemberReferencePathImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull OrderByImpl orderBy,
             int ordinal,
             @Nonnull ThisMemberReferencePathImpl thisMemberReferencePath,
@@ -65,7 +65,7 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
 
         public OrderByMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull OrderByBuilder orderByBuilder,
                 int ordinal,
                 @Nonnull ThisMemberReferencePathBuilder thisMemberReferencePathBuilder,

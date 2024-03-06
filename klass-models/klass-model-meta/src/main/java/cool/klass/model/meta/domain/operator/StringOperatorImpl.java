@@ -12,7 +12,7 @@ public final class StringOperatorImpl extends AbstractOperator implements String
 {
     private StringOperatorImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull String operatorText)
     {
         super(elementContext, macroElement, operatorText);
@@ -22,7 +22,7 @@ public final class StringOperatorImpl extends AbstractOperator implements String
     {
         public StringOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String operatorText)
         {
             super(elementContext, macroElement, operatorText);

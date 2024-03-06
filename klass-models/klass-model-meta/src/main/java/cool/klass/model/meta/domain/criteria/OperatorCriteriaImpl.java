@@ -24,7 +24,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
 
     private OperatorCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull AbstractOperator operator,
             @Nonnull AbstractExpressionValue sourceValue,
             @Nonnull AbstractExpressionValue targetValue)
@@ -67,7 +67,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
 
         public OperatorCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractOperatorBuilder<?> operator,
                 @Nonnull AbstractExpressionValueBuilder<?> sourceValue,
                 @Nonnull AbstractExpressionValueBuilder<?> targetValue)

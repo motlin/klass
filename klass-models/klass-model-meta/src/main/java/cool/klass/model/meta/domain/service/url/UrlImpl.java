@@ -128,7 +128,7 @@ public final class UrlImpl extends AbstractElement implements Url
 
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ServiceGroupBuilder serviceGroupBuilder)
         {
             super(elementContext, macroElement);

@@ -14,7 +14,7 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
 
     private IntegerLiteralValueImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             int value)
     {
         super(elementContext, macroElement);

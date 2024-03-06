@@ -18,7 +18,7 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
 
     private OrderByDirectionDeclarationImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull OrderByDirection orderByDirection)
     {
         super(elementContext, macroElement);
@@ -39,7 +39,7 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
 
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull OrderByDirection orderByDirection)
         {
             super(elementContext, macroElement);

@@ -14,13 +14,16 @@ public abstract class AbstractElement implements Element
     public static final ParserRuleContext NO_CONTEXT = new ParserRuleContext();
 
     @Nonnull
-    private final ParserRuleContext         elementContext;
+    private final ParserRuleContext elementContext;
+    @Nonnull
     private final Optional<Element> macroElement;
 
-    protected AbstractElement(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement)
+    protected AbstractElement(
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<Element> macroElement)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
-        this.macroElement = macroElement;
+        this.macroElement = Objects.requireNonNull(macroElement);
     }
 
     @Override
@@ -54,13 +57,14 @@ public abstract class AbstractElement implements Element
     {
         @Nonnull
         protected final ParserRuleContext           elementContext;
+        @Nonnull
         protected final Optional<ElementBuilder<?>> macroElement;
         protected       BuiltElement                element;
 
         protected ElementBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
-            this.macroElement = macroElement;
+            this.macroElement = Objects.requireNonNull(macroElement);
         }
 
         @Nonnull

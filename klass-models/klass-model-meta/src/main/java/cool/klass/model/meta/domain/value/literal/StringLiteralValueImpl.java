@@ -34,7 +34,7 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
 
         public StringLiteralValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String value)
         {
             super(elementContext, macroElement);

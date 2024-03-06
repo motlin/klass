@@ -22,7 +22,7 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
 
     private ParameterImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -64,7 +64,7 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
 
         public ParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

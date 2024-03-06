@@ -26,7 +26,7 @@ public final class InterfaceImpl extends AbstractClassifier implements Interface
     {
         public InterfaceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

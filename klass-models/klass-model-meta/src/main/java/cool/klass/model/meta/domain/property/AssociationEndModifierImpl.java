@@ -1,5 +1,6 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -16,14 +17,14 @@ public final class AssociationEndModifierImpl extends AbstractNamedElement imple
 
     private AssociationEndModifierImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AssociationEndImpl associationEnd)
+            @Nonnull AssociationEndImpl associationEnd)
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
-        this.associationEnd = associationEnd;
+        this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
     @Override
@@ -38,14 +39,14 @@ public final class AssociationEndModifierImpl extends AbstractNamedElement imple
 
         public AssociationEndModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                AssociationEndBuilder associationEndBuilder)
+                @Nonnull AssociationEndBuilder associationEndBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.associationEndBuilder = associationEndBuilder;
+            this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
 
         @Override

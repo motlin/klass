@@ -12,7 +12,7 @@ public final class InOperatorImpl extends AbstractOperator implements InOperator
 {
     private InOperatorImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull String operatorText)
     {
         super(elementContext, macroElement, operatorText);
@@ -22,7 +22,7 @@ public final class InOperatorImpl extends AbstractOperator implements InOperator
     {
         public InOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String operatorText)
         {
             super(elementContext, macroElement, operatorText);

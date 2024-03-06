@@ -19,7 +19,7 @@ public final class PrimitivePropertyImpl
 {
     private PrimitivePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -42,13 +42,13 @@ public final class PrimitivePropertyImpl
     {
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull PrimitiveType primitiveType,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
-                ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
+                @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
             super(

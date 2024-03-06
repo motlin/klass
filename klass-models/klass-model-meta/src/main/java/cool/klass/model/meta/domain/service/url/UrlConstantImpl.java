@@ -12,7 +12,7 @@ public final class UrlConstantImpl extends AbstractNamedElement
 {
     private UrlConstantImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
@@ -25,7 +25,7 @@ public final class UrlConstantImpl extends AbstractNamedElement
     {
         public UrlConstantBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)

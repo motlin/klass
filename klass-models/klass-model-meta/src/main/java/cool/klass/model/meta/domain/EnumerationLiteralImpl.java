@@ -17,7 +17,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
 
     private EnumerationLiteralImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -25,7 +25,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
             @Nonnull Optional<String> prettyName)
     {
         super(elementContext, macroElement, nameContext, name, ordinal, enumeration);
-        this.prettyName = prettyName;
+        this.prettyName = Objects.requireNonNull(prettyName);
     }
 
     @Nonnull
@@ -44,7 +44,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
 
         public EnumerationLiteralBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -52,7 +52,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.prettyName = prettyName;
+            this.prettyName = Objects.requireNonNull(prettyName);
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 

@@ -12,7 +12,7 @@ public final class EqualityOperatorImpl extends AbstractOperator implements Equa
 {
     private EqualityOperatorImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull String operatorText)
     {
         super(elementContext, macroElement, operatorText);
@@ -22,7 +22,7 @@ public final class EqualityOperatorImpl extends AbstractOperator implements Equa
     {
         public EqualityOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String operatorText)
         {
             super(elementContext, macroElement, operatorText);

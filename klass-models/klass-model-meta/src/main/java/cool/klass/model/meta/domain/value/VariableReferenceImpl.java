@@ -18,7 +18,7 @@ public final class VariableReferenceImpl extends AbstractExpressionValue impleme
 
     private VariableReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParameterImpl parameter)
     {
         super(elementContext, macroElement);
@@ -39,7 +39,7 @@ public final class VariableReferenceImpl extends AbstractExpressionValue impleme
 
         public VariableReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParameterBuilder parameterBuilder)
         {
             super(elementContext, macroElement);

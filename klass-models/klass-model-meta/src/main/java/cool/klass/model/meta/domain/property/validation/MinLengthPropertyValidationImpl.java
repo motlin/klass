@@ -16,8 +16,8 @@ public class MinLengthPropertyValidationImpl
 {
     public MinLengthPropertyValidationImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
-            AbstractDataTypeProperty<?> owningProperty,
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
         super(elementContext, macroElement, owningProperty, number);
@@ -28,8 +28,8 @@ public class MinLengthPropertyValidationImpl
     {
         public MinLengthPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
-                DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
                 int number)
         {
             super(elementContext, macroElement, owningPropertyBuilder, number);

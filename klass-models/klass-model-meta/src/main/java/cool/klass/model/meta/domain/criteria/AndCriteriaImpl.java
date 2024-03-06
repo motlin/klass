@@ -12,7 +12,7 @@ public final class AndCriteriaImpl extends AbstractBinaryCriteria implements And
 {
     private AndCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull AbstractCriteria left,
             @Nonnull AbstractCriteria right)
     {
@@ -23,7 +23,7 @@ public final class AndCriteriaImpl extends AbstractBinaryCriteria implements And
     {
         public AndCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractCriteriaBuilder<?> left,
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {

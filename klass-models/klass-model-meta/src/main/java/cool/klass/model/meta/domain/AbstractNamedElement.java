@@ -19,7 +19,7 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
 
     protected AbstractNamedElement(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
@@ -60,7 +60,7 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
 
         protected NamedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)

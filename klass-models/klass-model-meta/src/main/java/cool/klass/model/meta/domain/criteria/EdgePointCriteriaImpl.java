@@ -18,7 +18,7 @@ public final class EdgePointCriteriaImpl extends AbstractCriteria implements Edg
 
     private EdgePointCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull AbstractMemberReferencePath memberExpressionValue)
     {
         super(elementContext, macroElement);
@@ -39,7 +39,7 @@ public final class EdgePointCriteriaImpl extends AbstractCriteria implements Edg
 
         public EdgePointCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractMemberReferencePathBuilder<?> memberExpressionValue)
         {
             super(elementContext, macroElement);

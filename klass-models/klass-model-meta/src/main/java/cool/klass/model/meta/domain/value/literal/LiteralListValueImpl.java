@@ -15,14 +15,15 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class LiteralListValueImpl extends AbstractLiteralValue implements LiteralListValue
 {
+    @Nonnull
     private final Type type;
 
     private ImmutableList<LiteralValue> literalValues;
 
     private LiteralListValueImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
-            Type type)
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull Type type)
     {
         super(elementContext, macroElement);
         this.type = Objects.requireNonNull(type);
@@ -35,7 +36,7 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
         return Objects.requireNonNull(this.literalValues);
     }
 
-    public void setLiteralValues(ImmutableList<LiteralValue> literalValues)
+    public void setLiteralValues(@Nonnull ImmutableList<LiteralValue> literalValues)
     {
         if (this.literalValues != null)
         {
@@ -45,6 +46,7 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
     }
 
     @Override
+    @Nonnull
     public Type getType()
     {
         return this.type;
@@ -52,19 +54,20 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
 
     public static final class LiteralListValueBuilder extends AbstractLiteralValueBuilder<LiteralListValueImpl>
     {
+        @Nonnull
         private final TypeGetter                                    typeBuilder;
         private       ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders;
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
-                TypeGetter typeBuilder)
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                @Nonnull TypeGetter typeBuilder)
         {
             super(elementContext, macroElement);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
 
-        public void setLiteralValueBuilders(ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders)
+        public void setLiteralValueBuilders(@Nonnull ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders)
         {
             if (this.literalValueBuilders != null)
             {

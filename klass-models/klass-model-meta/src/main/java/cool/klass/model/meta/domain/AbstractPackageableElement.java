@@ -16,7 +16,7 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
 
     protected AbstractPackageableElement(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -49,7 +49,7 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
 
         protected PackageableElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

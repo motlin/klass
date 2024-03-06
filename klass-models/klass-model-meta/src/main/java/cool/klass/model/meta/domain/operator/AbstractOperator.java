@@ -17,7 +17,7 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
 
     protected AbstractOperator(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull String operatorText)
     {
         super(elementContext, macroElement);
@@ -39,7 +39,7 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
 
         protected AbstractOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String operatorText)
         {
             super(elementContext, macroElement);

@@ -17,7 +17,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
 
     private EnumerationImpl(
             @Nonnull ParserRuleContext elementContext,
-            Optional<Element> macroElement,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -32,7 +32,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
         return this.enumerationLiterals;
     }
 
-    private void setEnumerationLiterals(ImmutableList<EnumerationLiteral> enumerationLiterals)
+    private void setEnumerationLiterals(@Nonnull ImmutableList<EnumerationLiteral> enumerationLiterals)
     {
         this.enumerationLiterals = enumerationLiterals;
     }
@@ -45,7 +45,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
 
         public EnumerationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -54,7 +54,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
             super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         }
 
-        public void setEnumerationLiteralBuilders(ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
+        public void setEnumerationLiteralBuilders(@Nonnull ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
         {
             this.enumerationLiteralBuilders = enumerationLiteralBuilders;
         }

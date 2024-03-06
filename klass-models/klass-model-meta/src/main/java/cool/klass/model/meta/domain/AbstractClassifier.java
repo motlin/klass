@@ -42,7 +42,7 @@ public abstract class AbstractClassifier
         return this.dataTypeProperties;
     }
 
-    protected void setDataTypeProperties(ImmutableList<DataTypeProperty> dataTypeProperties)
+    protected void setDataTypeProperties(@Nonnull ImmutableList<DataTypeProperty> dataTypeProperties)
     {
         if (this.dataTypeProperties != null)
         {
@@ -58,7 +58,7 @@ public abstract class AbstractClassifier
         return this.classModifiers;
     }
 
-    protected void setClassModifiers(ImmutableList<ClassModifier> classModifiers)
+    protected void setClassModifiers(@Nonnull ImmutableList<ClassModifier> classModifiers)
     {
         if (this.classModifiers != null)
         {
@@ -74,7 +74,7 @@ public abstract class AbstractClassifier
         return Objects.requireNonNull(this.interfaces);
     }
 
-    protected void setInterfaces(ImmutableList<Interface> interfaces)
+    protected void setInterfaces(@Nonnull ImmutableList<Interface> interfaces)
     {
         if (this.interfaces != null)
         {
@@ -93,10 +93,11 @@ public abstract class AbstractClassifier
 
         protected ClassifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
-                int ordinal, @Nonnull String packageName)
+                int ordinal,
+                @Nonnull String packageName)
         {
             super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         }

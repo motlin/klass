@@ -122,6 +122,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
 
     public static final class KlassBuilder extends ClassifierBuilder<KlassImpl>
     {
+        @Nonnull
         private final InheritanceType inheritanceType;
         private final boolean         isUser;
         private final boolean         isTransient;
@@ -134,22 +135,21 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         @Nonnull
         private Optional<AssociationEndBuilder> versionedPropertyBuilder = Optional.empty();
 
-        @Nonnull
         private Optional<KlassBuilder> superClassBuilder;
 
         public KlassBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
-                InheritanceType inheritanceType,
+                @Nonnull InheritanceType inheritanceType,
                 boolean isUser,
                 boolean isTransient)
         {
             super(elementContext, macroElement, nameContext, name, ordinal, packageName);
-            this.inheritanceType = inheritanceType;
+            this.inheritanceType = Objects.requireNonNull(inheritanceType);
             this.isUser = isUser;
             this.isTransient = isTransient;
         }
@@ -199,7 +199,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
 
         public void setSuperClassBuilder(@Nonnull Optional<KlassBuilder> superClassBuilder)
         {
-            this.superClassBuilder = superClassBuilder;
+            this.superClassBuilder = Objects.requireNonNull(superClassBuilder);
         }
 
         @Override
