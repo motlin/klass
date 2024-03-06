@@ -42,7 +42,8 @@ public abstract class AntlrCriteria extends AntlrElement
     @Override
     public boolean omitParentFromSurroundingElements()
     {
-        return this.criteriaOwner instanceof AntlrServiceCriteria;
+        return this.criteriaOwner instanceof AntlrServiceCriteria
+                || this.criteriaOwner instanceof AntlrBinaryCriteria;
     }
 
     @Nonnull
