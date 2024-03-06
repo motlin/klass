@@ -80,6 +80,8 @@
     <!-- Whitespace -->
     <module name="FileTabCharacter">
         <property name="eachLine" value="false" />
+		<!-- All file extensions -->
+        <property name="fileExtensions" value="" />
     </module>
 
     <module name="TreeWalker">
