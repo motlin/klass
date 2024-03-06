@@ -211,6 +211,22 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     .detect(AntlrAssociationEndModifier::isOwned);
             compilerErrorHolder.add(message, ownedModifier);
         }
+        else if (this.getSourceEnd().isToOne()
+                && this.getTargetEnd().isToOne()
+                && this.getSourceEnd().isToOneRequired() == this.getTargetEnd().isToOneRequired()
+                && !this.getSourceEnd().isOwned()
+                && !this.getTargetEnd().isOwned())
+        {
+            String message = String.format(
+                    "ERR_ASO_SYM: Association '%s' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.",
+                    this.getName());
+            compilerErrorHolder.add(
+                    message,
+                    this,
+                    Lists.immutable.with(
+                            this.getSourceEnd().getMultiplicity().getElementContext(),
+                            this.getTargetEnd().getMultiplicity().getElementContext()));
+        }
 
         // TODO: reportErrors: Check that both ends aren't versions
 

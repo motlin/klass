@@ -406,7 +406,7 @@ public class KlassCompilerTest
                 + "}\n";
         //</editor-fold>
 
-        String[] error = {
+        String error =
                 ""
                         + "File: example.klass Line: 5 Char: 36 Error: ERR_ASO_OWN: Both associations are owned in association 'DoubleOwnedAssociation'. At most one end may be owned.\n"
                         + "package dummy\n"
@@ -416,13 +416,11 @@ public class KlassCompilerTest
                         + "                                   ^^^^^\n"
                         + "    target: DoubleOwnedClass[1..1] owned;\n"
                         + "                                   ^^^^^\n"
-                        + "}\n"
-        };
+                        + "}\n";
 
         this.assertCompilerErrors(sourceCodeText, error);
     }
 
-    @Ignore
     @Test
     public void symmetricalAssociation()
     {
@@ -445,7 +443,18 @@ public class KlassCompilerTest
                 + "}\n";
         //</editor-fold>
 
-        this.assertNoCompilerErrors(sourceCodeText);
+        String error = ""
+                + "File: example.klass Line: 5 Char: 23 Error: ERR_ASO_SYM: Association 'DummyAssociation' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.\n"
+                + "package dummy\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    source: DummyClass[1..1];\n"
+                + "                      ^^^^^^\n"
+                + "    target: DummyClass[1..1];\n"
+                + "                      ^^^^^^\n"
+                + "}\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
     }
 
     @Test
@@ -476,13 +485,13 @@ public class KlassCompilerTest
                 + "association DuplicateTopLevelElement\n"
                 + "{\n"
                 + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
-                + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
+                + "    duplicateMember: DuplicateTopLevelElement[0..1];\n"
                 + "}\n"
                 + "\n"
                 + "association DuplicateAssociationEnd\n"
                 + "{\n"
                 + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
-                + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
+                + "    duplicateAssociationEnd: DuplicateTopLevelElement[0..1];\n"
                 + "}\n"
                 + "\n"
                 + "projection DuplicateTopLevelElement on DuplicateTopLevelElement\n"
@@ -510,7 +519,7 @@ public class KlassCompilerTest
         // TODO: Duplicate duplicate errors
         // TODO: More error codes?
 
-        String[] expectedErrors = {
+        String[] errors = {
                 ""
                         + "File: example.klass Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
                         + "package dummy\n"
@@ -600,7 +609,7 @@ public class KlassCompilerTest
                         + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
                         + "{\n"
-                        + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
+                        + "    duplicateMember: DuplicateTopLevelElement[0..1];\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
@@ -621,7 +630,7 @@ public class KlassCompilerTest
                         + "package dummy\n"
                         + "association DuplicateAssociationEnd\n"
                         + "{\n"
-                        + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
+                        + "    duplicateAssociationEnd: DuplicateTopLevelElement[0..1];\n"
                         + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
@@ -668,7 +677,7 @@ public class KlassCompilerTest
                         + "}\n",
         };
 
-        this.assertCompilerErrors(sourceCodeText, expectedErrors);
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test
@@ -723,7 +732,7 @@ public class KlassCompilerTest
                 + "association badAssociation\n"
                 + "{\n"
                 + "    BadAssociationEndSource: badClass[1..1];\n"
-                + "    BadAssociationEndTarget: badClass[1..1];\n"
+                + "    BadAssociationEndTarget: badClass[0..1];\n"
                 + "    \n"
                 + "    relationship this.BadPrimitiveProperty == badClass.BadPrimitiveProperty\n"
                 + "}\n"
@@ -813,7 +822,7 @@ public class KlassCompilerTest
                         + "package BADPACKAGE\n"
                         + "association badAssociation\n"
                         + "{\n"
-                        + "    BadAssociationEndTarget: badClass[1..1];\n"
+                        + "    BadAssociationEndTarget: badClass[0..1];\n"
                         + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
@@ -1189,7 +1198,7 @@ public class KlassCompilerTest
                 + "association ExampleAssociationWithDuplicateAssociationEnd\n"
                 + "{\n"
                 + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1];\n"
-                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1];\n"
+                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[0..1];\n"
                 + "}\n"
                 + "\n"
                 + "class ExampleClass\n"
