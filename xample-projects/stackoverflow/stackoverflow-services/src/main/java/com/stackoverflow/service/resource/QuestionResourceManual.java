@@ -5,6 +5,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -54,6 +55,7 @@ import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
 import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
@@ -427,5 +429,27 @@ public class QuestionResourceManual
         Operation queryOperation = QuestionFinder.createdById().eq(userId);
 
         return QuestionFinder.findMany(queryOperation);
+    }
+
+    @Timed
+    @ExceptionMetered
+    @GET
+    @Path("/set")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public Set<String> setService()
+    {
+        return Sets.mutable.empty();
+    }
+
+    @Timed
+    @ExceptionMetered
+    @GET
+    @Path("/map")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public Map<String, Set<String>> mapService()
+    {
+        return Maps.mutable.empty();
     }
 }

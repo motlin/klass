@@ -150,7 +150,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
                 .request()
                 .post(Entity.json(invalidJson));
 
@@ -214,7 +214,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
                     .request()
                     .post(Entity.json(validJson));
 
@@ -232,7 +232,7 @@ public class QuestionResourceManualTest
         //<editor-fold desc="GET id: 2, status: ok">
         {
             Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                     .resolveTemplate("id", 2)
                     .request()
                     .get();
@@ -310,7 +310,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -341,7 +341,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
@@ -391,7 +391,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
@@ -402,7 +402,7 @@ public class QuestionResourceManualTest
         //</editor-fold>
 
         Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -481,7 +481,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -490,6 +490,30 @@ public class QuestionResourceManualTest
         this.assertResponseStatus(response, Status.NO_CONTENT);
 
         this.assertQuestion1Unchanged(client);
+    }
+
+    @Test
+    public void restSet()
+    {
+        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.restSet");
+
+        {
+            Response response = client.target(
+                            String.format("http://localhost:%d/api/manual/set", this.rule.getLocalPort()))
+                    .request()
+                    .get();
+
+            this.assertResponseStatus(response, Status.NO_CONTENT);
+        }
+
+        {
+            Response response = client.target(
+                            String.format("http://localhost:%d/api/manual/map", this.rule.getLocalPort()))
+                    .request()
+                    .get();
+
+            this.assertResponseStatus(response, Status.NO_CONTENT);
+        }
     }
 
     // TODO: Should PUT return the version number as an indicator that something changed? Or some other HTTP code?
