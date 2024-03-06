@@ -18,9 +18,11 @@
 
     <modules>
         <module>klass-jetty-admin-login-service</module>
-        <module>klass-servlet-filter-mdc</module>
-        <module>klass-servlet-filter-mdc-jsonview</module>
-        <module>klass-servlet-filter-structured-logging</module>
+        <module>klass-servlet-logging-mdc-clear</module>
+        <module>klass-servlet-logging-mdc-clear-jsonview</module>
+        <module>klass-servlet-logging-resource-info</module>
+        <module>klass-servlet-logging-correlation-id</module>
+        <module>klass-servlet-logging-structured</module>
     </modules>
 
     <dependencyManagement>
