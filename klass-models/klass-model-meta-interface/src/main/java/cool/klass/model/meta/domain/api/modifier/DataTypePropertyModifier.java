@@ -1,11 +1,10 @@
-package cool.klass.model.meta.domain.api.property;
+package cool.klass.model.meta.domain.api.modifier;
 
-import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-// TODO: Split for location specific modifiers?
-public interface PropertyModifier extends NamedElement
+public interface DataTypePropertyModifier extends Modifier
 {
     String CREATED_BY      = "createdBy";
     String CREATED_ON      = "createdOn";
@@ -15,6 +14,9 @@ public interface PropertyModifier extends NamedElement
             CREATED_BY,
             CREATED_ON,
             LAST_UPDATED_BY);
+
+    @Override
+    DataTypeProperty getModifierOwner();
 
     default boolean isKey()
     {

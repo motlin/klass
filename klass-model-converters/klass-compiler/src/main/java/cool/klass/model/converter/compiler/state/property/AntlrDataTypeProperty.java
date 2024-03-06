@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -26,7 +27,6 @@ import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
@@ -35,11 +35,11 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.eclipse.collections.impl.utility.Iterate;
 
-public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrProperty<T>
+public abstract class AntlrDataTypeProperty<T extends DataType>
+        extends AntlrProperty<T>
 {
     protected final boolean                              isOptional;
-    @Nonnull
-    protected final ImmutableList<AntlrPropertyModifier> modifierStates;
+
     @Nonnull
     protected final AntlrClassifier                      owningClassifierState;
 
@@ -58,12 +58,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
-            @Nonnull ImmutableList<AntlrPropertyModifier> modifierStates,
             boolean isOptional)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.isOptional = isOptional;
-        this.modifierStates = Objects.requireNonNull(modifierStates);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
@@ -74,35 +72,30 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return Optional.of(this.owningClassifierState);
     }
 
-    @Nonnull
-    public ImmutableList<AntlrPropertyModifier> getPropertyModifiers()
-    {
-        return this.modifierStates;
-    }
-
     public boolean isKey()
     {
-        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isKey);
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isKey);
     }
 
     public boolean isID()
     {
-        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isID);
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isID);
     }
 
     public boolean isUserId()
     {
-        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isUserId);
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isUserId);
     }
+
 
     public boolean isAudit()
     {
-        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isAudit);
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isAudit);
     }
 
     public boolean isDerived()
     {
-        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isDerived);
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isDerived);
     }
 
     public boolean isOptional()
@@ -209,36 +202,18 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return result.toImmutable();
     }
 
+    @OverridingMethodsMustInvokeSuper
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        this.reportDuplicateModifiers(compilerErrorHolder);
+        super.reportErrors(compilerErrorHolder);
+
         this.reportDuplicateValidations(compilerErrorHolder);
         this.reportInvalidIdProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
     }
 
-    private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        MutableBag<String> duplicateModifiers = this.modifierStates
-                .asLazy()
-                .collect(AntlrNamedElement::getName)
-                .toBag()
-                .selectDuplicates();
-
-        for (AntlrPropertyModifier modifierState : this.modifierStates)
-        {
-            if (duplicateModifiers.contains(modifierState.getName()))
-            {
-                ParserRuleContext offendingToken = modifierState.getElementContext();
-                String message = String.format(
-                        "Duplicate modifier '%s'.",
-                        offendingToken.getText());
-                compilerErrorHolder.add("ERR_DUP_MOD", message, this, offendingToken);
-            }
-        }
-    }
 
     private void reportDuplicateValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -284,13 +259,20 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
     }
 
+    private ListIterable<AntlrDataTypePropertyModifier> getDataTypePropertyModifiers()
+    {
+        // TODO: Consider generics instead of cast
+        return this.getModifiers()
+                .collect(AntlrDataTypePropertyModifier.class::cast);
+    }
+
     public String getShortString()
     {
         return String.format(
                 "%s: %s %s",
                 this.getName(),
-                this.getType().toString(),
-                this.modifierStates.collect(AntlrNamedElement::getName).makeString(" "));
+                this.getType(),
+                this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
     }
 
     @Override
@@ -300,7 +282,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
                 "%s.%s: %s %s",
                 this.getOwningClassifierState().getName(),
                 this.getName(),
-                this.getType().toString(),
-                this.modifierStates.collect(AntlrNamedElement::getName).makeString(" "));
+                this.getType(),
+                this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
     }
 }

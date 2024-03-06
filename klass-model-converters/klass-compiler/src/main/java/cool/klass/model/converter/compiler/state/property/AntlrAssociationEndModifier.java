@@ -64,6 +64,12 @@ public class AntlrAssociationEndModifier extends AntlrModifier
     }
 
     @Override
+    protected boolean isAudit()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isAudit() not implemented yet");
+    }
+
+    @Override
     @Nonnull
     public AssociationEndModifierBuilder build()
     {

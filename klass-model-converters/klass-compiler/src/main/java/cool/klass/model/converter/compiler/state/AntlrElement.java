@@ -25,6 +25,20 @@ public abstract class AntlrElement implements IAntlrElement
     {
         this.elementContext  = Objects.requireNonNull(elementContext);
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
+
+        compilationUnit.ifPresent(cu -> assertContextContains(cu.getParserContext(), elementContext));
+    }
+
+    private static void assertContextContains(ParserRuleContext parentContext, ParserRuleContext childContext)
+    {
+        if (parentContext == childContext)
+        {
+            return;
+        }
+
+        ParserRuleContext nextParent = childContext.getParent();
+        Objects.requireNonNull(nextParent);
+        assertContextContains(parentContext, nextParent);
     }
 
     @Override

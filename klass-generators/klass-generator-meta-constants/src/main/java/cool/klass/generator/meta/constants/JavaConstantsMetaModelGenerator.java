@@ -24,6 +24,8 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
@@ -31,12 +33,10 @@ import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.RichIterable;
@@ -130,6 +130,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.projection.*;\n"
                 + "import cool.klass.model.meta.domain.api.service.*;\n"
                 + "import org.eclipse.collections.api.list.*;\n"
@@ -406,6 +407,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.validation.*;\n"
                 + "import cool.klass.model.meta.domain.api.projection.*;\n"
@@ -488,7 +490,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getEnumerationLiteralSourceCode(@Nonnull EnumerationLiteral enumerationLiteral)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationLiteral.getName());
+        String uppercaseName = this.getUppercaseName(enumerationLiteral);
 
         String declaredPrettyName = enumerationLiteral.getDeclaredPrettyName()
                 .map(StringEscapeUtils::escapeJava)
@@ -586,6 +588,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.validation.*;\n"
                 + "\n"
@@ -680,6 +683,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.validation.*;\n"
                 + "\n"
@@ -871,13 +875,11 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getPrimitivePropertySourceCode(@Nonnull PrimitiveProperty primitiveProperty)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, primitiveProperty.getName());
+        String uppercaseName = this.getUppercaseName(primitiveProperty);
 
         //language=JAVA
         return ""
-                + "    public static enum "
-                + uppercaseName
-                + "_PrimitiveProperty implements PrimitiveProperty\n"
+                + "    public static enum " + uppercaseName + "_PrimitiveProperty implements PrimitiveProperty\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -885,17 +887,13 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public String getName()\n"
                 + "        {\n"
-                + "            return \""
-                + StringEscapeUtils.escapeJava(primitiveProperty.getName())
-                + "\";\n"
+                + "            return \"" + StringEscapeUtils.escapeJava(primitiveProperty.getName()) + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return "
-                + primitiveProperty.getOrdinal()
-                + ";\n"
+                + "            return " + primitiveProperty.getOrdinal() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -907,22 +905,18 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public boolean isOptional()\n"
                 + "        {\n"
-                + "            return "
-                + primitiveProperty.isOptional()
-                + ";\n"
+                + "            return " + primitiveProperty.isOptional() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isForeignKey()\n"
                 + "        {\n"
-                + "            return "
-                + primitiveProperty.isForeignKey()
-                + ";\n"
+                + "            return " + primitiveProperty.isForeignKey() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public ImmutableList<PropertyModifier> getPropertyModifiers()\n"
+                + "        public ImmutableList<DataTypePropertyModifier> getPropertyModifiers()\n"
                 + "        {\n"
                 + this.getPropertyModifiersSourceCode(primitiveProperty.getPropertyModifiers())
                 + "        }\n"
@@ -1030,19 +1024,19 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getPropertyModifiersSourceCode(@Nonnull ImmutableList<PropertyModifier> propertyModifiers)
+    private String getPropertyModifiersSourceCode(@Nonnull ImmutableList<DataTypePropertyModifier> propertyModifiers)
     {
         if (propertyModifiers.isEmpty())
         {
             return "            return Lists.immutable.empty();\n";
         }
         String variablesSourceCode = propertyModifiers
-                .collect(this::getPropertyModifierSourceCode)
+                .collect(this::getDataTypePropertyModifierSourceCode)
                 .makeString("\n");
 
         ImmutableList<String> variableNames = propertyModifiers
                 .collect(NamedElement::getName)
-                .collect(each -> each + "_" + PropertyModifier.class.getSimpleName());
+                .collect(each -> each + "_" + DataTypePropertyModifier.class.getSimpleName());
 
         return variablesSourceCode
                 + "\n"
@@ -1050,24 +1044,33 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getPropertyModifierSourceCode(@Nonnull PropertyModifier propertyModifier)
+    private String getDataTypePropertyModifierSourceCode(@Nonnull DataTypePropertyModifier dataTypePropertyModifier)
     {
+        String className = DataTypePropertyModifier.class.getSimpleName();
+        DataTypeProperty modifierOwner = dataTypePropertyModifier.getModifierOwner();
+
         // @formatter:off
+        //language=JAVA
         return ""
-                + "            PropertyModifier " + propertyModifier.getName() + "_" + PropertyModifier.class.getSimpleName() + " = new PropertyModifier()\n"
+                + "            " + className + " " + dataTypePropertyModifier.getName() + "_" + className + " = new " + className + "()\n"
                 + "            {\n"
+                + "                @Override\n"
+                + "                public DataTypeProperty getModifierOwner()\n"
+                + "                {\n"
+                + "                    return " + this.getUppercaseName(modifierOwner) + "_" + this.getTypeName(modifierOwner) + ".INSTANCE;\n"
+                + "                }\n"
+                + "\n"
                 + "                @Nonnull\n"
                 + "                @Override\n"
                 + "                public String getName()\n"
                 + "                {\n"
-                + "                    return \""
-                + StringEscapeUtils.escapeJava(propertyModifier.getName()) + "\";\n"
+                + "                    return \"" + StringEscapeUtils.escapeJava(dataTypePropertyModifier.getName()) + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public int getOrdinal()\n"
                 + "                {\n"
-                + "                    return " + propertyModifier.getOrdinal() + ";\n"
+                + "                    return " + dataTypePropertyModifier.getOrdinal() + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
@@ -1079,7 +1082,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                @Override\n"
                 + "                public String toString()\n"
                 + "                {\n"
-                + "                    return \"" + StringEscapeUtils.escapeJava(propertyModifier.toString()) + "\";\n"
+                + "                    return \"" + StringEscapeUtils.escapeJava(dataTypePropertyModifier.toString()) + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Nonnull\n"
@@ -1087,7 +1090,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                public String getSourceCode()\n"
                 + "                {\n"
                 + "                    return \"\"\n"
-                + "                            + \"" + this.wrapSourceCode(propertyModifier.getSourceCode())
+                + "                            + \"" + this.wrapSourceCode(dataTypePropertyModifier.getSourceCode())
                 + "\";\n"
                 + "                }\n"
                 + "            };\n";
@@ -1097,7 +1100,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getEnumerationPropertySourceCode(@Nonnull EnumerationProperty enumerationProperty)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationProperty.getName());
+        String uppercaseName = this.getUppercaseName(enumerationProperty);
 
         // @formatter:off
         //language=JAVA
@@ -1140,7 +1143,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public ImmutableList<PropertyModifier> getPropertyModifiers()\n"
+                + "        public ImmutableList<DataTypePropertyModifier> getPropertyModifiers()\n"
                 + "        {\n"
                 + this.getPropertyModifiersSourceCode(enumerationProperty.getPropertyModifiers())
                 + "        }\n"
@@ -1258,6 +1261,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.criteria.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.*;\n"
                 + "import cool.klass.model.meta.domain.api.projection.*;\n"
@@ -1343,7 +1347,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getAssociationEndSourceCode(@Nonnull AssociationEnd associationEnd)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, associationEnd.getName());
+        String uppercaseName = this.getUppercaseName(associationEnd);
 
         // @formatter:off
         //language=JAVA
@@ -1450,13 +1454,16 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getAssociationEndModifierConstantSourceCode(@Nonnull AssociationEndModifier associationEndModifier)
     {
+        String         className     = AssociationEndModifier.class.getSimpleName();
+        AssociationEnd modifierOwner = associationEndModifier.getModifierOwner();
+
         // @formatter:off
         //language=JAVA
         return ""
-                + "        public static final AssociationEndModifier " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new AssociationEndModifier()\n"
+                + "        public static final " + className + " " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new " + className + "()\n"
                 + "        {\n"
                 + "            @Override\n"
-                + "            public AssociationEnd getAssociationEnd()\n"
+                + "            public AssociationEnd getModifierOwner()\n"
                 + "            {\n"
                 + "                return INSTANCE;\n"
                 + "            }\n"
@@ -1549,6 +1556,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "import cool.klass.model.meta.domain.api.*;\n"
                 + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.modifier.*;\n"
                 + "import cool.klass.model.meta.domain.api.property.*;\n"
                 + "import cool.klass.model.meta.domain.api.projection.*;\n"
                 + "import org.eclipse.collections.api.list.*;\n"
@@ -1686,7 +1694,7 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull ProjectionDataTypeProperty projectionDataTypeProperty,
             String projectionParentName)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionDataTypeProperty.getName()) + projectionDataTypeProperty.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionDataTypeProperty) + projectionDataTypeProperty.getDepth();
 
         DataTypeProperty dataTypeProperty = projectionDataTypeProperty.getProperty();
 
@@ -1759,7 +1767,7 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull ProjectionAssociationEnd projectionAssociationEnd,
             String projectionParentName)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionAssociationEnd.getName()) + projectionAssociationEnd.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionAssociationEnd) + projectionAssociationEnd.getDepth();
 
         AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
 
@@ -1834,7 +1842,7 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull ProjectionProjectionReference projectionProjectionReference,
             String projectionParentName)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionProjectionReference.getName()) + projectionProjectionReference.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionProjectionReference) + projectionProjectionReference.getDepth();
 
         AssociationEnd associationEnd = projectionProjectionReference.getProperty();
 
@@ -1897,5 +1905,10 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "}\n";
         // @formatter:on
+    }
+
+    private String getUppercaseName(NamedElement namedElement)
+    {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, namedElement.getName());
     }
 }

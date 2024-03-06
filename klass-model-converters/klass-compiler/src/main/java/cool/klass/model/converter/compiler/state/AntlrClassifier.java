@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -55,37 +56,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getElementBuilder() not implemented yet");
         }
 
-        @Override
-        protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".reportCircularInheritance() not implemented yet");
-        }
-
-        @Override
-        protected boolean isInterfaceRedundant(
-                int index, AntlrInterface interfaceState)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isInterfaceRedundant() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public ImmutableBag<String> getDuplicateMemberNames()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDuplicateMemberNames() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        protected ImmutableList<String> getDeclaredMemberNames()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDeclaredMemberNames() not implemented yet");
-        }
-
         @Nonnull
         @Override
         public ClassifierBuilder<?> getTypeGetter()
@@ -134,37 +104,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".getElementBuilder() not implemented yet");
-        }
-
-        @Override
-        protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".reportCircularInheritance() not implemented yet");
-        }
-
-        @Override
-        protected boolean isInterfaceRedundant(
-                int index, AntlrInterface interfaceState)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".isInterfaceRedundant() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public ImmutableBag<String> getDuplicateMemberNames()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDuplicateMemberNames() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        protected ImmutableList<String> getDeclaredMemberNames()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDeclaredMemberNames() not implemented yet");
         }
 
         @Nonnull
@@ -243,7 +182,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.dataTypePropertyStates.toImmutable().newWithAll(inheritedProperties);
     }
 
-    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
         return this.interfaceStates
                 .flatCollectWith(AntlrClassifier::getDataTypeProperties, visited)
@@ -272,7 +211,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.classModifierStates.toImmutable().newWithAll(inheritedModifiers);
     }
 
-    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(@Nonnull MutableList<AntlrClassifier> visited)
     {
         return this.interfaceStates
                 .flatCollectWith(AntlrClassifier::getClassModifiers, visited)
@@ -289,6 +228,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
     {
+        Objects.requireNonNull(antlrDataTypeProperty);
         this.dataTypePropertyStates.add(antlrDataTypeProperty);
         this.dataTypePropertiesByName.compute(
                 antlrDataTypeProperty.getName(),
@@ -297,13 +237,15 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                         : AntlrPrimitiveProperty.AMBIGUOUS);
     }
 
-    public AntlrAssociationEndSignature getAssociationEndSignatureByContext(AssociationEndSignatureContext ctx)
+    public AntlrAssociationEndSignature getAssociationEndSignatureByContext(@Nonnull AssociationEndSignatureContext ctx)
     {
+        Objects.requireNonNull(ctx);
         return this.associationEndSignaturesByContext.get(ctx);
     }
 
     public void enterAssociationEndSignature(@Nonnull AntlrAssociationEndSignature associationEndSignatureState)
     {
+        Objects.requireNonNull(associationEndSignatureState);
         this.associationEndSignatureStates.add(associationEndSignatureState);
         this.associationEndSignaturesByName.compute(
                 associationEndSignatureState.getName(),
@@ -321,6 +263,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     public void enterClassModifier(@Nonnull AntlrClassModifier classModifierState)
     {
+        Objects.requireNonNull(classModifierState);
         this.classModifierStates.add(classModifierState);
         this.classModifiersByName.compute(
                 classModifierState.getName(),
@@ -337,8 +280,9 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
     }
 
-    public AntlrClassModifier getClassModifierByContext(ClassModifierContext classModifierContext)
+    public AntlrClassModifier getClassModifierByContext(@Nonnull ClassModifierContext classModifierContext)
     {
+        Objects.requireNonNull(classModifierContext);
         return this.classModifiersByContext.get(classModifierContext);
     }
 
@@ -347,8 +291,9 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.classModifierStates.size();
     }
 
-    public void enterImplementsDeclaration(AntlrInterface interfaceState)
+    public void enterImplementsDeclaration(@Nonnull AntlrInterface interfaceState)
     {
+        Objects.requireNonNull(interfaceState);
         this.interfaceStates.add(interfaceState);
     }
 
@@ -356,6 +301,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
     @Override
     public abstract ClassifierBuilder<?> getElementBuilder();
 
+    @OverridingMethodsMustInvokeSuper
     protected boolean implementsInterface(AntlrInterface interfaceState)
     {
         return this.interfaceStates.contains(interfaceState)
@@ -453,7 +399,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
     }
 
-    protected void reportRedundantInterface(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportRedundantInterface(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableSet<AntlrInterface> visitedInterfaceStates = Sets.mutable.empty();
 
@@ -501,11 +447,19 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
     }
 
-    protected abstract void reportCircularInheritance(CompilerErrorState compilerErrorHolder);
+    protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".reportCircularInheritance() not implemented yet");
+    }
 
-    protected abstract boolean isInterfaceRedundant(int index, AntlrInterface interfaceState);
+    protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".isInterfaceRedundant() not implemented yet");
+    }
 
-    protected boolean interfaceNotAtIndexImplements(int index, AntlrInterface interfaceState)
+    protected boolean interfaceNotAtIndexImplements(int index, @Nonnull AntlrInterface interfaceState)
     {
         return Interval.zeroTo(this.interfaceStates.size() - 1)
                 .asLazy()
@@ -520,9 +474,25 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 + ".getOffendingInterfaceReference() not implemented yet");
     }
 
-    public abstract ImmutableBag<String> getDuplicateMemberNames();
+    protected ImmutableBag<String> getDuplicateMemberNames()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getDuplicateMemberNames() not implemented yet");
+    }
 
-    protected abstract ImmutableList<String> getDeclaredMemberNames();
+    protected ImmutableList<String> getDeclaredMemberNames()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getDeclaredMemberNames() not implemented yet");
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        this.classModifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.associationEndSignatureStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+    }
 
     @Nonnull
     @Override

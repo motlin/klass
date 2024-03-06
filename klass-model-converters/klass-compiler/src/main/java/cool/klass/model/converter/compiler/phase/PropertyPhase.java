@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifierType;
@@ -17,9 +18,9 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndMod
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrClassifierTypeOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxLengthPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinLengthPropertyValidation;
@@ -29,6 +30,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
@@ -37,9 +39,6 @@ import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class PropertyPhase extends AbstractCompilerPhase
 {
@@ -63,10 +62,6 @@ public class PropertyPhase extends AbstractCompilerPhase
     {
         super.enterPrimitiveProperty(ctx);
 
-        ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collectWithIndex(this::getAntlrPropertyModifier)
-                .toImmutable();
-
         String             propertyName       = ctx.identifier().getText();
         boolean            isOptional         = ctx.optionalMarker() != null;
         String             primitiveTypeName  = ctx.primitiveType().getText();
@@ -85,7 +80,6 @@ public class PropertyPhase extends AbstractCompilerPhase
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState(),
                 isOptional,
-                propertyModifiers,
                 primitiveTypeState);
 
         this.getClassifierState().enterDataTypeProperty(this.dataTypePropertyState);
@@ -103,11 +97,6 @@ public class PropertyPhase extends AbstractCompilerPhase
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
         super.enterEnumerationProperty(ctx);
-
-        // TODO: Superclass above all modifiers. Modifiers hold their owners.
-        ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collectWithIndex(this::getAntlrPropertyModifier)
-                .toImmutable();
 
         String           propertyName     = ctx.identifier().getText();
         boolean          isOptional       = ctx.optionalMarker() != null;
@@ -127,7 +116,6 @@ public class PropertyPhase extends AbstractCompilerPhase
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState(),
                 isOptional,
-                propertyModifiers,
                 enumerationState);
 
         this.getClassifierState().enterDataTypeProperty(this.dataTypePropertyState);
@@ -136,9 +124,10 @@ public class PropertyPhase extends AbstractCompilerPhase
     @Override
     public void exitEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        super.exitEnumerationProperty(ctx);
         Objects.requireNonNull(this.dataTypePropertyState);
         this.dataTypePropertyState = null;
+
+        super.exitEnumerationProperty(ctx);
     }
 
     @Override
@@ -208,28 +197,17 @@ public class PropertyPhase extends AbstractCompilerPhase
         return Integer.decode(withoutUnderscores);
     }
 
-    @Nonnull
-    private AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context, int ordinal)
+    @Override
+    public void enterDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
-        return new AntlrPropertyModifier(
-                context,
+        AntlrDataTypePropertyModifier propertyModifierState = new AntlrDataTypePropertyModifier(
+                ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                context,
-                context.getText(),
-                ordinal + 1);
-    }
-
-    @Nonnull
-    private AntlrPropertyModifier getAntlrAssociationEndModifier(
-            @Nonnull AssociationEndModifierContext context,
-            int ordinal)
-    {
-        return new AntlrPropertyModifier(
-                context,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                context,
-                context.getText(),
-                ordinal + 1);
+                ctx,
+                ctx.getText(),
+                this.dataTypePropertyState.getNumModifiers() + 1,
+                this.dataTypePropertyState);
+        this.dataTypePropertyState.enterModifier(propertyModifierState);
     }
 
     @Override
@@ -287,7 +265,7 @@ public class PropertyPhase extends AbstractCompilerPhase
                 ctx.getText(),
                 this.associationEndSignatureState.getNumModifiers() + 1,
                 this.associationEndSignatureState);
-        this.associationEndSignatureState.enterAssociationEndModifier(antlrAssociationEndModifier);
+        this.associationEndSignatureState.enterModifier(antlrAssociationEndModifier);
     }
 
     @Nullable

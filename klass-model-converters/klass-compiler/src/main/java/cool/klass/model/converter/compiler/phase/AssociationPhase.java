@@ -121,7 +121,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 ctx.getText(),
                 this.associationEndState.getNumModifiers() + 1,
                 this.associationEndState);
-        this.associationEndState.enterAssociationEndModifier(antlrAssociationEndModifier);
+        this.associationEndState.enterModifier(antlrAssociationEndModifier);
     }
 
     @Override

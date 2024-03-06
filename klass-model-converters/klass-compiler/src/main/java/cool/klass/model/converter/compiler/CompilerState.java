@@ -80,9 +80,19 @@ public class CompilerState
                 sourceCodeText,
                 parserRule);
 
-        CompilerWalkState compilerWalkState = this.compilerWalkState.withCompilationUnit(compilationUnit);
-        this.macroCompilerWalkStates.put(compilationUnit, compilerWalkState);
-        this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
+        CompilerWalkState oldCompilerWalkState = this.compilerWalkState;
+        CompilerWalkState newCompilerWalkState = oldCompilerWalkState.withCompilationUnit(compilationUnit);
+        this.macroCompilerWalkStates.put(compilationUnit, newCompilerWalkState);
+
+        this.compilerWalkState = newCompilerWalkState;
+        try
+        {
+            this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
+        }
+        finally
+        {
+            this.compilerWalkState = oldCompilerWalkState;
+        }
     }
 
     public void runRootCompilerMacro(

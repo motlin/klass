@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.meta.domain.api.Element;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -772,6 +773,66 @@ public class KlassCompilerErrorTest
                         + "[36mFile:      [mexample.klass[m\n"
                         + "[36mLine:      [m5[m\n"
                         + "[36mCharacter: [m21[m\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void duplicateAssociationModifier()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    parent: Dummy[0..1];\n"
+                + "    children: Dummy[0..*] owned owned;\n"
+                + "\n"
+                + "    relationship this.id == Dummy.id\n"
+                + "}\n"
+                + "\n"
+                + "class Dummy\n"
+                + "{\n"
+                + "    id: Long id key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_DUP_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mDuplicate modifier 'owned'.[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:6)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mdummy\n"
+                        + "[40;37m3║ [40;35massociation [40;97mDummyAssociation\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m6║     [40;97mchildren[40;36m: [40;97mDummy[40;36m[[40;94m0[40;36m..[40;94m*[40;36m] [40;93mowned [40;93mowned[40;36m;\n"
+                        + "[40;37m ║                           [40;91m^^^^^\n"
+                        + "[40;37m9║ [40;36m}\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:6[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m6[m\n"
+                        + "[36mCharacter: [m27[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_DUP_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mDuplicate modifier 'owned'.[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:6)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mdummy\n"
+                        + "[40;37m3║ [40;35massociation [40;97mDummyAssociation\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m6║     [40;97mchildren[40;36m: [40;97mDummy[40;36m[[40;94m0[40;36m..[40;94m*[40;36m] [40;93mowned [40;93mowned[40;36m;\n"
+                        + "[40;37m ║                                 [40;91m^^^^^\n"
+                        + "[40;37m9║ [40;36m}\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:6[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m6[m\n"
+                        + "[36mCharacter: [m33[m\n",
         };
 
         this.assertCompilerErrors(sourceCodeText, errors);
@@ -2129,7 +2190,13 @@ public class KlassCompilerErrorTest
         CompilationResult compilationResult = compiler.compile();
         if (compilationResult instanceof DomainModelCompilationResult)
         {
-            fail("Expected a compile error.");
+            DomainModelCompilationResult domainModelResult = (DomainModelCompilationResult) compilationResult;
+            String sourceCodeWithInference = domainModelResult
+                    .getDomainModel()
+                    .getTopLevelElements()
+                    .collect(Element::getSourceCodeWithInference)
+                    .makeString("\n");
+            fail("Expected a compile error but found:\n" + sourceCodeWithInference);
         }
         else if (compilationResult instanceof ErrorsCompilationResult)
         {
@@ -2488,8 +2555,7 @@ public class KlassCompilerErrorTest
                 + "\n"
                 + "user User2\n"
                 + "{\n"
-                + "    userId1: String key userId;\n"
-                + "    userId2: String key userId;\n"
+                + "    userId: String key userId;\n"
                 + "}\n";
         //</editor-fold>
 
@@ -2552,38 +2618,404 @@ public class KlassCompilerErrorTest
                         + "[36mFile:      [mexample.klass[m\n"
                         + "[36mLine:      [m9[m\n"
                         + "[36mCharacter: [m6[m\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+
+
+    @Test
+    public void userIdWithoutUser()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package com.errors\n"
+                + "\n"
+                + "class User\n"
+                + "{\n"
+                + "    userId: String key userId;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                "",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void auditPropertyWithoutUser()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package com.errors\n"
+                + "\n"
+                + "class DummyClass systemTemporal versioned audited\n"
+                + "{\n"
+                + "    id             : Long id key;\n"
+                + "    system         : TemporalRange   system;\n"
+                + "    systemFrom     : TemporalInstant system from;\n"
+                + "    systemTo       : TemporalInstant system to;\n"
+                + "    createdById    : String private createdBy;\n"
+                + "    createdOn      : Instant createdOn;\n"
+                + "    lastUpdatedById: String private lastUpdatedBy;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
                 ""
-                        + "[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m\n"
-                        + "[31mDuplicate userId property: 'User2.userId1'.[m\n"
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;33mcreatedOn      [40;36m: [40;95mInstant [40;33mcreatedOn[40;36m;\n"
+                        + "[40;37m ║                              [40;91m^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mcreatedById    [40;36m: [40;95mString [40;33mprivate [40;33mcreatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mlastUpdatedById[40;36m: [40;95mString [40;33mprivate [40;33mlastUpdatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                           [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m43[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:9)\n"
+                        + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m 3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m 4║ [40;36m{\n"
+                        + "[40;37m 9║     [40;97mcreatedById    [40;36m: [40;95mString [40;33mprivate [40;33mcreatedBy[40;36m;\n"
+                        + "[40;37m  ║                                     [40;91m^^^^^^^^^\n"
+                        + "[40;37m12║ [40;36m}\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:9[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m9[m\n"
+                        + "[36mCharacter: [m37[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:10)\n"
+                        + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m 3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m 4║ [40;36m{\n"
+                        + "[40;37m10║     [40;33mcreatedOn      [40;36m: [40;95mInstant [40;33mcreatedOn[40;36m;\n"
+                        + "[40;37m  ║                              [40;91m^^^^^^^^^\n"
+                        + "[40;37m12║ [40;36m}\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:10[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m10[m\n"
+                        + "[36mCharacter: [m30[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
                         + "\n"
                         + "Error at location. (example.klass:11)\n"
                         + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
-                        + "[40;37m 9║ [40;95muser [40;97mUser2\n"
-                        + "[40;37m10║ [40;36m{\n"
-                        + "[40;37m11║     [40;97muserId1[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;\n"
-                        + "[40;37m  ║     [40;91m^^^^^^^\n"
-                        + "[40;37m13║ [40;36m}\n"
+                        + "[40;37m 3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m 4║ [40;36m{\n"
+                        + "[40;37m11║     [40;97mlastUpdatedById[40;36m: [40;95mString [40;33mprivate [40;33mlastUpdatedBy[40;36m;\n"
+                        + "[40;37m  ║                                     [40;91m^^^^^^^^^^^^^\n"
+                        + "[40;37m12║ [40;36m}\n"
                         + "[m\n"
                         + "[36mLocation:  [mexample.klass:11[m\n"
                         + "[36mFile:      [mexample.klass[m\n"
                         + "[36mLine:      [m11[m\n"
-                        + "[36mCharacter: [m5[m\n",
+                        + "[36mCharacter: [m37[m\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void auditInferenceWithoutUser()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package com.errors\n"
+                + "\n"
+                + "class DummyClass systemTemporal versioned audited\n"
+                + "{\n"
+                + "    id: Long id key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
                 ""
-                        + "[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m\n"
-                        + "[31mDuplicate userId property: 'User2.userId2'.[m\n"
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
                         + "\n"
-                        + "Error at location. (example.klass:12)\n"
-                        + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
-                        + "[40;37m 9║ [40;95muser [40;97mUser2\n"
-                        + "[40;37m10║ [40;36m{\n"
-                        + "[40;37m12║     [40;97muserId2[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;\n"
-                        + "[40;37m  ║     [40;91m^^^^^^^\n"
-                        + "[40;37m13║ [40;36m}\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;33mcreatedOn      [40;36m: [40;95mInstant [40;33mcreatedOn[40;36m;\n"
+                        + "[40;37m ║                              [40;91m^^^^^^^^^\n"
+                        + "[40;37m6║ [40;36m}\n"
                         + "[m\n"
-                        + "[36mLocation:  [mexample.klass:12[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                           [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
                         + "[36mFile:      [mexample.klass[m\n"
-                        + "[36mLine:      [m12[m\n"
-                        + "[36mCharacter: [m5[m\n",
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m43[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;33mcreatedOn      [40;36m: [40;95mInstant [40;33mcreatedOn[40;36m;\n"
+                        + "[40;37m ║                              [40;91m^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mcreatedById    [40;36m: [40;95mString [40;33mprivate [40;33mcreatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^\n"
+                        + "[40;37m6║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                           [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m43[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mlastUpdatedById[40;36m: [40;95mString [40;33mprivate [40;33mlastUpdatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^^^^^\n"
+                        + "[40;37m6║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                           [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m43[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mcreatedById    [40;36m: [40;95mString [40;33mprivate [40;33mcreatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Audit modifier macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m1║     [40;97mlastUpdatedById[40;36m: [40;95mString [40;33mprivate [40;33mlastUpdatedBy[40;36m;\n"
+                        + "[40;37m ║                                     [40;91m^^^^^^^^^^^^^\n"
+                        + "[40;37m7║ [40;36m}\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (Version class macro)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClassVersion [40;33msystemTemporal [40;33maudited\n"
+                        + "[40;37m ║                                        [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "Which was generated by macro at location (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                 [40;91m^^^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m33[m\n",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:3)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited\n"
+                        + "[40;37m ║                                           [40;91m^^^^^^^\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:3[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m3[m\n"
+                        + "[36mCharacter: [m43[m\n",
         };
 
         this.assertCompilerErrors(sourceCodeText, errors);
@@ -3459,10 +3891,8 @@ public class KlassCompilerErrorTest
                 + "class DummyClass\n"
                 + "{\n"
                 + "    id: Long id key;\n"
-                +
-                "    associationEndSignature: DummyClass[0..1];\n"
-                +
-                "}\n";
+                + "    associationEndSignature: DummyClass[0..1];\n"
+                + "}\n";
         //</editor-fold>
 
         String error =  ""

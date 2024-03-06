@@ -9,9 +9,7 @@ import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public final class PrimitivePropertyImpl
         extends AbstractDataTypeProperty<PrimitiveType>
@@ -49,7 +47,6 @@ public final class PrimitivePropertyImpl
                 int ordinal,
                 @Nonnull PrimitiveType primitiveType,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
-                @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
             super(
@@ -60,7 +57,6 @@ public final class PrimitivePropertyImpl
                     ordinal,
                     primitiveType,
                     owningClassifierBuilder,
-                    propertyModifierBuilders,
                     isOptional);
         }
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.MaxLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MaxPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
@@ -22,7 +23,7 @@ public interface DataTypeProperty extends Property
     DataType getType();
 
     @Nonnull
-    ImmutableList<PropertyModifier> getPropertyModifiers();
+    ImmutableList<DataTypePropertyModifier> getPropertyModifiers();
 
     Optional<MinLengthPropertyValidation> getMinLengthPropertyValidation();
 
@@ -39,59 +40,59 @@ public interface DataTypeProperty extends Property
 
     default boolean isKey()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isKey);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isKey);
     }
 
     boolean isID();
 
     default boolean isAudit()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isAudit);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isAudit);
     }
 
     default boolean isCreatedBy()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isCreatedBy);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isCreatedBy);
     }
 
     default boolean isCreatedOn()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isCreatedOn);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isCreatedOn);
     }
 
     default boolean isLastUpdatedBy()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isLastUpdatedBy);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isLastUpdatedBy);
     }
 
     default boolean isValid()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isValid);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isValid);
     }
 
     default boolean isSystem()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isSystem);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isSystem);
     }
 
     default boolean isFrom()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isFrom);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isFrom);
     }
 
     default boolean isTo()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isTo);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isTo);
     }
 
     default boolean isFinal()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isFinal);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isFinal);
     }
 
     default boolean isPrivate()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isPrivate);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isPrivate);
     }
 
     default boolean isValidTemporal()
@@ -124,6 +125,6 @@ public interface DataTypeProperty extends Property
 
     default boolean isDerived()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isDerived);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isDerived);
     }
 }

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public interface AssociationEnd extends ReferenceProperty

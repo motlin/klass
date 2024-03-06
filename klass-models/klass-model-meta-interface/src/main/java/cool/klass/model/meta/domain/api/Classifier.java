@@ -4,12 +4,13 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.MutableSet;
 
-public interface Classifier extends Type, PackageableElement
+public interface Classifier extends Type, PackageableElement, ModifierOwner
 {
     @Nonnull
     ImmutableList<Interface> getInterfaces();

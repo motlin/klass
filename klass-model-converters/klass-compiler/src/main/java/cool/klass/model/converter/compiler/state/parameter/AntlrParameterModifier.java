@@ -8,6 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AbstractNamedElement.NamedElementBuilder;
+import cool.klass.model.meta.domain.property.AbstractModifier.ModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrParameterModifier extends AntlrModifier
@@ -45,16 +46,22 @@ public class AntlrParameterModifier extends AntlrModifier
         return this.name.equals("version");
     }
 
+    @Override
+    protected boolean isAudit()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isAudit() not implemented yet");
+    }
+
     @Nonnull
     @Override
-    public NamedElementBuilder<?> build()
+    public ModifierBuilder<?> build()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
     }
 
     @Nonnull
     @Override
-    public NamedElementBuilder<?> getElementBuilder()
+    public ModifierBuilder<?> getElementBuilder()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getElementBuilder() not implemented yet");

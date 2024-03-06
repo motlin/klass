@@ -11,13 +11,13 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
+import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
-import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationImpl>
 {
@@ -30,7 +30,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             -1,
             AntlrClass.NOT_FOUND,
             false,
-            Lists.immutable.empty(),
             AntlrEnumeration.NOT_FOUND);
 
     // TODO: Check that it's not NOT_FOUND
@@ -47,7 +46,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
-            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             @Nonnull AntlrEnumeration enumerationState)
     {
         super(
@@ -57,9 +55,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 name,
                 ordinal,
                 owningClassifierState,
-                modifiers,
                 isOptional);
-        // TODO: is this nullable?
         this.enumerationState = Objects.requireNonNull(enumerationState);
     }
 
@@ -98,8 +94,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             throw new IllegalStateException();
         }
 
-        ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
-                this.modifierStates.collect(AntlrPropertyModifier::build);
+
 
         this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
@@ -109,8 +104,13 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 this.ordinal,
                 this.enumerationState.getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),
-                propertyModifierBuilders,
                 this.isOptional);
+
+        ImmutableList<DataTypePropertyModifierBuilder> dataTypePropertyModifierBuilders = this.getModifiers()
+                .collect(AntlrDataTypePropertyModifier.class::cast)
+                .collect(AntlrDataTypePropertyModifier::build)
+                .toImmutable();
+        this.elementBuilder.setDataTypePropertyModifierBuilders(dataTypePropertyModifierBuilders);
 
         this.buildValidations();
 
@@ -129,6 +129,11 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     {
         super.reportErrors(compilerErrorHolder);
 
+        this.reportTypeNotFound(compilerErrorHolder);
+    }
+
+    private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
         if (this.enumerationState != AntlrEnumeration.NOT_FOUND)
         {
             return;
@@ -144,8 +149,10 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     @Override
     protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ImmutableList<AntlrPropertyModifier> idModifiers = this.modifierStates.select(AntlrPropertyModifier::isID);
-        for (AntlrPropertyModifier idModifier : idModifiers)
+        ListIterable<AntlrDataTypePropertyModifier> idModifiers = this.getModifiers()
+                .collect(AntlrDataTypePropertyModifier.class::cast)
+                .select(AntlrDataTypePropertyModifier::isID);
+        for (AntlrDataTypePropertyModifier idModifier : idModifiers)
         {
             ParserRuleContext offendingToken = idModifier.getElementContext();
             String            message        = "Enumeration properties may not be auto-generated ids.";

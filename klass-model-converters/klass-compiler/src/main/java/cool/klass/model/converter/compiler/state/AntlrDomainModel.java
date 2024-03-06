@@ -406,6 +406,10 @@ public class AntlrDomainModel
         {
             classifierState.reportNameErrors(compilerErrorHolder);
             classifierState.reportErrors(compilerErrorHolder);
+            if (this.userClassStates.isEmpty())
+            {
+                classifierState.reportAuditErrors(compilerErrorHolder);
+            }
         }
 
         for (AntlrAssociation associationState : this.associationStates)

@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.api.property;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
@@ -42,13 +43,13 @@ public interface PrimitiveProperty extends DataTypeProperty
     @Override
     default boolean isVersion()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isVersion);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isVersion);
     }
 
     @Override
     default boolean isID()
     {
-        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isID);
+        return this.getPropertyModifiers().anySatisfy(DataTypePropertyModifier::isID);
     }
 
     @Override

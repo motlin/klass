@@ -7,11 +7,12 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.impl.factory.Lists;
 
 public class VersionClassInferencePhase extends AbstractCompilerPhase
@@ -85,8 +86,10 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
     private String getSourceCode(@Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        ImmutableList<AntlrPropertyModifier> propertyModifiers = dataTypeProperty.getPropertyModifiers()
-                .reject(AntlrPropertyModifier::isID);
+        ListIterable<AntlrDataTypePropertyModifier> propertyModifiers = dataTypeProperty
+                .getModifiers()
+                .collect(AntlrDataTypePropertyModifier.class::cast)
+                .reject(AntlrDataTypePropertyModifier::isID);
         String propertyModifierSourceCode = propertyModifiers.isEmpty()
                 ? ""
                 : propertyModifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");

@@ -11,15 +11,15 @@ import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.MaxLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MaxPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
-import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
+import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImpl.MaxPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
@@ -40,7 +40,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
 {
     private final boolean optional;
 
-    private ImmutableList<PropertyModifier> propertyModifiers;
+    private ImmutableList<DataTypePropertyModifier> propertyModifiers;
 
     private ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey;
     private ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey;
@@ -70,12 +70,12 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
 
     @Override
     @Nonnull
-    public ImmutableList<PropertyModifier> getPropertyModifiers()
+    public ImmutableList<DataTypePropertyModifier> getPropertyModifiers()
     {
         return Objects.requireNonNull(this.propertyModifiers);
     }
 
-    private void setPropertyModifiers(ImmutableList<PropertyModifier> propertyModifiers)
+    private void setPropertyModifiers(ImmutableList<DataTypePropertyModifier> propertyModifiers)
     {
         if (this.propertyModifiers != null)
         {
@@ -204,13 +204,14 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter, BuiltElement extends AbstractDataTypeProperty<T>>
             extends PropertyBuilder<T, TG, BuiltElement>
     {
-        protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;
-        protected final boolean                                isOptional;
+        protected final boolean                                        isOptional;
 
         protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
                 keyBuildersMatchingThisForeignKey;
         protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
                 foreignKeyBuildersMatchingThisKey;
+
+        protected ImmutableList<DataTypePropertyModifierBuilder> dataTypePropertyModifierBuilders;
 
         private Optional<MinLengthPropertyValidationBuilder> minLengthPropertyValidationBuilder;
         private Optional<MaxLengthPropertyValidationBuilder> maxLengthPropertyValidationBuilder;
@@ -225,11 +226,9 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
                 int ordinal,
                 @Nonnull TG typeBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
-                ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
             super(elementContext, macroElement, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
-            this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
             this.isOptional               = isOptional;
         }
 
@@ -271,13 +270,18 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             this.maxPropertyValidationBuilder = Objects.requireNonNull(maxPropertyValidationBuilder);
         }
 
+        public void setDataTypePropertyModifierBuilders(ImmutableList<DataTypePropertyModifierBuilder> dataTypePropertyModifierBuilders)
+        {
+            this.dataTypePropertyModifierBuilders = dataTypePropertyModifierBuilders;
+        }
+
         @Override
         protected void buildChildren()
         {
             AbstractDataTypeProperty<T> property = this.getElement();
 
-            ImmutableList<PropertyModifier> propertyModifiers =
-                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
+            ImmutableList<DataTypePropertyModifier> propertyModifiers =
+                    this.dataTypePropertyModifierBuilders.collect(DataTypePropertyModifierBuilder::build);
             property.setPropertyModifiers(propertyModifiers);
 
             Optional<MinLengthPropertyValidation> minLengthPropertyValidation =

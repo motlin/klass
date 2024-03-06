@@ -8,13 +8,13 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.property.AbstractModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ClassModifierImpl extends AbstractNamedElement implements ClassModifier
+public final class ClassModifierImpl
+        extends AbstractModifier
+        implements ClassModifier
 {
-    @Nonnull
-    private final AbstractClassifier owningClassifier;
-
     private ClassModifierImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
@@ -23,11 +23,17 @@ public final class ClassModifierImpl extends AbstractNamedElement implements Cla
             int ordinal,
             @Nonnull AbstractClassifier owningClassifier)
     {
-        super(elementContext, macroElement, nameContext, name, ordinal);
-        this.owningClassifier = Objects.requireNonNull(owningClassifier);
+        super(elementContext, macroElement, nameContext, name, ordinal, owningClassifier);
     }
 
-    public static final class ClassModifierBuilder extends NamedElementBuilder<ClassModifierImpl>
+    @Override
+    public AbstractClassifier getModifierOwner()
+    {
+        return (AbstractClassifier) super.getModifierOwner();
+    }
+
+    public static final class ClassModifierBuilder
+            extends ModifierBuilder<ClassModifierImpl>
     {
         @Nonnull
         private final ClassifierBuilder<?> owningClassifierBuilder;

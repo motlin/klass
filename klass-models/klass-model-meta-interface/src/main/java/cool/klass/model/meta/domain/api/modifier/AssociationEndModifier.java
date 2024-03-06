@@ -1,10 +1,10 @@
-package cool.klass.model.meta.domain.api.property;
+package cool.klass.model.meta.domain.api.modifier;
 
-import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
-public interface AssociationEndModifier extends NamedElement
+public interface AssociationEndModifier extends Modifier
 {
-    AssociationEnd getAssociationEnd();
+    AssociationEnd getModifierOwner();
 
     default boolean isOwned()
     {

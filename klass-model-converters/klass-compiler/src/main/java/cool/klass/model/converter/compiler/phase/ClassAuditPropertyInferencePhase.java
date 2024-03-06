@@ -10,6 +10,8 @@ import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -75,6 +77,8 @@ public class ClassAuditPropertyInferencePhase
         }
 
         AntlrDataTypeProperty<?> userIdProperty = userIdProperties.getOnly();
+
+        // TODO: Validate that the return type is the 'user' class for audit parameterized properties
 
         String createdBySourceCodeText = ""
                 + "    createdBy(): " + userClass.getName() + "[1..1] createdBy\n"

@@ -1,40 +1,54 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
+import cool.klass.model.meta.domain.property.DataTypePropertyModifierImpl.DataTypePropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrPropertyModifier extends AntlrModifier
+public class AntlrDataTypePropertyModifier extends AntlrModifier
 {
-    public static final ImmutableList<String>   AUDIT_PROPERTY_NAMES = Lists.immutable.with(
+    public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
             "createdBy",
             "createdOn",
             "lastUpdatedBy");
-    private             PropertyModifierBuilder elementBuilder;
 
-    public AntlrPropertyModifier(
+    public static final AntlrDataTypePropertyModifier AMBIGUOUS = new AntlrDataTypePropertyModifier(
+            new ParserRuleContext(),
+            Optional.empty(),
+            new ParserRuleContext(),
+            "ambiguous property modifier",
+            0,
+            AntlrPrimitiveProperty.AMBIGUOUS);
+
+    @Nonnull
+    private final AntlrDataTypeProperty<?> owningProperty;
+
+    private DataTypePropertyModifierBuilder elementBuilder;
+
+    public AntlrDataTypePropertyModifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
-            int ordinal)
+            int ordinal,
+            @Nonnull AntlrDataTypeProperty<?> owningProperty)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
+        this.owningProperty = Objects.requireNonNull(owningProperty);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getSurroundingContext() not implemented yet");
+        return Optional.of(this.owningProperty);
     }
 
     public boolean isKey()
@@ -79,24 +93,25 @@ public class AntlrPropertyModifier extends AntlrModifier
 
     @Override
     @Nonnull
-    public PropertyModifierBuilder build()
+    public DataTypePropertyModifierBuilder build()
     {
         if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new PropertyModifierBuilder(
+        this.elementBuilder = new DataTypePropertyModifierBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.nameContext,
                 this.name,
-                this.ordinal);
+                this.ordinal,
+                this.owningProperty.getElementBuilder());
         return this.elementBuilder;
     }
 
     @Nonnull
     @Override
-    public PropertyModifierBuilder getElementBuilder()
+    public DataTypePropertyModifierBuilder getElementBuilder()
     {
         return this.elementBuilder;
     }

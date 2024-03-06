@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler.state.property;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -15,14 +14,10 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
-import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociationEndSignature
         extends AntlrReferenceTypeProperty<AntlrClassifier>
@@ -50,16 +45,7 @@ public class AntlrAssociationEndSignature
     @Nonnull
     private final AntlrClassifier owningClassifierState;
 
-    @Nonnull
-    private final MutableList<AntlrAssociationEndModifier> associationEndModifierStates = Lists.mutable.empty();
-
     // private AssociationEndSignatureBuilder associationEndSignatureBuilder;
-
-    private final MutableOrderedMap<String, AntlrAssociationEndModifier> associationEndModifiersByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    private final MutableOrderedMap<AssociationEndModifierContext, AntlrAssociationEndModifier> associationEndModifiersByContext =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     @Nullable
     private AntlrClassifierType classifierTypeState;
@@ -89,17 +75,6 @@ public class AntlrAssociationEndSignature
         return this.classifierTypeState.getMultiplicity();
     }
 
-    public int getNumModifiers()
-    {
-        return this.associationEndModifierStates.size();
-    }
-
-    @Nonnull
-    public MutableList<AntlrAssociationEndModifier> getAssociationEndModifiers()
-    {
-        return this.associationEndModifierStates.asUnmodifiable();
-    }
-
     @Nonnull
     @Override
     public AssociationEndBuilder build()
@@ -109,13 +84,16 @@ public class AntlrAssociationEndSignature
 
     public boolean isOwned()
     {
-        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
+        // TODO: Consider generics instead of cast
+        return this.getModifiers()
+                .collect(AntlrAssociationEndModifier.class::cast)
+                .anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        // TODO: ☑ Check that there are no duplicate modifiers
+        super.reportErrors(compilerErrorHolder);
 
         String message = String.format(
                 "Reference type properties (single association ends in classifiers) are not yet supported but found '%s.%s'.",
@@ -136,29 +114,6 @@ public class AntlrAssociationEndSignature
     public AssociationEndBuilder getElementBuilder()
     {
         throw new AssertionError();
-    }
-
-    public void enterAssociationEndModifier(@Nonnull AntlrAssociationEndModifier associationEndModifierState)
-    {
-        this.associationEndModifierStates.add(associationEndModifierState);
-        this.associationEndModifiersByName.compute(
-                associationEndModifierState.getName(),
-                (name, builder) -> builder == null
-                        ? associationEndModifierState
-                        : AntlrAssociationEndModifier.AMBIGUOUS);
-
-        AntlrAssociationEndModifier duplicate = this.associationEndModifiersByContext.put(
-                associationEndModifierState.getElementContext(),
-                associationEndModifierState);
-        if (duplicate != null)
-        {
-            throw new AssertionError();
-        }
-    }
-
-    public AntlrAssociationEndModifier getAssociationEndModifierByName(String name)
-    {
-        return this.associationEndModifiersByName.get(name);
     }
 
     @Override

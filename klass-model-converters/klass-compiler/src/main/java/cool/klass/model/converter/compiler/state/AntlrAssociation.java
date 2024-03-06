@@ -24,7 +24,9 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociation extends AntlrPackageableElement implements AntlrTopLevelElement
+public class AntlrAssociation
+        extends AntlrPackageableElement
+        implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
@@ -180,10 +182,12 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     "Both associations are owned in association '%s'. At most one end may be owned.",
                     this.name);
             AntlrAssociationEndModifier sourceOwnedModifier = this.getSourceEnd()
-                    .getAssociationEndModifiers()
+                    .getModifiers()
+                    .collect(AntlrAssociationEndModifier.class::cast)
                     .detect(AntlrAssociationEndModifier::isOwned);
             AntlrAssociationEndModifier targetOwnedModifier = this.getTargetEnd()
-                    .getAssociationEndModifiers()
+                    .getModifiers()
+                    .collect(AntlrAssociationEndModifier.class::cast)
                     .detect(AntlrAssociationEndModifier::isOwned);
 
             compilerErrorHolder.add(
@@ -201,7 +205,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     this.getTargetEnd().getOwningClassifierState().getName(),
                     this.getTargetEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getTargetEnd()
-                    .getAssociationEndModifiers()
+                    .getModifiers()
+                    .collect(AntlrAssociationEndModifier.class::cast)
                     .detect(AntlrAssociationEndModifier::isOwned);
             compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }
@@ -212,7 +217,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     this.getSourceEnd().getOwningClassifierState().getName(),
                     this.getSourceEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getSourceEnd()
-                    .getAssociationEndModifiers()
+                    .getModifiers()
+                    .collect(AntlrAssociationEndModifier.class::cast)
                     .detect(AntlrAssociationEndModifier::isOwned);
             compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }

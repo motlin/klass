@@ -21,13 +21,11 @@ import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -57,21 +55,12 @@ public class AntlrAssociationEnd
     @Nonnull
     private final AntlrAssociation owningAssociationState;
 
-    @Nonnull
-    private final MutableList<AntlrAssociationEndModifier> associationEndModifierStates = Lists.mutable.empty();
-
     private AntlrClass          owningClassState;
     private AntlrAssociationEnd opposite;
 
     private AssociationEndBuilder associationEndBuilder;
 
     private final MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>> foreignKeys =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    private final MutableOrderedMap<String, AntlrAssociationEndModifier> associationEndModifiersByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    private final MutableOrderedMap<AssociationEndModifierContext, AntlrAssociationEndModifier> associationEndModifiersByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private AntlrClassType classTypeState;
@@ -101,17 +90,6 @@ public class AntlrAssociationEnd
         return this.classTypeState.getMultiplicity();
     }
 
-    public int getNumModifiers()
-    {
-        return this.associationEndModifierStates.size();
-    }
-
-    @Nonnull
-    public MutableList<AntlrAssociationEndModifier> getAssociationEndModifiers()
-    {
-        return this.associationEndModifierStates.asUnmodifiable();
-    }
-
     @Nonnull
     @Override
     public AssociationEndBuilder build()
@@ -134,9 +112,10 @@ public class AntlrAssociationEnd
                 this.getMultiplicity().getMultiplicity(),
                 this.isOwned());
 
-        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders =
-                this.associationEndModifierStates.collect(AntlrAssociationEndModifier::build)
-                        .toImmutable();
+        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders = this.getModifiers()
+                .collect(AntlrAssociationEndModifier.class::cast)
+                .collect(AntlrAssociationEndModifier::build)
+                .toImmutable();
 
         this.associationEndBuilder.setAssociationEndModifierBuilders(associationEndModifierBuilders);
 
@@ -148,19 +127,27 @@ public class AntlrAssociationEnd
 
     public boolean isOwned()
     {
-        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
+        return this.getModifiers()
+                .collect(AntlrAssociationEndModifier.class::cast)
+                .anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        // TODO: ☑ Check that there are no duplicate modifiers
+        super.reportErrors(compilerErrorHolder);
 
         if (this.orderByState != null)
         {
             this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
         }
 
+        this.reportInvalidMultiplicity(compilerErrorHolder);
+        this.reportVersionEndUnowned(compilerErrorHolder);
+    }
+
+    private void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
         if (this.getMultiplicity().getMultiplicity() == null)
         {
             String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
@@ -178,7 +165,10 @@ public class AntlrAssociationEnd
 
             compilerErrorHolder.add("ERR_ASO_MUL", message, this.getMultiplicity());
         }
+    }
 
+    private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
         if (this.isVersion() && !this.isOwned())
         {
             String message = String.format(
@@ -212,7 +202,9 @@ public class AntlrAssociationEnd
 
     public boolean isVersion()
     {
-        return this.associationEndModifiersByName.containsKey("version");
+        return this.getModifiers()
+                .collect(AntlrAssociationEndModifier.class::cast)
+                .anySatisfy(AntlrAssociationEndModifier::isVersion);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
@@ -231,8 +223,9 @@ public class AntlrAssociationEnd
             @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull AntlrClass antlrClass)
     {
-        AntlrAssociationEndModifier versionModifier = this.associationEndModifierStates.detect(
-                AntlrAssociationEndModifier::isVersion);
+        AntlrAssociationEndModifier versionModifier = this.getModifiers()
+                .collect(AntlrAssociationEndModifier.class::cast)
+                .detect(AntlrAssociationEndModifier::isVersion);
         String message = String.format(
                 "Multiple version properties on '%s'.",
                 antlrClass.getName());
@@ -247,29 +240,6 @@ public class AntlrAssociationEnd
                 "Multiple versioned properties on '%s'.",
                 antlrClass.getName());
         compilerErrorHolder.add("ERR_VER_END", message, this);
-    }
-
-    public void enterAssociationEndModifier(@Nonnull AntlrAssociationEndModifier associationEndModifierState)
-    {
-        this.associationEndModifierStates.add(associationEndModifierState);
-        this.associationEndModifiersByName.compute(
-                associationEndModifierState.getName(),
-                (name, builder) -> builder == null
-                        ? associationEndModifierState
-                        : AntlrAssociationEndModifier.AMBIGUOUS);
-
-        AntlrAssociationEndModifier duplicate = this.associationEndModifiersByContext.put(
-                associationEndModifierState.getElementContext(),
-                associationEndModifierState);
-        if (duplicate != null)
-        {
-            throw new AssertionError();
-        }
-    }
-
-    public AntlrAssociationEndModifier getAssociationEndModifierByName(String name)
-    {
-        return this.associationEndModifiersByName.get(name);
     }
 
     @Override

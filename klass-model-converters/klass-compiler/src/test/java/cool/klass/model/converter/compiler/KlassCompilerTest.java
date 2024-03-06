@@ -741,31 +741,6 @@ public class KlassCompilerTest
     }
 
     @Test
-    public void duplicateAssociationEndKeyword()
-    {
-        //<editor-fold desc="source code">
-        //language=Klass
-        String sourceCodeText = ""
-                + "package dummy\n"
-                + "\n"
-                + "association DummyAssociation\n"
-                + "{\n"
-                + "    parent: Dummy[0..1];\n"
-                + "    children: Dummy[0..*] owned owned;\n"
-                + "\n"
-                + "    relationship this.id == Dummy.id\n"
-                + "}\n"
-                + "\n"
-                + "class Dummy\n"
-                + "{\n"
-                + "    id: Long id key;\n"
-                + "}\n";
-        //</editor-fold>
-
-        this.assertNoCompilerErrors(sourceCodeText);
-    }
-
-    @Test
     public void emoji()
     {
         //<editor-fold desc="source code">

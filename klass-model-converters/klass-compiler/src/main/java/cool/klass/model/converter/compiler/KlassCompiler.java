@@ -92,7 +92,17 @@ public class KlassCompiler
     {
         ImmutableList<KlassListener> compilerPhases =
                 COMPILER_PHASE_BUILDERS.collectWith(Function::apply, this.compilerState);
-        compilerPhases.forEach(this::executeCompilerPhase);
+        for (KlassListener compilerPhase : compilerPhases)
+        {
+            try
+            {
+                this.executeCompilerPhase(compilerPhase);
+            }
+            catch (RuntimeException e)
+            {
+                throw new RuntimeException("Exception in compiler during phase: " + compilerPhase.getClass().getSimpleName(), e);
+            }
+        }
         this.compilerState.reportErrors();
         return this.compilerState.getCompilationResult();
     }

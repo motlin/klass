@@ -101,10 +101,10 @@ verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interfaceMember: dataTypeProperty | parameterizedPropertySignature | associationEndSignature;
 classMember: dataTypeProperty | parameterizedProperty | associationEndSignature;
 dataTypeProperty: primitiveProperty | enumerationProperty;
-primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
-    | identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
-enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
-    | identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
+primitiveProperty: identifier ':' primitiveType optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* ';'
+    | identifier ':' primitiveType optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
+enumerationProperty: identifier ':' enumerationReference optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* ';'
+    | identifier ':' enumerationReference optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
 parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
 parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierType parameterizedPropertyModifier* ';';
 optionalMarker: '?';
@@ -145,7 +145,7 @@ primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient';
-propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived';
+dataTypePropertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived';
 associationEndModifier: 'owned' | 'final' | 'version';
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
 parameterModifier: 'version' | 'userId' | 'id';
@@ -216,10 +216,16 @@ keywordValidAsIdentifier
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     | 'criteria'
-    | classModifier
-    | propertyModifier
-    | parameterModifier
-    | associationEndModifier
+    // classModifier
+    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient'
+    // dataTypePropertyModifier
+    | 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived'
+    // associationEndModifier
+    | 'owned' | 'final' | 'version'
+    // parameterizedPropertyModifier
+    | 'createdBy' | 'lastUpdatedBy'
+    // parameterModifier
+    | 'version' | 'userId' | 'id'
     | verb
     | serviceCategoryModifier
     | inOperator | stringOperator

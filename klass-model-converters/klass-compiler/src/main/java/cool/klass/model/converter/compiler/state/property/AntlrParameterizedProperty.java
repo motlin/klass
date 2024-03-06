@@ -171,7 +171,7 @@ public class AntlrParameterizedProperty
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        // TODO: ☑ Check that there are no duplicate modifiers
+        super.reportErrors(compilerErrorHolder);
 
         if (this.orderByState != null)
         {
@@ -199,6 +199,14 @@ public class AntlrParameterizedProperty
     {
         super.reportNameErrors(compilerErrorHolder);
         this.parameterHolder.reportNameErrors(compilerErrorHolder);
+    }
+
+    @Override
+    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        super.reportAuditErrors(compilerErrorHolder);
+
+        // TODO: if (!this.classTypeState.getType().isUser() && !this.isAudit())
     }
 
     @Nonnull

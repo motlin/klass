@@ -9,6 +9,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
+import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -24,7 +25,6 @@ import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
@@ -117,7 +117,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterPropertyModifier(@Nonnull PropertyModifierContext ctx)
+    public void enterDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

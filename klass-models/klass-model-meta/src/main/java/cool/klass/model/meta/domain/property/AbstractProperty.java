@@ -15,7 +15,9 @@ import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AbstractProperty<T extends Type> extends AbstractTypedElement<T> implements Property
+public abstract class AbstractProperty<T extends Type>
+        extends AbstractTypedElement<T>
+        implements Property
 {
     @Nonnull
     private final AbstractClassifier owningClassifier;

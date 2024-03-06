@@ -25,6 +25,8 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
@@ -38,11 +40,9 @@ import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference
 import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
 import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
@@ -481,7 +481,7 @@ public class KlassBootstrapWriter
 
     private void handlePropertyModifiers(@Nonnull Classifier classifier, @Nonnull DataTypeProperty dataTypeProperty)
     {
-        for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+        for (DataTypePropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
         {
             klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
             KlassBootstrapWriter.handleNamedElement(bootstrappedPropertyModifier, propertyModifier);

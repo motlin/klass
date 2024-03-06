@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -608,6 +609,15 @@ public class AntlrClass extends AntlrClassifier
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
+    }
+
+    @OverridingMethodsMustInvokeSuper
+    @Override
+    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        super.reportAuditErrors(compilerErrorHolder);
+
+        this.parameterizedPropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
     @Nonnull

@@ -10,9 +10,7 @@ import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
-import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public final class EnumerationPropertyImpl
         extends AbstractDataTypeProperty<EnumerationImpl>
@@ -68,7 +66,6 @@ public final class EnumerationPropertyImpl
                 int ordinal,
                 @Nonnull EnumerationBuilder enumerationBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
-                @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
             super(
@@ -79,7 +76,6 @@ public final class EnumerationPropertyImpl
                     ordinal,
                     enumerationBuilder,
                     owningClassifierBuilder,
-                    propertyModifierBuilders,
                     isOptional);
         }
 

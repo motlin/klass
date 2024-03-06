@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -14,9 +16,22 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.bag.MutableBag;
+import org.eclipse.collections.api.list.ListIterable;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
 {
+    @Nonnull
+    private final MutableList<AntlrModifier>                          modifierStates     = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrModifier>            modifiersByName    =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ParserRuleContext, AntlrModifier> modifiersByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
     protected AntlrProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
@@ -43,8 +58,65 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> getElementBuilder();
 
+    @Nonnull
+    protected abstract AntlrClassifier getOwningClassifierState();
+
+    public int getNumModifiers()
+    {
+        return this.modifierStates.size();
+    }
+
+    @Nonnull
+    public ListIterable<AntlrModifier> getModifiers()
+    {
+        return this.modifierStates.asUnmodifiable();
+    }
+
+    public void enterModifier(@Nonnull AntlrModifier modifierState)
+    {
+        Objects.requireNonNull(modifierState);
+        this.modifierStates.add(modifierState);
+        this.modifiersByName.compute(
+                modifierState.getName(),
+                (name, builder) -> builder == null
+                        ? modifierState
+                        : AntlrDataTypePropertyModifier.AMBIGUOUS);
+
+        AntlrModifier duplicate = this.modifiersByContext.put(
+                modifierState.getElementContext(),
+                modifierState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
     @OverridingMethodsMustInvokeSuper
-    public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        this.reportDuplicateModifiers(compilerErrorHolder);
+    }
+
+    private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        MutableBag<String> duplicateModifiers = this.getModifiers()
+                .asLazy()
+                .collect(AntlrNamedElement::getName)
+                .toBag()
+                .selectDuplicates();
+
+        for (AntlrModifier modifierState : this.getModifiers())
+        {
+            if (duplicateModifiers.contains(modifierState.getName()))
+            {
+                ParserRuleContext offendingToken = modifierState.getElementContext();
+                String message = String.format(
+                        "Duplicate modifier '%s'.",
+                        offendingToken.getText());
+                compilerErrorHolder.add("ERR_DUP_MOD", message, this, offendingToken);
+            }
+        }
+    }
 
     public void reportDuplicateUserProperty(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -66,8 +138,11 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
         compilerErrorHolder.add("ERR_DUP_PRP", message, this);
     }
 
-    @Nonnull
-    protected abstract AntlrClassifier getOwningClassifierState();
+    @OverridingMethodsMustInvokeSuper
+    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        this.modifierStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+    }
 
     @Override
     protected Pattern getNamePattern()

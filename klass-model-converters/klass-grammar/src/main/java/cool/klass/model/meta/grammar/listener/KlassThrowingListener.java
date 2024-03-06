@@ -34,6 +34,7 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -96,7 +97,6 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedProperty
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
@@ -1189,17 +1189,17 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
-    public void enterPropertyModifier(@Nonnull PropertyModifierContext ctx)
+    public void enterDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterPropertyModifier() not implemented yet");
+                + ".enterDataTypePropertyModifier() not implemented yet");
     }
 
     @Override
-    public void exitPropertyModifier(@Nonnull PropertyModifierContext ctx)
+    public void exitDataTypePropertyModifier(DataTypePropertyModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitPropertyModifier() not implemented yet");
+                + ".exitDataTypePropertyModifier() not implemented yet");
     }
 
     @Override

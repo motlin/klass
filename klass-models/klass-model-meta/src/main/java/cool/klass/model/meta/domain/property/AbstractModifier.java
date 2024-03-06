@@ -1,29 +1,45 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
+import cool.klass.model.meta.domain.api.modifier.Modifier;
+import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class PropertyModifierImpl extends AbstractNamedElement implements PropertyModifier
+public abstract class AbstractModifier
+        extends AbstractNamedElement
+        implements Modifier
 {
-    private PropertyModifierImpl(
+    @Nonnull
+    private final ModifierOwner modifierOwner;
+
+    protected AbstractModifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
-            int ordinal)
+            int ordinal,
+            @Nonnull ModifierOwner modifierOwner)
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
+        this.modifierOwner = Objects.requireNonNull(modifierOwner);
     }
 
-    public static final class PropertyModifierBuilder extends NamedElementBuilder<PropertyModifierImpl>
+    @Override
+    public ModifierOwner getModifierOwner()
     {
-        public PropertyModifierBuilder(
+        return this.modifierOwner;
+    }
+
+    public abstract static class ModifierBuilder<BuiltElement extends AbstractModifier>
+            extends NamedElementBuilder<BuiltElement>
+    {
+        protected ModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
@@ -31,18 +47,6 @@ public final class PropertyModifierImpl extends AbstractNamedElement implements 
                 int ordinal)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-        }
-
-        @Override
-        @Nonnull
-        protected PropertyModifierImpl buildUnsafe()
-        {
-            return new PropertyModifierImpl(
-                    this.elementContext,
-                    this.macroElement.map(ElementBuilder::getElement),
-                    this.nameContext,
-                    this.name,
-                    this.ordinal);
         }
     }
 }

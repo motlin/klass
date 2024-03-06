@@ -6,45 +6,45 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class AssociationEndModifierImpl
+public final class DataTypePropertyModifierImpl
         extends AbstractModifier
-        implements AssociationEndModifier
+        implements DataTypePropertyModifier
 {
-    private AssociationEndModifierImpl(
+    private DataTypePropertyModifierImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AssociationEndImpl owningProperty)
+            @Nonnull AbstractDataTypeProperty<?> owningProperty)
     {
         super(elementContext, macroElement, nameContext, name, ordinal, owningProperty);
     }
 
     @Override
-    public AssociationEnd getModifierOwner()
+    public DataTypeProperty getModifierOwner()
     {
-        return (AssociationEnd) super.getModifierOwner();
+        return (DataTypeProperty) super.getModifierOwner();
     }
 
-    public static final class AssociationEndModifierBuilder
-            extends ModifierBuilder<AssociationEndModifierImpl>
+    public static final class DataTypePropertyModifierBuilder
+            extends ModifierBuilder<DataTypePropertyModifierImpl>
     {
         @Nonnull
-        private final AssociationEndBuilder owningPropertyBuilder;
+        private final DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder;
 
-        public AssociationEndModifierBuilder(
+        public DataTypePropertyModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull AssociationEndBuilder owningPropertyBuilder)
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
             this.owningPropertyBuilder = Objects.requireNonNull(owningPropertyBuilder);
@@ -52,9 +52,9 @@ public final class AssociationEndModifierImpl
 
         @Override
         @Nonnull
-        protected AssociationEndModifierImpl buildUnsafe()
+        protected DataTypePropertyModifierImpl buildUnsafe()
         {
-            return new AssociationEndModifierImpl(
+            return new DataTypePropertyModifierImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
