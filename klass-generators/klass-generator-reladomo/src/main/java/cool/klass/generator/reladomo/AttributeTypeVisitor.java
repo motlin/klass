@@ -4,6 +4,7 @@ import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyType;
 import com.gs.fw.common.mithra.generator.metamodel.SimulatedSequenceType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
 
@@ -24,6 +25,11 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
     {
         this.attributeType.setJavaType("String");
         this.attributeType.setTrim(false);
+
+        this.primitiveProperty
+                .getMaxLengthPropertyValidation()
+                .map(NumericPropertyValidation::getNumber)
+                .ifPresent(this.attributeType::setMaxLength);
     }
 
     @Override
