@@ -16,7 +16,7 @@
     <name>Klass Compiler Plugin</name>
 
     <prerequisites>
-        <maven>3.0</maven>
+        <maven>3.1.0</maven>
     </prerequisites>
 
     <dependencies>
