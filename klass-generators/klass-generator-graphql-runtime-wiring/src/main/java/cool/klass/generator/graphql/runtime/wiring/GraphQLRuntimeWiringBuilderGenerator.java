@@ -41,7 +41,6 @@ public class GraphQLRuntimeWiringBuilderGenerator
     {
         ImmutableList<Klass> classes = this.domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .select(each -> each.getPackageName().equals(fullyQualifiedPackage));
 
         //language=JAVA
