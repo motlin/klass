@@ -9,7 +9,7 @@ import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
+import com.stackoverflow.graphql.runtime.wiring.RuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -48,7 +48,7 @@ public class StackOverflowApplication
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new StackOverflowRuntimeWiringBuilder()));
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new RuntimeWiringBuilder()));
 
         bootstrap.addBundle(new MigrationsBundle<>()
         {

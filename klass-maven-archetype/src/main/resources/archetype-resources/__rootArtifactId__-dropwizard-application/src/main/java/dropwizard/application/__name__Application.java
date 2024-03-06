@@ -9,7 +9,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.service.klass.html.KlassHtmlResource;
-import ${package}.graphql.runtime.wiring.${name}RuntimeWiringBuilder;
+import ${package}.graphql.runtime.wiring.RuntimeWiringBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
@@ -56,7 +56,7 @@ public class ${name}Application
 
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new ${name}RuntimeWiringBuilder()));
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new RuntimeWiringBuilder()));
 
         /*
         bootstrap.addBundle(new MigrationsBundle<>()

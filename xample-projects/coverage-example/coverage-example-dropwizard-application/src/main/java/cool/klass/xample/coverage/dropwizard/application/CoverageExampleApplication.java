@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.xample.coverage.graphql.runtime.wiring.CoverageExampleRuntimeWiringBuilder;
+import cool.klass.xample.coverage.graphql.runtime.wiring.RuntimeWiringBuilder;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -53,7 +53,7 @@ public class CoverageExampleApplication
 
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new CoverageExampleRuntimeWiringBuilder()));
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new RuntimeWiringBuilder()));
 
         bootstrap.addBundle(new MigrationsBundle<>()
         {

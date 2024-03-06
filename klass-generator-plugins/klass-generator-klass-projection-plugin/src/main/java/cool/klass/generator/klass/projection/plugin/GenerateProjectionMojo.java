@@ -28,7 +28,7 @@ public class GenerateProjectionMojo
     public void execute() throws MojoExecutionException
     {
         DomainModel domainModel = this.getDomainModel();
-        KlassProjectionGenerator generator = new KlassProjectionGenerator(domainModel);
+        var generator = new KlassProjectionGenerator(domainModel);
         generator.writeFiles(this.outputDirectory.toPath());
     }
 }

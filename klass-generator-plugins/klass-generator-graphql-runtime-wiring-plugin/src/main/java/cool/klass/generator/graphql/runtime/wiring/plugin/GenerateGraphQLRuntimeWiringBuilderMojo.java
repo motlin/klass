@@ -1,8 +1,6 @@
 package cool.klass.generator.graphql.runtime.wiring.plugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Path;
 
 import cool.klass.generator.graphql.runtime.wiring.GraphQLRuntimeWiringBuilderGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -26,34 +24,12 @@ public class GenerateGraphQLRuntimeWiringBuilderMojo
             defaultValue = "${project.build.directory}/generated-sources/graphql-runtime-wiring-builder")
     private File outputDirectory;
 
-    @Parameter(property = "rootPackageName", required = true)
-    private String rootPackageName;
-
-    @Parameter(property = "applicationName", required = true)
-    private String applicationName;
-
     @Override
     public void execute() throws MojoExecutionException
     {
-        if (!this.outputDirectory.exists())
-        {
-            this.outputDirectory.mkdirs();
-        }
-
         DomainModel domainModel = this.getDomainModel();
-        Path        outputPath  = this.outputDirectory.toPath();
-        try
-        {
-            GraphQLRuntimeWiringBuilderGenerator runtimeWiringGenerator = new GraphQLRuntimeWiringBuilderGenerator(
-                    domainModel,
-                    this.rootPackageName,
-                    this.applicationName);
-            runtimeWiringGenerator.writeRuntimeWiringBuilderFile(outputPath);
-        }
-        catch (RuntimeException | FileNotFoundException e)
-        {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+        var generator = new GraphQLRuntimeWiringBuilderGenerator(domainModel);
+        generator.writeFiles(this.outputDirectory.toPath());
 
         this.mavenProject.addCompileSourceRoot(this.outputDirectory.getPath());
     }
