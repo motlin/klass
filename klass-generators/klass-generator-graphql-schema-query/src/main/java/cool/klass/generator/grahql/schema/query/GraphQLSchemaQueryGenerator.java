@@ -136,7 +136,7 @@ public class GraphQLSchemaQueryGenerator
                 .resolve("schema")
                 .resolve("query");
         outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + ".graphqls";
+        String fileName = this.applicationName + "Query.graphqls";
         return outputDirectory.resolve(fileName);
     }
 
