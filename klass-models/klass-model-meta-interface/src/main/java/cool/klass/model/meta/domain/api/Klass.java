@@ -110,7 +110,9 @@ public interface Klass extends Classifier
 
     default Optional<DataTypeProperty> getVersionNumberProperty()
     {
-        ImmutableList<DataTypeProperty> versionProperties = this.getDataTypeProperties().select(DataTypeProperty::isVersion);
+        ImmutableList<DataTypeProperty> versionProperties = this
+                .getDataTypeProperties()
+                .select(DataTypeProperty::isVersion);
         if (versionProperties.size() > 1)
         {
             throw new AssertionError();
@@ -137,6 +139,16 @@ public interface Klass extends Classifier
     default boolean isTransient()
     {
         return this.getClassModifiers().anySatisfy(ClassModifier::isTransient);
+    }
+
+    default boolean isVersioned()
+    {
+        return this.getVersionProperty().isPresent();
+    }
+
+    default boolean isAudited()
+    {
+        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isAudit);
     }
 
     @Nonnull
