@@ -130,7 +130,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
             compilerErrorHolder.add(message, this);
         }
 
-        if (this.klass != this.referencedProjectionState.getKlass())
+        if (this.klass != this.referencedProjectionState.getKlass() && !this.klass.isSubTypeOf(this.referencedProjectionState.getKlass()))
         {
             String message = String.format(
                     "ERR_PRR_KLS: Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",

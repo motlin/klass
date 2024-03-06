@@ -272,7 +272,7 @@ public class KlassBootstrapWriter
             bootstrappedAssociationEndModifier.insert();
         }
 
-        associationEnd.getOrderBy().ifPresent(orderBy -> bootstrapAssociationEndOrderBy(associationEnd, orderBy));
+        associationEnd.getOrderBy().ifPresent(orderBy -> this.bootstrapAssociationEndOrderBy(associationEnd, orderBy));
     }
 
     private void bootstrapAssociationEndOrderBy(
@@ -290,7 +290,7 @@ public class KlassBootstrapWriter
             associationEndOrderBy.setAssociationEndClassName(associationEnd.getOwningClassifier().getName());
             associationEndOrderBy.setAssociationEndName(associationEnd.getName());
             associationEndOrderBy.setThisMemberReferencePathId(bootstrappedThisMemberReferencePath.getId());
-            associationEndOrderBy.setOrderByDirection(orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection().name());
+            associationEndOrderBy.setOrderByDirection(orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection().getPrettyName());
             associationEndOrderBy.insert();
         }
     }

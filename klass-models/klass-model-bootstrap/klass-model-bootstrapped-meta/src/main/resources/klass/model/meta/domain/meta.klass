@@ -1324,14 +1324,16 @@ projection AssociationEndSummaryProjection on AssociationEnd
     multiplicity           : "Association end multiplicity",
     resultType             :
     {
-        name       : "Association end result class name",
+        name: "Association end result class name",
     },
     associationEndModifiers:
     {
-        name    : "Association end modifier name",
+        name: "Association end modifier name",
     },
-    orderBys:{
-
+    orderBys               :
+    {
+        thisMemberReferencePath: MemberReferencePathSummaryProjection,
+        orderByDirection       : "Association end order by direction",
     },
 }
 

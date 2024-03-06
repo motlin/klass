@@ -113,22 +113,27 @@ public class ReladomoJsonTree implements JsonSerializable
         if (dataTypeValue == null)
         {
             // TODO: Make this configurable
+            jsonGenerator.writeNullField(propertyName);
             return;
-            // jsonGenerator.writeNullField(propertyName);
         }
 
         if (dataType instanceof Enumeration)
         {
             EnumerationLiteral enumerationLiteral = (EnumerationLiteral) dataTypeValue;
             jsonGenerator.writeStringField(propertyName, enumerationLiteral.getPrettyName());
+            return;
         }
-        else
+
+        if (dataType instanceof PrimitiveType)
         {
             PrimitiveType primitiveType = (PrimitiveType) dataType;
             PrimitiveTypeVisitor visitor =
                     new SerializeValueToJsonFieldPrimitiveTypeVisitor(jsonGenerator, propertyName, dataTypeValue);
             primitiveType.visit(visitor);
+            return;
         }
+
+        throw new AssertionError();
     }
 
     public void handleProjectionWithAssociationEnd(
