@@ -463,13 +463,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        return \"" + StringEscapeUtils.escapeJava(enumeration.toString()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(enumeration.getSourceCode()) + "\";\n"
-                + "    }\n"
-                + "\n"
                 + this.getEnumerationLiteralsSourceCode(enumeration)
                 + "}\n";
         // @formatter:on
@@ -541,13 +534,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String toString()\n"
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(enumerationLiteral.toString()) + "\";\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(enumerationLiteral.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
         // @formatter:on
@@ -659,13 +645,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String toString()\n"
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(eachInterface.toString()) + "\";\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(eachInterface.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + this.getDataTypePropertiesSourceCode(eachInterface)
@@ -804,13 +783,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String toString()\n"
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(klass.toString()) + "\";\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(klass.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + this.getDataTypePropertiesSourceCode(klass)
@@ -993,15 +965,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        {\n"
                 + "            return \"" + StringEscapeUtils.escapeJava(primitiveProperty.toString()) + "\";\n"
                 + "        }\n"
-                + "\n"
-                + "        @Override\n"
-                + "        public String getSourceCode()\n"
-                + "        {\n"
-                + "            return \"\"\n"
-                + "                    + \""
-                + this.wrapSourceCode(primitiveProperty.getSourceCode())
-                + "\";\n"
-                + "        }\n"
                 + "    }\n";
     }
 
@@ -1100,15 +1063,6 @@ public class JavaConstantsMetaModelGenerator
                 + "                public String toString()\n"
                 + "                {\n"
                 + "                    return \"" + StringEscapeUtils.escapeJava(dataTypePropertyModifier.toString()) + "\";\n"
-                + "                }\n"
-                + "\n"
-                + "                @Nonnull\n"
-                + "                @Override\n"
-                + "                public String getSourceCode()\n"
-                + "                {\n"
-                + "                    return \"\"\n"
-                + "                            + \"" + this.wrapSourceCode(dataTypePropertyModifier.getSourceCode())
-                + "\";\n"
                 + "                }\n"
                 + "            };\n";
         // @formatter:on
@@ -1223,14 +1177,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        {\n"
                 + "            return \"" + StringEscapeUtils.escapeJava(enumerationProperty.toString()) + "\";\n"
                 + "        }\n"
-                + "\n"
-                + "        @Override\n"
-                + "        public String getSourceCode()\n"
-                + "        {\n"
-                + "            return \"\"\n"
-                + "                    + \""
-                + this.wrapSourceCode(enumerationProperty.getSourceCode()) + "\";\n"
-                + "        }\n"
                 + "    }\n";
         // @formatter:on
     }
@@ -1255,13 +1201,6 @@ public class JavaConstantsMetaModelGenerator
                 uppercaseName,
                 type,
                 name);
-    }
-
-    @Nonnull
-    private String wrapSourceCode(String unwrappedSourceCode)
-    {
-        return StringEscapeUtils.escapeJava(unwrappedSourceCode)
-                .replaceAll("\\\\n", "\\\\n\" \n                + \"");
     }
 
     @Nonnull
@@ -1351,13 +1290,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String toString()\n"
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(association.toString()) + "\";\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(association.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
         // @formatter:on
@@ -1450,14 +1382,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        {\n"
                 + "            return \"" + StringEscapeUtils.escapeJava(associationEnd.toString()) + "\";\n"
                 + "        }\n"
-                + "\n"
-                + "        @Override\n"
-                + "        public String getSourceCode()\n"
-                + "        {\n"
-                + "            return \"\"\n"
-                + "                    + \""
-                + this.wrapSourceCode(associationEnd.getSourceCode()) + "\";\n"
-                + "        }\n"
                 + "    }\n";
         // @formatter:on
     }
@@ -1504,14 +1428,6 @@ public class JavaConstantsMetaModelGenerator
                 + "            public Optional<Element> getMacroElement()\n"
                 + "            {\n"
                 + "                return Optional.empty();\n"
-                + "            }\n"
-                + "\n"
-                + "            @Nonnull\n"
-                + "            @Override\n"
-                + "            public String getSourceCode()\n"
-                + "            {\n"
-                + "                return \"\"\n"
-                + "                        + \"" + this.wrapSourceCode(associationEndModifier.getSourceCode()) + "\";\n"
                 + "            }\n"
                 + "        };\n\n";
         // @formatter:on
@@ -1644,13 +1560,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        return \"" + StringEscapeUtils.escapeJava(projection.toString()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projection.getSourceCode()) + "\";\n"
-                + "    }\n"
-                + "\n"
                 + this.getProjectionChildrenSourceCode(projection, projection.getName() + "_Projection")
                 + "}\n";
         // @formatter:on
@@ -1773,13 +1682,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(projectionDataTypeProperty.toString()) + "\";\n"
                 + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionDataTypeProperty.getSourceCode()) + "\";\n"
-                + "    }\n"
                 + "}\n";
         // @formatter:on
     }
@@ -1848,13 +1750,6 @@ public class JavaConstantsMetaModelGenerator
                 + "        return \"" + StringEscapeUtils.escapeJava(projectionReferenceProperty.toString()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionReferenceProperty.getSourceCode()) + "\";\n"
-                + "    }\n"
-                + "\n"
                 + this.getProjectionChildrenSourceCode(projectionReferenceProperty, uppercaseName + "_ProjectionReferenceProperty")
                 + "}\n";
         // @formatter:on
@@ -1919,13 +1814,6 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String toString()\n"
                 + "    {\n"
                 + "        return \"" + StringEscapeUtils.escapeJava(projectionProjectionReference.toString()) + "\";\n"
-                + "    }\n"
-                + "\n"
-                + "    @Override\n"
-                + "    public String getSourceCode()\n"
-                + "    {\n"
-                + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionProjectionReference.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
         // @formatter:on

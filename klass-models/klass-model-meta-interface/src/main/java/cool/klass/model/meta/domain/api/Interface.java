@@ -29,23 +29,4 @@ public interface Interface extends Classifier
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties());
     }
-
-    @Nonnull
-    @Override
-    default String getSourceCodeWithInference()
-    {
-        String sourceCode = this.getSourceCode();
-        if (this.getMacroElement().isPresent())
-        {
-            return sourceCode;
-        }
-
-        return ""
-                + "interface" + ' ' + this.getName() + '\n'
-                + this.getImplementsSourceCode()
-                + this.getModifiersSourceCode()
-                + "{\n"
-                + this.getPropertiesSourceCode()
-                + "}\n";
-    }
 }

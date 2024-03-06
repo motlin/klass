@@ -716,10 +716,8 @@ public class ServiceResourceGenerator
     private String getOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
     {
         String operation           = this.getOperation(finderName, criteria);
-        String comment             = this.getComment(criteria);
         String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
-        return comment
-                + "        Operation " + paddedOperationName + " = " + operation + ";\n";
+        return "        Operation " + paddedOperationName + " = " + operation + ";\n";
     }
 
     @Nonnull
@@ -745,10 +743,9 @@ public class ServiceResourceGenerator
     private String getOptionalOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
     {
         String operation           = this.getOperation(finderName, criteria);
-        String comment             = this.getComment(criteria);
         String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
 
-        return comment
+        return ""
                 + "        Operation " + paddedOperationName + " = " + criteriaName + " == null\n"
                 + "                ? " + finderName + ".all()\n"
                 + "                : " + operation + ";\n";
@@ -879,15 +876,5 @@ public class ServiceResourceGenerator
             return PrimitiveToJavaParameterTypeVisitor.getJavaType((PrimitiveType) dataType);
         }
         throw new AssertionError();
-    }
-
-    @Nonnull
-    private String getComment(@Nonnull Criteria criteria)
-    {
-        return "        // " + criteria.getSourceCode()
-                .replaceAll("\\s+", " ")
-                .replaceAll(" &&", "\n        //     &&")
-                .replaceAll(" \\|\\|", "\n        //     ||")
-                + "\n";
     }
 }

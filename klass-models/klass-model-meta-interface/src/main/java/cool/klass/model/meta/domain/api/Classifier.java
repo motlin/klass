@@ -97,30 +97,6 @@ public interface Classifier
         return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isValidTemporal);
     }
 
-    @Nonnull
-    default String getImplementsSourceCode()
-    {
-        return this.getInterfaces().isEmpty()
-                ? ""
-                : "    implements " + this.getInterfaces().collect(NamedElement::getName).makeString() + "\n";
-    }
-
-    default String getPropertiesSourceCode()
-    {
-        return this.getDeclaredProperties()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-    }
-
-    default String getModifiersSourceCode()
-    {
-        return this.getModifiers()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-    }
-
     default boolean isStrictSuperTypeOf(@Nonnull Classifier classifier)
     {
         if (this == classifier)

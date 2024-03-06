@@ -153,27 +153,6 @@ public interface Klass extends Classifier
     }
 
     @Nonnull
-    @Override
-    default String getSourceCodeWithInference()
-    {
-        String sourceCode = this.getSourceCode();
-        if (this.getMacroElement().isPresent())
-        {
-            return sourceCode;
-        }
-
-        return ""
-                + (this.isUser() ? "user" : "class") + ' ' + this.getName() + '\n'
-                + this.getAbstractSourceCode()
-                + this.getExtendsSourceCode()
-                + this.getImplementsSourceCode()
-                + this.getModifiersSourceCode()
-                + "{\n"
-                + this.getPropertiesSourceCode()
-                + "}\n";
-    }
-
-    @Nonnull
     default String getAbstractSourceCode()
     {
         return this.getInheritanceType() == InheritanceType.NONE

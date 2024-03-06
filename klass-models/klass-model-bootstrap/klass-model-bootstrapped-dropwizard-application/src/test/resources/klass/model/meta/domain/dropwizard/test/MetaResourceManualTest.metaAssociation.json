@@ -1,17 +1,11 @@
 {
   "name": "DataTypePropertyHasModifiers",
-  "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 34,
-  "sourceCode": "association DataTypePropertyHasModifiers\n{\n    dataTypeProperty              : DataTypeProperty[1..1];\n    propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;\n\n    relationship this.classifierName == PropertyModifier.classifierName\n            && this.name == PropertyModifier.propertyName\n}",
-  "sourceCodeWithInference": "association DataTypePropertyHasModifiers\n{\n    dataTypeProperty              : DataTypeProperty[1..1];\n    propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;\n\n    relationship this.classifierName == PropertyModifier.classifierName\n            && this.name == PropertyModifier.propertyName\n}\n",
   "associationEnds": [
     {
       "name": "dataTypeProperty",
-      "inferred": false,
       "ordinal": 1,
-      "sourceCode": "dataTypeProperty              : DataTypeProperty[1..1];",
-      "sourceCodeWithInference": "dataTypeProperty              : DataTypeProperty[1..1];\n",
       "direction": "source",
       "multiplicity": "1..1",
       "owningClass": {
@@ -29,10 +23,7 @@
     },
     {
       "name": "propertyModifiers",
-      "inferred": false,
       "ordinal": 2,
-      "sourceCode": "propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "propertyModifiers             : PropertyModifier[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {

@@ -312,12 +312,4 @@ public enum PrimitiveType
     {
         return Optional.empty();
     }
-
-    @Nonnull
-    @Override
-    public String getSourceCode()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getSourceCode() not implemented yet");
-    }
 }

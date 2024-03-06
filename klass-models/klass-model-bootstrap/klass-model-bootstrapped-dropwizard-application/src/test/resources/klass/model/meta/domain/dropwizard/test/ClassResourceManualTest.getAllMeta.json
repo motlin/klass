@@ -1567,16 +1567,6 @@
         "maxValidation": null
       },
       {
-        "name": "inferred",
-        "primitiveType": "Boolean",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
         "name": "orderingId",
         "primitiveType": "Long",
         "optional": false,

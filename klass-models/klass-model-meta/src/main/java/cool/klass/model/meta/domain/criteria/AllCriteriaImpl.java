@@ -23,13 +23,6 @@ public final class AllCriteriaImpl
         super(elementContext, macroElement, sourceCode);
     }
 
-    @Nonnull
-    @Override
-    public String getSourceCode()
-    {
-        return "all";
-    }
-
     public static final class AllCriteriaBuilder
             extends AbstractCriteriaBuilder<AllCriteriaImpl>
     {

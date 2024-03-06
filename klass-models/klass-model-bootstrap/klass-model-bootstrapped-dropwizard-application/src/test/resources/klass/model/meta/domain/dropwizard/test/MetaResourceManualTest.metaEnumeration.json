@@ -1,90 +1,57 @@
 {
   "name": "PrimitiveType",
-  "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 15,
-  "sourceCode": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}",
-  "sourceCodeWithInference": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}\n",
   "enumerationLiterals": [
     {
       "name": "INTEGER",
       "prettyName": "Integer",
-      "inferred": false,
-      "ordinal": 1,
-      "sourceCode": "INTEGER(\"Integer\")",
-      "sourceCodeWithInference": "INTEGER(\"Integer\")\n"
+      "ordinal": 1
     },
     {
       "name": "LONG",
       "prettyName": "Long",
-      "inferred": false,
-      "ordinal": 2,
-      "sourceCode": "LONG(\"Long\")",
-      "sourceCodeWithInference": "LONG(\"Long\")\n"
+      "ordinal": 2
     },
     {
       "name": "DOUBLE",
       "prettyName": "Double",
-      "inferred": false,
-      "ordinal": 3,
-      "sourceCode": "DOUBLE(\"Double\")",
-      "sourceCodeWithInference": "DOUBLE(\"Double\")\n"
+      "ordinal": 3
     },
     {
       "name": "FLOAT",
       "prettyName": "Float",
-      "inferred": false,
-      "ordinal": 4,
-      "sourceCode": "FLOAT(\"Float\")",
-      "sourceCodeWithInference": "FLOAT(\"Float\")\n"
+      "ordinal": 4
     },
     {
       "name": "BOOLEAN",
       "prettyName": "Boolean",
-      "inferred": false,
-      "ordinal": 5,
-      "sourceCode": "BOOLEAN(\"Boolean\")",
-      "sourceCodeWithInference": "BOOLEAN(\"Boolean\")\n"
+      "ordinal": 5
     },
     {
       "name": "STRING",
       "prettyName": "String",
-      "inferred": false,
-      "ordinal": 6,
-      "sourceCode": "STRING(\"String\")",
-      "sourceCodeWithInference": "STRING(\"String\")\n"
+      "ordinal": 6
     },
     {
       "name": "INSTANT",
       "prettyName": "Instant",
-      "inferred": false,
-      "ordinal": 7,
-      "sourceCode": "INSTANT(\"Instant\")",
-      "sourceCodeWithInference": "INSTANT(\"Instant\")\n"
+      "ordinal": 7
     },
     {
       "name": "LOCAL_DATE",
       "prettyName": "LocalDate",
-      "inferred": false,
-      "ordinal": 8,
-      "sourceCode": "LOCAL_DATE(\"LocalDate\")",
-      "sourceCodeWithInference": "LOCAL_DATE(\"LocalDate\")\n"
+      "ordinal": 8
     },
     {
       "name": "TEMPORAL_INSTANT",
       "prettyName": "TemporalInstant",
-      "inferred": false,
-      "ordinal": 9,
-      "sourceCode": "TEMPORAL_INSTANT(\"TemporalInstant\")",
-      "sourceCodeWithInference": "TEMPORAL_INSTANT(\"TemporalInstant\")\n"
+      "ordinal": 9
     },
     {
       "name": "TEMPORAL_RANGE",
       "prettyName": "TemporalRange",
-      "inferred": false,
-      "ordinal": 10,
-      "sourceCode": "TEMPORAL_RANGE(\"TemporalRange\")",
-      "sourceCodeWithInference": "TEMPORAL_RANGE(\"TemporalRange\")\n"
+      "ordinal": 10
     }
   ]
 }

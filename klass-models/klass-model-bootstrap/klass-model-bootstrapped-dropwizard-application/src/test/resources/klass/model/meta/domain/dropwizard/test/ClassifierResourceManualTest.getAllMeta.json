@@ -5,42 +5,7 @@
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [],
     "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "inferred",
-        "primitiveType": "Boolean",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "sourceCode",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 100000
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "sourceCodeWithInference",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 100000
-        },
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
+    "primitiveProperties": [],
     "enumerationProperties": []
   },
   {
@@ -1732,16 +1697,6 @@
         "maxLengthValidation": {
           "number": 256
         },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "inferred",
-        "primitiveType": "Boolean",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
         "minValidation": null,
         "maxValidation": null
       },

@@ -17,7 +17,6 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.ClassifierModifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Interface;
@@ -56,7 +55,6 @@ import klass.model.meta.domain.AssociationFinder;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
 import klass.model.meta.domain.ClassifierInterfaceMappingFinder;
 import klass.model.meta.domain.ClassifierModifierFinder;
-import klass.model.meta.domain.ElementAbstract;
 import klass.model.meta.domain.EnumerationFinder;
 import klass.model.meta.domain.EnumerationLiteralFinder;
 import klass.model.meta.domain.EnumerationParameter;
@@ -331,7 +329,6 @@ public class KlassBootstrapWriter
     private void handleUrl(@Nonnull ServiceGroup serviceGroup, @Nonnull Url url)
     {
         klass.model.meta.domain.Url bootstrappedUrl = new klass.model.meta.domain.Url();
-        KlassBootstrapWriter.handleElement(bootstrappedUrl, url);
         bootstrappedUrl.setClassName(serviceGroup.getKlass().getName());
         bootstrappedUrl.setUrl(url.getUrlString());
         bootstrappedUrl.insert();
@@ -366,7 +363,6 @@ public class KlassBootstrapWriter
         bootstrappedParameter.insert();
 
         UrlParameter bootstrappedUrlParameter = new UrlParameter();
-        handleElement(bootstrappedUrlParameter, parameter);
         bootstrappedUrlParameter.setParameter(bootstrappedParameter);
         bootstrappedUrlParameter.setUrl(bootstrappedUrl);
         bootstrappedUrlParameter.setType(urlParameterType);
@@ -414,7 +410,6 @@ public class KlassBootstrapWriter
                 .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
 
         klass.model.meta.domain.Service bootstrappedService = new klass.model.meta.domain.Service();
-        KlassBootstrapWriter.handleElement(bootstrappedService, service);
         bootstrappedService.setClassName(serviceGroup.getKlass().getName());
         bootstrappedService.setUrlString(url.getUrlString());
         bootstrappedService.setVerb(service.getVerb().name());
@@ -522,9 +517,6 @@ public class KlassBootstrapWriter
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
         // TODO: Consider changing inferred: boolean to macroElement: Element
-        boostrappedValidation.setInferred(validation.getMacroElement().isPresent());
-        boostrappedValidation.setSourceCode(validation.getSourceCode());
-        boostrappedValidation.setSourceCodeWithInference(validation.getSourceCodeWithInference());
         boostrappedValidation.setClassifierName(classifier.getName());
         boostrappedValidation.setPropertyName(dataTypeProperty.getName());
         boostrappedValidation.setNumber(validation.getNumber());
@@ -617,18 +609,10 @@ public class KlassBootstrapWriter
         return bootstrappedThisMemberReferencePath;
     }
 
-    public static void handleElement(@Nonnull ElementAbstract bootstrappedElement, @Nonnull Element element)
-    {
-        bootstrappedElement.setInferred(element.getMacroElement().isPresent());
-        bootstrappedElement.setSourceCode(element.getSourceCode());
-        bootstrappedElement.setSourceCodeWithInference(element.getSourceCodeWithInference());
-    }
-
     public static void handleNamedElement(
             @Nonnull NamedElementAbstract bootstrappedNamedElement,
             @Nonnull NamedElement namedElement)
     {
-        KlassBootstrapWriter.handleElement(bootstrappedNamedElement, namedElement);
         bootstrappedNamedElement.setName(namedElement.getName());
         bootstrappedNamedElement.setOrdinal(namedElement.getOrdinal());
     }

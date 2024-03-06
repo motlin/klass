@@ -8,7 +8,6 @@ import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.Element;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Rule;
@@ -45,12 +44,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         if (compilationResult instanceof DomainModelCompilationResult)
         {
             DomainModelCompilationResult domainModelResult = (DomainModelCompilationResult) compilationResult;
-            String sourceCodeWithInference = domainModelResult
-                    .getDomainModel()
-                    .getTopLevelElements()
-                    .collect(Element::getSourceCodeWithInference)
-                    .makeString("\n");
-            fail("Expected a compile error but found:\n" + sourceCodeWithInference);
+            fail("Expected a compile error but found:\n" + sourceCodeText);
         }
         else if (compilationResult instanceof ErrorsCompilationResult)
         {

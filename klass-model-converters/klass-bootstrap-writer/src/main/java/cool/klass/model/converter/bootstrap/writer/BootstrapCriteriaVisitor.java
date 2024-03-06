@@ -74,7 +74,6 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
                 BootstrapExpressionValueVisitor.convert(this.bootstrappedParametersByParameter, targetValue);
 
         var bootstrappedCriteria = new klass.model.meta.domain.OperatorCriteria();
-        KlassBootstrapWriter.handleElement(bootstrappedCriteria, operatorCriteria);
 
         bootstrappedCriteria.setOperator(operatorCriteria.getOperator().getOperatorText());
         long sourceValueId = bootstrappedSourceValue.getId();
@@ -100,7 +99,6 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         bootstrappedMemberReferencePath.setPropertyName(property.getName());
 
         var bootstrappedCriteria = new klass.model.meta.domain.EdgePointCriteria();
-        KlassBootstrapWriter.handleElement(bootstrappedCriteria, edgePointCriteria);
         bootstrappedCriteria.setMemberReferencePathId(bootstrappedMemberReferencePath.getId());
         bootstrappedCriteria.insert();
         this.bootstrappedCriteria = bootstrappedCriteria;
@@ -127,7 +125,6 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
             @Nonnull klass.model.meta.domain.Criteria bootstrappedCriteria,
             @Nonnull Criteria criteria)
     {
-        KlassBootstrapWriter.handleElement(bootstrappedCriteria, criteria);
         bootstrappedCriteria.insert();
         this.bootstrappedCriteria = bootstrappedCriteria;
     }

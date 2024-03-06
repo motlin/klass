@@ -11,7 +11,6 @@ import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.Interval;
 
 public abstract class AbstractElement
         implements ElementWithSourceCode
@@ -49,16 +48,6 @@ public abstract class AbstractElement
     public SourceCode getSourceCodeObject()
     {
         return Objects.requireNonNull(this.sourceCode);
-    }
-
-    @Nonnull
-    @Override
-    public String getSourceCode()
-    {
-        Interval interval = new Interval(
-                this.elementContext.getStart().getStartIndex(),
-                this.elementContext.getStop().getStopIndex());
-        return this.elementContext.getStart().getInputStream().getText(interval);
     }
 
     @Nonnull

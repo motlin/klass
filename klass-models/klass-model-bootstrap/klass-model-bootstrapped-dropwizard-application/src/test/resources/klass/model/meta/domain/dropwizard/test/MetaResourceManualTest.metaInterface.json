@@ -1,10 +1,7 @@
 {
   "name": "PackageableElement",
-  "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 3,
-  "sourceCode": "interface PackageableElement implements NamedElement\n{\n    packageName: String maximumLength(100000);\n\n    // fullyQualifiedName: String = packageName + \".\" + name;\n}",
-  "sourceCodeWithInference": "interface PackageableElement\n    implements NamedElement\n{\n    packageName: String maximumLength(100000);\n}\n",
   "superInterfaces": [
     {
       "superInterface": {
@@ -17,7 +14,6 @@
   "primitiveProperties": [
     {
       "name": "packageName",
-      "inferred": false,
       "primitiveType": "String",
       "optional": false,
       "ordinal": 1,

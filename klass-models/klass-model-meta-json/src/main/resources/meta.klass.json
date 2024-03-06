@@ -223,35 +223,7 @@
     {
       "name": "Element",
       "packageName": "klass.model.meta.domain",
-      "primitiveProperties": [
-        {
-          "name": "inferred",
-          "primitiveType": "Boolean",
-          "optional": false,
-          "key": false,
-          "id": false
-        },
-        {
-          "name": "sourceCode",
-          "primitiveType": "String",
-          "optional": false,
-          "key": false,
-          "id": false,
-          "maxLengthValidation": {
-            "number": 100000
-          }
-        },
-        {
-          "name": "sourceCodeWithInference",
-          "primitiveType": "String",
-          "optional": false,
-          "key": false,
-          "id": false,
-          "maxLengthValidation": {
-            "number": 100000
-          }
-        }
-      ]
+      "primitiveProperties": []
     },
     {
       "name": "NamedElement",
@@ -4639,23 +4611,11 @@
         },
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "inferred"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
           "name": "packageName"
         },
         {
           "_type": "ProjectionDataTypeProperty",
           "name": "ordinal"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCode"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCodeWithInference"
         },
         {
           "_type": "ProjectionReferenceProperty",
@@ -4671,20 +4631,8 @@
             },
             {
               "_type": "ProjectionDataTypeProperty",
-              "name": "inferred"
-            },
-            {
-              "_type": "ProjectionDataTypeProperty",
               "name": "ordinal"
             },
-            {
-              "_type": "ProjectionDataTypeProperty",
-              "name": "sourceCode"
-            },
-            {
-              "_type": "ProjectionDataTypeProperty",
-              "name": "sourceCodeWithInference"
-            }
           ]
         }
       ]
@@ -4729,23 +4677,11 @@
         },
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "inferred"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
           "name": "packageName"
         },
         {
           "_type": "ProjectionDataTypeProperty",
           "name": "ordinal"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCode"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCodeWithInference"
         },
         {
           "_type": "ProjectionReferenceProperty",
@@ -5458,23 +5394,11 @@
         },
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "inferred"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
           "name": "packageName"
         },
         {
           "_type": "ProjectionDataTypeProperty",
           "name": "ordinal"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCode"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCodeWithInference"
         },
         {
           "_type": "ProjectionReferenceProperty",
@@ -5746,19 +5670,7 @@
         },
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "inferred"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
           "name": "ordinal"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCode"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCodeWithInference"
         },
         {
           "_type": "ProjectionDataTypeProperty",
@@ -5889,23 +5801,11 @@
         },
         {
           "_type": "ProjectionDataTypeProperty",
-          "name": "inferred"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
           "name": "packageName"
         },
         {
           "_type": "ProjectionDataTypeProperty",
           "name": "ordinal"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCode"
-        },
-        {
-          "_type": "ProjectionDataTypeProperty",
-          "name": "sourceCodeWithInference"
         },
         {
           "_type": "ProjectionProjectionReference",

@@ -2,9 +2,6 @@ package klass.model.meta.domain
 
 interface Element
 {
-    inferred: Boolean;
-    sourceCode: String maximumLength(100000);
-    sourceCodeWithInference: String maximumLength(100000);
 }
 
 interface NamedElement
@@ -663,7 +660,6 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key maximumLength(256);
     name                          : String key maximumLength(256);
-    inferred                      : Boolean;
     orderingId                    : Long private;
 }
 
@@ -963,19 +959,13 @@ association ServiceOrderByHasMemberReferencePath
 projection EnumerationProjection on Enumeration
 {
     name                   : "Enumeration name",
-    inferred               : "Enumeration inferred",
     packageName            : "Enumeration package name",
     ordinal                : "Enumeration ordinal",
-    sourceCode             : "Enumeration sourceCode",
-    sourceCodeWithInference: "Enumeration sourceCodeWithInference",
     enumerationLiterals    :
     {
         name                   : "Enumeration literal name",
         prettyName             : "Enumeration literal pretty name",
-        inferred               : "Enumeration literal inferred",
         ordinal                : "Enumeration literal ordinal",
-        sourceCode             : "Enumeration literal sourceCode",
-        sourceCodeWithInference: "Enumeration literal sourceCodeWithInference",
     },
 }
 
@@ -1019,11 +1009,8 @@ service Enumeration
 projection InterfaceProjection on Interface
 {
     name                   : "Interface name",
-    inferred               : "Interface inferred",
     packageName            : "Interface package name",
     ordinal                : "Interface ordinal",
-    sourceCode             : "Interface source code",
-    sourceCodeWithInference: "Interface source code with inference",
 
     // TODO: flat many-to-many, or parameterized property
     superInterfaces        :
@@ -1037,20 +1024,17 @@ projection InterfaceProjection on Interface
     classifierModifiers    :
     {
         name    : "Interface modifier name",
-        inferred: "Interface modifier inferred",
         ordinal : "Interface modifier ordinal",
     },
     primitiveProperties    :
     {
         name               : "Primitive property name",
-        inferred           : "Primitive property inferred",
         primitiveType      : "Primitive property type",
         optional           : "Primitive property is optional",
         ordinal            : "Primitive property ordinal",
         propertyModifiers  :
         {
             name    : "Primitive property modifier name",
-            inferred: "Primitive property modifier inferred",
             ordinal : "Primitive property modifier ordinal",
         },
         minLengthValidation:
@@ -1073,18 +1057,15 @@ projection InterfaceProjection on Interface
     enumerationProperties  :
     {
         name               : "Enumeration property name",
-        inferred           : "Enumeration property inferred",
         optional           : "Enumeration property is optional",
         ordinal            : "Enumeration property ordinal",
         enumeration        :
         {
             name    : "Enumeration name",
-            inferred: "Enumeration inferred",
         },
         propertyModifiers  :
         {
             name    : "Enumeration property modifier name",
-            inferred: "Enumeration property inferred",
             ordinal : "Enumeration property modifier ordinal",
         },
         minLengthValidation:
@@ -1146,19 +1127,16 @@ service Interface
 projection DataTypePropertyProjection on DataTypeProperty
 {
     name                           : "Property name",
-    inferred                       : "Property inferred",
     PrimitiveProperty.primitiveType: "Property primitive type",
     optional                       : "Property is optional",
     ordinal                        : "Property ordinal",
     EnumerationProperty.enumeration:
     {
         name    : "Property Enumeration name",
-        inferred: "Property Enumeration inferred",
     },
     propertyModifiers              :
     {
         name    : "Property modifier name",
-        inferred: "Property modifier inferred",
         ordinal : "Property modifier ordinal",
     },
     minLengthValidation            :
@@ -1182,14 +1160,12 @@ projection DataTypePropertyProjection on DataTypeProperty
 projection PrimitivePropertyProjection on PrimitiveProperty
 {
     name               : "Primitive property name",
-    inferred           : "Primitive property inferred",
     primitiveType      : "Primitive property type",
     optional           : "Primitive property is optional",
     ordinal            : "Primitive property ordinal",
     propertyModifiers  :
     {
         name    : "Primitive property modifier name",
-        inferred: "Primitive property modifier inferred",
         ordinal : "Primitive property modifier ordinal",
     },
     minLengthValidation:
@@ -1240,18 +1216,15 @@ projection PrimitivePropertySummaryProjection on PrimitiveProperty
 projection EnumerationPropertyProjection on EnumerationProperty
 {
     name               : "Enumeration property name",
-    inferred           : "Enumeration property inferred",
     optional           : "Enumeration property is optional",
     ordinal            : "Enumeration property ordinal",
     enumeration        :
     {
         name    : "Enumeration name",
-        inferred: "Enumeration inferred",
     },
     propertyModifiers  :
     {
         name    : "Enumeration property modifier name",
-        inferred: "Enumeration property inferred",
         ordinal : "Enumeration property modifier ordinal",
     },
     minLengthValidation:
@@ -1289,11 +1262,8 @@ projection EnumerationPropertySummaryProjection on EnumerationProperty
 projection ClassProjection on Klass
 {
     name                   : "Class name",
-    inferred               : "Class inferred",
     packageName            : "Class package name",
     ordinal                : "Class ordinal",
-    sourceCode             : "Class source code",
-    sourceCodeWithInference: "Class source code with inference",
     superClass             :
     {
         name           : "Super Class name",
@@ -1334,7 +1304,6 @@ projection ClassProjection on Klass
     classifierModifiers    :
     {
         name    : "Classifier modifier name",
-        inferred: "Classifier modifier inferred",
         ordinal : "Classifier modifier ordinal",
     },
     primitiveProperties    : PrimitivePropertyProjection,
@@ -1440,10 +1409,7 @@ service Classifier
 projection AssociationEndProjection on AssociationEnd
 {
     name                   : "Association end name",
-    inferred               : "Association end inferred",
     ordinal                : "Association end ordinal",
-    sourceCode             : "Association end source code",
-    sourceCodeWithInference: "Association end sourceCodeWithInference",
     direction              : "Association end direction",
     multiplicity           : "Association end multiplicity",
     owningClass            :
@@ -1463,7 +1429,6 @@ projection AssociationEndProjection on AssociationEnd
     associationEndModifiers:
     {
         name    : "Association end modifier name",
-        inferred: "Association end modifier inferred",
         ordinal : "Association end modifier ordinal",
     },
 }
@@ -1490,11 +1455,8 @@ projection AssociationEndSummaryProjection on AssociationEnd
 projection AssociationProjection on Association
 {
     name                   : "Association name",
-    inferred               : "Association inferred",
     packageName            : "Association package name",
     ordinal                : "Association ordinal",
-    sourceCode             : "Association source code",
-    sourceCodeWithInference: "Association sourceCodeWithInference",
     associationEnds        : AssociationEndProjection,
     criteria               : CriteriaProjection,
 }

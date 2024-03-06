@@ -1,10 +1,7 @@
 {
   "name": "Classifier",
-  "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 8,
-  "sourceCode": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n}",
-  "sourceCodeWithInference": "class Classifier\n    abstract(table-per-class)\n    implements PackageableElement\n{\n    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n    primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;\n    enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n    classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n}\n",
   "superClass": null,
   "superInterfaces": [
     {
@@ -20,10 +17,7 @@
   "associationEnds": [
     {
       "name": "superInterfaces",
-      "inferred": false,
       "ordinal": 2,
-      "sourceCode": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;",
-      "sourceCodeWithInference": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -40,17 +34,13 @@
       "associationEndModifiers": [
         {
           "name": "owned",
-          "inferred": false,
           "ordinal": 1
         }
       ]
     },
     {
       "name": "primitiveProperties",
-      "inferred": false,
       "ordinal": 2,
-      "sourceCode": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -68,10 +58,7 @@
     },
     {
       "name": "enumerationProperties",
-      "inferred": false,
       "ordinal": 2,
-      "sourceCode": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -89,10 +76,7 @@
     },
     {
       "name": "classifierModifiers",
-      "inferred": false,
       "ordinal": 2,
-      "sourceCode": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
