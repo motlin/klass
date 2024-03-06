@@ -67,7 +67,7 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
                                 com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
@@ -85,7 +85,7 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
                                 com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
@@ -165,21 +165,15 @@
     <dependencies>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-connection-manager-h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>
@@ -216,15 +210,82 @@
         </dependency>
 
         <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-cors</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-object-mapper</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-auth-filter</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-named-data-source</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-reladomo</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-application</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-application</artifactId>
         </dependency>
 
         <dependency>
