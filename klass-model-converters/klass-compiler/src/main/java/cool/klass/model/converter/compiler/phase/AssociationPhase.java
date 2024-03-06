@@ -113,6 +113,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         super.enterAssociationEndModifier(ctx);
 
+        Objects.requireNonNull(this.associationEndState);
         AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
