@@ -3,37 +3,38 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomo/src/main/xsd/mithraruntime.xsd">
     <ConnectionManager className="io.liftwizard.reladomo.connectionmanager.h2.memory.H2InMemoryConnectionManager">
-        <MithraObjectConfiguration className="io.liftwizard.reladomo.simseq.ObjectSequence" cacheType="none" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.User" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequired" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptional" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyProperty" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeForeignKeyProperty" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManyTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToOneSource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToOneTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySelf" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManySource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManyTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToOneSource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToOneTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManySelf" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalManyToOneSource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalManyToOneTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManySource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManyTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToOneSource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToOneTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManySelf" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManySource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManyTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToOneSource" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToOneTarget" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManySelf" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequiredVersion" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptionalVersion" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyPropertyVersion" cacheType="partial" />
+        <MithraObjectConfiguration className="io.liftwizard.reladomo.simseq.ObjectSequence" cacheType="none" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeForeignKeyProperty" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyProperty" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyPropertyVersion" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.FinalProperties" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySelf" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManyTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToOneSource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToOneTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManySelf" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManySource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToManyTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToOneSource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedSyntheticOneToOneTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptional" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptionalVersion" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequired" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequiredVersion" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalManyToOneSource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalManyToOneTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManySelf" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManySource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToManyTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToOneSource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedNaturalOneToOneTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManySelf" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManySource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManyTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToOneSource" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToOneTarget" cacheType="partial" offHeapReplicationExport="false" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.User" cacheType="partial" offHeapReplicationExport="false" />
     </ConnectionManager>
     <PureObjects notificationIdentifier="cool.klass.xample.coverage" />
 </MithraRuntime>
