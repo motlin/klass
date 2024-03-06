@@ -12,7 +12,7 @@
 
     <artifactId>klass-reladomo-simulated-sequence</artifactId>
 
-    <name>Reladomo Simulated Sequence</name>
+    <name>Klass Reladomo Simulated Sequence</name>
 
     <dependencyManagement>
         <dependencies>
