@@ -25,6 +25,7 @@
         <module>klass-generator-graphql-schema</module>
         <module>klass-generator-graphql-runtime-wiring</module>
         <module>klass-generator-graphql-data-fetcher</module>
+        <module>klass-generator-react-prop-type</module>
     </modules>
 
     <dependencyManagement>
