@@ -1,14 +1,29 @@
 package cool.klass.dropwizard.bundle.reladomo;
 
+import java.util.Objects;
+
 import com.google.auto.service.AutoService;
+import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.bundle.api.KlassBundle;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.configuration.ReladomoConfig;
-import io.dropwizard.Bundle;
+import cool.klass.serializer.json.ReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-@AutoService(Bundle.class)
-public class ReladomoBundle implements Bundle
+@AutoService(KlassBundle.class)
+public class ReladomoBundle implements KlassBundle
 {
+    private DomainModel domainModel;
+    private DataStore   dataStore;
+
+    @Override
+    public void initialize(DomainModel domainModel, DataStore dataStore)
+    {
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore = Objects.requireNonNull(dataStore);
+    }
+
     @Override
     public void initialize(Bootstrap<?> bootstrap)
     {
@@ -17,6 +32,8 @@ public class ReladomoBundle implements Bundle
     @Override
     public void run(Environment environment)
     {
-        ReladomoConfig.configure();
+        ReladomoConfig.configure(
+                environment.getObjectMapper(),
+                new ReladomoJsonSerializer(this.domainModel, this.dataStore));
     }
 }

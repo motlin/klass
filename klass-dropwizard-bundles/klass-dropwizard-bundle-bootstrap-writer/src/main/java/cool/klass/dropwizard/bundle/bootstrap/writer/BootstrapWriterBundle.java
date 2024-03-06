@@ -2,26 +2,29 @@ package cool.klass.dropwizard.bundle.bootstrap.writer;
 
 import java.util.Objects;
 
+import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.bundle.api.KlassBundle;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
-import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BootstrapWriterBundle implements Bundle
+@AutoService(KlassBundle.class)
+public class BootstrapWriterBundle implements KlassBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapWriterBundle.class);
 
-    private final DomainModel domainModel;
-    private final DataStore   dataStore;
+    private DomainModel domainModel;
+    private DataStore   dataStore;
 
-    public BootstrapWriterBundle(DomainModel domainModel, DataStore dataStore)
+    @Override
+    public void initialize(DomainModel domainModel, DataStore dataStore)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
         this.dataStore = Objects.requireNonNull(dataStore);

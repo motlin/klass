@@ -19,6 +19,7 @@
         <module>klass-dropwizard-bundle-ddl-executor</module>
         <module>klass-dropwizard-bundle-sample-data</module>
         <module>klass-dropwizard-bundle-bootstrap-writer</module>
+        <module>klass-dropwizard-bundle-api</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>
