@@ -291,7 +291,17 @@ public class AntlrAssociation
             return;
         }
 
-        this.relationship.reportErrors(compilerAnnotationHolder);
+        if (this.relationship == null)
+        {
+            String message = String.format(
+                    "Association '%s' has no relationship",
+                    this.getName());
+            compilerAnnotationHolder.add("ERR_ASO_REL", message, this);
+        }
+        else
+        {
+            this.relationship.reportErrors(compilerAnnotationHolder);
+        }
     }
 
     public AntlrRelationship getRelationship()
