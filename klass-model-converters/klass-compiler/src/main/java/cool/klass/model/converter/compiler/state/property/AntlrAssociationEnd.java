@@ -172,7 +172,10 @@ public class AntlrAssociationEnd
                     this.getType().getName());
             compilerErrorHolder.add("ERR_VER_END", message, this, this.nameContext);
         }
-        if (!this.getOwningClassifierState().isUser() && !this.isVersion() && this.getType().isVersion())
+        if (!this.getOwningClassifierState().isUser()
+                && !this.isVersion() && this.getType().isVersion()
+                && !this.getOpposite().isCreatedBy()
+                && !this.getOpposite().isLastUpdatedBy())
         {
             String message = String.format(
                     "Association end '%s.%s' has version type %s, but is missing the version modifier.",
