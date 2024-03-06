@@ -1,7 +1,5 @@
 package cool.klass.model.converter.compiler.error;
 
-import java.util.regex.Pattern;
-
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -90,15 +88,12 @@ import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.collections.api.list.MutableList;
 
 public class ErrorUnderlineListener extends BaseErrorListener
 {
-    private static final Pattern TAB_PATTERN = Pattern.compile("\t");
-
     public ErrorUnderlineListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
     {
         super(compilationUnit, contextualStrings);
@@ -760,16 +755,5 @@ public class ErrorUnderlineListener extends BaseErrorListener
             stringBuilder.append('^');
         }
         return stringBuilder.toString();
-    }
-
-    @Nonnull
-    @Override
-    protected Interval getIntervalMinusOne(@Nonnull Token startToken, @Nonnull Token onePastStopToken)
-    {
-        int   startIndex    = startToken.getStartIndex();
-        int   endTokenIndex = onePastStopToken.getTokenIndex();
-        Token endToken      = this.compilationUnit.getTokenStream().get(endTokenIndex - 1);
-        int   stopIndex     = endToken.getStopIndex();
-        return new Interval(startIndex, stopIndex);
     }
 }

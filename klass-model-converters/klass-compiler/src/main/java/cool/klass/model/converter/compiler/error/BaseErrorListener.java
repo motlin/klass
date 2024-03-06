@@ -30,14 +30,4 @@ public class BaseErrorListener extends KlassBaseListener
         Interval interval = new Interval(startToken.getStartIndex(), stopToken.getStopIndex());
         return this.compilationUnit.getCharStream().getText(interval);
     }
-
-    @Nonnull
-    protected Interval getIntervalMinusOne(@Nonnull Token startToken, @Nonnull Token onePastStopToken)
-    {
-        int startIndex = startToken.getStartIndex();
-        int endTokenIndex = onePastStopToken.getTokenIndex();
-        Token endToken = this.compilationUnit.getTokenStream().get(endTokenIndex - 1);
-        int stopIndex = endToken.getStopIndex();
-        return new Interval(startIndex, stopIndex);
-    }
 }
