@@ -48,6 +48,14 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/resources</directory>
                 </fileSet>
+
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-domain-model.iml</include>
+                    </includes>
+                </fileSet>
+
             </fileSets>
         </module>
 
@@ -68,6 +76,12 @@
                 <fileSet encoding="UTF-8">
                     <directory>src/test/resources</directory>
                 </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-reladomo-definitions.iml</include>
+                    </includes>
+                </fileSet>
             </fileSets>
         </module>
 
@@ -78,6 +92,12 @@
             <fileSets>
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-reladomo-pojos.iml</include>
+                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -99,6 +119,12 @@
                 <fileSet encoding="UTF-8">
                     <directory>src/test/resources</directory>
                 </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-reladomo-ddls.iml</include>
+                    </includes>
+                </fileSet>
             </fileSets>
         </module>
 
@@ -118,6 +144,12 @@
                 </fileSet>
                 <fileSet encoding="UTF-8">
                     <directory>src/test/resources</directory>
+                </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-services.iml</include>
+                    </includes>
                 </fileSet>
             </fileSets>
         </module>
@@ -139,6 +171,12 @@
                 <fileSet encoding="UTF-8">
                     <directory>src/test/resources</directory>
                 </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-reladomo-test-data.iml</include>
+                    </includes>
+                </fileSet>
             </fileSets>
         </module>
 
@@ -158,6 +196,7 @@
                         <include>.gitignore</include>
                         <include>config.yml</include>
                         <include>README.md</include>
+                        <include>__rootArtifactId__-dtos.iml</include>
                     </includes>
                 </fileSet>
 
@@ -192,6 +231,12 @@
                 </fileSet>
                 <fileSet encoding="UTF-8">
                     <directory>src/test/resources</directory>
+                </fileSet>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-meta-model-constants.iml</include>
+                    </includes>
                 </fileSet>
             </fileSets>
         </module>

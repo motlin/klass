@@ -4,7 +4,6 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.dropwizard.bundle.test.data.TestDataGeneratorBundle;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import io.dropwizard.Bundle;
