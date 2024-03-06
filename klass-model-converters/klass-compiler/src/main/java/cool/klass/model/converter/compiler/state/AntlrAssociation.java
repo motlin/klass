@@ -291,18 +291,7 @@ public class AntlrAssociation
             return;
         }
 
-        if (this.relationship == null)
-        {
-            // TODO: Editor error matching this one
-            String message = String.format(
-                    "Relationship inference not yet supported. '%s' must declare a relationship.",
-                    this.getName());
-            compilerAnnotationHolder.add("ERR_REL_INF", message, this);
-        }
-        else
-        {
-            this.relationship.reportErrors(compilerAnnotationHolder);
-        }
+        this.relationship.reportErrors(compilerAnnotationHolder);
     }
 
     public AntlrRelationship getRelationship()
