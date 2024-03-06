@@ -235,19 +235,6 @@
         </module>
         <!--endregion-->
 
-        <!--region ${rootArtifactId}-meta-model-constants-->
-        <module
-                id="${rootArtifactId}-meta-model-constants"
-                dir="__rootArtifactId__-meta-model-constants"
-                name="${rootArtifactId}-meta-model-constants">
-            <fileSets>
-                <fileSet filtered="true">
-                    <directory></directory>
-                </fileSet>
-            </fileSets>
-        </module>
-        <!--endregion-->
-
         <!--region ${rootArtifactId}-reladomo-ddls-->
         <module
                 id="${rootArtifactId}-reladomo-ddls"
