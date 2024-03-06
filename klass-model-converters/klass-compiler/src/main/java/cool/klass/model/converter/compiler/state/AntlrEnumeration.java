@@ -30,7 +30,14 @@ public class AntlrEnumeration
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            AntlrCompilationUnit.AMBIGUOUS);
+            AntlrCompilationUnit.AMBIGUOUS)
+    {
+        @Override
+        public String toString()
+        {
+            return AntlrEnumeration.class.getSimpleName() + ".AMBIGUOUS";
+        }
+    };
 
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
@@ -38,7 +45,14 @@ public class AntlrEnumeration
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            AntlrCompilationUnit.NOT_FOUND);
+            AntlrCompilationUnit.NOT_FOUND)
+    {
+        @Override
+        public String toString()
+        {
+            return AntlrEnumeration.class.getSimpleName() + ".NOT_FOUND";
+        }
+    };
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =

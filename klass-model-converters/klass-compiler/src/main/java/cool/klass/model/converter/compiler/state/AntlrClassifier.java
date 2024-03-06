@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSig
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
-import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
@@ -255,7 +254,7 @@ public abstract class AntlrClassifier
                 antlrDataTypeProperty.getName(),
                 (name, builder) -> builder == null
                         ? antlrDataTypeProperty
-                        : AntlrPrimitiveProperty.AMBIGUOUS);
+                        : AntlrDataTypeProperty.AMBIGUOUS);
     }
 
     public AntlrAssociationEndSignature getAssociationEndSignatureByContext(@Nonnull AssociationEndSignatureContext ctx)

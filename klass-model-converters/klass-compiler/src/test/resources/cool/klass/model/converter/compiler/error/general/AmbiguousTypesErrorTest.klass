@@ -1,0 +1,210 @@
+package dummy
+
+// The word "irrelevant" should not appear in error messages.
+// Irrelevant properties and types are in positions where the error would be nested inside another
+// AmbiguousClass.irrelevantProperty will already generate an error on AmbiguousClass, so we don't need a second in irrelevantProperty
+
+enumeration GoodEnum {}
+enumeration AmbiguousEnumeration {}
+enumeration AmbiguousEnumeration {}
+interface AmbiguousInterface {}
+interface AmbiguousInterface {}
+class AmbiguousClass {
+    key: String key;
+}
+class AmbiguousClass {
+    key: String key;
+}
+projection AmbiguousProjection on GoodClass {}
+projection AmbiguousProjection on GoodClass {}
+
+class GoodClass
+{
+    key: String key;
+    ambiguousDataProperty: GoodEnum;
+    ambiguousDataProperty: GoodEnum;
+    goodProperty: AmbiguousEnumeration;
+    parentKey: String private;
+
+    goodParameterizedProperty1(): AmbiguousClass[1..1]
+    {
+        this.irrelevant == IrrelevantClass.irrelevantDataTypeProperty
+    }
+    goodParameterizedProperty2(): GoodClass[1..1]
+    {
+        this.goodProperty == GoodClass.ambiguousDataProperty
+    }
+    goodParameterizedProperty3(): GoodClass[1..1]
+    {
+        this.goodProperty == GoodClass.goodProperty
+    }
+}
+
+interface InterfaceWithAmbiguousImplements implements AmbiguousInterface
+{
+    goodProperty: AmbiguousEnumeration;
+}
+
+class ClassWithAmbiguousExtends extends AmbiguousClass implements AmbiguousInterface
+{
+    goodProperty: AmbiguousEnumeration key;
+    ambiguousDataProperty: GoodEnum;
+    ambiguousDataProperty: GoodEnum;
+
+    goodParameterizedProperty1(): AmbiguousClass[1..1]
+    {
+        this.irrelevant == IrrelevantClass.irrelevantDataTypeProperty
+    }
+    goodParameterizedProperty2(): GoodClass[1..1]
+    {
+        this.goodProperty == GoodClass.ambiguousDataProperty
+    }
+    goodParameterizedProperty3(): GoodClass[1..1]
+    {
+        this.goodProperty == GoodClass.goodProperty
+    }
+}
+
+association AssociationWithAmbiguousClass
+{
+    parent1: GoodClass[0..1];
+    children1: AmbiguousClass[0..*];
+
+    relationship this.irrelevantProperty == IrrelevantClass.irrelevantProperty
+}
+
+association AssociationWithAmbiguousRelationshipProperty1
+{
+    parent2: GoodClass[0..1];
+    children2: GoodClass[0..*];
+
+    relationship this.key == GoodClass.ambiguousDataProperty
+}
+
+association AssociationWithAmbiguousRelationshipProperty2
+{
+    parent3: GoodClass[0..1];
+    children3: GoodClass[0..*];
+
+    relationship this.goodProperty == GoodClass.goodProperty
+}
+
+association GoodAssociation
+{
+    parent: GoodClass[0..1];
+    children: GoodClass[0..*];
+
+    relationship this.key == GoodClass.parentKey
+}
+
+association IrrelevantGoodAssociation1
+{
+    parent4: GoodClass[0..1];
+    ambiguousAssociationEnd: GoodClass[0..*];
+
+    relationship this.key == GoodClass.parentKey
+}
+
+association IrrelevantGoodAssociation2
+{
+    parent5: GoodClass[0..1];
+    ambiguousAssociationEnd: GoodClass[0..*];
+
+    relationship this.key == GoodClass.parentKey
+}
+
+association IrrelevantGoodAssociation3
+{
+    parent6: GoodClass[0..1];
+    goodAssociationEnd: AmbiguousClass[0..*];
+
+    relationship this.key == GoodClass.parentKey
+}
+
+projection EmptyProjection on AmbiguousClass
+{
+}
+
+projection ProjectionWithAmbiguousClass on AmbiguousClass
+{
+    irrelevantDataTypeProperty: "Header",
+    irrelevantAssociationEnd: {
+        irrelevantEmbeddedDataTypeProperty: "Header",
+    },
+    irrelevantDataTypePropert2: IrrelevantProjection,
+}
+
+projection ProjectionWithGoodClass on GoodClass
+{
+    goodProperty: "Header",
+    ambiguousDataProperty: "Header",
+    goodParameterizedProperty1: "Header",
+    goodParameterizedProperty2: "Header",
+    goodParameterizedProperty3: "Header",
+    ambiguousAssociationEnd: {
+        irrelevantProperty: "Header",
+    },
+    goodAssociationEnd: {
+        irrelevantProperty: "Header",
+    },
+    children:
+    {
+        key: "Header",
+        ambiguousDataProperty: "Header",
+    },
+    children1:
+    {
+        irrelevantProperty: "Header",
+    },
+    children2:
+    {
+        key: "Header",
+        ambiguousDataProperty: "Header",
+    },
+    children3:
+    {
+        key: "Header",
+        ambiguousDataProperty: "Header",
+    },
+}
+
+projection ProjectionWithGoodClass2 on GoodClass
+{
+    children: AmbiguousProjection,
+}
+
+service GoodClass
+{
+    /url1/{parameterAmbiguousType: AmbiguousEnumeration[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.ambiguousDataProperty == parameterAmbiguousType;
+            projection  : AmbiguousProjection;
+        }
+    /url2/{ambiguousParameter: String[1..1]}/{ambiguousParameter: String[1..1]}
+    GET
+    {
+        multiplicity: one;
+        criteria    : this.key == ambiguousParameter;
+        projection  : AmbiguousProjection;
+    }
+    /url3
+        GET
+        {
+            multiplicity: one;
+            criteria    : all;
+            projection  : AmbiguousProjection;
+        }
+}
+
+service AmbiguousClass
+{
+    /fake
+        GET
+        {
+            multiplicity: one;
+            criteria    : all;
+            projection  : EmptyProjection;
+        }
+}

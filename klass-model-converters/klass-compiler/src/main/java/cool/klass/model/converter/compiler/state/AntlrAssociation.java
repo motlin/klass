@@ -136,16 +136,17 @@ public class AntlrAssociation
         this.getSourceEnd().setOwningClassState(targetType);
         this.getTargetEnd().setOwningClassState(sourceType);
 
-        if (sourceType == AntlrClass.NOT_FOUND
-                || targetType == AntlrClass.NOT_FOUND
-                || sourceType == AntlrClass.AMBIGUOUS
-                || targetType == AntlrClass.AMBIGUOUS)
+        if (sourceType != AntlrClass.NOT_FOUND
+                && sourceType != AntlrClass.AMBIGUOUS)
         {
-            return;
+            sourceType.enterAssociationEnd(this.getTargetEnd());
         }
 
-        targetType.enterAssociationEnd(this.getSourceEnd());
-        sourceType.enterAssociationEnd(this.getTargetEnd());
+        if (targetType != AntlrClass.NOT_FOUND
+                && targetType != AntlrClass.AMBIGUOUS)
+        {
+            targetType.enterAssociationEnd(this.getSourceEnd());
+        }
     }
 
     public AssociationBuilder build()
@@ -278,6 +279,12 @@ public class AntlrAssociation
             this.getSourceEnd().reportTypeNotFound(compilerErrorHolder);
             this.getTargetEnd().reportTypeNotFound(compilerErrorHolder);
 
+            return;
+        }
+
+        if (this.getSourceEnd().getType() == AntlrClass.AMBIGUOUS
+                || this.getTargetEnd().getType() == AntlrClass.AMBIGUOUS)
+        {
             return;
         }
 

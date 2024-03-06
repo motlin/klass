@@ -1,17 +1,19 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_PRJ[m [33m════════════════════════════════════════[m
 [31mError: Duplicate member: 'duplicateMember'.[m
 
-At (DuplicateNamesErrorTest.klass:46)
+At (DuplicateNamesErrorTest.klass:47)
 
 [39m 1║ [35mpackage [39mdummy
 [39m42║ [35mprojection [39mDuplicateTopLevelElement [35mon [39mDuplicateTopLevelElement
 [39m43║ [36m{
-[39m46║     [39mduplicateMember[36m: [39mDuplicateTopLevelElement[36m,
+[39m47║     [39mduplicateMember[36m:
 [39m  ║ [31m    ^^^^^^^^^^^^^^^
+[39m48║     [36m{
+[39m50║     [36m}[36m,
 [39m51║ [36m}
 [m
-[36mLocation:  [mDuplicateNamesErrorTest.klass:46[m
+[36mLocation:  [mDuplicateNamesErrorTest.klass:47[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m
-[36mLine:      [m46[m
+[36mLine:      [m47[m
 [36mCharacter: [m5
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

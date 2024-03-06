@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -125,10 +126,11 @@ public class AntlrProjectionDataTypeProperty
             compilerErrorHolder.add("ERR_PRJ_HDR", "Empty header string.", this, this.headerContext);
         }
 
-        if (this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
+        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND
+                || this.antlrProjectionParent.getClassifier() == AntlrClass.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
                 || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
         {
-            // Covered by ERR_DUP_TOP
             return;
         }
 

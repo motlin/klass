@@ -1,19 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_PRP_NFD[m [33m════════════════════════════════════════[m
-[31mError: Not found: 'unresolvedClasses'.[m
+[33m════════════════════════════════════════[m [35mERR_PPR_NFD[m [33m════════════════════════════════════════[m
+[31mError: Not found: 'ChildProjection'.[m
 
-At (UnresolvedTypesErrorTest.klass:106)
+At (UnresolvedTypesErrorTest.klass:119)
 
 [39m  1║ [35mpackage [39mdummy
-[39m 87║ [35mprojection [39mParentProjection [35mon [39mParent
-[39m 88║ [36m{
-[39m106║     [39munresolvedClasses[36m:
-[39m   ║ [31m    ^^^^^^^^^^^^^^^^^
-[39m107║     [36m{
-[39m114║     [36m}[36m,
-[39m115║ [36m}
+[39m117║ [35mprojection [39mParentProjection2 [35mon [39mParent
+[39m118║ [36m{
+[39m119║     [39mchildren[36m: [39mChildProjection[36m,
+[39m   ║ [31m              ^^^^^^^^^^^^^^^
+[39m120║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:106[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:119[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m106[m
-[36mCharacter: [m5
+[36mLine:      [m119[m
+[36mCharacter: [m15
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

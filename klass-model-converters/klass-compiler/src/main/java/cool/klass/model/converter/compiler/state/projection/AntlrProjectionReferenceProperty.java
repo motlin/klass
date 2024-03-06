@@ -133,34 +133,33 @@ public class AntlrProjectionReferenceProperty
     {
         super.reportErrors(compilerErrorHolder);
 
-        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND)
+        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND
+                || this.antlrProjectionParent.getClassifier() == AntlrClass.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
         {
             return;
         }
 
         if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND
-                || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
+                || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND
+                || this.referenceProperty == AntlrAssociationEndSignature.NOT_FOUND)
         {
             String message = String.format("Not found: '%s'.", this);
             compilerErrorHolder.add("ERR_PRP_NFD", message, this);
+            return;
         }
-        else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
-                || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
-        {
-            String message = String.format("Ambiguous: '%s'.", this);
-            compilerErrorHolder.add("ERR_PRP_AMB", message, this);
-        }
-        else if (this.referenceProperty == AntlrAssociationEndSignature.NOT_FOUND
+
+        if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
+                || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS
                 || this.referenceProperty == AntlrAssociationEndSignature.AMBIGUOUS)
         {
-            throw new AssertionError(this.referenceProperty);
+            return;
         }
-        else
+
+        for (AntlrProjectionChild child : this.children)
         {
-            for (AntlrProjectionChild child : this.children)
-            {
-                child.reportErrors(compilerErrorHolder);
-            }
+            child.reportErrors(compilerErrorHolder);
         }
     }
 

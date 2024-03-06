@@ -199,4 +199,10 @@ public class AntlrServiceGroup
     {
         return this.serviceGroupBuilder;
     }
+
+    @Override
+    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        // Deliberately empty
+    }
 }

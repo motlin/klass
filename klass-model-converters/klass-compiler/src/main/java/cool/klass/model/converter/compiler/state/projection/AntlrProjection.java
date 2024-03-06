@@ -35,7 +35,14 @@ public class AntlrProjection
             new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
-            null);
+            null)
+    {
+        @Override
+        public String toString()
+        {
+            return AntlrProjection.class + ".AMBIGUOUS";
+        }
+    };
 
     @Nonnull
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
@@ -45,11 +52,18 @@ public class AntlrProjection
             new IdentifierContext(null, -1),
             AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
-            null);
+            null)
+    {
+        @Override
+        public String toString()
+        {
+            return AntlrProjection.class + ".NOT_FOUND";
+        }
+    };
 
     @Nonnull
     private final AntlrCompilationUnit compilationUnitState;
-    private final String packageName;
+    private final String               packageName;
 
     private ProjectionBuilder projectionBuilder;
 
@@ -128,20 +142,19 @@ public class AntlrProjection
         {
             String message = "Projection type not found " + this.getElementContext().classifierReference().getText();
             compilerErrorHolder.add("ERR_PRJ_NFD", message, this, this.getElementContext().classifierReference());
+            return;
         }
-        else if (this.classifier == AntlrClassifier.AMBIGUOUS
+
+        if (this.classifier == AntlrClassifier.AMBIGUOUS
                 || this.classifier == AntlrClass.AMBIGUOUS
                 || this.classifier == AntlrInterface.AMBIGUOUS)
         {
-            String message = "Projection type ambiguous " + this.getElementContext().classifierReference().getText();
-            compilerErrorHolder.add("ERR_PRJ_AMB", message, this, this.getElementContext().classifierReference());
+            return;
         }
-        else
+
+        for (AntlrProjectionChild child : this.children)
         {
-            for (AntlrProjectionChild child : this.children)
-            {
-                child.reportErrors(compilerErrorHolder);
-            }
+            child.reportErrors(compilerErrorHolder);
         }
     }
 

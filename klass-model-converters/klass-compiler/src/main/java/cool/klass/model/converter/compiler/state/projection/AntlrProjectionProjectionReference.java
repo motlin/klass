@@ -52,6 +52,13 @@ public class AntlrProjectionProjectionReference
         this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
     }
 
+    @Nonnull
+    @Override
+    public ProjectionProjectionReferenceContext getElementContext()
+    {
+        return (ProjectionProjectionReferenceContext) super.getElementContext();
+    }
+
     @Override
     public boolean isContext()
     {
@@ -109,24 +116,37 @@ public class AntlrProjectionProjectionReference
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND)
+        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND
+                || this.antlrProjectionParent.getClassifier() == AntlrClass.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
         {
             return;
         }
 
-        if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND)
+        if (this.referencedProjectionState == AntlrProjection.AMBIGUOUS)
+        {
+            return;
+        }
+
+        if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND
+                || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
             String message = String.format("Not found: '%s'.", this);
             compilerErrorHolder.add("ERR_PPR_NFD", message, this);
         }
-        else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS)
+        else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
+                || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
         {
             String message = String.format("Ambiguous: '%s'.", this);
             compilerErrorHolder.add("ERR_PPR_AMB", message, this);
         }
-        else if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
+        else if (this.referencedProjectionState == AntlrProjection.NOT_FOUND)
         {
-            throw new AssertionError(this.referenceProperty);
+            String message = String.format(
+                    "Not found: '%s'.",
+                    this.getElementContext().projectionReference().getText());
+            compilerErrorHolder.add("ERR_PPR_NFD", message, this, this.getElementContext().projectionReference());
         }
         else
         {

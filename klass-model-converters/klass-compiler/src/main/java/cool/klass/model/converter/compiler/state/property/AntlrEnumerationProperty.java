@@ -23,6 +23,23 @@ public class AntlrEnumerationProperty
         extends AntlrDataTypeProperty<EnumerationImpl>
 {
     @Nonnull
+    public static final AntlrEnumerationProperty AMBIGUOUS = new AntlrEnumerationProperty(
+            new EnumerationPropertyContext(null, -1),
+            Optional.empty(),
+            -1,
+            new IdentifierContext(null, -1),
+            AntlrClassifier.AMBIGUOUS,
+            false,
+            AntlrEnumeration.AMBIGUOUS)
+    {
+        @Override
+        public String toString()
+        {
+            return "AntlrEnumerationProperty.AMBIGUOUS";
+        }
+    };
+
+    @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(null, -1),
             Optional.empty(),
@@ -30,7 +47,14 @@ public class AntlrEnumerationProperty
             new IdentifierContext(null, -1),
             AntlrClassifier.NOT_FOUND,
             false,
-            AntlrEnumeration.NOT_FOUND);
+            AntlrEnumeration.NOT_FOUND)
+    {
+        @Override
+        public String toString()
+        {
+            return "AntlrEnumerationProperty.NOT_FOUND";
+        }
+    };
 
     // TODO: Check that it's not NOT_FOUND
     @Nonnull

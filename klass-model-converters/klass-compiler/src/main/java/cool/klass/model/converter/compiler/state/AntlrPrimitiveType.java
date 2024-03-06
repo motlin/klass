@@ -82,6 +82,7 @@ public final class AntlrPrimitiveType
     @Override
     public String toString()
     {
+        Objects.requireNonNull(this.primitiveType);
         return this.primitiveType.toString();
     }
 

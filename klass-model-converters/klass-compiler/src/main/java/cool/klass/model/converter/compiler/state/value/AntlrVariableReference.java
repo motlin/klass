@@ -63,15 +63,15 @@ public class AntlrVariableReference extends AntlrExpressionValue
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
+        if (this.antlrParameter == AntlrParameter.AMBIGUOUS)
+        {
+            return;
+        }
+
         if (this.antlrParameter == AntlrParameter.NOT_FOUND)
         {
             String message = String.format("Cannot find parameter '%s'.", this.elementContext.getText());
             compilerErrorHolder.add("ERR_VAR_REF", message, this);
-            return;
-        }
-        if (this.antlrParameter == AntlrParameter.AMBIGUOUS)
-        {
-            throw new AssertionError();
         }
     }
 
@@ -81,7 +81,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
     {
         Objects.requireNonNull(this.antlrParameter);
         AntlrType type = this.antlrParameter.getType();
-        if (type == AntlrEnumeration.NOT_FOUND)
+        if (type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS)
         {
             return Lists.immutable.empty();
         }

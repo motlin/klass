@@ -54,6 +54,12 @@ public class AntlrClass
             false)
     {
         @Override
+        public String toString()
+        {
+            return AntlrClass.class.getSimpleName() + ".AMBIGUOUS";
+        }
+
+        @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -84,6 +90,12 @@ public class AntlrClass
             AntlrCompilationUnit.NOT_FOUND,
             false)
     {
+        @Override
+        public String toString()
+        {
+            return AntlrClass.class.getSimpleName() + ".NOT_FOUND";
+        }
+
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
         {
@@ -543,7 +555,8 @@ public class AntlrClass
     private void reportExtendsConcrete(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.superClassState.isEmpty()
-                || this.superClassState.equals(Optional.of(NOT_FOUND)))
+                || this.superClassState.equals(Optional.of(NOT_FOUND))
+                || this.superClassState.equals(Optional.of(AMBIGUOUS)))
         {
             return;
         }

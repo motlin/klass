@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -74,7 +75,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         @Override
         public AntlrType getType()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+            return AntlrEnumeration.AMBIGUOUS;
         }
 
         @Nonnull
@@ -133,7 +134,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         @Override
         public AntlrType getType()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+            return AntlrEnumeration.NOT_FOUND;
         }
 
         @Nonnull
