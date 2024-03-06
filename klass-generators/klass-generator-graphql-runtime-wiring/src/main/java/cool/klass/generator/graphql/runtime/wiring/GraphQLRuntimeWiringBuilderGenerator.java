@@ -50,7 +50,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "\n"
                 + "import java.util.function.Consumer;\n"
                 + "\n"
-                + "import " + this.rootPackageName + ".graphql.runtime.wiring.query." + this.applicationName + "QueryTypeRuntimeWiringProvider;\n"
+                + "import " + this.rootPackageName + ".graphql.runtime.wiring.query.QueryTypeRuntimeWiringProvider;\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getImport).makeString("")
                 + "import graphql.Scalars;\n"
                 + "import graphql.schema.idl.RuntimeWiring.Builder;\n"
@@ -71,7 +71,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalRange\"))\n"
                 + "                .scalar(Scalars.GraphQLLong)\n"
                 + "                .scalar(new GraphQLLocalDateScalar())\n"
-                + "                .type(new " + this.applicationName + "QueryTypeRuntimeWiringProvider().get())\n"
+                + "                .type(new QueryTypeRuntimeWiringProvider().get())\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("\n") + ";\n"
                 + "    }\n"
                 + "}\n";
