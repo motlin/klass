@@ -18,16 +18,11 @@
     <modules>
         <module>klass-dropwizard-configuration-data-stores</module>
         <module>klass-dropwizard-configuration-domain-model-loaders</module>
-        <module>klass-dropwizard-configuration-http-logging</module>
         <module>klass-dropwizard-configuration-h2</module>
         <module>klass-dropwizard-configuration-ddl-executor</module>
         <module>klass-dropwizard-configuration-cors</module>
-        <module>klass-dropwizard-configuration-logging-filters</module>
         <module>klass-dropwizard-configuration-sample-data</module>
-        <module>klass-dropwizard-configuration-logging-logzio</module>
-        <module>klass-dropwizard-configuration-logging-encoder</module>
         <module>klass-dropwizard-configuration-enabled</module>
-        <module>klass-dropwizard-configuration-config-logging</module>
     </modules>
 
 </project>

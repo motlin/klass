@@ -30,5 +30,24 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-dropwizard-bundle-config-logging</module>
+        <module>klass-dropwizard-bundle-http-logging</module>
+        <module>klass-dropwizard-configuration-config-logging</module>
+        <module>klass-dropwizard-configuration-http-logging</module>
+        <module>klass-dropwizard-configuration-logging-encoder</module>
+        <module>klass-dropwizard-configuration-logging-filters</module>
+        <module>klass-dropwizard-configuration-logging-logzio</module>
+        <module>klass-logging-logback-filter-requesturl</module>
+        <module>klass-logging-slf4j-mdc-closeable</module>
+        <module>klass-servlet-logging-mdc-clear-keys</module>
+        <module>klass-servlet-logging-mdc-clear-all</module>
+        <module>klass-servlet-logging-mdc-correlation-id</module>
+        <module>klass-servlet-logging-mdc-jsonview</module>
+        <module>klass-servlet-logging-mdc-resource-info</module>
+        <module>klass-servlet-logging-structured-duration</module>
+        <module>klass-servlet-logging-structured-argument</module>
+        <module>klass-servlet-logging-structured-status-info</module>
+        <module>klass-servlet-logging-structured-klass-response</module>
+        <module>klass-servlet-logging-structured-reladomo</module>
     </modules>
 </project>

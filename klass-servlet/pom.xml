@@ -18,8 +18,6 @@
 
     <modules>
         <module>klass-jetty-admin-login-service</module>
-        <module>klass-servlet-logging-structured</module>
-        <module>klass-servlet-logging-mdc</module>
     </modules>
 
     <dependencyManagement>

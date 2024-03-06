@@ -18,11 +18,9 @@
     <modules>
         <module>klass-dropwizard-bundle-auth-filter</module>
         <module>klass-dropwizard-bundle-bootstrap-writer</module>
-        <module>klass-dropwizard-bundle-config-logging</module>
         <module>klass-dropwizard-bundle-cors</module>
         <module>klass-dropwizard-bundle-ddl-executor</module>
         <module>klass-dropwizard-bundle-h2</module>
-        <module>klass-dropwizard-bundle-http-logging</module>
         <module>klass-dropwizard-bundle-prioritized-api</module>
         <module>klass-dropwizard-bundle-sample-data</module>
     </modules>
