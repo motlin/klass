@@ -40,16 +40,21 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.finder.Operation;
+import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
+import com.gs.fw.common.mithra.util.MithraTimestamp;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
+import cool.klass.serialization.jackson.response.KlassResponseBuilder;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
@@ -355,6 +360,7 @@ public class QuestionResourceManual
     @POST
     @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
+    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method5(
             @Nonnull ObjectNode incomingInstance,
             @Nonnull @Context UriInfo uriInfo,
@@ -402,9 +408,21 @@ public class QuestionResourceManual
             return question;
         });
 
-        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-        builder.path(Long.toString(persistentInstance.getId()));
-        return Response.created(builder.build()).build();
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        uriBuilder.path(Long.toString(persistentInstance.getId()));
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                persistentInstance,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(QuestionFinder.id().eq(persistentInstance.getId()).toString());
+
+        return Response.created(uriBuilder.build()).entity(responseBuilder.build()).build();
     }
 
     @Timed

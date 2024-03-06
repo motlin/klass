@@ -231,11 +231,7 @@ public class QuestionResourceManualTest
                     .header("Authorization", "Impersonation User ID")
                     .post(Entity.json(validJson));
 
-            this.assertEmptyResponse(Status.CREATED, response);
-
-            String body = response.readEntity(String.class);
-            assertThat(body, is(""));
-
+            this.assertResponse("post_valid_data", Status.CREATED, response);
             assertThat(response.getLocation().getPath(), is("/api/manual/question/2"));
         }
         //</editor-fold>
