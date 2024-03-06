@@ -28,6 +28,7 @@ import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -72,6 +73,12 @@ public class ErrorUnderlineListener
 
     @Override
     public void enterServiceCriteriaKeyword(@Nonnull ServiceCriteriaKeywordContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterServiceProjectionDispatch(@Nonnull ServiceProjectionDispatchContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

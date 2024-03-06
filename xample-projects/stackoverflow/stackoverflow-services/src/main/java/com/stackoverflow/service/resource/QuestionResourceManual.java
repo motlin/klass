@@ -51,7 +51,6 @@ import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
-import com.stackoverflow.json.view.QuestionWriteProjection_JsonView;
 import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -188,7 +187,7 @@ public class QuestionResourceManual
     @DELETE
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionWriteProjection_JsonView.class)
+    @JsonView(QuestionReadProjection_JsonView.class)
     public Question method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
@@ -309,7 +308,7 @@ public class QuestionResourceManual
     @DELETE
     @Path("/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionWriteProjection_JsonView.class)
+    @JsonView(QuestionReadProjection_JsonView.class)
     public Question deleteQuestionById(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
@@ -407,7 +406,7 @@ public class QuestionResourceManual
     @GET
     @Path("/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionWriteProjection_JsonView.class)
+    @JsonView(QuestionReadProjection_JsonView.class)
     public QuestionList method7(@PathParam("userId") String userId)
     {
         // Question

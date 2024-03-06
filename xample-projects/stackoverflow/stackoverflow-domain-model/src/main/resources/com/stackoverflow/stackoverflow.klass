@@ -48,8 +48,6 @@ interface Document
 class Question
     implements Document
     read(QuestionReadProjection)
-    create(QuestionWriteProjection)
-    update(QuestionWriteProjection)
     systemTemporal
     versioned
     audited
@@ -134,7 +132,7 @@ class QuestionVersion
     key id            : ID
 
     // The version number
-    // It gets incremented automatically when anything in the version project (QuestionWriteProjection) gets edited
+    // It gets incremented automatically when anything in the version projection gets edited
     // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64
     // TODO: Consider a primitive property type VersionNumber
     number            : Integer
@@ -324,15 +322,6 @@ projection QuestionReadProjection on Question
     },
 }
 
-// TODO: Totally redo write projections. It doesn't make sense for them to contain dataTypeProperties
-projection QuestionWriteProjection on Question
-{
-    tags:
-    {
-
-    },
-}
-
 // TODO: Type inference on projection paramters
 /*
 projection FilteredAnswersProjection(substring: String[1..1]) on Question
@@ -396,7 +385,6 @@ service Question
 
             // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed
             // TODO: Allow anonymous/undeclared projections created from all owned association ends
-            projection  : QuestionWriteProjection;
         }
         DELETE
         {
@@ -408,7 +396,6 @@ service Question
             // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400
             // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`
             authorize   : this.createdById == user;
-            projection  : QuestionWriteProjection;
         }
     /question/in?{ids: Long[0..*]}
         GET
@@ -433,7 +420,6 @@ service Question
         POST
         {
             multiplicity: one;
-            projection  : QuestionWriteProjection;
         }
     /*
     GET
@@ -452,7 +438,7 @@ service Question
             //?page=1&pageSize=25
             multiplicity: many;
             criteria    : this.createdById == userId;
-            projection  : QuestionWriteProjection;
+            projection  : QuestionReadProjection;
 
             // Deliberately shallow
             orderBy     : this.createdOn;

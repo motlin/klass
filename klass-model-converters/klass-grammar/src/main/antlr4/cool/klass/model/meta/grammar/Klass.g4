@@ -83,7 +83,7 @@ queryParameterList: '?' urlParameterDeclaration ('&' urlParameterDeclaration)*;
 urlParameterDeclaration: '{' parameterDeclaration '}';
 // service
 serviceDeclaration: verb serviceDeclarationBody;
-serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch serviceOrderByDeclaration? '}' ;
+serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch? serviceOrderByDeclaration? '}' ;
 serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity ';'
     | 'multiplicity' ':' serviceMultiplicity {notifyErrorListeners("Missing semi-colon after service multiplicity declaration.");};
 serviceMultiplicity: one='one' | many='many';

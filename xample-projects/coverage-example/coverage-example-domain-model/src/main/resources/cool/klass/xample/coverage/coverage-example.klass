@@ -81,13 +81,11 @@ service PropertiesRequired
         POST
         {
             multiplicity: one;
-            projection  : PropertiesRequiredProjection;
         }
         PUT
         {
             multiplicity: one;
             criteria    : this.propertiesRequiredId == propertiesRequiredId;
-            projection  : PropertiesRequiredProjection;
         }
 }
 
@@ -134,13 +132,11 @@ service PropertiesOptional
         POST
         {
             multiplicity: one;
-            projection  : PropertiesOptionalProjection;
         }
         PUT
         {
             multiplicity: one;
             criteria    : this.propertiesOptionalId == propertiesOptionalId;
-            projection  : PropertiesOptionalProjection;
         }
 }
 
@@ -254,7 +250,6 @@ service AllKeyProperties
         POST
         {
             multiplicity: one;
-            projection  : AllKeyPropertiesProjection;
         }
         PUT
         {
@@ -268,7 +263,6 @@ service AllKeyProperties
                     && this.keyBoolean == keyBoolean
                     && this.keyInstant == keyInstant
                     && this.keyLocalDate == keyLocalDate;
-            projection  : AllKeyPropertiesProjection;
         }
 }
 

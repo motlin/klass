@@ -9,13 +9,11 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
-import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
@@ -26,6 +24,7 @@ import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.Servic
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -66,7 +65,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     @Nullable
     private AntlrServiceMultiplicity serviceMultiplicityState;
 
-    private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState;
+    @Nonnull
+    private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState = Optional.empty();
     @Nonnull
     private Optional<AntlrOrderBy>                   orderByState = Optional.empty();
     private ServiceBuilder                           elementBuilder;
@@ -180,27 +180,42 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     private void reportInvalidProjection(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (!this.serviceProjectionDispatchState.isPresent())
-        {
-            return;
-        }
-
-        AntlrServiceProjectionDispatch projectionDispatch = this.serviceProjectionDispatchState.get();
-        AntlrProjection                projection         = projectionDispatch.getProjection();
-        projectionDispatch.reportErrors(compilerErrorHolder);
-
-        if (projection == AntlrProjection.NOT_FOUND || projection.getClassifier() == AntlrClass.NOT_FOUND)
-        {
-            return;
-        }
-
         Verb verb = this.verbState.getVerb();
 
-        if (verb == Verb.POST || verb == Verb.PUT)
+        if (verb == Verb.GET)
         {
-            // TODO: ☑ Check that [1..*] association ends are non-empty
-            // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
+            this.serviceProjectionDispatchState.ifPresentOrElse(
+                    projectionDispatch -> projectionDispatch.reportErrors(compilerErrorHolder),
+                    () -> this.reportMissingProjection(compilerErrorHolder));
         }
+        else
+        {
+            this.serviceProjectionDispatchState.ifPresent(projectionDispatch -> this.reportPresentProjection(projectionDispatch, compilerErrorHolder));
+        }
+    }
+
+    private void reportMissingProjection(CompilerErrorState compilerErrorHolder)
+    {
+        ParserRuleContext verbContext = this.verbState.getElementContext();
+
+        compilerErrorHolder.add(
+                "ERR_GET_PRJ",
+                "GET services require a projection.",
+                this,
+                verbContext);
+    }
+
+    private void reportPresentProjection(
+            AntlrServiceProjectionDispatch projectionDispatch,
+            CompilerErrorState compilerErrorHolder)
+    {
+        ServiceProjectionDispatchContext elementContext = projectionDispatch.getElementContext();
+
+        compilerErrorHolder.add(
+                "ERR_GET_PRJ",
+                String.format("%s services must not have a projection.", this.verbState.getVerb().name()),
+                this,
+                elementContext);
     }
 
     @Nonnull
