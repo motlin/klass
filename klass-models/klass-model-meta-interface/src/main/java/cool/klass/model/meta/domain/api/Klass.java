@@ -136,27 +136,26 @@ public interface Klass
     @Nonnull
     default Optional<Property> getPropertyByName(String name)
     {
-        ImmutableList<DataTypeProperty> dataTypeProperties = this.getDataTypeProperties()
-                .select(each -> each.getName().equals(name));
-        ImmutableList<AssociationEnd> associationEnds = this.getAssociationEnds()
-                .select(each -> each.getName().equals(name));
+        DataTypeProperty dataTypeProperty   = this.getDataTypePropertyByName(name);
+        AssociationEnd   associationEnd     = this.getAssociationEndByName(name);
 
-        if (dataTypeProperties.isEmpty() && associationEnds.isEmpty())
+        if (dataTypeProperty != null && associationEnd != null)
         {
-            return Optional.empty();
+            String detailMessage = "Property " + name + " is both a data type property and an association end.";
+            throw new AssertionError(detailMessage);
         }
 
-        if (dataTypeProperties.size() + associationEnds.size() > 1)
+        if (dataTypeProperty != null)
         {
-            throw new AssertionError(name);
+            return Optional.of(dataTypeProperty);
         }
 
-        if (dataTypeProperties.notEmpty())
+        if (associationEnd != null)
         {
-            return Optional.of(dataTypeProperties.getOnly());
+            return Optional.of(associationEnd);
         }
 
-        return Optional.of(associationEnds.getOnly());
+        return Optional.empty();
     }
 
     @Nonnull
