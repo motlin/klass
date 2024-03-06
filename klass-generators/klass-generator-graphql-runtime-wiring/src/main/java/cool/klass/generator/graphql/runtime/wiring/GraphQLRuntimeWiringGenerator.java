@@ -13,20 +13,18 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLRuntimeWiringGenerator
 {
     @Nonnull
     private final DomainModel domainModel;
-    @Nonnull
-    private final String      rootPackageName;
 
-    public GraphQLRuntimeWiringGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName)
+    public GraphQLRuntimeWiringGenerator(@Nonnull DomainModel domainModel)
     {
-        this.domainModel     = Objects.requireNonNull(domainModel);
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
+        this.domainModel = Objects.requireNonNull(domainModel);
     }
 
     public void writeTypeRuntimeWiringFiles(@Nonnull Path outputPath)
@@ -82,12 +80,20 @@ public class GraphQLRuntimeWiringGenerator
                 .collectWith(this::getDataFetcherSourceCode, klass)
                 .makeString("");
 
+        ImmutableList<Klass> associatedTypes = klass
+                .getProperties()
+                .selectInstancesOf(ReferenceProperty.class)
+                .collect(ReferenceProperty::getType);
+
+        ImmutableList<Klass> importTypes = Lists.immutable.with(klass).newWithAll(associatedTypes);
+        ImmutableList<String> imports    = importTypes.collect(this::getImport);
+
         // @formatter:off
         //language=JAVA
         String sourceCode = ""
                 + "package " + klass.getPackageName() + ".graphql.type.runtime.wiring;\n"
                 + "\n"
-                + "import " + this.rootPackageName + ".*;\n"
+                + imports.makeString("")
                 + "import cool.klass.graphql.type.runtime.wiring.provider.GraphQLTypeRuntimeWiringProvider;\n"
                 + "import io.liftwizard.reladomo.graphql.deep.fetcher.GraphQLPropertyDataDeepFetcher;\n"
                 + "import io.liftwizard.reladomo.graphql.data.fetcher.*;\n"
@@ -111,6 +117,13 @@ public class GraphQLRuntimeWiringGenerator
         // @formatter:on
 
         return sourceCode;
+    }
+
+    private String getImport(Klass klass)
+    {
+        String fullyQualifiedName = klass.getFullyQualifiedName();
+        return "import " + fullyQualifiedName + ";\n"
+                + "import " + fullyQualifiedName + "Finder;\n";
     }
 
     private String getDataFetcherSourceCode(@Nonnull Property property, Classifier owningClassifier)
