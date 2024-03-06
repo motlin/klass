@@ -6,9 +6,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,29 +34,36 @@ public class Update_PropertiesOptionalTest
     @Before
     public void setUp()
     {
-        this.persistentInstance = this.reladomoDataStore.findByKey(this.getKlass(), Lists.immutable.with(1L));
+        Klass            klass       = this.getKlass();
+        DataTypeProperty keyProperty = (DataTypeProperty) klass.getPropertyByName("propertiesOptionalId").get();
+
+        ImmutableMap<DataTypeProperty, Object> keys = Maps.immutable.with(keyProperty, 1L);
+
+        this.persistentInstance = this.reladomoDataStore.findByKey(klass, keys);
     }
 
     @Override
     @Test
-    public void validate_good() throws IOException
+    public void validate_good()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": 1,\n"
-                + "  \"optionalString\": \"PropertiesOptional optionalString 2 ✌\",\n"
-                + "  \"optionalInteger\": 2,\n"
-                + "  \"optionalLong\": 200000000000,\n"
-                + "  \"optionalDouble\": 2.0123456789,\n"
-                + "  \"optionalFloat\": 2.0123456,\n"
-                + "  \"optionalBoolean\": false,\n"
-                + "  \"optionalInstant\": \"2000-01-01T00:00:00Z\",\n"
-                + "  \"optionalLocalDate\": \"2000-01-01\",\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 1,\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": 1,
+                  "optionalString": "PropertiesOptional optionalString 2 ✌",
+                  "optionalInteger": 2,
+                  "optionalLong": 200000000000,
+                  "optionalDouble": 2.0123456789,
+                  "optionalFloat": 2.0123456,
+                  "optionalBoolean": false,
+                  "optionalInstant": "2000-01-01T00:00:00Z",
+                  "optionalLocalDate": "2000-01-01",
+                  "version": {
+                    "number": 1,
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
@@ -61,24 +71,26 @@ public class Update_PropertiesOptionalTest
     }
 
     @Test
-    public void validate_wrong_version() throws IOException
+    public void validate_wrong_version()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": 1,\n"
-                + "  \"optionalString\": \"PropertiesOptional optionalString 2 ✌\",\n"
-                + "  \"optionalInteger\": 2,\n"
-                + "  \"optionalLong\": 200000000000,\n"
-                + "  \"optionalDouble\": 2.0123456789,\n"
-                + "  \"optionalFloat\": 2.0123456,\n"
-                + "  \"optionalBoolean\": false,\n"
-                + "  \"optionalInstant\": \"2000-01-01T00:00:00Z\",\n"
-                + "  \"optionalLocalDate\": \"2000-01-01\",\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 2,\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": 1,
+                  "optionalString": "PropertiesOptional optionalString 2 ✌",
+                  "optionalInteger": 2,
+                  "optionalLong": 200000000000,
+                  "optionalDouble": 2.0123456789,
+                  "optionalFloat": 2.0123456,
+                  "optionalBoolean": false,
+                  "optionalInstant": "2000-01-01T00:00:00Z",
+                  "optionalLocalDate": "2000-01-01",
+                  "version": {
+                    "number": 2,
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional.version.number. Mismatched value for version property 'PropertiesOptionalVersion.number: Integer'. Expected absent value or '1' but value was '2'.");
@@ -88,38 +100,40 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_extra_properties() throws IOException
+    public void validate_extra_properties()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": 1,\n"
-                + "  \"optionalString\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalInteger\": 1,\n"
-                + "  \"optionalLong\": 100000000000,\n"
-                + "  \"optionalDouble\": 1.0123456789,\n"
-                + "  \"optionalFloat\": 1.0123457,\n"
-                + "  \"optionalBoolean\": true,\n"
-                + "  \"optionalInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"optionalLocalDate\": \"1999-12-31\",\n"
-                + "  \"optionalDerived\": \"PropertiesOptional optionalDerived 1 ☝\",\n"
-                + "  \"system\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"version\": {\n"
-                + "    \"propertiesOptionalId\": 1,\n"
-                + "    \"number\": 1,\n"
-                + "    \"system\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"systemTo\": null,\n"
-                + "    \"createdById\": \"test user 1\",\n"
-                + "    \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"lastUpdatedById\": \"test user 1\",\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": 1,
+                  "optionalString": "PropertiesOptional optionalString 1 ☝",
+                  "optionalInteger": 1,
+                  "optionalLong": 100000000000,
+                  "optionalDouble": 1.0123456789,
+                  "optionalFloat": 1.0123457,
+                  "optionalBoolean": true,
+                  "optionalInstant": "1999-12-31T23:59:00Z",
+                  "optionalLocalDate": "1999-12-31",
+                  "optionalDerived": "PropertiesOptional optionalDerived 1 ☝",
+                  "system": "1999-12-31T23:59:59.999Z",
+                  "systemFrom": "1999-12-31T23:59:59.999Z",
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "version": {
+                    "propertiesOptionalId": 1,
+                    "number": 1,
+                    "system": "1999-12-31T23:59:59.999Z",
+                    "systemFrom": "1999-12-31T23:59:59.999Z",
+                    "systemTo": null,
+                    "createdById": "test user 1",
+                    "createdOn": "1999-12-31T23:59:59.999Z",
+                    "lastUpdatedById": "test user 1",
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional.system. Mismatched value for temporal property 'PropertiesOptional.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
@@ -138,7 +152,8 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_expected_primitive_actual_missing() throws IOException
+    public void validate_expected_primitive_actual_missing()
+            throws IOException
     {
         //language=JSON5
         String incomingJson = "{}";
@@ -151,29 +166,31 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_expected_primitive_actual_array() throws IOException
+    public void validate_expected_primitive_actual_array()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": [],\n"
-                + "  \"optionalString\": [],\n"
-                + "  \"optionalInteger\": [],\n"
-                + "  \"optionalLong\": [],\n"
-                + "  \"optionalDouble\": [],\n"
-                + "  \"optionalFloat\": [],\n"
-                + "  \"optionalBoolean\": [],\n"
-                + "  \"optionalInstant\": [],\n"
-                + "  \"optionalLocalDate\": [],\n"
-                + "  \"optionalDerived\": [],\n"
-                + "  \"system\": [],\n"
-                + "  \"systemFrom\": [],\n"
-                + "  \"systemTo\": [],\n"
-                + "  \"createdById\": [],\n"
-                + "  \"createdOn\": [],\n"
-                + "  \"lastUpdatedById\": [],\n"
-                + "  \"version\": [],\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": [],
+                  "optionalString": [],
+                  "optionalInteger": [],
+                  "optionalLong": [],
+                  "optionalDouble": [],
+                  "optionalFloat": [],
+                  "optionalBoolean": [],
+                  "optionalInstant": [],
+                  "optionalLocalDate": [],
+                  "optionalDerived": [],
+                  "system": [],
+                  "systemFrom": [],
+                  "systemTo": [],
+                  "createdById": [],
+                  "createdOn": [],
+                  "lastUpdatedById": [],
+                  "version": [],
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '[]' with type 'array'.",
@@ -207,29 +224,31 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_expected_primitive_actual_object() throws IOException
+    public void validate_expected_primitive_actual_object()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": {},\n"
-                + "  \"optionalString\": {},\n"
-                + "  \"optionalInteger\": {},\n"
-                + "  \"optionalLong\": {},\n"
-                + "  \"optionalDouble\": {},\n"
-                + "  \"optionalFloat\": {},\n"
-                + "  \"optionalBoolean\": {},\n"
-                + "  \"optionalInstant\": {},\n"
-                + "  \"optionalLocalDate\": {},\n"
-                + "  \"optionalDerived\": {},\n"
-                + "  \"system\": {},\n"
-                + "  \"systemFrom\": {},\n"
-                + "  \"systemTo\": {},\n"
-                + "  \"createdById\": {},\n"
-                + "  \"createdOn\": {},\n"
-                + "  \"lastUpdatedById\": {},\n"
-                + "  \"version\": {},\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": {},
+                  "optionalString": {},
+                  "optionalInteger": {},
+                  "optionalLong": {},
+                  "optionalDouble": {},
+                  "optionalFloat": {},
+                  "optionalBoolean": {},
+                  "optionalInstant": {},
+                  "optionalLocalDate": {},
+                  "optionalDerived": {},
+                  "system": {},
+                  "systemFrom": {},
+                  "systemTo": {},
+                  "createdById": {},
+                  "createdOn": {},
+                  "lastUpdatedById": {},
+                  "version": {},
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '{}' with type 'object'.",
@@ -262,29 +281,31 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_expected_primitive_actual_null() throws IOException
+    public void validate_expected_primitive_actual_null()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": null,\n"
-                + "  \"optionalString\": null,\n"
-                + "  \"optionalInteger\": null,\n"
-                + "  \"optionalLong\": null,\n"
-                + "  \"optionalDouble\": null,\n"
-                + "  \"optionalFloat\": null,\n"
-                + "  \"optionalBoolean\": null,\n"
-                + "  \"optionalInstant\": null,\n"
-                + "  \"optionalLocalDate\": null,\n"
-                + "  \"optionalDerived\": null,\n"
-                + "  \"system\": null,\n"
-                + "  \"systemFrom\": null,\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": null,\n"
-                + "  \"createdOn\": null,\n"
-                + "  \"lastUpdatedById\": null,\n"
-                + "  \"version\": null,\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": null,
+                  "optionalString": null,
+                  "optionalInteger": null,
+                  "optionalLong": null,
+                  "optionalDouble": null,
+                  "optionalFloat": null,
+                  "optionalBoolean": null,
+                  "optionalInstant": null,
+                  "optionalLocalDate": null,
+                  "optionalDerived": null,
+                  "system": null,
+                  "systemFrom": null,
+                  "systemTo": null,
+                  "createdById": null,
+                  "createdOn": null,
+                  "lastUpdatedById": null,
+                  "version": null,
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional. Expected value for version property 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was null.");
@@ -302,29 +323,31 @@ public class Update_PropertiesOptionalTest
 
     @Override
     @Test
-    public void validate_expected_primitive_actual_string() throws IOException
+    public void validate_expected_primitive_actual_string()
+            throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalString\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalInteger\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalLong\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalDouble\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalFloat\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalBoolean\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalInstant\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalLocalDate\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalDerived\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"system\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"systemFrom\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"systemTo\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"createdById\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"createdOn\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"lastUpdatedById\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"version\": \"PropertiesOptional requiredString 1 ☝\",\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesOptionalId": "PropertiesOptional optionalString 1 ☝",
+                  "optionalString": "PropertiesOptional optionalString 1 ☝",
+                  "optionalInteger": "PropertiesOptional optionalString 1 ☝",
+                  "optionalLong": "PropertiesOptional optionalString 1 ☝",
+                  "optionalDouble": "PropertiesOptional optionalString 1 ☝",
+                  "optionalFloat": "PropertiesOptional optionalString 1 ☝",
+                  "optionalBoolean": "PropertiesOptional optionalString 1 ☝",
+                  "optionalInstant": "PropertiesOptional optionalString 1 ☝",
+                  "optionalLocalDate": "PropertiesOptional optionalString 1 ☝",
+                  "optionalDerived": "PropertiesOptional optionalString 1 ☝",
+                  "system": "PropertiesOptional optionalString 1 ☝",
+                  "systemFrom": "PropertiesOptional optionalString 1 ☝",
+                  "systemTo": "PropertiesOptional optionalString 1 ☝",
+                  "createdById": "PropertiesOptional optionalString 1 ☝",
+                  "createdOn": "PropertiesOptional optionalString 1 ☝",
+                  "lastUpdatedById": "PropertiesOptional optionalString 1 ☝",
+                  "version": "PropertiesOptional requiredString 1 ☝",
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",

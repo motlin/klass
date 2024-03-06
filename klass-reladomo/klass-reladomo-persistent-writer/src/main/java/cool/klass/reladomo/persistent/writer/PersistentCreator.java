@@ -1,6 +1,7 @@
 package cool.klass.reladomo.persistent.writer;
 
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -14,6 +15,10 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class PersistentCreator extends PersistentSynchronizer
 {
@@ -112,10 +117,49 @@ public class PersistentCreator extends PersistentSynchronizer
             throw new AssertionError();
         }
 
-        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(
+        ImmutableMap<DataTypeProperty, Object> keys = this.getKeysFromPersistentInstance(
                 persistentInstance,
                 associationEnd.getOwningClassifier());
-        this.insertVersion(persistentInstance, associationEnd, keys);
+
+        MutableMap<DataTypeProperty, Object> versionKeys = getVersionKeys(associationEnd, keys);
+
+        this.insertVersion(persistentInstance, associationEnd, versionKeys);
+    }
+
+    @Nonnull
+    private static MutableMap<DataTypeProperty, Object> getVersionKeys(
+            @Nonnull AssociationEnd associationEnd,
+            ImmutableMap<DataTypeProperty, Object> keys)
+    {
+        MutableMap<DataTypeProperty, Object> versionKeys = MapAdapter.adapt(new LinkedHashMap<>());
+        keys.forEachKeyValue((keyProperty, keyValue) ->
+        {
+            DataTypeProperty versionKeyProperty = getVersionKeyProperty(associationEnd, keyProperty);
+            versionKeys.put(versionKeyProperty, keyValue);
+        });
+        return versionKeys;
+    }
+
+    @Nonnull
+    private static DataTypeProperty getVersionKeyProperty(
+            @Nonnull AssociationEnd associationEnd,
+            DataTypeProperty keyProperty)
+    {
+        DataTypeProperty versionKeyProperty = keyProperty
+                .getForeignKeysMatchingThisKey()
+                .get(associationEnd.getOpposite())
+                .getOnly();
+
+        if (versionKeyProperty.getOwningClassifier() == associationEnd.getType())
+        {
+            return versionKeyProperty;
+        }
+
+        String message = "Expected version key property '%s' to be owned by '%s' but it's owned by '%s' instead.".formatted(
+                versionKeyProperty,
+                associationEnd.getType(),
+                versionKeyProperty.getOwningClassifier());
+        throw new AssertionError(message);
     }
 
     @Override
@@ -142,14 +186,9 @@ public class PersistentCreator extends PersistentSynchronizer
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
-                    incomingChildInstance,
-                    associationEnd,
-                    persistentParentInstance);
-            String error = String.format("Could not find existing %s with key %s", associationEnd.getType(), keys);
-            // TODO: Error message including full path here. Error message earlier, during validation.
             // It's possible to trigger this code path by deleting reference data from tests, like one of the Tags listed in test-data/create-blueprint.txt
-            throw new IllegalStateException(error);
+            // We also hit this path when including an embedded to-one object that's outside the projection, during creation.
+            return false;
         }
 
         this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);
@@ -160,7 +199,7 @@ public class PersistentCreator extends PersistentSynchronizer
     private void insertVersion(
             Object persistentInstance,
             @Nonnull AssociationEnd associationEnd,
-            @Nonnull ImmutableList<Object> keys)
+            @Nonnull MapIterable<DataTypeProperty, Object> keys)
     {
         Klass  versionType     = associationEnd.getType();
         Object versionInstance = this.dataStore.instantiate(versionType, keys);

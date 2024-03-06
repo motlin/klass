@@ -20,13 +20,17 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.partition.list.PartitionImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.utility.ListIterate;
 
 public abstract class PersistentSynchronizer
 {
@@ -298,7 +302,7 @@ public abstract class PersistentSynchronizer
                 && !incomingChildInstance.isMissingNode()
                 && !incomingChildInstance.isNull())
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     incomingChildInstance,
                     associationEnd,
                     persistentParentInstance);
@@ -356,7 +360,7 @@ public abstract class PersistentSynchronizer
             @Nonnull JsonNode incomingChildInstance,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableList<Object> keys = this.getKeysFromJsonNode(
+        MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                 incomingChildInstance,
                 associationEnd,
                 persistentParentInstance);
@@ -367,7 +371,7 @@ public abstract class PersistentSynchronizer
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             JsonNode incomingChildInstance,
-            ImmutableList<Object> keys)
+            MapIterable<DataTypeProperty, Object> keys)
     {
         Klass                  resultType   = associationEnd.getType();
         Object                 newInstance  = this.dataStore.instantiate(resultType, keys);
@@ -406,7 +410,7 @@ public abstract class PersistentSynchronizer
                         this::jsonNodeNeedsIdInferredOnInsert,
                         associationEnd);
 
-        MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
+        MapIterable<MapIterable<DataTypeProperty, Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingInstancesForUpdate,
                 associationEnd,
                 persistentParentInstance);
@@ -414,7 +418,7 @@ public abstract class PersistentSynchronizer
         List<Object> persistentChildInstances = this.dataStore.getToMany(persistentParentInstance, associationEnd);
         for (Object persistentChildInstance : persistentChildInstances)
         {
-            ImmutableList<Object> keys = this.getKeysFromPersistentInstance(
+            ImmutableMap<DataTypeProperty, Object> keys = this.getKeysFromPersistentInstance(
                     persistentChildInstance,
                     associationEnd.getType());
             if (!incomingChildInstancesByKey.containsKey(keys))
@@ -434,7 +438,7 @@ public abstract class PersistentSynchronizer
                 persistentParentInstance,
                 associationEnd);
 
-        MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey = this.indexPersistentInstances(
+        MapIterable<MapIterable<DataTypeProperty, Object>, Object> persistentChildInstancesByKey = this.indexPersistentInstances(
                 nonTerminatedPersistentChildInstances,
                 associationEnd.getType());
 
@@ -453,7 +457,7 @@ public abstract class PersistentSynchronizer
                 }
 
                 Klass resultType = associationEnd.getType();
-                ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                         incomingChildInstance,
                         associationEnd,
                         persistentParentInstance);
@@ -489,7 +493,7 @@ public abstract class PersistentSynchronizer
     private Object getPersistentChildInstance(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
-            @Nonnull MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey,
+            @Nonnull MapIterable<MapIterable<DataTypeProperty, Object>, Object> persistentChildInstancesByKey,
             @Nonnull JsonNode incomingChildInstance)
     {
         if (this.jsonNodeNeedsIdInferredOnInsert(incomingChildInstance, associationEnd))
@@ -497,7 +501,7 @@ public abstract class PersistentSynchronizer
             return null;
         }
 
-        ImmutableList<Object> keys = this.getKeysFromJsonNode(
+        MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                 incomingChildInstance,
                 associationEnd,
                 persistentParentInstance);
@@ -521,7 +525,7 @@ public abstract class PersistentSynchronizer
 
         // TODO: Test null where an array goes
 
-        MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
+        MapIterable<MapIterable<DataTypeProperty, Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
                 incomingChildInstances,
                 associationEnd,
                 persistentParentInstance);
@@ -529,7 +533,7 @@ public abstract class PersistentSynchronizer
         List<Object> persistentChildInstances = this.dataStore.getToMany(persistentParentInstance, associationEnd);
         for (Object persistentChildInstance : persistentChildInstances)
         {
-            ImmutableList<Object> keys = this.getKeysFromPersistentInstance(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromPersistentInstance(
                     persistentChildInstance,
                     associationEnd.getType());
             if (!incomingChildInstancesByKey.containsKey(keys))
@@ -540,13 +544,13 @@ public abstract class PersistentSynchronizer
             }
         }
 
-        MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey = this.indexPersistentInstances(
+        MapIterable<MapIterable<DataTypeProperty, Object>, Object> persistentChildInstancesByKey = this.indexPersistentInstances(
                 persistentChildInstances,
                 associationEnd.getType());
 
         for (JsonNode incomingChildInstance : incomingChildInstances)
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     incomingChildInstance,
                     associationEnd,
                     persistentParentInstance);
@@ -588,30 +592,32 @@ public abstract class PersistentSynchronizer
     }
 
     @Nonnull
-    private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
+    private MapIterable<MapIterable<DataTypeProperty, Object>, JsonNode> indexIncomingJsonInstances(
             @Nonnull Iterable<JsonNode> incomingInstances,
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        MutableOrderedMap<MapIterable<DataTypeProperty, Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
         for (JsonNode incomingInstance : incomingInstances)
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     incomingInstance,
                     associationEnd,
                     persistentParentInstance);
             result.put(keys, incomingInstance);
         }
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
+        return result.asUnmodifiable();
     }
 
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
+    protected ImmutableMap<DataTypeProperty, Object> getKeysFromPersistentInstance(
+            Object persistentInstance,
+            @Nonnull Klass klass)
     {
         return klass
                 .getKeyProperties()
-                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
+                .toImmutableMap(
+                        keyProperty -> keyProperty,
+                        keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
     }
 
     @Nonnull
@@ -694,24 +700,18 @@ public abstract class PersistentSynchronizer
     }
 
     @Nonnull
-    private MapIterable<ImmutableList<Object>, Object> indexPersistentInstances(
+    private MapIterable<MapIterable<DataTypeProperty, Object>, Object> indexPersistentInstances(
             @Nonnull List<Object> persistentInstances,
             @Nonnull Klass klass)
     {
-        // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
+        MutableOrderedMap<MapIterable<DataTypeProperty, Object>, Object> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-        MutableOrderedMap<ImmutableList<Object>, Object> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-        for (Object persistentInstance : persistentInstances)
-        {
-            ImmutableList<Object> keysFromPersistentInstance = this.getKeysFromPersistentInstance(
-                    persistentInstance,
-                    klass);
-            result.put(keysFromPersistentInstance, persistentInstance);
-        }
+        ListIterate.groupByUniqueKey(
+                persistentInstances,
+                persistentInstance -> this.getKeysFromPersistentInstance(persistentInstance, klass),
+                result);
 
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
+        return result.asUnmodifiable();
     }
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
@@ -759,22 +759,29 @@ public abstract class PersistentSynchronizer
                 (ObjectNode) jsonNode);
     }
 
-    protected ImmutableList<Object> getKeysFromJsonNode(
+    protected MapIterable<DataTypeProperty, Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        if (this.jsonNodeNeedsIdInferredOnInsert(jsonNode, associationEnd))
+        MutableMap<DataTypeProperty, Object> result = MapAdapter.adapt(new LinkedHashMap<>());
+
+        for (DataTypeProperty keyProperty : associationEnd.getType().getKeyProperties())
         {
-            return Lists.immutable.empty();
+            if (!jsonNode.has(keyProperty.getName())
+                    && this.jsonNodeNeedsIdInferredOnInsert(keyProperty, jsonNode, associationEnd))
+            {
+                continue;
+            }
+
+            Object key = this.getKeyFromJsonNode(
+                    keyProperty,
+                    jsonNode,
+                    associationEnd,
+                    persistentParentInstance);
+            result.put(keyProperty, key);
         }
 
-        return associationEnd.getType()
-                .getKeyProperties()
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd,
-                        persistentParentInstance));
+        return result.asUnmodifiable();
     }
 }

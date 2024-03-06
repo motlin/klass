@@ -8,6 +8,7 @@ import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 
 public abstract class AbstractKlassDataGenerator
 {
@@ -40,7 +41,9 @@ public abstract class AbstractKlassDataGenerator
     private Object instantiate(@Nonnull Klass klass)
     {
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties().reject(DataTypeProperty::isID);
-        ImmutableList<Object>           keyValues     = keyProperties.collect(this::getNonNullValue);
+        ImmutableMap<DataTypeProperty, Object> keyValues = keyProperties.toImmutableMap(
+                keyProperty -> keyProperty,
+                this::getNonNullValue);
 
         if (klass.isValidTemporal())
         {

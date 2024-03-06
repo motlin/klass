@@ -18,12 +18,14 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
+import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class IncomingCreateDataModelValidator
@@ -321,7 +323,7 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     childJsonNode,
                     associationEnd,
                     parentJsonNode);
@@ -333,11 +335,17 @@ public class IncomingCreateDataModelValidator
             Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(associationEnd, keys);
             if (childPersistentInstanceWithKey == null)
             {
+                String keysString = keys
+                        .keyValuesView()
+                        .collect(keyValue -> keyValue.getOne().getName() + ": " + keyValue.getTwo())
+                        .makeString("{", ", ", "}");
+
                 String error = String.format(
                         "Error at '%s'. Could not find existing persistent instance for association end '%s' with key %s.",
                         this.getContextString(),
                         associationEnd,
-                        keys);
+                        keysString);
+
                 this.errors.add(error);
             }
         }
@@ -347,7 +355,9 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    protected Object findExistingChildPersistentInstance(@Nonnull AssociationEnd associationEnd, ImmutableList<Object> keys)
+    protected Object findExistingChildPersistentInstance(
+            @Nonnull AssociationEnd associationEnd,
+            MapIterable<DataTypeProperty, Object> keys)
     {
         /*
         if (!(this instanceof PersistentCreator) && !(this instanceof PersistentReplacer))
@@ -366,7 +376,7 @@ public class IncomingCreateDataModelValidator
     {
         for (JsonNode childJsonNode : childrenJsonNodes)
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     childJsonNode,
                     associationEnd,
                     parentJsonNode);
@@ -382,7 +392,7 @@ public class IncomingCreateDataModelValidator
         String associationEndName = associationEnd.getName();
         this.contextStack.push(associationEndName);
 
-        ImmutableList<Object> keys = this.getKeysFromJsonNode(
+        MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                 childJsonNode,
                 associationEnd,
                 this.objectNode);
@@ -593,20 +603,27 @@ public class IncomingCreateDataModelValidator
                 (ObjectNode) jsonNode);
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
+    private MapIterable<DataTypeProperty, Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
+        MutableMap<DataTypeProperty, Object> result = MapAdapter.adapt(new LinkedHashMap<>());
+
         Klass                           type                    = associationEnd.getType();
         ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
         ImmutableList<DataTypeProperty> nonForeignKeyProperties = keyProperties.reject(DataTypeProperty::isForeignKey);
-        return nonForeignKeyProperties
-                .collect(keyProperty -> this.getKeyFromJsonNode(
-                        keyProperty,
-                        jsonNode,
-                        associationEnd,
-                        parentJsonNode));
+        for (DataTypeProperty keyProperty : nonForeignKeyProperties)
+        {
+            result.put(
+                    keyProperty,
+                    this.getKeyFromJsonNode(
+                            keyProperty,
+                            jsonNode,
+                            associationEnd,
+                            parentJsonNode));
+        }
+        return result.toImmutable();
     }
 
     private Object getKeyFromJsonNode(

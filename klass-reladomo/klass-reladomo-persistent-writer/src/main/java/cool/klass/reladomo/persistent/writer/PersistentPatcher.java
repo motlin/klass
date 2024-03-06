@@ -9,7 +9,7 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MapIterable;
 
 public class PersistentPatcher
         extends PersistentSynchronizer
@@ -149,7 +149,7 @@ public class PersistentPatcher
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
-            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+            MapIterable<DataTypeProperty, Object> keys = this.getKeysFromJsonNode(
                     incomingChildInstance,
                     associationEnd,
                     persistentParentInstance);

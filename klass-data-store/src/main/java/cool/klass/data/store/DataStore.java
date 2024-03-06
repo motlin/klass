@@ -10,7 +10,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
-import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MapIterable;
 
 public interface DataStore
 {
@@ -18,7 +18,7 @@ public interface DataStore
 
     void runInTransaction(Runnable runnable);
 
-    Object findByKey(Klass klass, ImmutableList<Object> keys);
+    Object findByKey(Klass klass, MapIterable<DataTypeProperty, Object> keys);
 
     Object getToOne(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty);
 
@@ -31,7 +31,7 @@ public interface DataStore
     boolean setDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty, Object newValue);
 
     @Nonnull
-    Object instantiate(Klass klass, ImmutableList<Object> keys);
+    Object instantiate(Klass klass, MapIterable<DataTypeProperty, Object> keys);
 
     void insert(Object persistentInstance);
 

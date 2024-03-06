@@ -50,6 +50,7 @@ import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,8 +132,19 @@ public class ReladomoDataStore
     }
 
     @Override
-    public Object findByKey(@Nonnull Klass klass, @Nonnull ImmutableList<Object> keys)
+    public Object findByKey(@Nonnull Klass klass, @Nonnull MapIterable<DataTypeProperty, Object> keys)
     {
+        keys.forEachKeyValue((keyProperty, keyValue) ->
+        {
+            if (keyProperty.getOwningClassifier() != klass)
+            {
+                String message = "Expected key property '%s' to be owned by the given class: '%s' but got '%s'.".formatted(
+                        keyProperty,
+                        klass,
+                        keyProperty.getOwningClassifier());
+                throw new AssertionError(message);
+            }
+        });
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties();
         if (keyProperties.size() != keys.size())
         {
@@ -144,8 +156,19 @@ public class ReladomoDataStore
         }
 
         RelatedFinder<?> finder = this.getRelatedFinder(klass);
-        ImmutableList<Operation> operations = keyProperties.collectWithIndex((keyProperty, index) ->
-                this.getOperation(finder, keyProperty, keys.get(index)));
+        ImmutableList<Operation> operations = keyProperties.collect(keyProperty ->
+        {
+            Object key = keys.get(keyProperty);
+            if (!keys.containsKey(keyProperty))
+            {
+                throw new AssertionError("Expected key for property: " + keyProperty);
+            }
+            if (key == null)
+            {
+                throw new AssertionError("Expected non-null key for property: " + keyProperty);
+            }
+            return this.getOperation(finder, keyProperty, key);
+        });
 
         Operation operation = operations.reduce(Operation::and).get();
         return finder.findOne(operation);
@@ -171,7 +194,7 @@ public class ReladomoDataStore
 
     @Nonnull
     @Override
-    public Object instantiate(@Nonnull Klass klass, @Nonnull ImmutableList<Object> keys)
+    public Object instantiate(@Nonnull Klass klass, @Nonnull MapIterable<DataTypeProperty, Object> keys)
     {
         keys.each(Objects::requireNonNull);
 
@@ -218,7 +241,10 @@ public class ReladomoDataStore
         }
     }
 
-    private void setKeys(@Nonnull Klass klass, @Nonnull Object newInstance, @Nonnull ImmutableList<Object> keys)
+    private void setKeys(
+            @Nonnull Klass klass,
+            @Nonnull Object newInstance,
+            @Nonnull MapIterable<DataTypeProperty, Object> keys)
     {
         this.generateAndSetId(newInstance, klass);
 
@@ -231,10 +257,10 @@ public class ReladomoDataStore
                     keys);
             throw new IllegalArgumentException(error);
         }
-        for (int i = 0; i < keyProperties.size(); i++)
+        for (DataTypeProperty keyProperty : keyProperties)
         {
-            DataTypeProperty keyProperty = keyProperties.get(i);
-            Object           key         = keys.get(i);
+            Object key = keys.get(keyProperty);
+            Objects.requireNonNull(key, () -> "Expected non-null key for property: " + keyProperty);
             this.setDataTypeProperty(newInstance, keyProperty, key);
         }
     }
