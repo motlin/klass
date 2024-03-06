@@ -583,16 +583,14 @@ public class AntlrClass
 
     private void reportTransientIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (!this.isTransient()
-                || this.getDataTypeProperties().noneSatisfy(AntlrDataTypeProperty::isId))
+        if (!this.isTransient())
         {
             return;
         }
 
-        String message = String.format(
-                "Transient class '%s' may not have id properties.",
-                this.getName());
-        compilerErrorHolder.add("ERR_TNS_IDP", message, this);
+        this.dataTypePropertyStates
+                .select(AntlrDataTypeProperty::isId)
+                .forEachWith(AntlrDataTypeProperty::reportTransientIdProperties, compilerErrorHolder);
     }
 
     @Override

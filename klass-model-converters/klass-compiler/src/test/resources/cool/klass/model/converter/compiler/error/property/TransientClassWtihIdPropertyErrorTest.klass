@@ -12,5 +12,3 @@ class ConcreteSubClass
 {
     key: Long key id;
 }
-
-// TODO: ERR_TNS_IDP should be reported on properties, not classes

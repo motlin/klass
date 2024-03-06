@@ -713,4 +713,18 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 this);
         compilerErrorHolder.add("ERR_KEY_IDS", message, this);
     }
+
+    public void reportTransientIdProperties(CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableList<AntlrModifier> idModifiers = this.getModifiersByName("id");
+        if (idModifiers.isEmpty())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Transient class '%s' may not have id properties.",
+                this.getOwningClassifierState().getName());
+        compilerErrorHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
+    }
 }
