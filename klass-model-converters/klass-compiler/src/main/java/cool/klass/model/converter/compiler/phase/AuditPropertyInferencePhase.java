@@ -9,10 +9,12 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
+import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.predicate.Predicate;
+import org.eclipse.collections.api.list.ListIterable;
 
 // TODO: Only put audit properties onto version types
 public class AuditPropertyInferencePhase
@@ -80,11 +82,21 @@ public class AuditPropertyInferencePhase
                 .getDataTypeProperties()
                 .detect(AntlrDataTypeProperty::isUserId);
 
-        // TODO: Add validation that any userId is joined to another property that's also userId
+        ListIterable<AntlrModifier> modifiers = userIdProperty.getModifiers()
+                .reject(AntlrModifier::isUserId)
+                .reject(AntlrModifier::isKey)
+                .reject(AntlrModifier::isId);
+        if (!modifiers.isEmpty())
+        {
+            throw new AssertionError(modifiers);
+        }
+        ListIterable<AbstractAntlrPropertyValidation> validationStates = userIdProperty.getValidationStates();
+        String validationSourceCode = validationStates.isEmpty() ? "" : validationStates.makeString(" ", " ", "");
 
+        // TODO: Add validation that any userId is joined to another property that's also userId
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro("    createdById    : String createdBy userId final;\n");
+            this.runCompilerMacro("    createdById    : String createdBy userId final"  + validationSourceCode + ";\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
         {
@@ -92,7 +104,7 @@ public class AuditPropertyInferencePhase
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId;\n");
+            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId"  + validationSourceCode + ";\n");
         }
 
         /*
