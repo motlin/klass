@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.gs.fw.common.mithra.mithraruntime.CacheType;
 import com.gs.fw.common.mithra.mithraruntime.ConnectionManagerType;
@@ -24,13 +25,14 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: Split out into Liftwizard by passing in a list of class names (and Sequence name) into the constructor
-public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGenerator
+public class ReladomoRuntimeConfigurationGenerator
+        extends AbstractReladomoGenerator
 {
     // Default value will be "ConnectionManagerHolder"
     @Nonnull
-    private final String  connectionManagerClassName;
-    @Nonnull
-    private final String connectionManagerName;
+    private final String    connectionManagerClassName;
+    @Nullable
+    private final String    connectionManagerName;
     @Nonnull
     private final String    rootPackageName;
     @Nonnull
@@ -39,13 +41,13 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     public ReladomoRuntimeConfigurationGenerator(
             @Nonnull DomainModel domainModel,
             @Nonnull String connectionManagerClassName,
-            @Nonnull String connectionManagerName,
+            @Nullable String connectionManagerName,
             @Nonnull String rootPackageName,
             @Nonnull String cacheType)
     {
         super(domainModel);
         this.connectionManagerClassName = Objects.requireNonNull(connectionManagerClassName);
-        this.connectionManagerName      = Objects.requireNonNull(connectionManagerName);
+        this.connectionManagerName      = connectionManagerName;
         this.rootPackageName            = Objects.requireNonNull(rootPackageName);
         this.cacheType                  = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
     }
@@ -102,6 +104,11 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
 
     private ImmutableList<PropertyType> getPropertyTypes()
     {
+        if (this.connectionManagerName == null)
+        {
+            return Lists.immutable.empty();
+        }
+
         PropertyType propertyType = ReladomoRuntimeConfigurationGenerator.createPropertyType(
                 "connectionManagerName",
                 this.connectionManagerName);

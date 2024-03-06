@@ -66,9 +66,6 @@
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
                             <connectionManagerName>h2-tcp</connectionManagerName>
-                            <connectionManagerClassName>
-                                io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
-                            </connectionManagerClassName>
                             <isTest>false</isTest>
                         </configuration>
                     </execution>
@@ -84,9 +81,6 @@
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
                             <connectionManagerName>h2-tcp</connectionManagerName>
-                            <connectionManagerClassName>
-                                io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
-                            </connectionManagerClassName>
                             <isTest>false</isTest>
                             <cacheType>full</cacheType>
                         </configuration>

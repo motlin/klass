@@ -162,6 +162,7 @@
         <module>${app.artifactId}-reladomo-merge-hooks</module>
         <module>${app.artifactId}-reladomo-pojos</module>
         <module>${app.artifactId}-reladomo-readable-interfaces</module>
+        <module>${app.artifactId}-reladomo-runtime-configuration</module>
         <module>${app.artifactId}-reladomo-ddls</module>
         <module>${app.artifactId}-services</module>
         <module>${app.artifactId}-dtos</module>

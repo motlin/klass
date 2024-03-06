@@ -42,9 +42,7 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
 
     @Parameter(
             property = "connectionManagerName",
-            required = true,
-            readonly = true,
-            defaultValue = "h2-mem")
+            readonly = true)
     private String connectionManagerName;
 
     @SuppressWarnings("FieldMayBeFinal")
