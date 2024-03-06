@@ -16,7 +16,6 @@
     <name>Klass Dropwizard Tasks (Module Group)</name>
 
     <modules>
-        <module>klass-dropwizard-task-reladomo-clear-cache</module>
     </modules>
 
 </project>

@@ -16,7 +16,6 @@
     <name>Klass Dropwizard Health Checks (Module Group)</name>
 
     <modules>
-        <module>klass-dropwizard-healthcheck-reladomo</module>
     </modules>
 
 </project>

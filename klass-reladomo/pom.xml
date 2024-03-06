@@ -16,18 +16,6 @@
 
     <name>Klass Reladomo (Module Group)</name>
 
-    <modules>
-        <module>klass-connection-manager-h2</module>
-        <module>klass-ddl-executor</module>
-        <module>klass-reladomo-persistent-writer</module>
-        <module>klass-data-store-reladomo</module>
-        <module>klass-reladomo-sample-data</module>
-        <module>klass-reladomo-graphql-data-fetcher</module>
-        <module>klass-reladomo-serialize</module>
-        <module>klass-reladomo-persistent-writer-test</module>
-        <module>klass-connection-manager-heroku</module>
-    </modules>
-
     <dependencyManagement>
         <dependencies>
 
@@ -41,5 +29,28 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <modules>
+        <module>klass-connection-manager-h2</module>
+        <module>klass-connection-manager-heroku</module>
+        <module>klass-data-store-reladomo</module>
+        <module>klass-ddl-executor</module>
+        <module>klass-dropwizard-bundle-reladomo-jsonview</module>
+        <module>klass-dropwizard-bundle-reladomo-response</module>
+        <module>klass-dropwizard-bundle-reladomo</module>
+        <module>klass-dropwizard-configuration-reladomo</module>
+        <module>klass-dropwizard-healthcheck-reladomo</module>
+        <module>klass-dropwizard-task-reladomo-clear-cache</module>
+        <module>klass-maven-reladomo-logger</module>
+        <module>klass-reladomo-graphql-data-fetcher</module>
+        <module>klass-reladomo-persistent-writer-test</module>
+        <module>klass-reladomo-persistent-writer</module>
+        <module>klass-reladomo-sample-data</module>
+        <module>klass-reladomo-serialize</module>
+        <module>klass-reladomo-simulated-sequence-ddls</module>
+        <module>klass-reladomo-simulated-sequence</module>
+        <module>klass-reladomo-test-rule</module>
+        <module>klass-reladomo-timestamp</module>
+    </modules>
 
 </project>

@@ -20,11 +20,6 @@
         <module>klass-firebase-principal</module>
         <module>klass-junit-rule-match-file</module>
         <module>klass-junit-rule-match-json</module>
-        <module>klass-maven-reladomo-logger</module>
-        <module>klass-reladomo-simulated-sequence</module>
-        <module>klass-reladomo-simulated-sequence-ddls</module>
-        <module>klass-reladomo-test-rule</module>
-        <module>klass-reladomo-timestamp</module>
         <module>klass-logging-logback-filter-requesturl</module>
     </modules>
 
