@@ -446,6 +446,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>

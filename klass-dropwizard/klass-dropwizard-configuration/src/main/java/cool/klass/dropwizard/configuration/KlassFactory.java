@@ -7,14 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.reladomo.ReladomoDataStoreFactory;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
-import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
 import io.liftwizard.dropwizard.configuration.clock.ClockFactory;
 import io.liftwizard.dropwizard.configuration.clock.fixed.FixedClockFactory;
 
 public class KlassFactory
 {
     private @NotNull @Valid ClockFactory       clockFactory       = new FixedClockFactory();
-    private @NotNull @Valid DomainModelFactory domainModelFactory = new DomainModelCompilerFactory();
+    private @NotNull @Valid DomainModelFactory domainModelFactory;
     private @NotNull @Valid DataStoreFactory   dataStoreFactory   = new ReladomoDataStoreFactory();
 
     @JsonProperty("clock")
