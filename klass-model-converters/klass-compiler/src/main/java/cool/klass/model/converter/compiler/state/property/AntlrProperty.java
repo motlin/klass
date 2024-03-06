@@ -197,11 +197,28 @@ public abstract class AntlrProperty
     public String toString()
     {
         return String.format(
-                "%s.%s: %s %s",
+                "%s.%s",
                 this.getOwningClassifierState().getName(),
+                this.getShortString());
+    }
+
+    public String getShortString()
+    {
+        MutableList<String> sourceCodeStrings = org.eclipse.collections.api.factory.Lists.mutable.empty();
+
+        String typeSourceCode = this.getType().getName();
+        sourceCodeStrings.add(typeSourceCode);
+
+        this
+                .getModifiers()
+                .asLazy()
+                .collect(AntlrElement::toString)
+                .into(sourceCodeStrings);
+
+        return String.format(
+                "%s: %s",
                 this.getName(),
-                this.getType().getName(),
-                this.getModifiers().collect(AntlrModifier::getKeyword).makeString(" "));
+                sourceCodeStrings.makeString(" "));
     }
 
     @Override

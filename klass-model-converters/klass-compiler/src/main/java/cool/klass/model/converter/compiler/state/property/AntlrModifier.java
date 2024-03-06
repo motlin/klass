@@ -186,4 +186,10 @@ public class AntlrModifier
     {
         return Objects.requireNonNull(this.elementBuilder);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getKeyword();
+    }
 }

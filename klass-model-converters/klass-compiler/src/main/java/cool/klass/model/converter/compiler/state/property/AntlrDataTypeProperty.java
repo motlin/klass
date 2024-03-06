@@ -719,15 +719,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.owningClassifierState;
     }
 
-    public String getShortString()
-    {
-        return String.format(
-                "%s: %s %s",
-                this.getName(),
-                this.getType(),
-                this.getModifiers().collect(AntlrModifier::getKeyword).makeString(" "));
-    }
-
     public void reportIdPropertyWithKeyProperties(CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
@@ -758,5 +749,40 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 "Transient class '%s' may not have id properties.",
                 this.getOwningClassifierState().getName());
         compilerErrorHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s.%s",
+                this.owningClassifierState.getName(),
+                this.getShortString());
+    }
+
+    @Override
+    public String getShortString()
+    {
+        MutableList<String> sourceCodeStrings = org.eclipse.collections.api.factory.Lists.mutable.empty();
+
+        String typeSourceCode = this.getType().getName();
+        sourceCodeStrings.add(typeSourceCode);
+
+        this
+                .getModifiers()
+                .asLazy()
+                .collect(AntlrElement::toString)
+                .into(sourceCodeStrings);
+
+        this
+                .getValidationStates()
+                .asLazy()
+                .collect(AntlrElement::toString)
+                .into(sourceCodeStrings);
+
+        return String.format(
+                "%s: %s",
+                this.getName(),
+                sourceCodeStrings.makeString(" "));
     }
 }
