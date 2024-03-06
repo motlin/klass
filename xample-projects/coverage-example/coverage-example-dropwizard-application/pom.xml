@@ -120,7 +120,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
+            <artifactId>${app.artifactId}-liquibase-schema</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -310,12 +310,6 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <scope>runtime</scope>
         </dependency>
 
