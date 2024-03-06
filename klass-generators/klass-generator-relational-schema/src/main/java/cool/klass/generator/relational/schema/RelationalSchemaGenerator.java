@@ -11,11 +11,16 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 
 public class RelationalSchemaGenerator
 {
+    private static final Converter<String, String> CONVERTER =
+            CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
+
     private final DomainModel domainModel;
 
     public RelationalSchemaGenerator(DomainModel domainModel)
@@ -27,26 +32,28 @@ public class RelationalSchemaGenerator
     {
         for (Klass klass : this.domainModel.getClasses())
         {
+            String tableName = CONVERTER.convert(klass.getName());
+
             String packageName  = klass.getPackageName();
             String relativePath = packageName.replaceAll("\\.", "/");
             Path   parentPath   = path.resolve(relativePath);
             createDirectories(parentPath);
 
-            Path ddlOutputPath = parentPath.resolve(klass.getName() + ".ddl");
+            Path ddlOutputPath = parentPath.resolve(tableName + ".ddl");
             if (!ddlOutputPath.toFile().exists())
             {
                 String sourceCode = DdlGenerator.getDdl(klass);
                 this.printStringToFile(ddlOutputPath, sourceCode);
             }
 
-            Path idxOutputPath = parentPath.resolve(klass.getName() + ".idx");
+            Path idxOutputPath = parentPath.resolve(tableName + ".idx");
             if (!idxOutputPath.toFile().exists())
             {
                 String sourceCode = IdxGenerator.getIdx(klass);
                 this.printStringToFile(idxOutputPath, sourceCode);
             }
 
-            Path fkOutputPath = parentPath.resolve(klass.getName() + ".fk");
+            Path fkOutputPath = parentPath.resolve(tableName + ".fk");
             if (!fkOutputPath.toFile().exists())
             {
                 Optional<String> sourceCode = FkGenerator.getFk(klass);

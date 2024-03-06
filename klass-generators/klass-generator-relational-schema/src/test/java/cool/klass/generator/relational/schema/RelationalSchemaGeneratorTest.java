@@ -17,8 +17,9 @@ import org.junit.rules.TestRule;
 
 public class RelationalSchemaGeneratorTest
 {
-    private static final Converter<String, String> CONVERTER     =
+    private static final Converter<String, String> CONVERTER =
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
+
     @Rule
     public final         FileMatchRule             fileMatchRule = new FileMatchRule(this.getClass());
 
