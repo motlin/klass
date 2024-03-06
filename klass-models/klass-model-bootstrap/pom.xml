@@ -55,17 +55,17 @@
     </build>
 
     <modules>
-        <module>klass-model-bootstrapped-meta</module>
-        <module>klass-model-bootstrapped-reladomo-definitions</module>
-        <module>klass-model-bootstrapped-reladomo-pojos</module>
-        <module>klass-model-bootstrapped-reladomo-ddls</module>
-        <module>klass-model-bootstrapped-reladomo-ddls-workaround</module>
-        <module>klass-model-bootstrapped-reladomo-runtime-configuration</module>
-        <module>klass-model-bootstrapped-services</module>
+        <module>klass-model-bootstrapped-dropwizard-application</module>
         <module>klass-model-bootstrapped-dtos</module>
+        <module>klass-model-bootstrapped-json-views</module>
         <module>klass-model-bootstrapped-meta-model-constants</module>
         <module>klass-model-bootstrapped-meta-model-json</module>
-        <module>klass-model-bootstrapped-dropwizard-application</module>
-        <module>klass-model-bootstrapped-json-views</module>
+        <module>klass-model-bootstrapped-meta</module>
+        <module>klass-model-bootstrapped-reladomo-ddls-workaround</module>
+        <module>klass-model-bootstrapped-reladomo-ddls</module>
+        <module>klass-model-bootstrapped-reladomo-definitions</module>
+        <module>klass-model-bootstrapped-reladomo-pojos</module>
+        <module>klass-model-bootstrapped-reladomo-runtime-configuration</module>
+        <module>klass-model-bootstrapped-services</module>
     </modules>
 </project>
