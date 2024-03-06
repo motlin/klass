@@ -19,6 +19,6 @@ public class KlassCompilerMojo extends AbstractGenerateMojo
     @Override
     public void execute() throws MojoExecutionException
     {
-        this.getDomainModel();
+        this.getDomainModelFromFiles();
     }
 }

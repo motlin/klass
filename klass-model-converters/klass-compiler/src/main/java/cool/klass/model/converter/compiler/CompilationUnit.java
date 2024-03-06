@@ -1,6 +1,9 @@
 package cool.klass.model.converter.compiler;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
@@ -96,13 +99,26 @@ public final class CompilationUnit
     }
 
     @Nonnull
+    public static CompilationUnit createFromFile(
+            int ordinal,
+            @Nonnull File file)
+    {
+        String sourceCodeText = CompilationUnit.slurp(file);
+        String sourceName     = file.getAbsolutePath();
+        return CompilationUnit.createFromText(ordinal, Optional.empty(), sourceName, sourceCodeText);
+    }
+
+    @Nonnull
     public static CompilationUnit createFromClasspathLocation(
             int ordinal,
             @Nonnull String classpathLocation,
             @Nonnull ClassLoader classLoader)
     {
         String sourceCodeText = CompilationUnit.slurp(classpathLocation, classLoader);
-        return CompilationUnit.createFromText(ordinal, Optional.empty(), classpathLocation, sourceCodeText);
+        URL    resource       = classLoader.getResource(classpathLocation);
+        String file           = resource.getFile();
+        String sourceName     = classpathLocation.contains("jar!/") ? classpathLocation : file;
+        return CompilationUnit.createFromText(ordinal, Optional.empty(), sourceName, sourceCodeText);
     }
 
     @Nonnull
@@ -112,6 +128,19 @@ public final class CompilationUnit
                 ordinal,
                 classpathLocation,
                 CompilationUnit.class.getClassLoader());
+    }
+
+    @Nonnull
+    private static String slurp(File file)
+    {
+        try (Scanner scanner = new Scanner(file).useDelimiter("\\A"))
+        {
+            return scanner.hasNext() ? scanner.next() : "";
+        }
+        catch (FileNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Nonnull
