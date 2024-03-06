@@ -9,14 +9,19 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
 public class PersistentPatcher extends PersistentSynchronizer
 {
-    public PersistentPatcher(DataStore dataStore)
+    public PersistentPatcher(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore)
     {
-        this(dataStore, false);
+        this(mutationContext, dataStore, false);
     }
 
-    public PersistentPatcher(DataStore dataStore, boolean inTransaction)
+    public PersistentPatcher(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore,
+            boolean inTransaction)
     {
-        super(dataStore, inTransaction);
+        super(mutationContext, dataStore, inTransaction);
     }
 
     @Override

@@ -10,14 +10,19 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class PersistentReplacer extends PersistentSynchronizer
 {
-    public PersistentReplacer(DataStore dataStore)
+    public PersistentReplacer(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore)
     {
-        this(dataStore, false);
+        this(mutationContext, dataStore, false);
     }
 
-    public PersistentReplacer(DataStore dataStore, boolean inTransaction)
+    public PersistentReplacer(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore,
+            boolean inTransaction)
     {
-        super(dataStore, inTransaction);
+        super(mutationContext, dataStore, inTransaction);
     }
 
     @Override
@@ -101,12 +106,12 @@ public class PersistentReplacer extends PersistentSynchronizer
     {
         if (nextMode == OperationMode.CREATE)
         {
-            return new PersistentCreator(this.dataStore, this.inTransaction);
+            return new PersistentCreator(this.mutationContext, this.dataStore, this.inTransaction);
         }
 
         if (nextMode == OperationMode.REPLACE)
         {
-            return new PersistentReplacer(this.dataStore, this.inTransaction);
+            return new PersistentReplacer(this.mutationContext, this.dataStore, this.inTransaction);
         }
 
         throw new AssertionError();

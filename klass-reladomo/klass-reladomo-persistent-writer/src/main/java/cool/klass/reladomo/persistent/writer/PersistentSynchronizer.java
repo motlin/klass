@@ -1,5 +1,6 @@
 package cool.klass.reladomo.persistent.writer;
 
+import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableOrderedMap;
@@ -29,13 +31,19 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 public abstract class PersistentSynchronizer
 {
     @Nonnull
-    protected final DataStore dataStore;
+    protected final MutationContext mutationContext;
+    @Nonnull
+    protected final DataStore       dataStore;
 
     // TODO: Consider getting rid of this, it's just for assertions
     protected boolean inTransaction;
 
-    protected PersistentSynchronizer(DataStore dataStore, boolean inTransaction)
+    protected PersistentSynchronizer(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore,
+            boolean inTransaction)
     {
+        this.mutationContext = Objects.requireNonNull(mutationContext);
         this.dataStore = Objects.requireNonNull(dataStore);
         this.inTransaction = inTransaction;
     }
@@ -54,8 +62,12 @@ public abstract class PersistentSynchronizer
             throw new AssertionError();
         }
 
-        this.dataStore.runInTransaction(() ->
+        this.dataStore.runInTransaction(transaction ->
         {
+            Instant transactionTime       = this.mutationContext.getTransactionTime();
+            long    transactionTimeMillis = transactionTime.toEpochMilli();
+            transaction.setSystemTime(transactionTimeMillis);
+
             this.inTransaction = true;
             try
             {
@@ -87,7 +99,7 @@ public abstract class PersistentSynchronizer
         finally
         {
             this.inTransaction = false;
-        };
+        }
     }
 
     protected void synchronizeInTransaction(
@@ -120,33 +132,41 @@ public abstract class PersistentSynchronizer
             @Nonnull ObjectNode incomingJson)
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = klass.getDataTypeProperties();
-        ImmutableList<DataTypeProperty> nonDerivedDataTypeProperties = this.getNonDerivedDataTypeProperties(
-                dataTypeProperties);
-        for (int i = 0; i < nonDerivedDataTypeProperties.size(); i++)
+        ImmutableList<DataTypeProperty> simpleDataTypeProperties = dataTypeProperties.rejectWith(
+                this::shouldSkipDataTypeProperty,
+                klass);
+
+        boolean mutationOccurred = false;
+
+        for (DataTypeProperty dataTypeProperty : simpleDataTypeProperties)
         {
-            DataTypeProperty dataTypeProperty = nonDerivedDataTypeProperties.get(i);
-
-            // Skip `Long key id` properties in create (POST) mode.
-            // Skip temporal properties in most modes
-            // Handle audit properties separately
-            // Skip foreign keys for associations within the Projection.
-
-            if (dataTypeProperty.isForeignKey()
-                    || dataTypeProperty.isAudit()
-                    || dataTypeProperty.isTemporal()
-                    || this.hasReferencePropertyDependentOnDataTypeProperty(klass, dataTypeProperty)
-                    || dataTypeProperty.isKey() && !this.shouldWriteKey()
-                    || dataTypeProperty.isID() && !this.shouldWriteId())
-            {
-                continue;
-            }
-
-            Object newValue = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(dataTypeProperty, incomingJson);
-            // TODO: Reorder the first two parameters
-            this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, newValue);
+            mutationOccurred |= this.synchronizeDataTypeProperty(dataTypeProperty, persistentInstance, incomingJson);
         }
 
-        this.handleForeignKeysForAssociationsOutsideProjection(persistentInstance, incomingJson, klass);
+        Optional<PrimitiveProperty> createdByProperty     = klass.getCreatedByProperty();
+        Optional<PrimitiveProperty> createdOnProperty     = klass.getCreatedOnProperty();
+        Optional<PrimitiveProperty> lastUpdatedByProperty = klass.getLastUpdatedByProperty();
+    }
+
+    private boolean synchronizeDataTypeProperty(
+            DataTypeProperty dataTypeProperty,
+            Object persistentInstance,
+            @Nonnull ObjectNode incomingJson)
+    {
+        Object newValue = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(dataTypeProperty, incomingJson);
+        return this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, newValue);
+    }
+
+    private boolean shouldSkipDataTypeProperty(
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull Klass klass)
+    {
+        return dataTypeProperty.isForeignKey()
+                || dataTypeProperty.isAudit()
+                || dataTypeProperty.isTemporal()
+                || this.hasReferencePropertyDependentOnDataTypeProperty(klass, dataTypeProperty)
+                || dataTypeProperty.isKey() && !this.shouldWriteKey()
+                || dataTypeProperty.isID() && !this.shouldWriteId();
     }
     //endregion
 

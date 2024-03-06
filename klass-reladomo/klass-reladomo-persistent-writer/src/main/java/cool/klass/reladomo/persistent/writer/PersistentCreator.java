@@ -13,14 +13,19 @@ import org.eclipse.collections.impl.utility.Iterate;
 
 public class PersistentCreator extends PersistentSynchronizer
 {
-    public PersistentCreator(DataStore dataStore)
+    public PersistentCreator(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore)
     {
-        this(dataStore, false);
+        this(mutationContext, dataStore, false);
     }
 
-    public PersistentCreator(DataStore dataStore, boolean inTransaction)
+    public PersistentCreator(
+            @Nonnull MutationContext mutationContext,
+            @Nonnull DataStore dataStore,
+            boolean inTransaction)
     {
-        super(dataStore, inTransaction);
+        super(mutationContext, dataStore, inTransaction);
     }
 
     @Override
@@ -111,7 +116,7 @@ public class PersistentCreator extends PersistentSynchronizer
     {
         if (nextMode == OperationMode.CREATE)
         {
-            return new PersistentCreator(this.dataStore, this.inTransaction);
+            return new PersistentCreator(this.mutationContext, this.dataStore, this.inTransaction);
         }
 
         throw new AssertionError();
