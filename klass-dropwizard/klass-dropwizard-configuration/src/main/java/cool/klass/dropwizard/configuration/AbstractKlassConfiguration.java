@@ -35,6 +35,8 @@ import io.liftwizard.dropwizard.configuration.h2.H2Factory;
 import io.liftwizard.dropwizard.configuration.h2.H2FactoryProvider;
 import io.liftwizard.dropwizard.configuration.http.logging.JerseyHttpLoggingFactory;
 import io.liftwizard.dropwizard.configuration.http.logging.JerseyHttpLoggingFactoryProvider;
+import io.liftwizard.dropwizard.configuration.liquibase.migration.LiquibaseMigrationFactory;
+import io.liftwizard.dropwizard.configuration.liquibase.migration.LiquibaseMigrationFactoryProvider;
 import io.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactory;
 import io.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactoryProvider;
 import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
@@ -79,7 +81,8 @@ public class AbstractKlassConfiguration
         ClockFactoryProvider,
         NamedDataSourceProvider,
         ConnectionManagerProvider,
-        SystemPropertiesFactoryProvider
+        SystemPropertiesFactoryProvider,
+        LiquibaseMigrationFactoryProvider
 {
     // General
     private @Valid          KlassFactory            klassFactory;
@@ -93,11 +96,12 @@ public class AbstractKlassConfiguration
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
 
     // Data
-    private @Valid          H2Factory                h2Factory;
-    private @Valid @NotNull List<DdlExecutorFactory> ddlExecutorFactories = Arrays.asList();
-    private @Valid @NotNull ReladomoFactory          reladomoFactory      = new ReladomoFactory();
-    private @Valid @NotNull SampleDataFactory        sampleDataFactory    = new SampleDataFactory();
-    private @Valid @NotNull EnabledFactory           bootstrapFactory     = new EnabledFactory();
+    private @Valid          H2Factory                 h2Factory;
+    private @Valid @NotNull List<DdlExecutorFactory>  ddlExecutorFactories      = Arrays.asList();
+    private @Valid @NotNull ReladomoFactory           reladomoFactory           = new ReladomoFactory();
+    private @Valid @NotNull SampleDataFactory         sampleDataFactory         = new SampleDataFactory();
+    private @Valid @NotNull EnabledFactory            bootstrapFactory          = new EnabledFactory();
+    private @Valid @NotNull LiquibaseMigrationFactory liquibaseMigrationFactory = new LiquibaseMigrationFactory();
 
     @JsonUnwrapped
     private @Valid @NotNull NamedDataSourcesFactory namedDataSourcesFactory =
@@ -293,6 +297,19 @@ public class AbstractKlassConfiguration
     public void setSystemPropertiesFactory(SystemPropertiesFactory systemPropertiesFactory)
     {
         this.systemPropertiesFactory = systemPropertiesFactory;
+    }
+
+    @JsonProperty("liquibase")
+    @Override
+    public LiquibaseMigrationFactory getLiquibaseMigrationFactory()
+    {
+        return this.liquibaseMigrationFactory;
+    }
+
+    @JsonProperty("liquibase")
+    public void setLiquibaseMigrationFactory(LiquibaseMigrationFactory liquibaseMigrationFactory)
+    {
+        this.liquibaseMigrationFactory = liquibaseMigrationFactory;
     }
 
     @Override
