@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
+import com.gs.fw.common.mithra.superclassimpl.MithraTransactionalObjectImpl;
 import com.gs.fw.finder.TransactionalDomainList;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
@@ -493,19 +494,19 @@ public class KlassBootstrapWriter
     }
 
     @Nonnull
-    private Consumer<NumericPropertyValidation> getValidationHandler(
+    private <T extends MithraTransactionalObjectImpl & klass.model.meta.domain.NumericPropertyValidation> Consumer<NumericPropertyValidation> getValidationHandler(
             @Nonnull Classifier classifier,
             @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull Supplier<klass.model.meta.domain.NumericPropertyValidation> bootstrappedValidationSupplier)
+            @Nonnull Supplier<T> bootstrappedValidationSupplier)
     {
         return validation ->
                 this.handleValidation(classifier, dataTypeProperty, bootstrappedValidationSupplier.get(), validation);
     }
 
-    protected void handleValidation(
+    protected <T extends MithraTransactionalObjectImpl & klass.model.meta.domain.NumericPropertyValidation> void handleValidation(
             @Nonnull Classifier classifier,
             @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull klass.model.meta.domain.NumericPropertyValidation bootstrappedValidation,
+            @Nonnull T bootstrappedValidation,
             @Nonnull NumericPropertyValidation validation)
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces

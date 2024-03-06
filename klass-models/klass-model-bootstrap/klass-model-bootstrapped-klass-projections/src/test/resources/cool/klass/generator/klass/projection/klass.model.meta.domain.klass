@@ -115,10 +115,6 @@ projection EnumerationPropertyProjection on EnumerationProperty
     enumeration: EnumerationProjection,
 }
 
-projection PropertyValidationProjection on PropertyValidation
-{
-}
-
 projection NumericPropertyValidationProjection on NumericPropertyValidation
 {
     number: "NumericPropertyValidation number",

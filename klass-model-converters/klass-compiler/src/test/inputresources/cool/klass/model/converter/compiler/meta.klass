@@ -136,31 +136,27 @@ association ClassifierHasEnumerationProperties
     enumerationProperties: EnumerationProperty[0..*] owned
         orderBy: this.ordinal;
 }
-interface PropertyValidation implements Element
-{
-}
-class NumericPropertyValidation
-    abstract(table-per-subclass)
-    implements PropertyValidation
+interface NumericPropertyValidation
+    implements Element
 {
     classifierName                : String key maximumLength(256);
     propertyName                  : String key maximumLength(256);
     number: Integer;
 }
 class MinLengthPropertyValidation
-    extends NumericPropertyValidation
+    implements NumericPropertyValidation
 {
 }
 class MaxLengthPropertyValidation
-    extends NumericPropertyValidation
+    implements NumericPropertyValidation
 {
 }
 class MinPropertyValidation
-    extends NumericPropertyValidation
+    implements NumericPropertyValidation
 {
 }
 class MaxPropertyValidation
-    extends NumericPropertyValidation
+    implements NumericPropertyValidation
 {
 }
 association DataTypePropertyHasMinLengthPropertyValidation
