@@ -64,6 +64,7 @@ public class ReladomoJsonViewSerializer
         {
             throw new IllegalStateException(activeViewClass.getCanonicalName());
         }
+
         KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
         String        projectionName = klassJsonView.getProjectionName();
         Projection    projection     = this.domainModel.getProjectionByName(projectionName);

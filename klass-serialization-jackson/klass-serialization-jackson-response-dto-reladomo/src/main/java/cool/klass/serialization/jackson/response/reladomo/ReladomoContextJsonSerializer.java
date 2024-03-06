@@ -59,7 +59,11 @@ public class ReladomoContextJsonSerializer
             @Nonnull SerializerProvider serializers) throws IOException
     {
         Class<?> activeViewClass = serializers.getActiveView();
-        Objects.requireNonNull(activeViewClass);
+        Objects.requireNonNull(
+                activeViewClass,
+                () -> String.format(
+                        "Could not find json serializer for %s. Usually this is caused by a missing @JsonView() annotation.",
+                        mithraObject.getClass().getCanonicalName()));
 
         if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
         {
@@ -107,7 +111,7 @@ public class ReladomoContextJsonSerializer
                 }
                 else if (projectionElement instanceof ProjectionWithReferenceProperty)
                 {
-                    this.handleProjectionWithAssociationEnd(
+                    this.handleProjectionWithReferenceProperty(
                             jsonGenerator,
                             mithraObject,
                             (ProjectionWithReferenceProperty) projectionElement);
@@ -181,7 +185,7 @@ public class ReladomoContextJsonSerializer
         throw new AssertionError();
     }
 
-    public void handleProjectionWithAssociationEnd(
+    public void handleProjectionWithReferenceProperty(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
             @Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd) throws IOException
