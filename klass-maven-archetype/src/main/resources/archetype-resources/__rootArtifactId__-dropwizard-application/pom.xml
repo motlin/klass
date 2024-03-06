@@ -37,17 +37,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <basedir>${project.basedir}</basedir>
-                    <workingDirectory>${project.basedir}</workingDirectory>
-                    <executable>java</executable>
-                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.json5</commandlineArgs>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
@@ -616,36 +605,6 @@
                     </plugin>
 
                 </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>run-demo</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-
-                <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
-                <!--<file>-->
-                    <!--<missing>${project.build.directory}/h2db/${artifactId}-h2.mv.db</missing>-->
-                <!--</file>-->
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>exec-maven-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <phase>install</phase>
-                                    <goals>
-                                        <goal>exec</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
             </build>
         </profile>
 
