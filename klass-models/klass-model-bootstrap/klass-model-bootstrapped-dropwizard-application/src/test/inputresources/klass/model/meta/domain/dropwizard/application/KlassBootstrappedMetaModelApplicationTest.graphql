@@ -1,0 +1,98 @@
+fragment BlueprintFields on Blueprint {
+    key
+    systemFrom
+    systemTo
+    version {
+        number
+        systemFrom
+        systemTo
+        createdOn
+        createdBy {
+            # more available from here
+            userId
+        }
+        lastUpdatedBy {
+            userId
+        }
+    }
+    title
+    voteSummary {
+        numberOfUpvotes
+        systemFrom
+        systemTo
+    }
+    blueprintString {
+        sha
+        createdOn
+        createdBy {
+            userId
+        }
+    }
+    imgurImage {
+        imgurId
+        imgurType
+        height
+        width
+        systemFrom
+        systemTo
+        # not in json
+        deleteHash
+    }
+    tags {
+        systemFrom
+        systemTo
+        tag {
+            category
+            name
+            # not in json
+            ordinal
+        }
+    }
+}
+
+query {
+    blueprint(key: "-KnQ865j-qQ21WoUPbd3") {
+        ...BlueprintFields
+    }
+
+    v48: blueprintByFinder(operation: { key: { eq: "-KnQ865j-qQ21WoUPbd3" } }) {
+        ...BlueprintFields
+    }
+
+    v47: blueprintByFinder(
+        operation: {
+            key: { eq: "-KnQ865j-qQ21WoUPbd3" }
+            system: { eq: "2020-12-15T00:00:00Z" }
+        }
+    ) {
+        ...BlueprintFields
+    }
+
+    v46: blueprintByFinder(
+        operation: {
+            key: { eq: "-KnQ865j-qQ21WoUPbd3" }
+            version: { number: { eq: 46 } }
+            system: { equalsEdgePoint: {} }
+        }
+    ) {
+        ...BlueprintFields
+    }
+
+    v48String: blueprintByOperation(
+        operation: "this.key == \"-KnQ865j-qQ21WoUPbd3\" || substring(this.author.displayName, 1, 2) == \"asdf\""
+    ) {
+        ...BlueprintFields
+    }
+
+    v47String: blueprintByOperation(
+        operation: "this.key == \"-KnQ865j-qQ21WoUPbd3\" && this.system == \"2020-12-15T00:00:00Z\""
+    ) {
+        ...BlueprintFields
+    }
+
+    v46String: blueprintByOperation(
+        operation: "this.key == \"-KnQ865j-qQ21WoUPbd3\" && this.version.number == 46 && this.system equalsEdgePoint"
+    ) {
+        ...BlueprintFields
+    }
+}

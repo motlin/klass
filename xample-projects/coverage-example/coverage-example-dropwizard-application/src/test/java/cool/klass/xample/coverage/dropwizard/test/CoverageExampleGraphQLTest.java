@@ -5,9 +5,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
 
-public class EveryTypeKeyPropertyGraphQLTest
+public class CoverageExampleGraphQLTest
         extends AbstractCoverageTest
 {
     @Test
@@ -69,14 +70,11 @@ public class EveryTypeKeyPropertyGraphQLTest
                 }
                 """;
 
-        String json = "{\n"
-                + "\"query\": \"" + query + "\"\n"
-                + "}\n";
-
-        Response response = client.target("http://localhost:{port}/graphql")
+        Response response = client
+                .target("http://localhost:{port}/graphql")
                 .resolveTemplate("port", this.appRule.getLocalPort())
                 .request()
-                .post(Entity.json(json));
+                .post(Entity.json(Maps.mutable.with("query", query)));
 
         this.assertResponse("graphqlSmokeTest", Status.OK, response);
     }
