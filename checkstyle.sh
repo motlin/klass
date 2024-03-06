@@ -3,23 +3,54 @@
 set -uo pipefail
 
 VOICE='Serena (Premium)'
-
-# mvnd is the maven daemon, and is much faster but doesn't work for builds that include maven plugins plus runs of those maven plugins
-# mvnw is the regular maven wrapper.
-export MAVEN='./mvnw'
-export MAVEN='mvnd'
-
+MAVEN='mvnd'
 COMMAND="Checkstyle"
+INCREMENTAL=false
+SERIAL=false
+
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case $key in
+        --no-daemon)
+            MAVEN='./mvnw'
+            shift
+            ;;
+        --incremental)
+            INCREMENTAL=true
+            shift
+            ;;
+        --serial)
+            SERIAL=true
+            shift
+            ;;
+        *)
+            # unknown option
+            shift
+            ;;
+    esac
+done
 
 function echoSay {
     echo "$1"
-    say --voice "$VOICE" "$1"
+    say --voice "$VOICE" "$1" &
 }
 
 function failWithMessage {
-    if [ "$1" -ne 0 ]; then
-        echoSay "$2 failed with exit code $1"
-		osascript -e "display notification \"$2 failed with exit code $1\" with title \"$COMMAND failed\""
+    EXIT_CODE=$1
+    REASON=$2
+
+    if [ "$EXIT_CODE" -ne 0 ]; then
+        MESSAGE="$COMMAND failed on commit: '$COMMIT_MESSAGE' due to: '$REASON' with exit code: '$EXIT_CODE'"
+
+        echoSay "$MESSAGE"
+        # osascript -e "display notification \"$MESSAGE\" with title \"$COMMAND failed\""
+        curl -s \
+            --form-string "token=$PUSHOVER_TOKEN" \
+            --form-string "user=$PUSHOVER_USER" \
+            --form-string "message=$MESSAGE" \
+            --form-string "title=$COMMAND" \
+            https://api.pushover.net/1/messages.json
         exit 1
     fi
 }
@@ -31,15 +62,44 @@ function checkLocalModification {
 
 COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
 
-echoSay "[[volm 0.10]] Beginning build of commit: $COMMIT_MESSAGE" &
+if [[ $COMMIT_MESSAGE == *\[skip\]* || $COMMIT_MESSAGE == *\[pass\]* ]]; then
+    echo "Skipping $COMMAND due to [skip] or [pass] in commit: '$COMMIT_MESSAGE'"
+    exit 0
+fi
 
-$MAVEN clean            --threads 2C
-$MAVEN checkstyle:check --threads 2C
+if [[ $COMMIT_MESSAGE == *\[stop\]* || $COMMIT_MESSAGE == *\[fail\]* ]]; then
+    echo "Stopping $COMMAND due to [stop] or [fail] in commit: '$COMMIT_MESSAGE'"
+    exit 1
+fi
+
+if [[ $COMMIT_MESSAGE == *\[no-daemon\]* ]]; then
+    MAVEN='./mvnw'
+fi
+
+if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
+    SERIAL=true
+fi
+
+if [ "$SERIAL" = true ]; then
+    PARALLELISM=""
+else
+    PARALLELISM="--threads 2C --fail-at-end"
+fi
+
+echo "Beginning build of commit: $COMMIT_MESSAGE"
+
+if [ "$INCREMENTAL" != true ]; then
+    $MAVEN clean --threads 2C --quiet
+fi
+
+$MAVEN checkstyle:check $PARALLELISM
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
-    ./mvnw checkstyle:check
-    echoSay "$COMMAND failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
+    if [ "$SERIAL" != true ]; then
+        ./mvnw checkstyle:check
+    fi
+    failWithMessage $EXIT_CODE "$MAVEN checkstyle:check"
     exit 1
 fi
 
