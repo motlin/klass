@@ -24,6 +24,7 @@ import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.api.set.SetIterable;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
@@ -206,7 +207,9 @@ public abstract class AbstractCompilerAnnotation
 
     protected Pair<Token, Token> getFirstAndLastToken()
     {
-        SetIterable<Token> contextTokens = this.getContextTokens();
+        MutableSet<Token> contextTokens = Sets.mutable.empty();
+        this.offendingContexts.asLazy().collect(ParserRuleContext::getStart).into(contextTokens);
+        this.offendingContexts.asLazy().collect(ParserRuleContext::getStop).into(contextTokens);
 
         return Tuples.pair(contextTokens.min(TOKEN_COMPARATOR), contextTokens.max(TOKEN_COMPARATOR));
     }
