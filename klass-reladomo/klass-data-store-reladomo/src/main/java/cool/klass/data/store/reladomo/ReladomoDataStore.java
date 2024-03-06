@@ -57,13 +57,13 @@ public class ReladomoDataStore implements DataStore
         Config config         = ConfigFactory.load();
         Config reladomoConfig = config.getConfig("klass.data.reladomo");
 
-        if (LOGGER.isInfoEnabled())
+        if (LOGGER.isDebugEnabled())
         {
             ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
                     .setJson(false)
                     .setOriginComments(false);
             String render = reladomoConfig.root().render(configRenderOptions);
-            LOGGER.info("Reladomo configuration:\n{}", render);
+            LOGGER.debug("Reladomo configuration:\n{}", render);
         }
 
         this.retryCount = reladomoConfig.getInt("retryCount");

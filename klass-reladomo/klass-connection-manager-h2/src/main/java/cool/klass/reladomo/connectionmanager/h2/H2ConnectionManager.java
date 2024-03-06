@@ -44,13 +44,13 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
         this.schemaName = h2Config.getString("schemaName");
         this.databaseTimeZone = TimeZone.getTimeZone(timeZoneName);
 
-        if (LOGGER.isInfoEnabled())
+        if (LOGGER.isDebugEnabled())
         {
             ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
                     .setJson(false)
                     .setOriginComments(false);
             String render = h2Config.root().render(configRenderOptions);
-            LOGGER.info("H2 configuration:\n{}", render);
+            LOGGER.debug("H2 configuration:\n{}", render);
         }
 
         XAConnectionManager xaConnectionManager = new XAConnectionManager();
