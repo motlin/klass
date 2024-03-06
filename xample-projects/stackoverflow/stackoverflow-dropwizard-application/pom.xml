@@ -163,6 +163,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stackoverflow</groupId>
+            <artifactId>stackoverflow-graphql</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -242,6 +247,16 @@
             <artifactId>klass-dropwizard</artifactId>
             <version>${klass.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.smoketurner.dropwizard</groupId>
+            <artifactId>graphql-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
         </dependency>
 
         <!--TODO: Move all runtime dependencies to AbstractKlassApplication-->

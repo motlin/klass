@@ -2,6 +2,7 @@ package com.stackoverflow.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.data.store.reladomo.ReladomoDataStore;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -19,6 +20,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
         super.initialize(bootstrap);
 
         // TODO: application initialization
+        bootstrap.addBundle(new StackOverflowGraphQLBundle(new ReladomoDataStore()));
     }
 
     @Override

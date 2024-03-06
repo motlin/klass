@@ -1,0 +1,33 @@
+type Query {
+	question(id: Long!): Question
+	questions: [Question]
+}
+
+type Question {
+	id: Long!
+	title: String!
+	body: String!
+	status: Status!,
+	deleted: Boolean!,
+	systemFrom: String!,
+	systemTo: String,
+	createdById: String!,
+	createdOn: String!
+	lastUpdatedById: String!,
+	tags: [Tag]!,
+	version: QuestionVersion!,
+}
+
+enum Status {
+	OPEN,
+	ON_HOLD,
+	CLOSED,
+}
+
+type Tag {
+	name: String!,
+}
+
+type QuestionVersion {
+	number: Int!,
+}

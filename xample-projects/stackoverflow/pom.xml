@@ -41,6 +41,9 @@
         <module>${app.artifactId}-dtos</module>
         <module>${app.artifactId}-meta-model-constants</module>
         <module>${app.artifactId}-json-views</module>
+        <module>${app.artifactId}-graphql</module>
+        <module>${app.artifactId}-graphql-schema</module>
+        <module>${app.artifactId}-graphql-runtime-wiring</module>
         <module>${app.artifactId}-dropwizard-application</module>
     </modules>
 

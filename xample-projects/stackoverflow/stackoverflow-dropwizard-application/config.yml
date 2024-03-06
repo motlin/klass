@@ -13,8 +13,15 @@ logging:
     com.gs.fw.common.mithra.connectionmanager: INFO
     org.eclipse.jetty: INFO
     org.apache.http: INFO
+    graphql.execution.Execution: INFO
   appenders:
     - type: console
       # In production, always use UTC. In unit tests, system is more convenient
       timeZone: utc
       logFormat: "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
+
+graphQL:
+  enableTracing: false
+  queryCache: maximumSize=10000
+  schemaFiles:
+    - com/stackoverflow/graphql/schema/stackoverflow.graphqls
