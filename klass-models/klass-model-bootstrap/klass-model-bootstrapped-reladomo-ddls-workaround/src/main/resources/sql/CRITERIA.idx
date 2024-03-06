@@ -1,0 +1,2 @@
+alter table CRITERIA add constraint CRITERIA_PK primary key (id);
+

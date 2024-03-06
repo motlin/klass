@@ -1,0 +1,8 @@
+alter table PARAMETERIZED_PROPERTY add constraint PARAMETERIZED_PROPERTY_PK primary key (name, owning_class_name);
+
+drop index if exists PARAMETERIZED_PROPERTY_IDX0;
+create index PARAMETERIZED_PROPERTY_IDX0 on PARAMETERIZED_PROPERTY(result_type_name);
+
+drop index if exists PARAMETERIZED_PROPERTY_IDX1;
+create index PARAMETERIZED_PROPERTY_IDX1 on PARAMETERIZED_PROPERTY(owning_class_name);
+

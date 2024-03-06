@@ -1,0 +1,2 @@
+alter table PARAMETERIZED_PROPERTY_ORDERING add constraint PARAMETERIZED_PROPERTY_ORDERING_PK primary key (owning_class_name, name);
+

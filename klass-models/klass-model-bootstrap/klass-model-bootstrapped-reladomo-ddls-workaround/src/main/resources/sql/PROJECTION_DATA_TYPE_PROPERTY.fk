@@ -1,0 +1,7 @@
+alter table PROJECTION_DATA_TYPE_PROPERTY add constraint PROJECTION_DATA_TYPE_PROPERTY_fk_0 foreign key (
+    property_classifier_name,property_name
+)
+references DATA_TYPE_PROPERTY(
+    classifier_name,name
+);
+

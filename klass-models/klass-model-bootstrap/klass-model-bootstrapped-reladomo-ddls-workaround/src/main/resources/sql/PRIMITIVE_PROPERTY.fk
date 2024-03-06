@@ -1,0 +1,7 @@
+alter table PRIMITIVE_PROPERTY add constraint PRIMITIVE_PROPERTY_fk_0 foreign key (
+    classifier_name
+)
+references CLASSIFIER(
+    name
+);
+

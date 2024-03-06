@@ -1,0 +1,7 @@
+alter table URL_PARAMETER add constraint URL_PARAMETER_fk_0 foreign key (
+    url_class_name,url_string
+)
+references URL(
+    class_name,url
+);
+

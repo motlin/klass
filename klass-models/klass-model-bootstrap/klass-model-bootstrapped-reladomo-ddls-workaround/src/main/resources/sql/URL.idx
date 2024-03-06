@@ -1,0 +1,2 @@
+alter table URL add constraint URL_PK primary key (class_name, url);
+

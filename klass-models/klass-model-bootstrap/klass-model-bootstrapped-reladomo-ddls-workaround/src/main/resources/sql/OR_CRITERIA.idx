@@ -1,0 +1,1 @@
+alter table OR_CRITERIA add constraint OR_CRITERIA_PK primary key (id);

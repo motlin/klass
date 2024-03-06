@@ -1,0 +1,6 @@
+alter table PROJECTION_PROJECTION_REFERENCE add constraint PROJECTION_PROJECTION_REFERENCE_fk_0 foreign key (
+    projection_name
+)
+references SERVICE_PROJECTION(
+    name
+);

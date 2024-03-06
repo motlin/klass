@@ -1,0 +1,2 @@
+alter table MAX_LENGTH_PROPERTY_VALIDATION add constraint MAX_LENGTH_PROPERTY_VALIDATION_PK primary key (classifier_name, property_name);
+

@@ -1,0 +1,1 @@
+alter table AND_CRITERIA add constraint AND_CRITERIA_PK primary key (id);

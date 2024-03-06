@@ -1,0 +1,7 @@
+alter table PROPERTY_MODIFIER add constraint PROPERTY_MODIFIER_fk_0 foreign key (
+    classifier_name,property_name
+)
+references DATA_TYPE_PROPERTY(
+    classifier_name,name
+);
+

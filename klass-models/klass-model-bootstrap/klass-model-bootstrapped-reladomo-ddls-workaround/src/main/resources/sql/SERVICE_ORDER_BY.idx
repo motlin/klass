@@ -1,0 +1,5 @@
+alter table SERVICE_ORDER_BY add constraint SERVICE_ORDER_BY_PK primary key (service_class_name, service_url_string, service_verb, this_member_reference_path_id);
+
+drop index if exists SERVICE_ORDER_BY_IDX0;
+create index SERVICE_ORDER_BY_IDX0 on SERVICE_ORDER_BY(this_member_reference_path_id);
+

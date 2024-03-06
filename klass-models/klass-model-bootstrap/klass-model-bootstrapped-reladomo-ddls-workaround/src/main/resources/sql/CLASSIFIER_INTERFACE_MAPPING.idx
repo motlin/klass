@@ -1,0 +1,5 @@
+alter table CLASSIFIER_INTERFACE_MAPPING add constraint CLASSIFIER_INTERFACE_MAPPING_PK primary key (classifier_name, interface_name);
+
+drop index if exists CLASSIFIER_INTERFACE_MAPPING_IDX0;
+create index CLASSIFIER_INTERFACE_MAPPING_IDX0 on CLASSIFIER_INTERFACE_MAPPING(interface_name);
+

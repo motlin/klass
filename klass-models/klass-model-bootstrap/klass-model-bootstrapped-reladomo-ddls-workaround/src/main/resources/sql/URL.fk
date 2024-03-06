@@ -1,0 +1,7 @@
+alter table URL add constraint URL_fk_0 foreign key (
+    class_name
+)
+references SERVICE_GROUP(
+    class_name
+);
+

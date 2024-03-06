@@ -1,0 +1,5 @@
+alter table PRIMITIVE_PROPERTY add constraint PRIMITIVE_PROPERTY_PK primary key (name, classifier_name);
+
+drop index if exists PRIMITIVE_PROPERTY_IDX0;
+create index PRIMITIVE_PROPERTY_IDX0 on PRIMITIVE_PROPERTY(classifier_name);
+

@@ -1,0 +1,7 @@
+alter table SERVICE_PROJECTION add constraint SERVICE_PROJECTION_fk_0 foreign key (
+    class_name
+)
+references KLASS(
+    name
+);
+

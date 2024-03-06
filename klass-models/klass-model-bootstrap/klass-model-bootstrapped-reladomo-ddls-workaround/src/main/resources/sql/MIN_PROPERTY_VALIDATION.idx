@@ -1,0 +1,2 @@
+alter table MIN_PROPERTY_VALIDATION add constraint MIN_PROPERTY_VALIDATION_PK primary key (classifier_name, property_name);
+

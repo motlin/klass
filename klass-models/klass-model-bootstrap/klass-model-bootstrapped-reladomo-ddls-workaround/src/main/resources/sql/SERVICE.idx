@@ -1,0 +1,2 @@
+alter table SERVICE add constraint SERVICE_PK primary key (class_name, url_string, verb);
+

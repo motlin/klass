@@ -1,0 +1,14 @@
+alter table CLASSIFIER_INTERFACE_MAPPING add constraint CLASSIFIER_INTERFACE_MAPPING_fk_0 foreign key (
+    classifier_name
+)
+references CLASSIFIER(
+    name
+);
+
+alter table CLASSIFIER_INTERFACE_MAPPING add constraint CLASSIFIER_INTERFACE_MAPPING_fk_1 foreign key (
+    interface_name
+)
+references INTERFACE(
+    name
+);
+

@@ -1,0 +1,7 @@
+alter table CLASSIFIER_MODIFIER add constraint CLASSIFIER_MODIFIER_fk_0 foreign key (
+    classifier_name
+)
+references CLASSIFIER(
+    name
+);
+

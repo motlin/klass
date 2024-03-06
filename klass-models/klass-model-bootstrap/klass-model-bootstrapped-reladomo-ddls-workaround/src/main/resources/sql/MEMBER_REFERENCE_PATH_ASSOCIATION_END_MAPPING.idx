@@ -1,0 +1,5 @@
+alter table MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING add constraint MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_PK primary key (member_reference_path_id, association_owning_class_name, association_end_name);
+
+drop index if exists MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX0;
+create index MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX0 on MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING(association_end_name, association_owning_class_name);
+

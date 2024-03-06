@@ -1,0 +1,2 @@
+alter table EXPRESSION_VALUE add constraint EXPRESSION_VALUE_PK primary key (id);
+

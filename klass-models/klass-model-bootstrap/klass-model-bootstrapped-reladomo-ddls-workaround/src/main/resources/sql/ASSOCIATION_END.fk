@@ -1,0 +1,21 @@
+alter table ASSOCIATION_END add constraint ASSOCIATION_END_fk_0 foreign key (
+    association_name
+)
+references ASSOCIATION(
+    name
+);
+
+alter table ASSOCIATION_END add constraint ASSOCIATION_END_fk_1 foreign key (
+    result_type_name
+)
+references KLASS(
+    name
+);
+
+alter table ASSOCIATION_END add constraint ASSOCIATION_END_fk_2 foreign key (
+    owning_class_name
+)
+references KLASS(
+    name
+);
+

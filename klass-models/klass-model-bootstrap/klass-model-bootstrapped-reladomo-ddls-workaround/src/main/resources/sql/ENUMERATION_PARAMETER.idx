@@ -1,0 +1,5 @@
+alter table ENUMERATION_PARAMETER add constraint ENUMERATION_PARAMETER_PK primary key (id);
+
+drop index if exists ENUMERATION_PARAMETER_IDX0;
+create index ENUMERATION_PARAMETER_IDX0 on ENUMERATION_PARAMETER(enumeration_name);
+
