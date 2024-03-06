@@ -228,11 +228,57 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.isOptional;
     }
 
-    public abstract boolean isSystem();
+    public boolean isSystem()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isSystem);
+    }
 
-    public abstract boolean isValid();
+    public boolean isValid()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isValid);
+    }
 
     public abstract boolean isTemporal();
+
+    public boolean isValidRange()
+    {
+        return this.isValid() && !this.isFrom() && !this.isTo();
+    }
+
+    public boolean isValidFrom()
+    {
+        return this.isValid() && this.isFrom();
+    }
+
+    public boolean isValidTo()
+    {
+        return this.isValid() && this.isTo();
+    }
+
+    public boolean isSystemRange()
+    {
+        return this.isSystem() && !this.isFrom() && !this.isTo();
+    }
+
+    public boolean isSystemFrom()
+    {
+        return this.isSystem() && this.isFrom();
+    }
+
+    public boolean isSystemTo()
+    {
+        return this.isSystem() && this.isTo();
+    }
+
+    public boolean isFrom()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isFrom);
+    }
+
+    public boolean isTo()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isTo);
+    }
 
     public void setKeyMatchingThisForeignKey(
             AntlrAssociationEnd associationEnd,

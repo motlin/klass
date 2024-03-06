@@ -8,9 +8,10 @@ import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.eclipse.collections.api.block.predicate.Predicate;
+import org.eclipse.collections.api.list.ImmutableList;
 
-public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
+public class ClassTemporalPropertyInferencePhase
+        extends AbstractCompilerPhase
 {
     public ClassTemporalPropertyInferencePhase(@Nonnull CompilerState compilerState)
     {
@@ -30,45 +31,50 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         super.enterClassifierModifier(ctx);
 
         String modifierText = ctx.getText();
-        // TODO: Inference happens for batches of three properties. It could check whether it needs to add each of the three individually
-        if (!this.hasTemporalProperty(AntlrDataTypeProperty::isValid)
-                && ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText)))
-        {
-            this.addTemporalProperties(ctx, "valid");
-        }
 
-        if (!this.hasTemporalProperty(AntlrDataTypeProperty::isSystem)
-                && ("systemTemporal".equals(modifierText) || "bitemporal".equals(modifierText)))
-        {
-            this.addTemporalProperties(ctx, "system");
-        }
-    }
-
-    private boolean hasTemporalProperty(Predicate<AntlrDataTypeProperty<?>> predicate)
-    {
-        return this.compilerState
+        ImmutableList<AntlrDataTypeProperty<?>> dataTypeProperties = this.compilerState
                 .getCompilerWalkState()
                 .getClassState()
-                .getDataTypeProperties()
-                .asLazy()
-                .select(AntlrDataTypeProperty::isTemporal)
-                .anySatisfy(predicate);
-    }
+                .getDataTypeProperties();
 
-    private void addTemporalProperties(
-            @Nonnull ClassifierModifierContext ctx,
-            @Nonnull String prefix)
-    {
-        this.runCompilerMacro(prefix + "    : TemporalRange?   " + prefix + ";");
-        this.runCompilerMacro(prefix + "From: TemporalInstant? " + prefix + " from;");
-        this.runCompilerMacro(prefix + "To  : TemporalInstant? " + prefix + " to;");
+        if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
+        {
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
+            {
+                this.runCompilerMacro("valid    : TemporalRange?   valid;");
+            }
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
+            {
+                this.runCompilerMacro("validFrom: TemporalInstant? valid from;");
+            }
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidTo))
+            {
+                this.runCompilerMacro("validTo  : TemporalInstant? valid to;");
+            }
+        }
+
+        if ("systemTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
+        {
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
+            {
+                this.runCompilerMacro("system    : TemporalRange?   system;");
+            }
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
+            {
+                this.runCompilerMacro("systemFrom: TemporalInstant? system from;");
+            }
+            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemTo))
+            {
+                this.runCompilerMacro("systemTo  : TemporalInstant? system to;");
+            }
+        }
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
         AntlrModifier classifierModifierState =
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
-        ParseTreeListener       compilerPhase           = new PropertyPhase(this.compilerState);
+        ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 classifierModifierState,

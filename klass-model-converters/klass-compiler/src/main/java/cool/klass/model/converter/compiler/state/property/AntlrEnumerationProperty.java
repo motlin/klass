@@ -71,19 +71,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         return false;
     }
 
-    // TODO: Test that error is thrown for system, valid, to, from on enum properties
-    @Override
-    public boolean isSystem()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isValid()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public EnumerationPropertyBuilder build()

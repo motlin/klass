@@ -120,6 +120,16 @@ public class AntlrModifier
         return this.is("valid");
     }
 
+    public boolean isFrom()
+    {
+        return this.is("from");
+    }
+
+    public boolean isTo()
+    {
+        return this.is("to");
+    }
+
     public boolean isVersionNumber()
     {
         return this.is("version");

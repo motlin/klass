@@ -71,18 +71,6 @@ public class AntlrPrimitiveProperty
         return this.antlrPrimitiveType.isTemporal();
     }
 
-    @Override
-    public boolean isSystem()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isSystem);
-    }
-
-    @Override
-    public boolean isValid()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isValid);
-    }
-
     @Nonnull
     @Override
     public PrimitivePropertyBuilder build()
