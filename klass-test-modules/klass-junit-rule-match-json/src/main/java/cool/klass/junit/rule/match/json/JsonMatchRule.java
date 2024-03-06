@@ -81,7 +81,7 @@ public class JsonMatchRule extends ErrorCollector
             File file = new File(uri);
             this.writeStringToFile(actualString, file);
         }
-        JSONAssert.assertEquals(expectedStringFromFile, actualString, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(actualString, expectedStringFromFile, actualString, JSONCompareMode.STRICT);
     }
 
     private void writeStringToFile(String string, File file) throws FileNotFoundException

@@ -79,7 +79,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "  }\n"
                 + "]\n";
 
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "  \"code\" : 405,\n"
                 + "  \"message\" : \"HTTP 405 Method Not Allowed\"\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -224,6 +224,6 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "  ]\n"
                 + "}\n";
 
-        JSONAssert.assertEquals(expectedJson, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);
     }
 }

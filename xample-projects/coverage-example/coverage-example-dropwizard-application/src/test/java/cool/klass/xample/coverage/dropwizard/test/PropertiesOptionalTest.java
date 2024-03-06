@@ -39,7 +39,7 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 + "  \"optionalInstant\": \"1999-12-31T23:59:00Z\",\n"
                 + "  \"optionalLocalDate\": \"1999-12-31\"\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -70,6 +70,6 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 + "  \"optionalInstant\": null,\n"
                 + "  \"optionalLocalDate\": null\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 }

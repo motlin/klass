@@ -104,7 +104,7 @@ public class QuestionResourceManualTest
                 + "    \"number\": 2\n"
                 + "  }\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -265,7 +265,7 @@ public class QuestionResourceManualTest
                     + "    \"number\": 1\n"
                     + "  }\n"
                     + "}\n";
-            JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
+            JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
         }
         //</editor-fold>
     }
@@ -436,7 +436,7 @@ public class QuestionResourceManualTest
                 + "    \"number\": 3\n"
                 + "  }\n"
                 + "}";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
 
         // TODO: PUT with owned children, with all four cases of unchanged, created, updated, deleted
     }

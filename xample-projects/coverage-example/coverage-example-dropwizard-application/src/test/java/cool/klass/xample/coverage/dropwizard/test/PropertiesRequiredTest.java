@@ -40,7 +40,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
                 + "  \"requiredLocalDate\": \"1999-12-31\"\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredInstant\": \"2000-01-01T00:00:00Z\",\n"
                 + "  \"requiredLocalDate\": \"2000-01-01\"\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -125,6 +125,6 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
                 + "  \"requiredLocalDate\": \"1999-12-31\"\n"
                 + "}\n";
-        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 }
