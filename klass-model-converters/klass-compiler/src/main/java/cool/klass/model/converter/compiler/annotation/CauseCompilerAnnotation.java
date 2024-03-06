@@ -8,6 +8,9 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.fusesource.jansi.Ansi.Color;
+
+import static org.fusesource.jansi.Ansi.Color.GREEN;
 
 public class CauseCompilerAnnotation
         extends AbstractCompilerAnnotation
@@ -20,6 +23,13 @@ public class CauseCompilerAnnotation
             @Nonnull AnnotationSeverity severity)
     {
         super(compilationUnit, macroCause, offendingContexts, sourceContexts, severity);
+    }
+
+    @Nonnull
+    @Override
+    protected Color getCaretColor()
+    {
+        return GREEN;
     }
 
     @Nonnull

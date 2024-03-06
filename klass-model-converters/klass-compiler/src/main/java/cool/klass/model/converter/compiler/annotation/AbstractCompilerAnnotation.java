@@ -29,8 +29,6 @@ import org.eclipse.collections.impl.tuple.Tuples;
 import org.fusesource.jansi.Ansi.Color;
 
 import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public abstract class AbstractCompilerAnnotation
@@ -302,12 +300,15 @@ public abstract class AbstractCompilerAnnotation
                 .makeString("")
                 .stripTrailing();
 
-        Color caretColor = this instanceof RootCompilerAnnotation ? RED : GREEN;
+        Color caretColor = this.getCaretColor();
         String underlineString = ansi()
                 .fg(caretColor).a(uncoloredString + "\n").toString();
 
         return underlineString;
     }
+
+    @Nonnull
+    protected abstract Color getCaretColor();
 
     private String getSpaceOrUnderline(Token token, MutableSet<Token> underlinedTokens)
     {

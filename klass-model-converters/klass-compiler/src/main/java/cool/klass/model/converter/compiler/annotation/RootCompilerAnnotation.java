@@ -12,7 +12,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
+import org.fusesource.jansi.Ansi.Color;
 
+import static org.fusesource.jansi.Ansi.Color.RED;
+import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class RootCompilerAnnotation
@@ -82,6 +85,18 @@ public class RootCompilerAnnotation
         return ansi().render(ansi).toString();
     }
 
+    @Nonnull
+    @Override
+    protected Color getCaretColor()
+    {
+        return switch (this.severity)
+        {
+            case ERROR -> RED;
+            case WARNING -> YELLOW;
+            default -> throw new AssertionError(this.severity);
+        };
+    }
+
     @Override
     public String toGitHubAnnotation()
     {
@@ -92,8 +107,8 @@ public class RootCompilerAnnotation
         ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();
 
         Pair<Token, Token> firstAndLastToken = this.getFirstAndLastToken();
-        Token startToken = firstAndLastToken.getOne();
-        Token endToken   = firstAndLastToken.getTwo();
+        Token              startToken        = firstAndLastToken.getOne();
+        Token              endToken          = firstAndLastToken.getTwo();
 
         String sourceName = this.compilationUnit.getSourceName();
         return "::error file=%s,line=%d,endLine=%d,col=%d,endColumn=%d,title=%s::%s".formatted(
