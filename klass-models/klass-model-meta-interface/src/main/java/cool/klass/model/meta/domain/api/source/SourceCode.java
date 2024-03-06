@@ -33,7 +33,7 @@ public interface SourceCode
     @Override
     default Optional<TokenCategory> apply(Token token)
     {
-        return getTokenCategory(token);
+        return this.getTokenCategory(token);
     }
 
     interface SourceCodeBuilder
