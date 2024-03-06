@@ -21,6 +21,7 @@ import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.EnumerationWithSourceCode;
 import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
+import cool.klass.model.meta.domain.api.source.NamedElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -46,6 +47,16 @@ public class KlassHtmlResource
         TopLevelElementWithSourceCode topLevelElement = this.domainModel
                 .getTopLevelElementByName(topLevelElementName);
 
+        if (topLevelElement == null)
+        {
+            String message = this.domainModel
+                    .getTopLevelElements()
+                    .selectInstancesOf(NamedElementWithSourceCode.class)
+                    .collect(NamedElementWithSourceCode::getName)
+                    .toString();
+            throw new NotFoundException(message);
+        }
+
         Optional<SourceCode> sourceCode = getSourceCodeObject(topLevelElement, null);
         if (sourceCode.isEmpty())
         {
@@ -69,6 +80,16 @@ public class KlassHtmlResource
     {
         TopLevelElementWithSourceCode topLevelElement = this.domainModel
                 .getTopLevelElementByName(topLevelElementName);
+
+        if (topLevelElement == null)
+        {
+            String message = this.domainModel
+                    .getTopLevelElements()
+                    .selectInstancesOf(NamedElementWithSourceCode.class)
+                    .collect(NamedElementWithSourceCode::getName)
+                    .toString();
+            throw new NotFoundException(message);
+        }
 
         Optional<SourceCode> sourceCode = getSourceCodeObject(topLevelElement, memberName);
         if (sourceCode.isEmpty())
