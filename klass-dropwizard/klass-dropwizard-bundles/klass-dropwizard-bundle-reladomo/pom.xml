@@ -18,12 +18,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-configuration</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
             <version>${project.version}</version>
         </dependency>
