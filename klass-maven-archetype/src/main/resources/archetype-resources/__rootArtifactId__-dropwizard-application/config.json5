@@ -9,7 +9,8 @@
           "filterFactories": [
             {
               "type": "url",
-              "bannedUrls": [
+              "onMatch": "DENY",
+              "urls": [
                 "/icons/",
                 "/static/",
                 "/manifest.json",
