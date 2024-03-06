@@ -354,6 +354,8 @@ public class ReladomoDataStore
     @Override
     public Object getDataTypeProperty(@Nonnull Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
+        Objects.requireNonNull(persistentInstance);
+
         if (!(persistentInstance instanceof MithraObject))
         {
             String detailMessage = "Expected MithraObject but got " + persistentInstance.getClass().getCanonicalName();
@@ -850,6 +852,11 @@ public class ReladomoDataStore
         }
 
         Object result = relationshipFinder.valueOf(persistentInstance);
+        Objects.requireNonNull(
+                result,
+                () -> "Expected result to not be null for superClass: %s, persistentInstance: %s".formatted(
+                        klass,
+                        persistentInstance));
         return result;
     }
 
