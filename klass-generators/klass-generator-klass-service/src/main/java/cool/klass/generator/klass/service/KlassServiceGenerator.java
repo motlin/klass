@@ -68,6 +68,7 @@ public class KlassServiceGenerator
             @Nonnull String fullyQualifiedPackage)
     {
         String sourceCode = klasses
+                .reject(Klass::isAbstract)
                 .collect(KlassServiceGenerator::getSourceCode)
                 .makeString("");
 
