@@ -96,7 +96,7 @@ public class QuestionResourceManual
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public Question method0(
+    public Response method0(
             @PathParam("id") Long id,
             @Nullable @QueryParam("version") Integer version)
     {
@@ -109,7 +109,8 @@ public class QuestionResourceManual
                 ? QuestionFinder.all()
                 : QuestionFinder.system().equalsEdgePoint().and(QuestionFinder.version().number().eq(version));
 
-        QuestionList result = QuestionFinder.findMany(queryOperation.and(versionOperation));
+        Operation    operation = queryOperation.and(versionOperation);
+        QuestionList result    = QuestionFinder.findMany(operation);
         // Deep fetch using projection QuestionReadProjection
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.tags().tag());
@@ -119,7 +120,20 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        return Iterate.getOnly(result);
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Object          persistentInstance   = Iterate.getOnly(result);
+
+        var responseBuilder = new KlassResponseBuilder(
+                persistentInstance,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(operation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Timed
@@ -127,7 +141,8 @@ public class QuestionResourceManual
     @PUT
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void method1(
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public Response method1(
             @PathParam("id") Long id,
             @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
             @Nonnull @NotNull ObjectNode incomingInstance,
@@ -201,6 +216,17 @@ public class QuestionResourceManual
         MutationContext    mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(klass, persistentInstance, incomingInstance);
+
+        Projection projection = this.domainModel.getProjectionByName("QuestionReadProjection");
+
+        var responseBuilder = new KlassResponseBuilder(
+                persistentInstance,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Nonnull
@@ -210,7 +236,7 @@ public class QuestionResourceManual
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public Question method2(
+    public Response method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -243,7 +269,20 @@ public class QuestionResourceManual
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
 
-        return Iterate.getOnly(result);
+        Question persistentInstance = Iterate.getOnly(result);
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                persistentInstance,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Nonnull
@@ -253,7 +292,7 @@ public class QuestionResourceManual
     @Path("/question/in")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public QuestionList getQuestionsById(@Nonnull @QueryParam("ids") Set<Long> ids)
+    public Response getQuestionsById(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         // Question
 
@@ -267,7 +306,18 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        return result;
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                result,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Nonnull
@@ -277,7 +327,7 @@ public class QuestionResourceManual
     @Path("/question/firstTwo")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public QuestionList getFirstTwoQuestions()
+    public Response getFirstTwoQuestions()
     {
         // Question
 
@@ -288,7 +338,19 @@ public class QuestionResourceManual
         // Deep fetch using projection QuestionReadProjection
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
-        return result;
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                result,
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Nonnull
@@ -298,7 +360,7 @@ public class QuestionResourceManual
     @Path("/question/{id}/version/{version}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public Question getQuestionByIdAndVersion(
+    public Response getQuestionByIdAndVersion(
             @PathParam("id") Long id,
             @PathParam("version") Integer version)
     {
@@ -321,7 +383,19 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        return Iterate.getOnly(result);
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                Iterate.getOnly(result),
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Nonnull
@@ -331,7 +405,7 @@ public class QuestionResourceManual
     @Path("/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public Question deleteQuestionById(
+    public Response deleteQuestionById(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -339,8 +413,8 @@ public class QuestionResourceManual
         String    userPrincipalName  = securityContext.getUserPrincipal().getName();
         Operation queryOperation     = QuestionFinder.id().eq(id);
         Operation authorizeOperation = QuestionFinder.createdById().eq(userPrincipalName);
-        Operation validateOperation = QuestionFinder.id().eq(QuestionVersionFinder.id()).and(QuestionVersionFinder.number().eq(version));
-        Operation conflictOperation = QuestionFinder.all();
+        Operation validateOperation  = QuestionFinder.id().eq(QuestionVersionFinder.id()).and(QuestionVersionFinder.number().eq(version));
+        Operation conflictOperation  = QuestionFinder.all();
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // TODO: Deep fetch using projection QuestionWriteProjection
@@ -352,7 +426,19 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        return Iterate.getOnly(result);
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                Iterate.getOnly(result),
+                projection,
+                Multiplicity.ONE_TO_ONE,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Timed
@@ -395,14 +481,14 @@ public class QuestionResourceManual
             question.setCreatedOn(Timestamp.valueOf(LocalDateTime.ofInstant(now, ZoneOffset.UTC)));
             question.generateAndSetId();
 
-            String            userPrincipalName  = principal.getName();
-            Optional<String>  userId             = Optional.of(userPrincipalName);
-            Instant           transactionInstant = Instant.now(this.clock);
-            MutationContext   mutationContext    = new MutationContext(
+            String           userPrincipalName  = principal.getName();
+            Optional<String> userId             = Optional.of(userPrincipalName);
+            Instant          transactionInstant = Instant.now(this.clock);
+            MutationContext mutationContext = new MutationContext(
                     userId,
                     transactionInstant,
                     Maps.immutable.empty());
-            PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
+            PersistentCreator creator = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(klass, question, incomingInstance);
             question.insert();
             return question;
@@ -431,7 +517,7 @@ public class QuestionResourceManual
     @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public QuestionList method6()
+    public Response method6()
     {
         // Question
 
@@ -442,7 +528,19 @@ public class QuestionResourceManual
         // Deep fetch using projection QuestionReadProjection
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
-        return result;
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                result,
+                projection,
+                Multiplicity.ZERO_TO_MANY,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Timed
@@ -451,14 +549,27 @@ public class QuestionResourceManual
     @Path("/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
-    public QuestionList method7(@PathParam("userId") String userId)
+    public Response method7(@PathParam("userId") String userId)
     {
         // Question
 
         // this.createdById == userId
         Operation queryOperation = QuestionFinder.createdById().eq(userId);
 
-        return QuestionFinder.findMany(queryOperation);
+        QuestionList result = QuestionFinder.findMany(queryOperation);
+
+        Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
+        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
+        Instant         transactionInstant   = transactionTimestamp.toInstant();
+
+        var responseBuilder = new KlassResponseBuilder(
+                result,
+                projection,
+                Multiplicity.ZERO_TO_MANY,
+                transactionInstant)
+                .setCriteria(queryOperation.toString());
+
+        return Response.ok().entity(responseBuilder.build()).build();
     }
 
     @Timed

@@ -344,7 +344,7 @@ public class QuestionResourceManualTest
                     .header("Authorization", "Impersonation test user 1")
                     .put(Entity.json(validJson));
 
-            this.assertEmptyResponse(Status.NO_CONTENT, response);
+            this.assertResponse("put", Status.OK, response);
         }
         //</editor-fold>
 
@@ -406,7 +406,7 @@ public class QuestionResourceManualTest
                 .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
-        this.assertEmptyResponse(Status.NO_CONTENT, response);
+        this.assertResponse("put_unchanged", Status.OK, response);
 
         this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_unchanged");
     }
