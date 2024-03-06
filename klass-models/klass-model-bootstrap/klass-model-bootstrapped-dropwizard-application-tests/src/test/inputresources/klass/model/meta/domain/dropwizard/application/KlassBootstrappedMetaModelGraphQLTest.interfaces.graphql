@@ -55,11 +55,11 @@ fragment InterfaceFragment on Interface {
   superInterfaces {
     ...ClassifierInterfaceMappingFragment
   }
-  dataTypeProperties {
-    ...DataTypePropertyFragment
-  }
   classifierModifiers {
     keyword
+  }
+  dataTypeProperties {
+    ...DataTypePropertyFragment
   }
 }
 

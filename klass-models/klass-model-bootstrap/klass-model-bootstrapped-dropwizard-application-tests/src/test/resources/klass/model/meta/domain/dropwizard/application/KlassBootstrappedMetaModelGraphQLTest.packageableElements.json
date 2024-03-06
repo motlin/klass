@@ -289,7 +289,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -303,17 +302,6 @@
         "superClass": {
           "name": "PackageableElement"
         },
-        "associationEnds": [
-          {
-            "name": "enumerationLiterals"
-          },
-          {
-            "name": "enumerationProperties"
-          },
-          {
-            "name": "enumerationParameters"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -362,11 +350,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "enumeration"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -380,20 +363,6 @@
         "superClass": {
           "name": "PackageableElement"
         },
-        "associationEnds": [
-          {
-            "name": "superInterfaces"
-          },
-          {
-            "name": "classifierModifiers"
-          },
-          {
-            "name": "dataTypeProperties"
-          },
-          {
-            "name": "projections"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -407,11 +376,6 @@
         "superClass": {
           "name": "Classifier"
         },
-        "associationEnds": [
-          {
-            "name": "subClassifiers"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -479,14 +443,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "subClassifier"
-          },
-          {
-            "name": "superInterface"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -554,11 +510,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "owningClassifier"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -601,32 +552,6 @@
         "superClass": {
           "name": "Classifier"
         },
-        "associationEnds": [
-          {
-            "name": "subClasses"
-          },
-          {
-            "name": "superClass"
-          },
-          {
-            "name": "associationEnds"
-          },
-          {
-            "name": "associationEndsResultTypeOf"
-          },
-          {
-            "name": "memberReferencePaths"
-          },
-          {
-            "name": "parameterizedProperties"
-          },
-          {
-            "name": "parameterizedPropertiesResultTypeOf"
-          },
-          {
-            "name": "serviceGroups"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -673,26 +598,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "owningClassifier"
-          },
-          {
-            "name": "minLengthValidation"
-          },
-          {
-            "name": "maxLengthValidation"
-          },
-          {
-            "name": "propertyModifiers"
-          },
-          {
-            "name": "memberReferencePaths"
-          },
-          {
-            "name": "projectionDataTypeProperties"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -720,14 +625,6 @@
         "superClass": {
           "name": "DataTypeProperty"
         },
-        "associationEnds": [
-          {
-            "name": "minValidation"
-          },
-          {
-            "name": "maxValidation"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -759,11 +656,6 @@
         "superClass": {
           "name": "DataTypeProperty"
         },
-        "associationEnds": [
-          {
-            "name": "enumeration"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -841,11 +733,6 @@
         "dataTypeProperties": [],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "dataTypeProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -863,11 +750,6 @@
         "dataTypeProperties": [],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "dataTypeProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -885,11 +767,6 @@
         "dataTypeProperties": [],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "primitiveProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -907,11 +784,6 @@
         "dataTypeProperties": [],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "primitiveProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -996,11 +868,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "dataTypeProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1063,14 +930,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "variableReferences"
-          },
-          {
-            "name": "urlParameter"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1102,11 +961,6 @@
         "superClass": {
           "name": "Parameter"
         },
-        "associationEnds": [
-          {
-            "name": "enumeration"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1134,7 +988,6 @@
         "superClass": {
           "name": "Parameter"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1165,14 +1018,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "operatorCriteriaSourceOf"
-          },
-          {
-            "name": "operatorCriteriaTargetOf"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1186,7 +1031,6 @@
         "superClass": {
           "name": "ExpressionValue"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1200,7 +1044,6 @@
         "superClass": {
           "name": "ExpressionValue"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1230,11 +1073,6 @@
         "superClass": {
           "name": "ExpressionValue"
         },
-        "associationEnds": [
-          {
-            "name": "parameter"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1300,20 +1138,6 @@
         "superClass": {
           "name": "ExpressionValue"
         },
-        "associationEnds": [
-          {
-            "name": "edgePointCriteria"
-          },
-          {
-            "name": "klass"
-          },
-          {
-            "name": "associationEnds"
-          },
-          {
-            "name": "dataTypeProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1350,29 +1174,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "association"
-          },
-          {
-            "name": "ownerOfLeftCriteria"
-          },
-          {
-            "name": "ownerOfRightCriteria"
-          },
-          {
-            "name": "queryService"
-          },
-          {
-            "name": "authorizeService"
-          },
-          {
-            "name": "validateService"
-          },
-          {
-            "name": "conflictService"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1386,7 +1187,6 @@
         "superClass": {
           "name": "Criteria"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1431,14 +1231,6 @@
         "superClass": {
           "name": "Criteria"
         },
-        "associationEnds": [
-          {
-            "name": "left"
-          },
-          {
-            "name": "right"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1452,7 +1244,6 @@
         "superClass": {
           "name": "BinaryCriteria"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1466,7 +1257,6 @@
         "superClass": {
           "name": "BinaryCriteria"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -1524,14 +1314,6 @@
         "superClass": {
           "name": "Criteria"
         },
-        "associationEnds": [
-          {
-            "name": "sourceExpressionValue"
-          },
-          {
-            "name": "targetExpressionValue"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1561,11 +1343,6 @@
         "superClass": {
           "name": "Criteria"
         },
-        "associationEnds": [
-          {
-            "name": "memberReferencePath"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1595,14 +1372,6 @@
         "superClass": {
           "name": "PackageableElement"
         },
-        "associationEnds": [
-          {
-            "name": "associationEnds"
-          },
-          {
-            "name": "criteria"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1697,29 +1466,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "owningAssociation"
-          },
-          {
-            "name": "owningClass"
-          },
-          {
-            "name": "resultType"
-          },
-          {
-            "name": "associationEndModifiers"
-          },
-          {
-            "name": "memberReferencePaths"
-          },
-          {
-            "name": "orderBys"
-          },
-          {
-            "name": "projectionsWithAssociationEnd"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1804,11 +1550,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "associationEnd"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1894,14 +1635,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "memberReferencePath"
-          },
-          {
-            "name": "associationEnd"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1915,14 +1648,6 @@
         "superClass": {
           "name": "MemberReferencePath"
         },
-        "associationEnds": [
-          {
-            "name": "associationEndOrderBy"
-          },
-          {
-            "name": "serviceOrderBy"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -1936,7 +1661,6 @@
         "superClass": {
           "name": "MemberReferencePath"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -2005,20 +1729,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "owningClass"
-          },
-          {
-            "name": "resultType"
-          },
-          {
-            "name": "parameterizedPropertyOrderings"
-          },
-          {
-            "name": "parameters"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2117,14 +1827,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "associationEnd"
-          },
-          {
-            "name": "thisMemberReferencePath"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2185,11 +1887,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "parameterizedProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2260,11 +1957,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "parameterizedProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2329,14 +2021,6 @@
         ],
         "abstractClass": true,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "parent"
-          },
-          {
-            "name": "children"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2368,14 +2052,6 @@
         "superClass": {
           "name": "ProjectionElement"
         },
-        "associationEnds": [
-          {
-            "name": "namedProjection"
-          },
-          {
-            "name": "classifier"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2405,17 +2081,6 @@
         "superClass": {
           "name": "PackageableElement"
         },
-        "associationEnds": [
-          {
-            "name": "rootProjection"
-          },
-          {
-            "name": "projectionProjectionReferences"
-          },
-          {
-            "name": "services"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2464,11 +2129,6 @@
         "superClass": {
           "name": "ProjectionElement"
         },
-        "associationEnds": [
-          {
-            "name": "associationEnd"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2482,7 +2142,6 @@
         "superClass": {
           "name": "ProjectionWithAssociationEnd"
         },
-        "associationEnds": [],
         "parameterizedProperties": []
       },
       {
@@ -2514,11 +2173,6 @@
         "superClass": {
           "name": "ProjectionWithAssociationEnd"
         },
-        "associationEnds": [
-          {
-            "name": "projection"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2567,11 +2221,6 @@
         "superClass": {
           "name": "ProjectionElement"
         },
-        "associationEnds": [
-          {
-            "name": "dataTypeProperty"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2603,14 +2252,6 @@
         "superClass": {
           "name": "PackageableElement"
         },
-        "associationEnds": [
-          {
-            "name": "owningClass"
-          },
-          {
-            "name": "urls"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2678,17 +2319,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "parameters"
-          },
-          {
-            "name": "serviceGroup"
-          },
-          {
-            "name": "services"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2791,14 +2421,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "url"
-          },
-          {
-            "name": "parameter"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -2973,29 +2595,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "url"
-          },
-          {
-            "name": "projection"
-          },
-          {
-            "name": "queryCriteria"
-          },
-          {
-            "name": "authorizeCriteria"
-          },
-          {
-            "name": "validateCriteria"
-          },
-          {
-            "name": "conflictCriteria"
-          },
-          {
-            "name": "orderBys"
-          }
-        ],
         "parameterizedProperties": []
       },
       {
@@ -3110,14 +2709,6 @@
         ],
         "abstractClass": false,
         "superClass": null,
-        "associationEnds": [
-          {
-            "name": "service"
-          },
-          {
-            "name": "thisMemberReferencePath"
-          }
-        ],
         "parameterizedProperties": []
       },
       {

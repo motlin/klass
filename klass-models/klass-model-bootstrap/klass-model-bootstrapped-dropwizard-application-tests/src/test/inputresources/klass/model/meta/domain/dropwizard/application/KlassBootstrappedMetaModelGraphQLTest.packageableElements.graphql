@@ -23,9 +23,6 @@ fragment PackageableElementFragment on PackageableElement {
     superClass {
       name
     }
-    associationEnds {
-      name
-    }
     parameterizedProperties {
       ...ParameterizedPropertyFragment
     }
@@ -135,6 +132,7 @@ fragment AssociationEndOrderByFragment on AssociationEndOrderBy {
 fragment AssociationEndModifierFragment on AssociationEndModifier {
   keyword
 }
+
 fragment ParameterizedPropertyFragment on ParameterizedProperty {
   name
   multiplicity

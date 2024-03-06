@@ -1,17 +1,7 @@
-fragment MinLengthPropertyValidationFragment on MinLengthPropertyValidation {
-  number
-}
-
-fragment MaxLengthPropertyValidationFragment on MaxLengthPropertyValidation {
-  number
-}
-
-fragment MinPropertyValidationFragment on MinPropertyValidation {
-  number
-}
-
-fragment MaxPropertyValidationFragment on MaxPropertyValidation {
-  number
+fragment ClassifierInterfaceMappingFragment on ClassifierInterfaceMapping {
+  superInterface {
+    name
+  }
 }
 
 fragment DataTypePropertyFragment on DataTypeProperty {
@@ -43,10 +33,20 @@ fragment DataTypePropertyFragment on DataTypeProperty {
   }
 }
 
-fragment ClassifierInterfaceMappingFragment on ClassifierInterfaceMapping {
-  superInterface {
-    name
-  }
+fragment MinLengthPropertyValidationFragment on MinLengthPropertyValidation {
+  number
+}
+
+fragment MaxLengthPropertyValidationFragment on MaxLengthPropertyValidation {
+  number
+}
+
+fragment MinPropertyValidationFragment on MinPropertyValidation {
+  number
+}
+
+fragment MaxPropertyValidationFragment on MaxPropertyValidation {
+  number
 }
 
 fragment KlassFragment on Klass {
@@ -56,13 +56,30 @@ fragment KlassFragment on Klass {
   superInterfaces {
     ...ClassifierInterfaceMappingFragment
   }
-  dataTypeProperties {
-    ...DataTypePropertyFragment
-  }
   classifierModifiers {
     keyword
   }
+  dataTypeProperties {
+    ...DataTypePropertyFragment
+  }
   superClass {
+    name
+  }
+  parameterizedProperties {
+    ...ParameterizedPropertyFragment
+  }
+}
+
+fragment ParameterizedPropertyFragment on ParameterizedProperty {
+  name
+  multiplicity
+  resultType {
+    name
+  }
+  parameterizedPropertyOrderings {
+    ordinal
+  }
+  parameters {
     name
   }
 }
