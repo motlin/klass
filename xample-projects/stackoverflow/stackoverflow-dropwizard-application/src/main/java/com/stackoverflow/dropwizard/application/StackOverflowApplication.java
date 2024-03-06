@@ -5,6 +5,7 @@ import java.time.Clock;
 import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
@@ -26,6 +27,12 @@ public class StackOverflowApplication
     public void initialize(@Nonnull Bootstrap<StackOverflowConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
+    }
+
+    @Override
+    protected void initializeCommands(@Nonnull Bootstrap<StackOverflowConfiguration> bootstrap)
+    {
+        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
     }
 
     @Override

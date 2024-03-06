@@ -287,6 +287,12 @@
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
             <version>${klass.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-command-model-json</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass runtime dependencies -->

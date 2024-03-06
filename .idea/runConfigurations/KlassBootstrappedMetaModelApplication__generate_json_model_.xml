@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="KlassBootstrappedMetaModelApplication (generate-json-model)" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication" />
+    <module name="klass-model-bootstrapped-dropwizard-application" />
+    <option name="PROGRAM_PARAMETERS" value="generate-json-model config.json5" />
+    <option name="VM_PARAMETERS" value="-Xmx8g" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="klass.model.meta.domain.dropwizard.application.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

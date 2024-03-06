@@ -45,6 +45,7 @@
         <module>klass-generator-klass-service</module>
         <module>klass-generator-klass-with-inference</module>
         <module>klass-generator-meta-constants</module>
+        <module>klass-generator-meta-json</module>
         <module>klass-generator-react-prop-type</module>
         <module>klass-generator-reladomo-concrete-class</module>
         <module>klass-generator-reladomo-readable-interface</module>

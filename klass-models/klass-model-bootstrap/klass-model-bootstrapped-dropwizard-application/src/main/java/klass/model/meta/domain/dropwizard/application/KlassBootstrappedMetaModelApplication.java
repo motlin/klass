@@ -2,11 +2,13 @@ package klass.model.meta.domain.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
 import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 public class KlassBootstrappedMetaModelApplication
@@ -21,6 +23,12 @@ public class KlassBootstrappedMetaModelApplication
     public Class<KlassBootstrappedMetaModelConfiguration> getConfigurationClass()
     {
         return super.getConfigurationClass();
+    }
+
+    @Override
+    protected void initializeCommands(@Nonnull Bootstrap<KlassBootstrappedMetaModelConfiguration> bootstrap)
+    {
+        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
     }
 
     @Override

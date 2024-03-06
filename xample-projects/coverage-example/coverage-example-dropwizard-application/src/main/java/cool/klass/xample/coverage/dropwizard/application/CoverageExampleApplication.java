@@ -2,6 +2,7 @@ package cool.klass.xample.coverage.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
@@ -23,6 +24,12 @@ public class CoverageExampleApplication
     public void initialize(@Nonnull Bootstrap<CoverageExampleConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
+    }
+
+    @Override
+    protected void initializeCommands(@Nonnull Bootstrap<CoverageExampleConfiguration> bootstrap)
+    {
+        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
     }
 
     @Override
