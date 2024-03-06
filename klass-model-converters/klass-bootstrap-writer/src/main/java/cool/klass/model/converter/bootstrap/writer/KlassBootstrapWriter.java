@@ -372,18 +372,16 @@ public class KlassBootstrapWriter
     @Nonnull
     private klass.model.meta.domain.Parameter initializeBootstrappedParameter(DataType dataType)
     {
-        if (dataType instanceof PrimitiveType)
+        if (dataType instanceof PrimitiveType primitiveType)
         {
             PrimitiveParameter bootstrappedPrimitiveParameter = new PrimitiveParameter();
-            PrimitiveType      primitiveType                  = (PrimitiveType) dataType;
             bootstrappedPrimitiveParameter.setPrimitiveType(primitiveType.getPrettyName());
             return bootstrappedPrimitiveParameter;
         }
 
-        if (dataType instanceof Enumeration)
+        if (dataType instanceof Enumeration enumeration)
         {
             EnumerationParameter bootstrappedEnumerationParameter = new EnumerationParameter();
-            Enumeration          enumeration                      = (Enumeration) dataType;
             bootstrappedEnumerationParameter.setEnumerationName(enumeration.getName());
             return bootstrappedEnumerationParameter;
         }
@@ -429,10 +427,8 @@ public class KlassBootstrapWriter
     {
         for (DataTypeProperty dataTypeProperty : classifier.getDeclaredDataTypeProperties())
         {
-            if (dataTypeProperty instanceof PrimitiveProperty)
+            if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
             {
-                var primitiveProperty = (PrimitiveProperty) dataTypeProperty;
-
                 var bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
                 this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedPrimitiveProperty);
                 bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getPrettyName());
@@ -441,10 +437,8 @@ public class KlassBootstrapWriter
                 this.handlePropertyModifiers(classifier, dataTypeProperty);
                 this.handleValidations(classifier, dataTypeProperty);
             }
-            else if (dataTypeProperty instanceof EnumerationProperty)
+            else if (dataTypeProperty instanceof EnumerationProperty enumerationProperty)
             {
-                var enumerationProperty = (EnumerationProperty) dataTypeProperty;
-
                 var bootstrappedEnumerationProperty = new klass.model.meta.domain.EnumerationProperty();
                 this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedEnumerationProperty);
                 bootstrappedEnumerationProperty.setEnumerationName(enumerationProperty.getType().getName());

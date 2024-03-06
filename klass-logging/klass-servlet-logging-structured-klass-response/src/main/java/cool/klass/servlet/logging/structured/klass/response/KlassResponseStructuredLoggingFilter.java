@@ -13,7 +13,8 @@ import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 import cool.klass.serialization.jackson.response.KlassResponsePagination;
 
-public class KlassResponseStructuredLoggingFilter implements ContainerResponseFilter
+public class KlassResponseStructuredLoggingFilter
+        implements ContainerResponseFilter
 {
     @Override
     public void filter(
@@ -25,9 +26,8 @@ public class KlassResponseStructuredLoggingFilter implements ContainerResponseFi
         Map<String, Object> structuredArgumentsMap = (Map<String, Object>) structuredArguments;
 
         Object entity = responseContext.getEntity();
-        if (entity instanceof KlassResponse)
+        if (entity instanceof KlassResponse klassResponse)
         {
-            KlassResponse klassResponse = (KlassResponse) entity;
             this.setKlassResponse(klassResponse, structuredArgumentsMap);
         }
     }
@@ -37,10 +37,9 @@ public class KlassResponseStructuredLoggingFilter implements ContainerResponseFi
             Map<String, Object> structuredArgumentsMap)
     {
         Object data = klassResponse.getData();
-        if (data instanceof List)
+        if (data instanceof List<?> list)
         {
-            List<?> list = (List<?>) data;
-            int     size = list.size();
+            int size = list.size();
             structuredArgumentsMap.put("klass.response.data.size", size);
         }
         else if (data != null)

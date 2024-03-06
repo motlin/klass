@@ -139,9 +139,8 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
 
     private String getType(Type type)
     {
-        if (type instanceof PrimitiveType)
+        if (type instanceof PrimitiveType primitiveType)
         {
-            PrimitiveType primitiveType = (PrimitiveType) type;
             return PrimitiveToJavaTypeVisitor.getJavaType(primitiveType);
         }
         throw new AssertionError();

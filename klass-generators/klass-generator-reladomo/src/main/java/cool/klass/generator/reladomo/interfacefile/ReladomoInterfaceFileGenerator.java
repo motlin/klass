@@ -39,7 +39,8 @@ public class ReladomoInterfaceFileGenerator
         super(domainModel);
     }
 
-    public void writeObjectFiles(@Nonnull Path outputPath) throws IOException
+    public void writeObjectFiles(@Nonnull Path outputPath)
+            throws IOException
     {
         for (Interface anInterface : this.domainModel.getInterfaces())
         {
@@ -47,7 +48,8 @@ public class ReladomoInterfaceFileGenerator
         }
     }
 
-    private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Interface anInterface) throws IOException
+    private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Interface anInterface)
+            throws IOException
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
@@ -65,7 +67,8 @@ public class ReladomoInterfaceFileGenerator
     private void convertAndMarshall(
             @Nonnull Interface anInterface,
             @Nonnull MithraGeneratorMarshaller mithraGeneratorMarshaller,
-            StringBuilder stringBuilder) throws IOException
+            StringBuilder stringBuilder)
+            throws IOException
     {
         MithraInterface mithraInterface = this.convertToMithraInterface(anInterface);
         mithraGeneratorMarshaller.marshall(stringBuilder, mithraInterface);
@@ -219,8 +222,8 @@ public class ReladomoInterfaceFileGenerator
     {
         String propertyName = dataTypeProperty.getName();
         // TODO: Use actual temporal properties
-        String fromName       = propertyName + "From";
-        String toName         = propertyName + "To";
+        String fromName = propertyName + "From";
+        String toName   = propertyName + "To";
 
         asOfAttributeType.setName(propertyName);
         asOfAttributeType.setToIsInclusive(false);
@@ -270,10 +273,9 @@ public class ReladomoInterfaceFileGenerator
             attributeType.setJavaType("String");
         }
 
-        if (dataTypeProperty instanceof PrimitiveProperty)
+        if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
         {
-            PrimitiveProperty primitiveProperty = (PrimitiveProperty) dataTypeProperty;
-            PrimitiveType     primitiveType     = primitiveProperty.getType();
+            PrimitiveType primitiveType = primitiveProperty.getType();
             primitiveType.visit(new AttributeInterfaceTypeVisitor(attributeType));
         }
     }

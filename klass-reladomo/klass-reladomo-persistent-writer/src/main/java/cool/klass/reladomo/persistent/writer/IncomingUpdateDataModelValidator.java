@@ -274,12 +274,11 @@ public class IncomingUpdateDataModelValidator
             Object childPersistentInstance = this.dataStore.getToOne(
                     this.persistentInstance,
                     associationEnd);
-            if (!(jsonNode instanceof ObjectNode))
+            if (!(jsonNode instanceof ObjectNode objectNode))
             {
                 return;
             }
 
-            ObjectNode objectNode = (ObjectNode) jsonNode;
             this.handleAssociationEnd(associationEnd, objectNode, childPersistentInstance);
         }
         finally
@@ -642,9 +641,8 @@ public class IncomingUpdateDataModelValidator
             throw new AssertionError(childNode.getClass().getCanonicalName());
         }
 
-        if (jsonNode instanceof ObjectNode)
+        if (jsonNode instanceof ObjectNode objectNode)
         {
-            ObjectNode objectNode = (ObjectNode) jsonNode;
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
                     keyProperty,
                     objectNode);

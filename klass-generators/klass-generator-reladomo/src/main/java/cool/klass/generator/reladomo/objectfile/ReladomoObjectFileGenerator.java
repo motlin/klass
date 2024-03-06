@@ -50,7 +50,8 @@ public class ReladomoObjectFileGenerator
         super(domainModel);
     }
 
-    public void writeObjectFiles(@Nonnull Path outputPath) throws IOException
+    public void writeObjectFiles(@Nonnull Path outputPath)
+            throws IOException
     {
         for (Klass klass : this.domainModel.getClasses())
         {
@@ -58,7 +59,8 @@ public class ReladomoObjectFileGenerator
         }
     }
 
-    private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Klass klass) throws IOException
+    private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Klass klass)
+            throws IOException
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
@@ -76,7 +78,8 @@ public class ReladomoObjectFileGenerator
     private void convertAndMarshall(
             @Nonnull Klass klass,
             @Nonnull MithraGeneratorMarshaller mithraGeneratorMarshaller,
-            StringBuilder stringBuilder) throws IOException
+            StringBuilder stringBuilder)
+            throws IOException
     {
         if (klass.isTransient())
         {
@@ -159,7 +162,7 @@ public class ReladomoObjectFileGenerator
     private boolean needsTable(@Nonnull Klass klass)
     {
         return klass.getInheritanceType() == InheritanceType.NONE
-                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
+               || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 
     private ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
@@ -237,8 +240,8 @@ public class ReladomoObjectFileGenerator
     private boolean mustBeOnResultType(AssociationEnd associationEnd)
     {
         return !associationEnd.getOwningClassifier().isAbstract()
-                && associationEnd.getType().isAbstract()
-                && associationEnd.getMultiplicity().isToMany();
+               && associationEnd.getType().isAbstract()
+               && associationEnd.getMultiplicity().isToMany();
     }
 
     @Nonnull
@@ -445,10 +448,9 @@ public class ReladomoObjectFileGenerator
                     .ifPresent(attributeType::setMaxLength);
         }
 
-        if (dataTypeProperty instanceof PrimitiveProperty)
+        if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
         {
-            PrimitiveProperty primitiveProperty = (PrimitiveProperty) dataTypeProperty;
-            PrimitiveType     primitiveType     = primitiveProperty.getType();
+            PrimitiveType primitiveType = primitiveProperty.getType();
             primitiveType.visit(new AttributeTypeVisitor(attributeType, primitiveProperty));
         }
     }

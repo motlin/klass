@@ -1603,19 +1603,16 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getProjectionChildSourceCode(ProjectionElement projectionElement, String projectionParentName)
     {
-        if (projectionElement instanceof ProjectionDataTypeProperty)
+        if (projectionElement instanceof ProjectionDataTypeProperty projectionDataTypeProperty)
         {
-            ProjectionDataTypeProperty projectionDataTypeProperty = (ProjectionDataTypeProperty) projectionElement;
             return this.getProjectionDataTypePropertySourceCode(projectionDataTypeProperty, projectionParentName);
         }
-        if (projectionElement instanceof ProjectionReferenceProperty)
+        if (projectionElement instanceof ProjectionReferenceProperty projectionReferenceProperty)
         {
-            ProjectionReferenceProperty projectionReferenceProperty = (ProjectionReferenceProperty) projectionElement;
             return this.getProjectionReferencePropertySourceCode(projectionReferenceProperty, projectionParentName);
         }
-        if (projectionElement instanceof ProjectionProjectionReference)
+        if (projectionElement instanceof ProjectionProjectionReference projectionProjectionReference)
         {
-            ProjectionProjectionReference projectionProjectionReference = (ProjectionProjectionReference) projectionElement;
             return this.getProjectionProjectionReferenceSourceCode(projectionProjectionReference, projectionParentName);
         }
         throw new AssertionError(projectionElement.getClass().getSimpleName());

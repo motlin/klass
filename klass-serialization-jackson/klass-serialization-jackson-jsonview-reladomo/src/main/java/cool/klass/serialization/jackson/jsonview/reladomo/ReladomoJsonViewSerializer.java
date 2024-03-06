@@ -163,9 +163,8 @@ public class ReladomoJsonViewSerializer
             return;
         }
 
-        if (dataType instanceof PrimitiveType)
+        if (dataType instanceof PrimitiveType primitiveType)
         {
-            PrimitiveType primitiveType = (PrimitiveType) dataType;
             PrimitiveTypeVisitor visitor =
                     new SerializeValueToJsonFieldPrimitiveTypeVisitor(jsonGenerator, propertyName, dataTypeValue);
             primitiveType.visit(visitor);

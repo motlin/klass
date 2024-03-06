@@ -366,10 +366,9 @@ public class ReladomoDataStore
             return ((Timestamp) result).toInstant();
         }
 
-        if (dataTypeProperty instanceof EnumerationProperty)
+        if (dataTypeProperty instanceof EnumerationProperty enumerationProperty)
         {
             String              prettyName          = (String) result;
-            EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
             Enumeration         enumeration         = enumerationProperty.getType();
 
             Optional<EnumerationLiteral> enumerationLiteral = enumeration.getEnumerationLiterals()
@@ -430,10 +429,9 @@ public class ReladomoDataStore
             return ((Timestamp) result).toInstant();
         }
 
-        if (dataTypeProperty instanceof EnumerationProperty)
+        if (dataTypeProperty instanceof EnumerationProperty enumerationProperty)
         {
             String              prettyName          = (String) result;
-            EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
             Enumeration         enumeration         = enumerationProperty.getType();
 
             Optional<EnumerationLiteral> enumerationLiteral = enumeration.getEnumerationLiterals()
@@ -535,9 +533,8 @@ public class ReladomoDataStore
         }
 
         Object result = this.get(persistentSourceInstance, referenceProperty);
-        if (result instanceof List)
+        if (result instanceof List<?> list)
         {
-            List<?> list = (List<?>) result;
             throw new AssertionError("Expected single object but got " + list.size());
         }
         return result;

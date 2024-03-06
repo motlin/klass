@@ -660,9 +660,8 @@ public class IncomingCreateDataModelValidator
             return Objects.requireNonNull(result);
         }
 
-        if (jsonNode instanceof ObjectNode)
+        if (jsonNode instanceof ObjectNode objectNode)
         {
-            ObjectNode objectNode = (ObjectNode) jsonNode;
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
                     keyProperty,
                     objectNode);

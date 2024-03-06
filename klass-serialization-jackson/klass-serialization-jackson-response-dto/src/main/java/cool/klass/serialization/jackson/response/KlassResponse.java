@@ -58,10 +58,9 @@ public class KlassResponse
     {
         this.metadata.withMDC(mdc);
 
-        if (this.data instanceof List)
+        if (this.data instanceof List<?> list)
         {
-            List<?> list = (List<?>) this.data;
-            int     size = list.size();
+            int size = list.size();
             mdc.put("klass.response.data.size", String.valueOf(size));
         }
         else if (this.data != null)

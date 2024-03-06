@@ -259,19 +259,16 @@ public class KlassSourceCodeHtmlGenerator
     @Nullable
     private static String getIdForElement(ElementWithSourceCode value)
     {
-        if (value instanceof TopLevelElement)
+        if (value instanceof TopLevelElement topLevelElement)
         {
-            TopLevelElement topLevelElement = (TopLevelElement) value;
             return StringEscapeUtils.escapeHtml4(topLevelElement.getName());
         }
-        if (value instanceof Property)
+        if (value instanceof Property property)
         {
-            Property property = (Property) value;
             return StringEscapeUtils.escapeHtml4(property.getOwningClassifier().getName() + "." + property.getName());
         }
-        if (value instanceof EnumerationLiteral)
+        if (value instanceof EnumerationLiteral enumerationLiteral)
         {
-            EnumerationLiteral enumerationLiteral = (EnumerationLiteral) value;
             return StringEscapeUtils.escapeHtml4(enumerationLiteral.getType().getName()
                     + "."
                     + enumerationLiteral.getName());
@@ -282,22 +279,19 @@ public class KlassSourceCodeHtmlGenerator
     @Nonnull
     private static String getLinkForElement(ElementWithSourceCode element)
     {
-        if (element instanceof TopLevelElement)
+        if (element instanceof TopLevelElement topLevelElement)
         {
-            TopLevelElement topLevelElement = (TopLevelElement) element;
             return String.format("/api/meta/code/element/%s#%s", topLevelElement.getName(), topLevelElement.getName());
         }
-        if (element instanceof Property)
+        if (element instanceof Property property)
         {
-            Property property = (Property) element;
             return MessageFormat.format(
                     "/api/meta/code/element/{0}/{1}#{0}.{1}",
                     property.getOwningClassifier().getName(),
                     property.getName());
         }
-        if (element instanceof EnumerationLiteral)
+        if (element instanceof EnumerationLiteral enumerationLiteral)
         {
-            EnumerationLiteral enumerationLiteral = (EnumerationLiteral) element;
             return MessageFormat.format(
                     "/api/meta/code/element/{0}/{1}#{0}.{1}",
                     enumerationLiteral.getType().getName(),

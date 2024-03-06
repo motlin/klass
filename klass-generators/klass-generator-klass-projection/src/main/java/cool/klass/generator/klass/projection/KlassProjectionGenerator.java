@@ -123,12 +123,11 @@ public class KlassProjectionGenerator
 
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
     {
-        if (!(referenceProperty instanceof AssociationEnd))
+        if (!(referenceProperty instanceof AssociationEnd associationEnd))
         {
             return true;
         }
 
-        AssociationEnd associationEnd = (AssociationEnd) referenceProperty;
         return associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
     }
 
