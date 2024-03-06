@@ -28,12 +28,6 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         this.ordinal = ordinal;
     }
 
-    @Nonnull
-    public ParserRuleContext getNameContext()
-    {
-        return this.nameContext;
-    }
-
     @Override
     @Nonnull
     public final String getName()
@@ -66,12 +60,6 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
             this.nameContext = Objects.requireNonNull(nameContext);
             this.name = Objects.requireNonNull(name);
             this.ordinal = ordinal;
-        }
-
-        @Nonnull
-        public String getName()
-        {
-            return this.name;
         }
     }
 }

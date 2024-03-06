@@ -209,12 +209,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         return (AssociationDeclarationContext) this.elementContext;
     }
 
-    @Nonnull
-    public AntlrCriteria getCriteria()
-    {
-        return this.criteriaState;
-    }
-
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
         this.criteriaState = Objects.requireNonNull(criteria);

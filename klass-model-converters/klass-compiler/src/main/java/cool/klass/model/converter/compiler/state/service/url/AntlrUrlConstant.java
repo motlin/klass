@@ -11,11 +11,10 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrBuildableElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.meta.domain.service.url.UrlConstantImpl;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrUrlConstant extends AntlrNamedElement implements AntlrBuildableElement<UrlConstantImpl>
+public class AntlrUrlConstant extends AntlrNamedElement implements AntlrBuildableElement
 {
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
@@ -42,7 +41,6 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrBuildabl
         return true;
     }
 
-    @Override
     @Nonnull
     public UrlConstantBuilder build()
     {

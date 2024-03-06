@@ -96,11 +96,11 @@ public class OperatorAntlrCriteria extends AntlrCriteria
             CompilerErrorHolder compilerErrorHolder,
             ImmutableList<ParserRuleContext> parserRuleContexts)
     {
-        this.sourceValue.reportErrors(compilerErrorHolder, parserRuleContexts);
-        this.targetValue.reportErrors(compilerErrorHolder, parserRuleContexts);
+        this.sourceValue.reportErrors(compilerErrorHolder);
+        this.targetValue.reportErrors(compilerErrorHolder);
         ListIterable<AntlrType> sourceTypes = this.sourceValue.getPossibleTypes();
         ListIterable<AntlrType> targetTypes = this.targetValue.getPossibleTypes();
-        this.operator.checkTypes(compilerErrorHolder, parserRuleContexts, sourceTypes, targetTypes);
+        this.operator.checkTypes(compilerErrorHolder, sourceTypes, targetTypes);
     }
 
     @Override

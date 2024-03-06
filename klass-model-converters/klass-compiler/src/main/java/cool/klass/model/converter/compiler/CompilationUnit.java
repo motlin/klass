@@ -110,24 +110,6 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public String[] getLines()
-    {
-        return this.lines;
-    }
-
-    @Nonnull
-    public CharStream getCharStream()
-    {
-        return this.charStream;
-    }
-
-    @Nonnull
-    public TokenStream getTokenStream()
-    {
-        return this.tokenStream;
-    }
-
-    @Nonnull
     public ParserRuleContext getParserContext()
     {
         return this.parserContext;

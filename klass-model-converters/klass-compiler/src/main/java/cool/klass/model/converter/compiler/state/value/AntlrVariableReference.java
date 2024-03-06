@@ -50,8 +50,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
 
     @Override
     public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (this.antlrParameter == AntlrEnumerationParameter.NOT_FOUND)
         {

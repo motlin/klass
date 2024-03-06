@@ -3,10 +3,9 @@ package cool.klass.model.meta.domain.service.url;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
-import cool.klass.model.meta.domain.api.service.url.UrlConstant;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class UrlConstantImpl extends AbstractNamedElement implements AbstractUrlPathSegment, UrlConstant
+public final class UrlConstantImpl extends AbstractNamedElement
 {
     private UrlConstantImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -26,7 +25,6 @@ public final class UrlConstantImpl extends AbstractNamedElement implements Abstr
 
     public static final class UrlConstantBuilder
             extends NamedElementBuilder<UrlConstantImpl>
-            implements UrlPathSegmentBuilder
     {
         public UrlConstantBuilder(
                 @Nonnull ParserRuleContext elementContext,

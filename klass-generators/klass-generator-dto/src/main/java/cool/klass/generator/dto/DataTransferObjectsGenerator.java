@@ -81,8 +81,9 @@ public class DataTransferObjectsGenerator
         String packageName        = enumeration.getPackageName() + ".dto";
         String literalsSourceCode = enumeration.getEnumerationLiterals().collect(this::getLiteral).makeString("");
 
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + packageName + ";\n"
                 + "\n"
                 + "import javax.annotation.Generated;\n"
@@ -99,7 +100,7 @@ public class DataTransferObjectsGenerator
                 + "{\n"
                 + literalsSourceCode
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     @Nonnull
@@ -120,6 +121,7 @@ public class DataTransferObjectsGenerator
         String referenceGettersSettersSourceCode = associationEnds.collect(this::getReferenceGetterSetter).makeString(
                 "\n");
 
+        // @formatter:off
         //language=JAVA
         String sourceCode = ""
                 + "package " + packageName + ";\n"
@@ -143,6 +145,8 @@ public class DataTransferObjectsGenerator
                 + dataGettersSettersSourceCode
                 + referenceGettersSettersSourceCode
                 + "}\n";
+        // @formatter:on
+
         return sourceCode;
     }
 
@@ -215,7 +219,7 @@ public class DataTransferObjectsGenerator
 
     private String getDataField(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        String   annotation = getAnnotation(dataTypeProperty);
+        String   annotation = this.getAnnotation(dataTypeProperty);
         String   type       = this.getType(dataTypeProperty.getType());
         return String.format("%s    private %s %s;\n", annotation, type, dataTypeProperty.getName());
     }

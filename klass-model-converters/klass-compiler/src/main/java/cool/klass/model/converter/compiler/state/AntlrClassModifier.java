@@ -44,11 +44,6 @@ public class AntlrClassModifier extends AntlrModifier
                 + ".getSurroundingContext() not implemented yet");
     }
 
-    public boolean isVersioned()
-    {
-        return this.name.equals("versioned");
-    }
-
     public boolean isTransient()
     {
         return this.name.equals("transient");

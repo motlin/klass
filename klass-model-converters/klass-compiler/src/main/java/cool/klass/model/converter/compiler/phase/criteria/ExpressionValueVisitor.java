@@ -183,6 +183,6 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     @Override
     public AntlrLiteralValue visitLiteral(LiteralContext ctx)
     {
-        return getAntlrLiteralValue(ctx, expressionValueOwner);
+        return this.getAntlrLiteralValue(ctx, this.expressionValueOwner);
     }
 }

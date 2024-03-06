@@ -8,7 +8,6 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InOperatorImpl.InOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrInOperator extends AntlrOperator
@@ -32,7 +31,6 @@ public class AntlrInOperator extends AntlrOperator
     @Override
     public void checkTypes(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {

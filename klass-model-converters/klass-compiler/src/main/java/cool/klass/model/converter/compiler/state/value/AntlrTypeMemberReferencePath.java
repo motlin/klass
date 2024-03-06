@@ -18,7 +18,6 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -57,8 +56,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
 
     @Override
     public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
 

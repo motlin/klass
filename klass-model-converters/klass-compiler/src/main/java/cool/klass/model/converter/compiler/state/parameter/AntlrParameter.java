@@ -21,7 +21,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public abstract class AntlrParameter<BuiltElement extends AbstractParameter>
         extends AntlrNamedElement
-        implements AntlrBuildableElement<BuiltElement>
+        implements AntlrBuildableElement
 {
     @Nonnull
     protected final AntlrMultiplicity   multiplicityState;
@@ -85,7 +85,6 @@ public abstract class AntlrParameter<BuiltElement extends AbstractParameter>
     public abstract AntlrType getType();
 
     @Nonnull
-    @Override
     public abstract AbstractParameterBuilder<BuiltElement> build();
 
     @Nonnull

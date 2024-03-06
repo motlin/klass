@@ -11,7 +11,6 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.operator.AbstractOperator.AbstractOperatorBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
 public abstract class AntlrOperator extends AntlrElement
@@ -47,7 +46,6 @@ public abstract class AntlrOperator extends AntlrElement
 
     public abstract void checkTypes(
             CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts,
             ListIterable<AntlrType> sourceTypes,
             ListIterable<AntlrType> targetTypes);
 }

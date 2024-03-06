@@ -102,7 +102,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         KlassListener associationPhase = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState, isInference);
+                this.domainModelState,
+                this.isInference);
 
         KlassCompiler.executeCompilerPhase(associationPhase, compilationUnits);
 

@@ -103,7 +103,7 @@ public class ServiceResourceGenerator
 
         // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + packageName + ";\n"
                 + "\n"
                 + "import java.util.List;\n"
@@ -155,7 +155,6 @@ public class ServiceResourceGenerator
                 + "                projection.getChildren()));\n"
                 + "    }\n"
                 + "}\n";
-        return sourceCode;
         // @formatter:on
     }
 
@@ -240,8 +239,9 @@ public class ServiceResourceGenerator
                 .collect(each -> "        result.deepFetch(" + finderName + "." + each + ");\n")
                 .makeString("");
 
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
                 + "    @" + verb.name() + "\n"
@@ -267,8 +267,7 @@ public class ServiceResourceGenerator
                 + conflictPredicateSourceCode
                 + returnStatement
                 + "    }\n";
-
-        return sourceCode;
+        // @formatter:on
     }
 
     @Nonnull

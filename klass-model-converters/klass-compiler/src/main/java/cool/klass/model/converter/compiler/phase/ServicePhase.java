@@ -327,7 +327,7 @@ public class ServicePhase extends AbstractCompilerPhase
                 ? this.urlState.getNumQueryParameters() + 1
                 : this.urlState.getNumPathSegments() + 1;
 
-        parameterState = new AntlrPrimitiveParameter(
+        this.parameterState = new AntlrPrimitiveParameter(
                 ctx,
                 this.currentCompilationUnit,
                 false,
@@ -340,11 +340,11 @@ public class ServicePhase extends AbstractCompilerPhase
 
         if (this.inQueryParameterList)
         {
-            this.urlState.enterQueryParameterDeclaration(parameterState);
+            this.urlState.enterQueryParameterDeclaration(this.parameterState);
         }
         else
         {
-            this.urlState.enterPathParameterDeclaration(parameterState);
+            this.urlState.enterPathParameterDeclaration(this.parameterState);
         }
     }
 

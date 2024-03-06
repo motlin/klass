@@ -103,8 +103,9 @@ public class JavaConstantsMetaModelGenerator
                 .collect(packageName -> "import " + packageName + ".*;\n")
                 .makeString("");
 
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + this.rootPackageName + ".meta.constants;\n"
                 + "\n"
                 + "import javax.annotation.*;\n"
@@ -203,7 +204,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                + \".getProjectionByName() not implemented yet\");\n"
                 + "    }\n"
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     @Nonnull
@@ -347,8 +348,9 @@ public class JavaConstantsMetaModelGenerator
     {
         String packageName = enumeration.getPackageName() + ".meta.constants";
 
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + packageName + ";\n"
                 + "\n"
                 + "import java.util.Optional;\n"
@@ -422,7 +424,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + this.getEnumerationLiteralsSourceCode(enumeration)
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     private String getEnumerationLiteralsSourceCode(Enumeration enumeration)
@@ -513,8 +515,9 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getClassSourceCode(Klass klass)
     {
+        // @formatter:off
         //language=JAVA
-        String sourceCode = "package "
+        return "package "
                 + klass.getPackageName()
                 + ".meta.constants;\n"
                 + "\n"
@@ -631,7 +634,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + this.getAssociationEndsSourceCode(klass)
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     private String getAssociationEndsSourceCode(Klass klass)
@@ -924,8 +927,9 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getAssociationSourceCode(Association association)
     {
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + association.getPackageName() + ".meta.constants;\n"
                 + "\n"
                 + "import java.util.Optional;\n"
@@ -1014,7 +1018,7 @@ public class JavaConstantsMetaModelGenerator
                 + "                + \"" + this.wrapSourceCode(association.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     private String getAssociationEndSourceCode(AssociationEnd associationEnd)
@@ -1150,28 +1154,22 @@ public class JavaConstantsMetaModelGenerator
         String name          = associationEnd.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
 
-        String result = "    public static final "
-                + associationEnd.getOwningKlass().getName()
-                + "_Klass."
-                + uppercaseName
-                + "_AssociationEnd "
-                + sideName
-                + " = "
-                + this.applicationName
-                + "DomainModel."
-                + associationEnd.getOwningKlass().getName()
-                + "."
-                + name
-                + ";\n";
-
-        return result;
+        return String.format(
+                "    public static final %s_Klass.%s_AssociationEnd %s = %sDomainModel.%s.%s;\n",
+                associationEnd.getOwningKlass().getName(),
+                uppercaseName,
+                sideName,
+                this.applicationName,
+                associationEnd.getOwningKlass().getName(),
+                name);
     }
 
     @Nonnull
     private String getProjectionSourceCode(Projection projection)
     {
+        // @formatter:off
         //language=JAVA
-        String sourceCode = ""
+        return ""
                 + "package " + projection.getPackageName() + ".meta.constants;\n"
                 + "\n"
                 + "import java.util.Optional;\n"
@@ -1251,7 +1249,7 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + this.getProjectionChildrenSourceCode(projection)
                 + "}\n";
-        return sourceCode;
+        // @formatter:on
     }
 
     private String getProjectionChildrenConstantsSourceCode(ProjectionParent projectionParent)

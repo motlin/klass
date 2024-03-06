@@ -145,7 +145,8 @@ public class KlassCompiler
         KlassListener phase11 = new ResolveTypeErrorsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                phase10, domainModelState);
+                phase10,
+                this.domainModelState);
 
         KlassListener phase12 = new ProjectionPhase(
                 this.compilerErrorHolder,

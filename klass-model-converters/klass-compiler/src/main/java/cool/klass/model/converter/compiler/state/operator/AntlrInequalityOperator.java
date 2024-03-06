@@ -7,7 +7,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InequalityOperatorImpl.InequalityOperatorBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrInequalityOperator extends AntlrOperator
@@ -31,7 +30,6 @@ public class AntlrInequalityOperator extends AntlrOperator
     @Override
     public void checkTypes(
             CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts,
             ListIterable<AntlrType> sourceTypes,
             ListIterable<AntlrType> targetTypes)
     {

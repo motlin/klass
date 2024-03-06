@@ -58,12 +58,6 @@ public abstract class AbstractElement implements Element
         }
 
         @Nonnull
-        public ParserRuleContext getElementContext()
-        {
-            return this.elementContext;
-        }
-
-        @Nonnull
         public final BuiltElement build()
         {
             if (this.element != null)

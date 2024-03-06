@@ -68,12 +68,6 @@ public class AntlrOrderByDirection extends AntlrElement
     }
 
     @Nonnull
-    public OrderByDirection getOrderByDirection()
-    {
-        return this.orderByDirection;
-    }
-
-    @Nonnull
     public OrderByDirectionDeclarationBuilder build()
     {
         return new OrderByDirectionDeclarationBuilder(this.elementContext, this.inferred, this.orderByDirection);

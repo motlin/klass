@@ -70,7 +70,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
             CompilerErrorHolder compilerErrorHolder,
             ImmutableList<ParserRuleContext> parserRuleContexts)
     {
-        this.memberExpressionValue.reportErrors(compilerErrorHolder, parserRuleContexts);
+        this.memberExpressionValue.reportErrors(compilerErrorHolder);
         ListIterable<AntlrType> possibleTypes = this.memberExpressionValue.getPossibleTypes();
         if (possibleTypes.anySatisfy(each -> each.getTypeGetter() == PrimitiveType.TEMPORAL_RANGE))
         {

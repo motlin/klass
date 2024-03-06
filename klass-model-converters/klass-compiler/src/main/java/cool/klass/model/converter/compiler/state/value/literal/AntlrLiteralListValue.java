@@ -55,8 +55,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 
     @Override
     public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (this.getPossibleTypes().isEmpty())
         {

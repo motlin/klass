@@ -15,7 +15,6 @@ import cool.klass.model.meta.domain.order.OrderByDirectionDeclarationImpl.OrderB
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrOrderByMemberReferencePath extends AntlrElement
 {
@@ -65,7 +64,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: ❗️ Redo context stack for error reporting
-        this.thisMemberReferencePathState.reportErrors(compilerErrorHolder, Lists.immutable.empty());
+        this.thisMemberReferencePathState.reportErrors(compilerErrorHolder);
     }
 
     @Nonnull

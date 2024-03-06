@@ -18,7 +18,6 @@ import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMember
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -60,11 +59,10 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
 
     @Override
     public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
-        AntlrClass currentClassState = reportErrorsAssociationEnds(
+        AntlrClass currentClassState = this.reportErrorsAssociationEnds(
                 compilerErrorHolder,
                 associationEndReferenceContexts);
         if (currentClassState == null)

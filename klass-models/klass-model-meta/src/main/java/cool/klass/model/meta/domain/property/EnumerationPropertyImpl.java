@@ -57,8 +57,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
 
     public static final class EnumerationPropertyBuilder extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
     {
-        private EnumerationPropertyImpl enumerationProperty;
-
         public EnumerationPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
@@ -88,7 +86,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         @Nonnull
         protected EnumerationPropertyImpl buildUnsafe()
         {
-            EnumerationPropertyImpl enumerationProperty = new EnumerationPropertyImpl(
+            return new EnumerationPropertyImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -98,12 +96,14 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     this.owningKlassBuilder.getElement(),
                     this.isKey,
                     this.isOptional);
+        }
 
+        @Override
+        protected void buildChildren()
+        {
             ImmutableList<PropertyModifier> propertyModifiers =
                     this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-            enumerationProperty.setPropertyModifiers(propertyModifiers);
-
-            return enumerationProperty;
+            this.element.setPropertyModifiers(propertyModifiers);
         }
     }
 }
