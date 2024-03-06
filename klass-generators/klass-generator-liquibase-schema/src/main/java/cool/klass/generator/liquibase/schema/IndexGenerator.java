@@ -1,9 +1,12 @@
 package cool.klass.generator.liquibase.schema;
 
+import java.util.Objects;
+
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 
 public final class IndexGenerator
@@ -19,13 +22,21 @@ public final class IndexGenerator
 
         MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeyConstraints = klass.getForeignKeys();
 
-        return foreignKeyConstraints
+        MutableList<String> result = foreignKeyConstraints
                 .keyValuesView()
                 .collect(keyValuePair -> getForeignKeyIndex(
                         keyValuePair.getOne(), keyValuePair.getTwo(), klass,
                         tableName,
                         ordinal))
-                .makeString("");
+                .reject(String::isEmpty)
+                .toList();
+
+        if (!Objects.equals(result, result.distinct()))
+        {
+            throw new AssertionError("Duplicate foreign key index detected for " + tableName + " in " + klass.getName() + ". Indexes: " + result);
+        }
+
+        return result.makeString("");
     }
 
     private static String getForeignKeyIndex(
