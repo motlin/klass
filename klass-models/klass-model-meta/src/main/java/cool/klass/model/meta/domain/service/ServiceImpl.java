@@ -10,7 +10,7 @@ import cool.klass.model.meta.domain.api.criteria.Criteria;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
-import cool.klass.model.meta.domain.criteria.AbstractCriteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
@@ -19,17 +19,19 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public final class ServiceImpl extends AbstractElement implements Service
 {
     @Nonnull
-    private final UrlImpl                       url;
+    private final UrlImpl             url;
     @Nonnull
-    private final Verb                          verb;
+    private final Verb                verb;
     @Nonnull
-    private final ServiceMultiplicity           serviceMultiplicity;
-    private       Optional<Criteria>            queryCriteria;
-    private       Optional<Criteria>            authorizeCriteria;
-    private       Optional<Criteria>            validateCriteria;
-    private       Optional<Criteria>            conflictCriteria;
-    private       Optional<Criteria>            versionCriteria;
-    private       ServiceProjectionDispatchImpl projectionDispatch;
+    private final ServiceMultiplicity serviceMultiplicity;
+
+    private Optional<Criteria> queryCriteria;
+    private Optional<Criteria> authorizeCriteria;
+    private Optional<Criteria> validateCriteria;
+    private Optional<Criteria> conflictCriteria;
+    private Optional<Criteria> versionCriteria;
+
+    private ServiceProjectionDispatchImpl projectionDispatch;
 
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -158,7 +160,7 @@ public final class ServiceImpl extends AbstractElement implements Service
     @Override
     public int getNumParameters()
     {
-        int numUrlParameters       = this.url.getUrlParameters().size();
+        int numUrlParameters       = this.url.getParameters().size();
         int numVersionParameters   = this.isVersionClauseRequired() ? 1 : 0;
         int numAuthorizeParameters = this.isAuthorizeClauseRequired() ? 1 : 0;
         return numUrlParameters + numVersionParameters + numAuthorizeParameters;
@@ -177,7 +179,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         return this.authorizeCriteria.isPresent();
     }
 
-    public static final class ServiceBuilder extends ElementBuilder
+    public static final class ServiceBuilder extends ElementBuilder<ServiceImpl>
     {
         @Nonnull
         private final UrlBuilder          urlBuilder;
@@ -188,12 +190,11 @@ public final class ServiceImpl extends AbstractElement implements Service
 
         private ServiceProjectionDispatchBuilder projectionDispatchBuilder;
 
-        private Optional<CriteriaBuilder> criteria  = Optional.empty();
-        private Optional<CriteriaBuilder> authorize = Optional.empty();
-        private Optional<CriteriaBuilder> validate  = Optional.empty();
-        private Optional<CriteriaBuilder> conflict  = Optional.empty();
-        private Optional<CriteriaBuilder> version   = Optional.empty();
-        private ServiceImpl               service;
+        private Optional<AbstractCriteriaBuilder<?>> criteria  = Optional.empty();
+        private Optional<AbstractCriteriaBuilder<?>> authorize = Optional.empty();
+        private Optional<AbstractCriteriaBuilder<?>> validate  = Optional.empty();
+        private Optional<AbstractCriteriaBuilder<?>> conflict  = Optional.empty();
+        private Optional<AbstractCriteriaBuilder<?>> version   = Optional.empty();
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -208,7 +209,9 @@ public final class ServiceImpl extends AbstractElement implements Service
             this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
         }
 
-        public void addCriteriaBuilder(@Nonnull String criteriaKeyword, @Nonnull CriteriaBuilder criteriaBuilder)
+        public void addCriteriaBuilder(
+                @Nonnull String criteriaKeyword,
+                @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
         {
             Objects.requireNonNull(criteriaKeyword);
             Objects.requireNonNull(criteriaBuilder);
@@ -260,35 +263,33 @@ public final class ServiceImpl extends AbstractElement implements Service
             this.projectionDispatchBuilder = Objects.requireNonNull(projectionDispatchBuilder);
         }
 
-        public ServiceImpl build()
+        @Nonnull
+        @Override
+        protected ServiceImpl buildUnsafe()
         {
-            if (this.service != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.service = new ServiceImpl(
+            ServiceImpl service = new ServiceImpl(
                     this.elementContext,
                     this.inferred,
-                    this.urlBuilder.getUrl(),
+                    this.urlBuilder.getElement(),
                     this.verb,
                     this.serviceMultiplicity);
 
             ServiceProjectionDispatchImpl projectionDispatch = this.projectionDispatchBuilder.build();
-            this.service.setProjectionDispatch(projectionDispatch);
+            service.setProjectionDispatch(projectionDispatch);
 
-            Optional<Criteria> queryCriteria     = this.criteria.map(CriteriaBuilder::build);
-            Optional<Criteria> authorizeCriteria = this.authorize.map(CriteriaBuilder::build);
-            Optional<Criteria> validateCriteria  = this.validate.map(CriteriaBuilder::build);
-            Optional<Criteria> conflictCriteria  = this.conflict.map(CriteriaBuilder::build);
-            Optional<Criteria> versionCriteria   = this.version.map(CriteriaBuilder::build);
+            Optional<Criteria> queryCriteria     = this.criteria.map(AbstractCriteriaBuilder::build);
+            Optional<Criteria> authorizeCriteria = this.authorize.map(AbstractCriteriaBuilder::build);
+            Optional<Criteria> validateCriteria  = this.validate.map(AbstractCriteriaBuilder::build);
+            Optional<Criteria> conflictCriteria  = this.conflict.map(AbstractCriteriaBuilder::build);
+            Optional<Criteria> versionCriteria   = this.version.map(AbstractCriteriaBuilder::build);
 
-            this.service.setQueryCriteria(queryCriteria);
-            this.service.setAuthorizeCriteria(authorizeCriteria);
-            this.service.setValidateCriteria(validateCriteria);
-            this.service.setConflictCriteria(conflictCriteria);
-            this.service.setVersionCriteria(versionCriteria);
+            service.setQueryCriteria(queryCriteria);
+            service.setAuthorizeCriteria(authorizeCriteria);
+            service.setValidateCriteria(validateCriteria);
+            service.setConflictCriteria(conflictCriteria);
+            service.setVersionCriteria(versionCriteria);
 
-            return this.service;
+            return service;
         }
     }
 }

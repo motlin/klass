@@ -22,7 +22,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull KlassImpl owningKlass,
-            @Nonnull ImmutableList<PropertyModifier> propertyModifiers,
             boolean isKey,
             boolean isOptional)
     {
@@ -34,7 +33,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                 ordinal,
                 enumeration,
                 owningKlass,
-                propertyModifiers,
                 isKey,
                 isOptional);
     }
@@ -57,7 +55,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         return false;
     }
 
-    public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder>
+    public static final class EnumerationPropertyBuilder extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
     {
         private EnumerationPropertyImpl enumerationProperty;
 
@@ -87,17 +85,10 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         }
 
         @Override
-        public EnumerationPropertyImpl build()
+        @Nonnull
+        protected EnumerationPropertyImpl buildUnsafe()
         {
-            if (this.enumerationProperty != null)
-            {
-                throw new IllegalStateException();
-            }
-
-            ImmutableList<PropertyModifier> propertyModifiers =
-                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-
-            this.enumerationProperty = new EnumerationPropertyImpl(
+            EnumerationPropertyImpl enumerationProperty = new EnumerationPropertyImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -105,16 +96,14 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     this.ordinal,
                     this.typeBuilder.getElement(),
                     this.owningKlassBuilder.getElement(),
-                    propertyModifiers,
                     this.isKey,
                     this.isOptional);
-            return this.enumerationProperty;
-        }
 
-        @Override
-        public EnumerationPropertyImpl getProperty()
-        {
-            return this.enumerationProperty;
+            ImmutableList<PropertyModifier> propertyModifiers =
+                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
+            enumerationProperty.setPropertyModifiers(propertyModifiers);
+
+            return enumerationProperty;
         }
     }
 }

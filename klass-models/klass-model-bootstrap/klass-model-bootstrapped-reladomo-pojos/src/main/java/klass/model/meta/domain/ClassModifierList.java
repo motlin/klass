@@ -15,7 +15,7 @@ public class ClassModifierList extends ClassModifierListAbstract
         super(initialSize);
     }
 
-    public ClassModifierList(Collection c)
+    public ClassModifierList(Collection<?> c)
     {
         super(c);
     }

@@ -85,11 +85,6 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         this.urlStates.add(urlState);
     }
 
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-    }
-
     @Nonnull
     @Override
     public ServiceGroupDeclarationContext getElementContext()
@@ -135,24 +130,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
                     "ERR_SER_EMP: Service group should declare at least one url: '%s'.",
                     this.getElementContext().classReference().getText());
 
-            compilerErrorHolder.add(message, this.getElementContext());
-        }
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_SVC_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
+            compilerErrorHolder.add(message, this);
         }
     }
 
@@ -162,7 +140,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
                 "ERR_DUP_SVC: Multiple service groups for class: '%s.%s'.",
                 this.klass.getPackageName(),
                 this.klass.getName());
-        compilerErrorHolder.add(message, this.nameContext);
+        compilerErrorHolder.add(message, this);
     }
 
     public ServiceGroupBuilder build()

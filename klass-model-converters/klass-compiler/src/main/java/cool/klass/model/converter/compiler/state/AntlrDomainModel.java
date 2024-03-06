@@ -186,42 +186,34 @@ public class AntlrDomainModel
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
 
+        for (AntlrTopLevelElement topLevelElementState : this.topLevelElementStates)
+        {
+            if (duplicateTopLevelNames.contains(topLevelElementState.getName()))
+            {
+                topLevelElementState.reportDuplicateTopLevelName(compilerErrorHolder);
+            }
+        }
+
         for (AntlrEnumeration enumerationState : this.enumerationStates)
         {
-            if (duplicateTopLevelNames.contains(enumerationState.getName()))
-            {
-                enumerationState.reportDuplicateTopLevelName(compilerErrorHolder);
-            }
             enumerationState.reportNameErrors(compilerErrorHolder);
             enumerationState.reportErrors(compilerErrorHolder);
         }
 
         for (AntlrClass classState : this.classStates)
         {
-            if (duplicateTopLevelNames.contains(classState.getName()))
-            {
-                classState.reportDuplicateTopLevelName(compilerErrorHolder);
-            }
             classState.reportNameErrors(compilerErrorHolder);
             classState.reportErrors(compilerErrorHolder);
         }
 
         for (AntlrAssociation associationState : this.associationStates)
         {
-            if (duplicateTopLevelNames.contains(associationState.getName()))
-            {
-                associationState.reportDuplicateTopLevelName(compilerErrorHolder);
-            }
             associationState.reportNameErrors(compilerErrorHolder);
             associationState.reportErrors(compilerErrorHolder);
         }
 
         for (AntlrProjection projectionState : this.projectionStates)
         {
-            if (duplicateTopLevelNames.contains(projectionState.getName()))
-            {
-                projectionState.reportDuplicateTopLevelName(compilerErrorHolder);
-            }
             projectionState.reportNameErrors(compilerErrorHolder);
             projectionState.reportErrors(compilerErrorHolder);
         }

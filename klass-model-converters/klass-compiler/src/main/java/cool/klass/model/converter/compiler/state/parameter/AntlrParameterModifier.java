@@ -1,32 +1,33 @@
 package cool.klass.model.converter.compiler.state.parameter;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrParameterModifier extends AntlrElement
+public class AntlrParameterModifier extends AntlrModifier
 {
-    @Nonnull
-    private final String name;
-
     public AntlrParameterModifier(
-            @Nonnull ParserRuleContext context,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String name)
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            int ordinal)
     {
-        super(context, compilationUnit, inferred);
-        this.name = Objects.requireNonNull(name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
     }
 
     @Nonnull
-    public String getName()
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
     {
-        return this.name;
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSurroundingContext() not implemented yet");
     }
 
     public boolean isUserId()

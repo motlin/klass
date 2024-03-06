@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.value.literal.StringLiteralValueImpl.StringLiteralValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -18,9 +19,10 @@ public final class AntlrStringLiteralValue extends AntlrLiteralValue
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            String value)
+            String value,
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, inferred, expressionValueOwner);
         this.value = value;
     }
 

@@ -34,11 +34,10 @@ public final class PrimitiveParameterImpl extends AbstractParameter implements P
         return this.primitiveType;
     }
 
-    public static final class PrimitiveParameterBuilder extends ParameterBuilder
+    public static final class PrimitiveParameterBuilder extends AbstractParameterBuilder<PrimitiveParameterImpl>
     {
         @Nonnull
-        private final PrimitiveType          primitiveType;
-        private       PrimitiveParameterImpl primitiveParameter;
+        private final PrimitiveType primitiveType;
 
         public PrimitiveParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -53,15 +52,11 @@ public final class PrimitiveParameterImpl extends AbstractParameter implements P
             this.primitiveType = Objects.requireNonNull(primitiveType);
         }
 
-        @Nonnull
         @Override
-        public PrimitiveParameterImpl build()
+        @Nonnull
+        protected PrimitiveParameterImpl buildUnsafe()
         {
-            if (this.primitiveParameter != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.primitiveParameter = new PrimitiveParameterImpl(
+            return new PrimitiveParameterImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -69,14 +64,6 @@ public final class PrimitiveParameterImpl extends AbstractParameter implements P
                     this.ordinal,
                     this.multiplicity,
                     this.primitiveType);
-            return this.primitiveParameter;
-        }
-
-        @Nonnull
-        @Override
-        public PrimitiveParameterImpl getParameter()
-        {
-            return Objects.requireNonNull(this.primitiveParameter);
         }
     }
 }

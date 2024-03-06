@@ -15,7 +15,7 @@ public class AssociationList extends AssociationListAbstract
         super(initialSize);
     }
 
-    public AssociationList(Collection c)
+    public AssociationList(Collection<?> c)
     {
         super(c);
     }

@@ -51,7 +51,7 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
         return this.orderByDirectionDeclaration;
     }
 
-    public static final class OrderByMemberReferencePathBuilder extends ElementBuilder
+    public static final class OrderByMemberReferencePathBuilder extends ElementBuilder<OrderByMemberReferencePathImpl>
     {
         @Nonnull
         private final OrderByBuilder                     orderByBuilder;
@@ -76,12 +76,14 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
             this.orderByDirectionBuilder = Objects.requireNonNull(orderByDirectionBuilder);
         }
 
-        public OrderByMemberReferencePathImpl build()
+        @Override
+        @Nonnull
+        protected OrderByMemberReferencePathImpl buildUnsafe()
         {
             return new OrderByMemberReferencePathImpl(
                     this.elementContext,
                     this.inferred,
-                    this.orderByBuilder.getOrderBy(),
+                    this.orderByBuilder.getElement(),
                     this.ordinal,
                     this.thisMemberReferencePathBuilder.build(),
                     this.orderByDirectionBuilder.build());

@@ -5,28 +5,26 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.url.Url;
-import cool.klass.model.meta.domain.api.service.url.UrlParameter;
-import cool.klass.model.meta.domain.api.service.url.UrlPathSegment;
-import cool.klass.model.meta.domain.api.service.url.UrlQueryParameter;
+import cool.klass.model.meta.domain.parameter.AbstractParameter.AbstractParameterBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
-import cool.klass.model.meta.domain.service.url.AbstractUrlParameter.UrlParameterBuilder;
-import cool.klass.model.meta.domain.service.url.AbstractUrlPathSegment.UrlPathSegmentBuilder;
-import cool.klass.model.meta.domain.service.url.UrlQueryParameterImpl.UrlQueryParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class UrlImpl extends AbstractElement implements Url
 {
     @Nonnull
-    private final ServiceGroupImpl                 serviceGroup;
-    private       ImmutableList<UrlPathSegment>    urlPathSegments;
-    private       ImmutableList<UrlQueryParameter> queryParameters;
-    private       ImmutableList<UrlParameter>      urlParameters;
-    private       ImmutableList<Service>           services;
+    private final ServiceGroupImpl         serviceGroup;
+    private       ImmutableList<Element>   urlPathSegments;
+    private       ImmutableList<Parameter> parameters;
+    private       ImmutableList<Parameter> queryParameters;
+    private       ImmutableList<Parameter> pathParameters;
+    private       ImmutableList<Service>   services;
 
     private UrlImpl(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull ServiceGroupImpl serviceGroup)
     {
@@ -42,12 +40,12 @@ public final class UrlImpl extends AbstractElement implements Url
     }
 
     @Override
-    public ImmutableList<UrlPathSegment> getUrlPathSegments()
+    public ImmutableList<Element> getUrlPathSegments()
     {
         return Objects.requireNonNull(this.urlPathSegments);
     }
 
-    private void setUrlPathSegments(@Nonnull ImmutableList<UrlPathSegment> urlPathSegments)
+    private void setUrlPathSegments(@Nonnull ImmutableList<Element> urlPathSegments)
     {
         if (this.urlPathSegments != null)
         {
@@ -57,12 +55,27 @@ public final class UrlImpl extends AbstractElement implements Url
     }
 
     @Override
-    public ImmutableList<UrlQueryParameter> getQueryParameters()
+    public ImmutableList<Parameter> getParameters()
+    {
+        return Objects.requireNonNull(this.parameters);
+    }
+
+    private void setParameters(@Nonnull ImmutableList<Parameter> urlParameters)
+    {
+        if (this.parameters != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.parameters = Objects.requireNonNull(urlParameters);
+    }
+
+    @Override
+    public ImmutableList<Parameter> getQueryParameters()
     {
         return Objects.requireNonNull(this.queryParameters);
     }
 
-    private void setQueryParameters(@Nonnull ImmutableList<UrlQueryParameter> queryParameters)
+    private void setQueryParameters(@Nonnull ImmutableList<Parameter> queryParameters)
     {
         if (this.queryParameters != null)
         {
@@ -72,18 +85,18 @@ public final class UrlImpl extends AbstractElement implements Url
     }
 
     @Override
-    public ImmutableList<UrlParameter> getUrlParameters()
+    public ImmutableList<Parameter> getPathParameters()
     {
-        return Objects.requireNonNull(this.urlParameters);
+        return Objects.requireNonNull(this.pathParameters);
     }
 
-    private void setUrlParameters(@Nonnull ImmutableList<UrlParameter> urlParameters)
+    private void setPathParameters(@Nonnull ImmutableList<Parameter> pathParameters)
     {
-        if (this.urlParameters != null)
+        if (this.pathParameters != null)
         {
             throw new IllegalStateException();
         }
-        this.urlParameters = Objects.requireNonNull(urlParameters);
+        this.pathParameters = Objects.requireNonNull(pathParameters);
     }
 
     @Override
@@ -101,16 +114,16 @@ public final class UrlImpl extends AbstractElement implements Url
         this.services = Objects.requireNonNull(services);
     }
 
-    public static final class UrlBuilder extends ElementBuilder
+    public static final class UrlBuilder extends ElementBuilder<UrlImpl>
     {
         @Nonnull
         private final ServiceGroupBuilder serviceGroupBuilder;
 
-        private ImmutableList<UrlPathSegmentBuilder>    pathSegmentBuilders;
-        private ImmutableList<UrlQueryParameterBuilder> queryParameters;
-        private ImmutableList<ServiceBuilder>           services;
-        private UrlImpl                                 url;
-        private ImmutableList<UrlParameterBuilder>      urlParameters;
+        private ImmutableList<ElementBuilder<?>>           pathSegmentBuilders;
+        private ImmutableList<AbstractParameterBuilder<?>> parameterBuilders;
+        private ImmutableList<AbstractParameterBuilder<?>> queryParameterBuilders;
+        private ImmutableList<AbstractParameterBuilder<?>> pathParameterBuilders;
+        private ImmutableList<ServiceBuilder>              services;
 
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -121,19 +134,24 @@ public final class UrlImpl extends AbstractElement implements Url
             this.serviceGroupBuilder = Objects.requireNonNull(serviceGroupBuilder);
         }
 
-        public void setPathSegments(@Nonnull ImmutableList<UrlPathSegmentBuilder> pathSegmentBuilders)
+        public void setPathSegments(@Nonnull ImmutableList<ElementBuilder<?>> pathSegmentBuilders)
         {
             this.pathSegmentBuilders = Objects.requireNonNull(pathSegmentBuilders);
         }
 
-        public void setQueryParameters(@Nonnull ImmutableList<UrlQueryParameterBuilder> queryParameters)
+        public void setParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> parameterBuilders)
         {
-            this.queryParameters = Objects.requireNonNull(queryParameters);
+            this.parameterBuilders = Objects.requireNonNull(parameterBuilders);
         }
 
-        public void setUrlParameters(@Nonnull ImmutableList<UrlParameterBuilder> urlParameters)
+        public void setQueryParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> queryParameterBuilders)
         {
-            this.urlParameters = Objects.requireNonNull(urlParameters);
+            this.queryParameterBuilders = Objects.requireNonNull(queryParameterBuilders);
+        }
+
+        public void setPathParameterBuilders(@Nonnull ImmutableList<AbstractParameterBuilder<?>> pathParameterBuilders)
+        {
+            this.pathParameterBuilders = Objects.requireNonNull(pathParameterBuilders);
         }
 
         public void setServices(@Nonnull ImmutableList<ServiceBuilder> services)
@@ -141,32 +159,23 @@ public final class UrlImpl extends AbstractElement implements Url
             this.services = Objects.requireNonNull(services);
         }
 
-        public UrlImpl build()
+        @Override
+        @Nonnull
+        protected UrlImpl buildUnsafe()
         {
-            if (this.url != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.url = new UrlImpl(this.elementContext, this.inferred, this.serviceGroupBuilder.getElement());
-
-            ImmutableList<UrlPathSegment> urlPathSegments = this.pathSegmentBuilders.collect(UrlPathSegmentBuilder::build);
-            this.url.setUrlPathSegments(urlPathSegments);
-
-            ImmutableList<UrlQueryParameter> queryParameters = this.queryParameters.collect(UrlQueryParameterBuilder::build);
-            this.url.setQueryParameters(queryParameters);
-
-            ImmutableList<UrlParameter> urlParameters = this.urlParameters.collect(UrlParameterBuilder::getUrlParameter);
-            this.url.setUrlParameters(urlParameters);
-
-            ImmutableList<Service> services = this.services.collect(ServiceBuilder::build);
-            this.url.setServices(services);
-
-            return this.url;
+            return new UrlImpl(this.elementContext, this.inferred, this.serviceGroupBuilder.getElement());
         }
 
-        public UrlImpl getUrl()
+        @Override
+        protected void buildChildren()
         {
-            return Objects.requireNonNull(this.url);
+            this.element.setUrlPathSegments(this.pathSegmentBuilders.collect(ElementBuilder::build));
+            this.element.setQueryParameters(this.queryParameterBuilders.collect(AbstractParameterBuilder::build));
+            this.element.setPathParameters(this.pathParameterBuilders.collect(AbstractParameterBuilder::getElement));
+            this.element.setParameters(this.parameterBuilders.collect(AbstractParameterBuilder::getElement));
+
+            ImmutableList<Service> services = this.services.collect(ServiceBuilder::build);
+            this.element.setServices(services);
         }
     }
 }

@@ -15,7 +15,7 @@ public class AssociationEndOrderingList extends AssociationEndOrderingListAbstra
         super(initialSize);
     }
 
-    public AssociationEndOrderingList(Collection c)
+    public AssociationEndOrderingList(Collection<?> c)
     {
         super(c);
     }

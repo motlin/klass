@@ -56,7 +56,7 @@ public class ReladomoJsonTree implements JsonSerializable
             MithraObject mithraObject,
             @Nonnull ImmutableList<ProjectionElement> projectionElements) throws IOException
     {
-        RelatedFinder finder = mithraObject.zGetPortal().getFinder();
+        RelatedFinder<?> finder = mithraObject.zGetPortal().getFinder();
 
         jsonGenerator.writeStartObject();
         try
@@ -100,7 +100,7 @@ public class ReladomoJsonTree implements JsonSerializable
     public static void handleProjectionPrimitiveMember(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            @Nonnull RelatedFinder finder,
+            @Nonnull RelatedFinder<?> finder,
             ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
         DataTypeProperty property     = projectionPrimitiveMember.getProperty();
@@ -128,7 +128,7 @@ public class ReladomoJsonTree implements JsonSerializable
     public static void handleProjectionAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            RelatedFinder finder,
+            RelatedFinder<?> finder,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
         ImmutableList<ProjectionElement> children       = projectionAssociationEnd.getChildren();
@@ -187,7 +187,7 @@ public class ReladomoJsonTree implements JsonSerializable
     // TODO: Move this generic serialization logic to an abstract Reladomo serializer
     public static Object getDataTypeValue(
             MithraObject mithraObject,
-            RelatedFinder finder,
+            RelatedFinder<?> finder,
             DataTypeProperty dataTypeProperty)
     {
         Attribute attribute = finder.getAttributeByName(dataTypeProperty.getName());
@@ -208,7 +208,7 @@ public class ReladomoJsonTree implements JsonSerializable
         if (isTemporal || dataTypeProperty.getType() == PrimitiveType.INSTANT)
         {
             Instant            instant            = ((Date) result).toInstant();
-            TimestampAttribute timestampAttribute = (TimestampAttribute) attribute;
+            TimestampAttribute<?> timestampAttribute = (TimestampAttribute<?>) attribute;
             if (isTemporal)
             {
                 Timestamp infinity        = timestampAttribute.getAsOfAttributeInfinity();

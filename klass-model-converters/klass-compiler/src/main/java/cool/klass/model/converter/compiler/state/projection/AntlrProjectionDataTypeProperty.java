@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.projection;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,11 +32,11 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             AntlrPrimitiveProperty.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrProjectionParent antlrProjectionParent;
+    private final AntlrProjectionParent    antlrProjectionParent;
     @Nonnull
-    private final HeaderContext headerContext;
+    private final HeaderContext            headerContext;
     @Nonnull
-    private final String headerText;
+    private final String                   headerText;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
 
@@ -89,12 +90,8 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.getName());
+        compilerErrorHolder.add(message, this);
     }
 
     @Override
@@ -106,18 +103,12 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
                     "ERR_PRJ_DTP: Cannot find member '%s.%s'.",
                     this.antlrProjectionParent.getKlass().getName(),
                     this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add(message, this);
         }
 
         if (this.headerText.trim().isEmpty())
         {
-            compilerErrorHolder.add(
-                    "Empty header string.",
-                    this.headerContext,
-                    this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add("Empty header string.", this.headerContext, this);
         }
     }
 
@@ -125,5 +116,13 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
+    }
+
+    @Nonnull
+    @Override
+    protected Pattern getNamePattern()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getNamePattern() not implemented yet");
     }
 }

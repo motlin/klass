@@ -15,7 +15,7 @@ public class ServiceGroupList extends ServiceGroupListAbstract
         super(initialSize);
     }
 
-    public ServiceGroupList(Collection c)
+    public ServiceGroupList(Collection<?> c)
     {
         super(c);
     }

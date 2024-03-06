@@ -35,11 +35,10 @@ public final class EnumerationParameterImpl extends AbstractParameter implements
         return this.enumeration;
     }
 
-    public static final class EnumerationParameterBuilder extends ParameterBuilder
+    public static final class EnumerationParameterBuilder extends AbstractParameterBuilder<EnumerationParameterImpl>
     {
         @Nonnull
-        private final EnumerationBuilder       enumerationBuilder;
-        private       EnumerationParameterImpl enumerationParameter;
+        private final EnumerationBuilder enumerationBuilder;
 
         public EnumerationParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -54,15 +53,11 @@ public final class EnumerationParameterImpl extends AbstractParameter implements
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 
-        @Nonnull
         @Override
-        public EnumerationParameterImpl build()
+        @Nonnull
+        protected EnumerationParameterImpl buildUnsafe()
         {
-            if (this.enumerationParameter != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.enumerationParameter = new EnumerationParameterImpl(
+            return new EnumerationParameterImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -70,14 +65,6 @@ public final class EnumerationParameterImpl extends AbstractParameter implements
                     this.ordinal,
                     this.multiplicity,
                     this.enumerationBuilder.getElement());
-            return this.enumerationParameter;
-        }
-
-        @Override
-        @Nonnull
-        public EnumerationParameterImpl getParameter()
-        {
-            return Objects.requireNonNull(this.enumerationParameter);
         }
     }
 }

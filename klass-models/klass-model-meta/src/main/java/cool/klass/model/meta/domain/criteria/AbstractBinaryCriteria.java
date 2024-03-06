@@ -39,26 +39,23 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
         return this.right;
     }
 
-    public abstract static class BinaryCriteriaBuilder extends CriteriaBuilder
+    public abstract static class AbstractBinaryCriteriaBuilder<BuiltElement extends AbstractBinaryCriteria>
+            extends AbstractCriteriaBuilder<BuiltElement>
     {
         @Nonnull
-        protected final CriteriaBuilder left;
+        protected final AbstractCriteriaBuilder<?> left;
         @Nonnull
-        protected final CriteriaBuilder right;
+        protected final AbstractCriteriaBuilder<?> right;
 
-        protected BinaryCriteriaBuilder(
+        protected AbstractBinaryCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull CriteriaBuilder left,
-                @Nonnull CriteriaBuilder right)
+                @Nonnull AbstractCriteriaBuilder<?> left,
+                @Nonnull AbstractCriteriaBuilder<?> right)
         {
             super(elementContext, inferred);
             this.left = Objects.requireNonNull(left);
             this.right = Objects.requireNonNull(right);
         }
-
-        @Nonnull
-        @Override
-        public abstract AbstractBinaryCriteria build();
     }
 }

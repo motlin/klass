@@ -5,11 +5,9 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
-import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.property.AssociationEndImpl;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ProjectionAssociationEndImpl extends AbstractProjectionParent implements ProjectionAssociationEnd
 {
@@ -36,12 +34,12 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
         return this.associationEnd;
     }
 
-    public static final class ProjectionAssociationEndBuilder extends ProjectionParentBuilder implements ProjectionElementBuilder
+    public static final class ProjectionAssociationEndBuilder
+            extends AbstractProjectionParentBuilder<ProjectionAssociationEndImpl>
+            implements ProjectionElementBuilder
     {
         @Nonnull
         private final AssociationEndBuilder associationEndBuilder;
-
-        private ProjectionAssociationEndImpl projectionAssociationEnd;
 
         public ProjectionAssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -56,13 +54,10 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
         }
 
         @Override
-        public ProjectionAssociationEndImpl build()
+        @Nonnull
+        protected ProjectionAssociationEndImpl buildUnsafe()
         {
-            if (this.projectionAssociationEnd != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.projectionAssociationEnd = new ProjectionAssociationEndImpl(
+            ProjectionAssociationEndImpl projectionAssociationEnd = new ProjectionAssociationEndImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -70,11 +65,9 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
                     this.ordinal,
                     this.associationEndBuilder.getElement());
 
-            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
+            this.buildChildren(projectionAssociationEnd);
 
-            this.projectionAssociationEnd.setChildren(children);
-
-            return this.projectionAssociationEnd;
+            return projectionAssociationEnd;
         }
     }
 }

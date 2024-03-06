@@ -1,17 +1,20 @@
 package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 
 public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrProperty<T>
 {
@@ -38,6 +41,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.owningClassState);
+    }
+
     public boolean isKey()
     {
         return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isKey);
@@ -62,7 +72,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     @Nonnull
     @Override
-    public abstract DataTypePropertyBuilder<T, ?> build();
+    public abstract DataTypePropertyBuilder<T, ?, ?> build();
 
     @Nonnull
     @Override
@@ -72,33 +82,16 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     }
 
     @Nonnull
-    public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
+    public abstract DataTypePropertyBuilder<T, ?, ?> getPropertyBuilder();
 
     @Override
-    public void reportNameErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
-        this.reportKeywordCollision(compilerErrorHolder, this.getParserRuleContexts());
-
-        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
+        if (this.elementContext instanceof ClassModifierContext)
         {
-            String message = String.format(
-                    "ERR_DTP_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    this.getParserRuleContexts());
+            return;
         }
-    }
-
-    @Nonnull
-    protected ParserRuleContext[] getParserRuleContexts()
-    {
-        return this.elementContext instanceof ClassModifierContext
-                ? new ParserRuleContext[]{}
-                : new ParserRuleContext[]{this.getOwningClassState().getElementContext()};
+        this.owningClassState.getParserRuleContexts(parserRuleContexts);
     }
 
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
@@ -107,15 +100,5 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         // TODO: Check for nullable key properties
         // TODO: Check that ID properties are key properties
         // TODO: Only Integer and Long may be ID (no enums either)
-    }
-
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_DTP: Duplicate member: '%s'.", this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.getParserRuleContexts());
     }
 }

@@ -57,30 +57,26 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
         return this.property;
     }
 
-    public abstract static class MemberReferencePathBuilder extends ExpressionValueBuilder
+    public abstract static class AbstractMemberReferencePathBuilder<BuiltElement extends AbstractMemberReferencePath> extends AbstractExpressionValueBuilder<BuiltElement>
     {
         @Nonnull
         protected final KlassBuilder                         klassBuilder;
         @Nonnull
         protected final ImmutableList<AssociationEndBuilder> associationEndBuilders;
         @Nonnull
-        protected final DataTypePropertyBuilder<?, ?>        propertyBuilder;
+        protected final DataTypePropertyBuilder<?, ?, ?>        propertyBuilder;
 
-        protected MemberReferencePathBuilder(
+        protected AbstractMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
-                @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, inferred);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
         }
-
-        @Nonnull
-        @Override
-        public abstract AbstractMemberReferencePath build();
     }
 }

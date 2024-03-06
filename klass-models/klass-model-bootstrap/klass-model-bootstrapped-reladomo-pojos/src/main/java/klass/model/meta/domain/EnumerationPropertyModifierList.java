@@ -15,7 +15,7 @@ public class EnumerationPropertyModifierList extends EnumerationPropertyModifier
         super(initialSize);
     }
 
-    public EnumerationPropertyModifierList(Collection c)
+    public EnumerationPropertyModifierList(Collection<?> c)
     {
         super(c);
     }

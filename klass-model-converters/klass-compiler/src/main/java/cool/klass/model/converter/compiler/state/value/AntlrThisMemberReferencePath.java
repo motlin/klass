@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -21,7 +22,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
+public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
 {
     public AntlrThisMemberReferencePath(
             @Nonnull ThisMemberReferencePathContext elementContext,
@@ -29,9 +30,17 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
             boolean inferred,
             @Nonnull AntlrClass classState,
             ImmutableList<AntlrAssociationEnd> associationEndStates,
-            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState)
+            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred, classState, associationEndStates, dataTypePropertyState);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                classState,
+                associationEndStates,
+                dataTypePropertyState,
+                expressionValueOwner);
     }
 
     @Nonnull
@@ -57,7 +66,6 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
         List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
         AntlrClass currentClassState = reportErrorsAssociationEnds(
                 compilerErrorHolder,
-                parserRuleContexts,
                 associationEndReferenceContexts);
         if (currentClassState == null)
         {
@@ -71,10 +79,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
                     "ERR_THS_MEM: Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add(
-                    message,
-                    identifier,
-                    parserRuleContexts.toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add(message, identifier, this);
         }
     }
 

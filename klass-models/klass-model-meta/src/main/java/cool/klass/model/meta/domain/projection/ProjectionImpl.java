@@ -8,9 +8,7 @@ import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ProjectionImpl extends AbstractProjectionParent implements TopLevelElement, Projection
 {
@@ -47,13 +45,12 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         return this.packageName;
     }
 
-    public static final class ProjectionBuilder extends ProjectionParentBuilder implements TopLevelElementBuilder
+    public static final class ProjectionBuilder extends AbstractProjectionParentBuilder<ProjectionImpl> implements TopLevelElementBuilder
     {
         @Nonnull
-        private final String         packageName;
+        private final String       packageName;
         @Nonnull
-        private final KlassBuilder   klassBuilder;
-        private       ProjectionImpl projection;
+        private final KlassBuilder klassBuilder;
 
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -69,13 +66,11 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
-        public ProjectionImpl build()
+        @Override
+        @Nonnull
+        protected ProjectionImpl buildUnsafe()
         {
-            if (this.projection != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.projection = new ProjectionImpl(
+            ProjectionImpl projection = new ProjectionImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -84,17 +79,9 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
                     this.packageName,
                     this.klassBuilder.getElement());
 
-            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
+            this.buildChildren(projection);
 
-            this.projection.setChildren(children);
-
-            return this.projection;
-        }
-
-        @Override
-        public ProjectionImpl getElement()
-        {
-            return Objects.requireNonNull(this.projection);
+            return projection;
         }
     }
 }

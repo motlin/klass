@@ -39,7 +39,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             "ambiguous class",
             -1,
             null,
-            Lists.immutable.empty(),
             false)
     {
         @Override
@@ -72,7 +71,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             "not found class",
             -1,
             null,
-            Lists.immutable.empty(),
             false)
     {
         @Override
@@ -98,11 +96,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     };
 
     private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableList<AntlrParameterizedProperty>                                     parameterizedPropertyStates      = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrParameterizedProperty>                       parameterizedPropertiesByName    =
@@ -110,7 +109,9 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final ImmutableList<AntlrClassModifier> classModifierStates;
+    private final MutableList<AntlrClassModifier>               classModifierStates  = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrClassModifier> classModifiersByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final boolean isUser;
 
@@ -124,11 +125,9 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             @Nonnull String name,
             int ordinal,
             String packageName,
-            ImmutableList<AntlrClassModifier> classModifierStates,
             boolean isUser)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
-        this.classModifierStates = Objects.requireNonNull(classModifierStates);
         this.isUser = isUser;
     }
 
@@ -182,6 +181,16 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
     }
 
+    public void enterClassModifier(@Nonnull AntlrClassModifier classModifierState)
+    {
+        this.classModifierStates.add(classModifierState);
+        this.classModifiersByName.compute(
+                classModifierState.getName(),
+                (name, builder) -> builder == null
+                        ? classModifierState
+                        : AntlrClassModifier.AMBIGUOUS);
+    }
+
     public AntlrParameterizedProperty getParameterizedPropertyByContext(ParameterizedPropertyContext ctx)
     {
         return this.parameterizedPropertiesByContext.get(ctx);
@@ -194,9 +203,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             throw new IllegalStateException();
         }
 
-        ImmutableList<ClassModifierBuilder> classModifierBuilders =
-                this.classModifierStates.collect(AntlrClassModifier::build);
-
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
                 this.inferred,
@@ -204,12 +210,16 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 this.name,
                 this.ordinal,
                 this.packageName,
-                classModifierBuilders,
                 this.isUser,
                 this.isTransient());
 
-        ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
-                .<DataTypePropertyBuilder<?, ?>>collect(AntlrDataTypeProperty::build)
+        ImmutableList<ClassModifierBuilder> classModifierBuilders = this.classModifierStates
+                .collect(AntlrClassModifier::build)
+                .toImmutable();
+        this.klassBuilder.setClassModifierBuilders(classModifierBuilders);
+
+        ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
+                .<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::build)
                 .toImmutable();
 
         this.klassBuilder.setDataTypePropertyBuilders(dataTypePropertyBuilders);
@@ -257,47 +267,20 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
     }
 
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(message, this.nameContext);
-    }
-
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
+        super.reportNameErrors(compilerErrorHolder);
         this.reportKeywordCollision(compilerErrorHolder);
 
-        if (RELADOMO_TYPES.contains(this.name))
+        if (RELADOMO_TYPES.contains(this.getName()))
         {
-            String message = String.format(
-                    "ERR_REL_NME: '%s' is a Reladomo type.",
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
+            String message = String.format("ERR_REL_NME: '%s' is a Reladomo type.", this.getName());
+            compilerErrorHolder.add(message, this);
         }
 
-        for (AntlrDataTypeProperty<?> dataTypePropertyState : this.dataTypePropertyStates)
-        {
-            dataTypePropertyState.reportNameErrors(compilerErrorHolder);
-        }
-
-        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
-        {
-            associationEndState.reportNameErrors(compilerErrorHolder);
-        }
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_CLS_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
-        }
+        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -343,9 +326,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
         {
             String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.getElementContext());
+            compilerErrorHolder.add(message, this);
         }
 
         // TODO: Warn if class is owned by multiple
@@ -354,6 +335,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         // TODO: Check that ID properties aren't part of a composite key
 
         // TODO: parameterized properties
+        // TODO: duplicate class modifiers
     }
 
     public ImmutableBag<String> getDuplicateMemberNames()
@@ -364,19 +346,19 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 .toImmutable();
     }
 
-    @Nonnull
-    @Override
-    public ClassDeclarationContext getElementContext()
-    {
-        return (ClassDeclarationContext) super.getElementContext();
-    }
-
     private ImmutableList<String> getMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
+    }
+
+    @Nonnull
+    @Override
+    public ClassDeclarationContext getElementContext()
+    {
+        return (ClassDeclarationContext) super.getElementContext();
     }
 
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
@@ -392,6 +374,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
     {
         return this.associationEndStates.asUnmodifiable();
+    }
+
+    public int getNumClassModifiers()
+    {
+        return this.classModifierStates.size();
     }
 
     @Nonnull

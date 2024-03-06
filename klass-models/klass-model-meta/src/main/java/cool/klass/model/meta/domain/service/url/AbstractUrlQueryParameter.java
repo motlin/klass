@@ -7,9 +7,9 @@ import cool.klass.model.meta.domain.api.service.url.UrlQueryParameter;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class UrlQueryParameterImpl extends AbstractUrlParameter implements UrlQueryParameter
+public abstract class AbstractUrlQueryParameter extends AbstractUrlParameter implements UrlQueryParameter
 {
-    protected UrlQueryParameterImpl(
+    protected AbstractUrlQueryParameter(
             @Nonnull ParserRuleContext elementContext,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
@@ -21,9 +21,9 @@ public abstract class UrlQueryParameterImpl extends AbstractUrlParameter impleme
         super(elementContext, inferred, nameContext, name, ordinal, multiplicity, url);
     }
 
-    public abstract static class UrlQueryParameterBuilder extends UrlParameterBuilder
+    public abstract static class AbstractUrlQueryParameterBuilder<BuiltElement extends AbstractUrlQueryParameter> extends AbstractUrlParameterBuilder<BuiltElement>
     {
-        protected UrlQueryParameterBuilder(
+        protected AbstractUrlQueryParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
@@ -34,9 +34,5 @@ public abstract class UrlQueryParameterImpl extends AbstractUrlParameter impleme
         {
             super(elementContext, inferred, nameContext, name, ordinal, multiplicity, urlBuilder);
         }
-
-        @Override
-        @Nonnull
-        public abstract UrlQueryParameterImpl build();
     }
 }

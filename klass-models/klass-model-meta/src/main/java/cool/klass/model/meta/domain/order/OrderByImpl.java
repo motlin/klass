@@ -40,13 +40,12 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
         this.orderByMemberReferencePaths = Objects.requireNonNull(orderByMemberReferencePaths);
     }
 
-    public static final class OrderByBuilder extends ElementBuilder
+    public static final class OrderByBuilder extends ElementBuilder<OrderByImpl>
     {
         @Nonnull
-        private final KlassBuilder          thisContextBuilder;
+        private final KlassBuilder thisContextBuilder;
 
         private ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders;
-        private OrderByImpl                                      orderBy;
 
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -62,29 +61,22 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
             this.orderByMemberReferencePathBuilders = Objects.requireNonNull(orderByMemberReferencePathBuilders);
         }
 
-        public OrderByImpl getOrderBy()
+        @Override
+        @Nonnull
+        protected OrderByImpl buildUnsafe()
         {
-            return Objects.requireNonNull(this.orderBy);
-        }
-
-        public OrderByImpl build()
-        {
-            if (this.orderBy != null)
-            {
-                throw new IllegalStateException();
-            }
-
-            this.orderBy = new OrderByImpl(
+            return new OrderByImpl(
                     this.elementContext,
                     this.inferred,
-                    this.thisContextBuilder.getElement()
-            );
+                    this.thisContextBuilder.getElement());
+        }
 
+        @Override
+        protected void buildChildren()
+        {
             ImmutableList<OrderByMemberReferencePath> orderByMemberReferencePaths =
                     this.orderByMemberReferencePathBuilders.collect(OrderByMemberReferencePathBuilder::build);
-            this.orderBy.setOrderByMemberReferencePaths(orderByMemberReferencePaths);
-
-            return this.orderBy;
+            this.element.setOrderByMemberReferencePaths(orderByMemberReferencePaths);
         }
     }
 }

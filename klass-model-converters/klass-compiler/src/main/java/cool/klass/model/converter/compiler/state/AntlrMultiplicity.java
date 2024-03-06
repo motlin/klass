@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -58,6 +60,20 @@ public class AntlrMultiplicity extends AntlrElement
             return Multiplicity.ONE_TO_MANY;
         }
         return null;
+    }
+
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSurroundingContext() not implemented yet");
     }
 
     @Nonnull

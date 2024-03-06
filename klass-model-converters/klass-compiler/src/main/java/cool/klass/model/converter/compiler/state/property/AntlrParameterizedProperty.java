@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler.state.property;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,27 +10,23 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
-import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty implements AntlrCriteriaOwner, AntlrParameterOwner, AntlrOrderByOwner
+public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty implements AntlrParameterOwner
 {
+    @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             null,
@@ -42,6 +37,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
             AntlrClass.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
             null);
+    @Nullable
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             null,
@@ -55,21 +51,13 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
     // @Nonnull
     // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifierStates;
-    private final AntlrClass        owningClassState;
+    private final AntlrClass owningClassState;
 
-    private final MutableList<AntlrParameter>               parameterStates       = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrParameter> parameterStatesByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final ParameterHolder parameterHolder = new ParameterHolder();
 
-    private final MutableList<AntlrPrimitiveParameter>               primitiveParameterStates       = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrPrimitiveParameter> primitiveParameterStatesByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    private final MutableList<AntlrEnumerationParameter>               enumerationParameterStates       = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrEnumerationParameter> enumerationParameterStatesByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
     @Nullable
-    private       ParameterizedPropertyBuilder                         parameterizedPropertyBuilder;
-    private       AntlrCriteria                                        criteriaState;
+    private ParameterizedPropertyBuilder parameterizedPropertyBuilder;
+    private AntlrCriteria                criteriaState;
 
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
@@ -91,6 +79,43 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     public ParameterizedPropertyContext getElementContext()
     {
         return (ParameterizedPropertyContext) super.getElementContext();
+    }
+
+    @Override
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
+    {
+        parserRuleContexts.add(this.elementContext);
+        this.owningClassState.getParserRuleContexts(parserRuleContexts);
+    }
+
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.ofNullable(this.owningClassState);
+    }
+
+    @Override
+    public int getNumParameters()
+    {
+        return this.parameterHolder.getNumParameters();
+    }
+
+    @Override
+    public void enterParameterDeclaration(@Nonnull AntlrParameter<?> parameterState)
+    {
+        this.parameterHolder.enterParameterDeclaration(parameterState);
+    }
+
+    @Override
+    public void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState)
+    {
+        this.parameterHolder.enterPrimitiveParameterDeclaration(primitiveParameterState);
+    }
+
+    @Override
+    public void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState)
+    {
+        this.parameterHolder.enterEnumerationParameterDeclaration(enumerationParameterState);
     }
 
     @Nonnull
@@ -123,56 +148,10 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
-    @Override
-    public int getNumParameters()
-    {
-        return this.parameterStates.size();
-    }
-
-    @Override
-    public void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState)
-    {
-        this.primitiveParameterStates.add(primitiveParameterState);
-        this.primitiveParameterStatesByName.compute(
-                primitiveParameterState.getName(),
-                (name, builder) -> builder == null
-                        ? primitiveParameterState
-                        : AntlrPrimitiveParameter.AMBIGUOUS);
-    }
-
-    @Override
-    public void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState)
-    {
-        this.enumerationParameterStates.add(enumerationParameterState);
-        this.enumerationParameterStatesByName.compute(
-                enumerationParameterState.getName(),
-                (name, builder) -> builder == null
-                        ? enumerationParameterState
-                        : AntlrEnumerationParameter.AMBIGUOUS);
-    }
-
     @Nonnull
     public ParameterizedPropertyBuilder getParameterizedPropertyBuilder()
     {
         return Objects.requireNonNull(this.parameterizedPropertyBuilder);
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        this.reportKeywordCollision(compilerErrorHolder, this.owningClassState.getElementContext());
-
-        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_END_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    this.owningClassState.getElementContext());
-        }
     }
 
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
@@ -185,44 +164,14 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         }
     }
 
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format(
-                "ERR_DUP_PZP: Duplicate member: '%s.%s'.",
-                this.owningClassState.getName(),
-                this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.owningClassState.getElementContext());
-    }
-
     @Nonnull
-    @Override
     public AntlrCriteria getCriteria()
     {
         return this.criteriaState;
     }
 
-    @Override
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
         this.criteriaState = criteria;
-    }
-
-    @Override
-    public void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getParserRuleContexts() not implemented yet");
-    }
-
-    @Override
-    public ImmutableList<ParserRuleContext> getParserRuleContexts()
-    {
-        MutableList<ParserRuleContext> result = Lists.mutable.empty();
-        this.getParserRuleContexts(result);
-        return result.toImmutable();
     }
 }

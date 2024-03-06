@@ -14,6 +14,10 @@ import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
+import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
@@ -21,14 +25,8 @@ import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceMultiplicity;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceProjectionDispatch;
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
-import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
-import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlQueryParameter;
-import cool.klass.model.converter.compiler.state.service.url.AntlrParameterModifier;
-import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlPathParameter;
-import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlQueryParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
@@ -74,7 +72,9 @@ public class ServicePhase extends AbstractCompilerPhase
     private AntlrService      serviceState;
 
     @Nullable
-    private Boolean inQueryParameterList;
+    private Boolean           inQueryParameterList;
+    @Nullable
+    private AntlrParameter<?> parameterState;
 
     public ServicePhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
@@ -137,7 +137,7 @@ public class ServicePhase extends AbstractCompilerPhase
         }
 
         // Resolve service variable references after inferring additional parameters like version
-        OrderedMap<String, AntlrUrlParameter> formalParametersByName = this.urlState.getFormalParametersByName();
+        OrderedMap<String, AntlrParameter<?>> formalParametersByName = this.urlState.getFormalParametersByName();
         for (AntlrService serviceState : this.urlState.getServiceStates())
         {
             for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
@@ -273,7 +273,6 @@ public class ServicePhase extends AbstractCompilerPhase
                 this.serviceGroupState.getKlass());
 
         AntlrCriteria antlrCriteria = criteriaVisitor.visit(criteriaExpressionContext);
-
         serviceCriteriaState.setCriteria(antlrCriteria);
 
         this.serviceState.enterServiceCriteriaDeclaration(serviceCriteriaState);
@@ -324,42 +323,35 @@ public class ServicePhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false);
 
-        ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
-                .collect(this::getAntlrParameterModifier)
-                .toImmutable();
+        int ordinal = this.inQueryParameterList
+                ? this.urlState.getNumQueryParameters() + 1
+                : this.urlState.getNumPathSegments() + 1;
+
+        parameterState = new AntlrPrimitiveParameter(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                identifier,
+                identifier.getText(),
+                ordinal,
+                primitiveTypeState,
+                multiplicityState,
+                this.urlState);
 
         if (this.inQueryParameterList)
         {
-            AntlrPrimitiveUrlQueryParameter antlrPrimitiveUrlPathParameter = new AntlrPrimitiveUrlQueryParameter(
-                    ctx,
-                    this.currentCompilationUnit,
-                    false,
-                    identifier,
-                    identifier.getText(),
-                    this.urlState.getNumQueryParameters() + 1,
-                    primitiveTypeState,
-                    multiplicityState,
-                    this.urlState,
-                    parameterModifiers);
-
-            this.urlState.enterQueryParameterDeclaration(antlrPrimitiveUrlPathParameter);
+            this.urlState.enterQueryParameterDeclaration(parameterState);
         }
         else
         {
-            AntlrPrimitiveUrlPathParameter antlrPrimitiveUrlPathParameter = new AntlrPrimitiveUrlPathParameter(
-                    ctx,
-                    this.currentCompilationUnit,
-                    false,
-                    identifier,
-                    identifier.getText(),
-                    this.urlState.getNumPathSegments() + 1,
-                    primitiveTypeState,
-                    multiplicityState,
-                    this.urlState,
-                    parameterModifiers);
-
-            this.urlState.enterPathParameterDeclaration(antlrPrimitiveUrlPathParameter);
+            this.urlState.enterPathParameterDeclaration(parameterState);
         }
+    }
+
+    @Override
+    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
+    {
+        this.parameterState = null;
     }
 
     @Override
@@ -377,46 +369,52 @@ public class ServicePhase extends AbstractCompilerPhase
                 false);
 
         ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
-                .collect(this::getAntlrParameterModifier)
+                .collect(context ->
+                {
+                    // TODO: ordinal and parent
+                    return new AntlrParameterModifier(
+                            context, this.currentCompilationUnit, false,
+                            context, context.getText(), -1);
+                })
                 .toImmutable();
+
+        int ordinal = this.inQueryParameterList
+                ? this.urlState.getNumQueryParameters() + 1
+                : this.urlState.getNumPathSegments() + 1;
+
+        AntlrEnumerationParameter enumerationParameterState = new AntlrEnumerationParameter(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                identifier,
+                identifier.getText(),
+                ordinal,
+                enumerationState,
+                multiplicityState,
+                this.urlState
+        );
 
         if (this.inQueryParameterList)
         {
-            AntlrEnumerationUrlQueryParameter enumerationStateUrlPathParameter = new AntlrEnumerationUrlQueryParameter(
-                    ctx,
-                    this.currentCompilationUnit,
-                    false,
-                    identifier,
-                    identifier.getText(),
-                    this.urlState.getNumQueryParameters() + 1,
-                    enumerationState,
-                    multiplicityState,
-                    this.urlState,
-                    parameterModifiers);
-
-            this.urlState.enterQueryParameterDeclaration(enumerationStateUrlPathParameter);
+            this.urlState.enterQueryParameterDeclaration(enumerationParameterState);
         }
         else
         {
-            AntlrEnumerationUrlPathParameter enumerationStateUrlPathParameter = new AntlrEnumerationUrlPathParameter(
-                    ctx,
-                    this.currentCompilationUnit,
-                    false,
-                    identifier,
-                    identifier.getText(),
-                    this.urlState.getNumPathSegments(),
-                    enumerationState,
-                    multiplicityState,
-                    this.urlState,
-                    parameterModifiers);
-
-            this.urlState.enterPathParameterDeclaration(enumerationStateUrlPathParameter);
+            this.urlState.enterPathParameterDeclaration(enumerationParameterState);
         }
     }
 
-    @Nonnull
-    public AntlrParameterModifier getAntlrParameterModifier(@Nonnull ParameterModifierContext context)
+    @Override
+    public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
     {
-        return new AntlrParameterModifier(context, this.currentCompilationUnit, false, context.getText());
+        int ordinal = this.parameterState.getNumModifiers();
+        AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                ctx,
+                ctx.getText(),
+                ordinal);
+        this.parameterState.enterParameterModifier(parameterModifierState);
     }
 }

@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -52,6 +53,20 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     public static AntlrPrimitiveType valueOf(PrimitiveType type)
     {
         return Objects.requireNonNull(BY_TYPE.get(type));
+    }
+
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSurroundingContext() not implemented yet");
     }
 
     @Nonnull

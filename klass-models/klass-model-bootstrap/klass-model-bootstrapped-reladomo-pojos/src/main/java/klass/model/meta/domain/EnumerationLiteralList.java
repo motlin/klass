@@ -15,7 +15,7 @@ public class EnumerationLiteralList extends EnumerationLiteralListAbstract
         super(initialSize);
     }
 
-    public EnumerationLiteralList(Collection c)
+    public EnumerationLiteralList(Collection<?> c)
     {
         super(c);
     }

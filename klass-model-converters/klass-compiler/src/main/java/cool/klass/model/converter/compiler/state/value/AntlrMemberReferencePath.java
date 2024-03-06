@@ -9,15 +9,16 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.meta.domain.value.AbstractMemberReferencePath.MemberReferencePathBuilder;
+import cool.klass.model.meta.domain.value.AbstractMemberReferencePath.AbstractMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
+public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
 {
     @Nonnull
     protected final AntlrClass                         classState;
@@ -26,15 +27,16 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
     @Nonnull
     protected final AntlrDataTypeProperty<?>           dataTypePropertyState;
 
-    public AntlrMemberExpressionValue(
+    protected AntlrMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull AntlrClass classState,
             ImmutableList<AntlrAssociationEnd> associationEndStates,
-            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState)
+            @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, inferred, expressionValueOwner);
         this.classState = Objects.requireNonNull(classState);
         this.associationEndStates = Objects.requireNonNull(associationEndStates);
         this.dataTypePropertyState = Objects.requireNonNull(dataTypePropertyState);
@@ -42,12 +44,11 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
 
     @Nonnull
     @Override
-    public abstract MemberReferencePathBuilder build();
+    public abstract AbstractMemberReferencePathBuilder<?> build();
 
     @Nullable
     protected AntlrClass reportErrorsAssociationEnds(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts,
             @Nonnull List<AssociationEndReferenceContext> associationEndReferenceContexts)
     {
         AntlrClass currentClassState = this.classState;
@@ -61,10 +62,7 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
                         "ERR_MEM_EXP: Cannot find member '%s.%s'.",
                         currentClassState.getName(),
                         identifier.getText());
-                compilerErrorHolder.add(
-                        message,
-                        identifier,
-                        parserRuleContexts.toArray(new ParserRuleContext[]{}));
+                compilerErrorHolder.add(message, identifier, this);
                 return null;
             }
             currentClassState = associationEndState.getType();

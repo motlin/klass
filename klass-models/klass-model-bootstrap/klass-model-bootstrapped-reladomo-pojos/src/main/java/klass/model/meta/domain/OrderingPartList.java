@@ -15,7 +15,7 @@ public class OrderingPartList extends OrderingPartListAbstract
         super(initialSize);
     }
 
-    public OrderingPartList(Collection c)
+    public OrderingPartList(Collection<?> c)
     {
         super(c);
     }

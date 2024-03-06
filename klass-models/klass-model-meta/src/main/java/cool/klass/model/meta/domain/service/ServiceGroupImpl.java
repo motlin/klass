@@ -57,13 +57,12 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
         this.urls = Objects.requireNonNull(urls);
     }
 
-    public static class ServiceGroupBuilder extends PackageableElementBuilder implements TopLevelElementBuilder
+    public static final class ServiceGroupBuilder extends PackageableElementBuilder<ServiceGroupImpl> implements TopLevelElementBuilder
     {
         @Nonnull
         private final KlassBuilder klassBuilder;
 
         private ImmutableList<UrlBuilder> urlBuilders;
-        private ServiceGroupImpl          serviceGroup;
 
         public ServiceGroupBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -83,15 +82,11 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
             this.urlBuilders = Objects.requireNonNull(urlBuilders);
         }
 
+        @Override
         @Nonnull
-        public ServiceGroupImpl build()
+        protected ServiceGroupImpl buildUnsafe()
         {
-            if (this.serviceGroup != null)
-            {
-                throw new IllegalStateException();
-            }
-
-            this.serviceGroup = new ServiceGroupImpl(
+            return new ServiceGroupImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -99,18 +94,13 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
                     this.ordinal,
                     this.packageName,
                     this.klassBuilder.getElement());
-
-            ImmutableList<Url> urls = this.urlBuilders.collect(UrlBuilder::build);
-            this.serviceGroup.setUrls(urls);
-
-            return this.serviceGroup;
         }
 
         @Override
-        @Nonnull
-        public ServiceGroupImpl getElement()
+        protected void buildChildren()
         {
-            return Objects.requireNonNull(this.serviceGroup);
+            ImmutableList<Url> urls = this.urlBuilders.collect(UrlBuilder::build);
+            this.element.setUrls(urls);
         }
     }
 }

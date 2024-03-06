@@ -15,7 +15,7 @@ public class PrimitivePropertyList extends PrimitivePropertyListAbstract
         super(initialSize);
     }
 
-    public PrimitivePropertyList(Collection c)
+    public PrimitivePropertyList(Collection<?> c)
     {
         super(c);
     }

@@ -24,7 +24,7 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
     protected final MutableOrderedMap<String, AntlrProjectionElement> childrenByName = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
-    public AntlrProjectionParent(
+    protected AntlrProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
@@ -62,6 +62,4 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
                         ? child
                         : AntlrProjectionDataTypeProperty.AMBIGUOUS);
     }
-
-    public abstract void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts);
 }

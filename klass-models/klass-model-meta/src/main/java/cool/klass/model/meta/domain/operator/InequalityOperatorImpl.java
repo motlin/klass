@@ -15,7 +15,7 @@ public final class InequalityOperatorImpl extends AbstractOperator implements In
         super(elementContext, inferred, operatorText);
     }
 
-    public static class InequalityOperatorBuilder extends OperatorBuilder
+    public static final class InequalityOperatorBuilder extends AbstractOperatorBuilder<InequalityOperatorImpl>
     {
         public InequalityOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -25,9 +25,9 @@ public final class InequalityOperatorImpl extends AbstractOperator implements In
             super(elementContext, inferred, operatorText);
         }
 
-        @Nonnull
         @Override
-        public InequalityOperatorImpl build()
+        @Nonnull
+        protected InequalityOperatorImpl buildUnsafe()
         {
             return new InequalityOperatorImpl(this.elementContext, this.inferred, this.operatorText);
         }

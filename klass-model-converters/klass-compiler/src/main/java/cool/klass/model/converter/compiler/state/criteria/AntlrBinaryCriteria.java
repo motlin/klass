@@ -6,29 +6,41 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public abstract class BinaryAntlrCriteria extends AntlrCriteria
+public abstract class AntlrBinaryCriteria extends AntlrCriteria
 {
-    @Nonnull
-    protected final AntlrCriteria left;
-    @Nonnull
-    protected final AntlrCriteria right;
+    protected AntlrCriteria left;
+    protected AntlrCriteria right;
 
-    protected BinaryAntlrCriteria(
+    protected AntlrBinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull AntlrCriteriaOwner criteriaOwner,
-            @Nonnull AntlrCriteria left,
-            @Nonnull AntlrCriteria right)
+            @Nonnull IAntlrElement criteriaOwner)
     {
         super(elementContext, compilationUnit, inferred, criteriaOwner);
+    }
+
+    public void setLeft(AntlrCriteria left)
+    {
+        if (this.left != null)
+        {
+            throw new IllegalStateException();
+        }
         this.left = Objects.requireNonNull(left);
+    }
+
+    public void setRight(AntlrCriteria right)
+    {
+        if (this.right != null)
+        {
+            throw new IllegalStateException();
+        }
         this.right = Objects.requireNonNull(right);
     }
 
@@ -45,7 +57,7 @@ public abstract class BinaryAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public final void resolveServiceVariables(OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+    public final void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
     {
         this.left.resolveServiceVariables(formalParametersByName);
         this.right.resolveServiceVariables(formalParametersByName);

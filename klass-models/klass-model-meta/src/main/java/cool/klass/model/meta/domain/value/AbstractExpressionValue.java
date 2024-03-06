@@ -13,14 +13,11 @@ public abstract class AbstractExpressionValue extends AbstractElement implements
         super(elementContext, inferred);
     }
 
-    public abstract static class ExpressionValueBuilder extends ElementBuilder
+    public abstract static class AbstractExpressionValueBuilder<BuiltElement extends AbstractExpressionValue> extends ElementBuilder<BuiltElement>
     {
-        protected ExpressionValueBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
+        protected AbstractExpressionValueBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
             super(elementContext, inferred);
         }
-
-        @Nonnull
-        public abstract AbstractExpressionValue build();
     }
 }

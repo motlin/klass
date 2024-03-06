@@ -3,13 +3,14 @@ package cool.klass.model.converter.compiler.state.criteria;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.meta.domain.criteria.OperatorCriteriaImpl.OperatorCriteriaBuilder;
@@ -23,24 +24,21 @@ public class OperatorAntlrCriteria extends AntlrCriteria
 {
     @Nonnull
     private final AntlrOperator        operator;
-    @Nonnull
-    private final AntlrExpressionValue sourceValue;
-    @Nonnull
-    private final AntlrExpressionValue targetValue;
+
+    @Nullable
+    private  AntlrExpressionValue sourceValue;
+    @Nullable
+    private  AntlrExpressionValue targetValue;
 
     public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull AntlrCriteriaOwner criteriaOwner,
-            @Nonnull AntlrOperator operator,
-            @Nonnull AntlrExpressionValue sourceValue,
-            @Nonnull AntlrExpressionValue targetValue)
+            @Nonnull IAntlrElement criteriaOwner,
+            @Nonnull AntlrOperator operator)
     {
         super(elementContext, compilationUnit, inferred, criteriaOwner);
         this.operator = Objects.requireNonNull(operator);
-        this.sourceValue = Objects.requireNonNull(sourceValue);
-        this.targetValue = Objects.requireNonNull(targetValue);
     }
 
     @Nonnull
@@ -50,10 +48,41 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         return (CriteriaOperatorContext) super.getElementContext();
     }
 
+    @Nullable
+    public AntlrExpressionValue getSourceValue()
+    {
+        return Objects.requireNonNull(this.sourceValue);
+    }
+
+    public void setSourceValue(@Nullable AntlrExpressionValue sourceValue)
+    {
+        if (this.sourceValue != null)
+        {
+            throw new IllegalArgumentException();
+        }
+        this.sourceValue = Objects.requireNonNull(sourceValue);
+    }
+
+    @Nullable
+    public AntlrExpressionValue getTargetValue()
+    {
+        return Objects.requireNonNull(this.targetValue);
+    }
+
+    public void setTargetValue(@Nullable AntlrExpressionValue targetValue)
+    {
+        if (this.targetValue != null)
+        {
+            throw new IllegalArgumentException();
+        }
+        this.targetValue = Objects.requireNonNull(targetValue);
+    }
+
     @Nonnull
     @Override
     public OperatorCriteriaBuilder build()
     {
+        // TODO: Refactor to build the parent before the children
         return new OperatorCriteriaBuilder(
                 this.elementContext,
                 this.inferred,
@@ -75,7 +104,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+    public void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
     {
         this.sourceValue.resolveServiceVariables(formalParametersByName);
         this.targetValue.resolveServiceVariables(formalParametersByName);

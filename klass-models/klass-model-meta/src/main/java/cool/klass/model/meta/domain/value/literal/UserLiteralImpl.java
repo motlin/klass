@@ -12,16 +12,16 @@ public final class UserLiteralImpl extends AbstractLiteralValue implements UserL
         super(elementContext, inferred);
     }
 
-    public static final class UserLiteralBuilder extends LiteralValueBuilder
+    public static final class UserLiteralBuilder extends AbstractLiteralValueBuilder<UserLiteralImpl>
     {
         public UserLiteralBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
             super(elementContext, inferred);
         }
 
-        @Nonnull
         @Override
-        public UserLiteralImpl build()
+        @Nonnull
+        protected UserLiteralImpl buildUnsafe()
         {
             return new UserLiteralImpl(this.elementContext, this.inferred);
         }

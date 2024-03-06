@@ -30,10 +30,10 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
         return this.orderByDirection;
     }
 
-    public static final class OrderByDirectionDeclarationBuilder extends ElementBuilder
+    public static final class OrderByDirectionDeclarationBuilder extends ElementBuilder<OrderByDirectionDeclarationImpl>
     {
         @Nonnull
-        private final OrderByDirection orderByDirection;
+        private final OrderByDirection                orderByDirection;
 
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -44,9 +44,14 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
             this.orderByDirection = Objects.requireNonNull(orderByDirection);
         }
 
-        public OrderByDirectionDeclarationImpl build()
+        @Override
+        @Nonnull
+        protected OrderByDirectionDeclarationImpl buildUnsafe()
         {
-            return new OrderByDirectionDeclarationImpl(this.elementContext, this.inferred, this.orderByDirection);
+            return new OrderByDirectionDeclarationImpl(
+                    this.elementContext,
+                    this.inferred,
+                    this.orderByDirection);
         }
     }
 }

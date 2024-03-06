@@ -15,7 +15,7 @@ public class EnumerationPropertyList extends EnumerationPropertyListAbstract
         super(initialSize);
     }
 
-    public EnumerationPropertyList(Collection c)
+    public EnumerationPropertyList(Collection<?> c)
     {
         super(c);
     }

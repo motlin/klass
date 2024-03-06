@@ -57,9 +57,6 @@ public class AntlrInOperator extends AntlrOperator
                 targetTypes.getFirst());
         // Cast is a deliberate assertion
         CriteriaOperatorContext criteriaOperatorContext = (CriteriaOperatorContext) this.elementContext.getParent().getParent();
-        compilerErrorHolder.add(
-                message,
-                criteriaOperatorContext,
-                parserRuleContexts.toArray(new ParserRuleContext[]{}));
+        compilerErrorHolder.add(message, criteriaOperatorContext, this);
     }
 }

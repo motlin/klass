@@ -127,10 +127,8 @@ public class OrderByPhase extends AbstractCompilerPhase
 
     private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
-        AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(
-                orderByMemberReferencePathContext);
-        AntlrOrderByDirection orderByDirection = this.getAntlrOrderByDirection(
-                orderByMemberReferencePathContext);
+        AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(orderByMemberReferencePathContext);
+        AntlrOrderByDirection orderByDirection = this.getAntlrOrderByDirection(orderByMemberReferencePathContext);
 
         return new AntlrOrderByMemberReferencePath(
                 orderByMemberReferencePathContext,
@@ -148,7 +146,8 @@ public class OrderByPhase extends AbstractCompilerPhase
         ExpressionValueVisitor expressionValueVisitor = new ExpressionValueVisitor(
                 this.currentCompilationUnit,
                 this.thisContext,
-                this.domainModelState);
+                this.domainModelState,
+                this.orderByState.get());
 
         ThisMemberReferencePathContext thisMemberReferencePathContext = orderByMemberReferencePathContext.thisMemberReferencePath();
 

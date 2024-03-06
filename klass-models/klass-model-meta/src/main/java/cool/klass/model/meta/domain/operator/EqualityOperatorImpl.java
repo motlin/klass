@@ -12,7 +12,7 @@ public final class EqualityOperatorImpl extends AbstractOperator implements Equa
         super(elementContext, inferred, operatorText);
     }
 
-    public static class EqualityOperatorBuilder extends OperatorBuilder
+    public static final class EqualityOperatorBuilder extends AbstractOperatorBuilder<EqualityOperatorImpl>
     {
         public EqualityOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -22,9 +22,9 @@ public final class EqualityOperatorImpl extends AbstractOperator implements Equa
             super(elementContext, inferred, operatorText);
         }
 
-        @Nonnull
         @Override
-        public EqualityOperatorImpl build()
+        @Nonnull
+        protected EqualityOperatorImpl buildUnsafe()
         {
             return new EqualityOperatorImpl(this.elementContext, this.inferred, this.operatorText);
         }

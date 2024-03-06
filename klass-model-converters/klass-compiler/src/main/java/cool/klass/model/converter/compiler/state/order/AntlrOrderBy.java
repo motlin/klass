@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.order;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,6 +10,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -37,6 +39,20 @@ public class AntlrOrderBy extends AntlrElement
         super(elementContext, compilationUnit, inferred);
         this.thisContext = Objects.requireNonNull(thisContext);
         this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
+    }
+
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        // TODO: Is this backwards?
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.orderByOwnerState);
     }
 
     public int getNumProperties()

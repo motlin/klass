@@ -15,7 +15,7 @@ public class EnumerationList extends EnumerationListAbstract
         super(initialSize);
     }
 
-    public EnumerationList(Collection c)
+    public EnumerationList(Collection<?> c)
     {
         super(c);
     }

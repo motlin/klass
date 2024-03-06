@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Optional;
+import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -49,9 +52,35 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         this.owningEnumeration = owningEnumeration;
     }
 
+    @Nonnull
+    @Override
+    public EnumerationLiteralContext getElementContext()
+    {
+        return (EnumerationLiteralContext) super.getElementContext();
+    }
+
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.ofNullable(this.owningEnumeration);
+    }
+
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return false;
+    }
+
     public String getPrettyName()
     {
         return this.prettyName;
+    }
+
+    @Nonnull
+    @Override
+    protected Pattern getNamePattern()
+    {
+        return CONSTANT_NAME_PATTERN;
     }
 
     public EnumerationLiteralBuilder build()
@@ -72,38 +101,10 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         return this.enumerationLiteralBuilder;
     }
 
-    @Nonnull
-    @Override
-    public EnumerationLiteralContext getElementContext()
-    {
-        return (EnumerationLiteralContext) super.getElementContext();
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        if (!CONSTANT_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_LIT_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    this.owningEnumeration.getElementContext());
-        }
-    }
-
     public void reportDuplicateName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_ENM: Duplicate enumeration literal: '%s'.", this.name);
-        compilerErrorHolder.add(
-                message,
-                this.elementContext,
-                this.owningEnumeration.getElementContext());
+        String message = String.format("ERR_DUP_ENM: Duplicate enumeration literal: '%s'.", this.getName());
+        compilerErrorHolder.add(message, this);
     }
 
     public void reportDuplicatePrettyName(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -112,6 +113,6 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         compilerErrorHolder.add(
                 message,
                 this.getElementContext().enumerationPrettyName(),
-                this.owningEnumeration.getElementContext());
+                this);
     }
 }

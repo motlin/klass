@@ -44,6 +44,7 @@ class Question
     audited
     optimisticallyLocked
 {
+    // TODO: When copying id to QuestionVersion, id should be Long key but not id.
     id                : Long key id;
     title             : String;
     body              : String;

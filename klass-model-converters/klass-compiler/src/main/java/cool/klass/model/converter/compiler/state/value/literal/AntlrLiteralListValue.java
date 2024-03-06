@@ -7,46 +7,50 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
-import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.LiteralValueBuilder;
+import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import cool.klass.model.meta.domain.value.literal.LiteralListValueImpl.LiteralListValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 {
-    @Nonnull
-    private final ImmutableList<AntlrLiteralValue> literalStates;
-    private final ImmutableList<AntlrType>         possibleTypes;
+    private ImmutableList<AntlrLiteralValue> literalStates;
 
     public AntlrLiteralListValue(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull ImmutableList<AntlrLiteralValue> literalStates)
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred);
-        this.literalStates = Objects.requireNonNull(literalStates);
+        super(elementContext, compilationUnit, inferred, expressionValueOwner);
+    }
 
-        this.possibleTypes = this.literalStates
-                .flatCollect(AntlrExpressionValue::getPossibleTypes)
-                .toBag()
-                .selectByOccurrences(occurrences -> occurrences == literalStates.size())
-                .toList()
-                .distinct()
-                .toImmutable();
+    public void setLiteralStates(ImmutableList<AntlrLiteralValue> literalStates)
+    {
+        if (this.literalStates != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.literalStates = Objects.requireNonNull(literalStates);
     }
 
     @Nonnull
     @Override
     public LiteralListValueBuilder build()
     {
-        ImmutableList<LiteralValueBuilder> literalValueBuilders = this.literalStates.collect(AntlrLiteralValue::build);
-        return new LiteralListValueBuilder(
+        LiteralListValueBuilder literalListValueBuilder = new LiteralListValueBuilder(
                 this.elementContext,
                 this.inferred,
-                literalValueBuilders,
                 this.getInferredType().getTypeGetter());
+
+        ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates
+                .<AbstractLiteralValueBuilder<?>>collect(AntlrLiteralValue::build)
+                .toImmutable();
+        literalListValueBuilder.setLiteralValueBuilders(literalValueBuilders);
+
+        return literalListValueBuilder;
     }
 
     @Override
@@ -54,14 +58,11 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
     {
-        if (this.possibleTypes.isEmpty())
+        if (this.getPossibleTypes().isEmpty())
         {
             // TODO: Cover this with a test
 
-            compilerErrorHolder.add(
-                    "Literal list with heterogeneous values.",
-                    this.elementContext,
-                    parserRuleContexts.toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add("Literal list with heterogeneous values.", this.elementContext, this);
         }
     }
 
@@ -69,6 +70,12 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
-        return this.possibleTypes;
+        return this.literalStates
+                .flatCollect(AntlrExpressionValue::getPossibleTypes)
+                .toBag()
+                .selectByOccurrences(occurrences -> occurrences == this.literalStates.size())
+                .toList()
+                .distinct()
+                .toImmutable();
     }
 }

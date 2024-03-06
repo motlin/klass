@@ -13,7 +13,10 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
     @Nonnull
     private final String operatorText;
 
-    protected AbstractOperator(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String operatorText)
+    protected AbstractOperator(
+            @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
+            @Nonnull String operatorText)
     {
         super(elementContext, inferred);
         this.operatorText = Objects.requireNonNull(operatorText);
@@ -26,12 +29,13 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
         return this.operatorText;
     }
 
-    public abstract static class OperatorBuilder extends ElementBuilder
+    public abstract static class AbstractOperatorBuilder<BuiltElement extends AbstractOperator>
+            extends ElementBuilder<BuiltElement>
     {
         @Nonnull
         protected final String operatorText;
 
-        protected OperatorBuilder(
+        protected AbstractOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull String operatorText)
@@ -39,8 +43,5 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
             super(elementContext, inferred);
             this.operatorText = Objects.requireNonNull(operatorText);
         }
-
-        @Nonnull
-        public abstract AbstractOperator build();
     }
 }

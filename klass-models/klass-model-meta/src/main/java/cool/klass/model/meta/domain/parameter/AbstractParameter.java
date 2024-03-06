@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public abstract class AbstractParameter extends AbstractNamedElement implements Parameter
 {
     @Nonnull
-    protected final Multiplicity   multiplicity;
+    protected final Multiplicity multiplicity;
 
     protected AbstractParameter(
             @Nonnull ParserRuleContext elementContext,
@@ -39,12 +39,12 @@ public abstract class AbstractParameter extends AbstractNamedElement implements 
         return String.format("{%s}", this.getName());
     }
 
-    public abstract static class ParameterBuilder extends NamedElementBuilder
+    public abstract static class AbstractParameterBuilder<BuiltElement extends AbstractParameter> extends NamedElementBuilder<BuiltElement>
     {
         @Nonnull
         protected final Multiplicity multiplicity;
 
-        public ParameterBuilder(
+        protected AbstractParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
@@ -55,11 +55,5 @@ public abstract class AbstractParameter extends AbstractNamedElement implements 
             super(elementContext, inferred, nameContext, name, ordinal);
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
-
-        @Nonnull
-        public abstract AbstractParameter build();
-
-        @Nonnull
-        public abstract AbstractParameter getParameter();
     }
 }

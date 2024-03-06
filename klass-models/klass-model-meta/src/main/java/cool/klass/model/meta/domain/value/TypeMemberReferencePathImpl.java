@@ -24,28 +24,28 @@ public final class TypeMemberReferencePathImpl extends AbstractMemberReferencePa
         super(elementContext, inferred, klass, associationEnds, property);
     }
 
-    public static class TypeMemberReferencePathBuilder extends MemberReferencePathBuilder
+    public static final class TypeMemberReferencePathBuilder extends AbstractMemberReferencePathBuilder<TypeMemberReferencePathImpl>
     {
         public TypeMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
-                @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
+                @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, inferred, klassBuilder, associationEndBuilders, propertyBuilder);
         }
 
-        @Nonnull
         @Override
-        public TypeMemberReferencePathImpl build()
+        @Nonnull
+        protected TypeMemberReferencePathImpl buildUnsafe()
         {
             return new TypeMemberReferencePathImpl(
                     this.elementContext,
                     this.inferred,
                     this.klassBuilder.getElement(),
                     this.associationEndBuilders.collect(AssociationEndBuilder::getElement),
-                    this.propertyBuilder.getProperty());
+                    this.propertyBuilder.getElement());
         }
     }
 }

@@ -21,7 +21,7 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
         return this.value;
     }
 
-    public static final class IntegerLiteralValueBuilder extends LiteralValueBuilder
+    public static final class IntegerLiteralValueBuilder extends AbstractLiteralValueBuilder<IntegerLiteralValueImpl>
     {
         private final int value;
 
@@ -31,9 +31,9 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
             this.value = value;
         }
 
-        @Nonnull
         @Override
-        public IntegerLiteralValueImpl build()
+        @Nonnull
+        protected IntegerLiteralValueImpl buildUnsafe()
         {
             return new IntegerLiteralValueImpl(this.elementContext, this.inferred, this.value);
         }

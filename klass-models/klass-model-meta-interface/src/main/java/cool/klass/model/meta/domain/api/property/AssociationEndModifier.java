@@ -4,4 +4,5 @@ import cool.klass.model.meta.domain.api.NamedElement;
 
 public interface AssociationEndModifier extends NamedElement
 {
+    AssociationEnd getAssociationEnd();
 }

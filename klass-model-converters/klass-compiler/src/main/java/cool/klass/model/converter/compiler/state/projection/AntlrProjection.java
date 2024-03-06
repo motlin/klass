@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.projection;
 
+import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -56,6 +58,12 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         this.packageName = packageName;
     }
 
+    @Override
+    protected Pattern getNamePattern()
+    {
+        return TYPE_NAME_PATTERN;
+    }
+
     public ProjectionBuilder build()
     {
         if (this.projectionBuilder != null)
@@ -84,25 +92,6 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     public ProjectionBuilder getElementBuilder()
     {
         return this.projectionBuilder;
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        // TODO: ⬇ Potentially refine a smaller list of keywords that clash with projections and a separate name pattern
-
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_PRJ_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
-        }
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -139,15 +128,10 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         return (ProjectionDeclarationContext) super.getElementContext();
     }
 
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(message, this.nameContext);
-    }
-
     @Override
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.elementContext);
+        parserRuleContexts.add(this.compilationUnit.getParserContext());
     }
 }

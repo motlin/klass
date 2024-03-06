@@ -35,11 +35,11 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
         this.children = Objects.requireNonNull(children);
     }
 
-    public abstract static class ProjectionParentBuilder extends NamedElementBuilder
+    public abstract static class AbstractProjectionParentBuilder<BuiltElement extends AbstractProjectionParent> extends NamedElementBuilder<BuiltElement>
     {
         protected ImmutableList<ProjectionElementBuilder> childBuilders;
 
-        protected ProjectionParentBuilder(
+        protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull ParserRuleContext nameContext,
@@ -52,6 +52,12 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
         public void setChildBuilders(@Nonnull ImmutableList<ProjectionElementBuilder> projectionChildrenBuilders)
         {
             this.childBuilders = Objects.requireNonNull(projectionChildrenBuilders);
+        }
+
+        protected void buildChildren(@Nonnull AbstractProjectionParent projectionParent)
+        {
+            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
+            projectionParent.setChildren(children);
         }
     }
 }

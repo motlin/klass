@@ -16,20 +16,20 @@ public final class OrCriteriaImpl extends AbstractBinaryCriteria implements OrCr
         super(elementContext, inferred, left, right);
     }
 
-    public static final class OrCriteriaBuilder extends BinaryCriteriaBuilder
+    public static final class OrCriteriaBuilder extends AbstractBinaryCriteriaBuilder<OrCriteriaImpl>
     {
         public OrCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull CriteriaBuilder left,
-                @Nonnull CriteriaBuilder right)
+                @Nonnull AbstractCriteriaBuilder<?> left,
+                @Nonnull AbstractCriteriaBuilder<?> right)
         {
             super(elementContext, inferred, left, right);
         }
 
-        @Nonnull
         @Override
-        public OrCriteriaImpl build()
+        @Nonnull
+        protected OrCriteriaImpl buildUnsafe()
         {
             return new OrCriteriaImpl(
                     this.elementContext,

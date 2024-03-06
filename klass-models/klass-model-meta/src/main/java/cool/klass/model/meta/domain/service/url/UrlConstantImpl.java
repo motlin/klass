@@ -24,7 +24,9 @@ public final class UrlConstantImpl extends AbstractNamedElement implements Abstr
         return this.getName();
     }
 
-    public static final class UrlConstantBuilder extends NamedElementBuilder implements UrlPathSegmentBuilder
+    public static final class UrlConstantBuilder
+            extends NamedElementBuilder<UrlConstantImpl>
+            implements UrlPathSegmentBuilder
     {
         public UrlConstantBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -36,9 +38,9 @@ public final class UrlConstantImpl extends AbstractNamedElement implements Abstr
             super(elementContext, inferred, nameContext, name, ordinal);
         }
 
-        @Nonnull
         @Override
-        public UrlConstantImpl build()
+        @Nonnull
+        protected UrlConstantImpl buildUnsafe()
         {
             return new UrlConstantImpl(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
         }

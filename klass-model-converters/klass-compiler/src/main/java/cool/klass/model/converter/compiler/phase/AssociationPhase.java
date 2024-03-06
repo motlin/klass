@@ -25,9 +25,7 @@ import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class AssociationPhase extends AbstractCompilerPhase
 {
@@ -35,7 +33,9 @@ public class AssociationPhase extends AbstractCompilerPhase
     private final AntlrDomainModel domainModelState;
 
     @Nullable
-    private AntlrAssociation associationState;
+    private AntlrAssociation    associationState;
+    @Nullable
+    private AntlrAssociationEnd associationEndState;
 
     public AssociationPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
@@ -84,11 +84,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 this.isInference);
 
-        ImmutableList<AntlrAssociationEndModifier> associationEndModifiers = ListAdapter.adapt(ctx.associationEndModifier())
-                .collectWithIndex(this::getAntlrAssociationEndModifier)
-                .toImmutable();
-
-        AntlrAssociationEnd antlrAssociationEnd = new AntlrAssociationEnd(
+        this.associationEndState = new AntlrAssociationEnd(
                 ctx,
                 this.currentCompilationUnit,
                 this.isInference,
@@ -97,10 +93,15 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.associationState.getNumAssociationEnds() + 1,
                 this.associationState,
                 antlrClass,
-                multiplicityState,
-                associationEndModifiers);
+                multiplicityState);
 
-        this.associationState.enterAssociationEnd(antlrAssociationEnd);
+        this.associationState.enterAssociationEnd(this.associationEndState);
+    }
+
+    @Override
+    public void exitAssociationEnd(AssociationEndContext ctx)
+    {
+        this.associationEndState = null;
     }
 
     // TODO: This is too early to resolve relationships. It won't be reliable until we're done inferring associations and we've also compiled parameterized properties.
@@ -117,20 +118,21 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.domainModelState,
                 this.associationState,
                 thisReference);
-        visitor.visit(ctx.criteriaExpression());
+        AntlrCriteria criteriaState = visitor.visit(ctx.criteriaExpression());
+        this.associationState.setCriteria(criteriaState);
     }
 
-    @Nonnull
-    public AntlrAssociationEndModifier getAntlrAssociationEndModifier(
-            @Nonnull AssociationEndModifierContext context,
-            int ordinal)
+    @Override
+    public void enterAssociationEndModifier(@Nonnull AssociationEndModifierContext ctx)
     {
-        return new AntlrAssociationEndModifier(
-                context,
+        AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
+                ctx,
                 this.currentCompilationUnit,
                 this.isInference,
-                context,
-                context.getText(),
-                ordinal + 1);
+                ctx,
+                ctx.getText(),
+                this.associationEndState.getNumModifiers() + 1,
+                this.associationEndState);
+        this.associationEndState.enterAssociationEndModifier(antlrAssociationEndModifier);
     }
 }

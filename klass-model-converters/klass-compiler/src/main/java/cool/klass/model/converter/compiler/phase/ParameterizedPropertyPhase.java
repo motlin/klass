@@ -11,13 +11,14 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -34,9 +35,7 @@ import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 {
@@ -45,12 +44,14 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     private       AntlrParameterizedProperty parameterizedPropertyState;
     // TODO: Make better use of these Owner interfaces in shared compiler phases
     @Nullable
-    private       AntlrCriteriaOwner         criteriaOwnerState;
+    private       IAntlrElement              criteriaOwnerState;
     @Nullable
     private       AntlrParameterOwner        parameterOwnerState;
 
     @Nullable
-    private AntlrClass thisReference;
+    private AntlrClass     thisReference;
+    @Nullable
+    private AntlrParameter parameterState;
 
     public ParameterizedPropertyPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
@@ -137,8 +138,8 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 this.domainModelState,
                 this.criteriaOwnerState,
                 this.thisReference);
-
-        visitor.visit(ctx.criteriaExpression());
+        AntlrCriteria criteriaState = visitor.visit(ctx.criteriaExpression());
+        this.parameterizedPropertyState.setCriteria(criteriaState);
     }
 
     @Override
@@ -161,10 +162,6 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false);
 
-        ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
-                .collect(this::getAntlrParameterModifier)
-                .toImmutable();
-
         AntlrPrimitiveParameter primitiveParameterState = new AntlrPrimitiveParameter(
                 ctx,
                 this.currentCompilationUnit,
@@ -174,10 +171,15 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 this.parameterOwnerState.getNumParameters() + 1,
                 primitiveTypeState,
                 multiplicityState,
-                this.parameterOwnerState,
-                parameterModifiers);
-
+                this.parameterOwnerState);
+        this.parameterState = primitiveParameterState;
         this.parameterOwnerState.enterPrimitiveParameterDeclaration(primitiveParameterState);
+    }
+
+    @Override
+    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
+    {
+        this.parameterState = null;
     }
 
     @Override
@@ -199,10 +201,6 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false);
 
-        ImmutableList<AntlrParameterModifier> parameterModifiers = ListAdapter.adapt(ctx.parameterModifier())
-                .collect(this::getAntlrParameterModifier)
-                .toImmutable();
-
         AntlrEnumerationParameter enumerationParameterState = new AntlrEnumerationParameter(
                 ctx,
                 this.currentCompilationUnit,
@@ -212,8 +210,8 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 this.parameterOwnerState.getNumParameters() + 1,
                 enumerationState,
                 multiplicityState,
-                this.parameterOwnerState,
-                parameterModifiers);
+                this.parameterOwnerState);
+        this.parameterState = enumerationParameterState;
 
         this.parameterOwnerState.enterEnumerationParameterDeclaration(enumerationParameterState);
     }
@@ -239,9 +237,17 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 + ".exitParameterDeclarationList() not implemented yet");
     }
 
-    @Nonnull
-    public AntlrParameterModifier getAntlrParameterModifier(@Nonnull ParameterModifierContext context)
+    @Override
+    public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
     {
-        return new AntlrParameterModifier(context, this.currentCompilationUnit, false, context.getText());
+        int ordinal = this.parameterState.getNumModifiers();
+        AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                ctx,
+                ctx.getText(),
+                ordinal);
+        this.parameterState.enterParameterModifier(parameterModifierState);
     }
 }

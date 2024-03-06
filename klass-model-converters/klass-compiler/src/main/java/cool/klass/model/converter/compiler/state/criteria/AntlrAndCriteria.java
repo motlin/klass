@@ -4,23 +4,21 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class AndAntlrCriteria extends BinaryAntlrCriteria
+public class AntlrAndCriteria extends AntlrBinaryCriteria
 {
-    public AndAntlrCriteria(
+    public AntlrAndCriteria(
             @Nonnull CriteriaExpressionAndContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull AntlrCriteriaOwner criteriaOwner,
-            @Nonnull AntlrCriteria left,
-            @Nonnull AntlrCriteria right)
+            @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, inferred, criteriaOwner, left, right);
+        super(elementContext, compilationUnit, inferred, criteriaOwner);
     }
 
     @Nonnull

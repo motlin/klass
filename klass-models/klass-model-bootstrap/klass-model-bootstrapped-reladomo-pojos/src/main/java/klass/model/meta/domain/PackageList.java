@@ -15,7 +15,7 @@ public class PackageList extends PackageListAbstract
         super(initialSize);
     }
 
-    public PackageList(Collection c)
+    public PackageList(Collection<?> c)
     {
         super(c);
     }

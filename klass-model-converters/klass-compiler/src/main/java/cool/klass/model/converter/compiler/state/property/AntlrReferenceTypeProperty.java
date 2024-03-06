@@ -22,7 +22,7 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
     protected       Optional<AntlrOrderBy> orderByState = Optional.empty();
     protected       AntlrClass             owningClassState;
 
-    public AntlrReferenceTypeProperty(
+    protected AntlrReferenceTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,

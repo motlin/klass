@@ -47,7 +47,7 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         return this.ordinal;
     }
 
-    public abstract static class NamedElementBuilder extends ElementBuilder
+    public abstract static class NamedElementBuilder<BuiltElement extends AbstractNamedElement> extends ElementBuilder<BuiltElement>
     {
         @Nonnull
         protected final ParserRuleContext nameContext;

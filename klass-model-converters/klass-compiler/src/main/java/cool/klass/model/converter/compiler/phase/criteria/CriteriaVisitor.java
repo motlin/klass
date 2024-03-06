@@ -7,16 +7,16 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AllAntlrCriteria;
-import cool.klass.model.converter.compiler.state.criteria.AndAntlrCriteria;
+import cool.klass.model.converter.compiler.state.criteria.AntlrAndCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.criteria.AntlrOrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.EdgePointAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OperatorAntlrCriteria;
-import cool.klass.model.converter.compiler.state.criteria.OrAntlrCriteria;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
-import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
+import cool.klass.model.converter.compiler.state.value.AntlrMemberReferencePath;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
@@ -40,18 +40,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 {
     @Nonnull
-    private final CompilationUnit    compilationUnit;
+    private final CompilationUnit  compilationUnit;
     @Nonnull
-    private final AntlrDomainModel   domainModelState;
+    private final AntlrDomainModel domainModelState;
     @Nonnull
-    private final AntlrCriteriaOwner criteriaOwner;
+    private final IAntlrElement    criteriaOwner;
     @Nonnull
-    private final AntlrClass         thisReference;
+    private final AntlrClass       thisReference;
 
     public CriteriaVisitor(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull AntlrDomainModel domainModelState,
-            @Nonnull AntlrCriteriaOwner criteriaOwner,
+            @Nonnull IAntlrElement criteriaOwner,
             @Nonnull AntlrClass thisReference)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
@@ -64,18 +64,17 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaEdgePoint(@Nonnull CriteriaEdgePointContext ctx)
     {
-        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor();
-
-        AntlrMemberExpressionValue memberExpressionValue =
-                (AntlrMemberExpressionValue) expressionValueVisitor.visitExpressionMemberReference(ctx.expressionMemberReference());
-
         EdgePointAntlrCriteria edgePointAntlrCriteria = new EdgePointAntlrCriteria(
                 ctx,
                 this.compilationUnit,
                 false,
-                this.criteriaOwner,
-                memberExpressionValue);
-        this.criteriaOwner.setCriteria(edgePointAntlrCriteria);
+                this.criteriaOwner);
+
+        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(
+                edgePointAntlrCriteria);
+        AntlrMemberReferencePath memberExpressionValue =
+                (AntlrMemberReferencePath) expressionValueVisitor.visitExpressionMemberReference(ctx.expressionMemberReference());
+        edgePointAntlrCriteria.setMemberExpressionValue(memberExpressionValue);
         return edgePointAntlrCriteria;
     }
 
@@ -83,17 +82,25 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaExpressionAnd(@Nonnull CriteriaExpressionAndContext ctx)
     {
-        AntlrCriteria left  = this.visit(ctx.left);
-        AntlrCriteria right = this.visit(ctx.right);
-        AndAntlrCriteria andAntlrCriteria = new AndAntlrCriteria(
+        AntlrAndCriteria andCriteriaState = new AntlrAndCriteria(
                 ctx,
                 this.compilationUnit,
                 false,
-                this.criteriaOwner,
-                left,
-                right);
-        this.criteriaOwner.setCriteria(andAntlrCriteria);
-        return andAntlrCriteria;
+                this.criteriaOwner);
+
+        KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
+                this.compilationUnit,
+                this.domainModelState,
+                andCriteriaState,
+                this.thisReference);
+
+        AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
+        AntlrCriteria right = criteriaVisitor.visit(ctx.right);
+
+        andCriteriaState.setLeft(left);
+        andCriteriaState.setRight(right);
+
+        return andCriteriaState;
     }
 
     @Nonnull
@@ -126,20 +133,21 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilationUnit);
         AntlrOperator               operator        = operatorVisitor.visitOperator(ctx.operator());
 
-        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor();
-
-        AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);
-        AntlrExpressionValue targetValue = expressionValueVisitor.visitExpressionValue(ctx.target);
-
         OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
                 this.compilationUnit,
                 false,
                 this.criteriaOwner,
-                operator,
-                sourceValue,
-                targetValue);
-        this.criteriaOwner.setCriteria(operatorAntlrCriteria);
+                operator);
+
+        KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(operatorAntlrCriteria);
+
+        AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);
+        AntlrExpressionValue targetValue = expressionValueVisitor.visitExpressionValue(ctx.target);
+
+        operatorAntlrCriteria.setSourceValue(sourceValue);
+        operatorAntlrCriteria.setTargetValue(targetValue);
+
         return operatorAntlrCriteria;
     }
 
@@ -147,17 +155,25 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaExpressionOr(@Nonnull CriteriaExpressionOrContext ctx)
     {
-        AntlrCriteria left  = this.visit(ctx.left);
-        AntlrCriteria right = this.visit(ctx.right);
-        OrAntlrCriteria orAntlrCriteria = new OrAntlrCriteria(
+        AntlrOrCriteria orCriteriaState = new AntlrOrCriteria(
                 ctx,
                 this.compilationUnit,
                 false,
-                this.criteriaOwner,
-                left,
-                right);
-        this.criteriaOwner.setCriteria(orAntlrCriteria);
-        return orAntlrCriteria;
+                this.criteriaOwner);
+
+        KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
+                this.compilationUnit,
+                this.domainModelState,
+                orCriteriaState,
+                this.thisReference);
+
+        AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
+        AntlrCriteria right = criteriaVisitor.visit(ctx.right);
+
+        orCriteriaState.setLeft(left);
+        orCriteriaState.setRight(right);
+
+        return orCriteriaState;
     }
 
     @Nonnull
@@ -233,12 +249,13 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     }
 
     @Nonnull
-    private ExpressionValueVisitor getExpressionValueVisitor()
+    private ExpressionValueVisitor getExpressionValueVisitor(IAntlrElement expressionValueOwner)
     {
         return new ExpressionValueVisitor(
                 this.compilationUnit,
                 this.thisReference,
-                this.domainModelState);
+                this.domainModelState,
+                expressionValueOwner);
     }
 
     @Nonnull

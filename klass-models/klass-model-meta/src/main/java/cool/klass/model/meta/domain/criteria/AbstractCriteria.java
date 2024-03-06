@@ -13,14 +13,11 @@ public abstract class AbstractCriteria extends AbstractElement implements Criter
         super(elementContext, inferred);
     }
 
-    public abstract static class CriteriaBuilder extends ElementBuilder
+    public abstract static class AbstractCriteriaBuilder<BuiltElement extends AbstractCriteria> extends ElementBuilder<BuiltElement>
     {
-        protected CriteriaBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
+        protected AbstractCriteriaBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
             super(elementContext, inferred);
         }
-
-        @Nonnull
-        public abstract AbstractCriteria build();
     }
 }

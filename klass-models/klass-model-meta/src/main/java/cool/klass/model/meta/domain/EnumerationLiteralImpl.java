@@ -34,15 +34,12 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
         return this.prettyName;
     }
 
-    public static class EnumerationLiteralBuilder extends NamedElementBuilder
+    public static final class EnumerationLiteralBuilder extends NamedElementBuilder<EnumerationLiteralImpl>
     {
         @Nullable
         private final String             prettyName;
         @Nonnull
         private final EnumerationBuilder enumerationBuilder;
-
-        @Nullable
-        private EnumerationLiteralImpl enumerationLiteral;
 
         public EnumerationLiteralBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -58,15 +55,11 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 
+        @Override
         @Nonnull
-        public EnumerationLiteralImpl build()
+        protected EnumerationLiteralImpl buildUnsafe()
         {
-            if (this.enumerationLiteral != null)
-            {
-                throw new IllegalStateException();
-            }
-
-            this.enumerationLiteral = new EnumerationLiteralImpl(
+            return new EnumerationLiteralImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -74,7 +67,6 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
                     this.ordinal,
                     this.enumerationBuilder.getElement(),
                     this.prettyName);
-            return this.enumerationLiteral;
         }
     }
 }

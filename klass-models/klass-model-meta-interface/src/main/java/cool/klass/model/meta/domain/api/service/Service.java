@@ -33,7 +33,7 @@ public interface Service extends Element
 
     default int getNumParameters()
     {
-        int numUrlParameters       = this.getUrl().getUrlParameters().size();
+        int numUrlParameters       = this.getUrl().getParameters().size();
         int numVersionParameters   = this.isVersionClauseRequired() ? 1 : 0;
         int numAuthorizeParameters = this.isAuthorizeClauseRequired() ? 1 : 0;
         return numUrlParameters + numVersionParameters + numAuthorizeParameters;

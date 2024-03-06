@@ -1,17 +1,18 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrPropertyModifier extends AntlrNamedElement
+public class AntlrPropertyModifier extends AntlrModifier
 {
     public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
             "createdBy",
@@ -27,6 +28,14 @@ public class AntlrPropertyModifier extends AntlrNamedElement
             int ordinal)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSurroundingContext() not implemented yet");
     }
 
     public boolean isKey()
@@ -58,11 +67,5 @@ public class AntlrPropertyModifier extends AntlrNamedElement
                 this.nameContext,
                 this.name,
                 this.ordinal);
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        // intentionally blank
     }
 }

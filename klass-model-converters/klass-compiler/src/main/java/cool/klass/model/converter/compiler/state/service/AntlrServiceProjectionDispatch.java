@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,6 +10,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
@@ -33,6 +35,19 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         this.projection = Objects.requireNonNull(projection);
     }
 
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.serviceState);
+    }
+
     @Nonnull
     public AntlrProjection getProjection()
     {
@@ -44,10 +59,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         if (this.projection == AntlrProjection.NOT_FOUND)
         {
             String message = "TODO";
-            compilerErrorHolder.add(
-                    message,
-                    this.getElementContext(),
-                    this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add(message, this);
         }
         else
         {
@@ -63,7 +75,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
                 compilerErrorHolder.add(
                         error,
                         this.getElementContext().projectionReference(),
-                        this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+                        this);
             }
         }
     }

@@ -472,10 +472,12 @@ public class KlassCompilerTest
         String[] expectedErrors = {
                 ""
                         + "File: example.klass Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
+                        + "package dummy\n"
                         + "enumeration DuplicateTopLevelElement\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
                         + "File: example.klass Line: 5 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
+                        + "package dummy\n"
                         + "enumeration DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
@@ -483,6 +485,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 5 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
+                        + "package dummy\n"
                         + "enumeration DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
@@ -490,6 +493,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 6 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
+                        + "package dummy\n"
                         + "enumeration DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
@@ -497,6 +501,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 6 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
+                        + "package dummy\n"
                         + "enumeration DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
@@ -504,17 +509,20 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 9 Char: 7 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
+                        + "package dummy\n"
                         + "class DuplicateTopLevelElement\n"
                         + "      ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_DTP: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "package dummy\n"
                         + "class DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: String;\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_DTP: Duplicate member: 'duplicateMember'.\n"
+                        + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "package dummy\n"
                         + "class DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement;\n"
@@ -522,21 +530,25 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
+                        + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
                         + "File: example.klass Line: 20 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateTopLevelElement' must declare a relationship.\n"
+                        + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 22 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "File: example.klass Line: 22 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 23 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "File: example.klass Line: 23 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateMember'.\n"
+                        + "package dummy\n"
                         + "association DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: DuplicateTopLevelElement[1..1];\n"
@@ -544,17 +556,20 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 26 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateAssociationEnd' must declare a relationship.\n"
+                        + "package dummy\n"
                         + "association DuplicateAssociationEnd\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: example.klass Line: 28 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
+                        + "File: example.klass Line: 28 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
+                        + "package dummy\n"
                         + "association DuplicateAssociationEnd\n"
                         + "{\n"
                         + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
                         + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 29 Char: 5 Error: ERR_DUP_END: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
+                        + "File: example.klass Line: 29 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.\n"
+                        + "package dummy\n"
                         + "association DuplicateAssociationEnd\n"
                         + "{\n"
                         + "    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];\n"
@@ -562,10 +577,12 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 32 Char: 12 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
+                        + "package dummy\n"
                         + "projection DuplicateTopLevelElement on DuplicateTopLevelElement\n"
                         + "           ^^^^^^^^^^^^^^^^^^^^^^^^\n",
                 ""
                         + "File: example.klass Line: 34 Char: 5 Error: ERR_DUP_PRJ: Duplicate member: 'duplicateMember'.\n"
+                        + "package dummy\n"
                         + "projection DuplicateTopLevelElement on DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: \"Duplicate Header\",\n"
@@ -573,13 +590,20 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 35 Char: 5 Error: ERR_DUP_PRJ: Duplicate member: 'duplicateMember'.\n"
+                        + "package dummy\n"
                         + "projection DuplicateTopLevelElement on DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    duplicateMember: \"Duplicate Header\",\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
+                        + "File: example.klass Line: 38 Char: 9 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelElement'.\n"
+                        + "package dummy\n"
+                        + "service DuplicateTopLevelElement\n"
+                        + "        ^^^^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
                         + "File: example.klass Line: 40 Char: 31 Error: ERR_DUP_PAR: Duplicate parameter: 'duplicate'.\n"
+                        + "package dummy\n"
                         + "service DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    /api/duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}\n"
@@ -587,6 +611,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 40 Char: 57 Error: ERR_DUP_PAR: Duplicate parameter: 'duplicate'.\n"
+                        + "package dummy\n"
                         + "service DuplicateTopLevelElement\n"
                         + "{\n"
                         + "    /api/duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}\n"
@@ -594,9 +619,7 @@ public class KlassCompilerTest
                         + "}\n",
         };
 
-        this.assertCompilerErrors(
-                sourceCodeText,
-                expectedErrors);
+        this.assertCompilerErrors(sourceCodeText, expectedErrors);
     }
 
     @Test
@@ -727,7 +750,7 @@ public class KlassCompilerTest
                         + "                                       ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 15 Char: 13 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "File: example.klass Line: 15 Char: 13 Error: ERR_END_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
                         + "association AssociationWithUnresolved\n"
                         + "{\n"
@@ -735,7 +758,7 @@ public class KlassCompilerTest
                         + "            ^^^^^^^^^^^^^^^\n"
                         + "}\n",
                 ""
-                        + "File: example.klass Line: 16 Char: 15 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "File: example.klass Line: 16 Char: 15 Error: ERR_END_TYP: Cannot find class 'UnresolvedClass'.\n"
                         + "package dummy\n"
                         + "association AssociationWithUnresolved\n"
                         + "{\n"
@@ -744,6 +767,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 23 Char: 5 Error: ERR_PRJ_DTP: Cannot find member 'ClassWithUnresolved.unresolvedProjectionMember'.\n"
+                        + "package dummy\n"
                         + "projection EmptyProjection on ClassWithUnresolved\n"
                         + "{\n"
                         + "    unresolvedProjectionMember: \"Header\",\n"
@@ -751,6 +775,7 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 32 Char: 65 Error: ERR_VAR_REF: Cannot find parameter 'unresolvedParameter'.\n"
+                        + "package dummy\n"
                         + "service ClassWithUnresolved\n"
                         + "{\n"
                         + "    /api/unresolved/{id: Long[1..1]}\n"
@@ -1120,6 +1145,7 @@ public class KlassCompilerTest
 
         String error = ""
                 + "File: example.klass Line: 21 Char: 27 Error: ERR_SRV_PRJ: Expected projection referencing 'Class2' but projection 'ExampleProjection' references 'Class1'.\n"
+                + "package com.errors\n"
                 + "service Class2\n"
                 + "{\n"
                 + "    /api/example\n"
@@ -1167,11 +1193,13 @@ public class KlassCompilerTest
         String[] errors = {
                 ""
                         + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'ExampleClassHasVersion'.\n"
+                        + "package com.errors\n"
                         + "association ExampleClassHasVersion\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^\n",
 
                 ""
-                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 6 Char: 5 Error: ERR_DUP_END: Duplicate member: 'ExampleClass.version'.\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 6 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'ExampleClass.version'.\n"
+                        + "package com.errors\n"
                         + "association ExampleClassHasVersion\n"
                         + "{\n"
                         + "    version: ExampleClassVersion[1..1] owned version;\n"
@@ -1187,11 +1215,13 @@ public class KlassCompilerTest
                         + "}\n",
                 ""
                         + "File: example.klass Line: 14 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'ExampleClassHasVersion'.\n"
+                        + "package com.errors\n"
                         + "association ExampleClassHasVersion\n"
                         + "            ^^^^^^^^^^^^^^^^^^^^^^\n",
 
                 ""
-                        + "File: example.klass Line: 17 Char: 5 Error: ERR_DUP_END: Duplicate member: 'ExampleClass.version'.\n"
+                        + "File: example.klass Line: 17 Char: 5 Error: ERR_DUP_PRP: Duplicate member: 'ExampleClass.version'.\n"
+                        + "package com.errors\n"
                         + "association ExampleClassHasVersion\n"
                         + "{\n"
                         + "    version: SecondClassVersion[1..1] owned version;\n"

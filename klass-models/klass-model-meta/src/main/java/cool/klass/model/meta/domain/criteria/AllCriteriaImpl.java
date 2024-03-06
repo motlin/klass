@@ -22,7 +22,7 @@ public final class AllCriteriaImpl extends AbstractCriteria implements AllCriter
         return "all";
     }
 
-    public static final class AllCriteriaBuilder extends CriteriaBuilder
+    public static final class AllCriteriaBuilder extends AbstractCriteriaBuilder<AllCriteriaImpl>
     {
         public AllCriteriaBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
@@ -31,7 +31,7 @@ public final class AllCriteriaImpl extends AbstractCriteria implements AllCriter
 
         @Nonnull
         @Override
-        public AllCriteriaImpl build()
+        protected AllCriteriaImpl buildUnsafe()
         {
             return INSTANCE;
         }

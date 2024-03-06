@@ -5,53 +5,53 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.VariableReference;
-import cool.klass.model.meta.domain.service.url.AbstractUrlParameter;
-import cool.klass.model.meta.domain.service.url.AbstractUrlParameter.UrlParameterBuilder;
+import cool.klass.model.meta.domain.parameter.AbstractParameter;
+import cool.klass.model.meta.domain.parameter.AbstractParameter.AbstractParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class VariableReferenceImpl extends AbstractExpressionValue implements VariableReference
 {
     @Nonnull
-    private final AbstractUrlParameter urlParameter;
+    private final AbstractParameter parameter;
 
     private VariableReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
             boolean inferred,
-            @Nonnull AbstractUrlParameter urlParameter)
+            @Nonnull AbstractParameter parameter)
     {
         super(elementContext, inferred);
-        this.urlParameter = Objects.requireNonNull(urlParameter);
+        this.parameter = Objects.requireNonNull(parameter);
     }
 
     @Override
     @Nonnull
-    public AbstractUrlParameter getUrlParameter()
+    public AbstractParameter getParameter()
     {
-        return this.urlParameter;
+        return this.parameter;
     }
 
-    public static final class VariableReferenceBuilder extends ExpressionValueBuilder
+    public static final class VariableReferenceBuilder extends AbstractExpressionValueBuilder<VariableReferenceImpl>
     {
         @Nonnull
-        private final UrlParameterBuilder urlParameterBuilder;
+        private final AbstractParameterBuilder<?> parameterBuilder;
 
         public VariableReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull UrlParameterBuilder urlParameterBuilder)
+                @Nonnull AbstractParameterBuilder<?> parameterBuilder)
         {
             super(elementContext, inferred);
-            this.urlParameterBuilder = Objects.requireNonNull(urlParameterBuilder);
+            this.parameterBuilder = Objects.requireNonNull(parameterBuilder);
         }
 
-        @Nonnull
         @Override
-        public VariableReferenceImpl build()
+        @Nonnull
+        protected VariableReferenceImpl buildUnsafe()
         {
             return new VariableReferenceImpl(
                     this.elementContext,
                     this.inferred,
-                    this.urlParameterBuilder.getUrlParameter());
+                    this.parameterBuilder.getElement());
         }
     }
 }

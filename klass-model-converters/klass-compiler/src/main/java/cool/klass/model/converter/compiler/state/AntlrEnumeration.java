@@ -108,32 +108,11 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         return Objects.requireNonNull(this.enumerationBuilder);
     }
 
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(message, this.nameContext);
-    }
-
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        for (AntlrEnumerationLiteral enumerationLiteralState : this.enumerationLiteralStates)
-        {
-            enumerationLiteralState.reportNameErrors(compilerErrorHolder);
-        }
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_ENM_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
-        }
+        super.reportNameErrors(compilerErrorHolder);
+        this.enumerationLiteralStates.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerErrorHolder);
     }
 
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)

@@ -9,13 +9,11 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
-import cool.klass.model.meta.domain.criteria.AbstractCriteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -23,7 +21,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociation extends AntlrPackageableElement implements AntlrCriteriaOwner, AntlrTopLevelElement
+public class AntlrAssociation extends AntlrPackageableElement implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
@@ -44,7 +42,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
     };
 
     private final MutableList<AntlrAssociationEnd>                              associationEndStates     = Lists.mutable.empty();
-    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
 
     private AntlrCriteria criteriaState;
 
@@ -135,7 +134,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
             throw new AssertionError(numAssociationEnds);
         }
 
-        CriteriaBuilder criteriaBuilder = this.criteriaState.build();
+        AbstractCriteriaBuilder<?> criteriaBuilder = this.criteriaState.build();
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
@@ -160,31 +159,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
         return this.associationBuilder;
     }
 
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations and a separate name pattern
-
-        this.reportKeywordCollision(compilerErrorHolder);
-
-        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_ASO_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext);
-        }
-    }
-
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(message, this.nameContext);
-    }
-
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         int numAssociationEnds = this.associationEndStates.size();
@@ -194,7 +168,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
                     "ERR_ASO_END: Association '%s' should have 2 ends. Found %d",
                     this.name,
                     numAssociationEnds);
-            compilerErrorHolder.add(message, this.getElementContext().identifier());
+            compilerErrorHolder.add(message, this);
         }
 
         // TODO: reportErrors: Check that both ends aren't owned
@@ -208,8 +182,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
 
         if (sourceType == AntlrClass.NOT_FOUND || targetType == AntlrClass.NOT_FOUND)
         {
-            this.reportTypeNotFound(compilerErrorHolder, sourceAntlrAssociationEnd, sourceType);
-            this.reportTypeNotFound(compilerErrorHolder, targetAntlrAssociationEnd, targetType);
+            sourceAntlrAssociationEnd.reportTypeNotFound(compilerErrorHolder);
+            targetAntlrAssociationEnd.reportTypeNotFound(compilerErrorHolder);
 
             return;
         }
@@ -219,8 +193,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
             // TODO: Editor error matching this one
             String message = String.format(
                     "ERR_REL_INF: Relationship inference not yet supported. '%s' must declare a relationship.",
-                    this.name);
-            compilerErrorHolder.add(message, this.getElementContext().identifier());
+                    this.getName());
+            compilerErrorHolder.add(message, this);
         }
         else
         {
@@ -235,40 +209,14 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
         return (AssociationDeclarationContext) this.elementContext;
     }
 
-    private void reportTypeNotFound(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull AntlrAssociationEnd antlrAssociationEnd, AntlrClass type)
-    {
-        if (type == AntlrClass.NOT_FOUND)
-        {
-            ClassReferenceContext offendingToken = antlrAssociationEnd.getElementContext().classType().classReference();
-            String message = String.format(
-                    "ERR_ASO_TYP: Cannot find class '%s'.",
-                    offendingToken.getText());
-            compilerErrorHolder.add(
-                    message,
-                    offendingToken,
-                    this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
-        }
-    }
-
     @Nonnull
-    @Override
     public AntlrCriteria getCriteria()
     {
         return this.criteriaState;
     }
 
-    @Override
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
         this.criteriaState = Objects.requireNonNull(criteria);
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        parserRuleContexts.add(this.compilationUnit.getParserContext());
     }
 }

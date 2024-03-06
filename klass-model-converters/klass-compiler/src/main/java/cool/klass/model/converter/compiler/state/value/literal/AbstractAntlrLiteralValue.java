@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrType;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -14,12 +15,13 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
 {
     private AntlrType inferredType;
 
-    public AbstractAntlrLiteralValue(
+    protected AbstractAntlrLiteralValue(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred)
+            boolean inferred,
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, inferred, expressionValueOwner);
     }
 
     @Nonnull

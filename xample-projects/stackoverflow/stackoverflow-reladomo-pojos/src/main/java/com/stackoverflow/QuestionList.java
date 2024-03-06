@@ -15,7 +15,7 @@ public class QuestionList extends QuestionListAbstract
         super(initialSize);
     }
 
-    public QuestionList(Collection collection)
+    public QuestionList(Collection<?> collection)
     {
         super(collection);
     }

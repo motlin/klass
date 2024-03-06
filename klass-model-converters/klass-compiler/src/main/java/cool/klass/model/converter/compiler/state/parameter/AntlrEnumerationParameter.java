@@ -10,12 +10,11 @@ import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
+import cool.klass.model.meta.domain.parameter.EnumerationParameterImpl;
 import cool.klass.model.meta.domain.parameter.EnumerationParameterImpl.EnumerationParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrEnumerationParameter extends AntlrParameter
+public class AntlrEnumerationParameter extends AntlrParameter<EnumerationParameterImpl>
 {
     @Nonnull
     public static final AntlrEnumerationParameter AMBIGUOUS = new AntlrEnumerationParameter(
@@ -27,8 +26,7 @@ public class AntlrEnumerationParameter extends AntlrParameter
             -1,
             AntlrEnumeration.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrParameterizedProperty.AMBIGUOUS,
-            Lists.immutable.empty());
+            AntlrParameterizedProperty.AMBIGUOUS);
 
     @Nonnull
     public static final AntlrEnumerationParameter NOT_FOUND = new AntlrEnumerationParameter(
@@ -40,8 +38,7 @@ public class AntlrEnumerationParameter extends AntlrParameter
             -1,
             AntlrEnumeration.NOT_FOUND,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrParameterizedProperty.AMBIGUOUS,
-            Lists.immutable.empty());
+            AntlrParameterizedProperty.AMBIGUOUS);
 
     @Nonnull
     private final AntlrEnumeration            enumerationState;
@@ -56,8 +53,7 @@ public class AntlrEnumerationParameter extends AntlrParameter
             int ordinal,
             @Nonnull AntlrEnumeration enumerationState,
             @Nonnull AntlrMultiplicity multiplicityState,
-            @Nonnull AntlrParameterOwner parameterOwner,
-            @Nonnull ImmutableList<AntlrParameterModifier> parameterModifiers)
+            @Nonnull AntlrParameterOwner parameterOwner)
     {
         super(
                 elementContext,
@@ -67,8 +63,8 @@ public class AntlrEnumerationParameter extends AntlrParameter
                 name,
                 ordinal,
                 multiplicityState,
-                parameterOwner,
-                parameterModifiers);
+                parameterOwner
+        );
         this.enumerationState = Objects.requireNonNull(enumerationState);
     }
 
@@ -95,6 +91,13 @@ public class AntlrEnumerationParameter extends AntlrParameter
                 this.ordinal,
                 this.multiplicityState.getMultiplicity(),
                 this.enumerationState.getElementBuilder());
+        return this.enumerationParameterBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public EnumerationParameterBuilder getElementBuilder()
+    {
         return this.enumerationParameterBuilder;
     }
 }

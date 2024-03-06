@@ -73,7 +73,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 
         // TODO: Add property modifiers to the two association ends, "versioned" and "version". Remove the syntax versions(ClassName)
         //language=Klass
-        String klassSourceCode = "package " + classState.getPackageName() + "\n"
+        String klassSourceCode = ""
+                + "package " + classState.getPackageName() + "\n"
                 + "\n"
                 + "association " + className + "HasVersion\n"
                 + "{\n"

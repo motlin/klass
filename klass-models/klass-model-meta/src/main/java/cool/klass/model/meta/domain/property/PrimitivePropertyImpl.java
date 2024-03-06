@@ -23,7 +23,6 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
             int ordinal,
             @Nonnull PrimitiveType primitiveType,
             @Nonnull KlassImpl owningKlass,
-            @Nonnull ImmutableList<PropertyModifier> propertyModifiers,
             boolean isKey,
             boolean isOptional,
             boolean isID)
@@ -36,7 +35,6 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                 ordinal,
                 primitiveType,
                 owningKlass,
-                propertyModifiers,
                 isKey,
                 isOptional);
         this.isID = isID;
@@ -48,11 +46,9 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
         return this.isID;
     }
 
-    public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType>
+    public static final class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
     {
         private final boolean isID;
-
-        private PrimitivePropertyImpl primitiveProperty;
 
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -82,16 +78,10 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
         }
 
         @Override
-        public PrimitivePropertyImpl build()
+        @Nonnull
+        protected PrimitivePropertyImpl buildUnsafe()
         {
-            if (this.primitiveProperty != null)
-            {
-                throw new IllegalStateException();
-            }
-            ImmutableList<PropertyModifier> propertyModifiers =
-                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
-
-            this.primitiveProperty = new PrimitivePropertyImpl(
+            PrimitivePropertyImpl primitiveProperty = new PrimitivePropertyImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -99,17 +89,15 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                     this.ordinal,
                     this.typeBuilder,
                     this.owningKlassBuilder.getElement(),
-                    propertyModifiers,
                     this.isKey,
                     this.isOptional,
                     this.isID);
-            return this.primitiveProperty;
-        }
 
-        @Override
-        public PrimitivePropertyImpl getProperty()
-        {
-            return this.primitiveProperty;
+            ImmutableList<PropertyModifier> propertyModifiers =
+                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
+
+            primitiveProperty.setPropertyModifiers(propertyModifiers);
+            return primitiveProperty;
         }
     }
 }

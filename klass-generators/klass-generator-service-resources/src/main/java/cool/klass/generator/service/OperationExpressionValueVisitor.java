@@ -10,8 +10,8 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.Type;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.api.service.url.UrlParameter;
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
@@ -78,23 +78,23 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        UrlParameter urlParameter = variableReference.getUrlParameter();
-        DataType     dataType     = urlParameter.getType();
-        Multiplicity multiplicity = urlParameter.getMultiplicity();
+        Parameter    parameter    = variableReference.getParameter();
+        DataType     dataType     = parameter.getType();
+        Multiplicity multiplicity = parameter.getMultiplicity();
 
         if (dataType instanceof Enumeration)
         {
-            this.stringBuilder.append(urlParameter.getName());
+            this.stringBuilder.append(parameter.getName());
             return;
         }
         if (multiplicity.isToOne())
         {
-            this.stringBuilder.append(urlParameter.getName());
+            this.stringBuilder.append(parameter.getName());
             return;
         }
 
         PrimitiveType primitiveType = (PrimitiveType) dataType;
-        primitiveType.visit(new PrimitiveSetVisitor(this.stringBuilder, urlParameter.getName()));
+        primitiveType.visit(new PrimitiveSetVisitor(this.stringBuilder, parameter.getName()));
     }
 
     @Override

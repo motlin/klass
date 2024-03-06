@@ -12,7 +12,7 @@ public final class InOperatorImpl extends AbstractOperator implements InOperator
         super(elementContext, inferred, operatorText);
     }
 
-    public static class InOperatorBuilder extends OperatorBuilder
+    public static final class InOperatorBuilder extends AbstractOperatorBuilder<InOperatorImpl>
     {
         public InOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -22,9 +22,9 @@ public final class InOperatorImpl extends AbstractOperator implements InOperator
             super(elementContext, inferred, operatorText);
         }
 
-        @Nonnull
         @Override
-        public InOperatorImpl build()
+        @Nonnull
+        protected InOperatorImpl buildUnsafe()
         {
             return new InOperatorImpl(this.elementContext, this.inferred, this.operatorText);
         }

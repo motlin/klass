@@ -15,7 +15,7 @@ public class AnswerVersionList extends AnswerVersionListAbstract
         super(initialSize);
     }
 
-    public AnswerVersionList(Collection c)
+    public AnswerVersionList(Collection<?> c)
     {
         super(c);
     }

@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.projection;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
@@ -103,11 +104,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+        compilerErrorHolder.add(message, this);
     }
 
     @Override
@@ -142,6 +139,14 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
     @Nonnull
     @Override
+    protected Pattern getNamePattern()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getNamePattern() not implemented yet");
+    }
+
+    @Nonnull
+    @Override
     public ProjectionDeclarationContext getElementContext()
     {
         return (ProjectionDeclarationContext) super.getElementContext();
@@ -151,6 +156,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.elementContext);
-        this.getParent().getParserRuleContexts(parserRuleContexts);
+        this.antlrProjectionParent.getParserRuleContexts(parserRuleContexts);
     }
 }

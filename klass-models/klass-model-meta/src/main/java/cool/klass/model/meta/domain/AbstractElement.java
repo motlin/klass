@@ -29,12 +29,6 @@ public abstract class AbstractElement implements Element
     }
 
     @Nonnull
-    public ParserRuleContext getElementContext()
-    {
-        return this.elementContext;
-    }
-
-    @Nonnull
     @Override
     public String getSourceCode()
     {
@@ -44,11 +38,18 @@ public abstract class AbstractElement implements Element
         return this.elementContext.getStart().getInputStream().getText(interval);
     }
 
-    public abstract static class ElementBuilder
+    @Nonnull
+    public ParserRuleContext getElementContext()
+    {
+        return this.elementContext;
+    }
+
+    public abstract static class ElementBuilder<BuiltElement extends AbstractElement>
     {
         @Nonnull
         protected final ParserRuleContext elementContext;
         protected final boolean           inferred;
+        protected       BuiltElement      element;
 
         protected ElementBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
         {
@@ -60,6 +61,31 @@ public abstract class AbstractElement implements Element
         public ParserRuleContext getElementContext()
         {
             return this.elementContext;
+        }
+
+        @Nonnull
+        public final BuiltElement build()
+        {
+            if (this.element != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.element = Objects.requireNonNull(this.buildUnsafe());
+            this.buildChildren();
+            return this.element;
+        }
+
+        @Nonnull
+        protected abstract BuiltElement buildUnsafe();
+
+        protected void buildChildren()
+        {
+        }
+
+        @Nonnull
+        public final BuiltElement getElement()
+        {
+            return Objects.requireNonNull(this.element);
         }
     }
 }

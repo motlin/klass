@@ -37,7 +37,7 @@ public abstract class AbstractProperty<T extends Type> extends AbstractTypedElem
         return this.owningKlass;
     }
 
-    public abstract static class PropertyBuilder<T extends Type, TG extends TypeGetter> extends TypedElementBuilder<TG>
+    public abstract static class PropertyBuilder<T extends Type, TG extends TypeGetter, BuiltElement extends AbstractProperty<T>> extends TypedElementBuilder<T, TG, BuiltElement>
     {
         @Nonnull
         protected final KlassBuilder owningKlassBuilder;
@@ -54,7 +54,5 @@ public abstract class AbstractProperty<T extends Type> extends AbstractTypedElem
             super(elementContext, inferred, nameContext, name, ordinal, typeBuilder);
             this.owningKlassBuilder = Objects.requireNonNull(owningKlassBuilder);
         }
-
-        public abstract AbstractProperty<T> build();
     }
 }

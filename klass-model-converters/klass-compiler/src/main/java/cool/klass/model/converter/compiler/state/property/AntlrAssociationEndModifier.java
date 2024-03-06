@@ -1,25 +1,44 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrAssociationEndModifier extends AntlrNamedElement
+public class AntlrAssociationEndModifier extends AntlrModifier
 {
+    private final AntlrAssociationEnd surroundingElement;
+
     public AntlrAssociationEndModifier(
-            @Nonnull ParserRuleContext elementContext,
+            @Nonnull AssociationEndModifierContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
-            int ordinal)
+            int ordinal,
+            AntlrAssociationEnd surroundingElement)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        this.surroundingElement = surroundingElement;
+    }
+
+    @Nonnull
+    @Override
+    public AssociationEndModifierContext getElementContext()
+    {
+        return (AssociationEndModifierContext) super.getElementContext();
+    }
+
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.ofNullable(this.surroundingElement);
     }
 
     public boolean isOwned()
@@ -40,12 +59,7 @@ public class AntlrAssociationEndModifier extends AntlrNamedElement
                 this.inferred,
                 this.nameContext,
                 this.name,
-                this.ordinal);
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        // intentionally blank
+                this.ordinal,
+                this.surroundingElement.getElementBuilder());
     }
 }

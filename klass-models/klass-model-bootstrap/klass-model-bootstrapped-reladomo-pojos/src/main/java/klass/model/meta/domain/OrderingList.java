@@ -15,7 +15,7 @@ public class OrderingList extends OrderingListAbstract
         super(initialSize);
     }
 
-    public OrderingList(Collection c)
+    public OrderingList(Collection<?> c)
     {
         super(c);
     }

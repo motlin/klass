@@ -14,11 +14,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionWalker;
 import cool.klass.model.meta.domain.api.service.Service;
@@ -27,12 +29,10 @@ import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.api.service.url.Url;
-import cool.klass.model.meta.domain.api.service.url.UrlParameter;
-import cool.klass.model.meta.domain.api.service.url.UrlPathParameter;
-import cool.klass.model.meta.domain.api.service.url.UrlPathSegment;
-import cool.klass.model.meta.domain.api.service.url.UrlQueryParameter;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.tuple.primitive.ObjectBooleanPair;
+import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
 
 public class ServiceResourceGenerator
 {
@@ -174,10 +174,13 @@ public class ServiceResourceGenerator
         ServiceMultiplicity       serviceMultiplicity = service.getServiceMultiplicity();
         ServiceProjectionDispatch projectionDispatch  = service.getProjectionDispatch();
 
-        ServiceGroup                     serviceGroup    = url.getServiceGroup();
-        ImmutableList<UrlPathSegment>    urlPathSegments = url.getUrlPathSegments();
-        ImmutableList<UrlQueryParameter> queryParameters = url.getQueryParameters();
-        ImmutableList<UrlParameter>      urlParameters   = url.getUrlParameters();
+        ServiceGroup           serviceGroup    = url.getServiceGroup();
+        ImmutableList<Element> urlPathSegments = url.getUrlPathSegments();
+
+        ImmutableList<ObjectBooleanPair<Parameter>> pathParameters = url.getPathParameters()
+                .collectWith(PrimitiveTuples::pair, true);
+        ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
+                .collectWith(PrimitiveTuples::pair, false);
 
         Klass  klass           = serviceGroup.getKlass();
         String klassName       = klass.getName();
@@ -188,7 +191,7 @@ public class ServiceResourceGenerator
         String urlPathString = urlPathSegments.makeString("/", "/", "");
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
-                : queryParameters.makeString(" // ?", "&", "");
+                : queryParameters.collect(ObjectBooleanPair::getOne).makeString(" // ?", "&", "");
 
         boolean hasAuthorizeCriteria = service.isAuthorizeClauseRequired();
 
@@ -198,7 +201,7 @@ public class ServiceResourceGenerator
         String parameterPrefix = lineWrapParameters ? "\n" : "";
         String parameterIndent = lineWrapParameters ? "            " : "";
 
-        ImmutableList<String> parameterStrings1 = urlParameters
+        ImmutableList<String> parameterStrings1 = pathParameters.newWithAll(queryParameters)
                 .collectWith(this::getParameterSourceCode, parameterIndent);
         // TODO: This version query parameter should be inferred during the compilation of the service
         ImmutableList<String> parameterStrings = hasAuthorizeCriteria
@@ -227,7 +230,7 @@ public class ServiceResourceGenerator
                 service.getVersionCriteria(),
                 klassName);
 
-        Projection                  projection                  = projectionDispatch.getProjection();
+        Projection projection = projectionDispatch.getProjection();
 
         // TODO: Fix deep fetching redundant stuff
         DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
@@ -304,6 +307,32 @@ public class ServiceResourceGenerator
         return "        return this.applyProjection(result.asEcList(), " + this.applicationName + "DomainModel." + projectionName + ");\n";
     }
 
+    private String getParameterSourceCode(@Nonnull ObjectBooleanPair<Parameter> pair, String indent)
+    {
+        Parameter parameter       = pair.getOne();
+        boolean   isPathParameter = pair.getTwo();
+
+        // TODO: Hibernate validation annotations
+
+        String nullableAnnotation = parameter.getMultiplicity() == Multiplicity.ZERO_TO_ONE
+                ? "@Nullable "
+                : "";
+
+        DataType parameterType = parameter.getType();
+        String typeString = parameter.getMultiplicity().isToMany()
+                ? "Set<" + this.getType(parameterType) + ">"
+                : this.getType(parameterType);
+
+        return String.format(
+                "%s%s@%s(\"%s\") %s %s",
+                indent,
+                nullableAnnotation,
+                isPathParameter ? "PathParam" : "QueryParam",
+                parameter.getName(),
+                typeString,
+                parameter.getName());
+    }
+
     @Nonnull
     private String getOperation(
             String finderName,
@@ -354,6 +383,19 @@ public class ServiceResourceGenerator
                 versionClause);
     }
 
+    private String getType(DataType dataType)
+    {
+        if (dataType instanceof Enumeration)
+        {
+            return ((Enumeration) dataType).getName();
+        }
+        if (dataType instanceof PrimitiveType)
+        {
+            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
+        }
+        throw new AssertionError();
+    }
+
     @Nonnull
     private String getOperation(String finderName, @Nonnull Criteria criteria, String criteriaName)
     {
@@ -402,55 +444,5 @@ public class ServiceResourceGenerator
     private String getComment(@Nonnull Criteria criteria)
     {
         return "        // " + criteria.getSourceCode().replaceAll("\\s+", " ") + "\n";
-    }
-
-    private String getParameterSourceCode(@Nonnull UrlParameter urlParameter, String indent)
-    {
-        // TODO: Hibernate validation annotations
-
-        String nullableAnnotation = urlParameter.getMultiplicity() == Multiplicity.ZERO_TO_ONE
-                ? "@Nullable "
-                : "";
-
-        DataType parameterType = urlParameter.getType();
-        String typeString = urlParameter.getMultiplicity().isToMany()
-                ? "Set<" + this.getType(parameterType) + ">"
-                : this.getType(parameterType);
-
-        return String.format(
-                "%s%s@%s(\"%s\") %s %s",
-                indent,
-                nullableAnnotation,
-                this.getAnnotation(urlParameter),
-                urlParameter.getName(),
-                typeString,
-                urlParameter.getName());
-    }
-
-    private String getType(DataType dataType)
-    {
-        if (dataType instanceof Enumeration)
-        {
-            return ((Enumeration) dataType).getName();
-        }
-        if (dataType instanceof PrimitiveType)
-        {
-            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
-        }
-        throw new AssertionError();
-    }
-
-    @Nonnull
-    private String getAnnotation(UrlParameter urlParameter)
-    {
-        if (urlParameter instanceof UrlPathParameter)
-        {
-            return "PathParam";
-        }
-        if (urlParameter instanceof UrlQueryParameter)
-        {
-            return "QueryParam";
-        }
-        throw new AssertionError();
     }
 }

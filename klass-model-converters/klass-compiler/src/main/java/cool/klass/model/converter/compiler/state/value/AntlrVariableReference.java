@@ -9,9 +9,10 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
-import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlPathParameter;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.parameter.AntlrEnumerationParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.meta.domain.value.VariableReferenceImpl.VariableReferenceBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -24,15 +25,16 @@ public class AntlrVariableReference extends AntlrExpressionValue
     private final String variableName;
 
     @Nullable
-    private AntlrUrlParameter antlrUrlParameter;
+    private AntlrParameter<?> antlrParameter;
 
     public AntlrVariableReference(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String variableName)
+            @Nonnull String variableName,
+            IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, inferred, expressionValueOwner);
         this.variableName = Objects.requireNonNull(variableName);
     }
 
@@ -43,7 +45,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         return new VariableReferenceBuilder(
                 this.elementContext,
                 this.inferred,
-                this.antlrUrlParameter.getUrlParameterBuilder());
+                this.antlrParameter.getElementBuilder());
     }
 
     @Override
@@ -51,17 +53,14 @@ public class AntlrVariableReference extends AntlrExpressionValue
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
     {
-        if (this.antlrUrlParameter == AntlrEnumerationUrlPathParameter.NOT_FOUND)
+        if (this.antlrParameter == AntlrEnumerationParameter.NOT_FOUND)
         {
             String message = String.format("ERR_VAR_REF: Cannot find parameter '%s'.", this.elementContext.getText());
-            compilerErrorHolder.add(
-                    message,
-                    this.elementContext,
-                    parserRuleContexts.toArray(new ParserRuleContext[]{}));
+            compilerErrorHolder.add(message, this);
             return;
         }
-        if (this.antlrUrlParameter == AntlrPrimitiveUrlPathParameter.AMBIGUOUS
-                || this.antlrUrlParameter == AntlrEnumerationUrlPathParameter.AMBIGUOUS)
+        if (this.antlrParameter == AntlrPrimitiveParameter.AMBIGUOUS
+                || this.antlrParameter == AntlrEnumerationParameter.AMBIGUOUS)
         {
             throw new AssertionError();
         }
@@ -70,8 +69,8 @@ public class AntlrVariableReference extends AntlrExpressionValue
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
-        Objects.requireNonNull(this.antlrUrlParameter);
-        AntlrType type = this.antlrUrlParameter.getType();
+        Objects.requireNonNull(this.antlrParameter);
+        AntlrType type = this.antlrParameter.getType();
         if (type == AntlrEnumeration.NOT_FOUND)
         {
             return Lists.immutable.empty();
@@ -80,10 +79,10 @@ public class AntlrVariableReference extends AntlrExpressionValue
     }
 
     @Override
-    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter<?>> formalParametersByName)
     {
-        this.antlrUrlParameter = formalParametersByName.getIfAbsentValue(
+        this.antlrParameter = formalParametersByName.getIfAbsentValue(
                 this.variableName,
-                AntlrEnumerationUrlPathParameter.NOT_FOUND);
+                AntlrEnumerationParameter.NOT_FOUND);
     }
 }

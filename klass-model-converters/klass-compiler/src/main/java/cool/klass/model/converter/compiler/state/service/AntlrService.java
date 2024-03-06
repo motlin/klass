@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
@@ -22,7 +23,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
-import cool.klass.model.meta.domain.criteria.AbstractCriteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
@@ -90,6 +91,19 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
     }
 
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.urlState);
+    }
+
     @Nonnull
     public AntlrUrl getUrlState()
     {
@@ -116,11 +130,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     {
         String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
 
-        compilerErrorHolder.add(
-                message,
-                this.verbState.getElementContext(),
-                this.urlState.getElementContext(),
-                this.urlState.getServiceGroup().getElementContext());
+        compilerErrorHolder.add(message, this.verbState.getElementContext(), this);
     }
 
     public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
@@ -154,12 +164,12 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         // TODO: reportErrors: Find url parameters which are unused by any criteria
 
-        reportInvalidProjection(compilerErrorHolder);
+        this.reportInvalidProjection(compilerErrorHolder);
 
         Verb                  verb                 = this.verbState.getVerb();
         ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
 
-        for (AntlrServiceCriteria serviceCriteriaState: this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
         {
             if (allowedCriteriaTypes == null)
             {
@@ -206,7 +216,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 compilerErrorHolder.add(
                         message,
                         this.serviceProjectionDispatchState.getElementContext().projectionReference(),
-                        this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+                        this);
             }
 
             // TODO: Do this after changing the versionClass to versionAssociationEnd
@@ -226,26 +236,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
             MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
         }
-    }
-
-    public ImmutableList<ParserRuleContext> getParserRuleContexts()
-    {
-        MutableList<ParserRuleContext> parserRuleContexts = Lists.mutable.empty();
-        this.getParserRuleContexts(parserRuleContexts);
-        return parserRuleContexts.toImmutable();
-    }
-
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.getElementContext());
-        this.urlState.getParserRuleContexts(parserRuleContexts);
-    }
-
-    @Nonnull
-    @Override
-    public ServiceDeclarationContext getElementContext()
-    {
-        return (ServiceDeclarationContext) super.getElementContext();
     }
 
     @Nonnull
@@ -277,11 +267,11 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 verb,
                 serviceMultiplicity);
 
-        for (AntlrServiceCriteria serviceCriteriaState: this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
         {
-            String          serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
-            AntlrCriteria   criteriaState          = serviceCriteriaState.getCriteria();
-            CriteriaBuilder criteriaBuilder        = criteriaState.build();
+            String                     serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
+            AntlrCriteria              criteriaState          = serviceCriteriaState.getCriteria();
+            AbstractCriteriaBuilder<?> criteriaBuilder        = criteriaState.build();
             this.serviceBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteriaBuilder);
         }
 
@@ -323,5 +313,19 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 && this.verbState.getVerb() != Verb.POST
                 && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE
                 && !this.hasServiceCriteriaKeyword("conflict");
+    }
+
+    @Override
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
+    {
+        parserRuleContexts.add(this.getElementContext());
+        this.urlState.getParserRuleContexts(parserRuleContexts);
+    }
+
+    @Nonnull
+    @Override
+    public ServiceDeclarationContext getElementContext()
+    {
+        return (ServiceDeclarationContext) super.getElementContext();
     }
 }

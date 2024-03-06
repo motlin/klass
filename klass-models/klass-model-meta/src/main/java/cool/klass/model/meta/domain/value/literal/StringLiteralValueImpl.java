@@ -25,7 +25,7 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
         return this.value;
     }
 
-    public static final class StringLiteralValueBuilder extends LiteralValueBuilder
+    public static final class StringLiteralValueBuilder extends AbstractLiteralValueBuilder<StringLiteralValueImpl>
     {
         @Nonnull
         private final String value;
@@ -39,9 +39,9 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
             this.value = Objects.requireNonNull(value);
         }
 
-        @Nonnull
         @Override
-        public StringLiteralValueImpl build()
+        @Nonnull
+        protected StringLiteralValueImpl buildUnsafe()
         {
             return new StringLiteralValueImpl(this.elementContext, this.inferred, this.value);
         }

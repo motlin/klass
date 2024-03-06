@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -8,13 +9,14 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaOwner
+public class AntlrServiceCriteria extends AntlrElement
 {
     @Nonnull
     private final String       serviceCriteriaKeyword;
@@ -36,36 +38,34 @@ public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaO
     }
 
     @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.serviceState);
+    }
+
     @Nonnull
     public AntlrCriteria getCriteria()
     {
         return Objects.requireNonNull(this.antlrCriteria);
     }
 
-    @Override
     public void setCriteria(@Nonnull AntlrCriteria antlrCriteria)
     {
         this.antlrCriteria = Objects.requireNonNull(antlrCriteria);
-    }
-
-    @Override
-    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
-    {
-        parserRuleContexts.add(this.elementContext);
-        this.serviceState.getParserRuleContexts(parserRuleContexts);
     }
 
     public void reportDuplicateKeyword(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Test coverage of duplicate service criteria
         String message = String.format("ERR_DUP_CRI: Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
-
-        ImmutableList<ParserRuleContext> parserRuleContexts = this.antlrCriteria.getParserRuleContexts();
-
-        compilerErrorHolder.add(
-                message,
-                this.getElementContext(),
-                parserRuleContexts.toArray(new ParserRuleContext[]{}));
+        compilerErrorHolder.add(message, this.getElementContext(), this.antlrCriteria);
     }
 
     @Nonnull
@@ -73,6 +73,13 @@ public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaO
     public ServiceCriteriaDeclarationContext getElementContext()
     {
         return (ServiceCriteriaDeclarationContext) super.getElementContext();
+    }
+
+    @Override
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
+    {
+        parserRuleContexts.add(this.elementContext);
+        this.serviceState.getParserRuleContexts(parserRuleContexts);
     }
 
     @Nonnull
@@ -95,7 +102,7 @@ public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaO
             compilerErrorHolder.add(
                     error,
                     this.getElementContext().serviceCriteriaKeyword(),
-                    this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+                    this);
         }
     }
 }

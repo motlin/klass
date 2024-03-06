@@ -15,7 +15,7 @@ public class ParameterizedPropertyOrderingList extends ParameterizedPropertyOrde
         super(initialSize);
     }
 
-    public ParameterizedPropertyOrderingList(Collection c)
+    public ParameterizedPropertyOrderingList(Collection<?> c)
     {
         super(c);
     }

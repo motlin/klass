@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.meta.domain.criteria.AllCriteriaImpl.AllCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -18,7 +18,7 @@ public class AllAntlrCriteria extends AntlrCriteria
             @Nonnull CriteriaAllContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull AntlrCriteriaOwner criteriaOwner)
+            @Nonnull IAntlrElement criteriaOwner)
     {
         super(elementContext, compilationUnit, inferred, criteriaOwner);
     }
@@ -46,7 +46,7 @@ public class AllAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrUrlParameter> formalParametersByName)
+    public void resolveServiceVariables(OrderedMap<String, AntlrParameter<?>> formalParametersByName)
     {
         // Intentionally blank
     }

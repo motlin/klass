@@ -9,24 +9,22 @@ import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
 import cool.klass.model.meta.domain.value.AbstractExpressionValue;
-import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.LiteralValueBuilder;
+import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class LiteralListValueImpl extends AbstractExpressionValue implements LiteralListValue
 {
-    @Nonnull
-    private final ImmutableList<LiteralValue> literalValues;
-    private final Type                        type;
+    private final Type type;
+
+    private ImmutableList<LiteralValue> literalValues;
 
     private LiteralListValueImpl(
             @Nonnull ParserRuleContext elementContext,
             boolean inferred,
-            @Nonnull ImmutableList<LiteralValue> literalValues,
             Type type)
     {
         super(elementContext, inferred);
-        this.literalValues = Objects.requireNonNull(literalValues);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -34,7 +32,16 @@ public final class LiteralListValueImpl extends AbstractExpressionValue implemen
     @Nonnull
     public ImmutableList<LiteralValue> getLiteralValues()
     {
-        return this.literalValues;
+        return Objects.requireNonNull(this.literalValues);
+    }
+
+    public void setLiteralValues(ImmutableList<LiteralValue> literalValues)
+    {
+        if (this.literalValues != null)
+        {
+            throw new IllegalArgumentException();
+        }
+        this.literalValues = Objects.requireNonNull(literalValues);
     }
 
     @Override
@@ -43,33 +50,43 @@ public final class LiteralListValueImpl extends AbstractExpressionValue implemen
         return this.type;
     }
 
-    public static final class LiteralListValueBuilder extends ExpressionValueBuilder
+    public static final class LiteralListValueBuilder extends AbstractExpressionValueBuilder<LiteralListValueImpl>
     {
-        @Nonnull
-        private final ImmutableList<LiteralValueBuilder> literalValueBuilders;
-        private final TypeGetter                        typeBuilder;
+        private final TypeGetter typeBuilder;
+        private ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders;
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull ImmutableList<LiteralValueBuilder> literalValueBuilders,
                 TypeGetter typeBuilder)
         {
             super(elementContext, inferred);
-            this.literalValueBuilders = Objects.requireNonNull(literalValueBuilders);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
 
-        @Nonnull
-        @Override
-        public LiteralListValueImpl build()
+        public void setLiteralValueBuilders(ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders)
         {
-            ImmutableList<LiteralValue> literalValues = this.literalValueBuilders.collect(LiteralValueBuilder::build);
+            if (this.literalValueBuilders != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.literalValueBuilders = Objects.requireNonNull(literalValueBuilders);
+        }
+
+        @Override
+        @Nonnull
+        protected LiteralListValueImpl buildUnsafe()
+        {
             return new LiteralListValueImpl(
                     this.elementContext,
                     this.inferred,
-                    literalValues,
                     this.typeBuilder.getType());
+        }
+
+        @Override
+        protected void buildChildren()
+        {
+            this.element.setLiteralValues(this.literalValueBuilders.collect(AbstractLiteralValueBuilder::build));
         }
     }
 }

@@ -48,13 +48,9 @@ public class ClassPhase extends AbstractCompilerPhase
     @Override
     public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
-        ImmutableList<AntlrClassModifier> classModifiers = ListAdapter.adapt(ctx.classModifier())
-                .collectWithIndex(this::getAntlrClassModifier)
-                .toImmutable();
-
         String classOrUserKeyword = ctx.classOrUser().getText();
 
-        AntlrClass classState = new AntlrClass(
+        this.classState = new AntlrClass(
                 ctx,
                 this.currentCompilationUnit,
                 this.isInference,
@@ -62,10 +58,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 ctx.identifier().getText(),
                 this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName,
-                classModifiers,
                 classOrUserKeyword.equals("user"));
-
-        this.classState = classState;
     }
 
     @Override
@@ -73,6 +66,21 @@ public class ClassPhase extends AbstractCompilerPhase
     {
         this.domainModelState.exitClassDeclaration(this.classState);
         this.classState = null;
+    }
+
+    @Override
+    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+    {
+        int ordinal = this.classState.getNumClassModifiers();
+        AntlrClassModifier classModifierState = new AntlrClassModifier(
+                ctx,
+                this.currentCompilationUnit,
+                this.isInference,
+                ctx,
+                ctx.getText(),
+                ordinal + 1,
+                this.classState);
+        this.classState.enterClassModifier(classModifierState);
     }
 
     @Override
@@ -99,7 +107,9 @@ public class ClassPhase extends AbstractCompilerPhase
                 identifier,
                 propertyName,
                 this.classState.getNumMembers() + 1,
-                this.classState, isOptional, propertyModifiers,
+                this.classState,
+                isOptional,
+                propertyModifiers,
                 primitiveTypeState);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
@@ -132,18 +142,6 @@ public class ClassPhase extends AbstractCompilerPhase
                 enumerationState);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
-    }
-
-    @Nonnull
-    public AntlrClassModifier getAntlrClassModifier(@Nonnull ClassModifierContext context, int ordinal)
-    {
-        return new AntlrClassModifier(
-                context,
-                this.currentCompilationUnit,
-                this.isInference,
-                context,
-                context.getText(),
-                ordinal + 1);
     }
 
     @Nonnull

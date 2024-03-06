@@ -16,20 +16,20 @@ public final class AndCriteriaImpl extends AbstractBinaryCriteria implements And
         super(elementContext, inferred, left, right);
     }
 
-    public static final class AndCriteriaBuilder extends BinaryCriteriaBuilder
+    public static final class AndCriteriaBuilder extends AbstractBinaryCriteriaBuilder<AndCriteriaImpl>
     {
         public AndCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull CriteriaBuilder left,
-                @Nonnull CriteriaBuilder right)
+                @Nonnull AbstractCriteriaBuilder<?> left,
+                @Nonnull AbstractCriteriaBuilder<?> right)
         {
             super(elementContext, inferred, left, right);
         }
 
-        @Nonnull
         @Override
-        public AndCriteriaImpl build()
+        @Nonnull
+        protected AndCriteriaImpl buildUnsafe()
         {
             return new AndCriteriaImpl(
                     this.elementContext,

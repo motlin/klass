@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrIntegerLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrStringLiteralValue;
@@ -23,13 +24,16 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
     private final CompilationUnit  compilationUnit;
     @Nonnull
     private final AntlrDomainModel domainModelState;
+    private final IAntlrElement    expressionValueOwner;
 
     public LiteralValueVisitor(
             @Nonnull CompilationUnit compilationUnit,
-            @Nonnull AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState,
+            IAntlrElement expressionValueOwner)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 
     @Nonnull
@@ -37,7 +41,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
     public AntlrIntegerLiteralValue visitIntegerLiteral(@Nonnull IntegerLiteralContext ctx)
     {
         int value = Integer.parseInt(ctx.getText());
-        return new AntlrIntegerLiteralValue(ctx, this.compilationUnit, false, value);
+        return new AntlrIntegerLiteralValue(ctx, this.compilationUnit, false, value, this.expressionValueOwner);
     }
 
     @Nonnull
@@ -70,7 +74,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
     {
         String quotedText = ctx.getText();
         String text       = quotedText.substring(1, quotedText.length() - 1);
-        return new AntlrStringLiteralValue(ctx, this.compilationUnit, false, text);
+        return new AntlrStringLiteralValue(ctx, this.compilationUnit, false, text, this.expressionValueOwner);
     }
 
     @Nonnull

@@ -15,7 +15,7 @@ public class ClassList extends ClassListAbstract
         super(initialSize);
     }
 
-    public ClassList(Collection c)
+    public ClassList(Collection<?> c)
     {
         super(c);
     }

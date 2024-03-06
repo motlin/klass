@@ -110,32 +110,35 @@ public abstract class AntlrNamedElement extends AntlrElement
     }
 
     // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
-    public abstract void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder);
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
 
-    protected void reportKeywordCollision(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            ParserRuleContext... parserRuleContexts)
+        if (!this.getNamePattern().matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_NME_PAT: Name must match pattern %s but was '%s'.",
+                    this.getNamePattern(),
+                    this.name);
+            compilerErrorHolder.add(message, this);
+        }
+    }
+
+    protected abstract Pattern getNamePattern();
+
+    // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations/projections/services and a separate name pattern
+    protected void reportKeywordCollision(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (JAVA_KEYWORDS.contains(this.name))
         {
-            String message = String.format(
-                    "ERR_NME_KEY: '%s' is a reserved Java keyword.",
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    parserRuleContexts);
+            String message = String.format("ERR_NME_KEY: '%s' is a reserved Java keyword.", this.name);
+            compilerErrorHolder.add(message, this);
         }
 
         if (JAVA_LITERALS.contains(this.name))
         {
-            String message = String.format(
-                    "ERR_NME_LIT: '%s' is a reserved Java literal.",
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    parserRuleContexts);
+            String message = String.format("ERR_NME_LIT: '%s' is a reserved Java literal.", this.name);
+            compilerErrorHolder.add(message, this);
         }
     }
 }

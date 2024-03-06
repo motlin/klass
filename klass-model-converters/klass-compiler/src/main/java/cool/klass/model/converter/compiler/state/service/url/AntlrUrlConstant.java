@@ -1,16 +1,21 @@
 package cool.klass.model.converter.compiler.state.service.url;
 
+import java.util.Optional;
+import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrBuildableElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
-import cool.klass.model.meta.domain.service.url.AbstractUrlPathSegment.UrlPathSegmentBuilder;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.meta.domain.service.url.UrlConstantImpl;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathSegment
+public class AntlrUrlConstant extends AntlrNamedElement implements AntlrBuildableElement<UrlConstantImpl>
 {
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
@@ -25,16 +30,31 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathS
 
     @Nonnull
     @Override
-    public Object toNormalized()
+    public Optional<IAntlrElement> getSurroundingElement()
     {
-        return this.name;
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSurroundingContext() not implemented yet");
+    }
+
+    @Override
+    public boolean omitParentFromSurroundingElements()
+    {
+        return true;
+    }
+
+    @Override
+    @Nonnull
+    public UrlConstantBuilder build()
+    {
+        return new UrlConstantBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
     }
 
     @Nonnull
     @Override
-    public UrlPathSegmentBuilder build()
+    protected Pattern getNamePattern()
     {
-        return new UrlConstantBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getNamePattern() not implemented yet");
     }
 
     @Override

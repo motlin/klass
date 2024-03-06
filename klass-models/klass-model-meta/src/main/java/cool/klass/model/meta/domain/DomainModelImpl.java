@@ -164,11 +164,9 @@ public final class DomainModelImpl implements DomainModel
         public DomainModelImpl build()
         {
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.<Enumeration>collect(EnumerationBuilder::build).toImmutable();
-            ImmutableList<Klass>       klasses      = this.klassBuilders.<Klass>collect(KlassBuilder::build1).toImmutable();
-            this.klassBuilders.each(KlassBuilder::build2);
-
+            ImmutableList<Klass>       klasses      = this.klassBuilders.<Klass>collect(KlassBuilder::build).toImmutable();
             ImmutableList<Association> associations = this.associationBuilders.<Association>collect(AssociationBuilder::build).toImmutable();
-            this.klassBuilders.each(KlassBuilder::build3);
+            this.klassBuilders.each(KlassBuilder::build2);
 
             ImmutableList<Projection> projections = this.projectionBuilders.<Projection>collect(ProjectionBuilder::build).toImmutable();
             ImmutableList<ServiceGroup> serviceGroups =

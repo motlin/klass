@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
-import cool.klass.model.meta.domain.criteria.AbstractCriteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -68,13 +68,12 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         return this.targetAssociationEnd;
     }
 
-    public static class AssociationBuilder extends PackageableElementBuilder implements TopLevelElementBuilder
+    public static final class AssociationBuilder extends PackageableElementBuilder<AssociationImpl> implements TopLevelElementBuilder
     {
         @Nonnull
-        private final CriteriaBuilder criteriaBuilder;
+        private final AbstractCriteriaBuilder<?> criteriaBuilder;
 
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
-        private AssociationImpl                      association;
 
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -83,7 +82,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
-                @Nonnull CriteriaBuilder criteriaBuilder)
+                @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
@@ -94,13 +93,10 @@ public final class AssociationImpl extends AbstractPackageableElement implements
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
         }
 
-        public AssociationImpl build()
+        @Override
+        protected AssociationImpl buildUnsafe()
         {
-            if (this.association != null)
-            {
-                throw new IllegalStateException();
-            }
-            this.association = new AssociationImpl(
+            return new AssociationImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -108,19 +104,14 @@ public final class AssociationImpl extends AbstractPackageableElement implements
                     this.ordinal,
                     this.packageName,
                     this.criteriaBuilder.build());
-
-            ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
-                    .collect(AssociationEndBuilder::build);
-
-            this.association.setAssociationEnds(associationEnds);
-            return this.association;
         }
 
         @Override
-        @Nonnull
-        public AssociationImpl getElement()
+        protected void buildChildren()
         {
-            return Objects.requireNonNull(this.association);
+            ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
+                    .collect(AssociationEndBuilder::build);
+            this.element.setAssociationEnds(associationEnds);
         }
     }
 }

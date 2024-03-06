@@ -15,7 +15,7 @@ public class AssociationEndModifierList extends AssociationEndModifierListAbstra
         super(initialSize);
     }
 
-    public AssociationEndModifierList(Collection c)
+    public AssociationEndModifierList(Collection<?> c)
     {
         super(c);
     }

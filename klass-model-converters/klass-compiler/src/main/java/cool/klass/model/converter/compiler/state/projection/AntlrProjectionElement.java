@@ -1,28 +1,33 @@
 package cool.klass.model.converter.compiler.state.projection;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
-public interface AntlrProjectionElement
+public interface AntlrProjectionElement extends IAntlrElement
 {
     @Nonnull
     ProjectionElementBuilder build();
 
     @Nonnull
-    default MutableList<ParserRuleContext> getParserRuleContexts()
+    AntlrProjectionParent getParent();
+
+    @Override
+    default boolean omitParentFromSurroundingElements()
     {
-        MutableList<ParserRuleContext> result = Lists.mutable.empty();
-        this.getParent().getParserRuleContexts(result);
-        return result;
+        return false;
     }
 
     @Nonnull
-    AntlrProjectionParent getParent();
+    @Override
+    default Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.getParent());
+    }
 
     @Nonnull
     String getName();

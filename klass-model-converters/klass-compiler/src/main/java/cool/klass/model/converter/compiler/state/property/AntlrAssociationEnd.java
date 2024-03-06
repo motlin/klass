@@ -4,24 +4,29 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 {
+    @Nullable
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             null,
@@ -31,8 +36,8 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             -1,
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
-            null,
-            Lists.immutable.empty());
+            null);
+    @Nullable
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             null,
@@ -42,13 +47,12 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             -1,
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
-            null,
-            Lists.immutable.empty());
+            null);
 
     @Nonnull
-    private final AntlrAssociation                           owningAssociationState;
+    private final AntlrAssociation                         owningAssociationState;
     @Nonnull
-    private final ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates;
+    private final MutableList<AntlrAssociationEndModifier> associationEndModifierStates = Lists.mutable.empty();
 
     private AntlrAssociationEnd   opposite;
     private AssociationEndBuilder associationEndBuilder;
@@ -62,19 +66,22 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             int ordinal,
             @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
-            AntlrMultiplicity multiplicityState,
-            @Nonnull ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates)
+            AntlrMultiplicity multiplicityState)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, type, multiplicityState);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
-        this.associationEndModifierStates = Objects.requireNonNull(associationEndModifierStates);
     }
 
     @Nonnull
     @Override
-    public AssociationEndContext getElementContext()
+    public Optional<IAntlrElement> getSurroundingElement()
     {
-        return (AssociationEndContext) super.getElementContext();
+        return Optional.of(this.owningAssociationState);
+    }
+
+    public int getNumModifiers()
+    {
+        return this.associationEndModifierStates.size();
     }
 
     @Nonnull
@@ -85,9 +92,6 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         {
             throw new IllegalStateException();
         }
-
-        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders =
-                this.associationEndModifierStates.collect(AntlrAssociationEndModifier::build);
 
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
@@ -100,8 +104,13 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
                 this.owningClassState.getElementBuilder(),
                 this.owningAssociationState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity(),
-                associationEndModifierBuilders,
                 this.isOwned());
+
+        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders =
+                this.associationEndModifierStates.collect(AntlrAssociationEndModifier::build)
+                        .toImmutable();
+
+        this.associationEndBuilder.setAssociationEndModifierBuilders(associationEndModifierBuilders);
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.associationEndBuilder.setOrderByBuilder(orderByBuilder);
@@ -114,15 +123,15 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
-    public boolean isVersion()
-    {
-        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isVersion);
-    }
-
     public boolean isVersioned()
     {
         // TODO: ❗️ Error if both ends are version
         return this.opposite.isVersion();
+    }
+
+    public boolean isVersion()
+    {
+        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isVersion);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
@@ -136,24 +145,6 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return Objects.requireNonNull(this.associationEndBuilder);
     }
 
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        this.reportKeywordCollision(compilerErrorHolder, this.owningAssociationState.getElementContext());
-
-        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
-        {
-            String message = String.format(
-                    "ERR_END_NME: Name must match pattern %s but was %s",
-                    CONSTANT_NAME_PATTERN,
-                    this.name);
-            compilerErrorHolder.add(
-                    message,
-                    this.nameContext,
-                    this.owningAssociationState.getElementContext());
-        }
-    }
-
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
@@ -164,40 +155,58 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         }
     }
 
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format(
-                "ERR_DUP_END: Duplicate member: '%s.%s'.",
-                this.owningClassState.getName(),
-                this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.owningAssociationState.getElementContext());
-    }
-
-    public void reportDuplicateVersionProperty(@Nonnull CompilerErrorHolder compilerErrorHolder, @Nonnull AntlrClass antlrClass)
+    public void reportDuplicateVersionProperty(
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull AntlrClass antlrClass)
     {
         AntlrAssociationEndModifier versionModifier = this.associationEndModifierStates.detect(
                 AntlrAssociationEndModifier::isVersion);
         String message = String.format(
                 "ERR_VER_END: Multiple version properties on '%s'.",
                 antlrClass.getName());
-        compilerErrorHolder.add(
-                message,
-                versionModifier.getElementContext(),
-                this.owningAssociationState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+        compilerErrorHolder.add(message, versionModifier);
     }
 
-    public void reportDuplicateVersionedProperty(@Nonnull CompilerErrorHolder compilerErrorHolder, @Nonnull AntlrClass antlrClass)
+    public void reportDuplicateVersionedProperty(
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull AntlrClass antlrClass)
     {
         String message = String.format(
                 "ERR_VER_END: Multiple versioned properties on '%s'.",
                 antlrClass.getName());
-        compilerErrorHolder.add(
-                message,
-                this.getNameContext(),
-                this.owningAssociationState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+        compilerErrorHolder.add(message, this);
+    }
+
+    public void enterAssociationEndModifier(AntlrAssociationEndModifier antlrAssociationEndModifier)
+    {
+        this.associationEndModifierStates.add(antlrAssociationEndModifier);
+    }
+
+    public void reportTypeNotFound(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        if (this.getType() != AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
+        ClassReferenceContext offendingToken = this.getElementContext().classType().classReference();
+        String message = String.format(
+                "ERR_END_TYP: Cannot find class '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, offendingToken, this);
+    }
+
+    @Nonnull
+    @Override
+    public AssociationEndContext getElementContext()
+    {
+        return (AssociationEndContext) super.getElementContext();
+    }
+
+    @Override
+    public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
+    {
+        parserRuleContexts.add(this.getElementContext());
+        this.owningAssociationState.getParserRuleContexts(parserRuleContexts);
     }
 }

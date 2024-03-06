@@ -15,7 +15,7 @@ public class ParameterizedPropertyList extends ParameterizedPropertyListAbstract
         super(initialSize);
     }
 
-    public ParameterizedPropertyList(Collection c)
+    public ParameterizedPropertyList(Collection<?> c)
     {
         super(c);
     }

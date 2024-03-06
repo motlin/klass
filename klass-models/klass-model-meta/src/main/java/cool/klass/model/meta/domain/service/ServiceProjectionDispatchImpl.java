@@ -31,7 +31,7 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
         return this.projection;
     }
 
-    public static final class ServiceProjectionDispatchBuilder extends ElementBuilder
+    public static final class ServiceProjectionDispatchBuilder extends ElementBuilder<ServiceProjectionDispatchImpl>
     {
         @Nonnull
         private final ProjectionBuilder projectionBuilder;
@@ -45,7 +45,9 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
             this.projectionBuilder = Objects.requireNonNull(projectionBuilder);
         }
 
-        public ServiceProjectionDispatchImpl build()
+        @Override
+        @Nonnull
+        protected ServiceProjectionDispatchImpl buildUnsafe()
         {
             return new ServiceProjectionDispatchImpl(
                     this.elementContext,

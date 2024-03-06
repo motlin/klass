@@ -15,7 +15,7 @@ public class PrimitivePropertyModifierList extends PrimitivePropertyModifierList
         super(initialSize);
     }
 
-    public PrimitivePropertyModifierList(Collection c)
+    public PrimitivePropertyModifierList(Collection<?> c)
     {
         super(c);
     }

@@ -7,12 +7,15 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class StringOperatorImpl extends AbstractOperator implements StringOperator
 {
-    private StringOperatorImpl(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String operatorText)
+    private StringOperatorImpl(
+            @Nonnull ParserRuleContext elementContext,
+            boolean inferred,
+            @Nonnull String operatorText)
     {
         super(elementContext, inferred, operatorText);
     }
 
-    public static class StringOperatorBuilder extends OperatorBuilder
+    public static final class StringOperatorBuilder extends AbstractOperatorBuilder<StringOperatorImpl>
     {
         public StringOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -22,9 +25,9 @@ public final class StringOperatorImpl extends AbstractOperator implements String
             super(elementContext, inferred, operatorText);
         }
 
-        @Nonnull
         @Override
-        public StringOperatorImpl build()
+        @Nonnull
+        protected StringOperatorImpl buildUnsafe()
         {
             return new StringOperatorImpl(this.elementContext, this.inferred, this.operatorText);
         }

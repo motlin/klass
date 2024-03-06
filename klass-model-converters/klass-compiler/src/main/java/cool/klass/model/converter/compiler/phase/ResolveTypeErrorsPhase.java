@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -24,29 +24,18 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
 {
     private final ResolveTypesPhase resolveTypesPhase;
 
+    @Nonnull
+    private final AntlrDomainModel domainModelState;
+
     public ResolveTypeErrorsPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            ResolveTypesPhase resolveTypesPhase)
+            ResolveTypesPhase resolveTypesPhase,
+            @Nonnull AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext, false);
         this.resolveTypesPhase = resolveTypesPhase;
-    }
-
-    @Override
-    public void enterClassServiceModifier(@Nonnull ClassServiceModifierContext ctx)
-    {
-        ProjectionDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
-        if (declaration == DeclarationsByNamePhase.NO_SUCH_PROJECTION)
-        {
-            ProjectionReferenceContext reference = ctx.projectionReference();
-            this.error(
-                    String.format("Cannot find projection '%s'", reference.getText()),
-                    reference,
-                    ctx,
-                    this.classDeclarationContext,
-                    this.currentCompilationUnit.getParserContext());
-        }
+        this.domainModelState = domainModelState;
     }
 
     @Override

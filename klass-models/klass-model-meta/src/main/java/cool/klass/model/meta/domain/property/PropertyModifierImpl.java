@@ -18,7 +18,7 @@ public final class PropertyModifierImpl extends AbstractNamedElement implements 
         super(elementContext, inferred, nameContext, name, ordinal);
     }
 
-    public static final class PropertyModifierBuilder extends NamedElementBuilder
+    public static final class PropertyModifierBuilder extends NamedElementBuilder<PropertyModifierImpl>
     {
         public PropertyModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -30,9 +30,16 @@ public final class PropertyModifierImpl extends AbstractNamedElement implements 
             super(elementContext, inferred, nameContext, name, ordinal);
         }
 
-        public PropertyModifierImpl build()
+        @Override
+        @Nonnull
+        protected PropertyModifierImpl buildUnsafe()
         {
-            return new PropertyModifierImpl(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
+            return new PropertyModifierImpl(
+                    this.elementContext,
+                    this.inferred,
+                    this.nameContext,
+                    this.name,
+                    this.ordinal);
         }
     }
 }

@@ -15,7 +15,7 @@ public class UrlList extends UrlListAbstract
         super(initialSize);
     }
 
-    public UrlList(Collection c)
+    public UrlList(Collection<?> c)
     {
         super(c);
     }

@@ -17,10 +17,10 @@ import org.eclipse.collections.api.list.ImmutableList;
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
 public abstract class AbstractDataTypeProperty<T extends DataType> extends AbstractProperty<T> implements DataTypeProperty
 {
-    @Nonnull
-    private final ImmutableList<PropertyModifier> propertyModifiers;
-    private final boolean                         key;
-    private final boolean                         optional;
+    private final boolean key;
+    private final boolean optional;
+
+    private ImmutableList<PropertyModifier> propertyModifiers;
 
     protected AbstractDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -30,12 +30,10 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             int ordinal,
             @Nonnull T dataType,
             @Nonnull KlassImpl owningKlass,
-            @Nonnull ImmutableList<PropertyModifier> propertyModifiers,
             boolean isKey,
             boolean isOptional)
     {
         super(elementContext, inferred, nameContext, name, ordinal, dataType, owningKlass);
-        this.propertyModifiers = Objects.requireNonNull(propertyModifiers);
         this.key = isKey;
         this.optional = isOptional;
     }
@@ -44,7 +42,16 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
     @Nonnull
     public ImmutableList<PropertyModifier> getPropertyModifiers()
     {
-        return this.propertyModifiers;
+        return Objects.requireNonNull(this.propertyModifiers);
+    }
+
+    protected void setPropertyModifiers(ImmutableList<PropertyModifier> propertyModifiers)
+    {
+        if (this.propertyModifiers != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.propertyModifiers = Objects.requireNonNull(propertyModifiers);
     }
 
     @Override
@@ -59,7 +66,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
         return this.optional;
     }
 
-    public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter> extends PropertyBuilder<T, TG>
+    public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter, BuiltElement extends AbstractDataTypeProperty<T>>
+            extends PropertyBuilder<T, TG, BuiltElement>
     {
         protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;
         protected final boolean                                isKey;
@@ -82,10 +90,5 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             this.isKey = isKey;
             this.isOptional = isOptional;
         }
-
-        @Override
-        public abstract AbstractDataTypeProperty<T> build();
-
-        public abstract AbstractDataTypeProperty<T> getProperty();
     }
 }

@@ -2,12 +2,12 @@ package cool.klass.model.meta.domain.api.value;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.service.url.UrlParameter;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 
 public interface VariableReference extends ExpressionValue
 {
     @Nonnull
-    UrlParameter getUrlParameter();
+    Parameter getParameter();
 
     @Override
     default void visit(@Nonnull ExpressionValueVisitor visitor)

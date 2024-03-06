@@ -57,12 +57,11 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         this.orderBy = Objects.requireNonNull(orderBy);
     }
 
-    public static class ParameterizedPropertyBuilder extends PropertyBuilder<KlassImpl, KlassBuilder>
+    public static final class ParameterizedPropertyBuilder extends PropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
     {
         @Nonnull
         private final Multiplicity multiplicity;
 
-        private ParameterizedPropertyImpl parameterizedProperty;
         @Nonnull
         private Optional<OrderByBuilder>  orderByBuilder = Optional.empty();
 
@@ -86,19 +85,10 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         }
 
         @Override
-        public ParameterizedPropertyImpl build()
+        @Nonnull
+        protected ParameterizedPropertyImpl buildUnsafe()
         {
-            if (this.parameterizedProperty != null)
-            {
-                throw new IllegalStateException();
-            }
-
-            /*
-            ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers =
-                    this.parameterizedPropertyModifierBuilders.collect(ParameterizedPropertyModifierBuilder::build);
-            */
-
-            this.parameterizedProperty = new ParameterizedPropertyImpl(
+            ParameterizedPropertyImpl parameterizedProperty = new ParameterizedPropertyImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -109,14 +99,13 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
                     this.multiplicity);
 
             Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
-            this.parameterizedProperty.setOrderBy(orderBy);
+            parameterizedProperty.setOrderBy(orderBy);
 
-            return this.parameterizedProperty;
-        }
-
-        public ParameterizedPropertyImpl getParameterizedProperty()
-        {
-            return this.parameterizedProperty;
+            /*
+            ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers =
+                    this.parameterizedPropertyModifierBuilders.collect(ParameterizedPropertyModifierBuilder::build);
+            */
+            return parameterizedProperty;
         }
     }
 }
