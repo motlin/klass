@@ -50,6 +50,7 @@ public class GraphQLSchemaQueryGenerator
     {
         ImmutableList<Klass> classes = this.domainModel
                 .getClasses()
+                .reject(Klass::isAbstract)
                 .select(each -> each.getPackageName().equals(fullyQualifiedPackage));
 
         String allSourceCode = classes
