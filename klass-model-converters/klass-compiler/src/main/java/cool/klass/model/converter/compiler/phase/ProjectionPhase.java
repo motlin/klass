@@ -25,6 +25,7 @@ import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
+// TODO: This probably doesn't need to extend AbstractCompilerPhase
 public class ProjectionPhase extends AbstractCompilerPhase
 {
     @Nonnull
@@ -53,8 +54,8 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 false,
                 nameContext,
                 nameContext.getText(),
-                klass, this.packageName
-        );
+                klass,
+                this.packageName);
         this.elementStack.push(antlrProjection);
     }
 

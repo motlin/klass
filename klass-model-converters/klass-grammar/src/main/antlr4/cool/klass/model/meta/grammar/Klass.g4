@@ -52,7 +52,8 @@ serviceGroupDeclarationBody : '{' urlDeclaration* '}' ;
 // url
 urlDeclaration: url serviceDeclaration+;
 url: urlPathSegment+ '/'? queryParameterList?;
-urlPathSegment: '/' (urlConstant=identifier | urlParameterDeclaration);
+urlPathSegment: '/' (urlConstant | urlParameterDeclaration);
+urlConstant: identifier;
 queryParameterList: '?' urlParameterDeclaration ('&' urlParameterDeclaration)*;
 urlParameterDeclaration: '{' parameterDeclaration '}';
 // service
@@ -74,8 +75,9 @@ parameterizedProperty: escapedIdentifier '(' (parameterDeclaration (',' paramete
 optionalMarker: '?';
 
 // parameter
-parameterDeclaration: identifier (':' dataTypeDeclaration)?;
-dataTypeDeclaration: dataType multiplicity;
+parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration;
+primitiveParameterDeclaration: identifier (':' primitiveType multiplicity)?;
+enumerationParameterDeclaration: identifier (':' enumerationReference multiplicity)?;
 parameterDeclarationList: '(' parameterDeclaration (',' parameterDeclaration)* ')';
 
 // argument
@@ -135,7 +137,6 @@ stringOperator: 'contains' | 'startsWith' | 'endsWith';
 
 // Type references
 classType: classReference multiplicity;
-dataType: primitiveType | enumerationReference;
 
 // references
 classReference: identifier;
@@ -169,14 +170,21 @@ keywordValidAsIdentifier
     ;
 
 literal
-	:	IntegerLiteral
-	|	FloatingPointLiteral
-	|	BooleanLiteral
+	:	integerLiteral
+	|	floatingPointLiteral
+	|	booleanLiteral
 	// TODO: Character Reladomo types and character literals?
-	|	CharacterLiteral
-	|	StringLiteral
-	|	NullLiteral
+	|	characterLiteral
+	|	stringLiteral
+	|	nullLiteral
 	;
+
+integerLiteral: IntegerLiteral;
+floatingPointLiteral: FloatingPointLiteral;
+booleanLiteral: BooleanLiteral;
+characterLiteral: CharacterLiteral;
+stringLiteral: StringLiteral;
+nullLiteral: NullLiteral;
 
 // §3.10.1 Integer Literals
 

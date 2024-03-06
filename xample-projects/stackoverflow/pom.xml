@@ -18,5 +18,7 @@
     <modules>
         <module>stackoverflow-domain-model</module>
         <module>stackoverflow-reladomo-domain</module>
+        <module>stackoverflow-dropwizard-application</module>
+        <module>stackoverflow-services</module>
     </modules>
 </project>

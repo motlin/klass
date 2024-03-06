@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler.state;
 import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -24,24 +23,54 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrClass extends AntlrPackageableElement
+public class AntlrClass extends AntlrPackageableElement implements AntlrType
 {
-    @Nullable
+    @Nonnull
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
             true,
             new ParserRuleContext(),
             "ambiguous class",
-            null);
-    @Nullable
+            null)
+    {
+        @Override
+        public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterDataTypeProperty() not implemented yet");
+        }
+
+        @Override
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterAssociationEnd() not implemented yet");
+        }
+    };
+    @Nonnull
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
             true,
             new ParserRuleContext(),
             "not found class",
-            null);
+            null)
+    {
+        @Override
+        public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterDataTypeProperty() not implemented yet");
+        }
+
+        @Override
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterAssociationEnd() not implemented yet");
+        }
+    };
 
     private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName = OrderedMapAdapter.adapt(

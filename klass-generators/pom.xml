@@ -17,5 +17,6 @@
 
     <modules>
         <module>klass-generator-reladomo</module>
+        <module>klass-generator-service-resources</module>
     </modules>
 </project>

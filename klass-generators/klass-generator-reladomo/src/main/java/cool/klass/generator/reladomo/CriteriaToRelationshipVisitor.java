@@ -2,6 +2,7 @@ package cool.klass.generator.reladomo;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.AndCriteria;
 import cool.klass.model.meta.domain.criteria.BinaryCriteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
@@ -46,5 +47,11 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitBinary() not implemented yet");
+    }
+
+    @Override
+    public void visitAll(AllCriteria allCriteria)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".visitAll() not implemented yet");
     }
 }

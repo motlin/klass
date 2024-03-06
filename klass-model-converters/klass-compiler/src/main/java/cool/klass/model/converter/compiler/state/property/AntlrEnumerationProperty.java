@@ -3,11 +3,11 @@ package cool.klass.model.converter.compiler.state.property;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.property.EnumerationProperty.EnumerationPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -17,7 +17,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 {
-    @Nullable
+    @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new EnumerationPropertyContext(null, -1),
             null,
@@ -49,6 +49,13 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
         super(elementContext, compilationUnit, inferred, name, nameContext, isOptional, modifiers, owningClassState);
         // TODO: is this nullable?
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrType getType()
+    {
+        return this.antlrEnumeration;
     }
 
     @Override

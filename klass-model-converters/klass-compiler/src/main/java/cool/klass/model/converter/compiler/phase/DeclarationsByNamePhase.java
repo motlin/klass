@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler.phase;
 import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -16,29 +15,29 @@ import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class DeclarationsByNamePhase extends KlassBaseListener
 {
-    @Nullable
+    @Nonnull
     public static final ParserRuleContext             AMBIGUOUS_DECLARATION             =
             new ParserRuleContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final EnumerationDeclarationContext AMBIGUOUS_ENUMERATION_DECLARATION =
             new EnumerationDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final ClassDeclarationContext       AMBIGUOUS_CLASS_DECLARATION       =
             new ClassDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final AssociationDeclarationContext AMBIGUOUS_ASSOCIATION_DECLARATION =
             new AssociationDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final ProjectionDeclarationContext  AMBIGUOUS_PROJECTION_DECLARATION  =
             new ProjectionDeclarationContext(null, -1);
 
-    @Nullable
+    @Nonnull
     public static final EnumerationDeclarationContext NO_SUCH_ENUMERATION = new EnumerationDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final ClassDeclarationContext       NO_SUCH_CLASS       = new ClassDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final AssociationDeclarationContext NO_SUCH_ASSOCIATION = new AssociationDeclarationContext(null, -1);
-    @Nullable
+    @Nonnull
     public static final ProjectionDeclarationContext  NO_SUCH_PROJECTION  = new ProjectionDeclarationContext(null, -1);
 
     private final MutableMap<String, ParserRuleContext> declarationsByName = MapAdapter.adapt(new LinkedHashMap<>());

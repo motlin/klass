@@ -16,6 +16,7 @@ import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
+import cool.klass.model.converter.compiler.phase.ServicePhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
@@ -94,6 +95,11 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 domainModelState);
 
+        KlassListener phase10 = new ServicePhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                domainModelState);
+
         ImmutableList<KlassListener> phases = Lists.immutable.with(
                 phase1,
                 phase2,
@@ -103,7 +109,8 @@ public class KlassCompiler
                 phase6,
                 phase7,
                 phase8,
-                phase9);
+                phase9,
+                phase10);
 
         phases.forEachWith(this::executeCompilerPhase, compilationUnits);
 

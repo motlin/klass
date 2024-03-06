@@ -1,37 +1,59 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberValue;
 import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberValue;
+import cool.klass.model.converter.compiler.state.value.AntlrVariableReference;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralListValue;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralValue;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrUserLiteral;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
+import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.OrderedMap;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValue>
 {
-    private final CompilationUnit  compilationUnit;
-    private final AntlrAssociation associationState;
-    private final AntlrDomainModel domainModelState;
+    @Nonnull
+    private final CompilationUnit                       compilationUnit;
+    @Nonnull
+    private final AntlrClass                            thisReference;
+    @Nonnull
+    private final AntlrDomainModel                      domainModelState;
+    @Nonnull
+    private final OrderedMap<String, AntlrUrlParameter> formalParametersByName;
 
     public ExpressionValueVisitor(
-            CompilationUnit compilationUnit,
-            AntlrAssociation associationState,
-            AntlrDomainModel domainModelState)
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull AntlrClass thisReference,
+            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull OrderedMap<String, AntlrUrlParameter> formalParametersByName)
     {
-        this.compilationUnit = compilationUnit;
-        this.associationState = associationState;
-        this.domainModelState = domainModelState;
+        this.compilationUnit = Objects.requireNonNull(compilationUnit);
+        this.thisReference = Objects.requireNonNull(thisReference);
+        this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.formalParametersByName = Objects.requireNonNull(formalParametersByName);
     }
 
     @Nonnull
@@ -43,19 +65,53 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
     @Nonnull
     @Override
+    public AntlrLiteralListValue visitLiteralList(@Nonnull LiteralListContext ctx)
+    {
+        ImmutableList<AntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
+                .collect(literalCtx -> new LiteralValueVisitor(
+                        this.compilationUnit,
+                        this.domainModelState).visitLiteral(literalCtx))
+                .toImmutable();
+        return new AntlrLiteralListValue(ctx, this.compilationUnit, false, literalStates);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrExpressionValue visitNativeLiteral(@Nonnull NativeLiteralContext ctx)
+    {
+        String keyword = ctx.getText();
+        switch (keyword)
+        {
+            case "user":
+                return new AntlrUserLiteral(ctx, this.compilationUnit, false);
+            default:
+                throw new AssertionError(keyword);
+        }
+    }
+
+    @Nonnull
+    @Override
+    public AntlrVariableReference visitVariableReference(@Nonnull VariableReferenceContext ctx)
+    {
+        IdentifierContext identifier   = ctx.identifier();
+        String            variableName = identifier.getText();
+        AntlrUrlParameter antlrUrlParameter = this.formalParametersByName.getIfAbsentValue(
+                variableName,
+                AntlrEnumerationUrlPathParameter.NOT_FOUND);
+        return new AntlrVariableReference(ctx, this.compilationUnit, false, antlrUrlParameter);
+    }
+
+    @Nonnull
+    @Override
     public AntlrExpressionValue visitThisMemberReference(@Nonnull ThisMemberReferenceContext ctx)
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
         String memberName = memberReferenceContext.identifier().getText();
 
-        AntlrClass classState = this.associationState.getAssociationEndStates()
-                .getFirstOptional()
-                .map(AntlrAssociationEnd::getType)
-                .orElse(AntlrClass.NOT_FOUND);
-        AntlrDataTypeProperty<?> dataTypePropertyState = classState.getDataTypePropertyByName(memberName);
+        AntlrDataTypeProperty<?> dataTypePropertyState = this.thisReference.getDataTypePropertyByName(memberName);
 
-        return new AntlrThisMemberValue(ctx, this.compilationUnit, false, classState, dataTypePropertyState);
+        return new AntlrThisMemberValue(ctx, this.compilationUnit, false, this.thisReference, dataTypePropertyState);
     }
 
     @Nonnull
@@ -72,5 +128,14 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         AntlrDataTypeProperty<?> dataTypePropertyState = classState.getDataTypePropertyByName(memberName);
 
         return new AntlrTypeMemberValue(ctx, this.compilationUnit, false, classState, dataTypePropertyState);
+    }
+
+    @Override
+    public AntlrLiteralValue visitLiteral(LiteralContext ctx)
+    {
+        KlassVisitor<AntlrLiteralValue> literalValueVisitor = new LiteralValueVisitor(
+                this.compilationUnit,
+                this.domainModelState);
+        return literalValueVisitor.visitLiteral(ctx);
     }
 }

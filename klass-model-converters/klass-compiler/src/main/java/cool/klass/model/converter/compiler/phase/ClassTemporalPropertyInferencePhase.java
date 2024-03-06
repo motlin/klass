@@ -6,10 +6,10 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.eclipse.collections.api.map.MapIterable;
@@ -85,7 +85,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
             AntlrClass classState,
             @Nonnull ClassModifierContext ctx,
             @Nonnull String name,
-            PrimitiveType primitiveType)
+            @Nonnull PrimitiveType primitiveType)
     {
         return new AntlrPrimitiveProperty(
                 ctx,
@@ -96,6 +96,6 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
                 false,
                 Lists.immutable.empty(),
                 classState,
-                new PrimitiveTypeBuilder(ctx, primitiveType));
+                AntlrPrimitiveType.valueOf(primitiveType));
     }
 }

@@ -6,11 +6,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
+import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
+import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -23,22 +25,27 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrEnumeration> enumerationStates = Lists.mutable.empty();
-    private final MutableList<AntlrClass>       classStates       = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation> associationStates = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>  projectionStates  = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>  enumerationStates  = Lists.mutable.empty();
+    private final MutableList<AntlrClass>        classStates        = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>  associationStates  = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>   projectionStates   = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup> serviceGroupStates = Lists.mutable.empty();
 
-    private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration> enumerationsByContext = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>             classesByContext      = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
-    private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation> associationsByContext = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration> enumerationsByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>             classesByContext      =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation> associationsByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrAssociation> associationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrProjection>  projectionsByName  = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    // TODO: Or instead of embedding services inside classes, turn them into named elements. The name of the group can become the name of the resource. The group could have a base url.
+    private final MutableOrderedMap<AntlrClass, AntlrServiceGroup> serviceGroupsByClass =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
     {
@@ -102,6 +109,16 @@ public class AntlrDomainModel
                         : AntlrProjection.AMBIGUOUS);
     }
 
+    public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroupState)
+    {
+        this.serviceGroupStates.add(serviceGroupState);
+        this.serviceGroupsByClass.compute(
+                serviceGroupState.getKlass(),
+                (name, builder) -> builder == null
+                        ? serviceGroupState
+                        : AntlrServiceGroup.AMBIGUOUS);
+    }
+
     public AntlrEnumeration getEnumerationByName(String enumerationName)
     {
         return this.enumerationsByName.getIfAbsentValue(enumerationName, AntlrEnumeration.NOT_FOUND);
@@ -120,6 +137,11 @@ public class AntlrDomainModel
     public AntlrClass getClassByContext(ClassDeclarationContext context)
     {
         return this.classesByContext.get(context);
+    }
+
+    public AntlrProjection getProjectionByName(String projectionName)
+    {
+        return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -166,6 +188,16 @@ public class AntlrDomainModel
             }
             projectionState.reportErrors(compilerErrorHolder);
         }
+
+        ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
+        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
+        {
+            if (duplicateServiceGroupKlasses.contains(serviceGroupState.getKlass()))
+            {
+                serviceGroupState.reportDuplicateServiceGroupClass(compilerErrorHolder);
+            }
+            serviceGroupState.reportErrors(compilerErrorHolder);
+        }
     }
 
     private ImmutableList<String> getTopLevelNames()
@@ -178,6 +210,15 @@ public class AntlrDomainModel
         return topLevelNames.toImmutable();
     }
 
+    private ImmutableBag<AntlrClass> getDuplicateServiceGroupClasses()
+    {
+        return this.serviceGroupStates
+                .collect(AntlrServiceGroup::getKlass)
+                .toBag()
+                .selectByOccurrences(occurrences -> occurrences > 1)
+                .toImmutable();
+    }
+
     @Nonnull
     public DomainModelBuilder build()
     {
@@ -185,8 +226,14 @@ public class AntlrDomainModel
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
         ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
         this.classStates.each(AntlrClass::build2);
-        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates.collect(AntlrProjection::build).toImmutable();
+        ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
+        ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
 
-        return new DomainModelBuilder(enumerationBuilders, classBuilders, associationBuilders, projectionBuilders);
+        return new DomainModelBuilder(
+                enumerationBuilders,
+                classBuilders,
+                associationBuilders,
+                projectionBuilders,
+                serviceGroupBuilders);
     }
 }

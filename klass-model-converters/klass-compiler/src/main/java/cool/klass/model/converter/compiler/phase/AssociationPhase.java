@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -26,6 +27,7 @@ import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.impl.factory.OrderedMaps;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class AssociationPhase extends AbstractCompilerPhase
@@ -102,11 +104,17 @@ public class AssociationPhase extends AbstractCompilerPhase
     @Override
     public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
+        AntlrClass thisReference = this.associationState.getAssociationEndStates()
+                .getFirstOptional()
+                .map(AntlrAssociationEnd::getType)
+                .orElse(AntlrClass.NOT_FOUND);
+
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.currentCompilationUnit,
+                this.domainModelState,
                 this.associationState,
-                this.domainModelState);
-        AntlrCriteria antlrCriteria = visitor.visit(ctx.criteriaExpression());
-        this.associationState.enterRelationship(antlrCriteria);
+                thisReference,
+                OrderedMaps.adapt(new LinkedHashMap<>()));
+        visitor.visit(ctx.criteriaExpression());
     }
 }

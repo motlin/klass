@@ -9,12 +9,10 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
@@ -27,21 +25,21 @@ public class ResolveTypesPhase extends KlassBaseListener
 {
     private final ResolveTypeReferencesPhase resolveTypeReferencesPhase;
 
-    private final MutableOrderedMap<EnumerationPropertyContext, EnumerationDeclarationContext>      enumerationPropertyTypes   = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<EnumerationPropertyContext, EnumerationDeclarationContext>             enumerationPropertyTypes   = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ParameterizedPropertyContext, ClassDeclarationContext>          parameterizedPropertyTypes = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ParameterizedPropertyContext, ClassDeclarationContext>                 parameterizedPropertyTypes = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<AssociationEndContext, ClassDeclarationContext>                 associationEndTypes        = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<AssociationEndContext, ClassDeclarationContext>                        associationEndTypes        = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ClassServiceModifierContext, ProjectionDeclarationContext>      classServiceModifiers      = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ClassServiceModifierContext, ProjectionDeclarationContext>             classServiceModifiers      = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>          projectionDeclarations     = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>                 projectionDeclarations     = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>        serviceGroupDeclarations   = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>               serviceGroupDeclarations   = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext> serviceProjectDispatches   = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext>        serviceProjectDispatches   = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ParameterDeclarationContext, EnumerationDeclarationContext>     parameterTypes             = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<EnumerationParameterDeclarationContext, EnumerationDeclarationContext> enumerationParameterTypes  = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
     public ResolveTypesPhase(ResolveTypeReferencesPhase resolveTypeReferencesPhase)
@@ -106,17 +104,16 @@ public class ResolveTypesPhase extends KlassBaseListener
     }
 
     @Override
-    public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
+    public void enterEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
-        DataTypeDeclarationContext  dataTypeDeclarationContext = ctx.dataTypeDeclaration();
-        DataTypeContext             dataTypeContext            = dataTypeDeclarationContext.dataType();
-        EnumerationReferenceContext reference                  = dataTypeContext.enumerationReference();
-        if (reference == null)
+        EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
+        if (enumerationReferenceContext == null)
         {
             return;
         }
-        EnumerationDeclarationContext declaration = this.resolveTypeReferencesPhase.getEnumerationByReference(reference);
-        this.parameterTypes.put(ctx, declaration);
+        EnumerationDeclarationContext declaration = this.resolveTypeReferencesPhase.getEnumerationByReference(
+                enumerationReferenceContext);
+        this.enumerationParameterTypes.put(ctx, declaration);
     }
 
     public ClassDeclarationContext getType(AssociationEndContext ctx)
@@ -134,9 +131,9 @@ public class ResolveTypesPhase extends KlassBaseListener
         return this.enumerationPropertyTypes.get(ctx);
     }
 
-    public EnumerationDeclarationContext getType(ParameterDeclarationContext ctx)
+    public EnumerationDeclarationContext getType(EnumerationParameterDeclarationContext ctx)
     {
-        return this.parameterTypes.get(ctx);
+        return this.enumerationParameterTypes.get(ctx);
     }
 
     public ClassDeclarationContext getType(ServiceGroupDeclarationContext ctx)

@@ -71,6 +71,14 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     }
 
     @Nonnull
+    @Override
+    public AssociationEndContext getElementContext()
+    {
+        return (AssociationEndContext) super.getElementContext();
+    }
+
+    @Override
+    @Nonnull
     public AntlrClass getType()
     {
         return this.type;

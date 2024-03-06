@@ -9,11 +9,11 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
 import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -69,11 +69,12 @@ public class ClassPhase extends AbstractCompilerPhase
         PrimitiveTypeContext     primitiveTypeContext     = ctx.primitiveType();
         OptionalMarkerContext    optionalMarkerContext    = ctx.optionalMarker();
 
-        ParserRuleContext    nameContext          = EscapedIdentifierVisitor.getNameContext(escapedIdentifierContext);
-        String               propertyName         = nameContext.getText();
-        PrimitiveType        primitiveType        = PrimitiveType.valueOf(primitiveTypeContext.getText());
-        boolean              isOptional           = optionalMarkerContext != null;
-        PrimitiveTypeBuilder primitiveTypeBuilder = new PrimitiveTypeBuilder(primitiveTypeContext, primitiveType);
+        ParserRuleContext nameContext  = EscapedIdentifierVisitor.getNameContext(escapedIdentifierContext);
+        String            propertyName = nameContext.getText();
+        boolean           isOptional   = optionalMarkerContext != null;
+
+        PrimitiveType      primitiveType      = PrimitiveType.valueOf(primitiveTypeContext.getText());
+        AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
                 .collect(AntlrPropertyModifier::new)
@@ -88,7 +89,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 isOptional,
                 propertyModifiers,
                 this.classState,
-                primitiveTypeBuilder);
+                primitiveTypeState);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
     }

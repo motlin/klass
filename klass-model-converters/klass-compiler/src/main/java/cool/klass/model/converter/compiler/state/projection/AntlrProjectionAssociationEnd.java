@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler.state.projection;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -20,7 +19,7 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionMember
 {
-    @Nullable
+    @Nonnull
     public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
             null,
@@ -31,7 +30,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             AntlrProjection.AMBIGUOUS,
             AntlrAssociationEnd.AMBIGUOUS);
 
-    @Nullable
+    @Nonnull
     public static final AntlrProjectionAssociationEnd NOT_FOUND = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
             null,

@@ -18,7 +18,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrProjectionPrimitiveMember extends AntlrNamedElement implements AntlrProjectionMember
 {
-    @Nullable
+    @Nonnull
     public static final AntlrProjectionPrimitiveMember AMBIGUOUS = new AntlrProjectionPrimitiveMember(
             new ParserRuleContext(),
             null,

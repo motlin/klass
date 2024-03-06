@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -19,9 +18,9 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrEnumeration extends AntlrPackageableElement
+public class AntlrEnumeration extends AntlrPackageableElement implements AntlrType
 {
-    @Nullable
+    @Nonnull
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
@@ -29,7 +28,7 @@ public class AntlrEnumeration extends AntlrPackageableElement
             new ParserRuleContext(),
             "ambiguous enumeration",
             null);
-    @Nullable
+    @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
@@ -135,5 +134,11 @@ public class AntlrEnumeration extends AntlrPackageableElement
                 .asLazy()
                 .select(each -> duplicatePrettyNames.contains(each.getPrettyName()))
                 .forEachWith(AntlrEnumerationLiteral::reportDuplicatePrettyName, compilerErrorHolder);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s.%s", this.packageName, this.name);
     }
 }

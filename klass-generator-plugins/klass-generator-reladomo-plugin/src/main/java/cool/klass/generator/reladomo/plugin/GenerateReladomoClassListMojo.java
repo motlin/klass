@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.reladomo.ReladomoClassListGenerator;
 import cool.klass.model.meta.domain.DomainModel;
 import org.apache.maven.model.Resource;
@@ -14,7 +15,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "generate-reladomo-class-list", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
-public class GenerateReladomoClassListMojo extends AbstractGenerateReladomoMojo
+public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
 {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-resources/reladomo")
     private File outputDirectory;
@@ -35,11 +36,11 @@ public class GenerateReladomoClassListMojo extends AbstractGenerateReladomoMojo
 
         DomainModel domainModel = this.getDomainModel();
 
-        ReladomoClassListGenerator reladomoClassListGenerator = new ReladomoClassListGenerator(domainModel);
         Path outputPath = this.outputDirectory.toPath();
         Path path = outputPath.resolve(this.outputFilename);
         try
         {
+            ReladomoClassListGenerator reladomoClassListGenerator = new ReladomoClassListGenerator(domainModel);
             reladomoClassListGenerator.writeClassListFile(path);
         }
         catch (IOException e)

@@ -7,10 +7,13 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 
 public class AntlrMultiplicity extends AntlrElement
 {
+    public static final AntlrMultiplicity AMBIGUOUS = new AntlrMultiplicity();
+
     @Nullable
     private final Multiplicity multiplicity;
 
@@ -21,6 +24,12 @@ public class AntlrMultiplicity extends AntlrElement
     {
         super(context, compilationUnit, inferred);
         this.multiplicity = this.getMultiplicity(context);
+    }
+
+    private AntlrMultiplicity()
+    {
+        super(new ParserRuleContext(), null, true);
+        this.multiplicity = Multiplicity.ONE_TO_ONE;
     }
 
     private Multiplicity getMultiplicity(MultiplicityContext multiplicityContext)

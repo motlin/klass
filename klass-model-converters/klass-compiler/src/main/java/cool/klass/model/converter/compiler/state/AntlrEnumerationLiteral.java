@@ -1,7 +1,6 @@
 package cool.klass.model.converter.compiler.state;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -11,7 +10,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrEnumerationLiteral extends AntlrNamedElement
 {
-    @Nullable
+    @Nonnull
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,
@@ -20,7 +19,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(),
             null,
             null);
-    @Nullable
+    @Nonnull
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             null,

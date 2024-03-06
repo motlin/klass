@@ -23,12 +23,11 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
@@ -57,6 +56,7 @@ import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
@@ -72,7 +72,9 @@ import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
@@ -81,6 +83,7 @@ import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlParameterDeclarationContext;
@@ -239,6 +242,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
+    public void enterProjectionPrimitiveMember(ProjectionPrimitiveMemberContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionPrimitiveMember() not implemented yet");
+    }
+
+    @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -253,13 +263,6 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterProjectionPrimitiveMember(ProjectionPrimitiveMemberContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterProjectionPrimitiveMember() not implemented yet");
-    }
-
-    @Override
     public void enterHeader(HeaderContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".enterHeader() not implemented yet");
@@ -270,6 +273,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterServiceGroupDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterServiceGroupDeclarationBody(ServiceGroupDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceGroupDeclarationBody() not implemented yet");
     }
 
     @Override
@@ -293,6 +303,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
+    public void enterUrlConstant(UrlConstantContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterUrlConstant() not implemented yet");
+    }
+
+    @Override
     public void enterQueryParameterList(QueryParameterListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -311,6 +328,13 @@ public class ErrorUnderlineListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterServiceDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceDeclarationBody() not implemented yet");
     }
 
     @Override
@@ -402,10 +426,17 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterDataTypeDeclaration(DataTypeDeclarationContext ctx)
+    public void enterPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterDataTypeDeclaration() not implemented yet");
+                + ".enterPrimitiveParameterDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationParameterDeclaration() not implemented yet");
     }
 
     @Override
@@ -584,17 +615,38 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
+    public void enterEqualityOperator(EqualityOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEqualityOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterInequalityOperator(InequalityOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInequalityOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterInOperator(InOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterStringOperator(StringOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterStringOperator() not implemented yet");
+    }
+
+    @Override
     public void enterClassType(ClassTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterClassType() not implemented yet");
-    }
-
-    @Override
-    public void enterDataType(DataTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterDataType() not implemented yet");
     }
 
     @Override
@@ -623,10 +675,9 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterVariableReference(VariableReferenceContext ctx)
+    public void enterVariableReference(@Nonnull VariableReferenceContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterVariableReference() not implemented yet");
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
@@ -641,34 +692,6 @@ public class ErrorUnderlineListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterTypeMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void enterEqualityOperator(EqualityOperatorContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterEqualityOperator() not implemented yet");
-    }
-
-    @Override
-    public void enterInequalityOperator(InequalityOperatorContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterInequalityOperator() not implemented yet");
-    }
-
-    @Override
-    public void enterInOperator(InOperatorContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterInOperator() not implemented yet");
-    }
-
-    @Override
-    public void enterStringOperator(StringOperatorContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterStringOperator() not implemented yet");
     }
 
     @Override

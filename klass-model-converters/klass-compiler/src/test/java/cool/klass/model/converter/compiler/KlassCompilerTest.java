@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -323,12 +324,7 @@ public class KlassCompilerTest
                 + "        }\n"
                 + "}\n";
 
-        CompilationUnit       compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel           domainModel     = this.compiler.compile(compilationUnit);
-        ImmutableList<String> compilerErrors  = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
-        assertThat(compilerErrors, is(Lists.immutable.empty()));
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
+        this.assertNoCompilerErrors(sourceCodeText);
     }
 
     @Test
@@ -681,17 +677,6 @@ public class KlassCompilerTest
         this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4, error5, error6);
     }
 
-    public void assertCompilerErrors(@Nonnull String sourceCodeText, String... expectedErrors)
-    {
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        assertThat(domainModel, nullValue());
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
-        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
-
-        assertThat(compilerErrors, is(Lists.immutable.with(expectedErrors)));
-    }
-
     @Test
     public void doubleOwnedAssociation()
     {
@@ -702,26 +687,23 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    owned source: DoubleOwnedClass[1..1]\n"
                 + "    owned target: DoubleOwnedClass[1..1]\n"
+                + "    \n"
+                + "    relationship this.id == DoubleOwnedClass.id\n"
                 + "}\n"
                 + "\n"
                 + "class DoubleOwnedClass\n"
                 + "{\n"
+                + "    key id: ID\n"
                 + "}\n";
 
-        String error = ""
-                + "File: example.klass Line: 3 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DoubleOwnedAssociation' must declare a relationship.\n"
-                + "association DoubleOwnedAssociation\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^^\n";
-
-        this.assertCompilerErrors(sourceCodeText, error);
+        this.assertNoCompilerErrors(sourceCodeText);
     }
 
     @Test
     public void duplicateNames()
     {
         //language=Klass
-        String sourceCodeText = ""
-                + "package dummy\n"
+        String sourceCodeText = "package dummy\n"
                 + "\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "{\n"
@@ -756,7 +738,21 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    duplicateMember: \"Duplicate Header\",\n"
                 + "    duplicateMember: \"Duplicate Header\",\n"
-                + "}\n";
+                + "}\n"
+                + "\n"
+                + "service DuplicateTopLevelItem\n"
+                + "{\n"
+                + "    /api/duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            projection  : DuplicateTopLevelItem\n"
+                + "        }\n"
+                + "    /api/duplicate/duplicate/{different: String[1..1]}/{duplicate: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            projection  : DuplicateTopLevelItem\n"
+                + "        }\n"
+                + "}";
 
         // TODO: sort compiler errors by source file name, line number
         // TODO: Duplicate duplicate errors
@@ -871,6 +867,20 @@ public class KlassCompilerTest
                         + "    duplicateMember: \"Duplicate Header\",\n"
                         + "    ^^^^^^^^^^^^^^^\n"
                         + "}\n",
+                ""
+                        + "File: example.klass Line: 40 Char: 31 Error: ERR_DUP_PAR: Duplicate parameter: 'duplicate'.\n"
+                        + "service DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    /api/duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}\n"
+                        + "                              ^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 40 Char: 57 Error: ERR_DUP_PAR: Duplicate parameter: 'duplicate'.\n"
+                        + "service DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    /api/duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}\n"
+                        + "                                                        ^^^^^^^^^\n"
+                        + "}\n",
         };
 
         this.assertCompilerErrors(
@@ -890,18 +900,14 @@ public class KlassCompilerTest
                 + "    key key id: ID\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
+        this.assertNoCompilerErrors(sourceCodeText);
     }
 
     @Test
     public void invalidNames()
     {
         //language=Klass
-        String sourceCodeText = ""
-                + "package BADPACKAGE\n"
+        String sourceCodeText = "package BADPACKAGE\n"
                 + "\n"
                 + "enumeration badEnumeration\n"
                 + "{\n"
@@ -933,6 +939,8 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    BadAssociationEndSource: badClass[1..1]\n"
                 + "    BadAssociationEndTarget: badClass[1..1]\n"
+                + "    \n"
+                + "    relationship this.BadPrimitiveProperty == badClass.BadPrimitiveProperty\n"
                 + "}\n"
                 + "\n"
                 + "projection badProjection on badClass\n"
@@ -940,20 +948,14 @@ public class KlassCompilerTest
                 + "    BadPrimitiveProperty: \"Header\",\n"
                 + "}\n";
 
-        String error = ""
-                + "File: example.klass Line: 29 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'badAssociation' must declare a relationship.\n"
-                + "association badAssociation\n"
-                + "            ^^^^^^^^^^^^^^\n";
-
-        this.assertCompilerErrors(sourceCodeText, error);
+        this.assertNoCompilerErrors(sourceCodeText);
     }
 
     @Test
     public void unresolvedTypes()
     {
         //language=Klass
-        String sourceCodeText = ""
-                + "package dummy\n"
+        String sourceCodeText = "package dummy\n"
                 + "\n"
                 + "class ClassWithUnresolved\n"
                 + "{\n"
@@ -969,46 +971,80 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    parent: UnresolvedClass[0..1]\n"
                 + "    children: UnresolvedClass[0..*]\n"
+                + "\n"
+                + "    relationship this.unresolvedEnumerationProperty == UnresolvedClass.unresolvedEnumerationProperty\n"
+                + "}\n"
+                + "\n"
+                + "projection EmptyProjection on ClassWithUnresolved\n"
+                + "{\n"
+                + "    unresolvedProjectionMember: \"Header\",\n"
+                + "}\n"
+                + "\n"
+                + "service ClassWithUnresolved\n"
+                + "{\n"
+                + "    /api/unresolved/{id: Long[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.unresolvedEnumerationProperty == unresolvedParameter\n"
+                + "            projection  : EmptyProjection\n"
+                + "        }\n"
                 + "}\n";
 
-        String error1 = ""
-                + "File: example.klass Line: 5 Char: 36 Error: Cannot find enumeration 'UnresolvedEnumeration'\n"
-                + "package dummy\n"
-                + "class ClassWithUnresolved\n"
-                + "{\n"
-                + "    unresolvedEnumerationProperty: UnresolvedEnumeration\n"
-                + "                                   ^^^^^^^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error2 = ""
-                + "File: example.klass Line: 7 Char: 40 Error: Cannot find class 'UnresolvedClass'\n"
-                + "package dummy\n"
-                + "class ClassWithUnresolved\n"
-                + "{\n"
-                + "    unresolvedParameterizedProperty(): UnresolvedClass[1..1]\n"
-                + "                                       ^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error3 = ""
-                + "File: example.klass Line: 13 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'AssociationWithUnresolved' must declare a relationship.\n"
-                + "association AssociationWithUnresolved\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-        String error4 = ""
-                + "File: example.klass Line: 15 Char: 13 Error: Cannot find class 'UnresolvedClass'\n"
-                + "package dummy\n"
-                + "association AssociationWithUnresolved\n"
-                + "{\n"
-                + "    parent: UnresolvedClass[0..1]\n"
-                + "            ^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error5 = ""
-                + "File: example.klass Line: 16 Char: 15 Error: Cannot find class 'UnresolvedClass'\n"
-                + "package dummy\n"
-                + "association AssociationWithUnresolved\n"
-                + "{\n"
-                + "    children: UnresolvedClass[0..*]\n"
-                + "              ^^^^^^^^^^^^^^^\n"
-                + "}\n";
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 5 Char: 36 Error: Cannot find enumeration 'UnresolvedEnumeration'\n"
+                        + "package dummy\n"
+                        + "class ClassWithUnresolved\n"
+                        + "{\n"
+                        + "    unresolvedEnumerationProperty: UnresolvedEnumeration\n"
+                        + "                                   ^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 7 Char: 40 Error: Cannot find class 'UnresolvedClass'\n"
+                        + "package dummy\n"
+                        + "class ClassWithUnresolved\n"
+                        + "{\n"
+                        + "    unresolvedParameterizedProperty(): UnresolvedClass[1..1]\n"
+                        + "                                       ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 15 Char: 13 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "package dummy\n"
+                        + "association AssociationWithUnresolved\n"
+                        + "{\n"
+                        + "    parent: UnresolvedClass[0..1]\n"
+                        + "            ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 16 Char: 15 Error: ERR_ASO_TYP: Cannot find class 'UnresolvedClass'.\n"
+                        + "package dummy\n"
+                        + "association AssociationWithUnresolved\n"
+                        + "{\n"
+                        + "    children: UnresolvedClass[0..*]\n"
+                        + "              ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 23 Char: 5 Error: Cannot find member 'ClassWithUnresolved.unresolvedProjectionMember'.\n"
+                        + "projection EmptyProjection on ClassWithUnresolved\n"
+                        + "{\n"
+                        + "    unresolvedProjectionMember: \"Header\",\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 32 Char: 65 Error: ERR_VAR_REF: Cannot find parameter 'unresolvedParameter'.\n"
+                        + "service ClassWithUnresolved\n"
+                        + "{\n"
+                        + "    /api/unresolved/{id: Long[1..1]}\n"
+                        + "        GET\n"
+                        + "        {\n"
+                        + "            criteria    : this.unresolvedEnumerationProperty == unresolvedParameter\n"
+                        + "                                                                ^^^^^^^^^^^^^^^^^^^\n"
+                        + "        }\n"
+                        + "}\n"
+        };
 
-        this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4, error5);
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test
@@ -1017,23 +1053,20 @@ public class KlassCompilerTest
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
-                + "class Dummy\n"
-                + "{\n"
-                + "    key id: ID\n"
-                + "}\n"
-                + "\n"
                 + "association DummyAssociation\n"
                 + "{\n"
                 + "    owned owned parent: Dummy[0..1]\n"
                 + "    owned owned children: Dummy[0..*]\n"
+                + "\n"
+                + "    relationship this.id == Dummy.id\n"
+                + "}\n"
+                + "\n"
+                + "class Dummy\n"
+                + "{\n"
+                + "    key id: ID\n"
                 + "}\n";
 
-        String error = ""
-                + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"
-                + "association DummyAssociation\n"
-                + "            ^^^^^^^^^^^^^^^^\n";
-
-        this.assertCompilerErrors(sourceCodeText, error);
+        this.assertNoCompilerErrors(sourceCodeText);
     }
 
     @Test
@@ -1045,19 +1078,272 @@ public class KlassCompilerTest
                 + "class Dummy\n"
                 + "{\n"
                 + "    key id: ID\n"
+                + "    private parentId: Long\n"
                 + "}\n"
                 + "\n"
                 + "association DummyAssociation\n"
                 + "{\n"
                 + "    owned parent: Dummy[0..1]\n"
                 + "    children: Dummy[0..*]\n"
+                + "\n"
+                + "    relationship this.id == Dummy.parentId\n"
                 + "}\n";
 
-        String error = ""
-                + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"
+        this.assertNoCompilerErrors(sourceCodeText);
+    }
+
+    @Test
+    public void serviceErrors()
+    {
+        //language=Klass
+        String sourceCodeText = "package dummy\n"
+                + "\n"
+                + "class DummyClass\n"
+                + "{\n"
+                + "    key id: ID\n"
+                + "    private parentId: Long\n"
+                + "}\n"
+                + "\n"
                 + "association DummyAssociation\n"
-                + "            ^^^^^^^^^^^^^^^^\n";
+                + "{\n"
+                + "    owned parent: DummyClass[0..1]\n"
+                + "    children: DummyClass[0..*]\n"
+                + "\n"
+                + "    relationship this.id == DummyClass.parentId\n"
+                + "}\n"
+                + "\n"
+                + "projection DummyProjection on DummyClass\n"
+                + "{\n"
+                + "    id: \"Dummy ID\",\n"
+                + "}\n"
+                + "\n"
+                + "service DummyClass\n"
+                + "{\n"
+                + "    /api/dummy/manyPathParam/{id: Long[1..*]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id == 1\n"
+                + "            projection  : DummyProjection\n"
+                + "        }\n"
+                + "    /api/equalMany?{id: Long[1..*]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id == id\n"
+                + "            projection  : DummyProjection\n"
+                + "        }\n"
+                + "    /api/inOne?{id: Long[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id in id\n"
+                + "            projection  : DummyProjection\n"
+                + "        }\n"
+                + "}\n";
+
+        this.assertNoCompilerErrors(sourceCodeText);
+    }
+
+    @Ignore("TODO: Implement projection parameterized properties")
+    @Test
+    public void errors()
+    {
+        //language=Klass
+        String sourceCodeText = ""
+                + "package com.errors\n"
+                + "\n"
+                + "// TODO: Error annotators for all these errors\n"
+                + "class DuplicateTopLevelDeclarationName\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "class DuplicateTopLevelDeclarationName\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "enumeration DuplicateTopLevelDeclarationName\n"
+                + "{\n"
+                + "    EXAMPLE_LITERAL,\n"
+                + "}\n"
+                + "\n"
+                + "enumeration DuplicateTopLevelDeclarationName\n"
+                + "{\n"
+                + "    EXAMPLE_LITERAL,\n"
+                + "}\n"
+                + "\n"
+                + "enumeration EmptyEnumeration\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "enumeration ExampleEnumeration\n"
+                + "{\n"
+                + "    EXAMPLE_LITERAL,\n"
+                + "}\n"
+                + "\n"
+                + "enumeration DuplicateEnumerationLiteral\n"
+                + "{\n"
+                + "    DUPLICATE_LITERAL,\n"
+                + "    DUPLICATE_LITERAL,\n"
+                + "}\n"
+                + "\n"
+                + "class DuplicateMemberNames\n"
+                + "{\n"
+                + "    duplicateMemberName: String\n"
+                + "    duplicateMemberName: String\n"
+                + "    duplicateMemberName: ExampleEnumeration\n"
+                + "\n"
+                + "    duplicateMemberName(): DuplicateMemberNames[1..1]\n"
+                + "    {\n"
+                + "        this.duplicateMemberName == DuplicateMemberNames.duplicateMemberName\n"
+                + "    }\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleClassWithDuplicateAssociationEnd\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "association ExampleAssociationWithDuplicateAssociationEnd\n"
+                + "{\n"
+                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]\n"
+                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleClass\n"
+                + "{\n"
+                + "    integerProperty: Integer\n"
+                + "    longProperty: Long\n"
+                + "    stringProperty: String\n"
+                + "\n"
+                + "    invalidParameterType(stringParameter: String[1..1]): ExampleClass[1..1]\n"
+                + "    {\n"
+                + "        this.integerProperty == ExampleClass.stringProperty\n"
+                + "            && ExampleClass.integerProperty == stringParameter\n"
+                + "    }\n"
+                + "\n"
+                + "    idParameterType(idParameter: ID[1..1]): ExampleClass[1..1]\n"
+                + "    {\n"
+                + "        this.longProperty  == idParameter\n"
+                + "    }\n"
+                + "\n"
+                + "    invalidConstantType(): ExampleClass[1..1]\n"
+                + "    {\n"
+                + "        this.integerProperty == ExampleClass.integerProperty\n"
+                + "            && ExampleClass.stringProperty == 1\n"
+                + "    }\n"
+                + "}\n"
+                + "\n"
+                + "projection ProjectionWithInvalidParameterType(invalidParameter: Integer[1..1]) on ExampleClass\n"
+                + "{\n"
+                + "    invalidParameterType(invalidParameter):\n"
+                + "    {\n"
+                + "        // Also this is empty which doesn't make a lot of sense\n"
+                + "    },\n"
+                + "}\n"
+                + "\n"
+                + "service ExampleClass\n"
+                + "{\n"
+                + "    /api/example/{invalidParameter: Boolean[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            // Better error messages for missing multiplicity, criteria, projection\n"
+                + "            multiplicity: one\n"
+                + "            criteria: this.stringProperty == invalidParameter\n"
+                + "            projection: ProjectionWithInvalidParameterType(invalidParameter)\n"
+                + "        }\n"
+                + "    /api/example/singleParameterInClause?{id: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria: this.stringProperty in id\n"
+                + "\n"
+                + "            // Also missing projection parameter\n"
+                + "            projection: ProjectionWithInvalidParameterType\n"
+                + "        }\n"
+                + "    // Duplicate urls\n"
+                + "    /api/example/singleParameterInClause?{id: String[0..*]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria: this.stringProperty == id\n"
+                + "            projection: ProjectionWithInvalidParameterType\n"
+                + "        }\n"
+                + "    /api/example/{validParameter: Integer[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            // Better error messages for missing multiplicity, criteria, projection\n"
+                + "            multiplicity: one\n"
+                + "            criteria: this.stringProperty == invalidParameter\n"
+                + "            projection: ProjectionWithInvalidParameterType(validParameter, validParameter)\n"
+                + "        }\n"
+                + "    /api/example/{validParameter: Integer[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            // Better error messages for missing multiplicity, criteria, projection\n"
+                + "            multiplicity: one\n"
+                + "            criteria: this.stringProperty == invalidParameter\n"
+                + "            projection: ProjectionWithInvalidParameterType(invalidParameter)\n"
+                + "        }\n"
+                + "}\n"
+                + "\n"
+                + "projection EmptyProjection on ExampleClass\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "service ExampleClass\n"
+                + "{\n"
+                + "    // empty\n"
+                + "}\n"
+                + "\n"
+                + "enumeration String\n"
+                + "{\n"
+                + "    DUMMY,\n"
+                + "}\n"
+                + "\n"
+                + "enumeration ID\n"
+                + "{\n"
+                + "    DUMMY,\n"
+                + "}\n"
+                + "\n"
+                + "class style\n"
+                + "{\n"
+                + "    Style: String\n"
+                + "}\n"
+                + "\n"
+                + "enumeration styleenum\n"
+                + "{\n"
+                + "    style,\n"
+                + "}\n"
+                + "\n"
+                + "// TODO many owns one\n";
+
+        String error = "";
 
         this.assertCompilerErrors(sourceCodeText, error);
+    }
+
+    private void assertCompilerErrors(@Nonnull String sourceCodeText, String... expectedErrors)
+    {
+        DomainModel domainModel = this.compile(sourceCodeText);
+        assertThat("Expected a compile error.", domainModel, nullValue());
+        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
+        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+
+        assertThat(compilerErrors, is(Lists.immutable.with(expectedErrors)));
+    }
+
+    private void assertNoCompilerErrors(String sourceCodeText)
+    {
+        DomainModel           domainModel    = this.compile(sourceCodeText);
+        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+        assertThat(compilerErrors, is(Lists.immutable.empty()));
+        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
+        assertThat(domainModel, notNullValue());
+    }
+
+    private DomainModel compile(@Nonnull String sourceCodeText)
+    {
+        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
+        return this.compiler.compile(compilationUnit);
     }
 }

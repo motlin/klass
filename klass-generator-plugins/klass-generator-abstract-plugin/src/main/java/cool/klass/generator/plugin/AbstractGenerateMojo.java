@@ -1,4 +1,4 @@
-package cool.klass.generator.reladomo.plugin;
+package cool.klass.generator.plugin;
 
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
-public abstract class AbstractGenerateReladomoMojo extends AbstractMojo
+public abstract class AbstractGenerateMojo extends AbstractMojo
 {
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;

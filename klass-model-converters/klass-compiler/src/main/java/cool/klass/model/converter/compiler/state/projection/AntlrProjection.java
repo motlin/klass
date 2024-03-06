@@ -1,7 +1,6 @@
 package cool.klass.model.converter.compiler.state.projection;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -16,7 +15,7 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrProjection extends AntlrProjectionParent
 {
-    @Nullable
+    @Nonnull
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             null,
@@ -26,7 +25,7 @@ public class AntlrProjection extends AntlrProjectionParent
             AntlrClass.AMBIGUOUS, null
     );
 
-    @Nullable
+    @Nonnull
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             null,

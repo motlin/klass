@@ -1,15 +1,19 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrAssociation;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.criteria.AndAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OperatorCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OrAntlrCriteria;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
+import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
@@ -28,21 +32,33 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.collections.api.map.OrderedMap;
 
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 {
-    private final CompilationUnit  compilationUnit;
-    private final AntlrAssociation associationState;
-    private final AntlrDomainModel domainModelState;
+    @Nonnull
+    private final CompilationUnit                       compilationUnit;
+    @Nonnull
+    private final AntlrDomainModel                      domainModelState;
+    @Nonnull
+    private final CriteriaOwner                         criteriaOwner;
+    @Nonnull
+    private final AntlrClass                            thisReference;
+    @Nonnull
+    private final OrderedMap<String, AntlrUrlParameter> formalParametersByName;
 
     public CriteriaVisitor(
-            CompilationUnit compilationUnit,
-            AntlrAssociation associationState,
-            AntlrDomainModel domainModelState)
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrClass thisReference,
+            @Nonnull OrderedMap<String, AntlrUrlParameter> formalParametersByName)
     {
-        this.compilationUnit = compilationUnit;
-        this.associationState = associationState;
-        this.domainModelState = domainModelState;
+        this.compilationUnit = Objects.requireNonNull(compilationUnit);
+        this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.criteriaOwner = Objects.requireNonNull(criteriaOwner);
+        this.thisReference = Objects.requireNonNull(thisReference);
+        this.formalParametersByName = Objects.requireNonNull(formalParametersByName);
     }
 
     @Nonnull
@@ -51,7 +67,15 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         AntlrCriteria left  = this.visit(ctx.left);
         AntlrCriteria right = this.visit(ctx.right);
-        return new AndAntlrCriteria(ctx, this.compilationUnit, false, left, right);
+        AndAntlrCriteria andAntlrCriteria = new AndAntlrCriteria(
+                ctx,
+                this.compilationUnit,
+                false,
+                this.criteriaOwner,
+                left,
+                right);
+        this.criteriaOwner.setCriteria(andAntlrCriteria);
+        return andAntlrCriteria;
     }
 
     @Nonnull
@@ -79,13 +103,24 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 
         KlassVisitor<AntlrExpressionValue> expressionValueVisitor = new ExpressionValueVisitor(
                 this.compilationUnit,
-                this.associationState,
-                this.domainModelState);
+                this.thisReference,
+                this.domainModelState,
+                this.formalParametersByName
+        );
 
         AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);
         AntlrExpressionValue targetValue = expressionValueVisitor.visitExpressionValue(ctx.target);
 
-        return new OperatorCriteria(ctx, this.compilationUnit, false, operator, sourceValue, targetValue);
+        OperatorCriteria operatorCriteria = new OperatorCriteria(
+                ctx,
+                this.compilationUnit,
+                false,
+                this.criteriaOwner,
+                operator,
+                sourceValue,
+                targetValue);
+        this.criteriaOwner.setCriteria(operatorCriteria);
+        return operatorCriteria;
     }
 
     @Nonnull
@@ -94,7 +129,15 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         AntlrCriteria left  = this.visit(ctx.left);
         AntlrCriteria right = this.visit(ctx.right);
-        return new OrAntlrCriteria(ctx, this.compilationUnit, false, left, right);
+        OrAntlrCriteria orAntlrCriteria = new OrAntlrCriteria(
+                ctx,
+                this.compilationUnit,
+                false,
+                this.criteriaOwner,
+                left,
+                right);
+        this.criteriaOwner.setCriteria(orAntlrCriteria);
+        return orAntlrCriteria;
     }
 
     @Nonnull

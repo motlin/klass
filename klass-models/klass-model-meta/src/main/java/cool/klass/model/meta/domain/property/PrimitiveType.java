@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.DataType;
@@ -117,11 +119,13 @@ public abstract class PrimitiveType extends DataType
             TEMPORAL_INSTANT,
             TEMPORAL_RANGE);
 
+    public static final String META_PACKAGE = "klass.meta";
+
     private static final ImmutableMap<String, PrimitiveType> BY_NAME = PRIMITIVE_TYPES.groupByUniqueKey(NamedElement::getName);
 
     private PrimitiveType(@Nonnull String name)
     {
-        super(NO_CONTEXT, NO_CONTEXT, name, "klass.meta");
+        super(NO_CONTEXT, NO_CONTEXT, name, META_PACKAGE);
     }
 
     public static PrimitiveType valueOf(String name)
@@ -155,16 +159,18 @@ public abstract class PrimitiveType extends DataType
 
     public static class PrimitiveTypeBuilder extends DataTypeBuilder<PrimitiveType>
     {
+        @Nonnull
         private final PrimitiveType primitiveType;
 
         public PrimitiveTypeBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                PrimitiveType primitiveType)
+                @Nonnull PrimitiveType primitiveType)
         {
             super(elementContext, elementContext, elementContext.getText(), "klass.meta");
-            this.primitiveType = primitiveType;
+            this.primitiveType = Objects.requireNonNull(primitiveType);
         }
 
+        @Nonnull
         public PrimitiveType getPrimitiveType()
         {
             return this.primitiveType;

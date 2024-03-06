@@ -9,11 +9,10 @@ import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
@@ -57,11 +56,13 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
         if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)
         {
             ClassReferenceContext reference = ctx.classType().classReference();
+            /*
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
                     this.associationDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());
+            */
         }
     }
 
@@ -99,16 +100,16 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
+    public void enterEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
         EnumerationDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
         if (declaration == DeclarationsByNamePhase.NO_SUCH_ENUMERATION)
         {
             // TODO: Many different error contexts possible for ParameterDeclarations
-            DataTypeContext dataTypeContext = ctx.dataTypeDeclaration().dataType();
+            EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
             this.error(
-                    String.format("Cannot find enumeration '%s'", dataTypeContext.getText()),
-                    dataTypeContext,
+                    String.format("Cannot find enumeration '%s'", enumerationReferenceContext.getText()),
+                    enumerationReferenceContext,
                     ctx,
                     this.classDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());

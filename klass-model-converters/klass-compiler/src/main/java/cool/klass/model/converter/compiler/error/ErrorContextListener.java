@@ -23,12 +23,11 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeContext;
-import cool.klass.model.meta.grammar.KlassParser.DataTypeDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
@@ -57,6 +56,7 @@ import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
@@ -72,14 +72,18 @@ import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlParameterDeclarationContext;
@@ -429,6 +433,20 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
+    public void enterServiceGroupDeclarationBody(ServiceGroupDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceGroupDeclarationBody() not implemented yet");
+    }
+
+    @Override
+    public void exitServiceGroupDeclarationBody(ServiceGroupDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitServiceGroupDeclarationBody() not implemented yet");
+    }
+
+    @Override
     public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
         this.addTextInclusive("    ", ctx.getStart(), ctx.url().getStop());
@@ -458,6 +476,20 @@ public class ErrorContextListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitUrlPathSegment() not implemented yet");
+    }
+
+    @Override
+    public void enterUrlConstant(UrlConstantContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterUrlConstant() not implemented yet");
+    }
+
+    @Override
+    public void exitUrlConstant(UrlConstantContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitUrlConstant() not implemented yet");
     }
 
     @Override
@@ -498,6 +530,20 @@ public class ErrorContextListener extends BaseErrorListener
     public void exitServiceDeclaration(ServiceDeclarationContext ctx)
     {
         this.contextualStrings.add("        }");
+    }
+
+    @Override
+    public void enterServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceDeclarationBody() not implemented yet");
+    }
+
+    @Override
+    public void exitServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitServiceDeclarationBody() not implemented yet");
     }
 
     @Override
@@ -554,6 +600,20 @@ public class ErrorContextListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitServiceCriteriaKeyword() not implemented yet");
+    }
+
+    @Override
+    public void enterServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceProjectionDispatch() not implemented yet");
+    }
+
+    @Override
+    public void exitServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitServiceProjectionDispatch() not implemented yet");
     }
 
     @Override
@@ -667,17 +727,31 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterDataTypeDeclaration(DataTypeDeclarationContext ctx)
+    public void enterPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterDataTypeDeclaration() not implemented yet");
+                + ".enterPrimitiveParameterDeclaration() not implemented yet");
     }
 
     @Override
-    public void exitDataTypeDeclaration(DataTypeDeclarationContext ctx)
+    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitDataTypeDeclaration() not implemented yet");
+                + ".exitPrimitiveParameterDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationParameterDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitEnumerationParameterDeclaration() not implemented yet");
     }
 
     @Override
@@ -1056,20 +1130,6 @@ public class ErrorContextListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassType() not implemented yet");
-    }
-
-    @Override
-    public void enterDataType(DataTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterDataType() not implemented yet");
-    }
-
-    @Override
-    public void exitDataType(DataTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitDataType() not implemented yet");
     }
 
     @Override
