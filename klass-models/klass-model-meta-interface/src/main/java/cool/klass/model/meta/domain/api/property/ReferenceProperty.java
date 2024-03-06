@@ -74,4 +74,9 @@ public interface ReferenceProperty
     {
         return this.getModifiers().anySatisfy(modifier -> modifier.is("private"));
     }
+
+    default boolean isToSelf()
+    {
+        return this.getOwningClassifier().equals(this.getType());
+    }
 }
