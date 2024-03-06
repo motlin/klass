@@ -1,0 +1,26 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0
+  detailedJsonProcessingExceptionMapper: true
+  requestLog:
+    appenders:
+      - type: console
+
+logging:
+  level: DEBUG
+  loggers:
+    com.repro.reladomo.abstractownedforeignkey: DEBUG
+    com.gs.fw.common.mithra.sqllogs: DEBUG
+    com.gs.fw.common.mithra.batch.sqllogs: DEBUG
+    com.gs.fw.common.mithra.connectionmanager: INFO
+    org.eclipse.jetty: INFO
+    org.apache.http: INFO
+  appenders:
+    - type: console
+      # In production, always use UTC. In unit tests, system is more convenient
+      timeZone: system
+      logFormat: "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"

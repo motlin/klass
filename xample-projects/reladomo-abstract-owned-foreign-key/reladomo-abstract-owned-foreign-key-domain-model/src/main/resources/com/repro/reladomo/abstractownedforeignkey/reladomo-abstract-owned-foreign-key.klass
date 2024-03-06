@@ -1,0 +1,65 @@
+package com.repro.reladomo.abstractownedforeignkey
+
+// 'user' is just a special class that represents logged in users
+// There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
+user User
+    read
+    systemTemporal
+{
+    userId: String key userId;
+    firstName: String?;
+    lastName: String?;
+    email: String?;
+}
+
+projection UserReadProjection on User
+{
+    userId   : "User id",
+    firstName: "User first name",
+    lastName : "User last name",
+    email    : "User email",
+}
+
+service User
+{
+    /user/{userId: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.userId == userId;
+            projection  : UserReadProjection;
+        }
+    /user
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : UserReadProjection;
+        }
+}
+
+class Parent
+{
+    parentKey: String key;
+}
+
+class AbstractChild
+    abstract(table-per-class)
+{
+    parentKey: String;
+    childKey: String key;
+}
+
+class ConcreteChild
+    extends AbstractChild
+{
+    childProperty: String;
+}
+
+association ParentHasConcreteChildren
+{
+    parent: Parent[1..1];
+    children: ConcreteChild[0..*] owned;
+
+    relationship this.parentKey == ConcreteChild.parentKey
+}
