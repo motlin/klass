@@ -197,15 +197,33 @@ public class UmlNomnomlGenerator
             String sourceMultiplicity = sourceAssociationEnd.getMultiplicity().getPrettyName();
             String targetMultiplicity = targetAssociationEnd.getMultiplicity().getPrettyName();
 
+            String arrow = this.getArrow(sourceAssociationEnd, targetAssociationEnd);
+
             this.sourceCode = String.format(
-                    "// %s%n[%s] %s %s - %s %s [%s]%n%n",
+                    "// %s%n[%s] %s %s %s %s %s [%s]%n%n",
                     association.getName(),
                     targetClassName,
                     sourceName,
                     sourceMultiplicity,
+                    arrow,
                     targetName,
                     targetMultiplicity,
                     sourceClassName);
+        }
+
+        private String getArrow(AssociationEnd sourceAssociationEnd, AssociationEnd targetAssociationEnd)
+        {
+            if (targetAssociationEnd.isOwned())
+            {
+                return "+->";
+            }
+
+            if (sourceAssociationEnd.isOwned())
+            {
+                return "-+";
+            }
+
+            return "->";
         }
 
         @Override
