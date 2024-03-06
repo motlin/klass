@@ -165,12 +165,6 @@
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!--endregion-->
 
         <!--region Project runtime dependencies -->
@@ -178,6 +172,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-domain-model</artifactId>
             <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-meta</artifactId>
+            <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -191,6 +192,20 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-graphql-schema</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-schema-query</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-reladomo-finder</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -209,16 +224,17 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-graphql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -278,6 +294,12 @@
         <!--region Liftwizard config-->
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-logstash-file</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -306,6 +328,12 @@
             <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-logging-p6spy</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass compile dependencies -->
@@ -330,6 +358,24 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-servlet-logging-structured-klass-response</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-servlet-logging-mdc-jsonview</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -362,6 +408,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-ddls-workaround</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
@@ -383,6 +436,10 @@
         <!--endregion-->
 
         <!--region Compile dependencies -->
+        <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -405,11 +462,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections-api</artifactId>
         </dependency>
@@ -420,13 +472,23 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
@@ -470,6 +532,24 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-buffered</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
             <scope>test</scope>
         </dependency>
 

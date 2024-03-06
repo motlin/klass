@@ -22,7 +22,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.json.JSONException;
-import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,22 +35,23 @@ import static org.junit.Assert.assertThat;
 @Ignore("TODO: graphql.schema.idl.errors.SchemaProblem: errors=[There is no type resolver defined for interface / union 'Document' type, There is no type resolver defined for interface / union 'Vote' type]")
 public class QuestionResourceManualTest
 {
-    @ClassRule
-    public static final DropwizardAppRule<StackOverflowConfiguration> RULE = new DropwizardAppRule<>(
+    @Rule
+    public final DropwizardAppRule<StackOverflowConfiguration> rule = new DropwizardAppRule<>(
             StackOverflowApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.yml"));
+            ResourceHelpers.resourceFilePath("config-test.json"));
 
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
-            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml")
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
+            .setConnectionSupplier(() -> this.rule.getConfiguration().getConnectionManagerByName("h2-tcp").getConnection())
             .build();
 
     protected Client getClient(String clientName)
     {
-        JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
+        var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(RULE.getEnvironment())
+        return new JerseyClientBuilder(this.rule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
@@ -68,7 +68,7 @@ public class QuestionResourceManualTest
     protected void assertQuestion1Unchanged(@Nonnull Client client) throws JSONException
     {
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -150,7 +150,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
                 .request()
                 .post(Entity.json(invalidJson));
 
@@ -214,7 +214,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/", RULE.getLocalPort()))
+                    String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
                     .request()
                     .post(Entity.json(validJson));
 
@@ -232,7 +232,7 @@ public class QuestionResourceManualTest
         //<editor-fold desc="GET id: 2, status: ok">
         {
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                    String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                     .resolveTemplate("id", 2)
                     .request()
                     .get();
@@ -310,7 +310,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -341,7 +341,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
@@ -391,7 +391,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                    String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
@@ -402,7 +402,7 @@ public class QuestionResourceManualTest
         //</editor-fold>
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -481,7 +481,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()

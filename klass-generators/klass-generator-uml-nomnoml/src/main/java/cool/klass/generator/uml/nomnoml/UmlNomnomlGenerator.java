@@ -120,14 +120,18 @@ public class UmlNomnomlGenerator
         @Override
         public void visitInterface(Interface anInterface)
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".visitInterface() not implemented yet");
+            this.visitClassifier(anInterface);
         }
 
         @Override
         public void visitKlass(Klass klass)
         {
-            String propertiesSourceCode = klass
+            this.visitClassifier(klass);
+        }
+
+        public void visitClassifier(cool.klass.model.meta.domain.api.Classifier classifier)
+        {
+            String propertiesSourceCode = classifier
                     .getDataTypeProperties()
                     .reject(DataTypeProperty::isPrivate)
                     .reject(DataTypeProperty::isTemporalRange)
@@ -135,7 +139,7 @@ public class UmlNomnomlGenerator
                     .makeString(";\n");
 
             this.sourceCode = ""
-                    + "[ " + klass.getName() + " |\n"
+                    + "[ " + classifier.getName() + " |\n"
                     + propertiesSourceCode + "\n"
                     + "]\n"
                     + "\n";

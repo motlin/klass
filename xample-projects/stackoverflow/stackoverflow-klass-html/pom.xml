@@ -10,31 +10,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stackoverflow-graphql-schema</artifactId>
+    <artifactId>stackoverflow-klass-html</artifactId>
 
-    <name>${app.name} GraphQL Schema</name>
+    <name>${app.name} Klass HTML</name>
 
     <build>
         <plugins>
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-graphql-schema-plugin</artifactId>
+                <artifactId>klass-generator-klass-html-plugin</artifactId>
                 <version>${klass.version}</version>
 
                 <configuration>
-                    <rootPackageName>${app.rootPackageName}</rootPackageName>
-                    <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
-                        <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
 
                 <executions>
                     <execution>
+                        <id>generate-klass-html</id>
                         <goals>
-                            <goal>generate-graphql-schema</goal>
+                            <goal>generate-klass-html</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -47,13 +45,8 @@
                         <version>${project.version}</version>
                     </dependency>
 
-                    <!--<dependency>-->
-                        <!--<groupId>cool.klass</groupId>-->
-                        <!--<artifactId>klass-model-bootstrapped-meta</artifactId>-->
-                        <!--<version>${klass.version}</version>-->
-                    <!--</dependency>-->
-
                 </dependencies>
+
             </plugin>
 
         </plugins>

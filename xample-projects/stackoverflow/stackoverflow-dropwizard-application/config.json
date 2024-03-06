@@ -1,0 +1,76 @@
+{
+  "server": {
+    "detailedJsonProcessingExceptionMapper": true,
+    "rootPath": "/api/*",
+    "requestLog": {
+      "appenders": [
+        {
+          "type": "console",
+          "filterFactories": [
+            {
+              "type": "url",
+              "bannedUrls": [
+                "/icons/",
+                "/static/",
+                "/manifest.json",
+                "/assets-manifest.json",
+                "/favicon.ico",
+                "/service-worker.js"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "loggers": {
+      "com.stackoverflow": "DEBUG",
+      "com.gs.fw.common.mithra.sqllogs": "DEBUG",
+      "com.gs.fw.common.mithra.batch.sqllogs": "DEBUG",
+      "com.gs.fw.common.mithra.connectionmanager": "INFO",
+      "org.eclipse.jetty": "INFO",
+      "org.apache.http": "INFO"
+    },
+    "appenders": [
+      {
+        "type": "console",
+        "timeZone": "utc",
+        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)",
+        "includeCallerData": true
+      }
+    ]
+  },
+  "klass": {
+    "clock": {
+      "type": "system"
+    },
+    "domainModel": {
+      "type": "compiler",
+      "sourcePackages": [
+        "klass.model.meta.domain",
+        "com.stackoverflow"
+      ]
+    },
+    "dataStore": {
+      "type": "reladomo",
+      "uuid": {
+        "type": "system"
+      }
+    }
+  },
+  "configLogging": {
+    "enabled": true
+  },
+  "graphQL": {
+    "enableTracing": false,
+    "queryCache": "maximumSize=10000",
+    "schemaFiles": [
+      "com/stackoverflow/graphql/schema/query/StackOverflowQuery.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflowFinders.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflow.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
+    ]
+  }
+}

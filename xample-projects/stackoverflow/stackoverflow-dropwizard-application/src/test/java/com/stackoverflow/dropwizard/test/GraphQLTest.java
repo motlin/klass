@@ -17,7 +17,6 @@ import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.impl.factory.Maps;
 import org.json.JSONException;
-import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,22 +30,23 @@ import static org.junit.Assert.assertThat;
 @Ignore("TODO: graphql.schema.idl.errors.SchemaProblem: errors=[There is no type resolver defined for interface / union 'Document' type, There is no type resolver defined for interface / union 'Vote' type]")
 public class GraphQLTest
 {
-    @ClassRule
-    public static final DropwizardAppRule<StackOverflowConfiguration> RULE = new DropwizardAppRule<>(
+    @Rule
+    public final DropwizardAppRule<StackOverflowConfiguration> rule = new DropwizardAppRule<>(
             StackOverflowApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.yml"));
+            ResourceHelpers.resourceFilePath("config-test.json"));
 
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
-            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml")
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
+            .setConnectionSupplier(() -> this.rule.getConfiguration().getConnectionManagerByName("h2-tcp").getConnection())
             .build();
 
     protected Client getClient(String clientName)
     {
-        JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
+        var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(RULE.getEnvironment())
+        return new JerseyClientBuilder(this.rule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
@@ -113,7 +113,7 @@ public class GraphQLTest
         {
             // POST a body with field `query`
             Response response = client.target(
-                    String.format("http://localhost:%d/graphql", RULE.getLocalPort()))
+                    String.format("http://localhost:%d/graphql", this.rule.getLocalPort()))
                     .request()
                     .post(Entity.json(Maps.mutable.with("query", query)));
             this.assertResponseStatus(response, Status.OK);
@@ -121,20 +121,18 @@ public class GraphQLTest
             JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
         }
 
-        {
-            // GET with query param `query`
-            Response response = client.target(
-                    String.format("http://localhost:%d/graphql?query={query}", RULE.getLocalPort()))
-                    .resolveTemplate("query", query)
-                    .request()
-                    .get();
-            this.assertResponseStatus(response, Status.OK);
-            String jsonResponse = response.readEntity(String.class);
-            JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
-        }
+        // GET with query param `query`
+        Response response = client.target(
+                String.format("http://localhost:%d/graphql?query={query}", this.rule.getLocalPort()))
+                .resolveTemplate("query", query)
+                .request()
+                .get();
+        this.assertResponseStatus(response, Status.OK);
+        String jsonResponse = response.readEntity(String.class);
+        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
-    public void assertResponseStatus(@Nonnull Response response, Status status)
+    private void assertResponseStatus(@Nonnull Response response, Status status)
     {
         response.bufferEntity();
         String entityAsString = response.readEntity(String.class);

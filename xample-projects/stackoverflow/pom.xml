@@ -3,10 +3,17 @@
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>cool.klass</groupId>
+        <artifactId>xample-projects</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <klass.version>${project.version}</klass.version>
+        <klass.version>0.1.0-SNAPSHOT</klass.version>
 
         <app.artifactId>stackoverflow</app.artifactId>
         <app.rootPackageName>com.stackoverflow</app.rootPackageName>
@@ -22,14 +29,9 @@
         <maven.compiler.parameters>true</maven.compiler.parameters>
     </properties>
 
-    <parent>
-        <groupId>cool.klass</groupId>
-        <artifactId>xample-projects</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
-    </parent>
-
     <groupId>com.stackoverflow</groupId>
     <artifactId>stackoverflow</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${app.name} (Module Group)</name>
@@ -49,6 +51,14 @@
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-bom</artifactId>
                 <version>${liftwizard.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${klass.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -88,15 +98,23 @@
         <module>${app.artifactId}-dropwizard-application</module>
         <module>${app.artifactId}-dtos</module>
         <module>${app.artifactId}-graphql-data-fetchers</module>
+        <module>${app.artifactId}-graphql-fragment</module>
+        <module>${app.artifactId}-graphql-reladomo-finder</module>
         <module>${app.artifactId}-graphql-runtime-wiring-query</module>
         <module>${app.artifactId}-graphql-runtime-wiring</module>
+        <module>${app.artifactId}-graphql-schema-query</module>
         <module>${app.artifactId}-graphql-schema</module>
         <module>${app.artifactId}-json-views</module>
+        <module>${app.artifactId}-klass-html</module>
+        <module>${app.artifactId}-klass-projections</module>
+        <module>${app.artifactId}-klass-services</module>
         <module>${app.artifactId}-meta-model-constants</module>
         <module>${app.artifactId}-reladomo-ddls</module>
         <module>${app.artifactId}-reladomo-definitions</module>
+        <module>${app.artifactId}-reladomo-merge-hooks</module>
         <module>${app.artifactId}-reladomo-pojos</module>
         <module>${app.artifactId}-services</module>
+        <module>${app.artifactId}-uml-nomnoml</module>
     </modules>
 
 </project>

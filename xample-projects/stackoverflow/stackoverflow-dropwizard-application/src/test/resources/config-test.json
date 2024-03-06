@@ -1,0 +1,179 @@
+{
+  "server": {
+    "detailedJsonProcessingExceptionMapper": true,
+    "rootPath": "/api/*",
+    "applicationConnectors": [
+      {
+        "type": "http",
+        "port": 0
+      }
+    ],
+    "adminConnectors": [
+      {
+        "type": "http",
+        "port": 0
+      }
+    ],
+    "requestLog": {
+      "appenders": [
+        {
+          "type": "console",
+          "filterFactories": [
+            {
+              "type": "url",
+              "bannedUrls": [
+                "/icons/",
+                "/static/",
+                "/manifest.json",
+                "/assets-manifest.json",
+                "/favicon.ico",
+                "/service-worker.js"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "logging": {
+    "level": "DEBUG",
+    "loggers": {
+      "com.gs.fw.common.mithra.batch.sqllogs": "DEBUG",
+      "com.gs.fw.common.mithra.connectionmanager": "INFO",
+      "com.gs.fw.common.mithra.sqllogs": "DEBUG",
+      "com.stackoverflow": "DEBUG",
+      "org.apache.http": "INFO",
+      "org.eclipse.jetty": "INFO"
+    },
+    "appenders": [
+      {
+        "type"     : "buffered",
+        "timeZone" : "system",
+        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%magenta(%thread)] %green(%logger): %message%n%red(%rootException)"
+      }
+    ]
+  },
+  "klass": {
+    "clock": {
+      "type": "fixed",
+      "instant": "2000-12-31T23:59:59Z"
+    },
+    "domainModel": {
+      "type": "compiler",
+      "sourcePackages": [
+        "klass.model.meta.domain",
+        "com.stackoverflow"
+      ]
+    },
+    "dataStore": {
+      "type": "reladomo",
+      "uuid": {
+        "type": "system"
+      }
+    }
+  },
+  "configLogging": {
+    "enabled": true
+  },
+  "authFilters": [
+    {
+      "type": "impersonation"
+    }
+  ],
+  "h2": {
+    "enabled": true,
+    "webPort": 8089,
+    "tcpPort": 9099
+  },
+  "cors": {
+    "enabled": true
+  },
+  "dataSources": [
+    {
+      "name": "h2-mem",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:mem:;query_timeout=600000",
+      "properties": {
+        "charSet": "UTF-8"
+      },
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second"
+    },
+    {
+      "name": "h2-tcp",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9099/liftwizard-app-h2;query_timeout=600000",
+      "properties": {
+        "charSet": "UTF-8"
+      },
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second"
+    },
+    {
+      "name": "h2-file",
+      "driverClass": "com.p6spy.engine.spy.P6SpyDriver",
+      "readOnlyByDefault": false,
+      "user": "sa",
+      "password": "",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/liftwizard-app-h2;query_timeout=600000",
+      "properties": {
+        "charSet": "UTF-8"
+      },
+      "logValidationErrors": true,
+      "maxWaitForConnection": "1 second"
+    }
+  ],
+  "ddlExecutors": [
+    {
+      "dataSourceName": "h2-tcp"
+    }
+  ],
+  "sampleData": {
+    "enabled": false
+  },
+  "reladomo": {
+    "runtimeConfigurationPaths": [
+      "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml"
+    ],
+    "transactionTimeout": "1 hour"
+  },
+  "connectionManagers": [
+    {
+      "connectionManagerName": "h2-mem",
+      "dataSourceName": "h2-mem",
+      "databaseType": "H2",
+      "schemaName": "liftwizard-app-h2"
+    },
+    {
+      "connectionManagerName": "h2-tcp",
+      "dataSourceName": "h2-tcp",
+      "databaseType": "H2",
+      "schemaName": "liftwizard-app-h2"
+    },
+    {
+      "connectionManagerName": "h2-file",
+      "dataSourceName": "h2-file",
+      "databaseType": "H2",
+      "schemaName": "liftwizard-app-h2"
+    }
+  ],
+  "jerseyHttpLogging": {
+    "maxEntitySize": "1 kilobyte"
+  },
+  "graphQL": {
+    "enableTracing": false,
+    "queryCache": "maximumSize=10000",
+    "schemaFiles": [
+      "com/stackoverflow/graphql/schema/query/StackOverflowQuery.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflowFinders.graphqls",
+      "com/stackoverflow/graphql/schema/StackOverflow.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
+    ]
+  }
+}
