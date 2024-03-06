@@ -87,13 +87,14 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
             this.stringBuilder.append(parameter.getName());
             return;
         }
+
+        PrimitiveType primitiveType = (PrimitiveType) dataType;
         if (multiplicity.isToOne())
         {
-            this.stringBuilder.append(parameter.getName());
+            primitiveType.visit(new PrimitiveVisitor(this.stringBuilder, parameter.getName()));
             return;
         }
 
-        PrimitiveType primitiveType = (PrimitiveType) dataType;
         primitiveType.visit(new PrimitiveSetVisitor(this.stringBuilder, parameter.getName()));
     }
 

@@ -5,10 +5,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class ReladomoRequiredDataTypePropertyVisitor implements DataTypePropertyVisitor
 {
@@ -33,10 +36,24 @@ public class ReladomoRequiredDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitString(PrimitiveProperty primitiveProperty)
     {
-        this.result = String.format(
-                "%s %s 1 ☝",
-                primitiveProperty.getOwningKlass().getName(),
-                primitiveProperty.getName());
+        // TODO: Something more reliable, or ban shared foreign keys
+        if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
+        {
+            Pair<AssociationEnd, DataTypeProperty> pair           = primitiveProperty.getKeysMatchingThisForeignKey().keyValuePairsView().getOnly();
+            AssociationEnd                         associationEnd = pair.getOne();
+            DataTypeProperty                       keyProperty    = pair.getTwo();
+            this.result = String.format(
+                    "%s %s 1 ☝",
+                    associationEnd.getType().getName(),
+                    keyProperty.getName());
+        }
+        else
+        {
+            this.result = String.format(
+                    "%s %s 1 ☝",
+                    primitiveProperty.getOwningKlass().getName(),
+                    primitiveProperty.getName());
+        }
     }
 
     @Override
@@ -48,7 +65,7 @@ public class ReladomoRequiredDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitLong(PrimitiveProperty primitiveProperty)
     {
-        this.result = 100_000_000_000L;
+        this.result = primitiveProperty.isKey() || primitiveProperty.isForeignKey() ? 1L : 100_000_000_000L;
     }
 
     @Override
