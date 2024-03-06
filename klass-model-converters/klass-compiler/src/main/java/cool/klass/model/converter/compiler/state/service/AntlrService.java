@@ -226,7 +226,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         ServiceProjectionDispatchContext elementContext = projectionDispatch.getElementContext();
 
         compilerAnnotationHolder.add(
-                "ERR_GET_PRJ",
+                "ERR_PUT_PRJ",
                 String.format("%s services must not have a projection.", this.verbState.getVerb().name()),
                 projectionDispatch,
                 elementContext);
