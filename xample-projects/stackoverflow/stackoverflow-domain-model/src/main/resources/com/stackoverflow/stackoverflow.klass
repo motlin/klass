@@ -202,7 +202,7 @@ class QuestionVote
     audited
 {
     questionId             : Long key final;
-    createdById            : String key createdBy userId final;
+    createdById            : String key createdBy userId final private;
 }
 
 association QuestionHasVotes

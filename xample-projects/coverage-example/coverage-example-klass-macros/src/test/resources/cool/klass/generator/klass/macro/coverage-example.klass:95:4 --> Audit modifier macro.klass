@@ -1,5 +1,5 @@
 {
-    createdById    : String createdBy userId final;
+    createdById    : String createdBy private userId final;
     createdOn      : Instant createdOn final;
-    lastUpdatedById: String lastUpdatedBy userId;
+    lastUpdatedById: String lastUpdatedBy private userId;
 }

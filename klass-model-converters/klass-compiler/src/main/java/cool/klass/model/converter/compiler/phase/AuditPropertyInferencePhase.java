@@ -100,7 +100,7 @@ public class AuditPropertyInferencePhase
         // TODO: Add validation that any userId is joined to another property that's also userId
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            stringBuilder.append("    createdById    : String createdBy userId final"  + validationSourceCode + ";\n");
+            stringBuilder.append("    createdById    : String createdBy private userId final"  + validationSourceCode + ";\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
         {
@@ -108,7 +108,7 @@ public class AuditPropertyInferencePhase
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            stringBuilder.append("    lastUpdatedById: String lastUpdatedBy userId"  + validationSourceCode + ";\n");
+            stringBuilder.append("    lastUpdatedById: String lastUpdatedBy private userId"  + validationSourceCode + ";\n");
         }
 
         stringBuilder.append("}\n");

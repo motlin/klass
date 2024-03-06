@@ -249,12 +249,22 @@ public abstract class AntlrProperty
 
     public void reportUnreferencedPrivateProperty(CompilerAnnotationState compilerAnnotationState)
     {
-        String message = String.format(
-                "Private property '%s.%s' is not referenced in any criteria.",
+        boolean isAudit  = this.isCreatedBy() || this.isLastUpdatedBy();
+        String  prefix   = isAudit ? "Audit" : "Private";
+        var     severity = isAudit ? AnnotationSeverity.ERROR : AnnotationSeverity.WARNING;
+        this.reportUnreferencedPrivateProperty(compilerAnnotationState, prefix, severity);
+    }
+
+    private void reportUnreferencedPrivateProperty(
+            CompilerAnnotationState compilerAnnotationState,
+            String prefix,
+            AnnotationSeverity severity)
+    {
+        String message = "%s property '%s.%s' is not referenced in any criteria.".formatted(
+                prefix,
                 this.getOwningClassifierState().getName(),
                 this.getName());
-        // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
-        compilerAnnotationState.add("ERR_PRP_REF", message, this, AnnotationSeverity.WARNING);
+        compilerAnnotationState.add("ERR_PRP_REF", message, this, severity);
     }
     //</editor-fold>
 

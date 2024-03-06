@@ -1,20 +1,19 @@
 ════════════════════════════════════════ [35mWRN_LUB_NAM[m ════════════════════════════════════════
-[33mWarning: Expected lastUpdatedBy property 'DummyClass.lastUpdatedById2: String lastUpdatedBy userId maximumLength(256)' to be named 'lastUpdatedById'.[m
+[33mWarning: Expected lastUpdatedBy property 'DummyClass.lastUpdatedById1: String lastUpdatedBy userId private maximumLength(256)' to be named 'lastUpdatedById'.[m
 
-At (DuplicateAuditDataPropertiesErrorTest.klass:18)
+At (DuplicateAuditDataPropertiesErrorTest.klass:23)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m 3║ [35mclass [39mDummyClass
-[39m 4║     [32msystemTemporal
-[39m 5║     [32mversioned
-[39m 6║     [32maudited
-[39m 7║ [36m{
-[39m18║     [39mlastUpdatedById2[36m: [35mString [32mlastUpdatedBy [32muserId [32mmaximumLength[36m([34m256[36m)[36m;
+[39m10║ [35mclass [39mDummyClass
+[39m11║     [32msystemTemporal
+[39m12║     [32mversioned
+[39m13║ [36m{
+[39m23║     [39mlastUpdatedById1[36m: [35mString [32mlastUpdatedBy [32muserId [32mprivate [32mmaximumLength[36m([34m256[36m)[36m;
 [39m  ║ [33m    ^^^^^^^^^^^^^^^^         ^^^^^^^^^^^^^
-[39m19║ [36m}
+[39m25║ [36m}
 [m
-[36mLocation:  [mDuplicateAuditDataPropertiesErrorTest.klass:18[m
+[36mLocation:  [mDuplicateAuditDataPropertiesErrorTest.klass:23[m
 [36mFile:      [mDuplicateAuditDataPropertiesErrorTest.klass[m
-[36mLine:      [m18[m
+[36mLine:      [m23[m
 [36mCharacter: [m5
 ═════════════════════════════════════════════════════════════════════════════════════════════

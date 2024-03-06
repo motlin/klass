@@ -39,3 +39,15 @@ class DummyClass3
     systemFrom     : TemporalInstant system from;
     systemTo       : TemporalInstant system to;
 }
+
+class DummyClass4
+{
+    id: Long id key;
+    createdById    : String userId final;
+    lastUpdatedById: String userId;
+}
+
+class DummyClass5
+{
+    id: String key userId lastUpdatedBy maximumLength(256);
+}

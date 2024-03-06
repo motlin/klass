@@ -692,6 +692,23 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         super.reportInvalidAuditProperties(compilerAnnotationHolder);
 
+        if (this.isUserId())
+        {
+            if (!this.isKey() && !this.isCreatedBy() && !this.isLastUpdatedBy())
+            {
+                AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isUserId);
+                String message = String.format(
+                        "Expected property '%s' with modifier '%s' to be a key, createdBy, or lastUpdatedBy.",
+                        this,
+                        modifier.getKeyword());
+                compilerAnnotationHolder.add(
+                        "ERR_AUD_KEY",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
+            }
+        }
+
         if (this.isCreatedBy() || this.isLastUpdatedBy())
         {
             AntlrType antlrType = this.getType();
@@ -724,6 +741,21 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         modifier.getKeyword());
                 compilerAnnotationHolder.add(
                         "ERR_AUD_UID",
+                        message,
+                        this,
+                        Lists.immutable.with(modifier.getElementContext()));
+            }
+            else if (!this.isPrivate())
+            {
+                AntlrModifier modifier = this
+                        .getModifiers()
+                        .detect(antlrModifier -> antlrModifier.isCreatedBy() || antlrModifier.isLastUpdatedBy());
+                String message = String.format(
+                        "Expected property '%s' with modifier '%s' to also have the private modifier.",
+                        this,
+                        modifier.getKeyword());
+                compilerAnnotationHolder.add(
+                        "ERR_AUD_PRI",
                         message,
                         this,
                         Lists.immutable.with(modifier.getElementContext()));
