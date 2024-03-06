@@ -3,7 +3,6 @@ package cool.klass.dropwizard.configuration.clock.fixed;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.validation.Valid;
@@ -27,8 +26,8 @@ public class FixedClockFactory implements ClockFactory
     }
 
     @JsonProperty
-    public void setInstant(@Nonnull Instant instant)
+    public void setInstant(Instant instant)
     {
-        this.instant = Objects.requireNonNull(instant);
+        this.instant = instant;
     }
 }
