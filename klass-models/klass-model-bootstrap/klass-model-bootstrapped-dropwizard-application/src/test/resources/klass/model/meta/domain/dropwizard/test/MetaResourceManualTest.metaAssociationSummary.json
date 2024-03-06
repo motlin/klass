@@ -35,12 +35,12 @@
     }
   ],
   "criteria": {
-    "@type": "klass.model.meta.domain.AndCriteria",
+    "__typename": "klass.model.meta.domain.AndCriteria",
     "left": {
-      "@type": "klass.model.meta.domain.OperatorCriteria",
+      "__typename": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
+        "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "DataTypeProperty"
         },
@@ -50,7 +50,7 @@
         }
       },
       "targetExpressionValue": {
-        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
+        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "PropertyModifier"
         },
@@ -61,10 +61,10 @@
       }
     },
     "right": {
-      "@type": "klass.model.meta.domain.OperatorCriteria",
+      "__typename": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
+        "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "DataTypeProperty"
         },
@@ -74,7 +74,7 @@
         }
       },
       "targetExpressionValue": {
-        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
+        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "PropertyModifier"
         },

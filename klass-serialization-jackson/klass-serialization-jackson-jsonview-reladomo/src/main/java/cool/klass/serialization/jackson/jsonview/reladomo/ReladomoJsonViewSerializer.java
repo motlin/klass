@@ -85,7 +85,7 @@ public class ReladomoJsonViewSerializer
         {
             if (projectionParent.hasPolymorphicChildren())
             {
-                jsonGenerator.writeStringField("@type", mithraObject.getClass().getCanonicalName());
+                jsonGenerator.writeStringField("__typename", mithraObject.getClass().getCanonicalName());
             }
 
             // TODO: Use listener?

@@ -3,7 +3,7 @@ package cool.klass.model.meta.domain.json.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.eclipse.collections.api.list.ImmutableList;
 
-@JsonIgnoreProperties("@type")
+@JsonIgnoreProperties("__typename")
 public class ProjectionDTO
         extends PackageableElementDTO
 {

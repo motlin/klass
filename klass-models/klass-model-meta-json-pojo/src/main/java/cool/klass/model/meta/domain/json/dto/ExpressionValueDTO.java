@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-@JsonTypeInfo(use = Id.NAME, property = "@type")
+@JsonTypeInfo(use = Id.NAME, property = "__typename")
 @JsonSubTypes({
         @Type(value = ThisMemberReferencePathDTO.class, name = "klass.model.meta.domain.ThisMemberReferencePath"),
         @Type(value = TypeMemberReferencePathDTO.class, name = "klass.model.meta.domain.TypeMemberReferencePath"),

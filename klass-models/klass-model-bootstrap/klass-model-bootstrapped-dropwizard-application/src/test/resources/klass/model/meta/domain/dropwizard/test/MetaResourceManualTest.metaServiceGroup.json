@@ -12,7 +12,7 @@
             "name": "ServiceGroupSummaryProjection"
           },
           "queryCriteria": {
-            "@type": "klass.model.meta.domain.AllCriteria"
+            "__typename": "klass.model.meta.domain.AllCriteria"
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
@@ -30,10 +30,10 @@
             "name": "ServiceGroupProjection"
           },
           "queryCriteria": {
-            "@type": "klass.model.meta.domain.OperatorCriteria",
+            "__typename": "klass.model.meta.domain.OperatorCriteria",
             "operator": "==",
             "sourceExpressionValue": {
-              "@type": "klass.model.meta.domain.ThisMemberReferencePath",
+              "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
               "klass": {
                 "name": "ServiceGroup"
               },
@@ -43,7 +43,7 @@
               }
             },
             "targetExpressionValue": {
-              "@type": "klass.model.meta.domain.VariableReference",
+              "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
                 "name": "serviceGroupName"
               }
@@ -65,10 +65,10 @@
             "name": "ServiceGroupSummaryProjection"
           },
           "queryCriteria": {
-            "@type": "klass.model.meta.domain.OperatorCriteria",
+            "__typename": "klass.model.meta.domain.OperatorCriteria",
             "operator": "==",
             "sourceExpressionValue": {
-              "@type": "klass.model.meta.domain.ThisMemberReferencePath",
+              "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
               "klass": {
                 "name": "ServiceGroup"
               },
@@ -78,7 +78,7 @@
               }
             },
             "targetExpressionValue": {
-              "@type": "klass.model.meta.domain.VariableReference",
+              "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
                 "name": "serviceGroupName"
               }
