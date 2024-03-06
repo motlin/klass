@@ -325,10 +325,8 @@ public abstract class AbstractCompilerAnnotation
                 .stripTrailing();
 
         Color caretColor = this.getCaretColor();
-        String underlineString = ansi()
-                .fg(caretColor).a(uncoloredString + "\n").toString();
 
-        return underlineString;
+        return ansi().fg(caretColor).a(uncoloredString + "\n").toString();
     }
 
     @Nonnull
