@@ -147,7 +147,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
                 this.nameContext,
                 this.name,
                 this.packageName,
-                isUser);
+                this.isUser,
+                this.hasTransientModifier());
 
         ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?>>collect(AntlrDataTypeProperty::build)
@@ -339,5 +340,10 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public boolean hasVersionedModifier()
     {
         return this.classModifiers.anySatisfy(AntlrClassModifier::isVersioned);
+    }
+
+    private boolean hasTransientModifier()
+    {
+        return this.classModifiers.anySatisfy(AntlrClassModifier::isTransient);
     }
 }

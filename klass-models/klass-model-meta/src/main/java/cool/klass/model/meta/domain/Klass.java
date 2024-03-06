@@ -15,6 +15,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 public final class Klass extends Type
 {
     private final boolean isUser;
+    private final boolean isTransient;
 
     private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
     private ImmutableList<AssociationEnd>      associationEnds;
@@ -29,10 +30,12 @@ public final class Klass extends Type
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             @Nonnull String packageName,
-            boolean isUser)
+            boolean isUser,
+            boolean isTransient)
     {
         super(elementContext, nameContext, name, packageName);
         this.isUser = isUser;
+        this.isTransient = isTransient;
     }
 
     public ImmutableList<DataTypeProperty<?>> getDataTypeProperties()
@@ -82,9 +85,15 @@ public final class Klass extends Type
         return this.isUser;
     }
 
+    public boolean isTransient()
+    {
+        return this.isTransient;
+    }
+
     public static final class KlassBuilder extends TypeBuilder
     {
         private final boolean isUser;
+        private final boolean isTransient;
 
         private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
         private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
@@ -99,10 +108,12 @@ public final class Klass extends Type
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 @Nonnull String packageName,
-                boolean isUser)
+                boolean isUser,
+                boolean isTransient)
         {
             super(elementContext, nameContext, name, packageName);
             this.isUser = isUser;
+            this.isTransient = isTransient;
         }
 
         public void setDataTypePropertyBuilders(ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders)
@@ -137,7 +148,8 @@ public final class Klass extends Type
                     this.nameContext,
                     this.name,
                     this.packageName,
-                    this.isUser);
+                    this.isUser,
+                    this.isTransient);
 
             ImmutableList<DataTypeProperty<?>> dataTypeProperties = this.dataTypePropertyBuilders
                     .<DataTypeProperty<?>>collect(DataTypePropertyBuilder::build)

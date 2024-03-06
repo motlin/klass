@@ -7,11 +7,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
+import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributeType;
+import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.CardinalityType;
+import com.gs.fw.common.mithra.generator.metamodel.MithraCommonObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
+import com.gs.fw.common.mithra.generator.metamodel.MithraPureObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
@@ -46,10 +50,10 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     {
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
-
-        MithraObject  mithraObject  = this.convertToMithraObject(klass);
         StringBuilder stringBuilder = new StringBuilder();
-        mithraGeneratorMarshaller.marshall(stringBuilder, mithraObject);
+
+        this.convertAndMarshall(klass, mithraGeneratorMarshaller, stringBuilder);
+
         String xmlString = this.sanitizeXmlString(stringBuilder);
 
         // TODO: Arrange Reladomo xmls in relative paths
@@ -57,17 +61,55 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         this.printStringToFile(fullPath, xmlString);
     }
 
+    private void convertAndMarshall(
+            @Nonnull Klass klass,
+            MithraGeneratorMarshaller mithraGeneratorMarshaller,
+            StringBuilder stringBuilder) throws IOException
+    {
+        if (klass.isTransient())
+        {
+            MithraPureObject mithraPureObject = this.convertToMithraPureObject(klass);
+            mithraGeneratorMarshaller.marshall(stringBuilder, mithraPureObject);
+        }
+        else
+        {
+            MithraObject mithraObject = this.convertToMithraObject(klass);
+            mithraGeneratorMarshaller.marshall(stringBuilder, mithraObject);
+        }
+    }
+
+    @Nonnull
+    private MithraPureObject convertToMithraPureObject(Klass klass)
+    {
+        MithraPureObject mithraPureObject = new MithraPureObject();
+
+        this.convertCommonObject(klass, mithraPureObject);
+
+        ImmutableList<AsOfAttributePureType> asOfAttributeTypes = klass.getDataTypeProperties()
+                .select(DataTypeProperty::isTemporalRange)
+                .collect(this::convertToAsOfAttributePureType);
+
+        ImmutableList<AttributePureType> attributeTypes = klass.getDataTypeProperties()
+                .reject(DataTypeProperty::isTemporal)
+                .collect(this::convertToAttributePureType);
+
+        // TODO: Test that private properties are not included in Projections
+        // TODO: Add foreign keys
+
+        mithraPureObject.setAsOfAttributes(asOfAttributeTypes.castToList());
+        mithraPureObject.setAttributes(attributeTypes.castToList());
+
+        mithraPureObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
+
+        return mithraPureObject;
+    }
+
     @Nonnull
     private MithraObject convertToMithraObject(Klass klass)
     {
         MithraObject mithraObject = new MithraObject();
-        ObjectType   objectType   = new ObjectType();
-        objectType.with("transactional", mithraObject);
-        mithraObject.setObjectType(objectType);
-        mithraObject.setPackageName(klass.getPackageName());
-        mithraObject.setClassName(klass.getName());
+        this.convertCommonObject(klass, mithraObject);
         mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
-        mithraObject.setInitializePrimitivesToNull(true);
 
         ImmutableList<AsOfAttributeType> asOfAttributeTypes = klass.getDataTypeProperties()
                 .select(DataTypeProperty::isTemporalRange)
@@ -86,6 +128,17 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
 
         return mithraObject;
+    }
+
+    private void convertCommonObject(Klass klass, MithraCommonObjectType mithraCommonObject)
+    {
+        ObjectType objectType = new ObjectType();
+        objectType.with("transactional", mithraCommonObject);
+        mithraCommonObject.setObjectType(objectType);
+
+        mithraCommonObject.setPackageName(klass.getPackageName());
+        mithraCommonObject.setClassName(klass.getName());
+        mithraCommonObject.setInitializePrimitivesToNull(true);
     }
 
     private List<RelationshipType> convertRelationships(ImmutableList<AssociationEnd> associationEnds)
@@ -159,6 +212,23 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     @Nonnull
     private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
+        AsOfAttributeType asOfAttributeType = new AsOfAttributeType();
+        this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
+        return asOfAttributeType;
+    }
+
+    @Nonnull
+    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty<?> dataTypeProperty)
+    {
+        AsOfAttributePureType asOfAttributeType = new AsOfAttributePureType();
+        this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
+        return asOfAttributeType;
+    }
+
+    private void convertToAsOfAttributeType(
+            DataTypeProperty<?> dataTypeProperty,
+            AsOfAttributePureType asOfAttributeType)
+    {
         String propertyName = dataTypeProperty.getName();
         // TODO: Use actual temporal properties
         String fromName       = propertyName + "From";
@@ -166,7 +236,6 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         String fromColumnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, fromName);
         String toColumnName   = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, toName);
 
-        AsOfAttributeType asOfAttributeType = new AsOfAttributeType();
         asOfAttributeType.setName(propertyName);
         asOfAttributeType.setFromColumnName(fromColumnName);
         asOfAttributeType.setToColumnName(toColumnName);
@@ -195,26 +264,28 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         {
             throw new AssertionError(propertyName);
         }
-
-        return asOfAttributeType;
     }
 
     @Nonnull
     private AttributeType convertToAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
-        String        propertyName  = dataTypeProperty.getName();
+        this.convertToAttributeType(dataTypeProperty, attributeType);
+        return attributeType;
+    }
+
+    private void convertToAttributeType(DataTypeProperty<?> dataTypeProperty, AttributePureType attributeType)
+    {
+        String propertyName = dataTypeProperty.getName();
         attributeType.setName(propertyName);
         attributeType.setColumnName(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName));
         attributeType.setPrimaryKey(dataTypeProperty.isKey());
         attributeType.setNullable(dataTypeProperty.isOptional());
 
         this.handleType(attributeType, dataTypeProperty);
-
-        return attributeType;
     }
 
-    private void handleType(@Nonnull AttributeType attributeType, DataTypeProperty<?> dataTypeProperty)
+    private void handleType(@Nonnull AttributePureType attributeType, DataTypeProperty<?> dataTypeProperty)
     {
         if (dataTypeProperty instanceof EnumerationProperty)
         {
@@ -228,5 +299,13 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
             PrimitiveType     primitiveType     = primitiveProperty.getType();
             primitiveType.visit(new AttributeTypeVisitor(attributeType, primitiveProperty));
         }
+    }
+
+    @Nonnull
+    private AttributePureType convertToAttributePureType(DataTypeProperty<?> dataTypeProperty)
+    {
+        AttributePureType attributeType = new AttributePureType();
+        this.convertToAttributeType(dataTypeProperty, attributeType);
+        return attributeType;
     }
 }

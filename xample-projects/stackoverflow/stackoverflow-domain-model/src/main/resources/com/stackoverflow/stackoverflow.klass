@@ -243,7 +243,7 @@ service Question
                 projection  : QuestionReadProjection
             }
     */
-    // TODO: Service syntax
+    // TODO: Service syntax. Parameter must be a message type or projection type.
     /*
     service getById(id: Long[1..1]): QuestionReadProjection[1]
     {

@@ -32,4 +32,9 @@ public class AntlrClassModifier extends AntlrElement
     {
         return this.name.equals("versioned");
     }
+
+    public boolean isTransient()
+    {
+        return this.name.equals("transient");
+    }
 }
