@@ -31,7 +31,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
     @Nullable
     public String getPrettyName()
     {
-        return this.prettyName;
+        return this.prettyName == null ? this.getName() : this.prettyName;
     }
 
     public static final class EnumerationLiteralBuilder extends NamedElementBuilder<EnumerationLiteralImpl>
