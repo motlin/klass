@@ -127,13 +127,6 @@
     <dependencyManagement>
         <dependencies>
 
-            <!--TODO: Delete after upgrading to the next version of Liftwizard -->
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-security</artifactId>
-                <version>9.4.35.v20201120</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-runtime</artifactId>
