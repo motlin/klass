@@ -13,9 +13,9 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -28,10 +28,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import org.fusesource.jansi.AnsiConsole;
 
 public abstract class AbstractGenerateMojo
         extends AbstractMojo
@@ -39,6 +36,9 @@ public abstract class AbstractGenerateMojo
     public static final Pattern KLASS_FILE_EXTENSION = Pattern.compile(".*\\.klass");
     @Parameter(property = "klassSourcePackages", required = true)
     protected List<String> klassSourcePackages;
+
+    @Parameter(property = "logCompilerAnnotations")
+    protected boolean logCompilerAnnotations;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     protected MavenProject mavenProject;
@@ -77,16 +77,6 @@ public abstract class AbstractGenerateMojo
     @Nonnull
     protected DomainModelWithSourceCode getDomainModel() throws MojoExecutionException
     {
-        // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
-        CompilationResult compilationResult = this.getCompilationResult();
-
-        this.handleErrorsCompilationResult(compilationResult);
-
-        return compilationResult.domainModelWithSourceCode().get();
-    }
-
-    protected CompilationResult getCompilationResult() throws MojoExecutionException
-    {
         if (this.klassSourcePackages.isEmpty())
         {
             String message = ""
@@ -98,9 +88,12 @@ public abstract class AbstractGenerateMojo
             throw new MojoExecutionException(message);
         }
 
-        ClassLoader classLoader = this.getClassLoader();
-
-        return this.load(classLoader);
+        // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
+        var loader = new DomainModelCompilerLoader(
+                Lists.immutable.withAll(this.klassSourcePackages),
+                this.getClassLoader(),
+                this::logCompilerAnnotation);
+        return loader.load();
     }
 
     private MutableList<File> loadFiles()
@@ -153,19 +146,9 @@ public abstract class AbstractGenerateMojo
 
     protected void handleErrorsCompilationResult(CompilationResult compilationResult) throws MojoExecutionException
     {
-        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
-        ImmutableList<RootCompilerAnnotation> errors = compilerAnnotations.select(AbstractCompilerAnnotation::isError);
-        ImmutableList<RootCompilerAnnotation> warnings = compilerAnnotations.select(AbstractCompilerAnnotation::isWarning);
-
-        for (RootCompilerAnnotation error : errors)
+        for (RootCompilerAnnotation compilerAnnotation : compilationResult.compilerAnnotations())
         {
-            this.getLog().info(error.toGitHubAnnotation());
-            this.getLog().error("\n" + error);
-        }
-        for (RootCompilerAnnotation warning : warnings)
-        {
-            this.getLog().info(warning.toGitHubAnnotation());
-            this.getLog().warn("\n" + warning);
+            this.logCompilerAnnotation(compilerAnnotation);
         }
 
         if (compilationResult.domainModelWithSourceCode().isEmpty())
@@ -174,45 +157,20 @@ public abstract class AbstractGenerateMojo
         }
     }
 
-    @Nonnull
-    private CompilationResult load(ClassLoader classLoader) throws MojoExecutionException
+    private void logCompilerAnnotation(RootCompilerAnnotation compilerAnnotation)
     {
-        ImmutableList<String> klassSourcePackages = Lists.immutable.withAll(this.klassSourcePackages);
-        this.getLog().debug("Scanning source packages: " + klassSourcePackages.makeString());
+        AnsiConsole.systemInstall();
 
-        ImmutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(
-                classLoader,
-                klassSourcePackages);
-
-        KlassCompiler klassCompiler = new KlassCompiler(compilationUnits);
-        return klassCompiler.compile();
-    }
-
-    @Nonnull
-    private ImmutableList<CompilationUnit> getCompilationUnits(
-            ClassLoader classLoader,
-            ImmutableList<String> klassSourcePackages) throws MojoExecutionException
-    {
-        ImmutableList<URL> urls = klassSourcePackages.flatCollectWith(
-                ClasspathHelper::forPackage,
-                classLoader);
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .setScanners(new ResourcesScanner())
-                .setUrls(urls.castToList());
-        Reflections reflections    = new Reflections(configurationBuilder);
-        ImmutableList<String> klassLocations = Lists.immutable.withAll(reflections.getResources(KLASS_FILE_EXTENSION));
-
-        this.getLog().debug("Found source files on classpath: " + klassLocations);
-
-        ImmutableList<CompilationUnit> compilationUnits = Lists.immutable.withAll(klassLocations)
-                .collectWithIndex((each, index) -> CompilationUnit.createFromClasspathLocation(index, each, classLoader));
-
-        if (compilationUnits.isEmpty())
+        if (compilerAnnotation.isError())
         {
-            String message = "Could not find any files matching *.klass in urls: " + urls;
-            throw new MojoExecutionException(message);
+            this.getLog().info(compilerAnnotation.toGitHubAnnotation());
+            this.getLog().error("\n" + compilerAnnotation);
         }
-        return compilationUnits;
+        else if (compilerAnnotation.isWarning() && this.logCompilerAnnotations)
+        {
+            this.getLog().info(compilerAnnotation.toGitHubAnnotation());
+            this.getLog().warn("\n" + compilerAnnotation);
+        }
     }
 
     private ImmutableList<CompilationUnit> getCompilationUnits(ImmutableList<File> klassLocations)
