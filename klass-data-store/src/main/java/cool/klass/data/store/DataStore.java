@@ -22,6 +22,8 @@ public interface DataStore
 
     Object findByKey(Klass klass, MapIterable<DataTypeProperty, Object> keys);
 
+    List<Object> findByKeyReturningList(Klass klass, MapIterable<DataTypeProperty, Object> keys);
+
     default Object getReferenceProperty(Object persistentInstance, ReferenceProperty referenceProperty)
     {
         if (referenceProperty.getMultiplicity().isToOne())

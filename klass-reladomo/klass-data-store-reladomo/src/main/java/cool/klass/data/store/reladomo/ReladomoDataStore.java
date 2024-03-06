@@ -140,6 +140,24 @@ public class ReladomoDataStore
     @Override
     public Object findByKey(@Nonnull Klass klass, @Nonnull MapIterable<DataTypeProperty, Object> keys)
     {
+        Operation operation = this.getFindByKeyOperation(klass, keys);
+        RelatedFinder<?> finder = this.getRelatedFinder(klass);
+        return finder.findOne(operation);
+    }
+
+    @Override
+    public List<Object> findByKeyReturningList(Klass klass, MapIterable<DataTypeProperty, Object> keys)
+    {
+        Operation operation = this.getFindByKeyOperation(klass, keys);
+        RelatedFinder<?> finder = this.getRelatedFinder(klass);
+        return (List<Object>) finder.findMany(operation);
+    }
+
+    @Nonnull
+    private Operation getFindByKeyOperation(
+            @Nonnull Klass klass,
+            @Nonnull MapIterable<DataTypeProperty, Object> keys)
+    {
         keys.forEachKeyValue((keyProperty, keyValue) ->
         {
             if (keyProperty.getOwningClassifier() != klass)
@@ -179,7 +197,7 @@ public class ReladomoDataStore
         });
 
         Operation operation = operations.reduce(Operation::and).get();
-        return finder.findOne(operation);
+        return operation;
     }
 
     private Operation getOperation(
