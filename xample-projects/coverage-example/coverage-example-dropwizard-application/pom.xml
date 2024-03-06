@@ -253,6 +253,18 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-query-schema</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-logstash-console</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>

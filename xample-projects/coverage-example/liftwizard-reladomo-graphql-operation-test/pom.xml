@@ -88,6 +88,33 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-query-schema</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-schema</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-reladomo-finder</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass.xample.coverage</groupId>
+            <artifactId>coverage-example-graphql-runtime-wiring</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
             <scope>test</scope>

@@ -147,10 +147,11 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
+      "io/liftwizard/graphql/schema/query/QuerySchema.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
       "klass/model/meta/domain/graphql/schema/query/GraphQLQuerySchema.graphqls",
       "klass/model/meta/domain/graphql/schema/finder/GraphQLFinders.graphqls",
       "klass/model/meta/domain/graphql/schema/GraphQLSchema.graphqls",
-      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   },
   "spaRedirectFilter": {

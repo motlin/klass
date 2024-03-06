@@ -157,10 +157,11 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
+      "io/liftwizard/graphql/schema/query/QuerySchema.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
       "com/stackoverflow/graphql/schema/query/GraphQLQuerySchema.graphqls",
       "com/stackoverflow/graphql/schema/finder/GraphQLFinders.graphqls",
       "com/stackoverflow/graphql/schema/GraphQLSchema.graphqls",
-      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   }
 }

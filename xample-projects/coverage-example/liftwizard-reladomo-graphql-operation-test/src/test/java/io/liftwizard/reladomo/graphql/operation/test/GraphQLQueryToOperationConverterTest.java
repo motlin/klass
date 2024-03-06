@@ -22,6 +22,7 @@ import graphql.scalars.java.JavaPrimitives;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.RuntimeWiring.Builder;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
@@ -30,6 +31,7 @@ import io.liftwizard.graphql.scalar.temporal.GraphQLLocalDateScalar;
 import io.liftwizard.graphql.scalar.temporal.GraphQLTemporalScalar;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Rule;
 import org.junit.Test;
@@ -410,39 +412,44 @@ public class GraphQLQueryToOperationConverterTest
 
     private RuntimeWiring getRuntimeWiring()
     {
-        return RuntimeWiring.newRuntimeWiring()
+        Builder builder = RuntimeWiring.newRuntimeWiring();
+        builder
                 .scalar(GraphQLTemporalScalar.INSTANT_INSTANCE)
                 .scalar(GraphQLTemporalScalar.TEMPORAL_INSTANT_INSTANCE)
                 .scalar(GraphQLTemporalScalar.TEMPORAL_RANGE_INSTANCE)
                 .scalar(JavaPrimitives.GraphQLLong)
-                .scalar(GraphQLLocalDateScalar.INSTANCE)
+                .scalar(GraphQLLocalDateScalar.INSTANCE);
+        builder.type(
+                "Query",
+                typeWiring -> typeWiring
+                        .dataFetcher(
+                                "propertiesRequiredByFinder",
+                                new FakeReladomoFinderDataFetcher<>(PropertiesRequiredFinder.getFinderInstance()))
+                        .dataFetcher(
+                                "propertiesOptionalByFinder",
+                                new FakeReladomoFinderDataFetcher<>(PropertiesOptionalFinder.getFinderInstance()))
+                        .dataFetcher(
+                                "ownedNaturalOneToManySourceByFinder",
+                                new FakeReladomoFinderDataFetcher<>(OwnedNaturalOneToManySourceFinder.getFinderInstance())));
 
-                .type(
-                        "Query",
-                        typeWiring -> typeWiring
-                                .dataFetcher(
-                                        "propertiesRequiredByFinder",
-                                        new FakeReladomoFinderDataFetcher<>(PropertiesRequiredFinder.getFinderInstance()))
-                                .dataFetcher(
-                                        "propertiesOptionalByFinder",
-                                        new FakeReladomoFinderDataFetcher<>(PropertiesOptionalFinder.getFinderInstance()))
-                                .dataFetcher(
-                                        "ownedNaturalOneToManySourceByFinder",
-                                        new FakeReladomoFinderDataFetcher<>(OwnedNaturalOneToManySourceFinder.getFinderInstance())))
-                .build();
+        return builder.build();
     }
 
     @Nonnull
     private TypeDefinitionRegistry getRegistry()
     {
-        var typeRegistry          = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls");
-        var attributeTypeRegistry = this.getRegistry("/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls");
-        var queryTypeRegistry     = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/query/GraphQLQuerySchema.graphqls");
-        var findersTypeRegistry   = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls");
-        typeRegistry.merge(attributeTypeRegistry);
-        typeRegistry.merge(queryTypeRegistry);
-        typeRegistry.merge(findersTypeRegistry);
-        return typeRegistry;
+        ImmutableList<String> fileNames = Lists.immutable.with(
+                "/io/liftwizard/graphql/schema/query/QuerySchema.graphqls",
+                "/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
+                "/cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls",
+                "/cool/klass/xample/coverage/graphql/schema/query/GraphQLQuerySchema.graphqls",
+                "/cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls");
+
+        ImmutableList<TypeDefinitionRegistry> typeDefinitionRegistries = fileNames.collect(this::getRegistry);
+
+        Optional<TypeDefinitionRegistry> typeDefinitionRegistry = typeDefinitionRegistries.reduce(TypeDefinitionRegistry::merge);
+
+        return typeDefinitionRegistry.orElseThrow();
     }
 
     private TypeDefinitionRegistry getRegistry(String resourceName)
