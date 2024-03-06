@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="KlassBootstrappedMetaModelApplication Application (local)" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="corretto-16" />
+    <log_file alias="logs/***REMOVED***-server-local.log" path="$PROJECT_DIR$/xample-projects/***REMOVED***/***REMOVED***-dropwizard-application-production/logs/***REMOVED***-server-local.log" show_all="true" />
+    <option name="MAIN_CLASS_NAME" value="klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication" />
+    <module name="klass-model-bootstrapped-dropwizard-application" />
+    <option name="PROGRAM_PARAMETERS" value="server dropwizard-server.json5" />
+    <shortenClasspath name="ARGS_FILE" />
+    <option name="VM_PARAMETERS" value="-XX:+HeapDumpOnOutOfMemoryError" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
