@@ -132,6 +132,10 @@ public class GraphQLElementToSchemaSourceVisitor
         {
             return "Int";
         }
+        if (type == PrimitiveType.DOUBLE)
+        {
+            return "Float";
+        }
         return type.toString();
     }
 
