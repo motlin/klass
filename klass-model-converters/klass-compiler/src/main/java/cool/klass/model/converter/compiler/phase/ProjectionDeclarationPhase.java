@@ -36,7 +36,7 @@ public class ProjectionDeclarationPhase extends AbstractCompilerPhase
                 Optional.of(currentCompilationUnit),
                 nameContext,
                 nameContext.getText(),
-                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
+                this.compilerState.getOrdinal(ctx),
                 klass,
                 this.compilerState.getCompilerWalkState().getPackageName());
     }

@@ -43,13 +43,13 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
+                new TopLevelElementsPhase(this.compilerState),
                 new ClassifierPhase(this.compilerState),
                 new ClassTemporalPropertyInferencePhase(this.compilerState),
                 new ClassAuditPropertyInferencePhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
                 classModifierState,
-                ctx,
                 this,
                 klassSourceCode,
                 KlassParser::compilationUnit,

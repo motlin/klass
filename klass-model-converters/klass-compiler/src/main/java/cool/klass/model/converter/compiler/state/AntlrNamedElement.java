@@ -110,6 +110,11 @@ public abstract class AntlrNamedElement extends AntlrElement
         return this.name;
     }
 
+    public int getOrdinal()
+    {
+        return this.ordinal;
+    }
+
     // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {

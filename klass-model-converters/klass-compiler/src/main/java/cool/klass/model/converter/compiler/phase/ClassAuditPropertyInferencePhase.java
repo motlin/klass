@@ -10,7 +10,6 @@ import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -54,9 +53,9 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
 
     private void addAuditProperties(@Nonnull ClassModifierContext ctx)
     {
-        this.runCompilerMacro(ctx, "    createdById    : String private createdBy;\n");
-        this.runCompilerMacro(ctx, "    createdOn      : Instant createdOn;\n");
-        this.runCompilerMacro(ctx, "    lastUpdatedById: String private lastUpdatedBy;\n");
+        this.runCompilerMacro("    createdById    : String private createdBy;\n");
+        this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
+        this.runCompilerMacro("    lastUpdatedById: String private lastUpdatedBy;\n");
 
         Optional<AntlrClass> userClassOptional = this.compilerState.getDomainModelState().getUserClassState();
         if (!userClassOptional.isPresent())
@@ -88,18 +87,17 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
                 + "        this.lastUpdatedById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
                 + "    }\n";
 
-        this.runCompilerMacro(ctx, createdBySourceCodeText);
-        this.runCompilerMacro(ctx, lastUpdatedBySourceCodeText);
+        this.runCompilerMacro(createdBySourceCodeText);
+        this.runCompilerMacro(lastUpdatedBySourceCodeText);
     }
 
-    private void runCompilerMacro(@Nonnull ParserRuleContext ctx, @Nonnull String sourceCodeText)
+    private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
         ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 classModifierState,
-                ctx,
                 this,
                 sourceCodeText,
                 KlassParser::classMember,

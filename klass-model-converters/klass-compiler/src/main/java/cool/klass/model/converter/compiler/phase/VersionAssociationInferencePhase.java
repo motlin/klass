@@ -12,6 +12,7 @@ import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 {
@@ -49,15 +50,17 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
         String             klassSourceCode    = this.getSourceCode(keyProperties);
-        ParseTreeListener  compilerPhase      = new AssociationPhase(this.compilerState);
+
+        ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
+                new TopLevelElementsPhase(this.compilerState),
+                new AssociationPhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
                 classModifierState,
-                ctx,
                 this,
                 klassSourceCode,
                 KlassParser::compilationUnit,
-                compilerPhase);
+                compilerPhases);
     }
 
     @Nonnull

@@ -12,6 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
+import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -31,6 +32,7 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
 // TODO: Null checks could be replaced by flags indicating whether certain data is populated yet based on the current phase.
@@ -42,9 +44,11 @@ public class CompilerWalkState
     private CompilationUnit currentCompilationUnit;
 
     @Nullable
-    private String                     packageName;
-    @Nullable
+    private String packageName;
 
+    @Nullable
+    private AntlrTopLevelElement       topLevelDeclarationState;
+    @Nullable
     private AntlrEnumeration           enumerationState;
     @Nullable
     private AntlrClassifier            classifierState;
@@ -180,7 +184,7 @@ public class CompilerWalkState
     public void exitCompilationUnit()
     {
         this.currentCompilationUnit = null;
-        this.packageName = null;
+        this.packageName            = null;
     }
 
     public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
@@ -189,44 +193,15 @@ public class CompilerWalkState
         this.packageName = packageNameContext.getText();
     }
 
-    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
     {
-        CompilerWalkState.assertNull(this.classifierState);
-        CompilerWalkState.assertNull(this.interfaceState);
-        CompilerWalkState.assertNull(this.thisReference);
-
-        AntlrInterface interfaceByContext = this.domainModelState.getInterfaceByContext(ctx);
-
-        this.classifierState = interfaceByContext;
-        this.interfaceState = interfaceByContext;
-        this.thisReference = interfaceByContext;
+        CompilerWalkState.assertNull(this.topLevelDeclarationState);
+        this.topLevelDeclarationState = this.domainModelState.getTopLevelElementByContext(ctx);
     }
 
-    public void exitInterfaceDeclaration()
+    public void exitTopLevelDeclaration()
     {
-        this.classifierState = null;
-        this.interfaceState = null;
-        this.thisReference = null;
-    }
-
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.classifierState);
-        CompilerWalkState.assertNull(this.classState);
-        CompilerWalkState.assertNull(this.thisReference);
-
-        AntlrClass classByContext = this.domainModelState.getClassByContext(ctx);
-
-        this.classifierState = classByContext;
-        this.classState = classByContext;
-        this.thisReference = classByContext;
-    }
-
-    public void exitClassDeclaration()
-    {
-        this.classifierState = null;
-        this.classState = null;
-        this.thisReference = null;
+        this.topLevelDeclarationState = null;
     }
 
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
@@ -238,6 +213,46 @@ public class CompilerWalkState
     public void exitEnumerationDeclaration()
     {
         this.enumerationState = null;
+    }
+
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        CompilerWalkState.assertNull(this.classifierState);
+        CompilerWalkState.assertNull(this.interfaceState);
+        CompilerWalkState.assertNull(this.thisReference);
+
+        AntlrInterface interfaceByContext = this.domainModelState.getInterfaceByContext(ctx);
+
+        this.classifierState = interfaceByContext;
+        this.interfaceState  = interfaceByContext;
+        this.thisReference   = interfaceByContext;
+    }
+
+    public void exitInterfaceDeclaration()
+    {
+        this.classifierState = null;
+        this.interfaceState  = null;
+        this.thisReference   = null;
+    }
+
+    public void enterClassDeclaration(ClassDeclarationContext ctx)
+    {
+        CompilerWalkState.assertNull(this.classifierState);
+        CompilerWalkState.assertNull(this.classState);
+        CompilerWalkState.assertNull(this.thisReference);
+
+        AntlrClass classByContext = this.domainModelState.getClassByContext(ctx);
+
+        this.classifierState = classByContext;
+        this.classState      = classByContext;
+        this.thisReference   = classByContext;
+    }
+
+    public void exitClassDeclaration()
+    {
+        this.classifierState = null;
+        this.classState      = null;
+        this.thisReference   = null;
     }
 
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
@@ -269,14 +284,14 @@ public class CompilerWalkState
             return;
         }
         this.orderByOwnerState = this.associationEndState;
-        this.thisReference = this.associationEndState.getType();
+        this.thisReference     = this.associationEndState.getType();
     }
 
     public void exitAssociationEnd()
     {
         this.associationEndState = null;
-        this.thisReference = null;
-        this.orderByOwnerState = null;
+        this.thisReference       = null;
+        this.orderByOwnerState   = null;
     }
 
     public void enterRelationship()
@@ -322,26 +337,26 @@ public class CompilerWalkState
             return;
         }
         this.parameterizedPropertyState = this.classState.getParameterizedPropertyByContext(ctx);
-        this.orderByOwnerState = this.parameterizedPropertyState;
+        this.orderByOwnerState          = this.parameterizedPropertyState;
     }
 
     public void exitParameterizedProperty()
     {
         this.parameterizedPropertyState = null;
-        this.orderByOwnerState = null;
+        this.orderByOwnerState          = null;
     }
 
     public void defineInterface(AntlrInterface interfaceState)
     {
         this.classifierState = interfaceState;
-        this.interfaceState = interfaceState;
+        this.interfaceState  = interfaceState;
         this.domainModelState.defineInterface(this.interfaceState);
     }
 
     public void defineClass(AntlrClass classState)
     {
         this.classifierState = classState;
-        this.classState = classState;
+        this.classState      = classState;
         this.domainModelState.defineClass(this.classState);
     }
 
@@ -361,7 +376,7 @@ public class CompilerWalkState
     public void exitServiceGroupDeclaration()
     {
         this.serviceGroupState = null;
-        this.thisReference = null;
+        this.thisReference     = null;
     }
 
     public void enterUrlDeclaration(UrlDeclarationContext ctx)
@@ -398,7 +413,7 @@ public class CompilerWalkState
 
     public void exitServiceDeclaration()
     {
-        this.serviceState = null;
+        this.serviceState      = null;
         this.orderByOwnerState = null;
     }
 
@@ -432,21 +447,22 @@ public class CompilerWalkState
     {
         // TODO: It's too easy for this list to get out of sync with the declared fields
         CompilerWalkState compilerWalkState = new CompilerWalkState(this.domainModelState);
-        compilerWalkState.currentCompilationUnit = compilationUnit;
-        compilerWalkState.packageName = this.packageName;
-        compilerWalkState.enumerationState = this.enumerationState;
-        compilerWalkState.classifierState = this.classifierState;
-        compilerWalkState.interfaceState = this.interfaceState;
-        compilerWalkState.classState = this.classState;
-        compilerWalkState.associationState = this.associationState;
-        compilerWalkState.associationEndState = this.associationEndState;
+        compilerWalkState.currentCompilationUnit     = compilationUnit;
+        compilerWalkState.packageName                = this.packageName;
+        compilerWalkState.topLevelDeclarationState   = this.topLevelDeclarationState;
+        compilerWalkState.enumerationState           = this.enumerationState;
+        compilerWalkState.classifierState            = this.classifierState;
+        compilerWalkState.interfaceState             = this.interfaceState;
+        compilerWalkState.classState                 = this.classState;
+        compilerWalkState.associationState           = this.associationState;
+        compilerWalkState.associationEndState        = this.associationEndState;
         compilerWalkState.parameterizedPropertyState = this.parameterizedPropertyState;
-        compilerWalkState.projectionState = this.projectionState;
-        compilerWalkState.serviceGroupState = this.serviceGroupState;
-        compilerWalkState.urlState = this.urlState;
-        compilerWalkState.serviceState = this.serviceState;
-        compilerWalkState.thisReference = this.thisReference;
-        compilerWalkState.orderByOwnerState = this.orderByOwnerState;
+        compilerWalkState.projectionState            = this.projectionState;
+        compilerWalkState.serviceGroupState          = this.serviceGroupState;
+        compilerWalkState.urlState                   = this.urlState;
+        compilerWalkState.serviceState               = this.serviceState;
+        compilerWalkState.thisReference              = this.thisReference;
+        compilerWalkState.orderByOwnerState          = this.orderByOwnerState;
         return compilerWalkState;
     }
 

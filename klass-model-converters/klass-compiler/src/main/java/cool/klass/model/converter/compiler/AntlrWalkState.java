@@ -14,12 +14,16 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
+// TODO: Delete
 public class AntlrWalkState
 {
     @Nullable
     private PackageNameContext             packageContext;
+    @Nullable
+    private TopLevelDeclarationContext     topLevelDeclarationContext;
     @Nullable
     private InterfaceDeclarationContext    interfaceDeclarationContext;
     @Nullable
@@ -55,6 +59,17 @@ public class AntlrWalkState
     public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         this.packageContext = ctx.packageName();
+    }
+
+    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        AntlrWalkState.assertNull(this.topLevelDeclarationContext);
+        this.topLevelDeclarationContext = ctx;
+    }
+
+    public void exitTopLevelDeclaration()
+    {
+        this.topLevelDeclarationContext = null;
     }
 
     public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
@@ -177,22 +192,27 @@ public class AntlrWalkState
     {
         AntlrWalkState antlrWalkState = new AntlrWalkState();
 
-        antlrWalkState.packageContext = this.packageContext;
-        antlrWalkState.classDeclarationContext = this.classDeclarationContext;
-        antlrWalkState.associationDeclarationContext = this.associationDeclarationContext;
+        antlrWalkState.packageContext                 = this.packageContext;
+        antlrWalkState.topLevelDeclarationContext     = this.topLevelDeclarationContext;
+        antlrWalkState.classDeclarationContext        = this.classDeclarationContext;
+        antlrWalkState.associationDeclarationContext  = this.associationDeclarationContext;
         antlrWalkState.serviceGroupDeclarationContext = this.serviceGroupDeclarationContext;
-        antlrWalkState.parameterizedPropertyContext = this.parameterizedPropertyContext;
-        antlrWalkState.enumerationDeclarationContext = this.enumerationDeclarationContext;
-        antlrWalkState.projectionDeclarationContext = this.projectionDeclarationContext;
-        antlrWalkState.urlDeclarationContext = this.urlDeclarationContext;
-        antlrWalkState.serviceDeclarationContext = this.serviceDeclarationContext;
-        antlrWalkState.classModifierContext = this.classModifierContext;
+        antlrWalkState.parameterizedPropertyContext   = this.parameterizedPropertyContext;
+        antlrWalkState.enumerationDeclarationContext  = this.enumerationDeclarationContext;
+        antlrWalkState.projectionDeclarationContext   = this.projectionDeclarationContext;
+        antlrWalkState.urlDeclarationContext          = this.urlDeclarationContext;
+        antlrWalkState.serviceDeclarationContext      = this.serviceDeclarationContext;
+        antlrWalkState.classModifierContext           = this.classModifierContext;
         return antlrWalkState;
     }
 
     public void assertEmpty()
     {
         if (this.packageContext != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.topLevelDeclarationContext != null)
         {
             throw new AssertionError();
         }

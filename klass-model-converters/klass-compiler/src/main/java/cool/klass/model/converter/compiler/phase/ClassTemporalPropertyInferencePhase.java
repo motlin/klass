@@ -7,7 +7,6 @@ import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.predicate.Predicate;
 
@@ -60,13 +59,12 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
             @Nonnull ClassModifierContext ctx,
             @Nonnull String prefix)
     {
-        this.runCompilerMacro(ctx, prefix + "    : TemporalRange   " + prefix + ";");
-        this.runCompilerMacro(ctx, prefix + "From: TemporalInstant " + prefix + " from;");
-        this.runCompilerMacro(ctx, prefix + "To  : TemporalInstant " + prefix + " to;");
+        this.runCompilerMacro(prefix + "    : TemporalRange   " + prefix + ";");
+        this.runCompilerMacro(prefix + "From: TemporalInstant " + prefix + " from;");
+        this.runCompilerMacro(prefix + "To  : TemporalInstant " + prefix + " to;");
     }
 
     private void runCompilerMacro(
-            @Nonnull ParserRuleContext ctx,
             @Nonnull String sourceCodeText)
     {
         AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
@@ -74,7 +72,6 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 
         this.compilerState.runNonRootCompilerMacro(
                 classModifierState,
-                ctx,
                 this,
                 sourceCodeText,
                 KlassParser::classMember,

@@ -32,4 +32,6 @@ public interface AntlrTopLevelElement extends IAntlrElement
 
     @Nonnull
     String getName();
+
+    int getOrdinal();
 }

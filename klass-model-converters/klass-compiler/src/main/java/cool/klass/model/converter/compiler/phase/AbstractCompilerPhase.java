@@ -18,6 +18,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
 public abstract class AbstractCompilerPhase extends KlassBaseListener
@@ -57,6 +58,22 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     {
         super.enterPackageDeclaration(ctx);
         this.compilerState.enterPackageDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        super.enterTopLevelDeclaration(ctx);
+        this.compilerState.enterTopLevelDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        this.compilerState.exitTopLevelDeclaration();
+        super.exitTopLevelDeclaration(ctx);
     }
 
     @Override

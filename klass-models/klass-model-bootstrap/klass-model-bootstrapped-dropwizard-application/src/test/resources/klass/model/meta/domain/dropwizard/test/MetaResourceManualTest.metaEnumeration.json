@@ -2,7 +2,7 @@
   "name": "PrimitiveType",
   "inferred": false,
   "packageName": "klass.model.meta.domain",
-  "ordinal": 2,
+  "ordinal": 15,
   "sourceCode": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}",
   "sourceCodeWithInference": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}",
   "enumerationLiterals": [

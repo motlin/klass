@@ -89,6 +89,11 @@ public interface DataTypeProperty extends Property
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isFinal);
     }
 
+    default boolean isPrivate()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isPrivate);
+    }
+
     default boolean isValidTemporal()
     {
         return this.isValid() && this.isTemporalRange();

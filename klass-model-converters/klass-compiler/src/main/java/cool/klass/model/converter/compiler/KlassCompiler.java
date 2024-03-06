@@ -17,6 +17,7 @@ import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.RelationshipPhase;
 import cool.klass.model.converter.compiler.phase.ServiceCriteriaPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
+import cool.klass.model.converter.compiler.phase.TopLevelElementsPhase;
 import cool.klass.model.converter.compiler.phase.UrlParameterPhase;
 import cool.klass.model.converter.compiler.phase.VariableResolutionPhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
@@ -30,6 +31,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class KlassCompiler
 {
     public static final ImmutableList<Function<CompilerState, KlassListener>> COMPILER_PHASE_BUILDERS = Lists.immutable.with(
+            TopLevelElementsPhase::new,
             EnumerationsPhase::new,
             ClassifierPhase::new,
             InheritancePhase::new,

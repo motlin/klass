@@ -25,6 +25,7 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -59,7 +60,6 @@ public class CompilerState
 
     public void runNonRootCompilerMacro(
             @Nonnull AntlrElement macroElement,
-            @Nonnull ParserRuleContext parserContext,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
@@ -84,24 +84,6 @@ public class CompilerState
 
     public void runRootCompilerMacro(
             @Nonnull AntlrElement macroElement,
-            @Nonnull ParserRuleContext parserContext,
-            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
-            @Nonnull String sourceCodeText,
-            @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
-            ParseTreeListener... listeners)
-    {
-        this.runRootCompilerMacro(
-                macroElement,
-                parserContext,
-                macroExpansionCompilerPhase,
-                sourceCodeText,
-                parserRule,
-                Lists.immutable.with(listeners));
-    }
-
-    public void runRootCompilerMacro(
-            @Nonnull AntlrElement macroElement,
-            @Nonnull ParserRuleContext parserContext,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
@@ -125,14 +107,14 @@ public class CompilerState
         try
         {
             this.compilerWalkState = new CompilerWalkState(this.domainModelState);
-            this.antlrWalkState = new AntlrWalkState();
+            this.antlrWalkState    = new AntlrWalkState();
 
             this.compilerInputState.runCompilerMacro(compilationUnit, listeners);
         }
         finally
         {
             this.compilerWalkState = oldCompilerWalkState;
-            this.antlrWalkState = oldAntlrWalkState;
+            this.antlrWalkState    = oldAntlrWalkState;
         }
     }
 
@@ -202,6 +184,18 @@ public class CompilerState
     {
         this.antlrWalkState.enterPackageDeclaration(ctx);
         this.compilerWalkState.enterPackageDeclaration(ctx);
+    }
+
+    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        this.antlrWalkState.enterTopLevelDeclaration(ctx);
+        this.compilerWalkState.enterTopLevelDeclaration(ctx);
+    }
+
+    public void exitTopLevelDeclaration()
+    {
+        this.antlrWalkState.exitTopLevelDeclaration();
+        this.compilerWalkState.exitTopLevelDeclaration();
     }
 
     public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
@@ -361,18 +355,29 @@ public class CompilerState
         try
         {
             this.compilerWalkState = compilerWalkState;
-            this.antlrWalkState = antlrWalkState;
+            this.antlrWalkState    = antlrWalkState;
             runnable.run();
         }
         finally
         {
             this.compilerWalkState = new CompilerWalkState(this.domainModelState);
-            this.antlrWalkState = new AntlrWalkState();
+            this.antlrWalkState    = new AntlrWalkState();
         }
     }
 
-    public ImmutableList<RootCompilerError> getCompilerErrors()
+    public Integer getOrdinal(@Nonnull ParserRuleContext ctx)
     {
-        return this.compilerErrorHolder.getCompilerErrors();
+        TopLevelDeclarationContext topLevelDeclarationContext = AntlrUtils.getParentOfType(
+                ctx,
+                TopLevelDeclarationContext.class);
+
+        if (ctx == topLevelDeclarationContext)
+        {
+            throw new AssertionError(ctx);
+        }
+
+        Integer topLevelElementOrdinalByContext = this.domainModelState.getTopLevelElementOrdinalByContext(topLevelDeclarationContext);
+        Objects.requireNonNull(topLevelElementOrdinalByContext);
+        return topLevelElementOrdinalByContext;
     }
 }

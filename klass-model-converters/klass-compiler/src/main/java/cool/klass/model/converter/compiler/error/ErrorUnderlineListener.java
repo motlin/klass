@@ -1,8 +1,8 @@
 package cool.klass.model.converter.compiler.error;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import cool.klass.model.converter.compiler.AntlrUtils;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
@@ -131,7 +131,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     @Override
     public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
-        InterfaceHeaderContext interfaceDeclarationHeaderContext = this.getParentOfType(
+        InterfaceHeaderContext interfaceDeclarationHeaderContext = AntlrUtils.getParentOfType(
                 ctx,
                 InterfaceHeaderContext.class);
         if (interfaceDeclarationHeaderContext != null)
@@ -140,7 +140,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
             return;
         }
 
-        ClassHeaderContext classDeclarationHeaderContext = this.getParentOfType(
+        ClassHeaderContext classDeclarationHeaderContext = AntlrUtils.getParentOfType(
                 ctx,
                 ClassHeaderContext.class);
         if (classDeclarationHeaderContext != null)
@@ -185,7 +185,7 @@ public class ErrorUnderlineListener extends AbstractErrorListener
     @Override
     public void enterVariableReference(@Nonnull VariableReferenceContext ctx)
     {
-        ServiceCriteriaDeclarationContext serviceCriteriaDeclarationContext = this.getParentOfType(
+        ServiceCriteriaDeclarationContext serviceCriteriaDeclarationContext = AntlrUtils.getParentOfType(
                 ctx,
                 ServiceCriteriaDeclarationContext.class);
         if (serviceCriteriaDeclarationContext == null)
@@ -317,22 +317,5 @@ public class ErrorUnderlineListener extends AbstractErrorListener
                 this.contextualStrings.add(contextString);
             }
         }
-    }
-
-    @Nullable
-    private <T> T getParentOfType(@Nonnull ParserRuleContext ctx, @Nonnull Class<T> aClass /* klass? */)
-    {
-        if (aClass.isInstance(ctx))
-        {
-            return aClass.cast(ctx);
-        }
-
-        ParserRuleContext parent = ctx.getParent();
-        if (parent == null)
-        {
-            return null;
-        }
-
-        return this.getParentOfType(parent, aClass);
     }
 }
