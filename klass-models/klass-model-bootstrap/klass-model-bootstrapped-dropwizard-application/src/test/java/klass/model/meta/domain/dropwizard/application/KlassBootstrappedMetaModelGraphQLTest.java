@@ -9,7 +9,7 @@ import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
 
-public class KlassBootstrappedMetaModelApplicationTest
+public class KlassBootstrappedMetaModelGraphQLTest
         extends AbstractKlassBootstrappedMetaModelApplicationTest
 {
     @Test

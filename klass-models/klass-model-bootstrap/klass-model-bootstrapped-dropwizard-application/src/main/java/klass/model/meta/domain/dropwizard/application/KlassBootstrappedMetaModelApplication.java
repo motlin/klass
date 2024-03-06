@@ -9,6 +9,8 @@ import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
+import io.liftwizard.servlet.bundle.spa.SPARedirectFilterBundle;
+import io.liftwizard.servlet.config.spa.SPARedirectFilterFactory;
 import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 
 public class KlassBootstrappedMetaModelApplication
@@ -45,6 +47,15 @@ public class KlassBootstrappedMetaModelApplication
             public DataSourceFactory getDataSourceFactory(KlassBootstrappedMetaModelConfiguration configuration)
             {
                 return configuration.getNamedDataSourcesFactory().getNamedDataSourceFactoryByName("h2-tcp");
+            }
+        });
+
+        bootstrap.addBundle(new SPARedirectFilterBundle<>()
+        {
+            @Override
+            public SPARedirectFilterFactory getSPARedirectFilterFactory(KlassBootstrappedMetaModelConfiguration configuration)
+            {
+                return configuration.getSPARedirectFilterFactory();
             }
         });
     }
