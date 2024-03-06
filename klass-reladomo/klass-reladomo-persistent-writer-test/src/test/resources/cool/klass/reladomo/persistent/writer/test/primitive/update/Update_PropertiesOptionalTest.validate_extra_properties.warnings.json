@@ -1,4 +1,3 @@
 [
-  "Warning at PropertiesOptional.createdOn. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"1999-12-31T23:59:59.999Z\".",
   "Warning at PropertiesOptional.optionalDerived. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was string: \"PropertiesOptional optionalDerived 1 ☝\"."
 ]

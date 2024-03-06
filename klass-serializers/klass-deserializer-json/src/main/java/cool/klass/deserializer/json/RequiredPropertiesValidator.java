@@ -129,7 +129,7 @@ public class RequiredPropertiesValidator
         {
             this.handleKeyProperty(dataTypeProperty);
         }
-        else if (dataTypeProperty.isAudit())
+        else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
             if (dataTypeProperty.isPrivate())
             {
@@ -139,6 +139,10 @@ public class RequiredPropertiesValidator
             {
                 this.handleWarnIfPresent(dataTypeProperty, "audit");
             }
+        }
+        else if (dataTypeProperty.isCreatedOn())
+        {
+            this.handleCreatedOnProperty(dataTypeProperty);
         }
         else if (dataTypeProperty.isForeignKey())
         {
@@ -165,6 +169,14 @@ public class RequiredPropertiesValidator
             {
                 this.handleWarnIfPresent(dataTypeProperty, "temporal");
             }
+        }
+        else if (dataTypeProperty.isPrivate())
+        {
+            this.handleErrorIfPresent(dataTypeProperty, "private");
+        }
+        else if (dataTypeProperty.isDerived())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "derived");
         }
         else if (dataTypeProperty.isVersion())
         {
@@ -244,18 +256,50 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        this.handleMissingKeyProperty(dataTypeProperty);
-    }
+        if (this.operationMode == OperationMode.PATCH)
+        {
+            return;
+        }
 
-    protected void handleMissingKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
-    {
-        this.handlePlainProperty(dataTypeProperty);
+        JsonNode jsonNode = this.objectNode.path(dataTypeProperty.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            String error = String.format(
+                    "Error at %s. Expected value for key property '%s.%s: %s%s' but value was %s.",
+                    this.getContextString(),
+                    dataTypeProperty.getOwningClassifier().getName(),
+                    dataTypeProperty.getName(),
+                    dataTypeProperty.getType(),
+                    dataTypeProperty.isOptional() ? "?" : "",
+                    jsonNode.getNodeType().toString().toLowerCase());
+            this.errors.add(error);
+        }
     }
 
     protected boolean isForeignKeyMatchingRequiredNested(DataTypeProperty dataTypeProperty)
     {
         // TODO: Exclude path here
         return dataTypeProperty.getKeysMatchingThisForeignKey().keysView().anySatisfy(this::isToOneRequired);
+    }
+
+    private void handleCreatedOnProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        if (this.isInProjection && this.operationMode == OperationMode.CREATE)
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "audit");
+        }
+        else if (this.isInProjection && (this.operationMode == OperationMode.REPLACE || this.operationMode == OperationMode.PATCH))
+        {
+            // Validate in Incoming(Create|Update)DataModelValidator
+        }
+        else if (!this.isInProjection)
+        {
+            // Validate in Incoming(Create|Update)DataModelValidator
+        }
+        else
+        {
+            throw new AssertionError();
+        }
     }
 
     protected boolean isToOneRequired(AssociationEnd associationEnd)

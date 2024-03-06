@@ -151,9 +151,10 @@ public class IncomingCreateDataModelValidator
         }
         else if (dataTypeProperty.isTemporal())
         {
-            // this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
+            return;
         }
-        else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
+
+        if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
             if (dataTypeProperty.isForeignKey())
             {
@@ -163,12 +164,7 @@ public class IncomingCreateDataModelValidator
         }
         else if (dataTypeProperty.isCreatedOn())
         {
-            this.handleCreatedOnProperty(dataTypeProperty);
-        }
-        else if (!dataTypeProperty.isDerived()
-                && dataTypeProperty.isForeignKey())
-        {
-            // throw new AssertionError(dataTypeProperty);
+            return;
         }
         else if (dataTypeProperty.isVersion())
         {
@@ -239,43 +235,6 @@ public class IncomingCreateDataModelValidator
                             this.getContextString(),
                             dataTypeProperty.getName(),
                             maybeUserId.get(),
-                            jsonDataTypeValue.asText());
-            this.warnings.add(warning);
-        }
-        finally
-        {
-            this.contextStack.pop();
-        }
-    }
-
-    private void handleCreatedOnProperty(@Nonnull DataTypeProperty dataTypeProperty)
-    {
-        this.contextStack.push(dataTypeProperty.getName());
-
-        try
-        {
-            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
-            if (jsonDataTypeValue.isMissingNode() || !jsonDataTypeValue.isTextual())
-            {
-                return;
-            }
-
-            Optional<Instant> parsed = getInstant(jsonDataTypeValue);
-            if (parsed.isEmpty())
-            {
-                return;
-            }
-
-            if (this.mutationContext.getTransactionTime().equals(parsed.get()))
-            {
-                return;
-            }
-
-            String warning = "Warning at %s. Expected createdOn property '%s' to be absent or to match current transaction time '%s' but got '%s'."
-                    .formatted(
-                            this.getContextString(),
-                            dataTypeProperty.getName(),
-                            this.mutationContext.getTransactionTime(),
                             jsonDataTypeValue.asText());
             this.warnings.add(warning);
         }
@@ -572,6 +531,24 @@ public class IncomingCreateDataModelValidator
                         keysString);
 
                 this.errors.add(error);
+            }
+            else
+            {
+                // validate that present properties match, if they are temporal, version, created on, created by
+                ObjectNode childObjectNode = (ObjectNode) childJsonNode;
+                // TODO: Add isInProject == false
+                IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
+                        this.dataStore,
+                        this.userKlass,
+                        associationEnd.getType(),
+                        this.mutationContext,
+                        childObjectNode,
+                        this.errors,
+                        this.warnings,
+                        this.contextStack,
+                        Optional.of(associationEnd),
+                        false);
+                validator.validate();
             }
         }
         finally

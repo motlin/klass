@@ -6,8 +6,6 @@
   "Warning at PropertiesRequired.version.systemFrom. Didn't expect to receive value for temporal property 'PropertiesRequiredVersion.systemFrom: TemporalInstant?' but value was string: \"2000-01-01T00:00:00Z\".",
   "Warning at PropertiesRequired.version.systemTo. Didn't expect to receive value for temporal property 'PropertiesRequiredVersion.systemTo: TemporalInstant?' but value was null.",
   "Warning at PropertiesRequired.version.createdOn. Didn't expect to receive value for audit property 'PropertiesRequiredVersion.createdOn: Instant' but value was string: \"2000-01-01T00:00:00Z\".",
-  "Warning at PropertiesRequired.createdOn. Expected createdOn property 'createdOn' to be absent or to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
-  "Warning at PropertiesRequired.version.createdOn. Expected createdOn property 'createdOn' to be absent or to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
   "Warning at PropertiesRequired.version.createdBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
   "Warning at PropertiesRequired.version.lastUpdatedBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
   "Warning at PropertiesRequired.createdBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",

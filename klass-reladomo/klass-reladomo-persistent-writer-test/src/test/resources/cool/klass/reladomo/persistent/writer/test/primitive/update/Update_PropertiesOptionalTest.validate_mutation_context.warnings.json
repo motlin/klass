@@ -1,5 +1,4 @@
 [
-  "Warning at PropertiesOptional.createdOn. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"2000-01-01T00:00:00Z\".",
   "Warning at PropertiesOptional.optionalDerived. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was string: \"PropertiesOptional optionalDerived 1 ☝\".",
   "Warning at PropertiesOptional.version.createdBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
   "Warning at PropertiesOptional.version.lastUpdatedBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",

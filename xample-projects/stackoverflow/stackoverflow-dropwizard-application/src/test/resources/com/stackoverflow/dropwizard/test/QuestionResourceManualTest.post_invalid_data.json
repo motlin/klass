@@ -12,6 +12,6 @@
   "Error at Question.tags[2]. Expected json object but value was string: \"oops\".",
   "Error at Question.version.number. Expected property with type 'QuestionVersion.number: Integer' but got '20000000000' with type 'number'.",
   "Error at Question.body. Expected value for required property 'Document.body: String' but value was missing.",
-  "Error at Question.tags[1].tag.name. Expected key property 'Tag.name' but it was missing.",
+  "Error at Question.tags[1].tag.name. Expected value for key property 'Tag.name: String' but value was missing.",
   "Error at Question.version.number. Expected value for version property 'QuestionVersion.number: Integer' to be 1 during initial creation but value was number."
 ]

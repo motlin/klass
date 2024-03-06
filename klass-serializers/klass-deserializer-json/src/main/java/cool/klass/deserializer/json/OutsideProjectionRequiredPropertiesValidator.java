@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 
@@ -25,21 +24,6 @@ public class OutsideProjectionRequiredPropertiesValidator
             boolean isRoot)
     {
         super(klass, objectNode, operationMode, errors, warnings, contextStack, pathHere, isRoot, false);
-    }
-
-    @Override
-    protected void handleMissingKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
-    {
-        if (!this.objectNode.has(dataTypeProperty.getName()))
-        {
-            String error = String.format(
-                    "Error at %s. Expected key property '%s.%s' but it was missing.",
-                    this.getContextString(),
-                    this.klass.getName(),
-                    dataTypeProperty.getName());
-            // TODO: Test nested reference outside projection. For example, question's answer's author is missing a key property
-            this.errors.add(error);
-        }
     }
 
     @Override

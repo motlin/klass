@@ -147,33 +147,28 @@ public class IncomingUpdateDataModelValidator
         if (dataTypeProperty.isKey())
         {
             this.handleKeyProperty(dataTypeProperty);
-            return;
         }
-        if (dataTypeProperty.isTemporalInstant())
+        else if (dataTypeProperty.isTemporalInstant())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
-            return;
         }
-        if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
+        else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
             if (dataTypeProperty.isForeignKey())
             {
                 return;
             }
-            this.checkPropertyMatchesIfPresent(dataTypeProperty, "user id");
-            return;
+            this.handleAuditProperty(dataTypeProperty);
         }
-        if (dataTypeProperty.isCreatedOn())
+        else if (dataTypeProperty.isCreatedOn())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "created on");
-            return;
         }
-        if (dataTypeProperty.isVersion())
+        else if (dataTypeProperty.isVersion())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "version");
-            return;
         }
-        if (dataTypeProperty.isFinal())
+        else if (dataTypeProperty.isFinal())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "final");
         }
@@ -212,6 +207,11 @@ public class IncomingUpdateDataModelValidator
         {
             this.contextStack.pop();
         }
+    }
+
+    private void handleAuditProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.checkPropertyMatchesIfPresent(dataTypeProperty, "user id");
     }
 
     private void checkPropertyMatchesIfPresent(
