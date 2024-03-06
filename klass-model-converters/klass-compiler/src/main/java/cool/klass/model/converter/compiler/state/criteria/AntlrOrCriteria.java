@@ -62,4 +62,12 @@ public class AntlrOrCriteria extends AntlrBinaryCriteria
 
         super.reportErrors(compilerAnnotationHolder);
     }
+
+    @Override
+    public void visit(AntlrCriteriaVisitor visitor)
+    {
+        visitor.visitOr(this);
+        this.left.visit(visitor);
+        this.right.visit(visitor);
+    }
 }

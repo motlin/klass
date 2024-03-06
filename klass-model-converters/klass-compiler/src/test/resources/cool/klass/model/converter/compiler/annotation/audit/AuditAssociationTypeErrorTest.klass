@@ -28,6 +28,22 @@ association LastUpdatedBy
     relationship this.lastUpdatedById == NotUserClass.id
 }
 
+association VersionCreatedBy
+{
+    dummyVersionClassesCreatedBy: DummyClassVersion[0..*];
+    createdBy: NotUserClass[1..1] createdBy;
+
+    relationship this.createdById == NotUserClass.id
+}
+
+association VersionLastUpdatedBy
+{
+    dummyVersionClassesLastUpdatedBy: DummyClassVersion[0..*];
+    lastUpdatedBy: NotUserClass[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == NotUserClass.id
+}
+
 user User systemTemporal versioned
 {
     id: String key userId maximumLength(256);

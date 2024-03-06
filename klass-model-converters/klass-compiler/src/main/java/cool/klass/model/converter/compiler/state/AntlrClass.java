@@ -32,6 +32,7 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
@@ -154,6 +155,11 @@ public class AntlrClass
     public boolean isUser()
     {
         return this.isUser;
+    }
+
+    public ListIterable<AntlrAssociationEnd> getAssociationEndStates()
+    {
+        return associationEndStates.asUnmodifiable();
     }
 
     @Override
@@ -738,6 +744,12 @@ public class AntlrClass
         }
 
         return superClass.isSubClassOf(classifier);
+    }
+
+    @Override
+    public Optional<AntlrClass> getSuperClass()
+    {
+        return this.superClassState;
     }
 
     @Nonnull

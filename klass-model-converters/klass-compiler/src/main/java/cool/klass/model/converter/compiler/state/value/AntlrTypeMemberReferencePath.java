@@ -128,6 +128,12 @@ public class AntlrTypeMemberReferencePath
         return Lists.immutable.with(type);
     }
 
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitTypeMember(this);
+    }
+
     @Nonnull
     @Override
     public TypeMemberReferencePathContext getElementContext()

@@ -69,4 +69,12 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
         this.left.addForeignKeys();
         this.right.addForeignKeys();
     }
+
+    @Override
+    public void visit(AntlrCriteriaVisitor visitor)
+    {
+        visitor.visitAnd(this);
+        this.left.visit(visitor);
+        this.right.visit(visitor);
+    }
 }

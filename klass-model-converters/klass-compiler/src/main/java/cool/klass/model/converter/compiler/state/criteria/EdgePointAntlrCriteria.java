@@ -102,4 +102,10 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     {
         // Intentionally blank
     }
+
+    @Override
+    public void visit(AntlrCriteriaVisitor visitor)
+    {
+        visitor.visitEdgePoint(this);
+    }
 }

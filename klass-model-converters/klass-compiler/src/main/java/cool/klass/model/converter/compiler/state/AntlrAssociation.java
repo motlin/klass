@@ -305,6 +305,11 @@ public class AntlrAssociation
         }
     }
 
+    public AntlrRelationship getRelationship()
+    {
+        return Objects.requireNonNull(this.relationship);
+    }
+
     public void setRelationship(@Nonnull AntlrRelationship relationship)
     {
         if (this.relationship != null)

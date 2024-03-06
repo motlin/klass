@@ -50,6 +50,12 @@ public class AntlrProjectionReferenceProperty
         this.referenceProperty     = Objects.requireNonNull(referenceProperty);
     }
 
+    @Nonnull
+    public AntlrReferenceProperty<?> getProperty()
+    {
+        return this.referenceProperty;
+    }
+
     @Override
     public boolean isContext()
     {
@@ -107,6 +113,12 @@ public class AntlrProjectionReferenceProperty
     public void build2()
     {
         this.children.forEach(AntlrProjectionElement::build2);
+    }
+
+    @Override
+    public void visit(@Nonnull AntlrProjectionVisitor visitor)
+    {
+        visitor.visitReferenceProperty(this);
     }
 
     @Nonnull

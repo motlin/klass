@@ -584,4 +584,45 @@ public abstract class AntlrClassifier
     {
         return this.getDataTypeProperties().select(AntlrDataTypeProperty::isKey).toImmutable();
     }
+
+    public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenDataTypeProperties(String name)
+    {
+        MutableList<AntlrDataTypeProperty<?>> overriddenProperties = Lists.mutable.empty();
+        MutableSet<AntlrClassifier> visited = Sets.mutable.empty();
+        this.getOverriddenDataTypeProperties(name, overriddenProperties, visited);
+        return overriddenProperties.toImmutable();
+    }
+
+    protected void getOverriddenDataTypeProperties(
+            String name,
+            MutableList<AntlrDataTypeProperty<?>> overriddenProperties,
+            MutableSet<AntlrClassifier> visited)
+    {
+        if (visited.contains(this))
+        {
+            return;
+        }
+        visited.add(this);
+
+        AntlrDataTypeProperty<?> antlrDataTypeProperty = this.dataTypePropertiesByName.get(name);
+        if (antlrDataTypeProperty != null)
+        {
+            overriddenProperties.add(antlrDataTypeProperty);
+        }
+
+        this
+                .getSuperClass()
+                .ifPresent(antlrClass -> antlrClass.getOverriddenDataTypeProperties(name, overriddenProperties,
+                        visited));
+
+        for (AntlrInterface interfaceState : this.interfaceStates)
+        {
+            interfaceState.getOverriddenDataTypeProperties(name, overriddenProperties, visited);
+        }
+    }
+
+    public Optional<AntlrClass> getSuperClass()
+    {
+        return Optional.empty();
+    }
 }

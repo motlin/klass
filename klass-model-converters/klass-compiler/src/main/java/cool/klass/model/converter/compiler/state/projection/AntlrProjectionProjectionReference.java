@@ -101,6 +101,12 @@ public class AntlrProjectionProjectionReference
         this.projectionProjectionReferenceBuilder.setReferencedProjectionBuilder(referencedProjectionBuilder);
     }
 
+    @Override
+    public void visit(@Nonnull AntlrProjectionVisitor visitor)
+    {
+        visitor.visitProjectionReference(this);
+    }
+
     @Nonnull
     @Override
     public AntlrProjectionParent getParent()

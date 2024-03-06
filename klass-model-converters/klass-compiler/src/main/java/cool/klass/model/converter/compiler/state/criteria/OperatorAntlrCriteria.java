@@ -160,8 +160,8 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberReferencePathState();
         AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberReferencePathState();
 
-        AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
-        AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypePropertyState();
+        AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypeProperty();
+        AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypeProperty();
 
         if (sourceEnd.isToMany() && targetEnd.isToMany())
         {
@@ -207,6 +207,12 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         endWithForeignKeys.addForeignKeyPropertyMatchingProperty(
                 foreignKeyProperty,
                 keyProperty);
+    }
+
+    @Override
+    public void visit(AntlrCriteriaVisitor visitor)
+    {
+        visitor.visitOperator(this);
     }
 
     @Nullable

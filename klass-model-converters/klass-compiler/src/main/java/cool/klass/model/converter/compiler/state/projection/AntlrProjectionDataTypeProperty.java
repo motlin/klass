@@ -65,7 +65,7 @@ public class AntlrProjectionDataTypeProperty
     }
 
     @Nonnull
-    public AntlrDataTypeProperty<?> getDataTypeProperty()
+    public AntlrDataTypeProperty<?> getProperty()
     {
         return this.dataTypeProperty;
     }
@@ -95,6 +95,12 @@ public class AntlrProjectionDataTypeProperty
     public void build2()
     {
         // Deliberately empty
+    }
+
+    @Override
+    public void visit(@Nonnull AntlrProjectionVisitor visitor)
+    {
+        visitor.visitDataTypeProperty(this);
     }
 
     @Override

@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.value.AntlrExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.literal.FloatingPointLiteralValueImpl.FloatingPointLiteralValueBuilder;
 import cool.klass.model.meta.grammar.KlassParser.FloatingPointLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -66,5 +67,11 @@ public final class AntlrFloatingPointLiteralValue
         return Lists.immutable.with(
                 AntlrPrimitiveType.FLOAT,
                 AntlrPrimitiveType.DOUBLE);
+    }
+
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitFloatingPointLiteral(this);
     }
 }

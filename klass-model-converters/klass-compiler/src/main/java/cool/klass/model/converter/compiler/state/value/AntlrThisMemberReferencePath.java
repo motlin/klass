@@ -109,6 +109,12 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
         return Lists.immutable.with(type);
     }
 
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitThisMember(this);
+    }
+
     @Nonnull
     @Override
     public ThisMemberReferencePathContext getElementContext()

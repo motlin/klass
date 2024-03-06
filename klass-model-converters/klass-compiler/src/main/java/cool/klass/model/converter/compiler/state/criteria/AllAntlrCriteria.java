@@ -71,4 +71,10 @@ public class AllAntlrCriteria extends AntlrCriteria
     {
         // Intentionally blank
     }
+
+    @Override
+    public void visit(AntlrCriteriaVisitor visitor)
+    {
+        visitor.visitAll(this);
+    }
 }

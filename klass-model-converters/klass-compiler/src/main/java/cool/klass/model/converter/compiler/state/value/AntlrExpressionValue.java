@@ -52,4 +52,6 @@ public abstract class AntlrExpressionValue extends AntlrElement
     {
         // Intentionally blank
     }
+
+    public abstract void visit(AntlrExpressionValueVisitor visitor);
 }

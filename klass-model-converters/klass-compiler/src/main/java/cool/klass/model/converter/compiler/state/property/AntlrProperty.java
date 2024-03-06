@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -246,6 +247,16 @@ public abstract class AntlrProperty
                 modifierStates.collect(AntlrElement::getElementContext));
     }
     //</editor-fold>
+
+    public void reportUnreferencedPrivateProperty(CompilerAnnotationState compilerAnnotationState)
+    {
+        String message = String.format(
+                "Private property '%s.%s' is not referenced in any criteria.",
+                this.getOwningClassifierState().getName(),
+                this.getName());
+        // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
+        compilerAnnotationState.add("ERR_PRP_REF", message, this, AnnotationSeverity.WARNING);
+    }
 
     @Override
     protected Pattern getNamePattern()

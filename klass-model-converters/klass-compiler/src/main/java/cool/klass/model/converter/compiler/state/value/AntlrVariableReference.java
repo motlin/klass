@@ -95,4 +95,10 @@ public class AntlrVariableReference extends AntlrExpressionValue
                 this.variableName,
                 AntlrParameter.NOT_FOUND);
     }
+
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitVariableReference(this);
+    }
 }

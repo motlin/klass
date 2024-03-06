@@ -22,6 +22,7 @@ import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.bag.strategy.mutable.HashBagWithHashingStrategy;
@@ -88,6 +89,11 @@ public class AntlrServiceGroup
         this.urlStates.add(urlState);
     }
 
+    public ListIterable<AntlrUrl> getUrlStates()
+    {
+        return this.urlStates.asUnmodifiable();
+    }
+
     @Nonnull
     @Override
     public ServiceGroupDeclarationContext getElementContext()
@@ -113,6 +119,12 @@ public class AntlrServiceGroup
         {
             this.reportTypeNotFound(compilerAnnotationHolder);
         }
+    }
+
+    @Override
+    public void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    {
+        // Deliberately empty
     }
 
     private void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
@@ -183,12 +195,6 @@ public class AntlrServiceGroup
                 message,
                 this,
                 this.getElementContext().classReference());
-    }
-
-    @Override
-    public void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationState compilerAnnotationState)
-    {
-        // Deliberately empty
     }
     //</editor-fold>
 

@@ -2,14 +2,24 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.AntlrUtils;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.criteria.AntlrCriteriaVisitor;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrProperty;
+import cool.klass.model.converter.compiler.state.service.AntlrService;
+import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
+import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
@@ -48,7 +58,7 @@ public class AntlrDomainModel
     private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
     private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
 
-    private final MutableOrderedMap<CompilationUnitContext, AntlrCompilationUnit> compilationUnitsByContext        =
+    private final MutableOrderedMap<CompilationUnitContext, AntlrCompilationUnit> compilationUnitsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableOrderedMap<TopLevelDeclarationContext, AntlrTopLevelElement> topLevelElementsByContext        =
@@ -402,16 +412,68 @@ public class AntlrDomainModel
         return this.serviceGroupsByContext.get(context);
     }
 
-    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
+    //<editor-fold desc="Report Compiler Errors">
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationState)
     {
         for (AntlrClass userClassState : this.userClassStates)
         {
             if (this.userClassStates.size() > 1)
             {
-                userClassState.reportDuplicateUserClass(compilerAnnotationHolder);
+                userClassState.reportDuplicateUserClass(compilerAnnotationState);
             }
         }
 
+        this.reportDuplicateTopLevelNames(compilerAnnotationState);
+
+        for (AntlrCompilationUnit compilationUnitState : this.compilationUnitStates)
+        {
+            compilationUnitState.reportNameErrors(compilerAnnotationState);
+        }
+
+        for (AntlrEnumeration enumerationState : this.enumerationStates)
+        {
+            enumerationState.reportNameErrors(compilerAnnotationState);
+            enumerationState.reportErrors(compilerAnnotationState);
+        }
+
+        for (AntlrClassifier classifierState : this.classifierStates)
+        {
+            classifierState.reportNameErrors(compilerAnnotationState);
+            classifierState.reportErrors(compilerAnnotationState);
+            if (this.userClassStates.isEmpty())
+            {
+                classifierState.reportAuditErrors(compilerAnnotationState);
+            }
+        }
+
+        for (AntlrAssociation associationState : this.associationStates)
+        {
+            associationState.reportNameErrors(compilerAnnotationState);
+            associationState.reportErrors(compilerAnnotationState);
+        }
+
+        for (AntlrProjection projectionState : this.projectionStates)
+        {
+            projectionState.reportNameErrors(compilerAnnotationState);
+            projectionState.reportErrors(compilerAnnotationState);
+        }
+
+        ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
+        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
+        {
+            if (duplicateServiceGroupKlasses.contains(serviceGroupState.getKlass()))
+            {
+                serviceGroupState.reportDuplicateServiceGroupClass(compilerAnnotationState);
+            }
+            serviceGroupState.reportNameErrors(compilerAnnotationState);
+            serviceGroupState.reportErrors(compilerAnnotationState);
+        }
+
+        this.reportUnreferencedPrivateProperties(compilerAnnotationState);
+    }
+
+    private void reportDuplicateTopLevelNames(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    {
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
 
         ImmutableBag<String> duplicateTopLevelNames = topLevelNames
@@ -422,51 +484,7 @@ public class AntlrDomainModel
         this.topLevelElementsByContext
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
                 .select(topLevelElementState -> duplicateTopLevelNames.contains(topLevelElementState.getName()))
-                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationHolder);
-
-        for (AntlrCompilationUnit compilationUnitState : this.compilationUnitStates)
-        {
-            compilationUnitState.reportNameErrors(compilerAnnotationHolder);
-        }
-
-        for (AntlrEnumeration enumerationState : this.enumerationStates)
-        {
-            enumerationState.reportNameErrors(compilerAnnotationHolder);
-            enumerationState.reportErrors(compilerAnnotationHolder);
-        }
-
-        for (AntlrClassifier classifierState : this.classifierStates)
-        {
-            classifierState.reportNameErrors(compilerAnnotationHolder);
-            classifierState.reportErrors(compilerAnnotationHolder);
-            if (this.userClassStates.isEmpty())
-            {
-                classifierState.reportAuditErrors(compilerAnnotationHolder);
-            }
-        }
-
-        for (AntlrAssociation associationState : this.associationStates)
-        {
-            associationState.reportNameErrors(compilerAnnotationHolder);
-            associationState.reportErrors(compilerAnnotationHolder);
-        }
-
-        for (AntlrProjection projectionState : this.projectionStates)
-        {
-            projectionState.reportNameErrors(compilerAnnotationHolder);
-            projectionState.reportErrors(compilerAnnotationHolder);
-        }
-
-        ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
-        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
-        {
-            if (duplicateServiceGroupKlasses.contains(serviceGroupState.getKlass()))
-            {
-                serviceGroupState.reportDuplicateServiceGroupClass(compilerAnnotationHolder);
-            }
-            serviceGroupState.reportNameErrors(compilerAnnotationHolder);
-            serviceGroupState.reportErrors(compilerAnnotationHolder);
-        }
+                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationState);
     }
 
     private ImmutableList<String> getTopLevelNames()
@@ -489,6 +507,85 @@ public class AntlrDomainModel
                 .reject(AntlrClass.NOT_FOUND::equals)
                 .toImmutable();
     }
+
+    private void reportUnreferencedPrivateProperties(@Nonnull CompilerAnnotationState compilerAnnotationState)
+    {
+        var criteriaVisitor = new UnreferencedPrivatePropertiesCriteriaVisitor();
+
+        this.visitCriteria(criteriaVisitor);
+
+        this.reportUnreferencedPrivateProperty(
+                compilerAnnotationState,
+                criteriaVisitor.getDataTypePropertiesReferencedByCriteria(),
+                criteriaVisitor.getAssociationEndsReferencedByCriteria());
+    }
+
+    private void visitCriteria(AntlrCriteriaVisitor criteriaVisitor)
+    {
+        for (AntlrClassifier classifierState : this.classifierStates)
+        {
+            for (AntlrProperty property : classifierState.getProperties())
+            {
+                if (property instanceof AntlrParameterizedProperty parameterizedProperty)
+                {
+                    AntlrCriteria criteria = parameterizedProperty.getCriteria();
+                    criteria.visit(criteriaVisitor);
+                }
+            }
+        }
+
+        for (AntlrAssociation associationState : this.associationStates)
+        {
+            associationState.getRelationship().getCriteria().visit(criteriaVisitor);
+        }
+
+        for (AntlrServiceGroup serviceGroupState : this.serviceGroupStates)
+        {
+            for (AntlrUrl urlState : serviceGroupState.getUrlStates())
+            {
+                for (AntlrService serviceState : urlState.getServiceStates())
+                {
+                    for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
+                    {
+                        serviceCriteriaState.getCriteria().visit(criteriaVisitor);
+                    }
+                }
+            }
+        }
+    }
+
+    private void reportUnreferencedPrivateProperty(
+            @Nonnull CompilerAnnotationState compilerAnnotationState,
+            @Nonnull Set<AntlrDataTypeProperty<?>> dataTypePropertiesReferencedByCriteria,
+            @Nonnull Set<AntlrAssociationEnd> associationEndsReferencedByCriteria)
+    {
+        for (AntlrClassifier classifierState : this.classifierStates)
+        {
+            for (AntlrDataTypeProperty<?> dataTypeProperty : classifierState.getDataTypeProperties())
+            {
+                ImmutableList<AntlrDataTypeProperty<?>> overriddenProperties = dataTypeProperty.getOverriddenProperties();
+                if (dataTypeProperty.isPrivate() && overriddenProperties.noneSatisfy(
+                        dataTypePropertiesReferencedByCriteria::contains))
+                {
+                    dataTypeProperty.reportUnreferencedPrivateProperty(compilerAnnotationState);
+                }
+            }
+        }
+
+        for (AntlrClass classState : this.classStates)
+        {
+            for (AntlrAssociationEnd associationEndState : classState.getAssociationEndStates())
+            {
+                if (associationEndState.isPrivate()
+                        && !associationEndsReferencedByCriteria.contains(associationEndState)
+                        && !associationEndsReferencedByCriteria.contains(associationEndState.getOpposite()))
+                {
+                    associationEndState.reportUnreferencedPrivateProperty(compilerAnnotationState);
+                }
+            }
+        }
+    }
+    //</editor-fold>
 
     @Nonnull
     public DomainModelBuilder build(ImmutableList<CompilationUnit> compilationUnits)

@@ -43,3 +43,20 @@ association LastUpdatedByDuplicate
 
     relationship this.lastUpdatedById == User.id
 }
+
+
+association VersionCreatedBy
+{
+    dummyVersionClassesCreatedBy: DummyClassVersion[0..*];
+    createdBy: User[1..1] createdBy lastUpdatedBy;
+
+    relationship this.createdById == User.id
+}
+
+association VersionLastUpdatedBy
+{
+    dummyVersionClassesLastUpdatedBy: DummyClassVersion[0..*];
+    lastUpdatedBy: User[1..1] createdBy lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.id
+}

@@ -342,11 +342,24 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     @Nonnull
     @Override
-    public abstract DataTypePropertyBuilder<T, ?, ?> build();
+    public abstract DataTypePropertyBuilder<T, ?, ?> getElementBuilder();
 
     @Nonnull
     @Override
-    public abstract DataTypePropertyBuilder<T, ?, ?> getElementBuilder();
+    public AntlrClassifier getOwningClassifierState()
+    {
+        return this.owningClassifierState;
+    }
+
+    public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenProperties()
+    {
+        return this.getOwningClassifierState().getOverriddenDataTypeProperties(this.getName());
+    }
+
+    //<editor-fold desc="Perform Compilation">
+    @Nonnull
+    @Override
+    public abstract DataTypePropertyBuilder<T, ?, ?> build();
 
     protected void buildValidations()
     {
@@ -378,24 +391,20 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
                 this.keyBuildersMatchingThisForeignKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
-                        dataTypeProperties.getOnly().getElementBuilder()));
+                        dataTypeProperties
+                                .getOnly().getElementBuilder()));
 
         this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
 
         MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
                 this.foreignKeyBuildersMatchingThisKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
-                        dataTypeProperties.getOnly().getElementBuilder()));
+                        dataTypeProperties
+                                .getOnly().getElementBuilder()));
 
         this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
     }
-
-    @Nonnull
-    @Override
-    public AntlrClassifier getOwningClassifierState()
-    {
-        return this.owningClassifierState;
-    }
+    //</editor-fold>
 
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
@@ -458,7 +467,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         if (keyBuilders.size() > 1)
         {
-            throw new AssertionError("TODO: Is it sometimes valid to have a single foreign key relate to many different primary keys on different types?");
+            throw new AssertionError(
+                    "TODO: Is it sometimes valid to have a single foreign key relate to many different primary keys on different types?");
         }
 
         if (!associationEnd.isToOne())
@@ -604,7 +614,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         offendingToken.getText());
                 ListIterable<AntlrModifier> modifiers = this
                         .getModifiers()
-                        .select(modifier -> modifier.isSystem() || modifier.isVersion() || modifier.isFrom() || modifier.isTo());
+                        .select(modifier -> modifier.isSystem()
+                                || modifier.isVersion()
+                                || modifier.isFrom()
+                                || modifier.isTo());
                 ListIterable<ParserRuleContext> modifierContexts = modifiers
                         .collect(AntlrElement::getElementContext);
                 compilerAnnotationHolder.add(

@@ -53,4 +53,6 @@ public abstract class AntlrCriteria extends AntlrElement
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".addForeignKeys() not implemented yet");
     }
+
+    public abstract void visit(AntlrCriteriaVisitor visitor);
 }

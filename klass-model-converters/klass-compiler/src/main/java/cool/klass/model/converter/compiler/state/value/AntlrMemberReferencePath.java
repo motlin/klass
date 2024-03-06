@@ -49,7 +49,13 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
     }
 
     @Nonnull
-    public AntlrDataTypeProperty<?> getDataTypePropertyState()
+    public ImmutableList<AntlrAssociationEnd> getAssociationEnds()
+    {
+        return this.associationEndStates;
+    }
+
+    @Nonnull
+    public AntlrDataTypeProperty<?> getDataTypeProperty()
     {
         return this.dataTypePropertyState;
     }

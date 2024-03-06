@@ -1,0 +1,17 @@
+════════════════════════════════════════ [35mERR_AUD_END[m ════════════════════════════════════════
+[31mError: Expected lastUpdatedBy association end 'DummyClassVersion.lastUpdatedBy' to have user type, but was NotUserClass.[m
+
+At (AuditAssociationTypeErrorTest.klass:42)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m39║ [35massociation [39mVersionLastUpdatedBy
+[39m40║ [36m{
+[39m42║     [39mlastUpdatedBy[36m: [39mNotUserClass[36m[[34m1[36m..[34m1[36m] [32mlastUpdatedBy[36m;
+[39m  ║ [31m                   ^^^^^^^^^^^^       ^^^^^^^^^^^^^
+[39m45║ [36m}
+[m
+[36mLocation:  [mAuditAssociationTypeErrorTest.klass:42[m
+[36mFile:      [mAuditAssociationTypeErrorTest.klass[m
+[36mLine:      [m42[m
+[36mCharacter: [m20
+═════════════════════════════════════════════════════════════════════════════════════════════

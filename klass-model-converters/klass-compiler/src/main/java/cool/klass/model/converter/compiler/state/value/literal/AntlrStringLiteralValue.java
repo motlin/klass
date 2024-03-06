@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.value.AntlrExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.literal.StringLiteralValueImpl.StringLiteralValueBuilder;
 import cool.klass.model.meta.grammar.KlassParser.StringLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -63,5 +64,11 @@ public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
     public ImmutableList<AntlrType> getPossibleTypes()
     {
         return Lists.immutable.with(AntlrPrimitiveType.STRING);
+    }
+
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitStringLiteral(this);
     }
 }

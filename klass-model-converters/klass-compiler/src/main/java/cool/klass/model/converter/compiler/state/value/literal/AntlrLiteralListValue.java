@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
+import cool.klass.model.converter.compiler.state.value.AntlrExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import cool.klass.model.meta.domain.value.literal.LiteralListValueImpl.LiteralListValueBuilder;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
@@ -89,5 +90,11 @@ public class AntlrLiteralListValue
                 .toList()
                 .distinct()
                 .toImmutable();
+    }
+
+    @Override
+    public void visit(AntlrExpressionValueVisitor visitor)
+    {
+        visitor.visitLiteralList(this);
     }
 }
