@@ -6,16 +6,14 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 
+import cool.klass.logging.context.MDCCloseable;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import org.slf4j.MDC;
 
 @Provider
 @Priority(Priorities.USER + 1)
-public class JsonViewFilter implements ContainerRequestFilter, ContainerResponseFilter
+public class JsonViewFilter implements ContainerRequestFilter
 {
     private final Projection projection;
 
@@ -27,14 +25,9 @@ public class JsonViewFilter implements ContainerRequestFilter, ContainerResponse
     @Override
     public void filter(ContainerRequestContext requestContext)
     {
-        MDC.put("klass.jsonView.projectionName", String.valueOf(this.projection));
-        MDC.put("klass.jsonView.projectionClass", this.projection.getKlass().getFullyQualifiedName());
-    }
+        MDCCloseable mdc = (MDCCloseable) requestContext.getProperty("mdc");
 
-    @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
-    {
-        MDC.remove("klass.jsonView.projectionName");
-        MDC.remove("klass.jsonView.projectionClass");
+        mdc.put("klass.jsonView.projectionName", String.valueOf(this.projection));
+        mdc.put("klass.jsonView.projectionClass", this.projection.getKlass().getFullyQualifiedName());
     }
 }

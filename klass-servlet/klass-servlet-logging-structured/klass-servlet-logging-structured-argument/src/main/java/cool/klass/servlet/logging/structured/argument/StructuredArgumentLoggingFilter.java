@@ -1,6 +1,7 @@
 package cool.klass.servlet.logging.structured.argument;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,8 +15,8 @@ import javax.servlet.ServletResponse;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
 
+import cool.klass.logging.context.MDCCloseable;
 import net.logstash.logback.marker.Markers;
-import org.eclipse.collections.api.factory.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,8 @@ public class StructuredArgumentLoggingFilter implements Filter
 
     private void initialize(ServletRequest servletRequest)
     {
-        servletRequest.setAttribute("structuredArguments", Maps.mutable.empty());
+        servletRequest.setAttribute("structuredArguments", new LinkedHashMap<>());
+        servletRequest.setAttribute("mdc", new MDCCloseable());
     }
 
     private void log(ServletRequest servletRequest)
@@ -65,5 +67,8 @@ public class StructuredArgumentLoggingFilter implements Filter
         Map<String, Object> structuredArgumentsMap = (Map<String, Object>) structuredArguments;
 
         LOGGER.info(Markers.appendEntries(structuredArgumentsMap), "structured logging");
+
+        MDCCloseable mdc = (MDCCloseable) servletRequest.getAttribute("mdc");
+        mdc.close();
     }
 }

@@ -33,6 +33,14 @@ public class StatusInfoStructuredLoggingFilter implements ContainerResponseFilte
         structuredArgumentsMap.put("klass.response.http.statusPhrase", statusInfo.getReasonPhrase());
 
         Type entityType = responseContext.getEntityType();
-        structuredArgumentsMap.put("klass.response.http.entityType", entityType);
+        if (entityType instanceof Class)
+        {
+            Class<?> aClass = (Class<?>) entityType;
+            structuredArgumentsMap.put("klass.response.http.entityType", aClass.getCanonicalName());
+        }
+        else
+        {
+            throw new AssertionError(entityType.getClass().getCanonicalName());
+        }
     }
 }

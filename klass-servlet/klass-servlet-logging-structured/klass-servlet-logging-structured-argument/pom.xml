@@ -17,6 +17,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-logging-context</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
@@ -47,4 +53,5 @@
         </dependency>
 
     </dependencies>
+
 </project>
