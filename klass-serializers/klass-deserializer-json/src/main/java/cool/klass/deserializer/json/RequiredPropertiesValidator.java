@@ -558,7 +558,7 @@ public class RequiredPropertiesValidator
             return OperationMode.REPLACE;
         }
 
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet");
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet: " + operationMode);
     }
 
     private String getContextString()
