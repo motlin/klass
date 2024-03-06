@@ -30,17 +30,18 @@
     </dependencyManagement>
 
     <modules>
-        <module>klass-generator-reladomo</module>
-        <module>klass-generator-service-resources</module>
         <module>klass-generator-dropwizard</module>
         <module>klass-generator-dto</module>
-        <module>klass-generator-meta-constants</module>
-        <module>klass-generator-json-view</module>
-        <module>klass-generator-graphql-schema</module>
-        <module>klass-generator-graphql-runtime-wiring</module>
         <module>klass-generator-graphql-data-fetcher</module>
-        <module>klass-generator-react-prop-type</module>
+        <module>klass-generator-graphql-runtime-wiring</module>
+        <module>klass-generator-graphql-schema</module>
+        <module>klass-generator-json-view</module>
         <module>klass-generator-klass-with-inference</module>
+        <module>klass-generator-meta-constants</module>
+        <module>klass-generator-projection</module>
+        <module>klass-generator-react-prop-type</module>
+        <module>klass-generator-reladomo</module>
+        <module>klass-generator-service-resources</module>
         <module>klass-generator-uml-nomnoml</module>
     </modules>
 </project>
