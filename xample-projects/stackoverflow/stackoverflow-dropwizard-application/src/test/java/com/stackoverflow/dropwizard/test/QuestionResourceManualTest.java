@@ -186,48 +186,88 @@ public class QuestionResourceManualTest
         Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_valid_data");
 
         //<editor-fold desc="POST valid json, status: CREATED">
-        //language=JSON
-        String validJson = ""
-                + "{\n"
-                + "  \"title\": \"example title 1\",\n"
-                + "  \"body\": \"example body 1\",\n"
-                + "  \"status\": \"Open\",\n"
-                + "  \"deleted\": false,\n"
-                + "  \"createdById\": \"TODO\",\n"
-                + "  \"lastUpdatedById\": \"TODO\",\n"
-                + "  \"answers\": [],\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 1\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 3\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 1\n"
-                + "  }\n"
-                + "}\n";
+        {
+            //language=JSON
+            String validJson = ""
+                    + "{\n"
+                    + "  \"title\": \"example title 2\",\n"
+                    + "  \"body\": \"example body 2\",\n"
+                    + "  \"status\": \"Open\",\n"
+                    + "  \"deleted\": false,\n"
+                    + "  \"createdById\": \"TODO\",\n"
+                    + "  \"lastUpdatedById\": \"TODO\",\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"tags\": [\n"
+                    + "    {\n"
+                    + "      \"tag\": {\n"
+                    + "        \"name\": \"test tag 1\"\n"
+                    + "      }\n"
+                    + "    },\n"
+                    + "    {\n"
+                    + "      \"tag\": {\n"
+                    + "        \"name\": \"test tag 3\"\n"
+                    + "      }\n"
+                    + "    }\n"
+                    + "  ]\n"
+                    + "}\n";
 
-        Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/", RULE.getLocalPort()))
-                .request()
-                .post(Entity.json(validJson));
+            Response response = client.target(
+                    String.format("http://localhost:%d/manual/api/question/", RULE.getLocalPort()))
+                    .request()
+                    .post(Entity.json(validJson));
 
-        this.assertResponseStatus(response, Status.CREATED);
+            this.assertResponseStatus(response, Status.CREATED);
 
-        String body = response.readEntity(String.class);
-        assertThat(body, is(""));
+            String body = response.readEntity(String.class);
+            assertThat(body, is(""));
 
-        assertThat(response.getLocation().getPath(), is("/manual/api/question/2"));
+            assertThat(response.getLocation().getPath(), is("/manual/api/question/2"));
+        }
         //</editor-fold>
 
-        //<editor-fold desc="GET id: 2, status: ok">
         this.assertQuestion1Unchanged(client);
+
+        //<editor-fold desc="GET id: 2, status: ok">
+        {
+            Response response = client.target(
+                    String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                    .resolveTemplate("id", 2)
+                    .request()
+                    .get();
+
+            this.assertResponseStatus(response, Status.OK);
+
+            String jsonResponse = response.readEntity(String.class);
+            //language=JSON
+            String expected = ""
+                    + "{\n"
+                    + "  \"id\": 2,\n"
+                    + "  \"title\": \"example title 2\",\n"
+                    + "  \"body\": \"example body 2\",\n"
+                    + "  \"status\": \"Open\",\n"
+                    + "  \"deleted\": false,\n"
+                    + "  \"systemTo\": null,\n"
+                    + "  \"createdById\": \"TODO\",\n"
+                    + "  \"lastUpdatedById\": \"TODO\",\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"tags\": [\n"
+                    + "    {\n"
+                    + "      \"tag\": {\n"
+                    + "        \"name\": \"test tag 1\"\n"
+                    + "      }\n"
+                    + "    },\n"
+                    + "    {\n"
+                    + "      \"tag\": {\n"
+                    + "        \"name\": \"test tag 3\"\n"
+                    + "      }\n"
+                    + "    }\n"
+                    + "  ],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 1\n"
+                    + "  }\n"
+                    + "}\n";
+            JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
+        }
         //</editor-fold>
     }
 
