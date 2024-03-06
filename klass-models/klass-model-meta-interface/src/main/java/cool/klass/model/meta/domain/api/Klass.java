@@ -278,4 +278,10 @@ public interface Klass
                 .select(DataTypeProperty::isSystem)
                 .detectOptional(DataTypeProperty::isTo);
     }
+
+    default Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName)
+    {
+        return this.getDeclaredAssociationEnds()
+                .detectOptional(each -> each.getName().equals(associationEndName));
+    }
 }
