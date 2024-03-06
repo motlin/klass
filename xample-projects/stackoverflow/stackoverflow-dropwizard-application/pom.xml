@@ -186,6 +186,11 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-servlet-logging-mdc</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-data-source</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
