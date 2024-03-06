@@ -143,6 +143,7 @@ public class ReladomoRuntimeConfigurationGenerator
         connectionManagerType.setClassName(this.connectionManagerClassName);
         connectionManagerType.setProperties(properties);
         connectionManagerType.setMithraObjectConfigurations(this.getConnectionManagerObjectConfigurationTypes().castToList());
+        connectionManagerType.setOffHeapReplicationExport(false);
         return connectionManagerType;
     }
 
@@ -195,6 +196,7 @@ public class ReladomoRuntimeConfigurationGenerator
         MithraObjectConfigurationType mithraObjectConfigurationType = new MithraObjectConfigurationType();
         mithraObjectConfigurationType.setCacheType(cacheType);
         mithraObjectConfigurationType.setClassName(fullyQualifiedClassName);
+        mithraObjectConfigurationType.setOffHeapReplicationExport(false);
         return mithraObjectConfigurationType;
     }
 
