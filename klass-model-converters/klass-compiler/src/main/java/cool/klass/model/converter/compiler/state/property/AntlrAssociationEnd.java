@@ -167,7 +167,6 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 
     public boolean isVersioned()
     {
-        // TODO: ❗️ Error if both ends are version
         return this.opposite.isVersion();
     }
 

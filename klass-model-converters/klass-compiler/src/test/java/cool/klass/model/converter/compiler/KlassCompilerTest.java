@@ -422,6 +422,59 @@ public class KlassCompilerTest
     }
 
     @Test
+    public void doubleVersionAssociation()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "association DoubleVersionAssociation\n"
+                + "{\n"
+                + "    source: ExampleSource[1..1] version;\n"
+                + "    target: ExampleTarget[1..1] version;\n"
+                + "\n"
+                + "    relationship this.id == ExampleTarget.id\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleSource\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleTarget\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 5 Char: 26 Error: ERR_ASO_SYM: Association 'DoubleVersionAssociation' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.\n"
+                        + "package dummy\n"
+                        + "association DoubleVersionAssociation\n"
+                        + "{\n"
+                        + "    source: ExampleSource[1..1] version;\n"
+                        + "                         ^^^^^^\n"
+                        + "    target: ExampleTarget[1..1] version;\n"
+                        + "                         ^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 7 Error: ERR_VER_VER: Class 'ExampleSource' is a version and has a version.\n"
+                        + "package dummy\n"
+                        + "class ExampleSource\n"
+                        + "      ^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 16 Char: 7 Error: ERR_VER_VER: Class 'ExampleTarget' is a version and has a version.\n"
+                        + "package dummy\n"
+                        + "class ExampleTarget\n"
+                        + "      ^^^^^^^^^^^^^\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
     public void symmetricalAssociation()
     {
         //<editor-fold desc="source code">
