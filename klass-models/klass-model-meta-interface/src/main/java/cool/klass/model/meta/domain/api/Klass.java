@@ -78,6 +78,23 @@ public interface Klass
                 .detect(Objects::nonNull);
     }
 
+    default AssociationEnd getAssociationEndByName(String name)
+    {
+        AssociationEnd declaredAssociationEndByName = this.getDeclaredAssociationEndByName(name)
+                .orElse(null);
+        if (declaredAssociationEndByName != null)
+        {
+            return declaredAssociationEndByName;
+        }
+
+        AssociationEnd superClassAssociationEnd = this
+                .getSuperClass()
+                .map(superClass -> superClass.getAssociationEndByName(name))
+                .orElse(null);
+
+        return null;
+    }
+
     // TODO: Replace with an implementation that preserves order
     @Nonnull
     @Override
