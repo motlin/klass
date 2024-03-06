@@ -21,7 +21,6 @@
         <module>stackoverflow</module>
         <module>coverage-example</module>
         <module>reladomo-to-many-abstract</module>
-        <module>liftwizard-example</module>
     </modules>
 
     <dependencyManagement>
