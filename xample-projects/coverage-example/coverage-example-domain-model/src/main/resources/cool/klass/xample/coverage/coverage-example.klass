@@ -637,6 +637,4 @@ association ClassHasClassesWithDerivedProperty
         this.derivedOptionalBoolean ascending,
         this.derivedOptionalInstant ascending,
         this.derivedOptionalLocalDate ascending;
-
-    relationship this.key == ClassWithDerivedProperty.classOwningClassWithDerivedPropertyKey
 }
