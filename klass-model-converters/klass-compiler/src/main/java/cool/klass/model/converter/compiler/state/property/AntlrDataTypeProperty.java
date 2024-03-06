@@ -207,7 +207,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         this.reportInvalidIdProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
-        // TODO: ☑ Check that ID properties are key properties
     }
 
     private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)

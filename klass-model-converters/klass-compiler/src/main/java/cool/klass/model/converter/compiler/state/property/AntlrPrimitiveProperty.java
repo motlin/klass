@@ -136,8 +136,33 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType.isId())
         {
+            this.reportNonKeyIdProperty(compilerErrorHolder);
+        }
+        else
+        {
+            this.reportInvalidTypeIdProperty(compilerErrorHolder);
+        }
+    }
+
+    private void reportNonKeyIdProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isKey())
+        {
             return;
         }
+
+        ImmutableList<AntlrPropertyModifier> idModifiers = this.modifierStates.select(AntlrPropertyModifier::isID);
+        for (AntlrPropertyModifier idModifier : idModifiers)
+        {
+            ParserRuleContext offendingToken = idModifier.getElementContext();
+            String message = "Properties with the 'id' modifier must also have the 'key' modifier.";
+            compilerErrorHolder.add("ERR_NKY_IDP", message, this, offendingToken);
+        }
+    }
+
+    private void reportInvalidTypeIdProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
 
         ImmutableList<AntlrPropertyModifier> idModifiers = this.modifierStates.select(AntlrPropertyModifier::isID);
         for (AntlrPropertyModifier idModifier : idModifiers)

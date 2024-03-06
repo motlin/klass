@@ -401,12 +401,24 @@ public class AntlrClass extends AntlrClassifier
 
     private void reportMissingKeyProperty(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        boolean hasKeyProperty = this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
-        if (!hasKeyProperty && this.inheritanceTypeRequiresKeyProperties() && !this.superClassShouldHaveKey())
+        if (!this.hasKeyProperty()
+                && !this.hasIDProperty()
+                && this.inheritanceTypeRequiresKeyProperties()
+                && !this.superClassShouldHaveKey())
         {
             String message = String.format("Class '%s' must have at least one key property.", this.name);
             compilerErrorHolder.add("ERR_CLS_KEY", message, this);
         }
+    }
+
+    private boolean hasIDProperty()
+    {
+        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isID);
+    }
+
+    private boolean hasKeyProperty()
+    {
+        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
     }
 
     private boolean superClassShouldHaveKey()

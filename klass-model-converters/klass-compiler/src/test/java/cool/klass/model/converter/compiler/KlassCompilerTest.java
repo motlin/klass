@@ -4043,4 +4043,81 @@ public class KlassCompilerTest
         };
         this.assertCompilerErrors(sourceCodeText, errors);
     }
+
+    @Test
+    public void keyIdProperties()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package example\n"
+                + "\n"
+                + "class StringId\n"
+                + "{\n"
+                + "    stringId: String id;\n"
+                + "}\n"
+                + "\n"
+                + "class IntegerId\n"
+                + "{\n"
+                + "    integerId: Integer id;\n"
+                + "}\n"
+                + "\n"
+                + "class LongId\n"
+                + "{\n"
+                + "    longId: Long id;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_NKY_IDP\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mProperties with the 'id' modifier must also have the 'key' modifier.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:5)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mexample\n"
+                        + "\u001B[40;37m3║ \u001B[40;35mclass \u001B[40;97mStringId\n"
+                        + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m5║     \u001B[40;97mstringId\u001B[40;36m: \u001B[40;95mString \u001B[40;33mid\u001B[40;36m;\n"
+                        + "\u001B[40;37m ║                      \u001B[40;91m^^\n"
+                        + "\u001B[40;37m6║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:5\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m5\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m22\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_NKY_IDP\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mProperties with the 'id' modifier must also have the 'key' modifier.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:10)\n"
+                        + "\u001B[40m\u001B[40;37m 1║ \u001B[40;35mpackage \u001B[40;97mexample\n"
+                        + "\u001B[40;37m 8║ \u001B[40;35mclass \u001B[40;97mIntegerId\n"
+                        + "\u001B[40;37m 9║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m10║     \u001B[40;97mintegerId\u001B[40;36m: \u001B[40;95mInteger \u001B[40;33mid\u001B[40;36m;\n"
+                        + "\u001B[40;37m  ║                        \u001B[40;91m^^\n"
+                        + "\u001B[40;37m11║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:10\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m10\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m24\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_NKY_IDP\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mProperties with the 'id' modifier must also have the 'key' modifier.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:15)\n"
+                        + "\u001B[40m\u001B[40;37m 1║ \u001B[40;35mpackage \u001B[40;97mexample\n"
+                        + "\u001B[40;37m13║ \u001B[40;35mclass \u001B[40;97mLongId\n"
+                        + "\u001B[40;37m14║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m15║     \u001B[40;97mlongId\u001B[40;36m: \u001B[40;95mLong \u001B[40;33mid\u001B[40;36m;\n"
+                        + "\u001B[40;37m  ║                  \u001B[40;91m^^\n"
+                        + "\u001B[40;37m16║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:15\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m15\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m18\u001B[m\n",
+        };
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
 }
