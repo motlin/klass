@@ -34,6 +34,7 @@ public abstract class AbstractGenerateMojo
         extends AbstractMojo
 {
     public static final Pattern KLASS_FILE_EXTENSION = Pattern.compile(".*\\.klass");
+
     @Parameter(property = "klassSourcePackages", required = true)
     protected List<String> klassSourcePackages;
 
@@ -44,7 +45,8 @@ public abstract class AbstractGenerateMojo
     protected MavenProject mavenProject;
 
     @Nonnull
-    protected DomainModelWithSourceCode getDomainModelFromFiles() throws MojoExecutionException
+    protected DomainModelWithSourceCode getDomainModelFromFiles()
+            throws MojoExecutionException
     {
         CompilationResult compilationResult = this.getCompilationResultFromFiles();
 
@@ -75,16 +77,17 @@ public abstract class AbstractGenerateMojo
     }
 
     @Nonnull
-    protected DomainModelWithSourceCode getDomainModel() throws MojoExecutionException
+    protected DomainModelWithSourceCode getDomainModel()
+            throws MojoExecutionException
     {
         if (this.klassSourcePackages.isEmpty())
         {
             String message = ""
-                             + "Klass maven plugins must be configured with at least one klassSourcePackage. For example:\n"
-                             + "<klassSourcePackages>\n"
-                             + "    <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>\n"
-                             + "    <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>\n"
-                             + "</klassSourcePackages>";
+                    + "Klass maven plugins must be configured with at least one klassSourcePackage. For example:\n"
+                    + "<klassSourcePackages>\n"
+                    + "    <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>\n"
+                    + "    <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>\n"
+                    + "</klassSourcePackages>";
             throw new MojoExecutionException(message);
         }
 
@@ -114,7 +117,10 @@ public abstract class AbstractGenerateMojo
             Resource resource)
     {
         String directory = resource.getDirectory();
-        this.getLog().info("Scanning source packages: " + klassSourcePackages.makeString() + " in directory: " + directory);
+        String message = "Scanning source packages: %s in directory: %s".formatted(
+                klassSourcePackages.makeString(),
+                directory);
+        this.getLog().info(message);
 
         klassSourcePackages
                 .asLazy()
@@ -125,8 +131,7 @@ public abstract class AbstractGenerateMojo
                     File[] files = file.listFiles();
                     if (files == null)
                     {
-                        String message = "Could not find directory: " + file.getAbsolutePath();
-                        this.getLog().warn(message);
+                        this.getLog().warn("Could not find directory: " + file.getAbsolutePath());
                     }
                 });
 
@@ -144,7 +149,8 @@ public abstract class AbstractGenerateMojo
                         .into(resultKlassLocations));
     }
 
-    protected void handleErrorsCompilationResult(CompilationResult compilationResult) throws MojoExecutionException
+    protected void handleErrorsCompilationResult(CompilationResult compilationResult)
+            throws MojoExecutionException
     {
         for (RootCompilerAnnotation compilerAnnotation : compilationResult.compilerAnnotations())
         {
@@ -163,12 +169,12 @@ public abstract class AbstractGenerateMojo
 
         if (compilerAnnotation.isError())
         {
-            this.getLog().info(compilerAnnotation.toGitHubAnnotation());
+            this.getLog().info("\n" + compilerAnnotation.toGitHubAnnotation());
             this.getLog().error("\n" + compilerAnnotation);
         }
         else if (compilerAnnotation.isWarning() && this.logCompilerAnnotations)
         {
-            this.getLog().info(compilerAnnotation.toGitHubAnnotation());
+            this.getLog().info("\n" + compilerAnnotation.toGitHubAnnotation());
             this.getLog().warn("\n" + compilerAnnotation);
         }
     }
@@ -184,7 +190,8 @@ public abstract class AbstractGenerateMojo
     }
 
     @Nonnull
-    private ClassLoader getClassLoader() throws MojoExecutionException
+    private ClassLoader getClassLoader()
+            throws MojoExecutionException
     {
         try
         {
@@ -206,7 +213,8 @@ public abstract class AbstractGenerateMojo
     }
 
     @Nonnull
-    private static URL getUrl(@Nonnull String classpathElement) throws MojoExecutionException
+    private static URL getUrl(@Nonnull String classpathElement)
+            throws MojoExecutionException
     {
         try
         {
