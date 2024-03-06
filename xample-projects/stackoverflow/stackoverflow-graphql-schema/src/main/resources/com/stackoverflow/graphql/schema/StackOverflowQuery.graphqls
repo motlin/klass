@@ -1,4 +1,8 @@
+schema {
+    query: Query
+}
+
 type Query {
-	question(id: Long!): Question
-	questions: [Question]
+    question(id: Long!): Question
+    questions: [Question]
 }
