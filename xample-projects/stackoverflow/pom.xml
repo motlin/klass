@@ -87,6 +87,7 @@
         <module>${app.artifactId}-dropwizard-application</module>
         <module>${app.artifactId}-dtos</module>
         <module>${app.artifactId}-graphql-data-fetchers</module>
+        <module>${app.artifactId}-graphql-runtime-wiring-query</module>
         <module>${app.artifactId}-graphql-runtime-wiring</module>
         <module>${app.artifactId}-graphql-schema</module>
         <module>${app.artifactId}-json-views</module>

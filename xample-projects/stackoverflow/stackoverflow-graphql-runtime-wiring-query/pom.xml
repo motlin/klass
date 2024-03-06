@@ -10,45 +10,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stackoverflow-graphql-runtime-wiring</artifactId>
+    <artifactId>stackoverflow-graphql-runtime-wiring-query</artifactId>
 
-    <name>${app.name} GraphQL Runtime Wiring</name>
+    <name>${app.name} GraphQL Query Runtime Wiring</name>
 
     <dependencies>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-runtime-wiring-query</artifactId>
+            <artifactId>${app.artifactId}-graphql-data-fetchers</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-graphql-data-fetcher</artifactId>
-            <version>${liftwizard.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
-            <version>${liftwizard.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-scalar-temporal</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -65,7 +41,7 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-graphql-runtime-wiring-plugin</artifactId>
+                <artifactId>klass-generator-graphql-runtime-wiring-query-plugin</artifactId>
                 <version>${klass.version}</version>
 
                 <configuration>
@@ -80,8 +56,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate-graphql-runtime-wiring</goal>
-                            <goal>generate-graphql-runtime-wiring-builder</goal>
+                            <goal>generate-graphql-query-runtime-wiring</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -95,9 +70,9 @@
                     </dependency>
 
                     <!--<dependency>-->
-                    <!--<groupId>cool.klass</groupId>-->
-                    <!--<artifactId>klass-model-bootstrapped-meta</artifactId>-->
-                    <!--<version>${klass.version}</version>-->
+                        <!--<groupId>cool.klass</groupId>-->
+                        <!--<artifactId>klass-model-bootstrapped-meta</artifactId>-->
+                        <!--<version>${klass.version}</version>-->
                     <!--</dependency>-->
 
                 </dependencies>
