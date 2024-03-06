@@ -17,6 +17,7 @@
     <name>Klass Servlet (Module Group)</name>
 
     <modules>
+        <module>klass-jetty-admin-login-service</module>
         <module>klass-servlet-filter-mdc</module>
         <module>klass-servlet-filter-mdc-response</module>
         <module>klass-servlet-filter-mdc-jsonview</module>
