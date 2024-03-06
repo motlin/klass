@@ -11,7 +11,7 @@ import javax.ws.rs.ext.Provider;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import io.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
-// Priority must be greater than the priority of StructuredArgumentLoggingFilter
+// Priority must be greater than the priority of StructuredLoggingServletFilter
 @Provider
 @Priority(Priorities.USER - 10)
 public class JsonViewFilter
