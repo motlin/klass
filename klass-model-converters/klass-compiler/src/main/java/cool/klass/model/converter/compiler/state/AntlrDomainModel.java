@@ -100,12 +100,9 @@ public class AntlrDomainModel
 
     public Optional<AntlrClass> getUserClass()
     {
-        if (this.userClasses.size() == 1)
-        {
-            return this.userClasses.getFirstOptional();
-        }
-
-        return Optional.empty();
+        return this.userClasses.size() == 1
+                ? this.userClasses.getFirstOptional()
+                : Optional.empty();
     }
 
     public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)

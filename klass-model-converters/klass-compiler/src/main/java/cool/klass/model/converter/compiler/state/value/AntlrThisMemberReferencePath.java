@@ -103,11 +103,9 @@ public class AntlrThisMemberReferencePath
     public ImmutableList<AntlrType> getPossibleTypes()
     {
         AntlrType type = this.dataTypeProperty.getType();
-        if (type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS)
-        {
-            return Lists.immutable.empty();
-        }
-        return Lists.immutable.with(type);
+        return type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS
+                ? Lists.immutable.empty()
+                : Lists.immutable.with(type);
     }
 
     @Override

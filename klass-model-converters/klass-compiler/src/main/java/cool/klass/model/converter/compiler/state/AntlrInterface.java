@@ -358,21 +358,15 @@ public class AntlrInterface
     @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
-        if (this.declaredDataTypePropertiesByName.containsKey(name))
-        {
-            return this.declaredDataTypePropertiesByName.get(name);
-        }
-
-        return this.getInterfaceDataTypePropertyByName(name);
+        return this.declaredDataTypePropertiesByName.containsKey(name)
+                ? this.declaredDataTypePropertiesByName.get(name)
+                : this.getInterfaceDataTypePropertyByName(name);
     }
 
     public AntlrModifier getModifierByName(String name)
     {
-        if (this.declaredModifiersByName.containsKey(name))
-        {
-            return this.declaredModifiersByName.get(name);
-        }
-
-        return this.getInterfaceClassifierModifierByName(name);
+        return this.declaredModifiersByName.containsKey(name)
+                ? this.declaredModifiersByName.get(name)
+                : this.getInterfaceClassifierModifierByName(name);
     }
 }

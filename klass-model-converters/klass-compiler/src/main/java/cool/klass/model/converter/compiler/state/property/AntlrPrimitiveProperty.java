@@ -193,12 +193,11 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        if (!(overriddenProperty.getOwningClassifier() instanceof AntlrClass))
+        if (!(overriddenProperty.getOwningClassifier() instanceof AntlrClass overriddenPropertyOwningClass))
         {
             return;
         }
 
-        AntlrClass overriddenPropertyOwningClass = (AntlrClass) overriddenProperty.getOwningClassifier();
         String message = "'id' properties may not be overridden. The property '%s' in class '%s' overrides the 'id' property in class '%s'.".formatted(
                 this.getName(),
                 owningClass.getName(),

@@ -488,7 +488,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifier().getName(),
+                    this.owningClassifier.getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
             compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
@@ -523,7 +523,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifier().getName(),
+                    this.owningClassifier.getName(),
                     this.getName());
             compilerAnnotationHolder.add("ERR_FOR_FIN", message, this);
             for (AntlrModifier modifier : associationEnd.getModifiersByName("final"))
@@ -539,7 +539,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
-                    this.getOwningClassifier().getName(),
+                    this.owningClassifier.getName(),
                     this.getName());
             ImmutableList<AntlrModifier> modifiers = this.getModifiersByName("final");
             for (AntlrModifier modifier : modifiers)

@@ -142,7 +142,7 @@ public class AntlrClass
     @Nonnull
     private       Optional<AntlrClass>    superClass = Optional.empty();
     @Nonnull
-    private MutableList<AntlrClass> subClasses = Lists.mutable.empty();
+    private final MutableList<AntlrClass> subClasses = Lists.mutable.empty();
 
     public AntlrClass(
             @Nonnull ClassDeclarationContext elementContext,
@@ -540,7 +540,7 @@ public class AntlrClass
             return;
         }
 
-        if (!this.superClass.get().isAbstract())
+        if (!this.superClass.get().isAbstract)
         {
             ClassReferenceContext offendingToken = this
                     .getElementContext()
