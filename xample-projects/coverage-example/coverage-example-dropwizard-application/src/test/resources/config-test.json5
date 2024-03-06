@@ -166,6 +166,7 @@
     }
   ],
   "jerseyHttpLogging": {
+    "enabled": true,
     "maxEntitySize": "1 kilobyte"
   },
   "bootstrap": {
