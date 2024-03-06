@@ -182,7 +182,6 @@
             <artifactId>liftwizard-config-data-source</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-spa-redirect-filter</artifactId>
@@ -192,8 +191,6 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
-
-        <!--endregion-->
 
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -435,6 +432,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-json-pojo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Compile dependencies -->
