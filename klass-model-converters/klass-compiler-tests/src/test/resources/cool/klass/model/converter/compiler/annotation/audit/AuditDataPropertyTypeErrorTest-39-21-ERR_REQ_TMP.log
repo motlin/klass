@@ -1,17 +1,17 @@
 ════════════════════════════════════════ [35mERR_REQ_TMP[m ════════════════════════════════════════
 [31mError: Primitive properties with type TemporalInstant may not be required.[m
 
-At (AuditDataPropertyTypeErrorTest.klass:40)
+At (AuditDataPropertyTypeErrorTest.klass:39)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m35║ [35mclass [39mDummyClass3
 [39m36║ [36m{
-[39m40║     [39msystemTo       [36m: [35mTemporalInstant [32msystem [32mto[36m;
-[39m  ║ [31m    ^^^^^^^^
+[39m39║     [39msystemFrom     [36m: [35mTemporalInstant [32msystem [32mfrom[36m;
+[39m  ║ [31m                     ^^^^^^^^^^^^^^^
 [39m41║ [36m}
 [m
-[36mLocation:  [mAuditDataPropertyTypeErrorTest.klass:40[m
+[36mLocation:  [mAuditDataPropertyTypeErrorTest.klass:39[m
 [36mFile:      [mAuditDataPropertyTypeErrorTest.klass[m
-[36mLine:      [m40[m
-[36mCharacter: [m5
+[36mLine:      [m39[m
+[36mCharacter: [m22
 ═════════════════════════════════════════════════════════════════════════════════════════════

@@ -7,11 +7,11 @@ At (AuditDataPropertyTypeErrorTest.klass:38)
 [39m35║ [35mclass [39mDummyClass3
 [39m36║ [36m{
 [39m38║     [39msystem         [36m: [35mTemporalRange [32msystem [32mprivate[36m;
-[39m  ║ [31m    ^^^^^^
+[39m  ║ [31m                     ^^^^^^^^^^^^^
 [39m41║ [36m}
 [m
 [36mLocation:  [mAuditDataPropertyTypeErrorTest.klass:38[m
 [36mFile:      [mAuditDataPropertyTypeErrorTest.klass[m
 [36mLine:      [m38[m
-[36mCharacter: [m5
+[36mCharacter: [m22
 ═════════════════════════════════════════════════════════════════════════════════════════════

@@ -15,7 +15,7 @@ import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.PrimitivePropertyImpl.PrimitivePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
-import org.antlr.v4.runtime.ParserRuleContext;
+import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
@@ -63,7 +63,7 @@ public class AntlrPrimitiveProperty
     }
 
     @Override
-    protected ParserRuleContext getTypeParserRuleContext()
+    protected PrimitiveTypeContext getTypeParserRuleContext()
     {
         return this.getElementContext().primitiveType();
     }
@@ -236,7 +236,7 @@ public class AntlrPrimitiveProperty
         String message = String.format(
                 "Primitive properties with type %s may not be required.",
                 primitiveType.getPrettyName());
-        compilerAnnotationHolder.add("ERR_REQ_TMP", message, this, this.nameContext);
+        compilerAnnotationHolder.add("ERR_REQ_TMP", message, this, this.getTypeParserRuleContext());
     }
 
     private void reportInvalidTemporalVisibility(CompilerAnnotationState compilerAnnotationHolder)
@@ -255,7 +255,7 @@ public class AntlrPrimitiveProperty
         String message = String.format(
                 "Primitive properties with type %s must be private.",
                 primitiveType.getPrettyName());
-        compilerAnnotationHolder.add("ERR_REQ_PRV", message, this, this.nameContext);
+        compilerAnnotationHolder.add("ERR_REQ_PRV", message, this, this.getTypeParserRuleContext());
     }
 
     private void reportInvalidStringValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
