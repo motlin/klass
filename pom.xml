@@ -132,6 +132,7 @@
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-config-logging:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-cors:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-ddl-executor:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>

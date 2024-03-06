@@ -36,9 +36,10 @@ public class AbstractKlassConfiguration extends Configuration
     private @Valid          DdlExecutorFactory       ddlExecutorFactory;
     private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories;
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
-    private @Valid @NotNull BootstrapFactory         bootstrapFactory         = new BootstrapFactory();
+    private @Valid @NotNull EnabledFactory           bootstrapFactory         = new EnabledFactory();
     private @Valid @NotNull ReladomoFactory          reladomoFactory          = new ReladomoFactory();
     private @Valid @NotNull SampleDataFactory        sampleDataFactory        = new SampleDataFactory();
+    private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
 
     public KlassFactory getKlassFactory()
     {
@@ -135,13 +136,13 @@ public class AbstractKlassConfiguration extends Configuration
         this.objectMapperFactory = objectMapperFactory;
     }
 
-    public BootstrapFactory getBootstrapFactory()
+    public EnabledFactory getBootstrapFactory()
     {
         return this.bootstrapFactory;
     }
 
     @JsonProperty
-    public void setBootstrap(BootstrapFactory bootstrapFactory)
+    public void setBootstrap(EnabledFactory bootstrapFactory)
     {
         this.bootstrapFactory = bootstrapFactory;
     }
@@ -168,5 +169,16 @@ public class AbstractKlassConfiguration extends Configuration
     public void setSampleDataFactory(SampleDataFactory sampleDataFactory)
     {
         this.sampleDataFactory = sampleDataFactory;
+    }
+
+    public EnabledFactory getConfigLoggingFactory()
+    {
+        return this.configLoggingFactory;
+    }
+
+    @JsonProperty
+    public void setConfigLoggingFactory(EnabledFactory configLoggingFactory)
+    {
+        this.configLoggingFactory = configLoggingFactory;
     }
 }

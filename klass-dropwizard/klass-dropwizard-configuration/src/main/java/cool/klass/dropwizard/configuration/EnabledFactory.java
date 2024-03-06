@@ -2,7 +2,7 @@ package cool.klass.dropwizard.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BootstrapFactory
+public class EnabledFactory
 {
     private boolean enabled = false;
 
