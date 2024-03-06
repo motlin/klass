@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationResult;
@@ -40,7 +41,18 @@ public class DomainModelLoader
     {
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
 
-        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollect(ClasspathHelper::forPackage);
+        MutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(klassSourcePackagesImmutable);
+
+        CompilerState     compilerState     = new CompilerState(compilationUnits);
+        KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
+        CompilationResult compilationResult = klassCompiler.compile();
+        return this.handleResult(compilationResult);
+    }
+
+    @Nonnull
+    private MutableList<CompilationUnit> getCompilationUnits(ImmutableList<String> klassSourcePackages)
+    {
+        ImmutableList<URL> urls = klassSourcePackages.flatCollect(ClasspathHelper::forPackage);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList());
@@ -55,26 +67,36 @@ public class DomainModelLoader
             String message = "Could not find any files matching *.klass in urls: " + urls;
             throw new RuntimeException(message);
         }
+        return compilationUnits;
+    }
 
-        CompilerState     compilerState     = new CompilerState(compilationUnits);
-        KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
-        CompilationResult compilationResult = klassCompiler.compile();
+    private DomainModel handleResult(CompilationResult compilationResult)
+    {
         if (compilationResult instanceof ErrorsCompilationResult)
         {
-            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
-            for (RootCompilerError compilerError : compilerErrors)
-            {
-                LOGGER.warn(compilerError.toString());
-            }
-            throw new RuntimeException("There were compiler errors.");
+            return this.handleFailure((ErrorsCompilationResult) compilationResult);
         }
 
         if (compilationResult instanceof DomainModelCompilationResult)
         {
-            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
+            return this.handleSuccess((DomainModelCompilationResult) compilationResult);
         }
 
         throw new AssertionError(compilationResult.getClass().getSimpleName());
+    }
+
+    private DomainModel handleFailure(ErrorsCompilationResult compilationResult)
+    {
+        ImmutableList<RootCompilerError> compilerErrors = compilationResult.getCompilerErrors();
+        for (RootCompilerError compilerError : compilerErrors)
+        {
+            LOGGER.warn(compilerError.toString());
+        }
+        throw new RuntimeException("There were compiler errors.");
+    }
+
+    private DomainModel handleSuccess(DomainModelCompilationResult compilationResult)
+    {
+        return compilationResult.getDomainModel();
     }
 }
