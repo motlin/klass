@@ -6,6 +6,7 @@ import java.util.ServiceLoader;
 import javax.annotation.Nonnull;
 
 import ch.qos.logback.classic.Level;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import com.typesafe.config.Config;
@@ -102,5 +103,8 @@ public abstract class AbstractKlassApplication<T extends AbstractKlassConfigurat
     @Override
     public void run(@Nonnull T configuration, @Nonnull Environment environment) throws Exception
     {
+        ObjectMapper objectMapper        = environment.getObjectMapper();
+        String       configurationString = objectMapper.writeValueAsString(configuration);
+        LOGGER.info("Configuration: {}", configurationString);
     }
 }
