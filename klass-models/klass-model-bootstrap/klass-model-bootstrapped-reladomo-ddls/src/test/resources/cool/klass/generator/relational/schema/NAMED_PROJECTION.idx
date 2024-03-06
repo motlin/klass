@@ -1,0 +1,4 @@
+alter table NAMED_PROJECTION add constraint NAMED_PROJECTION_PK primary key (name);
+
+create index NAMED_PROJECTION_IDX_ROOT_PROJECTION on NAMED_PROJECTION(projection_id);
+

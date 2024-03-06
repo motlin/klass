@@ -1,0 +1,7 @@
+alter table ROOT_PROJECTION add constraint ROOT_PROJECTION_FK_KLASS foreign key (
+    class_name
+)
+references KLASS(
+    name
+);
+

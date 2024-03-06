@@ -598,21 +598,39 @@ service ParameterizedPropertyParameter
         }
 }
 
-service ServiceProjection
+service RootProjection
 {
-    /serviceProjection/{id: Long[1..1]}
+    /rootProjection/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.id == id;
-            projection  : ServiceProjectionProjection;
+            projection  : RootProjectionProjection;
         }
-    /serviceProjection
+    /rootProjection
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ServiceProjectionProjection;
+            projection  : RootProjectionProjection;
+        }
+}
+
+service NamedProjection
+{
+    /namedProjection/{name: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == name;
+            projection  : NamedProjectionProjection;
+        }
+    /namedProjection
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : NamedProjectionProjection;
         }
 }
 

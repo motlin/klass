@@ -21,20 +21,20 @@ import klass.model.meta.domain.Association;
 import klass.model.meta.domain.Enumeration;
 import klass.model.meta.domain.Interface;
 import klass.model.meta.domain.Klass;
+import klass.model.meta.domain.NamedProjection;
 import klass.model.meta.domain.ServiceGroup;
-import klass.model.meta.domain.ServiceProjection;
 import klass.model.meta.domain.json.view.AssociationSummaryProjection_JsonView;
 import klass.model.meta.domain.json.view.ClassSummaryProjection_JsonView;
 import klass.model.meta.domain.json.view.EnumerationSummaryProjection_JsonView;
 import klass.model.meta.domain.json.view.InterfaceSummaryProjection_JsonView;
-import klass.model.meta.domain.json.view.ProjectionElementSummaryProjection_JsonView;
+import klass.model.meta.domain.json.view.NamedProjectionProjection_JsonView;
 import klass.model.meta.domain.json.view.ServiceGroupSummaryProjection_JsonView;
 import klass.model.meta.domain.service.resource.AssociationResource;
 import klass.model.meta.domain.service.resource.EnumerationResource;
 import klass.model.meta.domain.service.resource.InterfaceResource;
 import klass.model.meta.domain.service.resource.KlassResource;
+import klass.model.meta.domain.service.resource.NamedProjectionResource;
 import klass.model.meta.domain.service.resource.ServiceGroupResource;
-import klass.model.meta.domain.service.resource.ServiceProjectionResource;
 
 public class JsonMetaModelGenerator
 {
@@ -128,13 +128,13 @@ public class JsonMetaModelGenerator
 
     public JsonNode getProjectionNode()
     {
-        ServiceProjectionResource projectionResource = new ServiceProjectionResource(
+        NamedProjectionResource projectionResource = new NamedProjectionResource(
                 this.domainModel,
                 this.dataStore,
                 this.clock);
-        List<ServiceProjection> serviceProjections = projectionResource.method2();
+        List<NamedProjection> serviceProjections = projectionResource.method2();
         ObjectMapper objectMapper = this.objectMapperWithView(
-                ProjectionElementSummaryProjection_JsonView.class);
+                NamedProjectionProjection_JsonView.class);
         return objectMapper.valueToTree(serviceProjections);
     }
 

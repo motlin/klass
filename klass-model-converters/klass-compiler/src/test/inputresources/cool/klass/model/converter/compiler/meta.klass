@@ -540,14 +540,27 @@ class ProjectionElement
     // name isn't key
     name: String maximumLength(256);
 }
-// TODO: Rename to Projection, but clashes with names in generated code.
-class ServiceProjection
+
+class RootProjection
     extends ProjectionElement
-    implements PackageableElement
 {
-    // TODO: unique constraint on name
     className                     : String private maximumLength(256);
 }
+
+class NamedProjection
+    implements PackageableElement
+{
+    projectionId: Long private;
+}
+
+association NamedProjectionHasRootProjection
+{
+    namedProjection: NamedProjection[1..1] owned;
+    rootProjection: RootProjection[1..1];
+
+    relationship this.projectionId == RootProjection.id
+}
+
 // TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
 class ProjectionWithAssociationEnd
     abstract(table-per-class)
@@ -599,17 +612,17 @@ association ProjectionDataTypePropertyHasDataTypeProperty
     relationship this.propertyClassifierName == DataTypeProperty.classifierName
             && this.propertyName == DataTypeProperty.name
 }
-association ProjectionHasClass
+association RootProjectionHasClass
 {
-    projections                   : ServiceProjection[0..*];
+    projections                   : RootProjection[0..*];
     klass                         : Klass[1..1];
     relationship this.className == Klass.name
 }
 association ProjectionProjectionReferenceHasProjection
 {
     projectionProjectionReferences: ProjectionProjectionReference[0..*];
-    projection                    : ServiceProjection[1..1];
-    relationship this.projectionName == ServiceProjection.name
+    projection                    : NamedProjection[1..1];
+    relationship this.projectionName == NamedProjection.name
 }
 class ServiceGroup
     implements PackageableElement
@@ -696,8 +709,8 @@ association UrlHasServices
 association ServiceHasProjection
 {
     services: Service[0..*];
-    projection                    : ServiceProjection[0..1];
-    relationship this.projectionName == ServiceProjection.name
+    projection                    : NamedProjection[0..1];
+    relationship this.projectionName == NamedProjection.name
 }
 association ServiceHasQueryCriteria
 {
@@ -1358,54 +1371,47 @@ service Association
 }
 projection ProjectionElementProjection on ProjectionElement
 {
-    name                                       : "Projection name",
-    ServiceProjection.packageName              : "Projection package name",
-    ServiceProjection.klass                    :
+    name                                    : "Projection name",
+    RootProjection.klass                    :
     {
         name: "Projection klass name",
     },
-    ProjectionProjectionReference.projection   :
+    ProjectionProjectionReference.projection:
     {
         name: "Projection reference name",
     },
-    children                                   : ProjectionElementSummaryProjection,
+    children                                : ProjectionElementProjection,
 }
-projection ProjectionElementSummaryProjection on ProjectionElement
+
+
+projection NamedProjectionProjection on NamedProjection
 {
-    name                                       : "Projection name",
-    ServiceProjection.packageName              : "Projection package name",
-    ServiceProjection.klass                    :
-    {
-        name: "Projection klass name",
-    },
-    ProjectionProjectionReference.projection   :
-    {
-        name: "Projection reference name",
-    },
-    children                                   : ProjectionElementSummaryProjection,
+    name          : "Projection name",
+    packageName   : "Projection package name",
+    rootProjection: ProjectionElementProjection,
 }
-service ServiceProjection
+service NamedProjection
 {
     /meta/projection/{projectionName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == projectionName;
-            projection  : ProjectionElementProjection;
+            projection  : NamedProjectionProjection;
         }
     /meta/projection/{projectionName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == projectionName;
-            projection  : ProjectionElementSummaryProjection;
+            projection  : NamedProjectionProjection;
         }
     /meta/projection
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ProjectionElementSummaryProjection;
+            projection  : NamedProjectionProjection;
             orderBy     : this.ordinal;
         }
 }

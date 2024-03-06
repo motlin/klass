@@ -69,6 +69,8 @@ import klass.model.meta.domain.MinLengthPropertyValidationFinder;
 import klass.model.meta.domain.MinPropertyValidation;
 import klass.model.meta.domain.MinPropertyValidationFinder;
 import klass.model.meta.domain.NamedElementAbstract;
+import klass.model.meta.domain.NamedProjection;
+import klass.model.meta.domain.NamedProjectionFinder;
 import klass.model.meta.domain.PackageableElementAbstract;
 import klass.model.meta.domain.PrimitiveParameter;
 import klass.model.meta.domain.PrimitivePropertyFinder;
@@ -77,9 +79,10 @@ import klass.model.meta.domain.ProjectionProjectionReferenceFinder;
 import klass.model.meta.domain.ProjectionReferencePropertyFinder;
 import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
 import klass.model.meta.domain.PropertyModifierFinder;
+import klass.model.meta.domain.RootProjection;
+import klass.model.meta.domain.RootProjectionFinder;
 import klass.model.meta.domain.ServiceFinder;
 import klass.model.meta.domain.ServiceGroupFinder;
-import klass.model.meta.domain.ServiceProjectionFinder;
 import klass.model.meta.domain.ThisMemberReferencePathFinder;
 import klass.model.meta.domain.UrlFinder;
 import klass.model.meta.domain.UrlParameter;
@@ -98,8 +101,8 @@ public class KlassBootstrapWriter
             InterfaceFinder.getFinderInstance(),
             KlassFinder.getFinderInstance(),
             AssociationFinder.getFinderInstance(),
-            ServiceProjectionFinder.getFinderInstance(),
-            ServiceProjectionFinder.getFinderInstance(),
+            NamedProjectionFinder.getFinderInstance(),
+            RootProjectionFinder.getFinderInstance(),
             ProjectionReferencePropertyFinder.getFinderInstance(),
             ProjectionProjectionReferenceFinder.getFinderInstance(),
             ProjectionDataTypePropertyFinder.getFinderInstance(),
@@ -223,14 +226,25 @@ public class KlassBootstrapWriter
         this.bootstrapAssociationEnd(targetAssociationEnd, "target");
     }
 
-    private void handleProjection(@Nonnull Projection projection)
+    private NamedProjection handleProjection(@Nonnull Projection projection)
     {
-        var bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
-        bootstrappedProjection.setClassName(projection.getClassifier().getName());
-        bootstrappedProjection.insert();
+        var bootstrappedProjectionElement = new klass.model.meta.domain.ProjectionElement();
+        bootstrappedProjectionElement.setName(projection.getName());
+        bootstrappedProjectionElement.setOrdinal(projection.getOrdinal());
+        bootstrappedProjectionElement.insert();
 
-        this.handleProjectionChildren(projection, bootstrappedProjection);
+        var bootstrappedRootProjection = new RootProjection();
+        bootstrappedRootProjection.setId(bootstrappedProjectionElement.getId());
+        bootstrappedRootProjection.setClassName(projection.getClassifier().getName());
+
+        var bootstrappedProjection = new klass.model.meta.domain.NamedProjection();
+        bootstrappedProjection.setName(projection.getName());
+        bootstrappedProjection.setPackageName(projection.getPackageName());
+        bootstrappedProjection.setProjectionId(bootstrappedProjectionElement.getId());
+
+        this.handleProjectionChildren(projection, bootstrappedProjectionElement);
+
+        return bootstrappedProjection;
     }
 
     private void handleProjection(
@@ -242,12 +256,21 @@ public class KlassBootstrapWriter
             @Override
             public void visitProjection(@Nonnull Projection projection)
             {
-                var bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
-                KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
-                bootstrappedProjection.setClassName(projection.getClassifier().getName());
-                bootstrappedProjection.insert();
+                var bootstrappedProjectionElement = new klass.model.meta.domain.ProjectionElement();
+                bootstrappedProjectionElement.setName(projection.getName());
+                bootstrappedProjectionElement.setOrdinal(projection.getOrdinal());
+                bootstrappedProjectionElement.insert();
 
-                KlassBootstrapWriter.this.handleProjectionChildren(projection, bootstrappedProjection);
+                var bootstrappedRootProjection = new RootProjection();
+                bootstrappedRootProjection.setId(bootstrappedProjectionElement.getId());
+                bootstrappedRootProjection.setClassName(projection.getClassifier().getName());
+
+                var bootstrappedProjection = new klass.model.meta.domain.NamedProjection();
+                bootstrappedProjection.setName(projection.getName());
+                bootstrappedProjection.setPackageName(projection.getPackageName());
+                bootstrappedProjection.setProjectionId(bootstrappedProjectionElement.getId());
+
+                KlassBootstrapWriter.this.handleProjectionChildren(projection, bootstrappedProjectionElement);
             }
 
             @Override

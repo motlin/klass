@@ -1,0 +1,7 @@
+alter table NAMED_PROJECTION add constraint NAMED_PROJECTION_FK_ROOT_PROJECTION foreign key (
+    projection_id
+)
+references ROOT_PROJECTION(
+    id
+);
+

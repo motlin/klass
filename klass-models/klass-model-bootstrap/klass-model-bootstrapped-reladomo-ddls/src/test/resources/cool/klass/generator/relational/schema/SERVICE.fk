@@ -8,7 +8,7 @@ references URL(
 alter table SERVICE add constraint SERVICE_FK_PROJECTION foreign key (
     projection_name
 )
-references SERVICE_PROJECTION(
+references NAMED_PROJECTION(
     name
 );
 

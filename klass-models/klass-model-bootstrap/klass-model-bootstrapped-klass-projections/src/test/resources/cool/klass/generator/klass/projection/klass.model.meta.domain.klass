@@ -336,14 +336,21 @@ projection ProjectionElementProjection on ProjectionElement
     children: ProjectionElementProjection,
 }
 
-projection ServiceProjectionProjection on ServiceProjection
+projection RootProjectionProjection on RootProjection
 {
     id: "ProjectionElement id",
     ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
-    packageName: "PackageableElement packageName",
     children: ProjectionElementProjection,
     klass: KlassProjection,
+}
+
+projection NamedProjectionProjection on NamedProjection
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    rootProjection: RootProjectionProjection,
 }
 
 projection ProjectionWithAssociationEndProjection on ProjectionWithAssociationEnd
@@ -371,7 +378,7 @@ projection ProjectionProjectionReferenceProjection on ProjectionProjectionRefere
     name: "ProjectionElement name",
     children: ProjectionElementProjection,
     associationEnd: AssociationEndProjection,
-    projection: ServiceProjectionProjection,
+    projection: NamedProjectionProjection,
 }
 
 projection ProjectionDataTypePropertyProjection on ProjectionDataTypeProperty
@@ -409,7 +416,7 @@ projection ServiceProjection on Service
 {
     verb: "Service verb",
     serviceMultiplicity: "Service serviceMultiplicity",
-    projection: ServiceProjectionProjection,
+    projection: NamedProjectionProjection,
     queryCriteria: CriteriaProjection,
     authorizeCriteria: CriteriaProjection,
     validateCriteria: CriteriaProjection,
