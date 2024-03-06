@@ -168,4 +168,3 @@ this.systemTo == null && system == null
     && (this.systemTo == null || system < this.systemTo)
 ```
 The synthetic property `system` exists to simplify criteria like this, and to use in association criteria as described in [Audit Model](1_audit_model.md#systemtemporal). Thus we're able to simplify the optionalCriteria to just `this.system == system`.
-

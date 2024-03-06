@@ -27,4 +27,3 @@ Colloquially, we call this a one-to-many relationship. Keep in mind that this sh
 Klass doesn't enforce singular and plural names. Take care to use singular names for to-one ends and plural names for to-many ends.
 
 The `question` end has the modifier `final` which means that an answer cannot be repointed to a different question. In the data layer, this means the foreign key `questionId` is immutable. It doesn't mean that the question's text is immutable.
-

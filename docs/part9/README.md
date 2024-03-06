@@ -261,4 +261,3 @@ We'll also want CLIs and/or build plugins.
 | Dependencies      | `klass-model-meta-mutable`                             |
 
 This module reads `DomainModel` and code-generates annotated Java POJOs.
-

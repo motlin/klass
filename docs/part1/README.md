@@ -43,4 +43,3 @@ The **classes**, **enumerations**, and **associations** make up the data model. 
 **Services** are traditional http or rpc services. We will define a service to get a `Question` by its id.
 
 **Projections** map services to data. They answer how much data a service reads or writes; conceptually how far the service walks through the object graph. For example, when we fetch a `Question` by its id, should we return the title and the body, or just the title? Should we include the question's answers in the response?
-
