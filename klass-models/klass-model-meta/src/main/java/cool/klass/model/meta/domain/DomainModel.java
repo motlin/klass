@@ -58,10 +58,8 @@ public final class DomainModel
         {
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.collect(EnumerationBuilder::build).toImmutable();
             ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build1).toImmutable();
-
-            this.klassBuilders.each(KlassBuilder::build2);
-
             ImmutableList<Association> associations = this.associationBuilders.collect(AssociationBuilder::build).toImmutable();
+            this.klassBuilders.each(KlassBuilder::build2);
 
             return new DomainModel(enumerations, klasses, associations);
         }

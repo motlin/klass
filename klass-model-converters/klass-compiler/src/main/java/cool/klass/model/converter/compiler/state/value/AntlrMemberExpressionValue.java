@@ -8,7 +8,7 @@ import cool.klass.model.converter.compiler.state.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.value.MemberExpressionValue.MemberExpressionValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrMemberExpressionValue extends AntlrExpressionValue
+public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
 {
     protected final AntlrClass               classState;
     protected final AntlrDataTypeProperty<?> dataTypePropertyState;
@@ -26,11 +26,5 @@ public class AntlrMemberExpressionValue extends AntlrExpressionValue
     }
 
     @Override
-    public MemberExpressionValueBuilder build()
-    {
-        return new MemberExpressionValueBuilder(
-                this.elementContext,
-                this.classState.getKlassBuilder(),
-                this.dataTypePropertyState.getPropertyBuilder());
-    }
+    public abstract MemberExpressionValueBuilder build();
 }

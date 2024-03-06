@@ -2,11 +2,17 @@ package cool.klass.model.meta.domain.operator;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class EqualityOperator extends Operator
+public final class EqualityOperator extends Operator
 {
-    protected EqualityOperator(ParserRuleContext elementContext, String operatorText)
+    private EqualityOperator(ParserRuleContext elementContext, String operatorText)
     {
         super(elementContext, operatorText);
+    }
+
+    @Override
+    public void visit(OperatorVisitor visitor)
+    {
+        visitor.visitEquality(this);
     }
 
     public static class EqualityOperatorBuilder extends OperatorBuilder

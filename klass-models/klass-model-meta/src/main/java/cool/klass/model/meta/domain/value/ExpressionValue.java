@@ -10,6 +10,8 @@ public abstract class ExpressionValue extends Element
         super(elementContext);
     }
 
+    public abstract void visit(ExpressionValueVisitor visitor);
+
     public abstract static class ExpressionValueBuilder extends ElementBuilder
     {
         protected ExpressionValueBuilder(ParserRuleContext elementContext)

@@ -93,7 +93,7 @@ public final class Klass extends Type
             }
 
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
-                    .collect(AssociationEndBuilder::build)
+                    .collect(AssociationEndBuilder::getAssociationEnd)
                     .toImmutable();
 
             this.klass.setAssociationEnds(associationEnds);

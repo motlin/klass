@@ -2,11 +2,17 @@ package cool.klass.model.meta.domain.operator;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class InequalityOperator extends Operator
+public final class InequalityOperator extends Operator
 {
-    protected InequalityOperator(ParserRuleContext elementContext, String operatorText)
+    private InequalityOperator(ParserRuleContext elementContext, String operatorText)
     {
         super(elementContext, operatorText);
+    }
+
+    @Override
+    public void visit(OperatorVisitor visitor)
+    {
+        visitor.visitInequality(this);
     }
 
     public static class InequalityOperatorBuilder extends OperatorBuilder

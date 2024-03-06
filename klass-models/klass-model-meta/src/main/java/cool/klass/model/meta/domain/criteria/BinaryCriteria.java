@@ -19,6 +19,22 @@ public abstract class BinaryCriteria extends Criteria
         this.right = Objects.requireNonNull(right);
     }
 
+    public Criteria getLeft()
+    {
+        return this.left;
+    }
+
+    public Criteria getRight()
+    {
+        return this.right;
+    }
+
+    @Override
+    public void visit(CriteriaVisitor visitor)
+    {
+        visitor.visitBinary(this);
+    }
+
     public abstract static class BinaryCriteriaBuilder extends CriteriaBuilder
     {
         protected final CriteriaBuilder left;

@@ -2,11 +2,17 @@ package cool.klass.model.meta.domain.operator;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class InOperator extends Operator
+public final class InOperator extends Operator
 {
-    protected InOperator(ParserRuleContext elementContext, String operatorText)
+    private InOperator(ParserRuleContext elementContext, String operatorText)
     {
         super(elementContext, operatorText);
+    }
+
+    @Override
+    public void visit(OperatorVisitor visitor)
+    {
+        visitor.visitIn(this);
     }
 
     public static class InOperatorBuilder extends OperatorBuilder

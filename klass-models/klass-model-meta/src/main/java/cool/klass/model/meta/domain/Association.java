@@ -13,6 +13,8 @@ public final class Association extends PackageableElement
     private final Criteria criteria;
 
     private ImmutableList<AssociationEnd> associationEnds;
+    private AssociationEnd                sourceAssociationEnd;
+    private AssociationEnd                targetAssociationEnd;
 
     private Association(
             ParserRuleContext elementContext,
@@ -37,7 +39,23 @@ public final class Association extends PackageableElement
 
     private void setAssociationEnds(ImmutableList<AssociationEnd> associationEnds)
     {
+        if (associationEnds.size() != 2)
+        {
+            throw new IllegalArgumentException(String.valueOf(associationEnds.size()));
+        }
         this.associationEnds = Objects.requireNonNull(associationEnds);
+        this.sourceAssociationEnd = associationEnds.get(0);
+        this.targetAssociationEnd = associationEnds.get(1);
+    }
+
+    public AssociationEnd getSourceAssociationEnd()
+    {
+        return this.sourceAssociationEnd;
+    }
+
+    public AssociationEnd getTargetAssociationEnd()
+    {
+        return this.targetAssociationEnd;
     }
 
     public static class AssociationBuilder extends PackageableElementBuilder
@@ -45,6 +63,7 @@ public final class Association extends PackageableElement
         private final CriteriaBuilder criteriaBuilder;
 
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
+        private Association                          association;
 
         public AssociationBuilder(
                 ParserRuleContext elementContext,
@@ -64,7 +83,11 @@ public final class Association extends PackageableElement
 
         public Association build()
         {
-            Association association = new Association(
+            if (this.association != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.association = new Association(
                     this.elementContext,
                     this.nameContext,
                     this.name,
@@ -72,10 +95,15 @@ public final class Association extends PackageableElement
                     this.criteriaBuilder.build());
 
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
-                    .collect(AssociationEndBuilder::getAssociationEnd);
+                    .collect(AssociationEndBuilder::build);
 
-            association.setAssociationEnds(associationEnds);
-            return association;
+            this.association.setAssociationEnds(associationEnds);
+            return this.association;
+        }
+
+        public Association getAssociation()
+        {
+            return Objects.requireNonNull(this.association);
         }
     }
 }

@@ -18,7 +18,7 @@ public abstract class Property<T extends Type> extends TypedElement<T>
             Klass owningKlass)
     {
         super(elementContext, nameContext, name, type);
-        this.owningKlass = owningKlass;
+        this.owningKlass = Objects.requireNonNull(owningKlass);
     }
 
     public Klass getOwningKlass()

@@ -15,6 +15,8 @@ public abstract class Operator extends Element
         this.operatorText = Objects.requireNonNull(operatorText);
     }
 
+    public abstract void visit(OperatorVisitor visitor);
+
     public String getOperatorText()
     {
         return this.operatorText;

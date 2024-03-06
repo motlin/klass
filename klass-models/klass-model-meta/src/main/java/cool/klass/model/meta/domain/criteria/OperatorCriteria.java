@@ -8,13 +8,13 @@ import cool.klass.model.meta.domain.value.ExpressionValue;
 import cool.klass.model.meta.domain.value.ExpressionValue.ExpressionValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class OperatorCriteria extends Criteria
+public final class OperatorCriteria extends Criteria
 {
     private final Operator        operator;
     private final ExpressionValue sourceValue;
     private final ExpressionValue targetValue;
 
-    protected OperatorCriteria(
+    private OperatorCriteria(
             ParserRuleContext elementContext,
             Operator operator,
             ExpressionValue sourceValue,
@@ -24,6 +24,27 @@ public class OperatorCriteria extends Criteria
         this.operator = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
+    }
+
+    public Operator getOperator()
+    {
+        return this.operator;
+    }
+
+    public ExpressionValue getSourceValue()
+    {
+        return this.sourceValue;
+    }
+
+    public ExpressionValue getTargetValue()
+    {
+        return this.targetValue;
+    }
+
+    @Override
+    public void visit(CriteriaVisitor visitor)
+    {
+        visitor.visitOperator(this);
     }
 
     public static final class OperatorCriteriaBuilder extends CriteriaBuilder

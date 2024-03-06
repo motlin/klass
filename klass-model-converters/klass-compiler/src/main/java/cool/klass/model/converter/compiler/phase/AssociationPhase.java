@@ -68,7 +68,10 @@ public class AssociationPhase extends AbstractCompilerPhase
 
         String            associationEndName = identifier.getText();
         AntlrClass        antlrClass         = this.domainModelState.getClassByName(classReferenceContext.getText());
-        AntlrMultiplicity antlrMultiplicity  = new AntlrMultiplicity(multiplicityContext);
+        AntlrMultiplicity antlrMultiplicity = new AntlrMultiplicity(
+                multiplicityContext,
+                this.currentCompilationUnit,
+                false);
 
         ImmutableList<AntlrAssociationEndModifier> associationEndModifiers = ListAdapter.adapt(ctx.associationEndModifier())
                 .collect(AntlrAssociationEndModifier::new)

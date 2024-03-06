@@ -156,8 +156,8 @@ public class AntlrDomainModel
     {
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
-        this.classStates.each(AntlrClass::build2);
         ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
+        this.classStates.each(AntlrClass::build2);
 
         return new DomainModelBuilder(enumerationBuilders, classBuilders, associationBuilders);
     }

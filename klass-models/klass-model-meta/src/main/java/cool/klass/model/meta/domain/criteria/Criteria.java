@@ -10,6 +10,8 @@ public abstract class Criteria extends Element
         super(elementContext);
     }
 
+    public abstract void visit(CriteriaVisitor visitor);
+
     public abstract static class CriteriaBuilder extends ElementBuilder
     {
         protected CriteriaBuilder(ParserRuleContext elementContext)

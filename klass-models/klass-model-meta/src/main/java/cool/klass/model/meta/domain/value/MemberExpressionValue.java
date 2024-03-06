@@ -8,7 +8,7 @@ import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class MemberExpressionValue extends ExpressionValue
+public abstract class MemberExpressionValue extends ExpressionValue
 {
     private final Klass               klass;
     private final DataTypeProperty<?> property;
@@ -33,12 +33,12 @@ public class MemberExpressionValue extends ExpressionValue
         return this.property;
     }
 
-    public static final class MemberExpressionValueBuilder extends ExpressionValueBuilder
+    public abstract static class MemberExpressionValueBuilder extends ExpressionValueBuilder
     {
-        private final KlassBuilder                  klassBuilder;
-        private final DataTypePropertyBuilder<?, ?> propertyBuilder;
+        protected final KlassBuilder                  klassBuilder;
+        protected final DataTypePropertyBuilder<?, ?> propertyBuilder;
 
-        public MemberExpressionValueBuilder(
+        protected MemberExpressionValueBuilder(
                 ParserRuleContext elementContext,
                 KlassBuilder klassBuilder,
                 DataTypePropertyBuilder<?, ?> propertyBuilder)
@@ -46,15 +46,6 @@ public class MemberExpressionValue extends ExpressionValue
             super(elementContext);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
-        }
-
-        @Override
-        public MemberExpressionValue build()
-        {
-            return new MemberExpressionValue(
-                    this.elementContext,
-                    this.klassBuilder.getKlass(),
-                    this.propertyBuilder.getProperty());
         }
     }
 }

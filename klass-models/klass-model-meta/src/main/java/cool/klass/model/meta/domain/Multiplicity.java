@@ -22,13 +22,23 @@ public enum Multiplicity
         this.prettyName = prettyName;
     }
 
+    public static Multiplicity getByPrettyName(String prettyName)
+    {
+        return MULTIPLICITY_BY_PRETTY_NAME.get(prettyName);
+    }
+
     public String getPrettyName()
     {
         return this.prettyName;
     }
 
-    public static Multiplicity getByPrettyName(String prettyName)
+    public boolean isToOne()
     {
-        return MULTIPLICITY_BY_PRETTY_NAME.get(prettyName);
+        return this == ZERO_TO_ONE || this == ONE_TO_ONE;
+    }
+
+    public boolean isToMany()
+    {
+        return this == ZERO_TO_MANY || this == ONE_TO_MANY;
     }
 }

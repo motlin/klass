@@ -16,7 +16,7 @@ public abstract class TypedElement<T extends Type> extends NamedElement
             T type)
     {
         super(elementContext, nameContext, name);
-        this.type = type;
+        this.type = Objects.requireNonNull(type);
     }
 
     public T getType()

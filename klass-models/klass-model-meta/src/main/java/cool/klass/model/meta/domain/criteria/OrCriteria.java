@@ -2,14 +2,20 @@ package cool.klass.model.meta.domain.criteria;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class OrCriteria extends BinaryCriteria
+public final class OrCriteria extends BinaryCriteria
 {
-    protected OrCriteria(
+    private OrCriteria(
             ParserRuleContext elementContext,
             Criteria left,
             Criteria right)
     {
         super(elementContext, left, right);
+    }
+
+    @Override
+    public void visit(CriteriaVisitor visitor)
+    {
+        visitor.visitOr(this);
     }
 
     public static final class OrCriteriaBuilder extends BinaryCriteriaBuilder

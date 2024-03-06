@@ -107,7 +107,7 @@ public class AntlrClass extends AntlrPackageableElement
         }
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
-                .collect(AntlrAssociationEnd::build)
+                .collect(AntlrAssociationEnd::getAssociationEndBuilder)
                 .toImmutable();
 
         this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);

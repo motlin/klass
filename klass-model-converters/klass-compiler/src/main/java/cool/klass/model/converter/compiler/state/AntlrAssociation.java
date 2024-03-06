@@ -87,18 +87,15 @@ public class AntlrAssociation extends AntlrPackageableElement
                 this.packageName,
                 criteriaBuilder);
 
+        sourceAntlrAssociationEnd.setOwningAssociation(this.associationBuilder);
+        targetAntlrAssociationEnd.setOwningAssociation(this.associationBuilder);
+
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
                 .collect(AntlrAssociationEnd::build)
                 .toImmutable();
 
         this.associationBuilder.setAssociationEndBuilders(associationEndBuilders);
         return this.associationBuilder;
-    }
-
-    @Override
-    public AssociationDeclarationContext getElementContext()
-    {
-        return (AssociationDeclarationContext) this.elementContext;
     }
 
     public void reportDuplicateTopLevelName(CompilerErrorHolder compilerErrorHolder)
@@ -128,5 +125,11 @@ public class AntlrAssociation extends AntlrPackageableElement
         }
 
         // TODO: Check that both ends aren't owned
+    }
+
+    @Override
+    public AssociationDeclarationContext getElementContext()
+    {
+        return (AssociationDeclarationContext) this.elementContext;
     }
 }

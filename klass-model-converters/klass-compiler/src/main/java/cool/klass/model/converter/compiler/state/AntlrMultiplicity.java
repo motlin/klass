@@ -1,18 +1,18 @@
 package cool.klass.model.converter.compiler.state;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import org.antlr.v4.runtime.Token;
 
-public class AntlrMultiplicity
+public class AntlrMultiplicity extends AntlrElement
 {
-    private final MultiplicityContext context;
-    private final Multiplicity        multiplicity;
+    private final Multiplicity multiplicity;
 
-    public AntlrMultiplicity(MultiplicityContext context)
+    public AntlrMultiplicity(MultiplicityContext context, CompilationUnit compilationUnit, boolean inferred)
     {
-        this.context = context;
+        super(context, compilationUnit, inferred);
         this.multiplicity = this.getMultiplicity(context);
     }
 
@@ -44,9 +44,10 @@ public class AntlrMultiplicity
         return null;
     }
 
-    public MultiplicityContext getContext()
+    @Override
+    public MultiplicityContext getElementContext()
     {
-        return this.context;
+        return (MultiplicityContext) super.getElementContext();
     }
 
     public Multiplicity getMultiplicity()
