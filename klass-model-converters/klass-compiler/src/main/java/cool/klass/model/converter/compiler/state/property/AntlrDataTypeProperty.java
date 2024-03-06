@@ -442,8 +442,22 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             throw new AssertionError(associationEnd);
         }
 
-        if (this.isOptional() != associationEnd.isToOneOptional())
+        if (this.isOptional() && associationEnd.isToOneRequired())
         {
+            String message = String.format(
+                    "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be required.",
+                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
+                    this.getOwningClassifierState().getName(),
+                    this.getName());
+            compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
+            compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+        }
+
+        if (!this.isOptional() && associationEnd.isToOneOptional())
+        {
+            // TODO: Possibly warn here. However, testing has showed legit examples where this warning fires, where the foreign key data includes references that sometimes cannot be resolved from the set of keys that we currently source.
             String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] but foreign key '%s.%s' is %srequired.",
                     associationEnd.getOwningClassifierState().getName(),
@@ -452,8 +466,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.isOptional ? "not " : "");
-            compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
-            compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+            // compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
+            // compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
         }
     }
 

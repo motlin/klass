@@ -199,7 +199,9 @@ public class OperatorAntlrCriteria extends AntlrCriteria
                 : thisDataTypePropertyState;
         if (foreignKeyProperty.isKey() && !keyProperty.isKey())
         {
-            throw new AssertionError(foreignKeyProperty);
+            // This can happen for non-key but unique properties
+            // TODO: Implement unique properties, and assert that the property is EITHER key or unique
+            // throw new AssertionError(foreignKeyProperty);
         }
 
         endWithForeignKeys.addForeignKeyPropertyMatchingProperty(

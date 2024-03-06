@@ -1,6 +1,25 @@
 package dummy
 
-association ForeignKeyMultiplicity
+class DummyOwner
+{
+    id: Long key;
+}
+
+class DummyOwned
+{
+    id: Long key;
+    ownerId: Long? private;
+}
+
+association OwnedHasOwner
+{
+    owner: DummyOwner[1..1];
+    owned: DummyOwned[0..*] owned;
+
+    relationship this.id == DummyOwned.ownerId
+ }
+
+association ForeignKeyMultiplicityOK
 {
     parent: DummyParent[0..1];
     children: DummyChild[0..*];

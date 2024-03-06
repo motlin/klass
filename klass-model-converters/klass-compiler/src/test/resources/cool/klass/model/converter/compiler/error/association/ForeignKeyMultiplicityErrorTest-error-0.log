@@ -1,17 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
-[31mError: Association end 'DummyChild.parent' has multiplicity [0..1] but foreign key 'DummyChild.parentId' is required.[m
+[31mError: Association end 'DummyOwned.owner' has multiplicity [1..1] so foreign key 'DummyOwned.ownerId' ought to be required.[m
 
-At (ForeignKeyMultiplicityErrorTest.klass:5)
+At (ForeignKeyMultiplicityErrorTest.klass:11)
 
-[39m1║ [35mpackage [39mdummy
-[39m3║ [35massociation [39mForeignKeyMultiplicity
-[39m4║ [36m{
-[39m5║     [39mparent[36m: [39mDummyParent[36m[[34m0[36m..[34m1[36m][36m;
-[39m ║ [31m                       ^^^^^^
-[39m9║ [36m}
+[39m 1║ [35mpackage [39mdummy
+[39m 8║ [35mclass [39mDummyOwned
+[39m 9║ [36m{
+[39m11║     [39mownerId[36m: [35mLong[36m? [33mprivate[36m;
+[39m  ║ [31m             ^^^^
+[39m12║ [36m}
 [m
-[36mLocation:  [mForeignKeyMultiplicityErrorTest.klass:5[m
+[36mLocation:  [mForeignKeyMultiplicityErrorTest.klass:11[m
 [36mFile:      [mForeignKeyMultiplicityErrorTest.klass[m
-[36mLine:      [m5[m
-[36mCharacter: [m24
+[36mLine:      [m11[m
+[36mCharacter: [m14
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m
