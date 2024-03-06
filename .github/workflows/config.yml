@@ -16,3 +16,5 @@ jobs:
           java-version: 11
 
       - run: ./mvnw verify
+        env:
+          MAVEN_OPTS: "-Xmx1g"
