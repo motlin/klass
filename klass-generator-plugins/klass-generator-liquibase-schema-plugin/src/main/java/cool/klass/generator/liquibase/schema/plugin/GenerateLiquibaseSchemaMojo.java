@@ -45,7 +45,7 @@ public class GenerateLiquibaseSchemaMojo
         LiquibaseSchemaGenerator generator = new LiquibaseSchemaGenerator(domainModel, this.fileName);
         try
         {
-            generator.writeLiquibaseSchema(outputPath);
+            generator.writeFiles(outputPath);
         }
         catch (RuntimeException e)
         {

@@ -29,6 +29,6 @@ public class GenerateServiceMojo
     {
         DomainModel domainModel = this.getDomainModel();
         KlassServiceGenerator generator = new KlassServiceGenerator(domainModel);
-        generator.writeKlassFiles(this.outputDirectory.toPath());
+        generator.writeFiles(this.outputDirectory.toPath());
     }
 }

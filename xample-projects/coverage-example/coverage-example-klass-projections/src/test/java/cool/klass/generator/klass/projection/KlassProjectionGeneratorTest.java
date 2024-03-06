@@ -38,7 +38,8 @@ public class KlassProjectionGeneratorTest
                 .toImmutableList();
         for (String packageName : packageNames)
         {
-            String sourceCode                = KlassProjectionGenerator.getPackageSourceCode(domainModel, packageName);
+            String sourceCode = KlassProjectionSourceCodeGenerator.getPackageSourceCode(domainModel, packageName);
+
             String resourceClassPathLocation = packageName + ".klass";
 
             this.fileMatchRule.assertFileContents(

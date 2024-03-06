@@ -12,28 +12,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-generator-liquibase-schema</artifactId>
+    <artifactId>klass-generator-package-abstract</artifactId>
 
-    <name>Klass Generator: Liquibase Schema</name>
-
-    <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/inputresources</directory>
-            </testResource>
-        </testResources>
-    </build>
+    <name>Klass Abstract Per-Package Generator</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-generator-package-abstract</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>

@@ -29,6 +29,6 @@ public class GenerateProjectionMojo
     {
         DomainModel domainModel = this.getDomainModel();
         KlassProjectionGenerator generator = new KlassProjectionGenerator(domainModel);
-        generator.writeKlassFiles(this.outputDirectory.toPath());
+        generator.writeFiles(this.outputDirectory.toPath());
     }
 }
