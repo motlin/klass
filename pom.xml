@@ -19,7 +19,6 @@
         <module>klass-generators</module>
         <module>klass-generator-plugins</module>
         <module>klass-reladomo</module>
-        <module>klass-jackson</module>
         <module>klass-serializers</module>
         <module>klass-test-modules</module>
         <module>klass-data-store</module>

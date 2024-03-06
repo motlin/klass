@@ -1,4 +1,4 @@
-package cool.klass.jackson;
+package cool.klass.serialization.jackson.config;
 
 import javax.annotation.Nonnull;
 
@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
-import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
-import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
 import cool.klass.serialization.jackson.pretty.JsonPrettyPrinter;
 
 public final class ObjectMapperConfig
@@ -45,9 +43,5 @@ public final class ObjectMapperConfig
 
         objectMapper.setDateFormat(new StdDateFormat());
         objectMapper.setSerializationInclusion(serializationInclusion);
-
-        objectMapper.registerModule(new EclipseCollectionsModule());
-        // TODO: Dynamically discover and load Jackson modules to break dependencies
-        objectMapper.registerModule(new JacksonReladomoModule());
     }
 }

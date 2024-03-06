@@ -17,6 +17,7 @@
 
     <modules>
         <module>klass-serialization-jackson-pretty-printer</module>
+        <module>klass-serialization-jackson-config</module>
     </modules>
 
     <dependencyManagement>

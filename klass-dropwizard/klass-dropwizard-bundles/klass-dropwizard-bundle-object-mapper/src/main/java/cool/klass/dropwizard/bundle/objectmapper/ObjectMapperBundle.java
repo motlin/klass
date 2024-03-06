@@ -6,7 +6,7 @@ import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.object.mapper.ObjectMapperFactory;
 import cool.klass.dropwizard.configuration.object.mapper.ObjectMapperFactoryProvider;
-import cool.klass.jackson.ObjectMapperConfig;
+import cool.klass.serialization.jackson.config.ObjectMapperConfig;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;

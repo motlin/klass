@@ -9,7 +9,7 @@ import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.common.mithra.util.serializer.SerializationConfig;
 import com.gs.fw.common.mithra.util.serializer.Serialized;
-import cool.klass.jackson.ObjectMapperConfig;
+import cool.klass.serialization.jackson.config.ObjectMapperConfig;
 import io.dropwizard.jackson.Jackson;
 
 public final class ReladomoDefaultSerializer
