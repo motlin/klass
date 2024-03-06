@@ -16,7 +16,6 @@
     <name>Klass Dropwizard Auth Filter Configuration Factories (Module Group)</name>
 
     <modules>
-
         <module>klass-dropwizard-configuration-auth-filter</module>
         <module>klass-dropwizard-configuration-auth-filter-firebase</module>
         <module>klass-dropwizard-configuration-auth-filter-impersonation</module>
