@@ -277,12 +277,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-services</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
