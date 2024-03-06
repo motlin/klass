@@ -2,14 +2,19 @@ package cool.klass.model.converter.bootstrap.writer;
 
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import cool.klass.model.meta.domain.Association;
+import cool.klass.model.meta.domain.ClassModifier;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.EnumerationLiteral;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.property.AssociationEnd;
+import cool.klass.model.meta.domain.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.EnumerationProperty;
 import cool.klass.model.meta.domain.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.property.PropertyModifier;
+import klass.model.meta.domain.EnumerationPropertyModifier;
+import klass.model.meta.domain.PrimitivePropertyModifier;
 
 public class KlassBootstrapWriter
 {
@@ -58,6 +63,15 @@ public class KlassBootstrapWriter
             bootstrappedClass.setPackageName(klass.getPackageName());
             bootstrappedClass.insert();
 
+            for (ClassModifier classModifier : klass.getClassModifiers())
+            {
+                klass.model.meta.domain.ClassModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassModifier();
+                bootstrappedClassModifier.setClassName(klass.getName());
+                bootstrappedClassModifier.setName(classModifier.getName());
+                bootstrappedClassModifier.setOrdinal(classModifier.getOrdinal());
+                bootstrappedClassModifier.insert();
+            }
+
             for (DataTypeProperty<?> dataTypeProperty : klass.getDataTypeProperties())
             {
                 if (dataTypeProperty instanceof PrimitiveProperty)
@@ -73,6 +87,16 @@ public class KlassBootstrapWriter
                     bootstrappedPrimitiveProperty.setId(primitiveProperty.isID());
                     bootstrappedPrimitiveProperty.setOptional(primitiveProperty.isOptional());
                     bootstrappedPrimitiveProperty.insert();
+
+                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+                    {
+                        PrimitivePropertyModifier primitivePropertyModifier = new PrimitivePropertyModifier();
+                        primitivePropertyModifier.setClassName(klass.getName());
+                        primitivePropertyModifier.setPropertyName(primitiveProperty.getName());
+                        primitivePropertyModifier.setName(propertyModifier.getName());
+                        primitivePropertyModifier.setOrdinal(propertyModifier.getOrdinal());
+                        primitivePropertyModifier.insert();
+                    }
                 }
                 else if (dataTypeProperty instanceof EnumerationProperty)
                 {
@@ -86,6 +110,16 @@ public class KlassBootstrapWriter
                     bootstrappedEnumerationProperty.setKey(enumerationProperty.isKey());
                     bootstrappedEnumerationProperty.setOptional(enumerationProperty.isOptional());
                     bootstrappedEnumerationProperty.insert();
+
+                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+                    {
+                        EnumerationPropertyModifier enumerationPropertyModifier = new EnumerationPropertyModifier();
+                        enumerationPropertyModifier.setClassName(klass.getName());
+                        enumerationPropertyModifier.setPropertyName(enumerationProperty.getName());
+                        enumerationPropertyModifier.setName(propertyModifier.getName());
+                        enumerationPropertyModifier.setOrdinal(propertyModifier.getOrdinal());
+                        enumerationPropertyModifier.insert();
+                    }
                 }
                 else
                 {
@@ -112,14 +146,24 @@ public class KlassBootstrapWriter
 
     private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
     {
-        klass.model.meta.domain.AssociationEnd boostrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
-        boostrappedAssociationEnd.setOwningClassName(associationEnd.getOwningKlass().getName());
-        boostrappedAssociationEnd.setName(associationEnd.getName());
-        boostrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
-        boostrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
-        boostrappedAssociationEnd.setDirection(direction);
-        boostrappedAssociationEnd.setMultiplicity(associationEnd.getMultiplicity().name());
-        boostrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
-        boostrappedAssociationEnd.insert();
+        klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
+        bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningKlass().getName());
+        bootstrappedAssociationEnd.setName(associationEnd.getName());
+        bootstrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
+        bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
+        bootstrappedAssociationEnd.setDirection(direction);
+        bootstrappedAssociationEnd.setMultiplicity(associationEnd.getMultiplicity().name());
+        bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
+        bootstrappedAssociationEnd.insert();
+
+        for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
+        {
+            klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
+            bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningKlass().getName());
+            bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
+            bootstrappedAssociationEndModifier.setName(associationEndModifier.getName());
+            bootstrappedAssociationEndModifier.setOrdinal(associationEndModifier.getOrdinal());
+            bootstrappedAssociationEndModifier.insert();
+        }
     }
 }

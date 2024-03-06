@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--TODO: Move this file to a subdirectory, and code generate it-->
+<!--TODO: ❗️ Move this file to a subdirectory, and code generate it-->
 <MithraRuntime
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomo/src/main/xsd/mithraruntime.xsd">
@@ -17,11 +17,14 @@
     <PureObjects notificationIdentifier="klass.model.meta.domain">
         <MithraObjectConfiguration className="klass.model.meta.domain.Association" />
         <MithraObjectConfiguration className="klass.model.meta.domain.AssociationEnd" />
+        <MithraObjectConfiguration className="klass.model.meta.domain.AssociationEndModifier" />
         <MithraObjectConfiguration className="klass.model.meta.domain.AssociationEndOrdering" />
         <MithraObjectConfiguration className="klass.model.meta.domain.Class" />
+        <MithraObjectConfiguration className="klass.model.meta.domain.ClassModifier" />
         <MithraObjectConfiguration className="klass.model.meta.domain.Enumeration" />
         <MithraObjectConfiguration className="klass.model.meta.domain.EnumerationLiteral" />
         <MithraObjectConfiguration className="klass.model.meta.domain.EnumerationProperty" />
+        <MithraObjectConfiguration className="klass.model.meta.domain.EnumerationPropertyModifier" />
         <MithraObjectConfiguration className="klass.model.meta.domain.Ordering" />
         <MithraObjectConfiguration className="klass.model.meta.domain.OrderingPart" />
         <MithraObjectConfiguration className="klass.model.meta.domain.Package" />
@@ -29,5 +32,6 @@
         <MithraObjectConfiguration className="klass.model.meta.domain.ParameterizedPropertyOrdering" />
         <MithraObjectConfiguration className="klass.model.meta.domain.ParameterizedPropertyParameter" />
         <MithraObjectConfiguration className="klass.model.meta.domain.PrimitiveProperty" />
+        <MithraObjectConfiguration className="klass.model.meta.domain.PrimitivePropertyModifier" />
     </PureObjects>
 </MithraRuntime>

@@ -12,16 +12,20 @@ import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.domain.order.OrderBy;
 import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEnd extends Property<Klass>
 {
     @Nonnull
-    private final Association  owningAssociation;
+    private final Association                           owningAssociation;
     @Nonnull
-    private final Multiplicity multiplicity;
-    private final boolean      owned;
+    private final Multiplicity                          multiplicity;
+    @Nonnull
+    private final ImmutableList<AssociationEndModifier> associationEndModifiers;
+    private final boolean                               owned;
 
     @Nonnull
     private Optional<OrderBy> orderBy = Optional.empty();
@@ -35,11 +39,13 @@ public final class AssociationEnd extends Property<Klass>
             @Nonnull Klass owningKlass,
             @Nonnull Association owningAssociation,
             @Nonnull Multiplicity multiplicity,
+            @Nonnull ImmutableList<AssociationEndModifier> associationEndModifiers,
             boolean owned)
     {
         super(elementContext, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity = Objects.requireNonNull(multiplicity);
+        this.associationEndModifiers = Objects.requireNonNull(associationEndModifiers);
         this.owned = owned;
     }
 
@@ -47,6 +53,12 @@ public final class AssociationEnd extends Property<Klass>
     public Multiplicity getMultiplicity()
     {
         return this.multiplicity;
+    }
+
+    @Nonnull
+    public ImmutableList<AssociationEndModifier> getAssociationEndModifiers()
+    {
+        return this.associationEndModifiers;
     }
 
     public boolean isOwned()
@@ -90,10 +102,12 @@ public final class AssociationEnd extends Property<Klass>
     public static class AssociationEndBuilder extends PropertyBuilder<Klass, KlassBuilder>
     {
         @Nonnull
-        private final AssociationBuilder owningAssociation;
+        private final AssociationBuilder                           owningAssociation;
         @Nonnull
-        private final Multiplicity       multiplicity;
-        private final boolean            isOwned;
+        private final Multiplicity                                 multiplicity;
+        @Nonnull
+        private final ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders;
+        private final boolean                                      isOwned;
 
         private AssociationEnd           associationEnd;
         @Nonnull
@@ -108,11 +122,13 @@ public final class AssociationEnd extends Property<Klass>
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull AssociationBuilder owningAssociation,
                 @Nonnull Multiplicity multiplicity,
+                @Nonnull ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders,
                 boolean isOwned)
         {
             super(elementContext, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
             this.multiplicity = Objects.requireNonNull(multiplicity);
+            this.associationEndModifierBuilders = Objects.requireNonNull(associationEndModifierBuilders);
             this.isOwned = isOwned;
         }
 
@@ -129,6 +145,9 @@ public final class AssociationEnd extends Property<Klass>
                 throw new IllegalStateException();
             }
 
+            ImmutableList<AssociationEndModifier> associationEndModifiers =
+                    this.associationEndModifierBuilders.collect(AssociationEndModifierBuilder::build);
+
             this.associationEnd = new AssociationEnd(
                     this.elementContext,
                     this.nameContext,
@@ -138,6 +157,7 @@ public final class AssociationEnd extends Property<Klass>
                     this.owningKlassBuilder.getKlass(),
                     this.owningAssociation.getAssociation(),
                     this.multiplicity,
+                    associationEndModifiers,
                     this.isOwned);
 
             Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);

@@ -94,9 +94,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
                 ctx,
                 name,
                 classState.getNumMembers() + 1,
-                false,
-                Lists.immutable.empty(),
-                classState,
+                classState, false, Lists.immutable.empty(),
                 AntlrPrimitiveType.valueOf(primitiveType));
     }
 }

@@ -6,7 +6,9 @@ import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 {
@@ -17,6 +19,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
             int ordinal,
             @Nonnull Enumeration enumeration,
             @Nonnull Klass owningKlass,
+            @Nonnull ImmutableList<PropertyModifier> propertyModifiers,
             boolean isKey,
             boolean isOptional)
     {
@@ -27,6 +30,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                 ordinal,
                 enumeration,
                 owningKlass,
+                propertyModifiers,
                 isKey,
                 isOptional);
     }
@@ -60,6 +64,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                 int ordinal,
                 @Nonnull EnumerationBuilder enumerationBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isKey,
                 boolean isOptional)
         {
@@ -70,6 +75,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                     ordinal,
                     enumerationBuilder,
                     owningKlassBuilder,
+                    propertyModifierBuilders,
                     isKey,
                     isOptional);
         }
@@ -81,6 +87,10 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
             {
                 throw new IllegalStateException();
             }
+
+            ImmutableList<PropertyModifier> propertyModifiers =
+                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
+
             this.enumerationProperty = new EnumerationProperty(
                     this.elementContext,
                     this.nameContext,
@@ -88,6 +98,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                     this.ordinal,
                     this.typeBuilder.getEnumeration(),
                     this.owningKlassBuilder.getKlass(),
+                    propertyModifiers,
                     this.isKey,
                     this.isOptional);
             return this.enumerationProperty;

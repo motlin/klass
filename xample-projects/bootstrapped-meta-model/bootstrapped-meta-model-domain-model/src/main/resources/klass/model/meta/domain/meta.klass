@@ -31,16 +31,15 @@ enumeration Multiplicity
     ONE_TO_MANY("1..*"),
 }
 
-// TODO: ⬆ Model ordinal/order in the boostrapped meta model and add order-bys.
 class PrimitiveProperty
     transient
 {
     className                     : String key;
     name                          : String key;
     primitiveType                 : PrimitiveType;
+    optional                      : Boolean;
     key                           : Boolean;
     id                            : Boolean;
-    optional                      : Boolean;
     ordinal                       : Integer;
 }
 
@@ -86,8 +85,8 @@ class EnumerationProperty
     className                     : String key;
     name                          : String key;
     enumerationName               : String private;
-    key                           : Boolean;
     optional                      : Boolean;
+    key                           : Boolean;
     ordinal                       : Integer;
 }
 
@@ -106,6 +105,61 @@ association ClassHasEnumerationProperties
         orderBy: this.ordinal;
 
     relationship this.name == EnumerationProperty.className
+}
+
+class PrimitivePropertyModifier
+    transient
+{
+    className                     : String key;
+    propertyName                  : String key;
+    name                          : String key;
+    ordinal                       : Integer;
+}
+
+class EnumerationPropertyModifier
+    transient
+{
+    className                     : String key;
+    propertyName                  : String key;
+    name                          : String key;
+    ordinal                       : Integer;
+}
+
+association PrimitivePropertyHasModifiers
+{
+    primitiveProperty: PrimitiveProperty[1..1];
+    primitivePropertyModifiers: PrimitivePropertyModifier[0..*]
+        orderBy: this.ordinal;
+
+    relationship this.className == PrimitivePropertyModifier.className
+            && this.name == PrimitivePropertyModifier.propertyName
+}
+
+association EnumerationPropertyHasModifiers
+{
+    enumerationProperty: EnumerationProperty[1..1];
+    enumerationPropertyModifiers: EnumerationPropertyModifier[0..*]
+        orderBy: this.ordinal;
+
+    relationship this.className == EnumerationPropertyModifier.className
+            && this.name == EnumerationPropertyModifier.propertyName
+}
+
+class ClassModifier
+    transient
+{
+    className                     : String key;
+    name                          : String key;
+    ordinal                       : Integer;
+}
+
+association ClassHasModifiers
+{
+    owningClass: Class[1..1];
+    classModifiers: ClassModifier[0..*]
+        orderBy: this.ordinal;
+
+    relationship this.name == ClassModifier.className
 }
 
 enumeration AssociationEndDirection
@@ -171,6 +225,25 @@ association AssociationEndHasResultType
     resultType: Class[1..1];
 
     relationship this.resultTypeName == Class.name
+}
+
+class AssociationEndModifier
+    transient
+{
+    owningClassName               : String key;
+    associationEndName            : String key;
+    name                          : String key;
+    ordinal                       : Integer;
+}
+
+association AssociationEndHasModifiers
+{
+    associationEnd: AssociationEnd[1..1];
+    associationEndModifiers: AssociationEndModifier[0..*]
+        orderBy: this.ordinal;
+
+    relationship this.owningClassName == AssociationEndModifier.owningClassName
+            && this.name == AssociationEndModifier.associationEndName
 }
 
 class ParameterizedProperty
@@ -370,37 +443,58 @@ projection ClassReadProjection on Class
     name                 : "Class name",
     packageName          : "Class package name",
     ordinal              : "Class ordinal",
+    classModifiers       :
+    {
+        name   : "Class modifier name",
+        ordinal: "Class modifier ordinal",
+    },
     primitiveProperties  :
     {
-        name         : "Primitive property name",
-        primitiveType: "Primitive property type",
-        optional     : "Primitive property is optional",
-        key          : "Primitive property is key",
-        ordinal      : "Primitive property ordinal",
+        name                      : "Primitive property name",
+        primitiveType             : "Primitive property type",
+        optional                  : "Primitive property is optional",
+        key                       : "Primitive property is key",
+        id                        : "Primitive property is id",
+        ordinal                   : "Primitive property ordinal",
+        primitivePropertyModifiers:
+        {
+            name   : "Primitive property modifier name",
+            ordinal: "Primitive property modifier ordinal",
+        },
     },
     enumerationProperties:
     {
-        name       : "Enumeration property name",
-        optional   : "Enumeration property is optional",
-        key        : "Enumeration property is key",
-        ordinal    : "Enumeration property ordinal",
-        enumeration:
+        name                        : "Enumeration property name",
+        optional                    : "Enumeration property is optional",
+        key                         : "Enumeration property is key",
+        ordinal                     : "Enumeration property ordinal",
+        enumeration                 :
         {
             name: "Enumeration name",
+        },
+        enumerationPropertyModifiers:
+        {
+            name   : "Enumeration property modifier name",
+            ordinal: "Enumeration property modifier ordinal",
         },
     },
     associationEnds      :
     {
-        name             : "Association end name",
-        direction        : "Association end direction",
-        multiplicity     : "Association end multiplicity",
-        resultType       :
+        name                   : "Association end name",
+        direction              : "Association end direction",
+        multiplicity           : "Association end multiplicity",
+        resultType             :
         {
             name: "Association end result type name",
         },
-        owningAssociation:
+        owningAssociation      :
         {
             name: "Association end owning association name",
+        },
+        associationEndModifiers:
+        {
+            name   : "Association end modifier name",
+            ordinal: "Association end modifier ordinal",
         },
     },
 }

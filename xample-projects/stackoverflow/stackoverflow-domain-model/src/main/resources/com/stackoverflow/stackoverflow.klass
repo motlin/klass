@@ -151,11 +151,12 @@ class Answer
     audited
     optimisticallyLocked
 {
-    id                : Long key id;
-    body              : String;
-    deleted           : Boolean;
+    id                            : Long key id;
+    body                          : String;
+    deleted                       : Boolean;
+
     // TODO: questionId: Long private *final*
-    questionId: Long private;
+    questionId                    : Long private;
 }
 
 // TODO Model AnswerVote
@@ -166,9 +167,9 @@ class QuestionVote
     systemTemporal
     audited
 {
-    questionId    : Long key;
-    createdById   : String key;
-    direction         : VoteDirection;
+    questionId                    : Long key;
+    createdById                   : String key;
+    direction                     : VoteDirection;
 }
 
 enumeration VoteDirection

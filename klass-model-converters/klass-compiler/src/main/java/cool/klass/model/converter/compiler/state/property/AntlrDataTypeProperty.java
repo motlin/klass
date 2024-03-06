@@ -17,7 +17,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 {
     protected final boolean                              isOptional;
     @Nonnull
-    protected final ImmutableList<AntlrPropertyModifier> modifiers;
+    protected final ImmutableList<AntlrPropertyModifier> propertyModifierStates;
+
     protected final AntlrClass                           owningClassState;
 
     protected AntlrDataTypeProperty(
@@ -27,24 +28,24 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            boolean isOptional,
-            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
-            AntlrClass owningClassState)
+            AntlrClass owningClassState,
+            @Nonnull ImmutableList<AntlrPropertyModifier> propertyModifierStates,
+            boolean isOptional)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.isOptional = isOptional;
-        this.modifiers = Objects.requireNonNull(modifiers);
+        this.propertyModifierStates = Objects.requireNonNull(propertyModifierStates);
         this.owningClassState = owningClassState;
     }
 
     public boolean isKey()
     {
-        return this.modifiers.anySatisfy(AntlrPropertyModifier::isKey);
+        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isKey);
     }
 
     public boolean isID()
     {
-        return this.modifiers.anySatisfy(AntlrPropertyModifier::isID);
+        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isID);
     }
 
     public abstract boolean isTemporal();

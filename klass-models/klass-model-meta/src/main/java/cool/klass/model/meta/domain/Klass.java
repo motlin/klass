@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.ClassModifier.ClassModifierBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.DataTypeProperty;
@@ -14,8 +15,10 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class Klass extends Type
 {
-    private final boolean isUser;
-    private final boolean isTransient;
+    @Nonnull
+    private final ImmutableList<ClassModifier> classModifiers;
+    private final boolean                      isUser;
+    private final boolean                      isTransient;
 
     private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
     private ImmutableList<AssociationEnd>      associationEnds;
@@ -31,10 +34,12 @@ public final class Klass extends Type
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
+            @Nonnull ImmutableList<ClassModifier> classModifiers,
             boolean isUser,
             boolean isTransient)
     {
         super(elementContext, nameContext, name, ordinal, packageName);
+        this.classModifiers = Objects.requireNonNull(classModifiers);
         this.isUser = isUser;
         this.isTransient = isTransient;
     }
@@ -81,6 +86,12 @@ public final class Klass extends Type
         this.associationEnds = associationEnds;
     }
 
+    @Nonnull
+    public ImmutableList<ClassModifier> getClassModifiers()
+    {
+        return this.classModifiers;
+    }
+
     public boolean isUser()
     {
         return this.isUser;
@@ -93,8 +104,10 @@ public final class Klass extends Type
 
     public static final class KlassBuilder extends TypeBuilder
     {
-        private final boolean isUser;
-        private final boolean isTransient;
+        @Nonnull
+        private final ImmutableList<ClassModifierBuilder> classModifierBuilders;
+        private final boolean                             isUser;
+        private final boolean                             isTransient;
 
         private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
         private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
@@ -110,10 +123,12 @@ public final class Klass extends Type
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
+                @Nonnull ImmutableList<ClassModifierBuilder> classModifierBuilders,
                 boolean isUser,
                 boolean isTransient)
         {
             super(elementContext, nameContext, name, ordinal, packageName);
+            this.classModifierBuilders = Objects.requireNonNull(classModifierBuilders);
             this.isUser = isUser;
             this.isTransient = isTransient;
         }
@@ -145,12 +160,15 @@ public final class Klass extends Type
                 throw new IllegalStateException();
             }
 
+            ImmutableList<ClassModifier> classModifiers = this.classModifierBuilders.collect(ClassModifierBuilder::build);
+
             this.klass = new Klass(
                     this.elementContext,
                     this.nameContext,
                     this.name,
                     this.ordinal,
                     this.packageName,
+                    classModifiers,
                     this.isUser,
                     this.isTransient);
 

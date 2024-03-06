@@ -15,6 +15,7 @@ import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -51,7 +52,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     private final AntlrClass                                 type;
     private final AntlrMultiplicity                          antlrMultiplicity;
     @Nonnull
-    private final ImmutableList<AntlrAssociationEndModifier> modifiers;
+    private final ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates;
 
     @Nonnull
     private Optional<AntlrOrderBy> orderByState = Optional.empty();
@@ -70,13 +71,13 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
             AntlrMultiplicity antlrMultiplicity,
-            @Nonnull ImmutableList<AntlrAssociationEndModifier> modifiers)
+            @Nonnull ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
         this.type = Objects.requireNonNull(type);
         this.antlrMultiplicity = antlrMultiplicity;
-        this.modifiers = Objects.requireNonNull(modifiers);
+        this.associationEndModifierStates = Objects.requireNonNull(associationEndModifierStates);
     }
 
     @Nonnull
@@ -101,15 +102,20 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             throw new IllegalStateException();
         }
 
+        ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders =
+                this.associationEndModifierStates.collect(AntlrAssociationEndModifier::build);
+
         // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                ordinal, this.type.getKlassBuilder(),
+                ordinal,
+                this.type.getKlassBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 this.owningAssociationState.getAssociationBuilder(),
                 this.antlrMultiplicity.getMultiplicity(),
+                associationEndModifierBuilders,
                 this.isOwned());
 
         // TODO: OrderByOwner?
@@ -132,7 +138,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
 
     public boolean isOwned()
     {
-        return this.modifiers.anySatisfy(AntlrAssociationEndModifier::isOwned);
+        return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
     public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)

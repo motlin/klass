@@ -12,6 +12,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
+import cool.klass.model.meta.domain.ClassModifier.ClassModifierBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
@@ -89,7 +90,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     private final MutableList<AntlrClass>       versionClasses      = Lists.mutable.empty();
     private final MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
 
-    private final ImmutableList<AntlrClassModifier> classModifiers;
+    private final ImmutableList<AntlrClassModifier> classModifierStates;
 
     private final boolean isUser;
 
@@ -104,11 +105,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             @Nonnull String name,
             int ordinal,
             String packageName,
-            ImmutableList<AntlrClassModifier> classModifiers,
+            ImmutableList<AntlrClassModifier> classModifierStates,
             boolean isUser)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
-        this.classModifiers = Objects.requireNonNull(classModifiers);
+        this.classModifierStates = Objects.requireNonNull(classModifierStates);
         this.isUser = isUser;
     }
 
@@ -151,12 +152,16 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             throw new IllegalStateException();
         }
 
-        // TODO: Pass through class modifiers?
+        ImmutableList<ClassModifierBuilder> classModifierBuilders =
+                this.classModifierStates.collect(AntlrClassModifier::build);
+
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                ordinal, this.packageName,
+                this.ordinal,
+                this.packageName,
+                classModifierBuilders,
                 this.isUser,
                 this.hasTransientModifier());
 
@@ -170,7 +175,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
     private boolean hasTransientModifier()
     {
-        return this.classModifiers.anySatisfy(AntlrClassModifier::isTransient);
+        return this.classModifierStates.anySatisfy(AntlrClassModifier::isTransient);
     }
 
     public void build2()

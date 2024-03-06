@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.property.PrimitiveProperty.PrimitivePropertyBuilder;
 import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -25,9 +26,9 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             Element.NO_CONTEXT,
             "ambiguous primitive property name",
             -1,
+            AntlrClass.AMBIGUOUS,
             false,
             Lists.immutable.empty(),
-            AntlrClass.AMBIGUOUS,
             AntlrPrimitiveType.AMBIGUOUS);
 
     @Nonnull
@@ -42,9 +43,9 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            boolean isOptional,
-            @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
+            boolean isOptional,
+            @Nonnull ImmutableList<AntlrPropertyModifier> propertyModifierStates,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
     {
         super(
@@ -54,9 +55,9 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 nameContext,
                 name,
                 ordinal,
-                isOptional,
-                modifiers,
-                owningClassState);
+                owningClassState,
+                propertyModifierStates,
+                isOptional);
         this.antlrPrimitiveType = Objects.requireNonNull(antlrPrimitiveType);
     }
 
@@ -81,12 +82,16 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             throw new IllegalStateException();
         }
 
+        ImmutableList<PropertyModifierBuilder> propertyModifierBuilders = this.propertyModifierStates.collect(AntlrPropertyModifier::build);
+
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                ordinal, this.antlrPrimitiveType.build(),
+                this.ordinal,
+                this.antlrPrimitiveType.build(),
                 this.owningClassState.getKlassBuilder(),
+                propertyModifierBuilders,
                 this.isKey(),
                 this.isOptional,
                 this.isID());

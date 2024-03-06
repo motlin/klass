@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.property.EnumerationProperty.EnumerationPropertyBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -23,9 +24,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             new ParserRuleContext(),
             "not found enumeration property",
             -1,
+            AntlrClass.NOT_FOUND,
             false,
             Lists.immutable.empty(),
-            AntlrClass.NOT_FOUND,
             AntlrEnumeration.NOT_FOUND);
 
     // TODO: Check that it's not NOT_FOUND
@@ -41,9 +42,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            AntlrClass owningClassState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
-            AntlrClass owningClassState,
             @Nonnull AntlrEnumeration antlrEnumeration)
     {
         super(
@@ -53,9 +54,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 nameContext,
                 name,
                 ordinal,
-                isOptional,
+                owningClassState,
                 modifiers,
-                owningClassState);
+                isOptional);
         // TODO: is this nullable?
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }
@@ -81,12 +82,17 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             throw new IllegalStateException();
         }
 
+        ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
+                this.propertyModifierStates.collect(AntlrPropertyModifier::build);
+
         this.enumerationPropertyBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                ordinal, this.antlrEnumeration.getEnumerationBuilder(),
+                this.ordinal,
+                this.antlrEnumeration.getEnumerationBuilder(),
                 this.owningClassState.getKlassBuilder(),
+                propertyModifierBuilders,
                 this.isKey(),
                 this.isOptional);
         return this.enumerationPropertyBuilder;

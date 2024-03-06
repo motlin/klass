@@ -17,6 +17,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -83,7 +84,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 false);
 
         ImmutableList<AntlrAssociationEndModifier> associationEndModifiers = ListAdapter.adapt(ctx.associationEndModifier())
-                .collect(AntlrAssociationEndModifier::new)
+                .collectWithIndex(this::getAntlrAssociationEndModifier)
                 .toImmutable();
 
         AntlrAssociationEnd antlrAssociationEnd = new AntlrAssociationEnd(
@@ -115,5 +116,19 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.associationState,
                 thisReference);
         visitor.visit(ctx.criteriaExpression());
+    }
+
+    @Nonnull
+    public AntlrAssociationEndModifier getAntlrAssociationEndModifier(
+            @Nonnull AssociationEndModifierContext context,
+            int ordinal)
+    {
+        return new AntlrAssociationEndModifier(
+                context,
+                this.currentCompilationUnit,
+                false,
+                context,
+                context.getText(),
+                ordinal + 1);
     }
 }

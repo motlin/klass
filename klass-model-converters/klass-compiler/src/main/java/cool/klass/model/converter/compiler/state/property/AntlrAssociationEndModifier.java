@@ -1,38 +1,40 @@
 package cool.klass.model.converter.compiler.state.property;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
+import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
+import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrAssociationEndModifier
+public class AntlrAssociationEndModifier extends AntlrNamedElement
 {
-    @Nonnull
-    private final AssociationEndModifierContext context;
-    @Nonnull
-    private final String                        name;
-
-    public AntlrAssociationEndModifier(@Nonnull AssociationEndModifierContext context)
+    public AntlrAssociationEndModifier(
+            @Nonnull ParserRuleContext elementContext,
+            @Nullable CompilationUnit compilationUnit,
+            boolean inferred,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            int ordinal)
     {
-        this.context = Objects.requireNonNull(context);
-        this.name = Objects.requireNonNull(context.getText());
-    }
-
-    @Nonnull
-    public AssociationEndModifierContext getContext()
-    {
-        return this.context;
-    }
-
-    @Nonnull
-    public String getName()
-    {
-        return this.name;
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
     }
 
     public boolean isOwned()
     {
         return this.name.equals("owned");
+    }
+
+    public AssociationEndModifierBuilder build()
+    {
+        return new AssociationEndModifierBuilder(this.elementContext, this.nameContext, this.name, this.ordinal);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // intentionally blank
     }
 }

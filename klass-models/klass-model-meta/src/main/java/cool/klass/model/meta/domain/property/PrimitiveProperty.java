@@ -5,7 +5,9 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 {
@@ -18,6 +20,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
             int ordinal,
             @Nonnull PrimitiveType primitiveType,
             @Nonnull Klass owningKlass,
+            @Nonnull ImmutableList<PropertyModifier> propertyModifiers,
             boolean isKey,
             boolean isOptional,
             boolean isID)
@@ -29,6 +32,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 ordinal,
                 primitiveType,
                 owningKlass,
+                propertyModifiers,
                 isKey,
                 isOptional);
         this.isID = isID;
@@ -70,6 +74,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 int ordinal,
                 @Nonnull PrimitiveTypeBuilder primitiveTypeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
+                ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isKey,
                 boolean isOptional,
                 boolean isID)
@@ -81,6 +86,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     ordinal,
                     primitiveTypeBuilder,
                     owningKlassBuilder,
+                    propertyModifierBuilders,
                     isKey,
                     isOptional);
             this.isID = isID;
@@ -93,6 +99,9 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
             {
                 throw new IllegalStateException();
             }
+            ImmutableList<PropertyModifier> propertyModifiers =
+                    this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);
+
             this.primitiveProperty = new PrimitiveProperty(
                     this.elementContext,
                     this.nameContext,
@@ -100,6 +109,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.ordinal,
                     this.typeBuilder.getPrimitiveType(),
                     this.owningKlassBuilder.getKlass(),
+                    propertyModifiers,
                     this.isKey,
                     this.isOptional,
                     this.isID);

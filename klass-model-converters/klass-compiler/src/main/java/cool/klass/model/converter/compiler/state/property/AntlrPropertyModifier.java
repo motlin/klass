@@ -1,32 +1,25 @@
 package cool.klass.model.converter.compiler.state.property;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrPropertyModifier extends AntlrElement
+public class AntlrPropertyModifier extends AntlrNamedElement
 {
-    @Nonnull
-    private final String name;
-
     public AntlrPropertyModifier(
-            @Nonnull ParserRuleContext context,
-            CompilationUnit compilationUnit,
+            @Nonnull ParserRuleContext elementContext,
+            @Nullable CompilationUnit compilationUnit,
             boolean inferred,
-            String name)
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            int ordinal)
     {
-        super(context, compilationUnit, inferred);
-        this.name = Objects.requireNonNull(name);
-    }
-
-    @Nonnull
-    public String getName()
-    {
-        return this.name;
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
     }
 
     public boolean isKey()
@@ -42,5 +35,16 @@ public class AntlrPropertyModifier extends AntlrElement
     public boolean isVersionNumber()
     {
         return this.name.equals("version");
+    }
+
+    public PropertyModifierBuilder build()
+    {
+        return new PropertyModifierBuilder(this.elementContext, this.nameContext, this.name, this.ordinal);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // intentionally blank
     }
 }

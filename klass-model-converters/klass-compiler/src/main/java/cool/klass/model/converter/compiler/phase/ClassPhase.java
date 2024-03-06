@@ -48,7 +48,7 @@ public class ClassPhase extends AbstractCompilerPhase
     public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
         ImmutableList<AntlrClassModifier> classModifiers = ListAdapter.adapt(ctx.classModifier())
-                .collect(this::getAntlrClassModifier)
+                .collectWithIndex(this::getAntlrClassModifier)
                 .toImmutable();
 
         String classOrUserKeyword = ctx.classOrUser().getText();
@@ -88,7 +88,7 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collect(this::getAntlrPropertyModifier)
+                .collectWithIndex(this::getAntlrPropertyModifier)
                 .toImmutable();
 
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
@@ -98,9 +98,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 identifier,
                 propertyName,
                 this.classState.getNumMembers() + 1,
-                isOptional,
-                propertyModifiers,
-                this.classState,
+                this.classState, isOptional, propertyModifiers,
                 primitiveTypeState);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
@@ -118,7 +116,7 @@ public class ClassPhase extends AbstractCompilerPhase
         boolean          isOptional       = optionalMarkerContext != null;
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collect(this::getAntlrPropertyModifier)
+                .collectWithIndex(this::getAntlrPropertyModifier)
                 .toImmutable();
 
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
@@ -128,23 +126,34 @@ public class ClassPhase extends AbstractCompilerPhase
                 identifier,
                 propertyName,
                 this.classState.getNumMembers() + 1,
-                isOptional,
+                this.classState, isOptional,
                 propertyModifiers,
-                this.classState,
                 antlrEnumeration);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
     }
 
     @Nonnull
-    public AntlrClassModifier getAntlrClassModifier(@Nonnull ClassModifierContext context)
+    public AntlrClassModifier getAntlrClassModifier(@Nonnull ClassModifierContext context, int ordinal)
     {
-        return new AntlrClassModifier(context, this.currentCompilationUnit, false, context.getText());
+        return new AntlrClassModifier(
+                context,
+                this.currentCompilationUnit,
+                false,
+                context,
+                context.getText(),
+                ordinal + 1);
     }
 
     @Nonnull
-    public AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context)
+    public AntlrPropertyModifier getAntlrPropertyModifier(@Nonnull PropertyModifierContext context, int ordinal)
     {
-        return new AntlrPropertyModifier(context, this.currentCompilationUnit, false, context.getText());
+        return new AntlrPropertyModifier(
+                context,
+                this.currentCompilationUnit,
+                false,
+                context,
+                context.getText(),
+                ordinal + 1);
     }
 }
