@@ -3,7 +3,6 @@ package klass.model.meta.domain.dropwizard.application;
 import javax.annotation.Nonnull;
 
 import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
-import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -32,7 +31,7 @@ public class KlassBootstrappedMetaModelApplication
     @Override
     protected void initializeCommands(@Nonnull Bootstrap<KlassBootstrappedMetaModelConfiguration> bootstrap)
     {
-        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
+        super.initializeCommands(bootstrap);
     }
 
     @Override
