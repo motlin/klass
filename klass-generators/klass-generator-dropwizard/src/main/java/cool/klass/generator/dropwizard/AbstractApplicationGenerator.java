@@ -134,7 +134,7 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(domainModel));\n",
+                "        environment.jersey().register(new %sResource(this.domainModel));\n",
                 serviceGroup.getKlass().getName());
     }
 
