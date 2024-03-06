@@ -114,7 +114,8 @@ public class RootCompilerAnnotation
         Token              endToken          = firstAndLastToken.getTwo();
 
         String sourceName = this.compilationUnit.getSourceName();
-        return "::error file=%s,line=%d,endLine=%d,col=%d,endColumn=%d,title=%s::%s".formatted(
+        return "::%s file=%s,line=%d,endLine=%d,col=%d,endColumn=%d,title=%s::%s".formatted(
+                this.getSeverityString(),
                 sourceName,
                 startToken.getLine(),
                 endToken.getLine(),
@@ -122,5 +123,15 @@ public class RootCompilerAnnotation
                 endToken.getCharPositionInLine(),
                 this.annotationCode,
                 this.message);
+    }
+
+    @Nonnull
+    protected String getSeverityString()
+    {
+        return switch (this.severity)
+        {
+            case ERROR -> "error";
+            case WARNING -> "warning";
+        };
     }
 }

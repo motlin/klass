@@ -86,6 +86,16 @@ public abstract class AbstractCompilerAnnotation
         return this.compilationUnit;
     }
 
+    public boolean isError()
+    {
+        return this.severity == AnnotationSeverity.ERROR;
+    }
+
+    public boolean isWarning()
+    {
+        return this.severity == AnnotationSeverity.WARNING;
+    }
+
     protected String getContextString()
     {
         ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();
