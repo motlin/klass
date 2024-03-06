@@ -35,7 +35,6 @@ association EnumerationHasLiterals
         orderBy: this.ordinal ascending;
 }
 
-// TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
 // TODO: Ordinals should have a syntax and be inferred using macros
 class Classifier
     abstract
