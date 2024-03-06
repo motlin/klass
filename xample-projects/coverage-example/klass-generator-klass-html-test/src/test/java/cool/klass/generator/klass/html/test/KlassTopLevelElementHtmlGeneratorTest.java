@@ -37,6 +37,7 @@ public class KlassTopLevelElementHtmlGeneratorTest
     {
         String sourceCodeText = KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT;
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 "example.klass",
                 sourceCodeText);

@@ -72,6 +72,7 @@ public class CompilerState
         Objects.requireNonNull(macroElement);
 
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
+                this.compilerInputState.getCompilationUnits().size(),
                 macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
@@ -100,6 +101,7 @@ public class CompilerState
             @Nonnull ImmutableList<ParseTreeListener> listeners)
     {
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
+                this.compilerInputState.getCompilationUnits().size(),
                 macroElement,
                 macroExpansionCompilerPhase,
                 sourceCodeText,
@@ -233,8 +235,7 @@ public class CompilerState
         {
             super.enterCompilationUnit(ctx);
 
-            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(
-                    ctx);
+            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(ctx);
             CompilerState.this.compilerWalkState.enterCompilationUnit(currentCompilationUnit);
         }
 

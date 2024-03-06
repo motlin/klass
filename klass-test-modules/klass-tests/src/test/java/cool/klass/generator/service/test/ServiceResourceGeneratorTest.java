@@ -26,6 +26,7 @@ public class ServiceResourceGeneratorTest
     public void stackOverflow()
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 "example.klass",
                 KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT);

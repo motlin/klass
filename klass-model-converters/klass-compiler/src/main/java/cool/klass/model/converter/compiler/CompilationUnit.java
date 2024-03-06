@@ -32,6 +32,7 @@ public final class CompilationUnit
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
+    private final int                               ordinal;
     @Nonnull
     private final Optional<AntlrElement>            macroElement;
     @Nonnull
@@ -54,6 +55,7 @@ public final class CompilationUnit
     private SourceCodeBuilder sourceCodeBuilder;
 
     private CompilationUnit(
+            int ordinal,
             @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText,
@@ -62,6 +64,7 @@ public final class CompilationUnit
             @Nonnull BufferedTokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
+        this.ordinal        = ordinal;
         this.macroElement   = Objects.requireNonNull(macroElement);
         this.sourceName     = Objects.requireNonNull(sourceName);
         this.sourceCodeText = Objects.requireNonNull(sourceCodeText);
@@ -79,19 +82,57 @@ public final class CompilationUnit
         this.tokenCategoriesFromParser = ParserBasedTokenCategorizer.findTokenCategoriesFromParser(this.parserContext);
     }
 
+    public int getOrdinal()
+    {
+        return this.ordinal;
+    }
+
+    @Nonnull
+    public Optional<AntlrElement> getMacroElement()
+    {
+        return this.macroElement;
+    }
+
+    @Nonnull
+    public ParserRuleContext getParserContext()
+    {
+        return this.parserContext;
+    }
+
+    @Nonnull
+    public String getSourceName()
+    {
+        return this.sourceName;
+    }
+
+    @Nonnull
+    public BufferedTokenStream getTokenStream()
+    {
+        return this.tokenStream;
+    }
+
+    public String getLine(int index)
+    {
+        return this.lines[index];
+    }
+
     @Nonnull
     public static CompilationUnit createFromClasspathLocation(
+            int ordinal,
             @Nonnull String classpathLocation,
             @Nonnull ClassLoader classLoader)
     {
         String sourceCodeText = CompilationUnit.slurp(classpathLocation, classLoader);
-        return CompilationUnit.createFromText(Optional.empty(), classpathLocation, sourceCodeText);
+        return CompilationUnit.createFromText(ordinal, Optional.empty(), classpathLocation, sourceCodeText);
     }
 
     @Nonnull
-    public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation)
+    public static CompilationUnit createFromClasspathLocation(int ordinal, @Nonnull String classpathLocation)
     {
-        return CompilationUnit.createFromClasspathLocation(classpathLocation, CompilationUnit.class.getClassLoader());
+        return CompilationUnit.createFromClasspathLocation(
+                ordinal,
+                classpathLocation,
+                CompilationUnit.class.getClassLoader());
     }
 
     @Nonnull
@@ -113,15 +154,22 @@ public final class CompilationUnit
 
     @Nonnull
     public static CompilationUnit createFromText(
+            int ordinal,
             @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText)
     {
-        return CompilationUnit.createFromText(macroElement, sourceName, sourceCodeText, KlassParser::compilationUnit);
+        return CompilationUnit.createFromText(
+                ordinal,
+                macroElement,
+                sourceName,
+                sourceCodeText,
+                KlassParser::compilationUnit);
     }
 
     @Nonnull
     private static CompilationUnit createFromText(
+            int ordinal,
             @Nonnull Optional<AntlrElement> macroElement,
             @Nonnull String sourceName,
             @Nonnull String sourceCodeText,
@@ -135,6 +183,7 @@ public final class CompilationUnit
         KlassParser         parser            = CompilationUnit.getParser(errorListener, tokenStream);
         ParserRuleContext   parserRuleContext = parserRule.apply(parser);
         return new CompilationUnit(
+                ordinal,
                 macroElement,
                 sourceName,
                 sourceCodeText,
@@ -163,31 +212,19 @@ public final class CompilationUnit
 
     @Nonnull
     public static CompilationUnit getMacroCompilationUnit(
+            int ordinal,
             @Nonnull AntlrElement macroElement,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
         String sourceName = macroExpansionCompilerPhase.getName() + " macro";
-        return CompilationUnit.createFromText(Optional.of(macroElement), sourceName, sourceCodeText, parserRule);
-    }
-
-    @Nonnull
-    public Optional<AntlrElement> getMacroElement()
-    {
-        return this.macroElement;
-    }
-
-    @Nonnull
-    public ParserRuleContext getParserContext()
-    {
-        return this.parserContext;
-    }
-
-    @Nonnull
-    public String getSourceName()
-    {
-        return this.sourceName;
+        return CompilationUnit.createFromText(
+                ordinal,
+                Optional.of(macroElement),
+                sourceName,
+                sourceCodeText,
+                parserRule);
     }
 
     @Override
@@ -199,17 +236,6 @@ public final class CompilationUnit
             throw new AssertionError(this.sourceName + ", " + this.charStream.getSourceName());
         }
         return this.charStream.getSourceName();
-    }
-
-    @Nonnull
-    public BufferedTokenStream getTokenStream()
-    {
-        return this.tokenStream;
-    }
-
-    public String getLine(int index)
-    {
-        return this.lines[index];
     }
 
     public SourceCodeBuilder build()

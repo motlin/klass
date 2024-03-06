@@ -53,6 +53,7 @@ public class ReladomoReadableInterfaceGeneratorTest
         //</editor-fold>
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 "example.klass",
                 klassSourceCode);

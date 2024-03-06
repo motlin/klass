@@ -36,6 +36,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         String   sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 sourceName,
                 sourceCodeText);
@@ -75,6 +76,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         String   sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 sourceName,
                 sourceCodeText);

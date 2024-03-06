@@ -1919,6 +1919,7 @@ public class KlassCompilerTest
     private void assertNoCompilerErrors(@Nonnull String sourceCodeText)
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 "example.klass",
                 sourceCodeText);

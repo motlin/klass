@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.Ordering;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,13 +15,10 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class RootCompilerError extends AbstractCompilerError implements Comparable<RootCompilerError>
 {
-    private static final Comparator<AbstractCompilerError> FRAME_COMPARATOR = Comparator
-            .comparing(AbstractCompilerError::getSourceName)
+    private static final Comparator<RootCompilerError> COMPILER_ERROR_COMPARATOR = Comparator.comparingInt(
+            (RootCompilerError each) -> each.getCompilationUnit().getOrdinal())
             .thenComparing(AbstractCompilerError::getLine)
             .thenComparing(AbstractCompilerError::getCharPositionInLine);
-
-    public static final  Ordering<Iterable<AbstractCompilerError>> STACK_COMPARATOR =
-            Ordering.from(FRAME_COMPARATOR).lexicographical();
 
     @Nonnull
     private final String errorCode;
@@ -45,15 +41,7 @@ public class RootCompilerError extends AbstractCompilerError implements Comparab
     @Override
     public int compareTo(@Nonnull RootCompilerError other)
     {
-        ImmutableList<AbstractCompilerError> thisReverseCauseChain = this.getCauseChain();
-        ImmutableList<AbstractCompilerError> otherReverseCauseChain = other.getCauseChain();
-
-        ImmutableList<AbstractCompilerError> thisReverseCauseChainTrimmed =
-                thisReverseCauseChain.size() == 1 ? thisReverseCauseChain : thisReverseCauseChain.drop(1).toReversed();
-        ImmutableList<AbstractCompilerError> otherReverseCauseChainTrimmed =
-                otherReverseCauseChain.size() == 1 ? otherReverseCauseChain : otherReverseCauseChain.drop(1).toReversed();
-
-        return STACK_COMPARATOR.compare(thisReverseCauseChainTrimmed, otherReverseCauseChainTrimmed);
+        return COMPILER_ERROR_COMPARATOR.compare(this, other);
     }
 
     @Nonnull

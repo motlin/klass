@@ -53,6 +53,7 @@ public class ReladomoConcreteClassGeneratorTest
         //</editor-fold>
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                0,
                 Optional.empty(),
                 "example.klass",
                 klassSourceCode);

@@ -83,7 +83,7 @@ public class DomainModelCompilerLoader
         LOGGER.debug("Found source files on classpath: {}", klassLocations);
 
         ImmutableList<CompilationUnit> compilationUnits = klassLocations
-                .collect(CompilationUnit::createFromClasspathLocation);
+                .collectWithIndex((each, index) -> CompilationUnit.createFromClasspathLocation(index, each));
 
         if (compilationUnits.isEmpty())
         {

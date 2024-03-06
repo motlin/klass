@@ -51,6 +51,12 @@ public abstract class AbstractCompilerError
         }
     }
 
+    @Nonnull
+    protected CompilationUnit getCompilationUnit()
+    {
+        return this.compilationUnit;
+    }
+
     protected String getContextString()
     {
         ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();

@@ -118,7 +118,7 @@ public abstract class AbstractGenerateMojo
         this.getLog().debug("Found source files on classpath: " + klassLocations);
 
         ImmutableCollection<CompilationUnit> compilationUnits = Lists.immutable.withAll(klassLocations)
-                .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
+                .collectWithIndex((each, index) -> CompilationUnit.createFromClasspathLocation(index, each, classLoader));
 
         if (compilationUnits.isEmpty())
         {
