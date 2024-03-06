@@ -135,7 +135,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
+        compilerErrorHolder.add(message, this.nameContext);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -147,7 +147,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
                     "ERR_ASO_END: Association '%s' should have 2 ends. Found %d",
                     this.name,
                     numAssociationEnds);
-            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().identifier());
+            compilerErrorHolder.add(message, this.getElementContext().identifier());
         }
 
         // TODO: reportErrors: Check that both ends aren't owned
@@ -171,7 +171,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             String message = String.format(
                     "ERR_REL_INF: Relationship inference not yet supported. '%s' must declare a relationship.",
                     this.name);
-            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().identifier());
+            compilerErrorHolder.add(message, this.getElementContext().identifier());
         }
         else
         {
@@ -197,7 +197,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
                     "ERR_ASO_TYP: Cannot find class '%s'.",
                     offendingToken.getText());
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     offendingToken,
                     this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
@@ -240,7 +239,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         String message = String.format(
                 "ERR_MUL_VER_ASSO: Multiple version associations on '%s'.",
                 versionClass.getName());
-        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 
     public void reportVersionAssociation(@Nonnull CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
@@ -249,6 +248,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         String message = String.format(
                 "ERR_VER_ASSO: Version association points to class which isn't a version '%s'.",
                 versionClass.getName());
-        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 }

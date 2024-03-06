@@ -44,7 +44,6 @@ public abstract class AntlrUrlParameter extends AntlrNamedElement
         String message = String.format("ERR_DUP_PAR: Duplicate parameter: '%s'.", this.name);
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.nameContext,
                 this.urlState.getServiceGroup().getElementContext());

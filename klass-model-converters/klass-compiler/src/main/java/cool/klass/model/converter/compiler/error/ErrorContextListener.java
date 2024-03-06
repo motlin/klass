@@ -2,7 +2,6 @@ package cool.klass.model.converter.compiler.error;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
@@ -96,9 +95,9 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class ErrorContextListener extends BaseErrorListener
 {
-    public ErrorContextListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
+    public ErrorContextListener(MutableList<String> contextualStrings)
     {
-        super(compilationUnit, contextualStrings);
+        super(contextualStrings);
     }
 
     @Override

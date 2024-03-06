@@ -188,7 +188,6 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
             ParserRuleContext... parserRuleContexts)
     {
         this.compilerErrorHolder.add(
-                this.currentCompilationUnit,
                 message,
                 offendingParserRuleContext,
                 parserRuleContexts);

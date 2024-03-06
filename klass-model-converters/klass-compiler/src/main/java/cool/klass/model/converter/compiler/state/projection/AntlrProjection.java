@@ -112,7 +112,7 @@ public class AntlrProjection extends AntlrProjectionParent
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
+        compilerErrorHolder.add(message, this.nameContext);
     }
 
     @Override

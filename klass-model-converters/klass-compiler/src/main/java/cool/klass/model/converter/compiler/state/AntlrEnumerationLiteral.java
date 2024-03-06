@@ -80,7 +80,6 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     {
         String message = String.format("ERR_DUP_ENM: Duplicate enumeration literal: '%s'.", this.name);
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.elementContext,
                 this.owningEnumeration.getElementContext());
@@ -90,7 +89,6 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     {
         String message = String.format("ERR_DUP_LIT: Duplicate enumeration pretty name: '%s'.", this.prettyName);
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.getElementContext().enumerationPrettyName(),
                 this.owningEnumeration.getElementContext());

@@ -62,7 +62,6 @@ public abstract class AntlrMemberExpressionValue extends AntlrExpressionValue
                         currentClassState.getName(),
                         identifier.getText());
                 compilerErrorHolder.add(
-                        this.compilationUnit,
                         message,
                         identifier,
                         parserRuleContexts.toArray(new ParserRuleContext[]{}));

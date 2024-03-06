@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
@@ -14,7 +13,6 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
@@ -101,9 +99,9 @@ public class ErrorUnderlineListener extends BaseErrorListener
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
-    public ErrorUnderlineListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
+    public ErrorUnderlineListener(MutableList<String> contextualStrings)
     {
-        super(compilationUnit, contextualStrings);
+        super(contextualStrings);
     }
 
     @Override
@@ -481,35 +479,6 @@ public class ErrorUnderlineListener extends BaseErrorListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".enterPrimitiveType() not implemented yet");
-    }
-
-    @Override
-    public void enterClassModifier(@Nonnull ClassModifierContext ctx)
-    {
-        ClassDeclarationContext classDeclarationContext = (ClassDeclarationContext) ctx.parent;
-
-        Token offendingToken   = ctx.getStart();
-        Token startToken       = classDeclarationContext.getStart();
-        Token onePastStopToken = classDeclarationContext.classBody().getStart();
-        Token endToken         = this.compilationUnit.getTokenStream().get(onePastStopToken.getTokenIndex() - 1);
-
-        int startLine     = startToken.getLine();
-        int endLine       = endToken.getLine();
-        int offendingLine = offendingToken.getLine();
-
-        for (int i = startLine; i <= endLine; i++)
-        {
-            String errorLine = this.compilationUnit.getLines()[i - 1];
-            this.contextualStrings.add(errorLine);
-
-            if (i == offendingLine)
-            {
-                String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(
-                        offendingToken,
-                        offendingToken);
-                this.contextualStrings.add(errorStringUnderlined);
-            }
-        }
     }
 
     @Override

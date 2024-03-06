@@ -104,7 +104,6 @@ public class AntlrService extends AntlrElement
         String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.verbState.getElementContext(),
                 this.urlState.getElementContext(),

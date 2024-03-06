@@ -87,7 +87,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
                 ? new ParserRuleContext[]{}
                 : new ParserRuleContext[]{this.getOwningClassState().getElementContext()};
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.nameContext,
                 parserRuleContexts);

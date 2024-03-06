@@ -108,7 +108,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
                     "ERR_SER_EMP: Service group should declare at least one url: '%s'.",
                     this.getElementContext().classReference().getText());
 
-            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext());
+            compilerErrorHolder.add(message, this.getElementContext());
         }
     }
 
@@ -118,7 +118,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
                 "ERR_DUP_SVC: Multiple service groups for class: '%s.%s'.",
                 this.klass.getPackageName(),
                 this.klass.getName());
-        compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
+        compilerErrorHolder.add(message, this.nameContext);
     }
 
     public ServiceGroupBuilder build()

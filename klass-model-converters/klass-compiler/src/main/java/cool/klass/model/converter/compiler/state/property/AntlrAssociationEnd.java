@@ -156,7 +156,6 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.nameContext,
                 this.owningAssociationState.getElementContext());

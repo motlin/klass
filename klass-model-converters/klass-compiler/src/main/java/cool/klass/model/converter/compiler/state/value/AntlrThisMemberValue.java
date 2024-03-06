@@ -70,7 +70,6 @@ public class AntlrThisMemberValue extends AntlrMemberExpressionValue
                     currentClassState.getName(),
                     identifier.getText());
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     identifier,
                     parserRuleContexts.toArray(new ParserRuleContext[]{}));

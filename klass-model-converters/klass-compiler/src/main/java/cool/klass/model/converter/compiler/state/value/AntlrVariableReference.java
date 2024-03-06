@@ -52,7 +52,6 @@ public class AntlrVariableReference extends AntlrExpressionValue
         {
             String message = String.format("ERR_VAR_REF: Cannot find parameter '%s'.", this.elementContext.getText());
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     this.elementContext,
                     parserRuleContexts.toArray(new ParserRuleContext[]{}));

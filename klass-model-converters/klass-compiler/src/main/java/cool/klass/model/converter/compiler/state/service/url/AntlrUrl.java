@@ -179,7 +179,6 @@ public class AntlrUrl extends AntlrElement
                     this.getElementContext().url().getText());
 
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     this.getElementContext(),
                     this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));

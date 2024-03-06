@@ -70,7 +70,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
         String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.nameContext,
                 this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));

@@ -198,7 +198,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
-        compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
+        compilerErrorHolder.add(message, this.nameContext);
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -251,7 +251,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         {
             String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     this.getElementContext().versions().classReference());
         }
@@ -277,7 +276,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         String message = String.format(
                 "ERR_VER_CLS: Multiple version classes on '%s'.",
                 versionedClass.getName());
-        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+        compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 
     private ImmutableList<String> getMemberNames()

@@ -64,7 +64,6 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
         ImmutableList<ParserRuleContext> parserRuleContexts = this.antlrCriteria.getParserRuleContexts();
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.getElementContext(),
                 parserRuleContexts.toArray(new ParserRuleContext[]{}));
@@ -95,7 +94,6 @@ public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
                     this.serviceState.getVerbState().getVerb(),
                     allowedCriteriaTypes);
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     error,
                     this.getElementContext().serviceCriteriaKeyword(),
                     this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));

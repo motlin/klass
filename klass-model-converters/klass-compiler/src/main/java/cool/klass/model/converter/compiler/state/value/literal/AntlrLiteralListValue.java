@@ -58,7 +58,6 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
             // TODO: Cover this with a test
 
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     "Literal list with heterogeneous values.",
                     this.elementContext,
                     parserRuleContexts.toArray(new ParserRuleContext[]{}));

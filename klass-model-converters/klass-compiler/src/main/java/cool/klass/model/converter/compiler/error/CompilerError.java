@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,21 +15,18 @@ import org.eclipse.collections.impl.factory.Lists;
 public class CompilerError implements Comparable<CompilerError>
 {
     @Nonnull
-    private final CompilationUnit                  compilationUnit;
-    @Nonnull
     private final String                           message;
     @Nonnull
     private final ParserRuleContext                offendingParserRuleContext;
+    // TODO: Change the list of contexts into a list of AntlrElements
     private final ImmutableList<ParserRuleContext> parserRuleContexts;
     private final Token                            offendingToken;
 
     public CompilerError(
-            @Nonnull CompilationUnit compilationUnit,
             @Nonnull String message,
             @Nonnull ParserRuleContext offendingParserRuleContext,
             ParserRuleContext... parserRuleContexts)
     {
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
         this.message = Objects.requireNonNull(message);
         this.offendingParserRuleContext = Objects.requireNonNull(offendingParserRuleContext);
         if (offendingParserRuleContext instanceof EqualityOperatorContext)
@@ -68,8 +64,8 @@ public class CompilerError implements Comparable<CompilerError>
     {
         MutableList<String> contextualStrings = Lists.mutable.empty();
 
-        KlassListener errorContextListener   = new ErrorContextListener(this.compilationUnit, contextualStrings);
-        KlassListener errorUnderlineListener = new ErrorUnderlineListener(this.compilationUnit, contextualStrings);
+        KlassListener errorContextListener   = new ErrorContextListener(contextualStrings);
+        KlassListener errorUnderlineListener = new ErrorUnderlineListener(contextualStrings);
 
         ImmutableList<ParserRuleContext> reversedContext = this.parserRuleContexts.toReversed();
         for (ParserRuleContext ruleContext : reversedContext)

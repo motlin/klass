@@ -61,7 +61,7 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
                     "ERR_MEM_TYP: Cannot find class '%s'.",
                     offendingToken.getText());
 
-            compilerErrorHolder.add(this.compilationUnit, message, offendingToken);
+            compilerErrorHolder.add(message, offendingToken);
             return;
         }
 
@@ -83,7 +83,6 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
                     currentClassState.getName(),
                     identifier.getText());
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     identifier,
                     parserRuleContexts.toArray(new ParserRuleContext[]{}));

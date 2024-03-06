@@ -39,7 +39,6 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         {
             String message = "TODO";
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     this.getElementContext(),
                     this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
@@ -56,7 +55,6 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
                         this.projection.getName(),
                         projectionKlass.getName());
                 compilerErrorHolder.add(
-                        this.compilationUnit,
                         error,
                         this.getElementContext().projectionReference(),
                         this.serviceState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));

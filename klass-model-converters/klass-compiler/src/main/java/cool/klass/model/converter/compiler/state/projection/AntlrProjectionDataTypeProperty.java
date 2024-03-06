@@ -83,7 +83,6 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
         String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
 
         compilerErrorHolder.add(
-                this.compilationUnit,
                 message,
                 this.nameContext,
                 this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
@@ -99,7 +98,6 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
                     this.antlrProjectionParent.getKlass().getName(),
                     this.name);
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     message,
                     this.nameContext,
                     this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
@@ -108,7 +106,6 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
         if (this.headerText.trim().isEmpty())
         {
             compilerErrorHolder.add(
-                    this.compilationUnit,
                     "Empty header string.",
                     this.headerContext,
                     this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
