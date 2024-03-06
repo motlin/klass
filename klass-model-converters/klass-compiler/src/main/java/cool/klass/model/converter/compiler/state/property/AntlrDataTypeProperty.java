@@ -27,14 +27,11 @@ import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Multimaps;
-import org.eclipse.collections.impl.utility.Iterate;
 
 public abstract class AntlrDataTypeProperty<T extends DataType>
         extends AntlrProperty
@@ -299,32 +296,22 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public void build2()
     {
-        ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
-                AntlrDataTypeProperty.collectKeyMultiValues(
-                        this.keyBuildersMatchingThisForeignKey,
-                        AntlrAssociationEnd::getElementBuilder,
-                        AntlrDataTypeProperty::getElementBuilder);
-        this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey);
+        MutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
+                this.keyBuildersMatchingThisForeignKey
+                        .collectKeyMultiValues(
+                                AntlrAssociationEnd::getElementBuilder,
+                                AntlrDataTypeProperty::getElementBuilder,
+                                Multimaps.mutable.list.empty());
+        this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.toImmutable());
 
-        ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
-                AntlrDataTypeProperty.collectKeyMultiValues(
-                        this.foreignKeyBuildersMatchingThisKey,
-                        AntlrAssociationEnd::getElementBuilder,
-                        AntlrDataTypeProperty::getElementBuilder);
-        this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey);
-    }
+        MutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
+                this.foreignKeyBuildersMatchingThisKey
+                        .collectKeyMultiValues(
+                                AntlrAssociationEnd::getElementBuilder,
+                                AntlrDataTypeProperty::getElementBuilder,
+                                Multimaps.mutable.list.empty());
 
-    public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
-            @Nonnull MutableListMultimap<InputKey, InputValue> multimap,
-            @Nonnull Function<? super InputKey, ? extends OutputKey> keyFunction,
-            Function<? super InputValue, ? extends OutputValue> valueFunction)
-    {
-        MutableListMultimap<OutputKey, OutputValue> result = Multimaps.mutable.list.empty();
-        multimap.forEachKeyMultiValues((key, multiValues) ->
-                result.putAll(
-                        keyFunction.valueOf(key),
-                        Iterate.collect(multiValues, valueFunction)));
-        return result.toImmutable();
+        this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.toImmutable());
     }
 
     @OverridingMethodsMustInvokeSuper
