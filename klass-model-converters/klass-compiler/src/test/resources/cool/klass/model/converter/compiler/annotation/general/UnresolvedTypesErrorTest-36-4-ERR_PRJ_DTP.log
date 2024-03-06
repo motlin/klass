@@ -8,7 +8,7 @@ At (UnresolvedTypesErrorTest.klass:36)
 [39m35║ [36m{
 [39m36║     [39munresolvedDataProperty[36m: [34m"Header"[36m,
 [39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^
-[39m45║ [36m}
+[39m46║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:36[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m

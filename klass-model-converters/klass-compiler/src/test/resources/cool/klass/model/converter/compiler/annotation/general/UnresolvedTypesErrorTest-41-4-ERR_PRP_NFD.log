@@ -9,7 +9,7 @@ At (UnresolvedTypesErrorTest.klass:41)
 [39m41║     [39munresolvedReferenceProperty[36m:[36m{
 [39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 [39m43║     [36m}[36m,
-[39m45║ [36m}
+[39m46║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:41[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m

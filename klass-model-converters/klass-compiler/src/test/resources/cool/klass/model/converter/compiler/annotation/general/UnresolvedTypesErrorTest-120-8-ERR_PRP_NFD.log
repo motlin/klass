@@ -1,22 +1,22 @@
 ════════════════════════════════════════ [35mERR_PRP_NFD[m ════════════════════════════════════════
 [31mError: Cannot find member 'Child.unresolvedProjectionAssociationEnd'.[m
 
-At (UnresolvedTypesErrorTest.klass:118)
+At (UnresolvedTypesErrorTest.klass:120)
 
 [39m  1║ [35mpackage [39mdummy
-[39m106║ [35mprojection [39mParentProjection [35mon [39mParent
-[39m107║ [36m{
-[39m115║     [39mchildren[36m:
-[39m116║     [36m{
-[39m118║         [39munresolvedProjectionAssociationEnd[36m:
+[39m108║ [35mprojection [39mParentProjection [35mon [39mParent
+[39m109║ [36m{
+[39m117║     [39mchildren[36m:
+[39m118║     [36m{
+[39m120║         [39munresolvedProjectionAssociationEnd[36m:
 [39m   ║ [31m        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m119║         [36m{
-[39m121║         [36m}[36m,
-[39m123║     [36m}[36m,
-[39m134║ [36m}
+[39m121║         [36m{
+[39m123║         [36m}[36m,
+[39m125║     [36m}[36m,
+[39m136║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:118[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:120[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m118[m
+[36mLine:      [m120[m
 [36mCharacter: [m9
 ═════════════════════════════════════════════════════════════════════════════════════════════

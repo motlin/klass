@@ -42,6 +42,7 @@ projection ProjectionWithUnresolved on ClassWithUnresolved
         irrelevantProperty:"Header",
     },
     associationEndToUnresolvedClass: "Header",
+    UnresolvedClass.irrelevantProperty: "Header",
 }
 
 projection EmptyProjection on ClassWithUnresolved
@@ -55,6 +56,7 @@ projection ProjectionWithUnresolvedClass on UnresolvedClass
         unresolvedProjectionMemberEmbedded: "Header",
     },
     unresolvedProjectionMember3: UnresolvedProjection,
+    IrrelevantClass.irrelevantProperty: "Header",
 }
 
 class Parent
@@ -162,7 +164,7 @@ service UnresolvedClass
         GET
         {
             multiplicity: one;
-            criteria    : all;
-            projection  : EmptyProjection;
+            criteria    : this.irrelevantProperty == irrelevantParameter;
+            projection  : IrrelevantProjection;
         }
 }

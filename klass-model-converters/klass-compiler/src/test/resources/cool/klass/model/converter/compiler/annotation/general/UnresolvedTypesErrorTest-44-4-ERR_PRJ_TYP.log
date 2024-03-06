@@ -8,7 +8,7 @@ At (UnresolvedTypesErrorTest.klass:44)
 [39m35║ [36m{
 [39m44║     [39massociationEndToUnresolvedClass[36m: [34m"Header"[36m,
 [39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m45║ [36m}
+[39m46║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:44[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
