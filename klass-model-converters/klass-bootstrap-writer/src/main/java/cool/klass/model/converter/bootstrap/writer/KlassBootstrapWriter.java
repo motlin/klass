@@ -166,7 +166,7 @@ public class KlassBootstrapWriter
     private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
     {
         klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
-        bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningKlass().getName());
+        bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningClassifier().getName());
         bootstrappedAssociationEnd.setName(associationEnd.getName());
         bootstrappedAssociationEnd.setInferred(associationEnd.isInferred());
         bootstrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
@@ -179,7 +179,7 @@ public class KlassBootstrapWriter
         for (AssociationEndModifier associationEndModifier: associationEnd.getAssociationEndModifiers())
         {
             klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
-            bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningKlass().getName());
+            bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
             bootstrappedAssociationEndModifier.setName(associationEndModifier.getName());
             bootstrappedAssociationEndModifier.setInferred(associationEndModifier.isInferred());

@@ -38,7 +38,8 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
         return this.packageName + '.' + this.getName();
     }
 
-    public abstract static class PackageableElementBuilder<BuiltElement extends AbstractPackageableElement> extends NamedElementBuilder<BuiltElement>
+    public abstract static class PackageableElementBuilder<BuiltElement extends AbstractPackageableElement>
+            extends NamedElementBuilder<BuiltElement>
     {
         // TODO: package context instead of package name?
         @Nonnull

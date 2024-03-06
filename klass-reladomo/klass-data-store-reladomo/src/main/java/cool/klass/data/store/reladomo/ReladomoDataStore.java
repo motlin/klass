@@ -237,7 +237,7 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object getToOne(Object persistentSourceInstance, AssociationEnd associationEnd)
     {
-        RelatedFinder<?> finder = this.getRelatedFinder(associationEnd.getOwningKlass());
+        RelatedFinder<?> finder = this.getRelatedFinder(associationEnd.getOwningClassifier());
         AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder
                 .getRelationshipFinderByName(associationEnd.getName());
 
@@ -264,7 +264,7 @@ public class ReladomoDataStore implements DataStore
         // A Reladomo bug prevents just calling a method like setQuestion here. Instead we have to call foreign key setters like setQuestionId
 
         ImmutableList<DataTypeProperty> targetDataTypeProperties = associationEnd
-                .getOwningKlass()
+                .getOwningClassifier()
                 .getDataTypeProperties();
         for (DataTypeProperty targetDataTypeProperty : targetDataTypeProperties)
         {

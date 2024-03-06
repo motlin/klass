@@ -12,7 +12,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "generate-abstract-application", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
@@ -25,9 +24,6 @@ public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
 
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;
-
-    @Parameter(defaultValue = "${project}", required = true, readonly = true)
-    private MavenProject mavenProject;
 
     @Override
     public void execute() throws MojoExecutionException

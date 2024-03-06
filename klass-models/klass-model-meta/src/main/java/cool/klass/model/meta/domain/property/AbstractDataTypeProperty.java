@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -39,10 +39,10 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             @Nonnull String name,
             int ordinal,
             @Nonnull T dataType,
-            @Nonnull KlassImpl owningKlass,
+            @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, dataType, owningKlass);
+        super(elementContext, inferred, nameContext, name, ordinal, dataType, owningClassifier);
         this.optional = isOptional;
     }
 
@@ -118,11 +118,11 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder,
-                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, typeBuilder, owningKlassBuilder);
+            super(elementContext, inferred, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
             this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
             this.isOptional = isOptional;
         }

@@ -6,9 +6,6 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import com.gs.fw.common.mithra.generator.metamodel.Mithra;
-import com.gs.fw.common.mithra.generator.metamodel.MithraObjectResourceType;
-import com.gs.fw.common.mithra.generator.metamodel.MithraPureObjectResourceType;
 import com.gs.fw.common.mithra.mithraruntime.CacheType;
 import com.gs.fw.common.mithra.mithraruntime.ConnectionManagerType;
 import com.gs.fw.common.mithra.mithraruntime.MithraObjectConfigurationType;
@@ -19,7 +16,6 @@ import com.gs.fw.common.mithra.mithraruntime.PropertyType;
 import com.gs.fw.common.mithra.mithraruntime.PureObjectsType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -149,7 +145,9 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     {
         return this.domainModel
                 .getKlasses()
+                // TODO: Can a class be transient and abstract? Is that redundant?
                 .reject(Klass::isTransient)
+                .reject(Klass::isAbstract)
                 .collect(PackageableElement::getFullyQualifiedName)
                 .collectWith(this::getMithraObjectConfigurationType, CacheType.PARTIAL);
     }
@@ -179,42 +177,5 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         MithraPureObjectConfigurationType mithraPureObjectConfigurationType = new MithraPureObjectConfigurationType();
         mithraPureObjectConfigurationType.setClassName(fullyQualifiedClassName);
         return mithraPureObjectConfigurationType;
-    }
-
-    @Nonnull
-    private Mithra generateObjectResources()
-    {
-        ImmutableList<MithraObjectResourceType> objectResources = this.domainModel
-                .getKlasses()
-                .reject(Klass::isTransient)
-                .collect(NamedElement::getName)
-                .collect(this::getObjectResource);
-
-        ImmutableList<MithraPureObjectResourceType> pureObjectResources = this.domainModel
-                .getKlasses()
-                .select(Klass::isTransient)
-                .collect(NamedElement::getName)
-                .collect(this::getPureObjectResource);
-
-        Mithra mithra = new Mithra();
-        mithra.setMithraObjectResources(objectResources.castToList());
-        mithra.setMithraPureObjectResources(pureObjectResources.castToList());
-        return mithra;
-    }
-
-    @Nonnull
-    private MithraObjectResourceType getObjectResource(String className)
-    {
-        MithraObjectResourceType objectResource = new MithraObjectResourceType();
-        objectResource.setName(className);
-        return objectResource;
-    }
-
-    @Nonnull
-    private MithraPureObjectResourceType getPureObjectResource(String className)
-    {
-        MithraPureObjectResourceType pureObjectResource = new MithraPureObjectResourceType();
-        pureObjectResource.setName(className);
-        return pureObjectResource;
     }
 }

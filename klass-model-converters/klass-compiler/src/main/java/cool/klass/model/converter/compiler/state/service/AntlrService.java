@@ -216,7 +216,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             @Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableList<AntlrDataTypeProperty<?>> requiredProperties = projection.getKlass()
-                .getDataTypePropertyStates()
+                .getDataTypeProperties()
                 .asLazy()
                 .reject(AntlrDataTypeProperty::isOptional)
                 .reject(AntlrDataTypeProperty::isKey)

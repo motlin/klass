@@ -133,7 +133,7 @@ public final class JsonTypeCheckingValidator
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
             primitiveType.visit(new JsonTypeCheckingPrimitiveTypeVisitor(
-                    primitiveProperty.getOwningKlass(),
+                    primitiveProperty.getOwningClassifier(),
                     primitiveProperty,
                     this.jsonNode,
                     JsonTypeCheckingValidator.this.contextStack,
@@ -153,7 +153,7 @@ public final class JsonTypeCheckingValidator
                 String error = String.format(
                         "Error at %s. Expected enumerated property with type '%s.%s: %s%s' but got %s with type '%s'.",
                         JsonTypeCheckingValidator.this.getContextString(),
-                        enumerationProperty.getOwningKlass().getName(),
+                        enumerationProperty.getOwningClassifier().getName(),
                         enumerationProperty.getName(),
                         enumerationProperty.getType().getName(),
                         enumerationProperty.isOptional() ? "?" : "",
@@ -177,7 +177,7 @@ public final class JsonTypeCheckingValidator
                 String error = String.format(
                         "Error at %s. Expected enumerated property with type '%s.%s: %s%s' but got %s with type '%s'. Expected one of %s.",
                         JsonTypeCheckingValidator.this.getContextString(),
-                        enumerationProperty.getOwningKlass().getName(),
+                        enumerationProperty.getOwningClassifier().getName(),
                         enumerationProperty.getName(),
                         enumerationProperty.getType().getName(),
                         enumerationProperty.isOptional() ? "?" : "",

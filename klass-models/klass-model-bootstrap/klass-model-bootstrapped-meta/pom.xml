@@ -12,7 +12,6 @@
 
     <!--TODO: Consider renaming this module from klass-model-bootstrapped-meta to klass-model-bootstrapped-domain-model-->
     <artifactId>klass-model-bootstrapped-meta</artifactId>
-    <packaging>jar</packaging>
 
     <name>Klass Bootstrapped Meta Model</name>
 

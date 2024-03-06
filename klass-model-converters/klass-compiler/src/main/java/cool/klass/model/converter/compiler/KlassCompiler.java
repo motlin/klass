@@ -5,9 +5,10 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
-import cool.klass.model.converter.compiler.phase.ClassPhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
+import cool.klass.model.converter.compiler.phase.ClassifierPhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
+import cool.klass.model.converter.compiler.phase.InheritancePhase;
 import cool.klass.model.converter.compiler.phase.OrderByPhase;
 import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
@@ -31,7 +32,8 @@ public class KlassCompiler
 {
     public static final ImmutableList<Function<CompilerState, KlassListener>> COMPILER_PHASE_BUILDERS = Lists.immutable.with(
             EnumerationsPhase::new,
-            ClassPhase::new,
+            ClassifierPhase::new,
+            InheritancePhase::new,
             ClassTemporalPropertyInferencePhase::new,
             VersionClassInferencePhase::new,
             AssociationPhase::new,

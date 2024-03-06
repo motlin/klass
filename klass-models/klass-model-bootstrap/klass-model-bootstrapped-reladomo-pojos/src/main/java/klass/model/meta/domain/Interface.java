@@ -1,8 +1,8 @@
 package klass.model.meta.domain;
 
-public class Ordering extends OrderingAbstract
+public class Interface extends InterfaceAbstract
 {
-    public Ordering()
+    public Interface()
     {
         // You must not modify this constructor. Mithra calls this internally.
         // You can call this constructor. You can also add new constructors.

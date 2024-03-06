@@ -21,7 +21,7 @@ public class AntlrClassModifier extends AntlrModifier
             -1,
             AntlrClass.AMBIGUOUS);
 
-    private final       AntlrClass         owningClassState;
+    private final AntlrClassifier owningClassifierState;
 
     public AntlrClassModifier(
             @Nonnull ParserRuleContext elementContext,
@@ -30,10 +30,10 @@ public class AntlrClassModifier extends AntlrModifier
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClass owningClassState)
+            AntlrClassifier owningClassifierState)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
-        this.owningClassState = owningClassState;
+        this.owningClassifierState = owningClassifierState;
     }
 
     @Nonnull
@@ -63,6 +63,6 @@ public class AntlrClassModifier extends AntlrModifier
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.owningClassState.getElementBuilder());
+                this.owningClassifierState.getElementBuilder());
     }
 }

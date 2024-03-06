@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -40,13 +41,13 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     private final CompilerState compilerState;
 
     @Nonnull
-    private final AntlrClass       thisReference;
+    private final AntlrClassifier thisReference;
     @Nonnull
-    private final IAntlrElement    expressionValueOwner;
+    private final IAntlrElement   expressionValueOwner;
 
     public ExpressionValueVisitor(
             @Nonnull CompilerState compilerState,
-            @Nonnull AntlrClass thisReference,
+            @Nonnull AntlrClassifier thisReference,
             IAntlrElement expressionValueOwner)
     {
         this.compilerState = Objects.requireNonNull(compilerState);
@@ -126,7 +127,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
-        AntlrClass                       currentClassState    = this.thisReference;
+        AntlrClass                       currentClassState    = (AntlrClass) this.thisReference;
         MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
         for (AssociationEndReferenceContext associationEndReferenceContext : ctx.associationEndReference())
         {
@@ -144,7 +145,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
-                this.thisReference,
+                (AntlrClass) this.thisReference,
                 associationEndStates.toImmutable(),
                 dataTypePropertyState,
                 this.expressionValueOwner);

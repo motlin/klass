@@ -13,16 +13,12 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "generate-reladomo-runtime-configuration", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMojo
 {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-test-resources/reladomo-runtime-configuration")
     private File outputDirectory;
-
-    @Parameter(defaultValue = "${project}", required = true, readonly = true)
-    private MavenProject mavenProject;
 
     @Parameter(property = "outputFilename", required = true, readonly = true, defaultValue = "TestReladomoRuntimeConfiguration.xml")
     private String outputFilename;

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.DataType;
@@ -29,7 +29,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Nonnull
     protected final ImmutableList<AntlrPropertyModifier> propertyModifierStates;
     @Nonnull
-    protected final AntlrClass                           owningClassState;
+    protected final AntlrClassifier                      owningClassifierState;
 
     private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> keyBuildersMatchingThisForeignKey = Multimaps.mutable.list.empty();
     private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> foreignKeyBuildersMatchingThisKey = Multimaps.mutable.list.empty();
@@ -41,21 +41,21 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClass owningClassState,
+            AntlrClassifier owningClassifierState,
             @Nonnull ImmutableList<AntlrPropertyModifier> propertyModifierStates,
             boolean isOptional)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.isOptional = isOptional;
         this.propertyModifierStates = Objects.requireNonNull(propertyModifierStates);
-        this.owningClassState = Objects.requireNonNull(owningClassState);
+        this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.of(this.owningClassState);
+        return Optional.of(this.owningClassifierState);
     }
 
     @Nonnull
@@ -135,9 +135,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     @Nonnull
     @Override
-    protected AntlrClass getOwningClassState()
+    protected AntlrClassifier getOwningClassifierState()
     {
-        return this.owningClassState;
+        return this.owningClassifierState;
     }
 
     @Nonnull
@@ -150,7 +150,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         {
             return;
         }
-        this.owningClassState.getParserRuleContexts(parserRuleContexts);
+        this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
     }
 
     public void setKeyMatchingThisForeignKey(
@@ -181,7 +181,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     {
         return String.format(
                 "%s.%s: %s %s",
-                this.getOwningClassState().getName(),
+                this.getOwningClassifierState().getName(),
                 this.getName(),
                 this.getType().toString(),
                 this.propertyModifierStates.collect(AntlrNamedElement::getName).makeString(" "));

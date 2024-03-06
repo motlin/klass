@@ -195,7 +195,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         {
             String message = String.format(
                     "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
-                    this.getSourceEnd().getOwningClassState().getName(),
+                    this.getSourceEnd().getOwningClassifierState().getName(),
                     this.getSourceEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getTargetEnd()
                     .getAssociationEndModifiers()
@@ -206,7 +206,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         {
             String message = String.format(
                     "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
-                    this.getTargetEnd().getOwningClassState().getName(),
+                    this.getTargetEnd().getOwningClassifierState().getName(),
                     this.getTargetEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getSourceEnd()
                     .getAssociationEndModifiers()

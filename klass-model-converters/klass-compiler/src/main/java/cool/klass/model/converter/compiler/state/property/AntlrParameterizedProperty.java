@@ -172,7 +172,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
 
     @Nonnull
     @Override
-    public AntlrClass getOwningClassState()
+    public AntlrClass getOwningClassifierState()
     {
         return Objects.requireNonNull(this.owningClassState);
     }

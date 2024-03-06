@@ -5,29 +5,50 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
+import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
+import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ClassPhase extends AbstractCompilerPhase
+public class ClassifierPhase extends AbstractCompilerPhase
 {
-    public ClassPhase(CompilerState compilerState)
+    public ClassifierPhase(CompilerState compilerState)
     {
         super(compilerState);
+    }
+
+    @Override
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        super.enterInterfaceDeclaration(ctx);
+
+        AntlrInterface interfaceState = new AntlrInterface(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                ctx.identifier(),
+                ctx.identifier().getText(),
+                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
+                this.compilerState.getAntlrWalkState().getPackageContext(),
+                this.compilerState.getCompilerWalkState().getPackageName());
+
+        this.compilerState.getCompilerWalkState().defineInterface(interfaceState);
     }
 
     @Override
@@ -51,10 +72,34 @@ public class ClassPhase extends AbstractCompilerPhase
     }
 
     @Override
+    public void enterAbstractDeclaration(AbstractDeclarationContext ctx)
+    {
+        super.enterAbstractDeclaration(ctx);
+
+        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
+        // TODO: InheritanceType
+        classState.setInheritanceType(InheritanceType.TABLE_PER_SUBCLASS);
+    }
+
+    @Override
+    public void enterInheritanceType(InheritanceTypeContext ctx)
+    {
+        super.enterInheritanceType(ctx);
+
+        AntlrClass      classState      = this.compilerState.getCompilerWalkState().getClassState();
+        InheritanceType inheritanceType = InheritanceType.byPrettyName(ctx.getText());
+        // TODO: InheritanceType
+        classState.setInheritanceType(inheritanceType);
+    }
+
+    @Override
     public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         super.enterClassModifier(ctx);
-        int ordinal = this.compilerState.getCompilerWalkState().getClassState().getNumClassModifiers();
+
+        AntlrClassifier classifierState = this.compilerState.getCompilerWalkState().getClassifierState();
+        int             ordinal         = classifierState.getNumClassModifiers();
+
         AntlrClassModifier classModifierState = new AntlrClassModifier(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
@@ -62,41 +107,41 @@ public class ClassPhase extends AbstractCompilerPhase
                 ctx,
                 ctx.getText(),
                 ordinal + 1,
-                this.compilerState.getCompilerWalkState().getClassState());
-        this.compilerState.getCompilerWalkState().getClassState().enterClassModifier(classModifierState);
+                classifierState);
+
+        classifierState.enterClassModifier(classModifierState);
     }
 
     @Override
     public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
         super.enterPrimitiveProperty(ctx);
-        IdentifierContext     identifier            = ctx.identifier();
-        PrimitiveTypeContext  primitiveTypeContext  = ctx.primitiveType();
-        OptionalMarkerContext optionalMarkerContext = ctx.optionalMarker();
-
-        String  propertyName = identifier.getText();
-        boolean isOptional   = optionalMarkerContext != null;
-
-        PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeContext.getText());
-        AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
                 .collectWithIndex(this::getAntlrPropertyModifier)
                 .toImmutable();
 
+        String             propertyName       = ctx.identifier().getText();
+        boolean            isOptional         = ctx.optionalMarker() != null;
+        String             primitiveTypeName  = ctx.primitiveType().getText();
+        PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeName);
+        AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
+
+        AntlrClassifier classifierState = this.compilerState.getCompilerWalkState().getClassifierState();
+
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
-                identifier,
+                ctx.identifier(),
                 propertyName,
-                this.compilerState.getCompilerWalkState().getClassState().getNumMembers() + 1,
-                this.compilerState.getCompilerWalkState().getClassState(),
+                classifierState.getNumMembers() + 1,
+                classifierState,
                 isOptional,
                 propertyModifiers,
                 primitiveTypeState);
 
-        this.compilerState.getCompilerWalkState().getClassState().enterDataTypeProperty(primitivePropertyState);
+        classifierState.enterDataTypeProperty(primitivePropertyState);
     }
 
     @Override
@@ -104,32 +149,31 @@ public class ClassPhase extends AbstractCompilerPhase
     {
         super.enterEnumerationProperty(ctx);
 
-        IdentifierContext           identifier                  = ctx.identifier();
-        EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
-        OptionalMarkerContext       optionalMarkerContext       = ctx.optionalMarker();
-
-        String           propertyName     = identifier.getText();
-        AntlrEnumeration enumerationState = this.compilerState.getDomainModelState().getEnumerationByName(enumerationReferenceContext.getText());
-        boolean          isOptional       = optionalMarkerContext != null;
-
         // TODO: Superclass above all modifiers. Modifiers hold their owners.
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
                 .collectWithIndex(this::getAntlrPropertyModifier)
                 .toImmutable();
 
+        String           propertyName     = ctx.identifier().getText();
+        boolean          isOptional       = ctx.optionalMarker() != null;
+        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
+        String           enumerationName  = ctx.enumerationReference().getText();
+        AntlrEnumeration enumerationState = domainModelState.getEnumerationByName(enumerationName);
+        AntlrClassifier  classifierState  = this.compilerState.getCompilerWalkState().getClassifierState();
+
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
-                identifier,
+                ctx.identifier(),
                 propertyName,
-                this.compilerState.getCompilerWalkState().getClassState().getNumMembers() + 1,
-                this.compilerState.getCompilerWalkState().getClassState(),
+                classifierState.getNumMembers() + 1,
+                classifierState,
                 isOptional,
                 propertyModifiers,
                 enumerationState);
 
-        this.compilerState.getCompilerWalkState().getClassState().enterDataTypeProperty(primitivePropertyState);
+        classifierState.enterDataTypeProperty(primitivePropertyState);
     }
 
     @Nonnull

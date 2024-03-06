@@ -4,23 +4,23 @@ import java.util.Collection;
 
 import com.gs.fw.finder.Operation;
 
-public class OrderingList extends OrderingListAbstract
+public class ClassifierList extends ClassifierListAbstract
 {
-    public OrderingList()
+    public ClassifierList()
     {
     }
 
-    public OrderingList(int initialSize)
+    public ClassifierList(int initialSize)
     {
         super(initialSize);
     }
 
-    public OrderingList(Collection<?> c)
+    public ClassifierList(Collection c)
     {
         super(c);
     }
 
-    public OrderingList(Operation operation)
+    public ClassifierList(Operation operation)
     {
         super(operation);
     }

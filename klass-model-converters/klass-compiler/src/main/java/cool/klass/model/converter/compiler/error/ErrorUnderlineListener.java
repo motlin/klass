@@ -12,6 +12,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
@@ -100,13 +101,19 @@ public class ErrorUnderlineListener extends KlassThrowingListener
     }
 
     @Override
-    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
+    public void enterEnumerationReference(@Nonnull EnumerationReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override
-    public void enterEnumerationReference(@Nonnull EnumerationReferenceContext ctx)
+    public void enterInterfaceReference(InterfaceReferenceContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

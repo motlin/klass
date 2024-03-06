@@ -245,7 +245,7 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
             String error = String.format(
                     "Error at %s. Mismatched value for property '%s.%s: %s%s'. Expected absent value or %s but value was %s.",
                     this.getContextString(),
-                    property.getOwningKlass().getName(),
+                    property.getOwningClassifier().getName(),
                     property.getName(),
                     property.getType().toString(),
                     property.isOptional() ? "?" : "",
@@ -280,7 +280,7 @@ public class IncomingUpdateDataModelListener extends BaseProjectionListener
             String error = String.format(
                     "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
                     this.getContextString(),
-                    property.getOwningKlass().getName(),
+                    property.getOwningClassifier().getName(),
                     property.getName(),
                     property.getType().toString(),
                     property.isOptional() ? "?" : "",

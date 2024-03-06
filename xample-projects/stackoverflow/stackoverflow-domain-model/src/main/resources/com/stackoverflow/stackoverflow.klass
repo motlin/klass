@@ -1,6 +1,7 @@
 /*
  * Simplified StackOverflow domain model. One question has many answers.
  */
+
 // TODO: There should be a maven plugin that compiles the klass files and does nothing else, just to fail the build at the right module
 package com.stackoverflow
 
@@ -12,13 +13,14 @@ user User
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
-    userId        : String key userId;
+    userId         : String key userId;
 
     // TODO: String max lengths
-    firstName         : String?;
-    lastName          : String?;
+    firstName      : String?;
+    lastName       : String?;
+
     // TODO: Consider adding primitive types like email address and url
-    email             : String?;
+    email          : String?;
 
     // TODO: Unique property sets
 }
@@ -30,12 +32,20 @@ enumeration Status
     CLOSED("Closed"),
 }
 
+interface Document
+{
+    id             : Long key id;
+    title          : String;
+    votes          : Vote[0..*];
+}
+
 // TODO: Sets of unique properties other than keys
 // TODO: Try to infer whether a query is for a unique item and assert multiplicity one
 // TODO: Check for ownership cycles and give a good error message
 // TODO: Errors for using reserved names like system, systemFrom, systemTo, etc.
 // TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal, optimisticallyLocked when not versioned
 class Question
+    implements Document
     read(QuestionReadProjection)
     create(QuestionWriteProjection)
     update(QuestionWriteProjection)
@@ -45,13 +55,13 @@ class Question
     optimisticallyLocked
 {
     // TODO: When copying id to QuestionVersion, id should be Long key but not id.
-    id                : Long key id;
-    title             : String;
-    body              : String;
+    id             : Long key id;
+    title          : String;
+    body           : String;
 
     // TODO: Statemachine
-    status            : Status;
-    deleted           : Boolean;
+    status         : Status;
+    deleted        : Boolean;
 
     // TODO: Consider type inference on paramterized property parameters based on usage in relationship
     // orderBy natural key ascending is the default
@@ -86,21 +96,21 @@ class Question
     */
 
     // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system            : TemporalRange system;
+    system         : TemporalRange system;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom        : TemporalInstant system from;
-    systemTo          : TemporalInstant system to;
+    systemFrom     : TemporalInstant system from;
+    systemTo       : TemporalInstant system to;
 
     // TODO: private properties must not be used in projections
 
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById       : String private createdBy;
+    createdById    : String private createdBy;
 
     // createdOn, or createdDate?
-    createdOn         : Instant createdOn;
-    lastUpdatedById   : String private lastUpdatedBy;
+    createdOn      : Instant createdOn;
+    lastUpdatedById: String private lastUpdatedBy;
 
     createdBy(): User[1..1] createdBy
     {
@@ -136,9 +146,8 @@ class QuestionVersion
 // TODO: Error message if versions doesn't point to a version class
 association QuestionHasAnswer
 {
-    // TODO: *final* question: Question[1..1]
-    question: Question[1..1] final;
-    answers: Answer[0..*]
+    question       : Question[1..1] final;
+    answers        : Answer[0..*]
         orderBy: this.id ascending;
 
     // TODO: check that the foreign key (questionId) is required since the to-one relationship end is also required (question: Question[1..1])
@@ -161,17 +170,32 @@ association QuestionHasVersion
 */
 
 class Answer
+    implements Document
     systemTemporal
     versioned
     audited
     optimisticallyLocked
 {
-    id                            : Long key id;
-    body                          : String;
-    deleted                       : Boolean;
+    id             : Long key id;
+    body           : String;
+    deleted        : Boolean;
 
     // TODO: questionId: Long private *final*
-    questionId                    : Long private;
+    questionId     : Long private;
+}
+
+interface Vote
+{
+    direction      : VoteDirection;
+}
+
+class AbstractVote
+    abstract(table-per-subclass)
+    implements Vote
+    systemTemporal
+    audited
+{
+    direction      : VoteDirection;
 }
 
 // TODO Model AnswerVote
@@ -179,12 +203,13 @@ class Answer
 // TODO superclass AbstractVote
 // TODO Aggregation for number of upvotes and downvotes
 class QuestionVote
+    extends AbstractVote
     systemTemporal
     audited
 {
-    questionId                    : Long key;
-    createdById                   : String key createdBy;
-    direction                     : VoteDirection;
+    questionId     : Long key;
+    createdById    : String key createdBy;
+    direction      : VoteDirection;
 }
 
 enumeration VoteDirection
@@ -195,16 +220,16 @@ enumeration VoteDirection
 
 association QuestionHasVotes
 {
-    question: Question[1..1] final;
-    votes: QuestionVote[0..*];
+    question       : Question[1..1] final;
+    votes          : QuestionVote[0..*];
 
     relationship this.id == QuestionVote.questionId
 }
 
 association UserHasQuestionVotes
 {
-    user: User[1..1] final;
-    votes: QuestionVote[0..*];
+    user           : User[1..1] final;
+    votes          : QuestionVote[0..*];
 
     relationship this.userId == QuestionVote.createdById
 }
@@ -244,21 +269,21 @@ class Tag
     audited
     optimisticallyLocked
 {
-    name                  : String key;
-    description           : String;
+    name           : String key;
+    description    : String;
 }
 
 class QuestionTagMapping
     systemTemporal
 {
-    questionId: Long key private;
-    tagName: String key private;
+    questionId     : Long key private;
+    tagName        : String key private;
 }
 
 association QuestionHasTagMappings
 {
-    question: Question[1..1] final;
-    tags: QuestionTagMapping[0..*] owned
+    question       : Question[1..1] final;
+    tags           : QuestionTagMapping[0..*] owned
         orderBy: this.tagName;
 
     relationship this.id == QuestionTagMapping.questionId
@@ -266,8 +291,8 @@ association QuestionHasTagMappings
 
 association TagHasQuestionMappings
 {
-    tag: Tag[1..1] final;
-    questions: QuestionTagMapping[0..*]
+    tag            : Tag[1..1] final;
+    questions      : QuestionTagMapping[0..*]
         orderBy: this.questionId;
 
     relationship this.name == QuestionTagMapping.tagName
@@ -287,13 +312,11 @@ projection QuestionReadProjection on Question
     createdById    : "Question created by ID",
     createdOn      : "Question created on",
     lastUpdatedById: "Question last updated by ID",
-
     answers        :
     {
         id  : "Answer id",
         body: "Answer body",
     },
-
     tags           :
     {
         tag:
@@ -301,7 +324,6 @@ projection QuestionReadProjection on Question
             name: "Question tag name",
         },
     },
-
     version        :
     {
         number: "Question version number",
@@ -349,6 +371,7 @@ service Question
                 projection  : QuestionReadProjection
             }
     */
+
     // TODO: Service syntax. Parameter must be a message type or projection type.
     /*
     read getById(id: Long[1..1]): QuestionReadProjection[1]
@@ -366,6 +389,7 @@ service Question
             multiplicity: one;
             criteria    : this.id == id;
             projection  : QuestionReadProjection;
+
             // TODO: format: json
         }
         PUT
@@ -374,6 +398,7 @@ service Question
             // TODO Version should be a primitive type, as in {version: Version[1..1]}
             multiplicity: one;
             criteria    : this.id == id;
+
             // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed
             // TODO: Allow anonymous/undeclared projections created from all owned association ends
             projection  : QuestionWriteProjection;
@@ -384,6 +409,7 @@ service Question
             // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
             multiplicity: one;
             criteria    : this.id == id;
+
             // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400
             // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`
             authorize   : this.createdById == user;
@@ -396,6 +422,7 @@ service Question
             criteria    : this.id in ids;
             projection  : QuestionReadProjection;
         }
+
     // TODO: Test urls containing unusual characters like emoji, and %20
     /api/question/firstTwo
         GET

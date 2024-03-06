@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.gs.fw.common.mithra.generator.metamodel.Mithra;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
+import com.gs.fw.common.mithra.generator.metamodel.MithraInterfaceResourceType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObjectResourceType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraPureObjectResourceType;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -26,7 +27,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
 
-        Mithra mithra = this.generateObjectResources();
+        Mithra mithra = this.generateMithra();
 
         StringBuilder stringBuilder = new StringBuilder();
         mithraGeneratorMarshaller.marshall(stringBuilder, mithra);
@@ -36,7 +37,7 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private Mithra generateObjectResources()
+    private Mithra generateMithra()
     {
         ImmutableList<MithraObjectResourceType> objectResources = this.domainModel
                 .getKlasses()
@@ -50,9 +51,15 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
                 .collect(NamedElement::getName)
                 .collect(this::getPureObjectResource);
 
+        ImmutableList<MithraInterfaceResourceType> interfaceResources = this.domainModel
+                .getInterfaces()
+                .collect(NamedElement::getName)
+                .collect(this::getInterfaceResource);
+
         Mithra mithra = new Mithra();
         mithra.setMithraObjectResources(objectResources.castToList());
         mithra.setMithraPureObjectResources(pureObjectResources.castToList());
+        mithra.setMithraInterfaceResources(interfaceResources.castToList());
         return mithra;
     }
 
@@ -70,5 +77,13 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
         MithraPureObjectResourceType pureObjectResource = new MithraPureObjectResourceType();
         pureObjectResource.setName(className);
         return pureObjectResource;
+    }
+
+    @Nonnull
+    private MithraInterfaceResourceType getInterfaceResource(String interfaceName)
+    {
+        MithraInterfaceResourceType interfaceResource = new MithraInterfaceResourceType();
+        interfaceResource.setName(interfaceName);
+        return interfaceResource;
     }
 }

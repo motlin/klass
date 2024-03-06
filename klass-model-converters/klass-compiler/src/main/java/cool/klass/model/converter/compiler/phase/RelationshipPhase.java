@@ -48,7 +48,7 @@ public class RelationshipPhase extends AbstractCompilerPhase
             return;
         }
 
-        AntlrClass typeWithForeignKeys = endWithForeignKeys.getOwningClassState();
+        AntlrClass typeWithForeignKeys = endWithForeignKeys.getOwningClassifierState();
         if (typeWithForeignKeys == AntlrClass.NOT_FOUND || typeWithForeignKeys == AntlrClass.AMBIGUOUS)
         {
             return;

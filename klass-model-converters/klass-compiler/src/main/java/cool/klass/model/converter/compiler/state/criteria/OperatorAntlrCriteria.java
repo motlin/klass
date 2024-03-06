@@ -146,13 +146,13 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
         AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypePropertyState();
 
-        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassState() == thisMemberReferencePathState.getClassState();
+        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassifierState() == thisMemberReferencePathState.getClassState();
         if (foreignKeysOnThis2 != foreignKeysOnThis)
         {
             throw new AssertionError();
         }
 
-        if (endWithForeignKeys.getOwningClassState() == thisMemberReferencePathState.getClassState())
+        if (endWithForeignKeys.getOwningClassifierState() == thisMemberReferencePathState.getClassState())
         {
             endWithForeignKeys.addForeignKeyPropertyMatchingProperty(thisDataTypePropertyState, typeDataTypePropertyState);
         }

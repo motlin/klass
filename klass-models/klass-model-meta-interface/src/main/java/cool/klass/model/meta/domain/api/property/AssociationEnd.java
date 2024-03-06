@@ -3,10 +3,15 @@ package cool.klass.model.meta.domain.api.property;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Klass;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public interface AssociationEnd extends ReferenceProperty
 {
+    @Nonnull
+    @Override
+    Klass getOwningClassifier();
+
     @Override
     default void visit(@Nonnull PropertyVisitor visitor)
     {

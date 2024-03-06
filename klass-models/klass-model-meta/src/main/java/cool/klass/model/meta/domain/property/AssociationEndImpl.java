@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.AssociationImpl;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -48,6 +49,13 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.owned = owned;
+    }
+
+    @Nonnull
+    @Override
+    public Klass getOwningClassifier()
+    {
+        return (Klass) super.getOwningClassifier();
     }
 
     @Override
@@ -146,7 +154,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
                     this.name,
                     this.ordinal,
                     this.typeBuilder.getElement(),
-                    this.owningKlassBuilder.getElement(),
+                    (KlassImpl) this.owningClassifierBuilder.getElement(),
                     this.owningAssociation.getElement(),
                     this.multiplicity,
                     this.isOwned);
@@ -169,7 +177,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
     {
         return String.format(
                 "%s.%s: %s[%s]",
-                this.getOwningKlass().getName(),
+                this.getOwningClassifier().getName(),
                 this.getName(),
                 this.getType().getName(),
                 this.multiplicity.getPrettyName());

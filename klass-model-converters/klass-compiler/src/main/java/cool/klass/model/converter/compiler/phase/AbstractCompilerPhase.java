@@ -10,6 +10,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
@@ -49,6 +50,21 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     {
         super.enterPackageDeclaration(ctx);
         this.compilerState.enterPackageDeclaration(ctx);
+    }
+
+    @Override
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        super.enterInterfaceDeclaration(ctx);
+        this.compilerState.enterInterfaceDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        this.compilerState.exitInterfaceDeclaration();
+        super.exitInterfaceDeclaration(ctx);
     }
 
     @Override

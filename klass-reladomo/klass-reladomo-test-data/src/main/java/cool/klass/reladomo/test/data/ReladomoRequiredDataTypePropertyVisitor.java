@@ -51,7 +51,7 @@ public class ReladomoRequiredDataTypePropertyVisitor implements DataTypeProperty
         {
             this.result = String.format(
                     "%s %s 1 ☝",
-                    primitiveProperty.getOwningKlass().getName(),
+                    primitiveProperty.getOwningClassifier().getName(),
                     primitiveProperty.getName());
         }
     }

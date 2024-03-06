@@ -15,6 +15,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
@@ -176,6 +177,18 @@ public class CompilerState
     {
         this.antlrWalkState.enterPackageDeclaration(ctx);
         this.compilerWalkState.enterPackageDeclaration(ctx);
+    }
+
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        this.antlrWalkState.enterInterfaceDeclaration(ctx);
+        this.compilerWalkState.enterInterfaceDeclaration(ctx);
+    }
+
+    public void exitInterfaceDeclaration()
+    {
+        this.antlrWalkState.exitInterfaceDeclaration();
+        this.compilerWalkState.exitInterfaceDeclaration();
     }
 
     public void enterClassDeclaration(ClassDeclarationContext ctx)

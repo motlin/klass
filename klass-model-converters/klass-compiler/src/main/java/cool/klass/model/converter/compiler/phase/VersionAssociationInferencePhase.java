@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 {
@@ -29,8 +29,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        MutableList<AntlrDataTypeProperty<?>> keyProperties = this.compilerState.getCompilerWalkState().getClassState()
-                .getDataTypePropertyStates()
+        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = this.compilerState.getCompilerWalkState().getClassState()
+                .getDataTypeProperties()
                 .select(AntlrDataTypeProperty::isKey);
 
         if (keyProperties.isEmpty())
@@ -50,7 +50,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
     }
 
     @Nonnull
-    private String getSourceCode(MutableList<AntlrDataTypeProperty<?>> keyProperties)
+    private String getSourceCode(ImmutableList<AntlrDataTypeProperty<?>> keyProperties)
     {
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
         String     className  = classState.getName();

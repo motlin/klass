@@ -4,9 +4,9 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AbstractElement;
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
@@ -16,14 +16,14 @@ import org.eclipse.collections.api.list.ImmutableList;
 public final class OrderByImpl extends AbstractElement implements OrderBy
 {
     @Nonnull
-    private final KlassImpl thisContext;
+    private final AbstractClassifier thisContext;
 
     private ImmutableList<OrderByMemberReferencePath> orderByMemberReferencePaths;
 
     private OrderByImpl(
             @Nonnull ParserRuleContext elementContext,
             boolean inferred,
-            @Nonnull KlassImpl thisContext)
+            @Nonnull AbstractClassifier thisContext)
     {
         super(elementContext, inferred);
         this.thisContext = Objects.requireNonNull(thisContext);
@@ -43,14 +43,14 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
     public static final class OrderByBuilder extends ElementBuilder<OrderByImpl>
     {
         @Nonnull
-        private final KlassBuilder thisContextBuilder;
+        private final ClassifierBuilder<?> thisContextBuilder;
 
         private ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders;
 
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
-                @Nonnull KlassBuilder thisContextBuilder)
+                @Nonnull ClassifierBuilder<?> thisContextBuilder)
         {
             super(elementContext, inferred);
             this.thisContextBuilder = Objects.requireNonNull(thisContextBuilder);

@@ -56,7 +56,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         ClassTypeContext classTypeContext          = ctx.classType();
         String           parameterizedPropertyName = ctx.identifier().getText();
         String           className                 = classTypeContext.classReference().getText();
-        AntlrClass       antlrClass                = this.compilerState.getDomainModelState().getClassByName(className);
+        AntlrClass       classState                = this.compilerState.getDomainModelState().getClassByName(className);
 
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
@@ -70,18 +70,19 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 .toImmutable();
         */
 
+        AntlrClass thisReference = (AntlrClass) this.compilerState.getCompilerWalkState().getThisReference();
         this.parameterizedPropertyState = new AntlrParameterizedProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
                 ctx.identifier(),
                 parameterizedPropertyName,
-                this.compilerState.getCompilerWalkState().getThisReference().getNumMembers() + 1,
-                this.compilerState.getCompilerWalkState().getThisReference(),
-                antlrClass,
+                thisReference.getNumMembers() + 1,
+                thisReference,
+                classState,
                 multiplicityState);
 
-        this.compilerState.getCompilerWalkState().getThisReference().enterParameterizedProperty(this.parameterizedPropertyState);
+        thisReference.enterParameterizedProperty(this.parameterizedPropertyState);
 
         this.parameterOwnerState = this.parameterizedPropertyState;
         this.criteriaOwnerState = this.parameterizedPropertyState;

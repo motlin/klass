@@ -1,6 +1,7 @@
 package cool.klass.model.meta.grammar.listener;
 
 import cool.klass.model.meta.grammar.KlassListener;
+import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentContext;
 import cool.klass.model.meta.grammar.KlassParser.ArgumentListContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
@@ -8,6 +9,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.CharacterLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
@@ -18,6 +20,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
@@ -37,12 +40,19 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionValueContext;
+import cool.klass.model.meta.grammar.KlassParser.ExtendsDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.FloatingPointLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ImplementsDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
+import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
@@ -63,6 +73,7 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext
 import cool.klass.model.meta.grammar.KlassParser.ParameterModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertySignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
@@ -178,6 +189,34 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterInterfaceBody(InterfaceBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceBody() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceBody(InterfaceBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceBody() not implemented yet");
+    }
+
+    @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -203,6 +242,62 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassOrUser() not implemented yet");
+    }
+
+    @Override
+    public void enterExtendsDeclaration(ExtendsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterExtendsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitExtendsDeclaration(ExtendsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitExtendsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterAbstractDeclaration(AbstractDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAbstractDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitAbstractDeclaration(AbstractDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAbstractDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterInheritanceType(InheritanceTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInheritanceType() not implemented yet");
+    }
+
+    @Override
+    public void exitInheritanceType(InheritanceTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInheritanceType() not implemented yet");
+    }
+
+    @Override
+    public void enterImplementsDeclaration(ImplementsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterImplementsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitImplementsDeclaration(ImplementsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitImplementsDeclaration() not implemented yet");
     }
 
     @Override
@@ -346,6 +441,20 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAssociationEndSignature() not implemented yet");
+    }
+
+    @Override
+    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAssociationEndSignature() not implemented yet");
+    }
+
+    @Override
     public void enterRelationship(RelationshipContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -441,6 +550,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitProjectionParameterizedProperty() not implemented yet");
+    }
+
+    @Override
+    public void enterParameterizedPropertySignature(ParameterizedPropertySignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterParameterizedPropertySignature() not implemented yet");
+    }
+
+    @Override
+    public void exitParameterizedPropertySignature(ParameterizedPropertySignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitParameterizedPropertySignature() not implemented yet");
     }
 
     @Override
@@ -687,6 +810,20 @@ public class KlassThrowingListener implements KlassListener
     public void exitVerb(VerbContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".exitVerb() not implemented yet");
+    }
+
+    @Override
+    public void enterInterfaceMember(InterfaceMemberContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceMember() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceMember(InterfaceMemberContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceMember() not implemented yet");
     }
 
     @Override
@@ -1250,6 +1387,20 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterInterfaceReference(InterfaceReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceReference() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceReference(InterfaceReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceReference() not implemented yet");
+    }
+
+    @Override
     public void enterClassReference(ClassReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -1261,6 +1412,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassReference() not implemented yet");
+    }
+
+    @Override
+    public void enterClassifierReference(ClassifierReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassifierReference() not implemented yet");
+    }
+
+    @Override
+    public void exitClassifierReference(ClassifierReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassifierReference() not implemented yet");
     }
 
     @Override

@@ -12,7 +12,6 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionAssociationEndImpl.ProjectionAssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -143,13 +142,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getNamePattern() not implemented yet");
-    }
-
-    @Nonnull
-    @Override
-    public ProjectionDeclarationContext getElementContext()
-    {
-        return (ProjectionDeclarationContext) super.getElementContext();
     }
 
     @Override

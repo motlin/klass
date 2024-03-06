@@ -1,14 +1,50 @@
 package klass.model.meta.domain
 
-class Class
+interface Element
+{
+    inferred: Boolean;
+    sourceCode: String;
+    sourceCodeWithInference: String;
+}
+
+interface NamedElement
+    implements Element
+{
+    name: String;
+    ordinal: Integer;
+}
+
+interface PackageableElement
+{
+    packageName: String;
+    // fullyQualifiedName: String = packageName + "." + name;
+}
+
+class Classifier
+    abstract
+    implements PackageableElement
     transient
 {
-    name                          : String key;
-    inferred                      : Boolean;
-    packageName                   : String private;
+    name: String key;
+    inferred: Boolean;
+    packageName: String;
+
     // TODO: Ordinals should have a syntax and be inferred using macros
-    ordinal                       : Integer;
-    sourceCode                    : String;
+    ordinal: Integer;
+    sourceCode: String;
+}
+
+// TODO: Error when transient extends non-transient
+class Interface
+    extends Classifier
+    transient
+{
+}
+
+class Class
+    extends Classifier
+    transient
+{
 }
 
 enumeration PrimitiveType
@@ -326,6 +362,7 @@ association ParameterizedPropertyHasOrdering
             && this.name == ParameterizedPropertyOrdering.name
 }
 
+/*
 association AssociationEndOrderingHasParts
 {
     associationEndOrdering: AssociationEndOrdering[1..1];
@@ -399,6 +436,7 @@ association OrderingPartHasEnumerationProperty
     relationship this.className == EnumerationProperty.className
             && this.propertyName == EnumerationProperty.name
 }
+*/
 
 association ParameterizedPropertyHasParameters
 {
@@ -424,39 +462,6 @@ association ParameterizedPropertyHasCriteria
 
 }
 */
-
-class Package
-    transient
-{
-    fullyQualifiedName            : String key;
-}
-
-association PackageHasClasses
-{
-    owningPackage: Package[1..1];
-    classes: Class[0..*]
-        orderBy: this.ordinal;
-
-    relationship this.fullyQualifiedName == Class.packageName
-}
-
-association PackageHasEnumerations
-{
-    owningPackage: Package[1..1];
-    enumerations: Enumeration[0..*]
-        orderBy: this.ordinal;
-
-    relationship this.fullyQualifiedName == Enumeration.packageName
-}
-
-association PackageHasAssociations
-{
-    owningPackage: Package[1..1];
-    associations: Association[0..*]
-        orderBy: this.ordinal;
-
-    relationship this.fullyQualifiedName == Association.packageName
-}
 
 enumeration ServiceMultiplicity
 {

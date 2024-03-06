@@ -152,7 +152,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         {
             String message = String.format(
                     "ERR_VER_OWN: Expected version association end '%s.%s' to be owned.",
-                    this.getOwningClassState().getName(),
+                    this.getOwningClassifierState().getName(),
                     this.getName());
             compilerErrorHolder.add(message, this, this.nameContext);
         }
@@ -160,7 +160,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 
     @Nonnull
     @Override
-    public AntlrClass getOwningClassState()
+    public AntlrClass getOwningClassifierState()
     {
         return Objects.requireNonNull(this.owningClassState);
     }

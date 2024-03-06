@@ -2,8 +2,8 @@ package cool.klass.model.meta.domain.property;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -23,7 +23,7 @@ public final class PrimitivePropertyImpl
             @Nonnull String name,
             int ordinal,
             @Nonnull PrimitiveType primitiveType,
-            @Nonnull KlassImpl owningKlass,
+            @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
         super(
@@ -33,7 +33,7 @@ public final class PrimitivePropertyImpl
                 name,
                 ordinal,
                 primitiveType,
-                owningKlass,
+                owningClassifier,
                 isOptional);
     }
 
@@ -59,7 +59,7 @@ public final class PrimitivePropertyImpl
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull PrimitiveType primitiveType,
-                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
@@ -70,7 +70,7 @@ public final class PrimitivePropertyImpl
                     name,
                     ordinal,
                     primitiveType,
-                    owningKlassBuilder,
+                    owningClassifierBuilder,
                     propertyModifierBuilders,
                     isOptional);
         }
@@ -86,7 +86,7 @@ public final class PrimitivePropertyImpl
                     this.name,
                     this.ordinal,
                     this.typeBuilder,
-                    this.owningKlassBuilder.getElement(),
+                    this.owningClassifierBuilder.getElement(),
                     this.isOptional);
         }
 

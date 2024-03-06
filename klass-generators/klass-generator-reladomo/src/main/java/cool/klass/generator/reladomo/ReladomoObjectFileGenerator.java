@@ -18,10 +18,13 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
 import com.gs.fw.common.mithra.generator.metamodel.MithraPureObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
+import com.gs.fw.common.mithra.generator.metamodel.SuperClassAttributeType;
+import com.gs.fw.common.mithra.generator.metamodel.SuperClassType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
 import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
@@ -113,7 +116,20 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     {
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
-        mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+        if (klass.isAbstract())
+        {
+            SuperClassType superClassType = new SuperClassType();
+            // TODO: Configurable inheritance type
+            superClassType.with("table-per-subclass", mithraObject);
+            mithraObject.setSuperClassType(superClassType);
+        }
+        else
+        {
+            mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+        }
+
+        ImmutableList<String> superInterfaceNames = klass.getInterfaces().collect(NamedElement::getName);
+        mithraObject.setMithraInterfaces(superInterfaceNames.castToList());
 
         ImmutableList<AsOfAttributeType> asOfAttributeTypes = klass.getDataTypeProperties()
                 .select(DataTypeProperty::isTemporalRange)
@@ -143,6 +159,13 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraCommonObject.setPackageName(klass.getPackageName());
         mithraCommonObject.setClassName(klass.getName());
         mithraCommonObject.setInitializePrimitivesToNull(true);
+
+        klass.getSuperClass().ifPresent(superClass ->
+        {
+            SuperClassAttributeType superClassAttributeType = new SuperClassAttributeType();
+            superClassAttributeType.setName(superClass.getName());
+            mithraCommonObject.setSuperClass(superClassAttributeType);
+        });
     }
 
     private List<RelationshipType> convertRelationships(ImmutableList<AssociationEnd> associationEnds)

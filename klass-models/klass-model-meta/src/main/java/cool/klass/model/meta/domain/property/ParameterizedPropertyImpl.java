@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
@@ -38,6 +39,13 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
+    @Nonnull
+    @Override
+    public Klass getOwningClassifier()
+    {
+        return (Klass) super.getOwningClassifier();
+    }
+
     @Override
     @Nonnull
     public Multiplicity getMultiplicity()
@@ -63,7 +71,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         private final Multiplicity multiplicity;
 
         @Nonnull
-        private Optional<OrderByBuilder>  orderByBuilder = Optional.empty();
+        private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
 
         public ParameterizedPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -95,7 +103,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
                     this.name,
                     this.ordinal,
                     this.typeBuilder.getElement(),
-                    this.owningKlassBuilder.getElement(),
+                    (KlassImpl) this.owningClassifierBuilder.getElement(),
                     this.multiplicity);
 
             Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);

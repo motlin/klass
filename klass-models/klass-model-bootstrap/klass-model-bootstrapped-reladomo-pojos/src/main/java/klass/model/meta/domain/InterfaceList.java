@@ -4,23 +4,23 @@ import java.util.Collection;
 
 import com.gs.fw.finder.Operation;
 
-public class PackageList extends PackageListAbstract
+public class InterfaceList extends InterfaceListAbstract
 {
-    public PackageList()
+    public InterfaceList()
     {
     }
 
-    public PackageList(int initialSize)
+    public InterfaceList(int initialSize)
     {
         super(initialSize);
     }
 
-    public PackageList(Collection<?> c)
+    public InterfaceList(Collection c)
     {
         super(c);
     }
 
-    public PackageList(Operation operation)
+    public InterfaceList(Operation operation)
     {
         super(operation);
     }

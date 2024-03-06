@@ -12,23 +12,29 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
+import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrClass extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
+public class AntlrClass extends AntlrClassifier
 {
     @Nonnull
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
@@ -99,10 +105,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
 
     // TODO: Unified list of dataType and parameterized properties
 
-    private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -113,13 +115,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableList<AntlrClassModifier>               classModifierStates  = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrClassModifier> classModifiersByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final boolean         isUser;
+    private       InheritanceType inheritanceType = InheritanceType.NONE;
 
-    private final boolean isUser;
-
-    private KlassBuilder klassBuilder;
+    private KlassBuilder         klassBuilder;
+    @Nonnull
+    private Optional<AntlrClass> superClassState = Optional.empty();
 
     public AntlrClass(
             @Nonnull ParserRuleContext elementContext,
@@ -136,26 +137,39 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         this.isUser = isUser;
     }
 
-    public MutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
+    @Override
+    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(MutableList<AntlrClassifier> visited)
     {
-        return this.dataTypePropertyStates;
+        ImmutableList<AntlrDataTypeProperty<?>> superClassProperties = this.superClassState
+                .map(antlrClass -> antlrClass.getDataTypeProperties(visited))
+                .orElseGet(Lists.immutable::empty);
+
+        ImmutableList<AntlrDataTypeProperty<?>> interfaceProperties = this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getDataTypeProperties, visited)
+                .toImmutable();
+
+        return superClassProperties.newWithAll(interfaceProperties).distinctBy(AntlrNamedElement::getName);
     }
 
+    @Override
+    protected ImmutableList<AntlrClassModifier> getInheritedModifiers(MutableList<AntlrClassifier> visited)
+    {
+        ImmutableList<AntlrClassModifier> superClassModifiers = this.superClassState
+                .map(antlrClass -> antlrClass.getClassModifiers(visited)).orElseGet(Lists.immutable::empty);
+
+        ImmutableList<AntlrClassModifier> interfaceModifiers = this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getClassModifiers, visited)
+                .toImmutable();
+
+        return superClassModifiers.newWithAll(interfaceModifiers).distinctBy(AntlrNamedElement::getName);
+    }
+
+    @Override
     public int getNumMembers()
     {
-        return this.dataTypePropertyStates.size()
+        return this.getDataTypeProperties().size()
                 + this.parameterizedPropertyStates.size()
                 + this.associationEndStates.size();
-    }
-
-    public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
-    {
-        this.dataTypePropertyStates.add(antlrDataTypeProperty);
-        this.dataTypePropertiesByName.compute(
-                antlrDataTypeProperty.getName(),
-                (name, builder) -> builder == null
-                        ? antlrDataTypeProperty
-                        : AntlrPrimitiveProperty.AMBIGUOUS);
     }
 
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
@@ -186,19 +200,48 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
     }
 
-    public void enterClassModifier(@Nonnull AntlrClassModifier classModifierState)
-    {
-        this.classModifierStates.add(classModifierState);
-        this.classModifiersByName.compute(
-                classModifierState.getName(),
-                (name, builder) -> builder == null
-                        ? classModifierState
-                        : AntlrClassModifier.AMBIGUOUS);
-    }
-
     public AntlrParameterizedProperty getParameterizedPropertyByContext(ParameterizedPropertyContext ctx)
     {
         return this.parameterizedPropertiesByContext.get(ctx);
+    }
+
+    public boolean isAbstract()
+    {
+        return this.inheritanceType != InheritanceType.NONE;
+    }
+
+    public InheritanceType getInheritanceType()
+    {
+        return this.inheritanceType;
+    }
+
+    public void setInheritanceType(InheritanceType inheritanceType)
+    {
+        this.inheritanceType = inheritanceType;
+    }
+
+    public void enterExtendsDeclaration(AntlrClass superClassState)
+    {
+        this.superClassState = Optional.of(superClassState);
+    }
+
+    @Override
+    public KlassBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.klassBuilder);
+    }
+
+    @Override
+    protected boolean implementsInterface(AntlrInterface interfaceState)
+    {
+        if (super.implementsInterface(interfaceState))
+        {
+            return true;
+        }
+
+        return this.superClassState
+                .map(classState -> classState.implementsInterface(interfaceState))
+                .orElse(false);
     }
 
     public KlassBuilder build1()
@@ -215,6 +258,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 this.name,
                 this.ordinal,
                 this.packageName,
+                this.inheritanceType,
                 this.isUser,
                 this.isTransient());
 
@@ -229,17 +273,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
 
         this.klassBuilder.setDataTypePropertyBuilders(dataTypePropertyBuilders);
         return this.klassBuilder;
-    }
-
-    public boolean isTransient()
-    {
-        return this.classModifierStates.anySatisfy(AntlrClassModifier::isTransient);
-    }
-
-    @Override
-    public KlassBuilder getElementBuilder()
-    {
-        return Objects.requireNonNull(this.klassBuilder);
     }
 
     public void build2()
@@ -267,6 +300,15 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
 
         this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
+
+        ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
+                .collect(AntlrInterface::getElementBuilder)
+                .toImmutable();
+
+        this.klassBuilder.setInterfaceBuilders(interfaceBuilders);
+
+        Optional<KlassBuilder> superClassBuilder = this.superClassState.map(AntlrClass::getElementBuilder);
+        this.klassBuilder.setSuperClassBuilder(superClassBuilder);
     }
 
     @Override
@@ -286,18 +328,26 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
+        super.reportErrors(compilerErrorHolder);
 
-        for (AntlrDataTypeProperty<?> dataTypePropertyState : this.dataTypePropertyStates)
-        {
-            if (duplicateMemberNames.contains(dataTypePropertyState.getName()))
-            {
-                dataTypePropertyState.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            dataTypePropertyState.reportErrors(compilerErrorHolder);
-        }
+        this.reportDuplicateParameterizedPropertyNames(compilerErrorHolder);
+        this.reportDuplicateAssociationEndNames(compilerErrorHolder);
+        this.reportVersionErrors(compilerErrorHolder);
+        this.reportMissingKeyProperty(compilerErrorHolder);
+        this.reportSuperClassNotFound(compilerErrorHolder);
+        this.reportExtendsConcrete(compilerErrorHolder);
+        this.reportTransientInheritance(compilerErrorHolder);
+        this.reportTransientIdProperties(compilerErrorHolder);
+
+        // TODO: parameterized properties
+    }
+
+    private void reportDuplicateParameterizedPropertyNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
         for (AntlrParameterizedProperty parameterizedPropertyState : this.parameterizedPropertyStates)
         {
@@ -307,6 +357,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             }
             parameterizedPropertyState.reportErrors(compilerErrorHolder);
         }
+    }
+
+    private void reportDuplicateAssociationEndNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
         for (AntlrAssociationEnd associationEndState : this.associationEndStates)
         {
@@ -316,7 +371,10 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             }
             associationEndState.reportErrors(compilerErrorHolder);
         }
+    }
 
+    private void reportVersionErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
         MutableList<AntlrAssociationEnd> versionAssociationEnds = this.associationEndStates.select(AntlrAssociationEnd::isVersion);
         if (versionAssociationEnds.size() > 1)
         {
@@ -340,63 +398,144 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             String message = String.format("ERR_VER_VER: Class '%s' is a version and has a version.", this.name);
             compilerErrorHolder.add(message, this);
         }
+    }
 
-        int numKeyProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isKey);
-        if (numKeyProperties == 0)
+    private void reportMissingKeyProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        int numKeyProperties = this.getDataTypeProperties().count(AntlrDataTypeProperty::isKey);
+        if (numKeyProperties == 0 && !this.isAbstract())
         {
             String message = String.format("ERR_CLS_KEY: Class '%s' must have at least one key property.", this.name);
             compilerErrorHolder.add(message, this);
         }
-
-        int numIdProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isID);
-        if (numIdProperties > 1)
-        {
-            String message = String.format(
-                    "ERR_MNY_IDS: Class '%s' may only have one id property. Found: %s.",
-                    this.name,
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isID)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString());
-            compilerErrorHolder.add(message, this);
-        }
-
-        if (numIdProperties > 0 && numKeyProperties != numIdProperties)
-        {
-            String message = String.format(
-                    "ERR_KEY_IDS: Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
-                    this.name,
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isID)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString(),
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isKey)
-                            .reject(AntlrDataTypeProperty::isID)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString());
-            compilerErrorHolder.add(message, this);
-        }
-
-        // TODO: Warn if class is owned by multiple
-        // TODO: Detect ownership cycles
-
-        // TODO: parameterized properties
-        // TODO: duplicate class modifiers
     }
 
+    private void reportSuperClassNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        if (this.superClassState.equals(Optional.of(AntlrClass.NOT_FOUND)))
+        {
+            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            String message = String.format(
+                    "ERR_EXT_CLS: Cannot find class '%s'.",
+                    offendingToken.getText());
+            compilerErrorHolder.add(message, this, offendingToken);
+        }
+    }
+
+    private void reportExtendsConcrete(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.superClassState.isPresent()
+                || this.superClassState.equals(Optional.of(NOT_FOUND)))
+        {
+            return;
+        }
+
+        if (!this.superClassState.get().isAbstract())
+        {
+            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            String message = String.format(
+                    "ERR_EXT_CCT: Superclass must be abstract '%s'.",
+                    offendingToken.getText());
+            compilerErrorHolder.add(message, this, offendingToken);
+        }
+    }
+
+    private void reportTransientInheritance(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isTransient()
+                || !this.superClassState.isPresent()
+                || !this.superClassState.get().isTransient())
+        {
+            return;
+        }
+
+        ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+        String message = String.format(
+                "ERR_EXT_TNS: Must be transient to inherit from transient superclass '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, this, offendingToken);
+    }
+
+    private void reportTransientIdProperties(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isTransient()
+                || this.getDataTypeProperties().noneSatisfy(AntlrDataTypeProperty::isID))
+        {
+            return;
+        }
+
+        IdentifierContext offendingToken = this.getElementContext().identifier();
+        String message = String.format(
+                "ERR_TNS_IDP: Transient class '%s' may not have id properties.",
+                offendingToken.getText());
+        compilerErrorHolder.add(message, this, offendingToken);
+    }
+
+    @Override
+    protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.superClassState.isPresent())
+        {
+            return;
+        }
+        if (this.superClassState.get().extendsClass(this, Sets.mutable.empty()))
+        {
+            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            String message = String.format(
+                    "ERR_EXT_SLF: Circular inheritance '%s'.",
+                    offendingToken.getText());
+            compilerErrorHolder.add(message, this, offendingToken);
+        }
+    }
+
+    private boolean extendsClass(AntlrClass antlrClass, MutableSet<AntlrClass> visitedClasses)
+    {
+        if (!this.superClassState.isPresent())
+        {
+            return false;
+        }
+
+        if (this.superClassState.equals(Optional.of(antlrClass)))
+        {
+            return true;
+        }
+
+        if (visitedClasses.contains(this))
+        {
+            return false;
+        }
+
+        visitedClasses.add(this);
+        return this.superClassState.get().extendsClass(antlrClass, visitedClasses);
+    }
+
+    @Override
+    protected boolean isInterfaceRedundant(int index, AntlrInterface interfaceState)
+    {
+        return this.superClassState.isPresent() && this.superClassState.get().implementsInterface(interfaceState)
+                || this.interfaceNotAtIndexImplements(index, interfaceState);
+    }
+
+    @Override
+    protected InterfaceReferenceContext getOffendingInterfaceReference(int index)
+    {
+        return this.getElementContext().implementsDeclaration().interfaceReference().get(index);
+    }
+
+    @Override
     public ImmutableBag<String> getDuplicateMemberNames()
     {
-        return this.getMemberNames()
+        return this.getDeclaredMemberNames()
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
     }
 
-    private ImmutableList<String> getMemberNames()
+    @Override
+    protected ImmutableList<String> getDeclaredMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
-        this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
+        this.getDataTypeProperties().collect(AntlrProperty::getName, topLevelNames);
         this.parameterizedPropertyStates.collect(AntlrNamedElement::getName, topLevelNames);
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
@@ -409,11 +548,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         return (ClassDeclarationContext) super.getElementContext();
     }
 
-    public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
-    {
-        return this.dataTypePropertiesByName.getIfAbsentValue(name, AntlrEnumerationProperty.NOT_FOUND);
-    }
-
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
         return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
@@ -422,11 +556,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
     {
         return this.associationEndStates.asUnmodifiable();
-    }
-
-    public int getNumClassModifiers()
-    {
-        return this.classModifierStates.size();
     }
 
     @Nonnull
@@ -440,5 +569,25 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     public boolean hasVersion()
     {
         return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
+    }
+
+    @Override
+    public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
+    {
+        if (this.dataTypePropertiesByName.containsKey(name))
+        {
+            return this.dataTypePropertiesByName.get(name);
+        }
+
+        if (this.superClassState.isPresent())
+        {
+            AntlrDataTypeProperty<?> superClassProperty = this.superClassState.get().getDataTypePropertyByName(name);
+            if (superClassProperty != AntlrEnumerationProperty.NOT_FOUND)
+            {
+                return superClassProperty;
+            }
+        }
+
+        return this.getInterfaceDataTypePropertyByName(name);
     }
 }

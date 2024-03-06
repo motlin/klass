@@ -49,7 +49,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
         return this.compilerState
                 .getCompilerWalkState()
                 .getClassState()
-                .getDataTypePropertyStates()
+                .getDataTypeProperties()
                 .asLazy()
                 .select(AntlrDataTypeProperty::isTemporal)
                 .anySatisfy(predicate);
@@ -64,7 +64,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 
     private void runCompilerMacro(@Nonnull ParserRuleContext ctx, String sourceCodeText)
     {
-        ParseTreeListener compilerPhase = new ClassPhase(this.compilerState);
+        ParseTreeListener compilerPhase = new ClassifierPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 ctx,

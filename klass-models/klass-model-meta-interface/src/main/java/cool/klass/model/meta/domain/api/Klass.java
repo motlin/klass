@@ -10,8 +10,32 @@ import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface Klass extends Type, PackageableElement
+public interface Klass extends Classifier
 {
+    @Override
+    default ImmutableList<ClassModifier> getInheritedClassModifiers()
+    {
+        ImmutableList<ClassModifier> superClassProperties = this.getSuperClass()
+                .map(Classifier::getClassModifiers)
+                .orElseGet(Lists.immutable::empty);
+
+        ImmutableList<ClassModifier> interfaceProperties = Classifier.super.getInheritedClassModifiers();
+
+        return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
+    }
+
+    @Override
+    default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
+    {
+        ImmutableList<DataTypeProperty> superClassProperties = this.getSuperClass()
+                .map(Classifier::getDataTypeProperties)
+                .orElseGet(Lists.immutable::empty);
+
+        ImmutableList<DataTypeProperty> interfaceProperties = Classifier.super.getInheritedDataTypeProperties();
+
+        return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
+    }
+
     // TODO: Replace with an implementation that preserves order
     default ImmutableList<Property> getProperties()
     {
@@ -19,8 +43,6 @@ public interface Klass extends Type, PackageableElement
                 .newWithAll(this.getDataTypeProperties())
                 .newWithAll(this.getAssociationEnds());
     }
-
-    ImmutableList<DataTypeProperty> getDataTypeProperties();
 
     ImmutableList<AssociationEnd> getAssociationEnds();
 
@@ -63,24 +85,19 @@ public interface Klass extends Type, PackageableElement
     Optional<AssociationEnd> getVersionedProperty();
 
     @Nonnull
-    ImmutableList<ClassModifier> getClassModifiers();
+    Optional<Klass> getSuperClass();
 
     boolean isUser();
 
-    boolean isTransient();
-
-    default boolean isBitemporal()
+    default boolean isAbstract()
     {
-        return this.isValidTemporal() && this.isSystemTemporal();
+        return this.getInheritanceType() != InheritanceType.NONE;
     }
 
-    default boolean isValidTemporal()
-    {
-        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isValidTemporal);
-    }
+    InheritanceType getInheritanceType();
 
-    default boolean isSystemTemporal()
+    default boolean isTransient()
     {
-        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isSystemTemporal);
+        return this.getClassModifiers().anySatisfy(ClassModifier::isTransient);
     }
 }

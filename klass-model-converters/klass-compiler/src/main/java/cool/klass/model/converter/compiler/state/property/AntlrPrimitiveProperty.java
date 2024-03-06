@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -43,7 +44,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClass owningClassState,
+            AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> propertyModifierStates,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
@@ -55,7 +56,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 nameContext,
                 name,
                 ordinal,
-                owningClassState,
+                owningClassifierState,
                 propertyModifierStates,
                 isOptional);
         this.antlrPrimitiveType = Objects.requireNonNull(antlrPrimitiveType);
@@ -105,7 +106,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.name,
                 this.ordinal,
                 this.antlrPrimitiveType.getPrimitiveType(),
-                this.owningClassState.getElementBuilder(),
+                this.owningClassifierState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isOptional);
         return this.primitivePropertyBuilder;

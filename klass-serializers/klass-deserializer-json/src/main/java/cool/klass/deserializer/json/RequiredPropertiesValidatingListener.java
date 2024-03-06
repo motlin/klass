@@ -221,7 +221,7 @@ public class RequiredPropertiesValidatingListener extends BaseProjectionListener
             String error = String.format(
                     "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
                     this.getContextString(),
-                    property.getOwningKlass().getName(),
+                    property.getOwningClassifier().getName(),
                     property.getName(),
                     property.getType().toString(),
                     property.isOptional() ? "?" : "",

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.api.Type;
@@ -44,14 +44,14 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     {
         String message = String.format(
                 "ERR_DUP_PRP: Duplicate member: '%s.%s'.",
-                this.getOwningClassState().getName(),
+                this.getOwningClassifierState().getName(),
                 this.name);
 
         compilerErrorHolder.add(message, this);
     }
 
     @Nonnull
-    protected abstract AntlrClass getOwningClassState();
+    protected abstract AntlrClassifier getOwningClassifierState();
 
     @Override
     protected Pattern getNamePattern()

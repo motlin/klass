@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
+import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -17,6 +18,7 @@ import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -29,6 +31,7 @@ public class AntlrDomainModel
 {
     private final MutableList<AntlrTopLevelElement> topLevelElementStates = Lists.mutable.empty();
     private final MutableList<AntlrEnumeration>     enumerationStates     = Lists.mutable.empty();
+    private final MutableList<AntlrInterface>       interfaceStates       = Lists.mutable.empty();
     private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
     private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
     private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
@@ -38,12 +41,15 @@ public class AntlrDomainModel
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>               classesByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<InterfaceDeclarationContext, AntlrInterface>       interfacesByContext    =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation>   associationsByContext  =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<ServiceGroupDeclarationContext, AntlrServiceGroup> serviceGroupsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrInterface>   interfacesByName   = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrAssociation> associationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrProjection>  projectionsByName  = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -70,6 +76,23 @@ public class AntlrDomainModel
         AntlrEnumeration duplicate = this.enumerationsByContext.put(
                 enumerationState.getElementContext(),
                 enumerationState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public void defineInterface(@Nonnull AntlrInterface interfaceState)
+    {
+        this.topLevelElementStates.add(interfaceState);
+        this.interfaceStates.add(interfaceState);
+        this.interfacesByName.compute(
+                interfaceState.getName(),
+                (name, builder) -> builder == null
+                        ? interfaceState
+                        : AntlrInterface.AMBIGUOUS);
+
+        AntlrInterface duplicate = this.interfacesByContext.put(interfaceState.getElementContext(), interfaceState);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -147,6 +170,11 @@ public class AntlrDomainModel
         return this.enumerationsByName.getIfAbsentValue(enumerationName, AntlrEnumeration.NOT_FOUND);
     }
 
+    public AntlrInterface getInterfaceByName(String interfaceName)
+    {
+        return this.interfacesByName.getIfAbsentValue(interfaceName, AntlrInterface.NOT_FOUND);
+    }
+
     public AntlrClass getClassByName(String className)
     {
         return this.classesByName.getIfAbsentValue(className, AntlrClass.NOT_FOUND);
@@ -155,6 +183,11 @@ public class AntlrDomainModel
     public AntlrEnumeration getEnumerationByContext(EnumerationDeclarationContext context)
     {
         return this.enumerationsByContext.get(context);
+    }
+
+    public AntlrInterface getInterfaceByContext(InterfaceDeclarationContext context)
+    {
+        return this.interfacesByContext.get(context);
     }
 
     public AntlrClass getClassByContext(ClassDeclarationContext context)
@@ -200,6 +233,12 @@ public class AntlrDomainModel
             enumerationState.reportErrors(compilerErrorHolder);
         }
 
+        for (AntlrInterface interfaceState : this.interfaceStates)
+        {
+            interfaceState.reportNameErrors(compilerErrorHolder);
+            interfaceState.reportErrors(compilerErrorHolder);
+        }
+
         for (AntlrClass classState : this.classStates)
         {
             classState.reportNameErrors(compilerErrorHolder);
@@ -234,6 +273,7 @@ public class AntlrDomainModel
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.enumerationStates.collect(AntlrEnumeration::getName, topLevelNames);
+        this.interfaceStates.collect(AntlrInterface::getName, topLevelNames);
         this.classStates.collect(AntlrClass::getName, topLevelNames);
         this.associationStates.collect(AntlrAssociation::getName, topLevelNames);
         this.projectionStates.collect(AntlrProjection::getName, topLevelNames);
@@ -253,9 +293,11 @@ public class AntlrDomainModel
     public DomainModelBuilder build()
     {
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();
+        ImmutableList<InterfaceBuilder>   interfaceBuilders   = this.interfaceStates.collect(AntlrInterface::build1).toImmutable();
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
 
         ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
+        this.interfaceStates.each(AntlrInterface::build2);
         this.classStates.each(AntlrClass::build2);
 
         ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
@@ -267,6 +309,7 @@ public class AntlrDomainModel
         return new DomainModelBuilder(
                 topLevelElementBuilders,
                 enumerationBuilders,
+                interfaceBuilders,
                 classBuilders,
                 associationBuilders,
                 projectionBuilders,

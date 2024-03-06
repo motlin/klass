@@ -44,7 +44,7 @@ public class PersistentCreator extends PersistentSynchronizer
 
         ImmutableList<Object> keys = getKeysFromPersistentInstance(
                 persistentInstance,
-                associationEnd.getOwningKlass());
+                associationEnd.getOwningClassifier());
         this.insertVersion(persistentInstance, associationEnd, keys);
     }
 

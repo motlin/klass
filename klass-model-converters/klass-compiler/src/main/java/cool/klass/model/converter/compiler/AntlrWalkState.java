@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
@@ -17,6 +18,8 @@ public class AntlrWalkState
 {
     @Nullable
     private PackageNameContext             packageContext;
+    @Nullable
+    private InterfaceDeclarationContext    interfaceDeclarationContext;
     @Nullable
     private ClassDeclarationContext        classDeclarationContext;
     @Nullable
@@ -48,6 +51,17 @@ public class AntlrWalkState
     public void enterPackageDeclaration(PackageDeclarationContext ctx)
     {
         this.packageContext = ctx.packageName();
+    }
+
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        assertNull(this.interfaceDeclarationContext);
+        this.interfaceDeclarationContext = ctx;
+    }
+
+    public void exitInterfaceDeclaration()
+    {
+        this.interfaceDeclarationContext = null;
     }
 
     public void enterClassDeclaration(ClassDeclarationContext ctx)

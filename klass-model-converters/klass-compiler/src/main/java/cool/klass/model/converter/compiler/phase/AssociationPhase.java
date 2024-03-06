@@ -55,9 +55,9 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         super.enterAssociationEnd(ctx);
 
-        ClassTypeContext classTypeContext = ctx.classType();
-        String           className        = classTypeContext.classReference().getText();
-        AntlrClass       antlrClass       = this.compilerState.getDomainModelState().getClassByName(className);
+        ClassTypeContext classTypeContext   = ctx.classType();
+        String           className          = classTypeContext.classReference().getText();
+        AntlrClass       classState = this.compilerState.getDomainModelState().getClassByName(className);
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
@@ -72,7 +72,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 associationEndName,
                 this.associationState.getNumAssociationEnds() + 1,
                 this.associationState,
-                antlrClass,
+                classState,
                 multiplicityState);
 
         this.associationState.enterAssociationEnd(this.associationEndState);

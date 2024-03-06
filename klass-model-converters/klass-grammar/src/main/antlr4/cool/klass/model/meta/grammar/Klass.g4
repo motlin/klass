@@ -11,19 +11,31 @@ packageName
 	;
 
 topLevelDeclaration
-    : classDeclaration
+    : interfaceDeclaration
+    | classDeclaration
     | enumerationDeclaration
     | associationDeclaration
     | projectionDeclaration
     | serviceGroupDeclaration
     ;
 
+// TODO: Consider splitting separate interfaceModifiers from classModifiers
+// interface
+interfaceDeclaration: 'interface' identifier implementsDeclaration? classModifier* interfaceBody;
+interfaceBody: '{' interfaceMember* '}';
+
 // class
-classDeclaration: classOrUser identifier classServiceModifier* classModifier* classBody;
+classDeclaration: classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classModifier* classBody;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
 classBody: '{' classMember* '}';
+
+// inheritance
+abstractDeclaration: 'abstract' ('(' inheritanceType ')')?;
+extendsDeclaration: 'extends' classReference;
+inheritanceType: 'table-per-subclass' | 'table-for-all-subclasses' | 'table-per-class';
+implementsDeclaration: 'implements' interfaceReference (',' interfaceReference)*;
 
 // enumeration
 enumerationDeclaration: 'enumeration' identifier enumerationBody;
@@ -36,6 +48,7 @@ associationDeclaration: 'association' identifier associationBody;
 associationBody: '{' associationEnd? associationEnd? relationship? '}';
 associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration? ';'
     | identifier ':' classType associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
+associationEndSignature: identifier ':' classifierReference multiplicity associationEndModifier* ';';
 relationship: 'relationship' criteriaExpression;
 
 // projection
@@ -74,6 +87,7 @@ serviceOrderByDeclaration: orderByDeclaration ';'
 verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 // member
+interfaceMember: dataTypeProperty | parameterizedPropertySignature | associationEndSignature;
 classMember: dataTypeProperty | parameterizedProperty;
 dataTypeProperty: primitiveProperty | enumerationProperty;
 primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* ';'
@@ -81,6 +95,7 @@ primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier
 enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* ';'
     | identifier ':' enumerationReference optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
 parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
+parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierReference multiplicity parameterizedPropertyModifier* ';';
 optionalMarker: '?';
 
 // parameter
@@ -152,7 +167,9 @@ stringOperator: 'contains' | 'startsWith' | 'endsWith';
 classType: classReference multiplicity;
 
 // references
+interfaceReference: identifier;
 classReference: identifier;
+classifierReference: identifier;
 enumerationReference: identifier;
 projectionReference: identifier;
 memberReference: identifier;

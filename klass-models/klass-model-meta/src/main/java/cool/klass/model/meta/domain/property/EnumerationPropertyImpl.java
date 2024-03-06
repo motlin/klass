@@ -2,10 +2,10 @@ package cool.klass.model.meta.domain.property;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
@@ -22,7 +22,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
             @Nonnull String name,
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
-            @Nonnull KlassImpl owningKlass,
+            @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
         super(
@@ -32,7 +32,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                 name,
                 ordinal,
                 enumeration,
-                owningKlass,
+                owningClassifier,
                 isOptional);
     }
 
@@ -73,7 +73,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull EnumerationBuilder enumerationBuilder,
-                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
@@ -84,7 +84,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     name,
                     ordinal,
                     enumerationBuilder,
-                    owningKlassBuilder,
+                    owningClassifierBuilder,
                     propertyModifierBuilders,
                     isOptional);
         }
@@ -100,7 +100,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     this.name,
                     this.ordinal,
                     this.typeBuilder.getElement(),
-                    this.owningKlassBuilder.getElement(),
+                    this.owningClassifierBuilder.getElement(),
                     this.isOptional);
         }
 

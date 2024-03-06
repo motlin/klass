@@ -6,6 +6,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
@@ -40,18 +41,6 @@ public class ErrorContextListener extends KlassThrowingListener
     }
 
     @Override
-    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
-    {
-        this.addTextInclusive("", ctx.getStart(), ctx.classBody().getStart());
-    }
-
-    @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
-    {
-        this.contextualStrings.add("}");
-    }
-
-    @Override
     public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStart(), ctx.enumerationBody().getStart());
@@ -59,6 +48,30 @@ public class ErrorContextListener extends KlassThrowingListener
 
     @Override
     public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
+    {
+        this.contextualStrings.add("}");
+    }
+
+    @Override
+    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        this.addTextInclusive("", ctx.getStart(), ctx.interfaceBody().getStart());
+    }
+
+    @Override
+    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
+    {
+        this.contextualStrings.add("}");
+    }
+
+    @Override
+    public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
+    {
+        this.addTextInclusive("", ctx.getStart(), ctx.classBody().getStart());
+    }
+
+    @Override
+    public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
         this.contextualStrings.add("}");
     }

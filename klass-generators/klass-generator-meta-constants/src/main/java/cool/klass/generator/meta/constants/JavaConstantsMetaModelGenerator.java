@@ -15,10 +15,12 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
@@ -74,6 +76,13 @@ public class JavaConstantsMetaModelGenerator
             Path   path                  = this.getOutputPath(outputPath, enumeration);
             String enumerationSourceCode = this.getEnumerationSourceCode(enumeration);
             this.printStringToFile(path, enumerationSourceCode);
+        }
+
+        for (Interface eachInterface : this.domainModel.getInterfaces())
+        {
+            Path   path            = this.getOutputPath(outputPath, eachInterface);
+            String classSourceCode = this.getInterfaceSourceCode(eachInterface);
+            this.printStringToFile(path, classSourceCode);
         }
 
         for (Klass klass : this.domainModel.getKlasses())
@@ -140,16 +149,21 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public ImmutableList<PackageableElement> getTopLevelElements()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getTopLevelElements() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getTopLevelElements() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public ImmutableList<Enumeration> getEnumerations()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getEnumerations() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getEnumerations() not implemented yet\");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public ImmutableList<Interface> getInterfaces()\n"
+                + "    {\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getInterfaces() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -163,52 +177,51 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public ImmutableList<Association> getAssociations()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getAssociations() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getAssociations() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public ImmutableList<Projection> getProjections()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getProjections() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getProjections() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public ImmutableList<ServiceGroup> getServiceGroups()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getServiceGroups() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getServiceGroups() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public Enumeration getEnumerationByName(String name)\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getEnumerationByName() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getEnumerationByName() not implemented yet\");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public Interface getInterfaceByName(String name)\n"
+                + "    {\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getInterfaceByName() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public Klass getKlassByName(String name)\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getKlassByName() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getKlassByName() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public Association getAssociationByName(String name)\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getAssociationByName() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getAssociationByName() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public Projection getProjectionByName(String name)\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getProjectionByName() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getProjectionByName() not implemented yet\");\n"
                 + "    }\n"
                 + "}\n";
         // @formatter:on
@@ -241,6 +254,11 @@ public class JavaConstantsMetaModelGenerator
         if (element instanceof Enumeration)
         {
             return Enumeration.class.getSimpleName();
+        }
+
+        if (element instanceof Interface)
+        {
+            return Interface.class.getSimpleName();
         }
 
         if (element instanceof Klass)
@@ -451,7 +469,9 @@ public class JavaConstantsMetaModelGenerator
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationLiteral.getName());
 
         //language=JAVA
-        return "public static enum " + uppercaseName + "_EnumerationLiteral implements EnumerationLiteral\n"
+        return "public static enum "
+                + uppercaseName
+                + "_EnumerationLiteral implements EnumerationLiteral\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -459,33 +479,45 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public String getName()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(enumerationLiteral.getName()) + "\";\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(enumerationLiteral.getName())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return " + enumerationLiteral.getOrdinal() + ";\n"
+                + "        return "
+                + enumerationLiteral.getOrdinal()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return " + enumerationLiteral.isInferred() + ";\n"
+                + "        return "
+                + enumerationLiteral.isInferred()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nullable\n"
                 + "    @Override\n"
                 + "    public String getPrettyName()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(enumerationLiteral.getPrettyName()) + "\";\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(enumerationLiteral.getPrettyName())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public Enumeration getType()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + enumerationLiteral.getType().getName() + ";\n"
+                + "        return "
+                + this.applicationName
+                + "DomainModel."
+                + enumerationLiteral.getType().getName()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -498,7 +530,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(enumerationLiteral.getSourceCode()) + "\";\n"
+                + "                + \""
+                + this.wrapSourceCode(enumerationLiteral.getSourceCode())
+                + "\";\n"
                 + "    }\n"
                 + "}\n";
     }
@@ -524,13 +558,108 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
+    private String getInterfaceSourceCode(Interface eachInterface)
+    {
+        // @formatter:off
+        //language=JAVA
+        return ""
+                + "package " + eachInterface.getPackageName() + ".meta.constants;\n"
+                + "\n"
+                + "import java.util.Optional;\n"
+                + "\n"
+                + "import javax.annotation.*;\n"
+                + "\n"
+                + "import cool.klass.model.meta.domain.api.*;\n"
+                + "import cool.klass.model.meta.domain.api.order.*;\n"
+                + "import cool.klass.model.meta.domain.api.property.*;\n"
+                + "\n"
+                + "import org.eclipse.collections.api.list.*;\n"
+                + "import org.eclipse.collections.api.multimap.list.*;\n"
+                + "import org.eclipse.collections.impl.factory.*;"
+                + "\n"
+                + "/**\n"
+                + " * Auto-generated by {@link cool.klass.generator.meta.constants.JavaConstantsMetaModelGenerator}\n"
+                + " */\n"
+                + "@Generated(\n"
+                + "        value = \"cool.klass.generator.meta.constants.JavaConstantsMetaModelGenerator\",\n"
+                + "        date = \"" + this.now + "\")\n"
+                + "public enum " + eachInterface.getName() + "_Interface implements Interface\n"
+                + "{\n"
+                + "    INSTANCE;\n"
+                + "    \n"
+                + this.getMemberConstantsSourceCode(eachInterface)
+                + "    \n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public String getPackageName()\n"
+                + "    {\n"
+                + "        return \"" + StringEscapeUtils.escapeJava(eachInterface.getPackageName()) + "\";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public String getName()\n"
+                + "    {\n"
+                + "        return \"" + StringEscapeUtils.escapeJava(eachInterface.getName()) + "\";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public int getOrdinal()\n"
+                + "    {\n"
+                + "        return " + eachInterface.getOrdinal() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public boolean isInferred()\n"
+                + "    {\n"
+                + "        return " + eachInterface.isInferred() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public ImmutableList<Interface> getInterfaces()\n"
+                + "    {\n"
+                + "        return Lists.immutable.empty();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties()\n"
+                + "    {\n"
+                + "        return Lists.immutable.with(" + eachInterface.getDeclaredDataTypeProperties().collect(NamedElement::getName).makeString() + ");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public ImmutableList<ClassModifier> getDeclaredClassModifiers()\n"
+                + "    {\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
+                + "                + \".getDeclaredClassModifiers() not implemented yet\");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public String toString()\n"
+                + "    {\n"
+                + "        return this.getName();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public String getSourceCode()\n"
+                + "    {\n"
+                + "        return \"\"\n"
+                + "                + \"" + this.wrapSourceCode(eachInterface.getSourceCode()) + "\";\n"
+                + "    }\n"
+                + "\n"
+                + this.getDataTypePropertiesSourceCode(eachInterface)
+                + "}\n";
+        // @formatter:on
+    }
+
+    @Nonnull
     private String getClassSourceCode(Klass klass)
     {
         // @formatter:off
         //language=JAVA
-        return "package "
-                + klass.getPackageName()
-                + ".meta.constants;\n"
+        return "package " + klass.getPackageName() + ".meta.constants;\n"
                 + "\n"
                 + "import java.util.Optional;\n"
                 + "\n"
@@ -583,10 +712,24 @@ public class JavaConstantsMetaModelGenerator
                 + "        return " + klass.isInferred() + ";\n"
                 + "    }\n"
                 + "\n"
+                + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<DataTypeProperty> getDataTypeProperties()\n"
+                + "    public ImmutableList<Interface> getInterfaces()\n"
                 + "    {\n"
-                + "        return Lists.immutable.with(" + klass.getDataTypeProperties().collect(NamedElement::getName).makeString() + ");\n"
+                + "        return Lists.immutable.empty();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties()\n"
+                + "    {\n"
+                + "        return Lists.immutable.with(" + klass.getDeclaredDataTypeProperties().collect(NamedElement::getName).makeString() + ");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Nonnull\n"
+                + "    @Override\n"
+                + "    public Optional<Klass> getSuperClass()\n"
+                + "    {\n"
+                + "        return Optional.empty();\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -611,10 +754,10 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<ClassModifier> getClassModifiers()\n"
+                + "    public ImmutableList<ClassModifier> getDeclaredClassModifiers()\n"
                 + "    {\n"
                 + "        throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                + \".getClassModifiers() not implemented yet\");\n"
+                + "                + \".getDeclaredClassModifiers() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -627,6 +770,12 @@ public class JavaConstantsMetaModelGenerator
                 + "    public boolean isTransient()\n"
                 + "    {\n"
                 + "        return " + klass.isTransient() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public InheritanceType getInheritanceType()\n"
+                + "    {\n"
+                + "        return InheritanceType." + klass.getInheritanceType().name() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -666,9 +815,9 @@ public class JavaConstantsMetaModelGenerator
                 .orElse("Optional.empty()");
     }
 
-    private String getDataTypePropertiesSourceCode(Klass klass)
+    private String getDataTypePropertiesSourceCode(Classifier classifier)
     {
-        return klass.getDataTypeProperties()
+        return classifier.getDeclaredDataTypeProperties()
                 .collect(this::getDataTypePropertySourceCode)
                 .makeString("\n");
     }
@@ -695,7 +844,9 @@ public class JavaConstantsMetaModelGenerator
 
         //language=JAVA
         return ""
-                + "    public static enum " + uppercaseName + "_PrimitiveProperty implements PrimitiveProperty\n"
+                + "    public static enum "
+                + uppercaseName
+                + "_PrimitiveProperty implements PrimitiveProperty\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -703,31 +854,41 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public String getName()\n"
                 + "        {\n"
-                + "            return \"" + StringEscapeUtils.escapeJava(primitiveProperty.getName()) + "\";\n"
+                + "            return \""
+                + StringEscapeUtils.escapeJava(primitiveProperty.getName())
+                + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return " + primitiveProperty.getOrdinal() + ";\n"
+                + "            return "
+                + primitiveProperty.getOrdinal()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isInferred()\n"
                 + "        {\n"
-                + "            return " + primitiveProperty.isInferred() + ";\n"
+                + "            return "
+                + primitiveProperty.isInferred()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isOptional()\n"
                 + "        {\n"
-                + "            return " + primitiveProperty.isOptional() + ";\n"
+                + "            return "
+                + primitiveProperty.isOptional()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isForeignKey()\n"
                 + "        {\n"
-                + "            return " + primitiveProperty.isForeignKey() + ";\n"
+                + "            return "
+                + primitiveProperty.isForeignKey()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -739,16 +900,22 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public Klass getOwningKlass()\n"
+                + "        public Classifier getOwningClassifier()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + primitiveProperty.getOwningKlass().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + primitiveProperty.getOwningClassifier().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public PrimitiveType getType()\n"
                 + "        {\n"
-                + "            return PrimitiveType." + primitiveProperty.getType().name() + ";\n"
+                + "            return PrimitiveType."
+                + primitiveProperty.getType().name()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -776,7 +943,9 @@ public class JavaConstantsMetaModelGenerator
                 + "        public String getSourceCode()\n"
                 + "        {\n"
                 + "            return \"\"\n"
-                + "                    + \"" + this.wrapSourceCode(primitiveProperty.getSourceCode()) + "\";\n"
+                + "                    + \""
+                + this.wrapSourceCode(primitiveProperty.getSourceCode())
+                + "\";\n"
                 + "        }\n"
                 + "    }\n";
     }
@@ -803,7 +972,7 @@ public class JavaConstantsMetaModelGenerator
         return String.format(
                 "%sDomainModel.%s.%s",
                 this.applicationName,
-                dataTypeProperty.getOwningKlass().getName(),
+                dataTypeProperty.getOwningClassifier().getName(),
                 dataTypeProperty.getName());
     }
 
@@ -829,25 +998,35 @@ public class JavaConstantsMetaModelGenerator
     private String getPropertyModifierSourceCode(PropertyModifier propertyModifier)
     {
         return ""
-                + "            PropertyModifier " + propertyModifier.getName() + "_" + PropertyModifier.class.getSimpleName() + " = new PropertyModifier()\n"
+                + "            PropertyModifier "
+                + propertyModifier.getName()
+                + "_"
+                + PropertyModifier.class.getSimpleName()
+                + " = new PropertyModifier()\n"
                 + "            {\n"
                 + "                @Nonnull\n"
                 + "                @Override\n"
                 + "                public String getName()\n"
                 + "                {\n"
-                + "                    return \"" + StringEscapeUtils.escapeJava(propertyModifier.getName()) + "\";\n"
+                + "                    return \""
+                + StringEscapeUtils.escapeJava(propertyModifier.getName())
+                + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public int getOrdinal()\n"
                 + "                {\n"
-                + "                    return " + propertyModifier.getOrdinal() + ";\n"
+                + "                    return "
+                + propertyModifier.getOrdinal()
+                + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public boolean isInferred()\n"
                 + "                {\n"
-                + "                    return " + propertyModifier.isInferred() + ";\n"
+                + "                    return "
+                + propertyModifier.isInferred()
+                + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
@@ -861,7 +1040,9 @@ public class JavaConstantsMetaModelGenerator
                 + "                public String getSourceCode()\n"
                 + "                {\n"
                 + "                    return \"\"\n"
-                + "                            + \"" + this.wrapSourceCode(propertyModifier.getSourceCode()) + "\";\n"
+                + "                            + \""
+                + this.wrapSourceCode(propertyModifier.getSourceCode())
+                + "\";\n"
                 + "                }\n"
                 + "            };\n";
     }
@@ -872,7 +1053,9 @@ public class JavaConstantsMetaModelGenerator
 
         //language=JAVA
         return ""
-                + "    public static enum " + uppercaseName + "_EnumerationProperty implements EnumerationProperty\n"
+                + "    public static enum "
+                + uppercaseName
+                + "_EnumerationProperty implements EnumerationProperty\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -880,31 +1063,41 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public String getName()\n"
                 + "        {\n"
-                + "            return \"" + StringEscapeUtils.escapeJava(enumerationProperty.getName()) + "\";\n"
+                + "            return \""
+                + StringEscapeUtils.escapeJava(enumerationProperty.getName())
+                + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return " + enumerationProperty.getOrdinal() + ";\n"
+                + "            return "
+                + enumerationProperty.getOrdinal()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isInferred()\n"
                 + "        {\n"
-                + "            return " + enumerationProperty.isInferred() + ";\n"
+                + "            return "
+                + enumerationProperty.isInferred()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isOptional()\n"
                 + "        {\n"
-                + "            return " + enumerationProperty.isOptional() + ";\n"
+                + "            return "
+                + enumerationProperty.isOptional()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isForeignKey()\n"
                 + "        {\n"
-                + "            return " + enumerationProperty.isForeignKey() + ";\n"
+                + "            return "
+                + enumerationProperty.isForeignKey()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -916,16 +1109,24 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public Klass getOwningKlass()\n"
+                + "        public Classifier getOwningClassifier()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + enumerationProperty.getOwningKlass().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + enumerationProperty.getOwningClassifier().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Enumeration getType()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + enumerationProperty.getType().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + enumerationProperty.getType().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -953,15 +1154,17 @@ public class JavaConstantsMetaModelGenerator
                 + "        public String getSourceCode()\n"
                 + "        {\n"
                 + "            return \"\"\n"
-                + "                    + \"" + this.wrapSourceCode(enumerationProperty.getSourceCode()) + "\";\n"
+                + "                    + \""
+                + this.wrapSourceCode(enumerationProperty.getSourceCode())
+                + "\";\n"
                 + "        }\n"
                 + "    }\n";
     }
 
-    private String getMemberConstantsSourceCode(Klass klass)
+    private String getMemberConstantsSourceCode(Classifier classifier)
     {
         // TODO: Change from properties to members
-        return klass.getDataTypeProperties()
+        return classifier.getDeclaredDataTypeProperties()
                 .collect(this::getDataTypePropertyConstantSourceCode)
                 .makeString("");
     }
@@ -1091,7 +1294,9 @@ public class JavaConstantsMetaModelGenerator
 
         //language=JAVA
         return ""
-                + "    public static enum " + uppercaseName + "_AssociationEnd implements AssociationEnd\n"
+                + "    public static enum "
+                + uppercaseName
+                + "_AssociationEnd implements AssociationEnd\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -1100,54 +1305,75 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public String getName()\n"
                 + "        {\n"
-                + "            return \"" + StringEscapeUtils.escapeJava(associationEnd.getName()) + "\";\n"
+                + "            return \""
+                + StringEscapeUtils.escapeJava(associationEnd.getName())
+                + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return " + associationEnd.getOrdinal() + ";\n"
+                + "            return "
+                + associationEnd.getOrdinal()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isInferred()\n"
                 + "        {\n"
-                + "            return " + associationEnd.isInferred() + ";\n"
+                + "            return "
+                + associationEnd.isInferred()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Klass getType()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + associationEnd.getType().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + associationEnd.getType().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Multiplicity getMultiplicity()\n"
                 + "        {\n"
-                + "            return Multiplicity." + associationEnd.getMultiplicity().name() + ";\n"
+                + "            return Multiplicity."
+                + associationEnd.getMultiplicity().name()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public ImmutableList<AssociationEndModifier> getAssociationEndModifiers()\n"
                 + "        {\n"
-                + "            return Lists.immutable.with(" + associationEnd.getAssociationEndModifiers().collect(
-                NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
+                + "            return Lists.immutable.with("
+                + associationEnd.getAssociationEndModifiers().collect(
+                NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each
+                + "_MODIFIER").makeString()
+                + ");\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isOwned()\n"
                 + "        {\n"
-                + "            return " + associationEnd.isOwned() + ";\n"
+                + "            return "
+                + associationEnd.isOwned()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Association getOwningAssociation()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + associationEnd.getOwningAssociation().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + associationEnd.getOwningAssociation().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -1160,9 +1386,13 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
-                + "        public Klass getOwningKlass()\n"
+                + "        public Klass getOwningClassifier()\n"
                 + "        {\n"
-                + "            return " + this.applicationName + "DomainModel." + associationEnd.getOwningKlass().getName() + ";\n"
+                + "            return "
+                + this.applicationName
+                + "DomainModel."
+                + associationEnd.getOwningClassifier().getName()
+                + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1175,7 +1405,9 @@ public class JavaConstantsMetaModelGenerator
                 + "        public String getSourceCode()\n"
                 + "        {\n"
                 + "            return \"\"\n"
-                + "                    + \"" + this.wrapSourceCode(associationEnd.getSourceCode()) + "\";\n"
+                + "                    + \""
+                + this.wrapSourceCode(associationEnd.getSourceCode())
+                + "\";\n"
                 + "        }\n"
                 + "    }\n";
     }
@@ -1192,7 +1424,9 @@ public class JavaConstantsMetaModelGenerator
     {
         //language=JAVA
         return ""
-                + "        public static final AssociationEndModifier " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new AssociationEndModifier()\n"
+                + "        public static final AssociationEndModifier "
+                + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName())
+                + "_MODIFIER = new AssociationEndModifier()\n"
                 + "        {\n"
                 + "            @Override\n"
                 + "            public AssociationEnd getAssociationEnd()\n"
@@ -1204,19 +1438,25 @@ public class JavaConstantsMetaModelGenerator
                 + "            @Override\n"
                 + "            public String getName()\n"
                 + "            {\n"
-                + "                return \"" + associationEndModifier.getName() + "\";\n"
+                + "                return \""
+                + associationEndModifier.getName()
+                + "\";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"
                 + "            public int getOrdinal()\n"
                 + "            {\n"
-                + "                return " + associationEndModifier.getOrdinal() + ";\n"
+                + "                return "
+                + associationEndModifier.getOrdinal()
+                + ";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"
                 + "            public boolean isInferred()\n"
                 + "            {\n"
-                + "                return " + associationEndModifier.isInferred() + ";\n"
+                + "                return "
+                + associationEndModifier.isInferred()
+                + ";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Nonnull\n"
@@ -1224,7 +1464,9 @@ public class JavaConstantsMetaModelGenerator
                 + "            public String getSourceCode()\n"
                 + "            {\n"
                 + "                return \"\"\n"
-                + "                        + \"" + this.wrapSourceCode(associationEndModifier.getSourceCode()) + "\";\n"
+                + "                        + \""
+                + this.wrapSourceCode(associationEndModifier.getSourceCode())
+                + "\";\n"
                 + "            }\n"
                 + "        };\n\n";
     }
@@ -1263,11 +1505,11 @@ public class JavaConstantsMetaModelGenerator
 
         return String.format(
                 "    public static final %s_Klass.%s_AssociationEnd %s = %sDomainModel.%s.%s;\n",
-                associationEnd.getOwningKlass().getName(),
+                associationEnd.getOwningClassifier().getName(),
                 uppercaseName,
                 sideName,
                 this.applicationName,
-                associationEnd.getOwningKlass().getName(),
+                associationEnd.getOwningClassifier().getName(),
                 name);
     }
 
@@ -1413,7 +1655,9 @@ public class JavaConstantsMetaModelGenerator
 
         //language=JAVA
         return ""
-                + "public static enum " + uppercaseName + "_ProjectionDataTypeProperty implements ProjectionDataTypeProperty\n"
+                + "public static enum "
+                + uppercaseName
+                + "_ProjectionDataTypeProperty implements ProjectionDataTypeProperty\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -1421,33 +1665,47 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public String getName()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getName()) + "\";\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getName())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return " + projectionDataTypeProperty.getOrdinal() + ";\n"
+                + "        return "
+                + projectionDataTypeProperty.getOrdinal()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return " + projectionDataTypeProperty.isInferred() + ";\n"
+                + "        return "
+                + projectionDataTypeProperty.isInferred()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public String getHeaderText()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getHeaderText()) + "\";\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getHeaderText())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public DataTypeProperty getProperty()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + dataTypeProperty.getOwningKlass().getName() + "." + dataTypeProperty.getName() + ";\n"
+                + "        return "
+                + this.applicationName
+                + "DomainModel."
+                + dataTypeProperty.getOwningClassifier().getName()
+                + "."
+                + dataTypeProperty.getName()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1460,7 +1718,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionDataTypeProperty.getSourceCode()) + "\";\n"
+                + "                + \""
+                + this.wrapSourceCode(projectionDataTypeProperty.getSourceCode())
+                + "\";\n"
                 + "    }\n"
                 + "}\n";
     }
@@ -1473,7 +1733,9 @@ public class JavaConstantsMetaModelGenerator
 
         //language=JAVA
         return ""
-                + "public static enum " + uppercaseName + "_ProjectionAssociationEnd implements ProjectionAssociationEnd\n"
+                + "public static enum "
+                + uppercaseName
+                + "_ProjectionAssociationEnd implements ProjectionAssociationEnd\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -1483,32 +1745,46 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public String getName()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(projectionAssociationEnd.getName()) + "\";\n"
+                + "        return \""
+                + StringEscapeUtils.escapeJava(projectionAssociationEnd.getName())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return " + projectionAssociationEnd.getOrdinal() + ";\n"
+                + "        return "
+                + projectionAssociationEnd.getOrdinal()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return " + projectionAssociationEnd.isInferred() + ";\n"
+                + "        return "
+                + projectionAssociationEnd.isInferred()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public ImmutableList<ProjectionElement> getChildren()\n"
                 + "    {\n"
-                + "        return Lists.immutable.with(" + projectionAssociationEnd.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
+                + "        return Lists.immutable.with("
+                + projectionAssociationEnd.getChildren().collect(ProjectionElement::getName).makeString()
+                + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public AssociationEnd getAssociationEnd()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningKlass().getName() + "." + associationEnd.getName() + ";\n"
+                + "        return "
+                + this.applicationName
+                + "DomainModel."
+                + associationEnd.getOwningClassifier().getName()
+                + "."
+                + associationEnd.getName()
+                + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1521,7 +1797,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionAssociationEnd.getSourceCode()) + "\";\n"
+                + "                + \""
+                + this.wrapSourceCode(projectionAssociationEnd.getSourceCode())
+                + "\";\n"
                 + "    }\n"
                 + "\n"
                 + this.getProjectionChildrenSourceCode(projectionAssociationEnd)

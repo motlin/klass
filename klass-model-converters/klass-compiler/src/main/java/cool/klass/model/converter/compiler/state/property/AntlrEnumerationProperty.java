@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
@@ -45,7 +46,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClass owningClassState,
+            AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             @Nonnull AntlrEnumeration enumerationState)
@@ -57,7 +58,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 nameContext,
                 name,
                 ordinal,
-                owningClassState,
+                owningClassifierState,
                 modifiers,
                 isOptional);
         // TODO: is this nullable?
@@ -109,7 +110,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 this.name,
                 this.ordinal,
                 this.enumerationState.getElementBuilder(),
-                this.owningClassState.getElementBuilder(),
+                this.owningClassifierState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isOptional);
         return this.enumerationPropertyBuilder;

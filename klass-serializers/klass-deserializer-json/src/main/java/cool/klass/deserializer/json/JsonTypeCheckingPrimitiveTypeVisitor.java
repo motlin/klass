@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
@@ -15,20 +15,20 @@ import org.eclipse.collections.api.stack.MutableStack;
 
 public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {
-    private final Klass                klass;
+    private final Classifier           classifier;
     private final PrimitiveProperty    primitiveProperty;
     private final JsonNode             jsonNode;
     private final MutableStack<String> contextStack;
     private final MutableList<String>  errors;
 
     public JsonTypeCheckingPrimitiveTypeVisitor(
-            Klass klass,
+            Classifier classifier,
             PrimitiveProperty primitiveProperty,
             JsonNode jsonNode,
             MutableStack<String> contextStack,
             MutableList<String> errors)
     {
-        this.klass = Objects.requireNonNull(klass);
+        this.classifier = Objects.requireNonNull(classifier);
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonNode = Objects.requireNonNull(jsonNode);
         this.contextStack = Objects.requireNonNull(contextStack);
@@ -41,7 +41,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         String error = String.format(
                 "Error at %s. Expected property with type '%s.%s: %s%s' but got '%s' with type '%s'.",
                 contextString,
-                this.primitiveProperty.getOwningKlass().getName(),
+                this.primitiveProperty.getOwningClassifier().getName(),
                 this.primitiveProperty.getName(),
                 this.primitiveProperty.getType().getPrettyName(),
                 this.primitiveProperty.isOptional() ? "?" : "",
@@ -141,7 +141,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         {
             String error = String.format(
                     "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by LocalDate.parse().",
-                    this.klass,
+                    this.classifier,
                     this.primitiveProperty,
                     this.jsonNode);
             this.errors.add(error);
@@ -190,7 +190,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         {
             String error = String.format(
                     "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
-                    this.klass,
+                    this.classifier,
                     this.primitiveProperty,
                     this.jsonNode);
             this.errors.add(error);
