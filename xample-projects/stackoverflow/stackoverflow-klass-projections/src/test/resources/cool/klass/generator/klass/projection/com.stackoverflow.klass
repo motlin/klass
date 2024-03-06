@@ -83,7 +83,6 @@ projection TagProjection on Tag
     systemTo: "Tag systemTo",
     createdOn: "Tag createdOn",
     description: "Tag description",
-    questions: QuestionTagMappingProjection,
     version: TagVersionProjection,
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,
@@ -93,6 +92,7 @@ projection QuestionTagMappingProjection on QuestionTagMapping
 {
     systemFrom: "QuestionTagMapping systemFrom",
     systemTo: "QuestionTagMapping systemTo",
+    tag: TagProjection,
 }
 
 projection QuestionVersionProjection on QuestionVersion

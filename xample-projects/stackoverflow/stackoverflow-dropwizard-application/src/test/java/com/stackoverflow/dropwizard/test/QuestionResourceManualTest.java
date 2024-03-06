@@ -17,14 +17,11 @@ import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import org.json.JSONException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -87,15 +84,13 @@ public class QuestionResourceManualTest
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void get_smoke_test()
-            throws JSONException
     {
         Client client = this.getClient("get_smoke_test");
 
-        this.assertQuestion1Unchanged(client);
+        this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_get_smoke_test");
     }
 
-    protected void assertQuestion1Unchanged(@Nonnull Client client)
-            throws JSONException
+    protected void assertQuestion1Unchanged(@Nonnull Client client, String testName)
     {
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")
@@ -104,39 +99,7 @@ public class QuestionResourceManualTest
                 .request()
                 .get();
 
-        this.assertResponseStatus(response, Status.OK);
-
-        String jsonResponse = response.readEntity(String.class);
-        //language=JSON
-        String expected = """
-                {
-                  "id": 1,
-                  "title": "test title 1",
-                  "body": "test body 1",
-                  "status": "Open",
-                  "deleted": false,
-                  "systemFrom": "1999-12-31T23:59:59.999Z",
-                  "systemTo": null,
-                  "createdOn": "1999-12-31T23:59:59.999Z",
-                  "answers": [],
-                  "tags": [
-                    {
-                      "tag": {
-                        "name": "test tag 1"
-                      }
-                    },
-                    {
-                      "tag": {
-                        "name": "test tag 2"
-                      }
-                    }
-                  ],
-                  "version": {
-                    "number": 2
-                  }
-                }
-                """;
-        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
+        this.assertResponse(testName, Status.OK, response);
     }
 
     @Test
@@ -184,7 +147,7 @@ public class QuestionResourceManualTest
                 .target("http://localhost:{port}/api/manual/question/")
                 .resolveTemplate("port", this.appRule.getLocalPort())
                 .request()
-                .header("Authorization", "Impersonation User ID")
+                .header("Authorization", "Impersonation test user 1")
                 .post(Entity.json(invalidJson));
 
         this.assertResponse("post_invalid_data", Status.BAD_REQUEST, response);
@@ -193,7 +156,6 @@ public class QuestionResourceManualTest
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void post_valid_data()
-            throws JSONException
     {
         Client client = this.getClient("post_valid_data");
 
@@ -228,7 +190,7 @@ public class QuestionResourceManualTest
                     .target("http://localhost:{port}/api/manual/question/")
                     .resolveTemplate("port", this.appRule.getLocalPort())
                     .request()
-                    .header("Authorization", "Impersonation User ID")
+                    .header("Authorization", "Impersonation test user 1")
                     .post(Entity.json(validJson));
 
             this.assertResponse("post_valid_data", Status.CREATED, response);
@@ -236,7 +198,7 @@ public class QuestionResourceManualTest
         }
         //</editor-fold>
 
-        this.assertQuestion1Unchanged(client);
+        this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_post_valid_data");
 
         //<editor-fold desc="GET id: 2, status: ok">
         {
@@ -256,7 +218,6 @@ public class QuestionResourceManualTest
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put_invalid_id()
-            throws JSONException
     {
         Client client = this.getClient("put_invalid_id");
 
@@ -298,17 +259,16 @@ public class QuestionResourceManualTest
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
-                .header("Authorization", "Impersonation User ID")
+                .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
         this.assertResponseStatus(response, Status.NO_CONTENT);
-        this.assertQuestion1Unchanged(client);
+        this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_invalid_id");
     }
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put_conflict()
-            throws JSONException
     {
         Client client = this.getClient("put_conflict");
 
@@ -333,12 +293,12 @@ public class QuestionResourceManualTest
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
-                .header("Authorization", "Impersonation User ID")
+                .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(validJson));
 
         this.assertResponseStatus(response, Status.CONFLICT);
 
-        this.assertQuestion1Unchanged(client);
+        this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_conflict");
     }
 
     @Test
@@ -357,11 +317,6 @@ public class QuestionResourceManualTest
                       "body": "edited body 1",
                       "status": "On hold",
                       "deleted": true,
-                      "systemFrom": "1999-12-31T23:59:59.999Z",
-                      "systemTo": null,
-                      "createdById": "test user 1",
-                      "createdOn": "1999-12-31T23:59:59.999Z",
-                      "lastUpdatedById": "test user 1",
                       "tags": [
                         {
                           "tag": {
@@ -386,7 +341,7 @@ public class QuestionResourceManualTest
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
-                    .header("Authorization", "Impersonation User ID")
+                    .header("Authorization", "Impersonation test user 1")
                     .put(Entity.json(validJson));
 
             this.assertEmptyResponse(Status.NO_CONTENT, response);
@@ -408,7 +363,6 @@ public class QuestionResourceManualTest
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put_unchanged()
-            throws JSONException
     {
         Client client = this.getClient("put_unchanged");
 
@@ -449,12 +403,12 @@ public class QuestionResourceManualTest
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
-                .header("Authorization", "Impersonation User ID")
+                .header("Authorization", "Impersonation test user 1")
                 .put(Entity.json(json));
 
         this.assertEmptyResponse(Status.NO_CONTENT, response);
 
-        this.assertQuestion1Unchanged(client);
+        this.assertQuestion1Unchanged(client, "assertQuestion1Unchanged_put_unchanged");
     }
 
     @Test

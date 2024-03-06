@@ -265,9 +265,63 @@ association QuestionHasTagMappings
 
 association TagHasQuestionMappings
 {
-    tag                    : Tag[1..1] final;
     questions              : QuestionTagMapping[0..*]
         orderBy: this.questionId;
+    tag                    : Tag[1..1] final;
+}
+
+projection UserProjection on User
+{
+    userId: "User userId",
+    systemFrom: "User systemFrom",
+    systemTo: "User systemTo",
+}
+
+projection AnswerVersionProjection on AnswerVersion
+{
+    systemFrom: "AnswerVersion systemFrom",
+    systemTo: "AnswerVersion systemTo",
+    createdOn: "AnswerVersion createdOn",
+    number: "AnswerVersion number",
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
+}
+
+projection AnswerProjection on Answer
+{
+    id: "Answer id",
+    systemFrom: "Answer systemFrom",
+    systemTo: "Answer systemTo",
+    createdOn: "Answer createdOn",
+    body: "Document body",
+    deleted: "Answer deleted",
+    version: AnswerVersionProjection,
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
+}
+
+projection TagProjection on Tag
+{
+    name: "Tag name",
+    systemFrom: "Tag systemFrom",
+    systemTo: "Tag systemTo",
+}
+
+projection QuestionTagMappingProjection on QuestionTagMapping
+{
+    systemFrom: "QuestionTagMapping systemFrom",
+    systemTo: "QuestionTagMapping systemTo",
+    tag: TagProjection,
+}
+
+projection QuestionVersionProjection on QuestionVersion
+{
+    systemFrom: "QuestionVersion systemFrom",
+    systemTo: "QuestionVersion systemTo",
+    createdOn: "QuestionVersion createdOn",
+    number: "QuestionVersion number",
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
 }
 
 // TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection
@@ -275,29 +329,18 @@ projection QuestionReadProjection on Question
 {
     // field names are "includes", field values are column headers when serializing to a tabular format
     id             : "Question id",
+    systemFrom     : "Question system From",
+    systemTo       : "Question system To",
+    createdOn      : "Question created on",
     title          : "Question title",
     body           : "Question body",
     status         : "Question status",
     deleted        : "Question is deleted",
-    systemFrom     : "Question system From",
-    systemTo       : "Question system To",
-    createdOn      : "Question created on",
-    answers        :
-    {
-        id  : "Answer id",
-        body: "Answer body",
-    },
-    tags           :
-    {
-        tag:
-        {
-            name: "Question tag name",
-        },
-    },
-    version        :
-    {
-        number: "Question version number",
-    },
+    answers: AnswerProjection,
+    tags: QuestionTagMappingProjection,
+    version: QuestionVersionProjection,
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
 }
 
 // TODO: Type inference on projection paramters
