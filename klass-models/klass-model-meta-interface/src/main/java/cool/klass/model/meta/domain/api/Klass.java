@@ -28,9 +28,9 @@ public interface Klass
                 .map(Classifier::getModifiers)
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<Modifier> interfaceProperties = Classifier.super.getInheritedModifiers();
+        ImmutableList<Modifier> interfaceModifiers = Classifier.super.getInheritedModifiers();
 
-        return superClassProperties.newWithAll(interfaceProperties).distinctBy(Modifier::getKeyword);
+        return superClassProperties.newWithAll(interfaceModifiers).distinctBy(Modifier::getKeyword);
     }
 
     @Override
@@ -87,7 +87,6 @@ public interface Klass
                 .toReversed();
     }
 
-    // TODO: Override for efficiency?
     @Nonnull
     default Optional<Property> getPropertyByName(String name)
     {
@@ -149,10 +148,7 @@ public interface Klass
 
     InheritanceType getInheritanceType();
 
-    default boolean isTransient()
-    {
-        return this.getModifiers().anySatisfy(classifierModifier -> classifierModifier.is("transient"));
-    }
+    boolean isTransient();
 
     default boolean isVersioned()
     {
