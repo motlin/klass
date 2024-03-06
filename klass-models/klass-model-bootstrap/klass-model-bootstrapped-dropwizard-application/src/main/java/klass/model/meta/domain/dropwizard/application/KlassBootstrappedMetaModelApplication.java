@@ -39,7 +39,7 @@ public class KlassBootstrappedMetaModelApplication
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        bootstrap.addBundle(new MigrationsBundle<KlassBootstrappedMetaModelConfiguration>()
+        bootstrap.addBundle(new MigrationsBundle<>()
         {
             @Override
             public DataSourceFactory getDataSourceFactory(KlassBootstrappedMetaModelConfiguration configuration)

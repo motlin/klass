@@ -168,7 +168,7 @@ public class QuestionResourceManualTest
 
         this.assertResponseStatus(response, Status.BAD_REQUEST);
 
-        List<String> errors = response.readEntity(new GenericType<List<String>>() {});
+        List<String> errors = response.readEntity(new GenericType<>() {});
         String message = ListAdapter.adapt(errors)
                 .collect(String::toString)
                 .collect(StringEscapeUtils::escapeJava)

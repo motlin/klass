@@ -60,7 +60,7 @@ public class CoverageExampleApplication
 
         bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new CoverageExampleRuntimeWiringBuilder()));
 
-        bootstrap.addBundle(new MigrationsBundle<CoverageExampleConfiguration>()
+        bootstrap.addBundle(new MigrationsBundle<>()
         {
             @Override
             public DataSourceFactory getDataSourceFactory(CoverageExampleConfiguration configuration)
