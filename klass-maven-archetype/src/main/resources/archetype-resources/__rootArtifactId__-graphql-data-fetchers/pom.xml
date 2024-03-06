@@ -24,13 +24,38 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-graphql-deep-fetcher</artifactId>
+            <artifactId>klass-data-store</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-annotation</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-reladomo-tree</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-reladomo-graphql</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-tree-deep-fetcher</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>
@@ -41,6 +66,16 @@
         <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
     </dependencies>
@@ -66,6 +101,7 @@
                         <goals>
                             <goal>generate-graphql-data-fetchers</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
 
