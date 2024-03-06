@@ -20,8 +20,11 @@ import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import cool.klass.generator.klass.html.KlassSourceCodeHtmlGenerator;
 import cool.klass.model.meta.domain.api.TopLevelElement;
+import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
+import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -78,13 +81,40 @@ public class KlassHtmlResource
         TopLevelElementWithSourceCode topLevelElement = this.domainModel
                 .getTopLevelElementByName(topLevelElementName);
 
-        SourceCode sourceCode = topLevelElement.getSourceCodeObject();
-
+        Optional<SourceCode> sourceCode = getSourceCodeObject(topLevelElement, memberName);
+        if (sourceCode.isEmpty())
+        {
+            throw new BadRequestException();
+        }
         return KlassSourceCodeHtmlGenerator.getSourceCode(
                 this.domainModel,
-                sourceCode,
+                sourceCode.get(),
                 Optional.of(topLevelElement),
                 Optional.of(memberName));
+    }
+
+    @Nonnull
+    private static Optional<SourceCode> getSourceCodeObject(TopLevelElementWithSourceCode topLevelElement, String memberName)
+    {
+        if (memberName == null)
+        {
+            return Optional.of(topLevelElement.getSourceCodeObject());
+        }
+
+        if (topLevelElement instanceof KlassWithSourceCode klass)
+        {
+            Optional<Property> property = klass.getPropertyByName(memberName);
+            if (property.isEmpty())
+            {
+                return Optional.empty();
+            }
+            if (property.get() instanceof ElementWithSourceCode elementWithSourceCode)
+            {
+                return Optional.of(elementWithSourceCode.getSourceCodeObject());
+            }
+        }
+
+        throw new AssertionError(topLevelElement);
     }
 
     @Timed
