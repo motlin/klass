@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.domain.api.ClassModifier;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -128,20 +129,48 @@ public final class KlassImpl extends AbstractPackageableElement implements TopLe
         this.associationEnds = Objects.requireNonNull(associationEnds);
     }
 
+    @Override
+    public String getSourceCodeWithInference()
+    {
+        String sourceCode = this.getSourceCode();
+        if (this.isInferred())
+        {
+            return sourceCode;
+        }
+
+        String modifiersSourceCode = this.getClassModifiers()
+                .collect(Element::getSourceCode)
+                .collect(each -> "    " + each + '\n')
+                .makeString("");
+
+        String propertiesSourceCode = this.getProperties()
+                .collect(Element::getSourceCode)
+                .collect(each -> "    " + each + '\n')
+                .makeString("");
+
+        String result = ""
+                + (this.isUser ? "user" : "class") + ' ' + this.getName() + '\n'
+                + modifiersSourceCode
+                + "{\n"
+                + propertiesSourceCode
+                + "}\n";
+        return result;
+    }
+
     public static final class KlassBuilder extends PackageableElementBuilder<KlassImpl> implements TypeGetter, TopLevelElementBuilder
     {
-        private final boolean                             isUser;
-        private final boolean                             isTransient;
+        private final boolean isUser;
+        private final boolean isTransient;
 
         @Nullable
         private ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
         @Nullable
         private ImmutableList<AssociationEndBuilder>            associationEndBuilders;
         @Nullable
-        private  ImmutableList<ClassModifierBuilder> classModifierBuilders;
+        private ImmutableList<ClassModifierBuilder>             classModifierBuilders;
 
         @Nonnull
-        private Optional<AssociationEndBuilder> versionPropertyBuilder = Optional.empty();
+        private Optional<AssociationEndBuilder> versionPropertyBuilder   = Optional.empty();
         @Nonnull
         private Optional<AssociationEndBuilder> versionedPropertyBuilder = Optional.empty();
 

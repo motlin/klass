@@ -8,4 +8,9 @@ public interface Element
 
     @Nonnull
     String getSourceCode();
+
+    default String getSourceCodeWithInference()
+    {
+        return this.getSourceCode();
+    }
 }

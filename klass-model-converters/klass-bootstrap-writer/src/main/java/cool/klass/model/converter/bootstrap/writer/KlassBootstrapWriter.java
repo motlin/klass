@@ -43,6 +43,8 @@ public class KlassBootstrapWriter
             bootstrappedEnumeration.setInferred(enumeration.isInferred());
             bootstrappedEnumeration.setOrdinal(enumeration.getOrdinal());
             bootstrappedEnumeration.setPackageName(enumeration.getPackageName());
+            // TODO: getSourceCodeWithInference?
+            bootstrappedEnumeration.setSourceCode(enumeration.getSourceCode());
             bootstrappedEnumeration.insert();
 
             for (EnumerationLiteral enumerationLiteral: enumeration.getEnumerationLiterals())
@@ -64,6 +66,8 @@ public class KlassBootstrapWriter
             bootstrappedClass.setInferred(klass.isInferred());
             bootstrappedClass.setOrdinal(klass.getOrdinal());
             bootstrappedClass.setPackageName(klass.getPackageName());
+            bootstrappedClass.setSourceCode(klass.getSourceCodeWithInference());
+            // TODO: Report Reladomo bug. If any of these non-nullable properties are not set, insert() ought to throw but doesn't
             bootstrappedClass.insert();
 
             for (ClassModifier classModifier: klass.getClassModifiers())
@@ -143,6 +147,7 @@ public class KlassBootstrapWriter
             bootstrappedAssociation.setInferred(association.isInferred());
             bootstrappedAssociation.setOrdinal(association.getOrdinal());
             bootstrappedAssociation.setPackageName(association.getPackageName());
+            bootstrappedAssociation.setSourceCode(association.getSourceCodeWithInference());
             bootstrappedAssociation.insert();
 
             AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();

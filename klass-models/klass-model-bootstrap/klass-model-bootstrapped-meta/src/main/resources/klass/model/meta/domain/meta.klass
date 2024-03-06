@@ -8,6 +8,7 @@ class Class
     packageName                   : String private;
     // TODO: Ordinals should have a syntax and be inferred using macros
     ordinal                       : Integer;
+    sourceCode                    : String;
 }
 
 enumeration PrimitiveType
@@ -62,6 +63,7 @@ class Enumeration
     inferred                      : Boolean;
     packageName                   : String private;
     ordinal                       : Integer;
+    sourceCode                    : String;
 }
 
 class EnumerationLiteral
@@ -183,6 +185,7 @@ class Association
     inferred                      : Boolean;
     packageName                   : String private;
     ordinal                       : Integer;
+    sourceCode                    : String;
 
     source(): AssociationEnd[1..1]
     {
@@ -522,6 +525,7 @@ projection ClassReadProjection on Class
     inferred             : "Class inferred",
     packageName          : "Class package name",
     ordinal              : "Class ordinal",
+    sourceCode           : "Class source code",
     classModifiers       :
     {
         name    : "Class modifier name",
@@ -601,5 +605,32 @@ service Class
             multiplicity: many;
             criteria    : all;
             projection  : ClassReadProjection;
+        }
+}
+
+projection AssociationReadProjection on Association
+{
+    name                          : "Association name",
+    inferred                      : "Association inferred",
+    packageName                   : "Association package name",
+    ordinal                       : "Association ordinal",
+    sourceCode                    : "Association source code",
+}
+
+service Association
+{
+    /api/meta/association/{associationName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == associationName;
+            projection  : AssociationReadProjection;
+        }
+    /api/meta/association
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : AssociationReadProjection;
         }
 }
