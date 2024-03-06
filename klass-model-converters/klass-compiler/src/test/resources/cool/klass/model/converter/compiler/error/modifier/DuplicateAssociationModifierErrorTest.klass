@@ -2,13 +2,19 @@ package dummy
 
 association DummyAssociation
 {
-    parent: Dummy[0..1];
-    children: Dummy[0..*] owned owned;
+    parent: DummyParent[1..1];
+    children: DummyChild[0..*] owned owned;
 
-    relationship this.id == Dummy.id
+    relationship this.id == DummyChild.parentId
 }
 
-class Dummy
+class DummyParent
 {
     id: Long id key;
+}
+
+class DummyChild
+{
+    id: Long id key;
+    parentId: Long private;
 }

@@ -27,6 +27,7 @@ import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
@@ -322,6 +323,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         this.reportDuplicateValidations(compilerErrorHolder);
         this.reportInvalidIdProperties(compilerErrorHolder);
+        this.reportInvalidForeignKeyProperties(compilerErrorHolder);
 
         // TODO: ☑ Check for nullable key properties
     }
@@ -352,6 +354,43 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     }
 
     protected abstract void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder);
+
+    private void reportInvalidForeignKeyProperties(CompilerErrorState compilerErrorHolder)
+    {
+        this.keyBuildersMatchingThisForeignKey.forEachKeyMultiValues((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
+                compilerErrorHolder,
+                associationEnd,
+                (RichIterable<AntlrDataTypeProperty<?>>) keyBuilders));
+    }
+
+    private void reportInvalidForeignKeyProperties(
+            CompilerErrorState compilerErrorHolder,
+            AntlrAssociationEnd associationEnd,
+            RichIterable<AntlrDataTypeProperty<?>> keyBuilders)
+    {
+        if (keyBuilders.size() > 1)
+        {
+            throw new AssertionError("TODO: Is it sometimes valid to have a single foreign key relate to many different primary keys on different types?");
+        }
+
+        if (!associationEnd.isToOne())
+        {
+            throw new AssertionError(associationEnd);
+        }
+
+        if (this.isOptional() != associationEnd.isToOneOptional())
+        {
+            String message  = String.format(
+                    "Association end '%s.%s' has multiplicity [%s] but foreign key '%s.%s' is %srequired.",
+                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
+                    this.getOwningClassifierState(),
+                    this.getName(),
+                    this.isOptional ? "not " : "");
+            compilerErrorHolder.add("ERR_FOR_MUL", message, this);
+        }
+    }
 
     @Nonnull
     @Override

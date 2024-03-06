@@ -115,7 +115,6 @@ public class IncomingCreateDataModelValidator
 
     private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        /*
         if (dataTypeProperty.isID())
         {
             // TODO: inside the projection, only check for matching, and only in update mode
@@ -133,9 +132,7 @@ public class IncomingCreateDataModelValidator
         {
             // TODO
         }
-        */
-
-        if (dataTypeProperty.isVersion())
+        else if (dataTypeProperty.isVersion())
         {
             throw new AssertionError();
         }

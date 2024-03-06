@@ -1,15 +1,15 @@
-[33m════════════════════════════════════════[m [35mERR_OWN_ONE[m [33m════════════════════════════════════════[m
-[31mAssociation end 'Dummy.parent2' is owned, but is on the to-one end of a many-to-one association.[m
+[33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
+[31mAssociation end 'Dummy.parent' has multiplicity [0..1] but foreign key 'Dummy.parentId' is required.[m
 
-Error at location. (ManyOwnsOneAssociationErrorTest.klass:20)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m17║ [40;35massociation [40;97mDummyAssociation2
-[40;37m18║ [40;36m{
-[40;37m20║     [40;97mparent2[40;36m: [40;97mDummy[40;36m[[40;94m0[40;36m..[40;94m1[40;36m] [40;93mowned[40;36m;
-[40;37m  ║                          [40;91m^^^^^
-[40;37m23║ [40;36m}
+Error at location. (ManyOwnsOneAssociationErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mdummy
+[40;37m3║ [40;35mclass [40;97mDummy
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97mparentId[40;36m: [40;95mLong [40;33mprivate[40;36m;
+[40;37m ║     [40;91m^^^^^^^^
+[40;37m7║ [40;36m}
 [m
-[36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:20[m
+[36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:6[m
 [36mFile:      [mManyOwnsOneAssociationErrorTest.klass[m
-[36mLine:      [m20[m
-[36mCharacter: [m26[m
+[36mLine:      [m6[m
+[36mCharacter: [m5[m

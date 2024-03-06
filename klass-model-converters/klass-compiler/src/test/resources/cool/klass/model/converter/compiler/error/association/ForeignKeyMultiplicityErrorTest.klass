@@ -1,0 +1,20 @@
+package dummy
+
+association ForeignKeyMultiplicity
+{
+    parent: DummyParent[0..1];
+    children: DummyChild[0..*];
+
+    relationship this.id == DummyChild.parentId
+}
+
+class DummyParent
+{
+    id: Long key;
+}
+
+class DummyChild
+{
+    id: Long key;
+    parentId: Long private;
+}
