@@ -35,7 +35,7 @@ public class AuthFilterBundle
     @Override
     public void run(AuthFilterFactoryProvider configuration, @Nonnull Environment environment)
     {
-        List<? extends AuthFilter<?, ? extends Principal>> authFilters = configuration.getAuthFilterFactories()
+        List<AuthFilter<?, ? extends Principal>> authFilters = configuration.getAuthFilterFactories()
                 .stream()
                 .map(AuthFilterFactory::createAuthFilter)
                 .collect(Collectors.toList());

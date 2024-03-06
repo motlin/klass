@@ -1,7 +1,5 @@
 package cool.klass.dropwizard.configuration.auth.filter.firebase;
 
-import java.security.Principal;
-
 import javax.annotation.Nonnull;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -24,7 +22,7 @@ public class FirebaseAuthFilterFactory implements AuthFilterFactory
 
     @Nonnull
     @Override
-    public AuthFilter<?, ? extends Principal> createAuthFilter()
+    public AuthFilter<?, FirebasePrincipal> createAuthFilter()
     {
         FirebaseAuth firebaseAuthFactory = new FirebaseAuth(
                 this.databaseUrl,
