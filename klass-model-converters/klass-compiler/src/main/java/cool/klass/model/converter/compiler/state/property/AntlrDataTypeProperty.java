@@ -37,6 +37,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
@@ -843,5 +844,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 "%s: %s",
                 this.getName(),
                 sourceCodeStrings.makeString(" "));
+    }
+
+    public OrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> getKeysMatchingThisForeignKey()
+    {
+        return Objects.requireNonNull(this.keyBuildersMatchingThisForeignKey);
     }
 }
