@@ -98,33 +98,43 @@ public class ReladomoContextJsonSerializer
                 jsonGenerator.writeStringField("__typename", mithraObject.getClass().getCanonicalName());
             }
 
-            // TODO: Use listener?
-            ImmutableList<? extends ProjectionChild> children = projectionParent.getChildren();
-            for (ProjectionElement projectionElement : children)
-            {
-                if (projectionElement instanceof ProjectionDataTypeProperty)
-                {
-                    this.handleProjectionPrimitiveMember(
-                            jsonGenerator,
-                            mithraObject,
-                            (ProjectionDataTypeProperty) projectionElement);
-                }
-                else if (projectionElement instanceof ProjectionWithReferenceProperty)
-                {
-                    this.handleProjectionWithReferenceProperty(
-                            jsonGenerator,
-                            mithraObject,
-                            (ProjectionWithReferenceProperty) projectionElement);
-                }
-                else
-                {
-                    throw new AssertionError(projectionElement.getClass().getSimpleName());
-                }
-            }
+            this.handleObjectMembers(mithraObject, jsonGenerator, projectionParent);
         }
         finally
         {
             jsonGenerator.writeEndObject();
+        }
+    }
+
+    private void handleObjectMembers(
+            @Nonnull MithraObject mithraObject,
+            @Nonnull JsonGenerator jsonGenerator,
+            @Nonnull ProjectionParent projectionParent)
+            throws IOException
+    {
+        Objects.requireNonNull(mithraObject);
+        // TODO: Use listener?
+        ImmutableList<? extends ProjectionChild> children = projectionParent.getChildren();
+        for (ProjectionElement projectionElement : children)
+        {
+            if (projectionElement instanceof ProjectionDataTypeProperty)
+            {
+                this.handleProjectionPrimitiveMember(
+                        jsonGenerator,
+                        mithraObject,
+                        (ProjectionDataTypeProperty) projectionElement);
+            }
+            else if (projectionElement instanceof ProjectionWithReferenceProperty)
+            {
+                this.handleProjectionWithReferenceProperty(
+                        jsonGenerator,
+                        mithraObject,
+                        (ProjectionWithReferenceProperty) projectionElement);
+            }
+            else
+            {
+                throw new AssertionError(projectionElement.getClass().getSimpleName());
+            }
         }
     }
 
@@ -146,6 +156,8 @@ public class ReladomoContextJsonSerializer
             MithraObject mithraObject,
             @Nonnull ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
+        Objects.requireNonNull(mithraObject);
+
         if (projectionPrimitiveMember.isPolymorphic())
         {
             Classifier classifier = projectionPrimitiveMember.getProperty().getOwningClassifier();
@@ -182,7 +194,7 @@ public class ReladomoContextJsonSerializer
             return;
         }
 
-        throw new AssertionError();
+        throw new AssertionError("Unhandled data type: " + dataType.getClass().getCanonicalName());
     }
 
     public void handleProjectionWithReferenceProperty(
