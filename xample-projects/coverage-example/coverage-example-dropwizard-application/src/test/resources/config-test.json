@@ -1,6 +1,5 @@
-// klass-models/klass-model-bootstrap/klass-model-bootstrapped-dropwizard-application/src/test/resources/config-test.json5
 {
-  "server"            : {
+  "server"     : {
     "detailedJsonProcessingExceptionMapper": true,
     "applicationConnectors"                : [
       {
@@ -23,14 +22,15 @@
       ]
     }
   },
-  "logging"           : {
+  "logging"    : {
     "level"    : "DEBUG",
     "loggers"  : {
-      "klass.model.meta.domain"                  : "INFO",
+      "cool.klass.xample.coverage"                : "DEBUG",
+      "com.gs.fw.common.mithra.sqllogs"          : "DEBUG",
+      "com.gs.fw.common.mithra.batch.sqllogs"    : "DEBUG",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "org.eclipse.jetty"                        : "INFO",
-      "org.apache.http"                          : "INFO",
-      "org.hibernate.validator.internal"         : "INFO"
+      "org.apache.http"                          : "INFO"
     },
     "appenders": [
       {
@@ -40,15 +40,10 @@
       }
     ]
   },
-  "klass"             : {
+  "klass"      : {
     "clock"      : {
-      "type": "system"
-    },
-    "domainModel": {
-      "type"          : "compiler",
-      "sourcePackages": [
-        "klass.model.meta.domain"
-      ]
+      "type"   : "fixed",
+      "instant": "2000-12-31T23:59:59Z"
     },
     "dataStore"  : {
       "type": "reladomo",
@@ -56,12 +51,16 @@
         "type": "seed",
         "seed": "test seed"
       }
+    },
+    "domainModel": {
+      "type"          : "compiler",
+      "sourcePackages": [
+        "klass.model.meta.domain",
+        "cool.klass.xample.coverage"
+      ]
     }
   },
-  "configLogging"     : {
-    "enabled": false
-  },
-  "authFilters"       : [
+  "authFilters": [
     {
       "type": "impersonation"
     }
@@ -121,7 +120,7 @@
   "reladomo"          : {
     "runtimeConfigurationPaths": [
       "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml"
-    ]
+  ]
   },
   "connectionManagers": [
     {
@@ -142,5 +141,5 @@
       "databaseType"         : "H2",
       "schemaName"           : "liftwizard-app-h2"
     }
-  ],
+  ]
 }

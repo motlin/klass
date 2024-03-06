@@ -351,7 +351,7 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
-        if (orderByMemberReferencePathState != null)
+        if (this.orderByMemberReferencePathState != null)
         {
             throw new AssertionError();
         }

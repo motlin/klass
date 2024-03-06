@@ -41,8 +41,8 @@ public class QuestionResourceManualTest
             ResourceHelpers.resourceFilePath("config-test.yml"));
 
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
+    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
 
     protected Client getClient(String clientName)
     {
@@ -110,7 +110,8 @@ public class QuestionResourceManualTest
     @ReladomoTestFile("test-data/existing-question.txt")
     public void post_invalid_data()
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_invalid_data");
+        Client client =
+                this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_invalid_data");
 
         //language=JSON
         String invalidJson = ""

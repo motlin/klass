@@ -20,9 +20,10 @@ public class Update_PropertiesRequiredTest
         implements PrimitiveValidatorTest
 {
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml",
-            "test-data/Update_PropertiesRequiredTest.txt");
+    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
+            .setTestDataFileNames("test-data/Update_PropertiesRequiredTest.txt")
+            .enableDropCreateTables();
 
     private Object persistentInstance;
 

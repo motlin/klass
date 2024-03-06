@@ -66,9 +66,10 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerFullyQualifiedName>
-                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
-                            </connectionManagerFullyQualifiedName>
+                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerClassName>
+                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                            </connectionManagerClassName>
                             <isTest>false</isTest>
                         </configuration>
                     </execution>
@@ -83,19 +84,13 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerFullyQualifiedName>
-                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
-                            </connectionManagerFullyQualifiedName>
+                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerClassName>
+                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                            </connectionManagerClassName>
                             <isTest>false</isTest>
                             <cacheType>full</cacheType>
                         </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-test-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
                     </execution>
 
                 </executions>

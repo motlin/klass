@@ -6,12 +6,13 @@ import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.junit.Before;
 
-public class AbstractBootstrappedResourceTest extends AbstractResourceTest
+public class AbstractBootstrappedResourceTestCase
+        extends AbstractResourceTestCase
 {
     @Before
     public void bootstrap()
     {
-        KlassFactory klassFactory = RULE.getConfiguration().getKlassFactory();
+        KlassFactory klassFactory = this.appRule.getConfiguration().getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
 

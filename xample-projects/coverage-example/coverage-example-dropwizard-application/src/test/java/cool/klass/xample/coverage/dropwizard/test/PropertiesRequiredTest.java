@@ -22,7 +22,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesRequiredTest.getFirst");
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -54,7 +54,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesRequiredTest.getSecond");
 
         Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 2)
                 .request()
                 .get();
@@ -103,7 +103,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "}\n";
 
         Response putResponse = client.target(
-                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .put(Entity.json(json));
@@ -112,7 +112,7 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
         assertThat(putStringResponse, is(""));
 
         Response getResponse = client.target(
-                String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))
+                String.format("http://localhost:%d/api/propertiesRequired/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();

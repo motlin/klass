@@ -95,13 +95,6 @@
                         </configuration>
                     </execution>
 
-                    <execution>
-                        <id>generate-test-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
-                    </execution>
-
                 </executions>
 
                 <dependencies>

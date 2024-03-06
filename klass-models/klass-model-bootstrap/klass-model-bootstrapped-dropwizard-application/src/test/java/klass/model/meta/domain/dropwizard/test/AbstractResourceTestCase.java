@@ -9,7 +9,6 @@ import javax.ws.rs.core.Response.Status;
 
 import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
 import com.liftwizard.junit.rule.match.json.JsonMatchRule;
-import com.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
@@ -18,21 +17,17 @@ import io.dropwizard.util.Duration;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelConfiguration;
 import org.eclipse.collections.impl.utility.Iterate;
-import org.junit.ClassRule;
 import org.junit.Rule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class AbstractResourceTest
+public class AbstractResourceTestCase
 {
-    @ClassRule
-    public static final DropwizardAppRule<KlassBootstrappedMetaModelConfiguration> RULE = new DropwizardAppRule<>(
+    @Rule
+    public final DropwizardAppRule<KlassBootstrappedMetaModelConfiguration> appRule = new DropwizardAppRule<>(
             KlassBootstrappedMetaModelApplication.class,
             ResourceHelpers.resourceFilePath("config-test.json5"));
-
-    @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(this.getRuntimeConfigFilename());
 
     @Rule
     public final JsonMatchRule jsonMatchRule = new JsonMatchRule();
@@ -42,7 +37,7 @@ public class AbstractResourceTest
         JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(RULE.getEnvironment())
+        return new JerseyClientBuilder(this.appRule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
@@ -52,7 +47,7 @@ public class AbstractResourceTest
         Class<?> klass      = this.getClass();
         String   clientName = klass.getPackage().getName() + '.' + klass.getSimpleName() + '.' + testName;
         Client   client     = this.getClient(clientName);
-        String   uriString  = "http://localhost:" + RULE.getLocalPort() + "/api" + url;
+        String   uriString  = "http://localhost:" + this.appRule.getLocalPort() + "/api" + url;
         Response response   = client.target(uriString).request().get();
 
         this.assertResponseStatus(response, Status.OK);
@@ -71,7 +66,7 @@ public class AbstractResourceTest
 
     private String getRuntimeConfigFilename()
     {
-        ReladomoFactory reladomoFactory           = RULE.getConfiguration().getReladomoFactory();
+        ReladomoFactory reladomoFactory           = this.appRule.getConfiguration().getReladomoFactory();
         List<String>    runtimeConfigurationPaths = reladomoFactory.getRuntimeConfigurationPaths();
         return Iterate.getOnly(runtimeConfigurationPaths);
     }

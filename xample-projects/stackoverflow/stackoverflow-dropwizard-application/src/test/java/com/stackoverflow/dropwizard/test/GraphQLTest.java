@@ -36,8 +36,8 @@ public class GraphQLTest
             ResourceHelpers.resourceFilePath("config-test.yml"));
 
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
+    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
 
     protected Client getClient(String clientName)
     {

@@ -2,7 +2,7 @@ package klass.model.meta.domain.dropwizard.test;
 
 import org.junit.Test;
 
-public class MetaResourceManualTest extends AbstractBootstrappedResourceTest
+public class MetaResourceManualTest extends AbstractBootstrappedResourceTestCase
 {
     @Test
     public void metaEnumeration()

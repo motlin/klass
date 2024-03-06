@@ -67,9 +67,10 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerFullyQualifiedName>
-                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
-                            </connectionManagerFullyQualifiedName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
+                            <connectionManagerClassName>
+                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                            </connectionManagerClassName>
                             <isTest>false</isTest>
                         </configuration>
                     </execution>
@@ -84,19 +85,13 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerFullyQualifiedName>
-                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
-                            </connectionManagerFullyQualifiedName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
+                            <connectionManagerClassName>
+                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                            </connectionManagerClassName>
                             <isTest>false</isTest>
                             <cacheType>full</cacheType>
                         </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-test-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
                     </execution>
 
                 </executions>
@@ -315,6 +310,12 @@
 
         <dependency>
             <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-connection-manager-holder</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
             <scope>test</scope>
         </dependency>
@@ -340,6 +341,12 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
             <scope>test</scope>
         </dependency>
 

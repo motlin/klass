@@ -2,7 +2,7 @@ package klass.model.meta.domain.dropwizard.test;
 
 import org.junit.Test;
 
-public class ClassifierResourceManualTest extends AbstractBootstrappedResourceTest
+public class ClassifierResourceManualTest extends AbstractBootstrappedResourceTestCase
 {
     @Test
     public void getAllMeta()

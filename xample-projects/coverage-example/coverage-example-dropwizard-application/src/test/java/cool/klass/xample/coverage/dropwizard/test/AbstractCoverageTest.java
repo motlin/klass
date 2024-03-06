@@ -22,7 +22,6 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Rule;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -30,19 +29,19 @@ import static org.junit.Assert.assertThat;
 
 public class AbstractCoverageTest
 {
-    @ClassRule
-    public static final DropwizardAppRule<CoverageExampleConfiguration> RULE = new DropwizardAppRule<>(
+    @Rule
+    public final DropwizardAppRule<CoverageExampleConfiguration> rule = new DropwizardAppRule<>(
             CoverageExampleApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.json5"));
+            ResourceHelpers.resourceFilePath("config-test.json"));
 
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
+    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
 
     @Before
     public void setUpSampleData()
     {
-        KlassFactory klassFactory = RULE.getConfiguration().getKlassFactory();
+        KlassFactory klassFactory = this.rule.getConfiguration().getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
@@ -61,7 +60,7 @@ public class AbstractCoverageTest
         JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(RULE.getEnvironment())
+        return new JerseyClientBuilder(this.rule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
