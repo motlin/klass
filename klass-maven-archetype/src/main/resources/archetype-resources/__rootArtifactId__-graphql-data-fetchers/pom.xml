@@ -29,6 +29,11 @@
         </dependency>
 
         <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-annotation</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
         </dependency>
@@ -52,7 +57,6 @@
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <klassSourcePackages>
-                        <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
@@ -72,12 +76,6 @@
                         <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
-
-                    <!--<dependency>-->
-                        <!--<groupId>cool.klass</groupId>-->
-                        <!--<artifactId>klass-model-bootstrapped-domain-model</artifactId>-->
-                        <!--<version>${klass.version}</version>-->
-                    <!--</dependency>-->
 
                 </dependencies>
             </plugin>

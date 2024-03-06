@@ -90,42 +90,4 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-
-            <plugin>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-klass-html-plugin</artifactId>
-                <version>${klass.version}</version>
-
-                <configuration>
-                    <klassSourcePackages>
-                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
-                    </klassSourcePackages>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <id>generate-klass-html</id>
-                        <goals>
-                            <goal>generate-klass-html</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <dependencies>
-
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-
-                </dependencies>
-
-            </plugin>
-
-        </plugins>
-    </build>
-
 </project>

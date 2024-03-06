@@ -57,7 +57,6 @@
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
-                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
@@ -121,14 +120,14 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-runtime-configuration</artifactId>
+            <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
+            <artifactId>${app.artifactId}-reladomo-runtime-configuration</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -175,9 +174,35 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-mdc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-logstash-encoder</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-servlet-logging-typesafe</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -205,7 +230,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+            <artifactId>liftwizard-bundle-liquibase-migration</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -229,7 +254,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-logging-http</artifactId>
+            <artifactId>liftwizard-bundle-logging-uncaught-exception-handler</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
@@ -261,23 +286,16 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock-incrementing</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid-system</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
-            <version>${liftwizard.version}</version>
-            <scope>runtime</scope>
-        </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -307,19 +325,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -331,37 +337,31 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-servlet-logging-structured-klass-response</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-servlet-logging-mdc-jsonview</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-sample-data</artifactId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-service-klass-html</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
             <version>${klass.version}</version>
         </dependency>
         <!--endregion-->
@@ -376,14 +376,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-domain-model</artifactId>
-            <version>${klass.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-relational-schema</artifactId>
+            <artifactId>klass-syntax-css-class</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -391,6 +384,13 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -421,19 +421,16 @@
             <artifactId>dropwizard-jersey</artifactId>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-util</artifactId>
+            <artifactId>dropwizard-migrations</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>com.smoketurner.dropwizard</groupId>
             <artifactId>graphql-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
         <dependency>
@@ -519,6 +516,12 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-file</artifactId>
             <scope>test</scope>
         </dependency>
 

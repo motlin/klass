@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
@@ -39,7 +38,7 @@ public class CoverageExampleApplication
     @Override
     protected void initializeCommands(@Nonnull Bootstrap<CoverageExampleConfiguration> bootstrap)
     {
-        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
+        super.initializeCommands(bootstrap);
     }
 
     @Override

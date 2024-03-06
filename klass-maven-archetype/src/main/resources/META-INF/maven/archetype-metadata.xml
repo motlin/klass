@@ -6,12 +6,7 @@
 
     <requiredProperties>
         <requiredProperty key="name" />
-        <requiredProperty key="description">
-            <defaultValue>null</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="git">
-            <defaultValue>.git</defaultValue>
-        </requiredProperty>
+        <requiredProperty key="packageInPathFormat" />
     </requiredProperties>
 
     <fileSets>
@@ -45,7 +40,6 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/resources</directory>
                 </fileSet>
-
             </fileSets>
         </module>
         <!--endregion-->
@@ -56,7 +50,7 @@
                 dir="__rootArtifactId__-dropwizard-application"
                 name="${rootArtifactId}-dropwizard-application">
             <fileSets>
-                <fileSet filtered="true">
+                <fileSet filtered="true" encoding="UTF-8">
                     <directory></directory>
                     <includes>
                         <include>.gitignore</include>
@@ -196,11 +190,11 @@
         </module>
         <!--endregion-->
 
-        <!--region ${rootArtifactId}-klass-html-->
+        <!--region ${rootArtifactId}-klass-macros-->
         <module
-                id="${rootArtifactId}-klass-html"
-                dir="__rootArtifactId__-klass-html"
-                name="${rootArtifactId}-klass-html">
+                id="${rootArtifactId}-klass-macros"
+                dir="__rootArtifactId__-klass-macros"
+                name="${rootArtifactId}-klass-macros">
             <fileSets>
                 <fileSet filtered="true">
                     <directory></directory>
@@ -282,9 +276,6 @@
             <fileSets>
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet filtered="true">
-                    <directory></directory>
                 </fileSet>
             </fileSets>
         </module>

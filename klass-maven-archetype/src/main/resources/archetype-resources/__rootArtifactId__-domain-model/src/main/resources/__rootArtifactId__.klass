@@ -1,9 +1,9 @@
 package ${package}
 
-// 'user' is just a special class that represents logged in users
-// There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
+// 'user' is a special class that represents logged in users
+// There must only be a single user class in the model, it must have a single key, and the key must be of type String.
+// Other properties must be nullable
 user User
-    read
     systemTemporal
 {
     userId   : String key userId;
@@ -35,5 +35,57 @@ service User
             multiplicity: many;
             criteria    : all;
             projection  : UserReadProjection;
+        }
+}
+
+class DeleteMeExampleType
+    systemTemporal
+    versioned
+    audited
+{
+    id         : Long id key;
+    name       : String maxLength(128);
+}
+
+class DeleteMeExampleOwnedType
+    systemTemporal
+{
+    id                   : Long id key;
+    deleteMeExampleTypeId: Long private;
+    name                 : String maxLength(128);
+}
+
+association DeleteMeExampleToOwned
+{
+    deleteMeExampleType: DeleteMeExampleType[1..1];
+    deleteMeExampleOwnedTypes: DeleteMeExampleOwnedType[0..*] owned;
+}
+
+projection DeleteMeExampleTypeProjection on DeleteMeExampleType
+{
+    id                      : "Id",
+    name                    : "Name",
+    deleteMeExampleOwnedTypes:
+    {
+        id  : "Id",
+        name: "Name",
+    },
+}
+
+service DeleteMeExampleType
+{
+    /deleteMeExampleType/{id: Long[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.id == id;
+            projection  : DeleteMeExampleTypeProjection;
+        }
+    /deleteMeExampleType
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : DeleteMeExampleTypeProjection;
         }
 }
