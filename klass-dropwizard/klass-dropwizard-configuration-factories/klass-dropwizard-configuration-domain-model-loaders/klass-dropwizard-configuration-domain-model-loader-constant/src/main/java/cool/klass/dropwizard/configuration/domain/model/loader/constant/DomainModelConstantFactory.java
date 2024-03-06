@@ -46,6 +46,12 @@ public class DomainModelConstantFactory implements DomainModelFactory
     }
 
     @JsonProperty
+    public String getFullyQualifiedClassName()
+    {
+        return this.fullyQualifiedClassName;
+    }
+
+    @JsonProperty
     public void setFullyQualifiedClassName(String fullyQualifiedClassName)
     {
         this.fullyQualifiedClassName = fullyQualifiedClassName;

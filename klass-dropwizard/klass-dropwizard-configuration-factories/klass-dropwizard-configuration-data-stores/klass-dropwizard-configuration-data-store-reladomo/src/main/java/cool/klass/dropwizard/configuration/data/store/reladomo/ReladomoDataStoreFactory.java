@@ -38,6 +38,12 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
     }
 
     @JsonProperty
+    public int getRetryCount()
+    {
+        return this.retryCount;
+    }
+
+    @JsonProperty
     public void setRetryCount(int retryCount)
     {
         this.retryCount = retryCount;

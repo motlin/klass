@@ -40,6 +40,12 @@ public class DomainModelCompilerFactory implements DomainModelFactory
     }
 
     @JsonProperty
+    public List<String> getSourcePackages()
+    {
+        return Lists.mutable.withAll(this.sourcePackages);
+    }
+
+    @JsonProperty
     public void setSourcePackages(List<String> sourcePackages)
     {
         this.sourcePackages = sourcePackages;

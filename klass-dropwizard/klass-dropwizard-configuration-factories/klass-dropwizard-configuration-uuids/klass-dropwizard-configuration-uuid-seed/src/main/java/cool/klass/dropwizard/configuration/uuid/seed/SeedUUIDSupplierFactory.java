@@ -27,6 +27,12 @@ public class SeedUUIDSupplierFactory implements UUIDSupplierFactory
     }
 
     @JsonProperty
+    public String getSeed()
+    {
+        return this.seed;
+    }
+
+    @JsonProperty
     public void setSeed(@Nonnull String seed)
     {
         this.seed = Objects.requireNonNull(seed);

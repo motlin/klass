@@ -29,6 +29,7 @@ public class SampleDataFactory
         this.enabled = enabled;
     }
 
+    @JsonProperty
     public Instant getDataInstant()
     {
         return this.dataInstant;
@@ -40,6 +41,7 @@ public class SampleDataFactory
         this.dataInstant = dataInstant;
     }
 
+    @JsonProperty
     public ImmutableList<String> getSkippedPackages()
     {
         return Lists.immutable.withAll(this.skippedPackages);

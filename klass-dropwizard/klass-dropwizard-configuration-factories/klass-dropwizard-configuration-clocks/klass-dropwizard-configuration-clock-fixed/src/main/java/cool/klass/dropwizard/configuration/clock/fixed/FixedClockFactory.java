@@ -27,6 +27,12 @@ public class FixedClockFactory implements ClockFactory
     }
 
     @JsonProperty
+    public Instant getInstant()
+    {
+        return this.instant;
+    }
+
+    @JsonProperty
     public void setInstant(Instant instant)
     {
         this.instant = instant;

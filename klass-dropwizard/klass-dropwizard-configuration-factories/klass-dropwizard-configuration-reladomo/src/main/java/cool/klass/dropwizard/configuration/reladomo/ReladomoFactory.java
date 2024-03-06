@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.util.Duration;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class ReladomoFactory
 {
@@ -17,6 +18,7 @@ public class ReladomoFactory
             "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
     private          boolean      enableRetrieveCountMetrics = true;
 
+    @JsonProperty
     public Duration getTransactionTimeout()
     {
         return this.transactionTimeout;
@@ -28,9 +30,10 @@ public class ReladomoFactory
         this.transactionTimeout = transactionTimeout;
     }
 
+    @JsonProperty
     public List<String> getRuntimeConfigurationPaths()
     {
-        return this.runtimeConfigurationPaths;
+        return Lists.mutable.withAll(this.runtimeConfigurationPaths);
     }
 
     @JsonProperty
@@ -39,6 +42,7 @@ public class ReladomoFactory
         this.runtimeConfigurationPaths = runtimeConfigurationPaths;
     }
 
+    @JsonProperty
     public boolean isEnableRetrieveCountMetrics()
     {
         return this.enableRetrieveCountMetrics;

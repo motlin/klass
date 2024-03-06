@@ -40,9 +40,21 @@ public class FirebaseAuthFilterFactory implements AuthFilterFactory
     }
 
     @JsonProperty
+    public String getCredentialsClasspathLocation()
+    {
+        return this.credentialsClasspathLocation;
+    }
+
+    @JsonProperty
     public void setCredentialsClasspathLocation(String credentialsClasspathLocation)
     {
         this.credentialsClasspathLocation = credentialsClasspathLocation;
+    }
+
+    @JsonProperty
+    public String getDatabaseUrl()
+    {
+        return this.databaseUrl;
     }
 
     @JsonProperty

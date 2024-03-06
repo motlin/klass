@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
@@ -41,21 +42,10 @@ public class AbstractKlassConfiguration extends Configuration
     private @Valid @NotNull SampleDataFactory        sampleDataFactory        = new SampleDataFactory();
     private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
 
+    @JsonProperty("klass")
     public KlassFactory getKlassFactory()
     {
         return this.klassFactory;
-    }
-
-    @Override
-    public DataStoreFactory getDataStoreFactory()
-    {
-        return this.getKlassFactory().getDataStoreFactory();
-    }
-
-    @Override
-    public DomainModelFactory getDomainModelFactory()
-    {
-        return this.getKlassFactory().getDomainModelFactory();
     }
 
     @JsonProperty
@@ -65,6 +55,21 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonIgnore
+    public DataStoreFactory getDataStoreFactory()
+    {
+        return this.getKlassFactory().getDataStoreFactory();
+    }
+
+    @Override
+    @JsonIgnore
+    public DomainModelFactory getDomainModelFactory()
+    {
+        return this.getKlassFactory().getDomainModelFactory();
+    }
+
+    @Override
+    @JsonProperty("jerseyHttpLogging")
     public JerseyHttpLoggingFactory getJerseyHttpLoggingFactory()
     {
         return this.jerseyHttpLoggingFactory;
@@ -77,6 +82,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("h2")
     public H2Factory getH2Factory()
     {
         return this.h2Factory;
@@ -89,6 +95,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("cors")
     public CorsFactory getCorsFactory()
     {
         return this.corsFactory;
@@ -101,6 +108,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("ddlExecutor")
     public DdlExecutorFactory getDdlExecutorFactory()
     {
         return this.ddlExecutorFactory;
@@ -113,6 +121,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("authFilters")
     public List<AuthFilterFactory> getAuthFilterFactories()
     {
         return this.authFilterFactories;
@@ -125,6 +134,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("objectMapper")
     public ObjectMapperFactory getObjectMapperFactory()
     {
         return this.objectMapperFactory;
@@ -136,6 +146,7 @@ public class AbstractKlassConfiguration extends Configuration
         this.objectMapperFactory = objectMapperFactory;
     }
 
+    @JsonProperty("bootstrap")
     public EnabledFactory getBootstrapFactory()
     {
         return this.bootstrapFactory;
@@ -148,6 +159,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("reladomo")
     public ReladomoFactory getReladomoFactory()
     {
         return this.reladomoFactory;
@@ -160,6 +172,7 @@ public class AbstractKlassConfiguration extends Configuration
     }
 
     @Override
+    @JsonProperty("sampleData")
     public SampleDataFactory getSampleDataFactory()
     {
         return this.sampleDataFactory;
@@ -171,6 +184,7 @@ public class AbstractKlassConfiguration extends Configuration
         this.sampleDataFactory = sampleDataFactory;
     }
 
+    @JsonProperty("configLogging")
     public EnabledFactory getConfigLoggingFactory()
     {
         return this.configLoggingFactory;
