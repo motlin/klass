@@ -2,6 +2,7 @@ version: 2.1
 
 jobs:
   build:
+    resource_class: large
     working_directory: ~/klass
     docker:
       - image: circleci/openjdk:11-jdk-browsers
@@ -20,7 +21,7 @@ jobs:
             - ~/.m2
           key: klass-{{ checksum "pom.xml" }}
 
-      - run: ./mvnw verify --offline
+      - run: ./mvnw verify --offline --threads 2C --activate-profiles '!shade,!run-demo,enforcer-strict'
 
       # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
       - run:
