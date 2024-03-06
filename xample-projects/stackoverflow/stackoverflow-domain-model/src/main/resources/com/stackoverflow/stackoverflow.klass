@@ -43,7 +43,7 @@ interface Document
 // TODO: Try to infer whether a query is for a unique item and assert multiplicity one
 // TODO: Check for ownership cycles and give a good error message
 // TODO: Errors for using reserved names like system, systemFrom, systemTo, etc.
-// TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal, optimisticallyLocked when not versioned
+// TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal
 class Question
     implements Document
     read(QuestionReadProjection)
@@ -52,7 +52,6 @@ class Question
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     // TODO: When copying id to QuestionVersion, id should be Long key but not id.
     id             : Long key id;
@@ -173,7 +172,6 @@ class Answer
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     id             : Long key id;
     deleted        : Boolean;
@@ -265,7 +263,6 @@ class Tag
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     name           : String key;
     description    : String;

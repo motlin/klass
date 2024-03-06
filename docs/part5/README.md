@@ -16,7 +16,7 @@ The MVP could start with read, followed by replace, upsert, and create. The oper
 
 ### Audit Data
 
-The MVP could start without any audit features (`systemTemporal`, `versioned`, `audited`, `optimisticallyLocked`). It could start without other modifiers, like `final` and `owned`. It wouldn't need any macros or inference at first.
+The MVP could start without any audit features (`systemTemporal`, `versioned`, `audited`). It could start without other modifiers, like `final` and `owned`. It wouldn't need any macros or inference at first.
 
 ### Bootstrapped meta-model
 

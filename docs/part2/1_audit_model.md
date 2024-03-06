@@ -7,7 +7,6 @@ class Question
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     // ...
 }
@@ -127,24 +126,4 @@ class QuestionVersion
     }
 }
 
-```
-
-### optimisticallyLocked
-
-The modifier `optimisticallyLocked` is a little different than the others. It affects services, not the data layer. It changes `PUT` and `PATCH` to expect version information embedded in the json body. If the embedded number doesn't match the current version, the service throws 409 Conflict.
-
-`DELETE` services are different because they don't take any body. Instead, `optimisticallyLocked` behaves as a compiler macro that adds a required version query parameter and a conflict criteria.
-
-```klass
-service QuestionResource
-{
-    deleteById(id: Long[1..1], version: Integer[1..1] version): Void
-    {
-        operation: delete;
-        url      : /api/question/{id: Long[1..1]}?{version: Integer[1..1] version};
-        criteria : this.id == id;
-        conflict : this.version.number == version;
-        format   : json;
-    }
-}
 ```

@@ -52,7 +52,6 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.MODIFIER_CLASS_BITEMPORAL:
             case KlassLexer.MODIFIER_CLASS_VERSIONED:
             case KlassLexer.MODIFIER_CLASS_AUDITED:
-            case KlassLexer.MODIFIER_CLASS_OPTIMISTICALLY_LOCKED:
             case KlassLexer.MODIFIER_CLASS_TRANSIENT:
             case KlassLexer.MODIFIER_PROPERTY_KEY:
             case KlassLexer.MODIFIER_PROPERTY_PRIVATE:

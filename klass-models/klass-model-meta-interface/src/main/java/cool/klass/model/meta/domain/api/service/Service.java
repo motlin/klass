@@ -32,9 +32,6 @@ public interface Service extends Element
     @Nonnull
     Optional<Criteria> getConflictCriteria();
 
-    @Nonnull
-    Optional<Criteria> getVersionCriteria();
-
     Optional<ServiceProjectionDispatch> getProjectionDispatch();
 
     @Nonnull

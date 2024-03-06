@@ -63,11 +63,6 @@ public class AntlrClassModifier extends AntlrModifier
         return this.name.equals("transient");
     }
 
-    public boolean isOptimisticallyLocked()
-    {
-        return this.name.equals("optimisticallyLocked");
-    }
-
     @Override
     @Nonnull
     public ClassModifierBuilder build()

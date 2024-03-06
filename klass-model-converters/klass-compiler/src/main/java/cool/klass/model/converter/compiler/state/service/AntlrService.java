@@ -267,40 +267,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return Objects.requireNonNull(this.elementBuilder);
     }
 
-    public boolean needsVersionCriteriaInferred()
-    {
-        return this.needsVersionCriteria() && !this.hasServiceCriteriaKeyword("version");
-    }
-
-    public boolean needsVersionCriteria()
-    {
-        return this.urlState.getServiceGroup().getKlass().hasVersion()
-                && this.verbState.getVerb() == Verb.GET
-                && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE;
-    }
-
-    private boolean hasServiceCriteriaKeyword(String serviceCriteriaKeyword)
-    {
-        return this.serviceCriteriaStates
-                .asLazy()
-                .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
-                .contains(serviceCriteriaKeyword);
-    }
-
-    public boolean needsConflictCriteriaInferred()
-    {
-        // TODO: PUT many and PATCH many could get the version numbers from the body
-        // TODO: DELETE many would have to take a body too?
-        // TODO: Or maybe there's no such thing as DELETE many, and it's implied through a merge api
-        // TODO: Also the class should be optimistically locked
-
-        return this.urlState.getServiceGroup().getKlass().hasVersion()
-                && this.verbState.getVerb() != Verb.GET
-                && this.verbState.getVerb() != Verb.POST
-                && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE
-                && !this.hasServiceCriteriaKeyword("conflict");
-    }
-
     @Override
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {

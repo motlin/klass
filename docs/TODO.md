@@ -14,7 +14,7 @@
 * Anonymous projections
 * RPC syntax
 * TODO: Document format: csv with multiple to-many ends. With systemTemporal changes.
-* Opt-out of systemTemporal, versioned, audited, optimisticallyLocked instead of opt-in
+* Opt-out of systemTemporal, versioned, audited instead of opt-in
 
 
 

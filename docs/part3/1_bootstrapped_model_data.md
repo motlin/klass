@@ -8,7 +8,7 @@ The Klass meta-model is part of every Klass model. When an Klass application sta
   "inferred": false,
   "packageName": "com.stackoverflow",
   "ordinal": 1,
-  "sourceCode": "class Question\n    systemTemporal\n    versioned\n    audited\n    optimisticallyLocked\n{\n    id                : Long key id;\n    title             : String;\n    body              : String;\n    system            : TemporalRange system;\n    systemFrom        : TemporalInstant system from;\n    systemTo          : TemporalInstant system to;\n    createdById       : String private createdBy;\n    createdOn         : Instant createdOn;\n    lastUpdatedById   : String private lastUpdatedBy;\n    answers: Answer[0..*]\n        orderBy: this.id ascending;\n    version: QuestionVersion[1..1] version;\n}\n",
+  "sourceCode": "class Question\n    systemTemporal\n    versioned\n    audited\n{\n    id                : Long key id;\n    title             : String;\n    body              : String;\n    system            : TemporalRange system;\n    systemFrom        : TemporalInstant system from;\n    systemTo          : TemporalInstant system to;\n    createdById       : String private createdBy;\n    createdOn         : Instant createdOn;\n    lastUpdatedById   : String private lastUpdatedBy;\n    answers: Answer[0..*]\n        orderBy: this.id ascending;\n    version: QuestionVersion[1..1] version;\n}\n",
   "classModifiers": [
     {
       "name": "systemTemporal",
@@ -24,11 +24,6 @@ The Klass meta-model is part of every Klass model. When an Klass application sta
       "name": "audited",
       "inferred": false,
       "ordinal": 3
-    },
-    {
-      "name": "optimisticallyLocked",
-      "inferred": false,
-      "ordinal": 4
     }
   ],
   "primitiveProperties": [

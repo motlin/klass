@@ -148,7 +148,6 @@ class Question
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     // ...
 
@@ -172,7 +171,6 @@ class Question
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     // ...
 
@@ -298,7 +296,6 @@ class Question
     systemTemporal
     versioned
     audited
-    optimisticallyLocked
 {
     // ...
 

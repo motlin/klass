@@ -89,7 +89,7 @@ serviceMultiplicity: one='one' | many='many';
 serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression ';'
     | serviceCriteriaKeyword ':' criteriaExpression {notifyErrorListeners("Missing semi-colon after service criteria declaration.");};
 // TODO: Optional criteria
-serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict' | 'version';
+serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict';
 serviceProjectionDispatch: 'projection' ':' projectionReference argumentList? ';'
     | 'projection' ':' projectionReference argumentList? {notifyErrorListeners("Missing semi-colon after service projection dispatch.");};
 serviceOrderByDeclaration: orderByDeclaration ';'
@@ -143,7 +143,7 @@ multiplicityBody: lowerBound=IntegerLiteral '..' upperBound=(IntegerLiteral | '*
 primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
 
 // modifiers
-classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient';
+classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient';
 propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived';
 associationEndModifier: 'owned' | 'final' | 'version';
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
@@ -284,7 +284,6 @@ MODIFIER_CLASS_VALID_TEMPORAL        : 'validTemporal';
 MODIFIER_CLASS_BITEMPORAL            : 'bitemporal';
 MODIFIER_CLASS_VERSIONED             : 'versioned';
 MODIFIER_CLASS_AUDITED               : 'audited';
-MODIFIER_CLASS_OPTIMISTICALLY_LOCKED : 'optimisticallyLocked';
 MODIFIER_CLASS_TRANSIENT             : 'transient';
 
 // propertyModifiers

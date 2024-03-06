@@ -33,7 +33,6 @@ public final class ServiceImpl extends AbstractElement implements Service
     private Optional<Criteria> authorizeCriteria;
     private Optional<Criteria> validateCriteria;
     private Optional<Criteria> conflictCriteria;
-    private Optional<Criteria> versionCriteria;
 
     private Optional<ServiceProjectionDispatch> projectionDispatch;
 
@@ -138,22 +137,6 @@ public final class ServiceImpl extends AbstractElement implements Service
         this.conflictCriteria = Objects.requireNonNull(conflictCriteria);
     }
 
-    @Nonnull
-    @Override
-    public Optional<Criteria> getVersionCriteria()
-    {
-        return this.versionCriteria;
-    }
-
-    private void setVersionCriteria(@Nonnull Optional<Criteria> versionCriteria)
-    {
-        if (this.versionCriteria != null)
-        {
-            throw new IllegalStateException();
-        }
-        this.versionCriteria = Objects.requireNonNull(versionCriteria);
-    }
-
     @Override
     public Optional<ServiceProjectionDispatch> getProjectionDispatch()
     {
@@ -221,7 +204,6 @@ public final class ServiceImpl extends AbstractElement implements Service
         private Optional<AbstractCriteriaBuilder<?>> authorize = Optional.empty();
         private Optional<AbstractCriteriaBuilder<?>> validate  = Optional.empty();
         private Optional<AbstractCriteriaBuilder<?>> conflict  = Optional.empty();
-        private Optional<AbstractCriteriaBuilder<?>> version   = Optional.empty();
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -273,13 +255,6 @@ public final class ServiceImpl extends AbstractElement implements Service
                     }
                     this.conflict = Optional.of(criteriaBuilder);
                     return;
-                case "version":
-                    if (this.version.isPresent())
-                    {
-                        throw new IllegalStateException();
-                    }
-                    this.version = Optional.of(criteriaBuilder);
-                    return;
                 default:
                     throw new AssertionError();
             }
@@ -313,13 +288,11 @@ public final class ServiceImpl extends AbstractElement implements Service
             Optional<Criteria> authorizeCriteria = this.authorize.map(AbstractCriteriaBuilder::build);
             Optional<Criteria> validateCriteria  = this.validate.map(AbstractCriteriaBuilder::build);
             Optional<Criteria> conflictCriteria  = this.conflict.map(AbstractCriteriaBuilder::build);
-            Optional<Criteria> versionCriteria   = this.version.map(AbstractCriteriaBuilder::build);
 
             service.setQueryCriteria(queryCriteria);
             service.setAuthorizeCriteria(authorizeCriteria);
             service.setValidateCriteria(validateCriteria);
             service.setConflictCriteria(conflictCriteria);
-            service.setVersionCriteria(versionCriteria);
 
             return service;
         }
