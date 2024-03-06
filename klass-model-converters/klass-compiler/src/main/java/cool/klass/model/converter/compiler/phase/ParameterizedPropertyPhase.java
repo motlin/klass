@@ -3,11 +3,9 @@ package cool.klass.model.converter.compiler.phase;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -31,28 +29,23 @@ import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MutableMap;
 
-public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
+public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 {
     @Nullable
-    private       AntlrParameterizedProperty parameterizedPropertyState;
+    private AntlrParameterizedProperty parameterizedPropertyState;
     // TODO: Make better use of these Owner interfaces in shared compiler phases
     @Nullable
-    private       IAntlrElement              criteriaOwnerState;
+    private IAntlrElement              criteriaOwnerState;
     @Nullable
-    private       AntlrParameterOwner        parameterOwnerState;
+    private AntlrParameterOwner        parameterOwnerState;
 
     @Nullable
     private AntlrParameter parameterState;
 
-    public ParameterizedPropertyPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            boolean isInference,
-            AntlrDomainModel domainModelState)
+    public ParameterizedPropertyPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
@@ -63,12 +56,12 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
         ClassTypeContext classTypeContext          = ctx.classType();
         String           parameterizedPropertyName = ctx.identifier().getText();
         String           className                 = classTypeContext.classReference().getText();
-        AntlrClass       antlrClass                = this.domainModelState.getClassByName(className);
+        AntlrClass       antlrClass                = this.compilerState.getDomainModelState().getClassByName(className);
 
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
-                this.currentCompilationUnit,
-                this.isInference);
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference());
 
         // TODO: Parameterized Property modifiers
         /*
@@ -79,16 +72,16 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
 
         this.parameterizedPropertyState = new AntlrParameterizedProperty(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx.identifier(),
                 parameterizedPropertyName,
-                this.thisReference.getNumMembers() + 1,
-                this.thisReference,
+                this.compilerState.getCompilerWalkState().getThisReference().getNumMembers() + 1,
+                this.compilerState.getCompilerWalkState().getThisReference(),
                 antlrClass,
                 multiplicityState);
 
-        this.thisReference.enterParameterizedProperty(this.parameterizedPropertyState);
+        this.compilerState.getCompilerWalkState().getThisReference().enterParameterizedProperty(this.parameterizedPropertyState);
 
         this.parameterOwnerState = this.parameterizedPropertyState;
         this.criteriaOwnerState = this.parameterizedPropertyState;
@@ -108,16 +101,16 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
+        super.enterRelationship(ctx);
+
         if (this.parameterizedPropertyState == null)
         {
             return;
         }
 
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
-                this.currentCompilationUnit,
-                this.domainModelState,
-                this.criteriaOwnerState,
-                this.thisReference);
+                this.compilerState,
+                this.criteriaOwnerState);
         AntlrCriteria criteriaState = visitor.visit(ctx.criteriaExpression());
         this.parameterizedPropertyState.setCriteria(criteriaState);
     }
@@ -125,6 +118,7 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
+        super.enterPrimitiveParameterDeclaration(ctx);
         if (this.parameterizedPropertyState == null)
         {
             return;
@@ -141,18 +135,20 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
     {
         this.parameterState = null;
+        super.exitPrimitiveParameterDeclaration(ctx);
     }
 
     @Override
     public void enterEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
+        super.enterEnumerationParameterDeclaration(ctx);
         if (this.parameterizedPropertyState == null)
         {
             return;
         }
 
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
-        AntlrType enumerationState = this.domainModelState.getEnumerationByName(
+        AntlrType enumerationState = this.compilerState.getDomainModelState().getEnumerationByName(
                 enumerationReferenceContext.getText());
 
         this.enterParameterDeclaration(ctx, enumerationState, ctx.identifier(), ctx.multiplicity());
@@ -162,6 +158,7 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
     {
         this.parameterState = null;
+        super.exitEnumerationParameterDeclaration(ctx);
     }
 
     @Override
@@ -181,11 +178,12 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
     {
+        super.enterParameterModifier(ctx);
         int ordinal = this.parameterState.getNumModifiers();
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx,
                 ctx.getText(),
                 ordinal);
@@ -199,13 +197,13 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     {
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
-                this.currentCompilationUnit,
-                false);
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference());
 
         AntlrParameter parameterState = new AntlrParameter(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 identifierContext,
                 identifierContext.getText(),
                 this.parameterOwnerState.getNumParameters() + 1,

@@ -4,9 +4,9 @@ import java.time.Instant;
 
 import cool.klass.generator.service.ServiceResourceGenerator;
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.test.constants.KlassTestConstants;
@@ -20,19 +20,17 @@ import static org.junit.Assert.assertThat;
 
 public class ServiceResourceGeneratorTest
 {
-    private final CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-    private final KlassCompiler       compiler            = new KlassCompiler(this.compilerErrorHolder);
-
     @Test
     public void stackOverflow()
     {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 "example.klass",
                 KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT);
-        DomainModel           domainModel    = this.compiler.compile(compilationUnit);
-        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+        CompilerState         compilerState  = new CompilerState(compilationUnit);
+        KlassCompiler         klassCompiler  = new KlassCompiler(compilerState);
+        DomainModel           domainModel    = klassCompiler.compile();
+        ImmutableList<String> compilerErrors = compilerState.getCompilerErrors().collect(CompilerError::toString);
         assertThat(compilerErrors, is(Lists.immutable.empty()));
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
         assertThat(domainModel, notNullValue());
 
         Instant now = Instant.parse("2019-12-31T23:59:59.999Z");

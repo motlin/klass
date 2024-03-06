@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -55,7 +55,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.classState == AntlrClass.AMBIGUOUS || this.classState == AntlrClass.NOT_FOUND)
         {

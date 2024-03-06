@@ -4,8 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrIntegerLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralValue;
@@ -21,18 +20,14 @@ import cool.klass.model.meta.grammar.KlassParser.StringLiteralContext;
 public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
 {
     @Nonnull
-    private final CompilationUnit  compilationUnit;
-    @Nonnull
-    private final AntlrDomainModel domainModelState;
-    private final IAntlrElement    expressionValueOwner;
+    private final CompilerState compilerState;
+    private final IAntlrElement expressionValueOwner;
 
     public LiteralValueVisitor(
-            @Nonnull CompilationUnit compilationUnit,
-            @Nonnull AntlrDomainModel domainModelState,
+            @Nonnull CompilerState compilerState,
             IAntlrElement expressionValueOwner)
     {
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.compilerState = Objects.requireNonNull(compilerState);
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 
@@ -41,7 +36,12 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
     public AntlrIntegerLiteralValue visitIntegerLiteral(@Nonnull IntegerLiteralContext ctx)
     {
         int value = Integer.parseInt(ctx.getText());
-        return new AntlrIntegerLiteralValue(ctx, this.compilationUnit, false, value, this.expressionValueOwner);
+        return new AntlrIntegerLiteralValue(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                value,
+                this.expressionValueOwner);
     }
 
     @Nonnull
@@ -74,7 +74,12 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AntlrLiteralValue>
     {
         String quotedText = ctx.getText();
         String text       = quotedText.substring(1, quotedText.length() - 1);
-        return new AntlrStringLiteralValue(ctx, this.compilationUnit, false, text, this.expressionValueOwner);
+        return new AntlrStringLiteralValue(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                text,
+                this.expressionValueOwner);
     }
 
     @Nonnull

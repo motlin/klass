@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -38,9 +38,9 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @Nonnull
     public abstract PropertyBuilder<T, ?, ?> build();
 
-    public abstract void reportErrors(CompilerErrorHolder compilerErrorHolder);
+    public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
-    public final void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public final void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
                 "ERR_DUP_PRP: Duplicate member: '%s.%s'.",

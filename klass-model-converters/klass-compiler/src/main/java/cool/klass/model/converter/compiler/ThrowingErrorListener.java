@@ -25,7 +25,7 @@ public class ThrowingErrorListener extends BaseErrorListener
             String msg,
             RecognitionException e)
     {
-        String sourceLine = getSourceLine(line);
+        String sourceLine = this.getSourceLine(line);
         String error = String.format(
                 "%s[%d:%d] %s%n%s",
                 this.sourceName,

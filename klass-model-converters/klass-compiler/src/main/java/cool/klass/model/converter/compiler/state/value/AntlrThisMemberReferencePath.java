@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -58,7 +58,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(

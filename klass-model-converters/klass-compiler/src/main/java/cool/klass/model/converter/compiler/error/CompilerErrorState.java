@@ -9,7 +9,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class CompilerErrorHolder
+public class CompilerErrorState
 {
     private final MutableList<CompilerError> compilerErrors = Lists.mutable.empty();
 

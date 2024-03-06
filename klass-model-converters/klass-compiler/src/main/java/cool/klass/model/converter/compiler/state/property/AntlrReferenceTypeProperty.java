@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
@@ -61,7 +61,7 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
         this.orderByState = Objects.requireNonNull(orderByState);
     }
 
-    public void reportTypeNotFound(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.type != AntlrClass.NOT_FOUND)
         {

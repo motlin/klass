@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
@@ -94,7 +94,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         return this.projectionBuilder;
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.klass == AntlrClass.NOT_FOUND)
         {

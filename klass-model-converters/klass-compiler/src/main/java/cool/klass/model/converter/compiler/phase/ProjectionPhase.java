@@ -2,10 +2,8 @@ package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionAssociationEnd;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionDataTypeProperty;
@@ -18,39 +16,35 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
-public class ProjectionPhase extends AbstractDomainModelCompilerPhase
+public class ProjectionPhase extends AbstractCompilerPhase
 {
     private final MutableStack<AntlrProjectionParent> elementStack = Stacks.mutable.empty();
 
-    public ProjectionPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState,
-            boolean isInference)
+    public ProjectionPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
     public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
+        super.enterProjectionDeclaration(ctx);
+
         String            className   = ctx.classReference().identifier().getText();
-        AntlrClass        klass       = this.domainModelState.getClassByName(className);
+        AntlrClass        klass       = this.compilerState.getDomainModelState().getClassByName(className);
         IdentifierContext nameContext = ctx.identifier();
         AntlrProjection antlrProjection = new AntlrProjection(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 nameContext,
                 nameContext.getText(),
-                this.domainModelState.getNumTopLevelElements() + 1,
+                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
                 klass,
-                this.packageName);
+                this.compilerState.getCompilerWalkState().getPackageName());
         this.elementStack.push(antlrProjection);
     }
 
@@ -58,12 +52,14 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
     public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
         AntlrProjection antlrProjection = (AntlrProjection) this.elementStack.pop();
-        this.domainModelState.exitProjectionDeclaration(antlrProjection);
+        this.compilerState.getDomainModelState().exitProjectionDeclaration(antlrProjection);
+        super.exitProjectionDeclaration(ctx);
     }
 
     @Override
     public void enterProjectionPrimitiveMember(@Nonnull ProjectionPrimitiveMemberContext ctx)
     {
+        super.enterProjectionPrimitiveMember(ctx);
         AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
 
         IdentifierContext nameContext      = ctx.identifier();
@@ -77,8 +73,8 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
 
         AntlrProjectionDataTypeProperty antlrProjectionPrimitiveMember = new AntlrProjectionDataTypeProperty(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 nameContext,
                 name,
                 antlrProjectionParent.getNumChildren() + 1,
@@ -93,6 +89,7 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
     {
+        super.enterProjectionAssociationEnd(ctx);
         AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
 
         IdentifierContext nameContext = ctx.identifier();
@@ -103,8 +100,8 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
 
         AntlrProjectionAssociationEnd antlrProjectionAssociationEnd = new AntlrProjectionAssociationEnd(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 nameContext,
                 name,
                 antlrProjectionParent.getNumChildren() + 1,
@@ -120,6 +117,7 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
     public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
     {
         this.elementStack.pop();
+        super.exitProjectionAssociationEnd(ctx);
     }
 
     @Override

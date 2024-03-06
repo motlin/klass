@@ -17,10 +17,12 @@ import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
 import cool.klass.data.store.DataStore;
+import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 
@@ -93,7 +95,7 @@ public class ReladomoDataStore implements DataStore
     {
         this.generateAndSetId(newInstance, klass);
 
-        ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties();
+        ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties().reject(DataTypeProperty::isID);
         if (keyProperties.size() != keys.size())
         {
             throw new AssertionError();
@@ -169,6 +171,15 @@ public class ReladomoDataStore implements DataStore
             return ((Timestamp) result).toInstant();
         }
 
+        if (dataTypeProperty instanceof EnumerationProperty)
+        {
+            String prettyName = (String) result;
+            return ((EnumerationProperty) dataTypeProperty).getType()
+                    .getEnumerationLiterals()
+                    .detectOptional(each -> each.getPrettyName().equals(prettyName))
+                    .get();
+        }
+
         return result;
     }
 
@@ -181,6 +192,10 @@ public class ReladomoDataStore implements DataStore
         if (newValue == null)
         {
             attribute.setValueNull(persistentInstance);
+        }
+        else if (dataTypeProperty instanceof EnumerationProperty)
+        {
+            attribute.setValue(persistentInstance, ((EnumerationLiteral) newValue).getPrettyName());
         }
         else
         {

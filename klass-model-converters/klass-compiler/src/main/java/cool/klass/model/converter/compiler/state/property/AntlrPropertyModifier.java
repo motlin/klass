@@ -53,6 +53,16 @@ public class AntlrPropertyModifier extends AntlrModifier
         return AUDIT_PROPERTY_NAMES.contains(this.name);
     }
 
+    public boolean isSystem()
+    {
+        return this.name.equals("system");
+    }
+
+    public boolean isValid()
+    {
+        return this.name.equals("valid");
+    }
+
     public boolean isVersionNumber()
     {
         return this.name.equals("version");

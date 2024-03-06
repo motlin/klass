@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
@@ -95,7 +95,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         this.sourceValue.reportErrors(compilerErrorHolder);
         this.targetValue.reportErrors(compilerErrorHolder);

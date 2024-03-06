@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
@@ -76,7 +76,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void exitClassDeclaration(@Nonnull AntlrClass classState)
+    public void defineClass(@Nonnull AntlrClass classState)
     {
         this.topLevelElementStates.add(classState);
         this.classStates.add(classState);
@@ -177,7 +177,7 @@ public class AntlrDomainModel
         return this.serviceGroupsByContext.get(context);
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
 

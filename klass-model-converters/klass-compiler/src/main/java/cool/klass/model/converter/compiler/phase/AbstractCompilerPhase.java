@@ -1,253 +1,213 @@
 package cool.klass.model.converter.compiler.phase;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.meta.grammar.KlassBaseListener;
-import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.collections.api.block.function.Function;
-import org.eclipse.collections.api.map.MutableMap;
 
 public abstract class AbstractCompilerPhase extends KlassBaseListener
 {
-    @Nonnull
-    protected final MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext;
-    @Nonnull
-    protected final CompilerErrorHolder                            compilerErrorHolder;
+    protected final CompilerState compilerState;
 
-    @Nullable
-    protected PackageNameContext packageContext;
-    @Nullable
-    protected String             packageName;
-    @Nullable
-    protected CompilationUnit    currentCompilationUnit;
-
-    protected boolean isInference;
-
-    @Nullable
-    protected ClassDeclarationContext        classDeclarationContext;
-    @Nullable
-    protected AssociationDeclarationContext  associationDeclarationContext;
-    @Nullable
-    protected ServiceGroupDeclarationContext serviceGroupDeclarationContext;
-    @Nullable
-    protected ParameterizedPropertyContext   parameterizedPropertyContext;
-    @Nullable
-    protected EnumerationDeclarationContext  enumerationDeclarationContext;
-    @Nullable
-    protected ProjectionDeclarationContext   projectionDeclarationContext;
-    @Nullable
-    protected UrlDeclarationContext          urlDeclarationContext;
-    @Nullable
-    protected ServiceDeclarationContext      serviceDeclarationContext;
-
-    protected AbstractCompilerPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            boolean isInference)
+    protected AbstractCompilerPhase(CompilerState compilerState)
     {
-        this.compilerErrorHolder = Objects.requireNonNull(compilerErrorHolder);
-        this.compilationUnitsByContext = Objects.requireNonNull(compilationUnitsByContext);
-        this.isInference = isInference;
+        this.compilerState = compilerState;
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterCompilationUnit(CompilationUnitContext ctx)
     {
-        this.currentCompilationUnit = this.compilationUnitsByContext.get(ctx);
+        super.enterCompilationUnit(ctx);
+        this.compilerState.enterCompilationUnit(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitCompilationUnit(CompilationUnitContext ctx)
     {
-        this.currentCompilationUnit = null;
-        this.packageContext = null;
-        this.packageName = null;
+        this.compilerState.exitCompilationUnit();
+        super.exitCompilationUnit(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
-        PackageNameContext packageNameContext = ctx.packageName();
-        this.packageContext = packageNameContext;
-        this.packageName = packageNameContext.getText();
+        super.enterPackageDeclaration(ctx);
+        this.compilerState.enterPackageDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.classDeclarationContext = ctx;
+        super.enterClassDeclaration(ctx);
+        this.compilerState.enterClassDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.classDeclarationContext = null;
+        this.compilerState.exitClassDeclaration();
+        super.exitClassDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.enumerationDeclarationContext = ctx;
+        super.enterEnumerationDeclaration(ctx);
+        this.compilerState.enterEnumerationDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.enumerationDeclarationContext = null;
+        this.compilerState.exitEnumerationDeclaration();
+        super.exitEnumerationDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.associationDeclarationContext = ctx;
+        super.enterAssociationDeclaration(ctx);
+        this.compilerState.enterAssociationDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.associationDeclarationContext = null;
+        this.compilerState.exitAssociationDeclaration();
+        super.exitAssociationDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterAssociationEnd(AssociationEndContext ctx)
+    {
+        super.enterAssociationEnd(ctx);
+        this.compilerState.enterAssociationEnd(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitAssociationEnd(AssociationEndContext ctx)
+    {
+        this.compilerState.exitAssociationEnd();
+        super.exitAssociationEnd(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterRelationship(RelationshipContext ctx)
+    {
+        super.enterRelationship(ctx);
+        this.compilerState.enterRelationship();
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitRelationship(RelationshipContext ctx)
+    {
+        this.compilerState.exitRelationship();
+        super.exitRelationship(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.projectionDeclarationContext = ctx;
+        super.enterProjectionDeclaration(ctx);
+        this.compilerState.enterProjectionDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.projectionDeclarationContext = null;
+        this.compilerState.exitProjectionDeclaration();
+        super.exitProjectionDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.serviceGroupDeclarationContext = ctx;
+        super.enterServiceGroupDeclaration(ctx);
+        this.compilerState.enterServiceGroupDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.serviceGroupDeclarationContext = null;
+        this.compilerState.exitServiceGroupDeclaration();
+        super.exitServiceGroupDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterUrlDeclaration(UrlDeclarationContext ctx)
     {
-        this.urlDeclarationContext = ctx;
+        super.enterUrlDeclaration(ctx);
+        this.compilerState.enterUrlDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitUrlDeclaration(UrlDeclarationContext ctx)
     {
-        this.urlDeclarationContext = null;
+        this.compilerState.exitUrlDeclaration();
+        super.exitUrlDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        this.serviceDeclarationContext = ctx;
+        super.enterServiceDeclaration(ctx);
+        this.compilerState.enterServiceDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        this.serviceDeclarationContext = null;
+        this.compilerState.exitServiceDeclaration();
+        super.exitServiceDeclaration(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
-        this.parameterizedPropertyContext = ctx;
+        super.enterParameterizedProperty(ctx);
+        this.compilerState.enterParameterizedProperty(ctx);
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
     {
-        this.parameterizedPropertyContext = null;
-    }
-
-    public void error(
-            @Nonnull String message,
-            @Nonnull ParserRuleContext offendingParserRuleContext,
-            ParserRuleContext... parserRuleContexts)
-    {
-        this.compilerErrorHolder.add(
-                message,
-                offendingParserRuleContext,
-                parserRuleContexts);
-    }
-
-    public void error(
-            @Nonnull String message,
-            @Nonnull IAntlrElement element,
-            @Nonnull ParserRuleContext offendingParserRuleContext)
-    {
-        this.compilerErrorHolder.add(message, element, offendingParserRuleContext);
-    }
-
-    public <T extends ParserRuleContext> void runCompilerMacro(
-            @Nonnull Token contextToken,
-            @Nonnull String macroName,
-            @Nonnull String sourceCodeText,
-            @Nonnull Function<KlassParser, T> parserRule)
-    {
-        String contextMessage = this.getContextMessage(contextToken);
-        String sourceName     = String.format("%s compiler macro (%s)", macroName, contextMessage);
-        CompilationUnit compilationUnit = CompilationUnit.createFromText(
-                sourceName,
-                sourceCodeText,
-                parserRule);
-
-        CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
-        boolean         oldIsInference     = this.isInference;
-
-        try
-        {
-            this.currentCompilationUnit = compilationUnit;
-            this.isInference = true;
-
-            ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
-            parseTreeWalker.walk(this, compilationUnit.getParserContext());
-        }
-        finally
-        {
-            this.currentCompilationUnit = oldCompilationUnit;
-            this.isInference = oldIsInference;
-        }
-    }
-
-    protected String getContextMessage(@Nonnull Token contextToken)
-    {
-        String sourceName         = contextToken.getInputStream().getSourceName();
-        int    line               = contextToken.getLine();
-        int    charPositionInLine = contextToken.getCharPositionInLine();
-
-        return String.format(
-                "File: %s Line: %d Char: %d",
-                sourceName,
-                line,
-                charPositionInLine + 1);
+        this.compilerState.exitParameterizedProperty();
+        super.exitParameterizedProperty(ctx);
     }
 }

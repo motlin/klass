@@ -4,9 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AllAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrAndCriteria;
@@ -40,24 +38,16 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 {
     @Nonnull
-    private final CompilationUnit  compilationUnit;
+    private final CompilerState compilerState;
     @Nonnull
-    private final AntlrDomainModel domainModelState;
-    @Nonnull
-    private final IAntlrElement    criteriaOwner;
-    @Nonnull
-    private final AntlrClass       thisReference;
+    private final IAntlrElement criteriaOwner;
 
     public CriteriaVisitor(
-            @Nonnull CompilationUnit compilationUnit,
-            @Nonnull AntlrDomainModel domainModelState,
-            @Nonnull IAntlrElement criteriaOwner,
-            @Nonnull AntlrClass thisReference)
+            @Nonnull CompilerState compilerState,
+            @Nonnull IAntlrElement criteriaOwner)
     {
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
+        this.compilerState = Objects.requireNonNull(compilerState);
         this.criteriaOwner = Objects.requireNonNull(criteriaOwner);
-        this.thisReference = Objects.requireNonNull(thisReference);
     }
 
     @Nonnull
@@ -66,8 +56,8 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         EdgePointAntlrCriteria edgePointAntlrCriteria = new EdgePointAntlrCriteria(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(
@@ -84,15 +74,13 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         AntlrAndCriteria andCriteriaState = new AntlrAndCriteria(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
-                this.compilationUnit,
-                this.domainModelState,
-                andCriteriaState,
-                this.thisReference);
+                this.compilerState,
+                andCriteriaState);
 
         AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
         AntlrCriteria right = criteriaVisitor.visit(ctx.right);
@@ -123,20 +111,24 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaAll(@Nonnull CriteriaAllContext ctx)
     {
-        return new AllAntlrCriteria(ctx, this.compilationUnit, false, this.criteriaOwner);
+        return new AllAntlrCriteria(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                this.criteriaOwner);
     }
 
     @Nonnull
     @Override
     public OperatorAntlrCriteria visitCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
-        KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilationUnit);
+        KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilerState);
         AntlrOperator               operator        = operatorVisitor.visitOperator(ctx.operator());
 
         OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.criteriaOwner,
                 operator);
 
@@ -157,15 +149,13 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     {
         AntlrOrCriteria orCriteriaState = new AntlrOrCriteria(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
-                this.compilationUnit,
-                this.domainModelState,
-                orCriteriaState,
-                this.thisReference);
+                this.compilerState,
+                orCriteriaState);
 
         AntlrCriteria left  = criteriaVisitor.visit(ctx.left);
         AntlrCriteria right = criteriaVisitor.visit(ctx.right);
@@ -252,9 +242,8 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     private ExpressionValueVisitor getExpressionValueVisitor(IAntlrElement expressionValueOwner)
     {
         return new ExpressionValueVisitor(
-                this.compilationUnit,
-                this.thisReference,
-                this.domainModelState,
+                this.compilerState,
+                this.compilerState.getCompilerWalkState().getThisReference(),
                 expressionValueOwner);
     }
 

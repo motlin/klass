@@ -3,80 +3,57 @@ package cool.klass.model.converter.compiler.phase;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.phase.criteria.ExpressionValueVisitor;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByDirection;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByMemberReferencePath;
-import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.converter.compiler.state.service.AntlrService;
-import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
-import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
-import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MutableMap;
 
-public class OrderByPhase extends AbstractDomainModelCompilerPhase
+public class OrderByPhase extends AbstractCompilerPhase
 {
-    @Nullable
-    private AntlrParameterizedProperty parameterizedPropertyState;
-    @Nullable
-    private AntlrServiceGroup          serviceGroupState;
-    @Nullable
-    private AntlrUrl                   urlState;
-
     @Nonnull
     private Optional<AntlrOrderBy> orderByState = Optional.empty();
-    @Nullable
-    private AntlrService           serviceState;
 
-    public OrderByPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState,
-            boolean isInference)
+    public OrderByPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
     public void enterOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
     {
-        if (this.orderByOwnerState == null)
+        super.enterOrderByDeclaration(ctx);
+        if (this.compilerState.getCompilerWalkState().getOrderByOwnerState() == null)
         {
             return;
         }
 
         this.orderByState = Optional.of(new AntlrOrderBy(
                 ctx,
-                this.currentCompilationUnit,
-                false,
-                this.thisReference,
-                this.orderByOwnerState));
-        this.orderByOwnerState.setOrderByState(this.orderByState);
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerWalkState().getThisReference(),
+                this.compilerState.getCompilerWalkState().getOrderByOwnerState()));
+        this.compilerState.getCompilerWalkState().getOrderByOwnerState().setOrderByState(this.orderByState);
     }
 
     @Override
     public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
     {
         this.orderByState = null;
+        super.exitOrderByDeclaration(ctx);
     }
 
     @Override
     public void enterOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
     {
-        if (this.orderByOwnerState == null)
+        super.enterOrderByMemberReferencePath(ctx);
+        if (this.compilerState.getCompilerWalkState().getOrderByOwnerState() == null)
         {
             return;
         }
@@ -87,13 +64,15 @@ public class OrderByPhase extends AbstractDomainModelCompilerPhase
 
     private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
-        AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(orderByMemberReferencePathContext);
-        AntlrOrderByDirection orderByDirection = this.getAntlrOrderByDirection(orderByMemberReferencePathContext);
+        AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(
+                orderByMemberReferencePathContext);
+        AntlrOrderByDirection        orderByDirection        = this.getAntlrOrderByDirection(
+                orderByMemberReferencePathContext);
 
         return new AntlrOrderByMemberReferencePath(
                 orderByMemberReferencePathContext,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.orderByState.get(),
                 this.orderByState.get().getNumProperties(),
                 thisMemberReferencePath,
@@ -104,9 +83,8 @@ public class OrderByPhase extends AbstractDomainModelCompilerPhase
     private AntlrThisMemberReferencePath getAntlrThisMemberReferencePath(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
         ExpressionValueVisitor expressionValueVisitor = new ExpressionValueVisitor(
-                this.currentCompilationUnit,
-                this.thisReference,
-                this.domainModelState,
+                this.compilerState,
+                this.compilerState.getCompilerWalkState().getThisReference(),
                 this.orderByState.get());
 
         ThisMemberReferencePathContext thisMemberReferencePathContext = orderByMemberReferencePathContext.thisMemberReferencePath();
@@ -119,65 +97,7 @@ public class OrderByPhase extends AbstractDomainModelCompilerPhase
     {
         return new AntlrOrderByDirection(
                 orderByMemberReferencePathContext.orderByDirection(),
-                this.currentCompilationUnit,
-                false);
-    }
-
-    @Override
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
-    {
-        this.serviceGroupState = this.domainModelState.getServiceGroupByContext(ctx);
-    }
-
-    @Override
-    public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
-    {
-        this.serviceGroupState = null;
-    }
-
-    @Override
-    public void enterUrlDeclaration(UrlDeclarationContext ctx)
-    {
-        this.urlState = this.serviceGroupState.getUrlByContext(ctx);
-    }
-
-    @Override
-    public void exitUrlDeclaration(UrlDeclarationContext ctx)
-    {
-        this.urlState = null;
-    }
-
-    @Override
-    public void enterServiceDeclaration(ServiceDeclarationContext ctx)
-    {
-        this.serviceState = this.urlState.getServiceByContext(ctx);
-    }
-
-    @Override
-    public void exitServiceDeclaration(ServiceDeclarationContext ctx)
-    {
-        this.serviceState = null;
-    }
-
-    @Override
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
-    {
-        if (this.orderByOwnerState != null)
-        {
-            throw new IllegalStateException();
-        }
-        this.orderByOwnerState = this.parameterizedPropertyState;
-        this.parameterizedPropertyState = this.classState.getParameterizedPropertyByContext(ctx);
-    }
-
-    @Override
-    public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
-    {
-        if (this.orderByOwnerState != null)
-        {
-            throw new IllegalStateException();
-        }
-        this.orderByOwnerState = null;
-        this.parameterizedPropertyState = null;
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference());
     }
 }

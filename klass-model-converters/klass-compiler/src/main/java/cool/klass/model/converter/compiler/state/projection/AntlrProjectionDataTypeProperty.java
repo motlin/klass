@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -88,14 +88,14 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     }
 
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.getName());
         compilerErrorHolder.add(message, this);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
@@ -113,7 +113,7 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }

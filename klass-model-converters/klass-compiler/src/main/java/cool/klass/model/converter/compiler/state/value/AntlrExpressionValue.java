@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -45,7 +45,7 @@ public abstract class AntlrExpressionValue extends AntlrElement
     @Nonnull
     public abstract AbstractExpressionValueBuilder<?> build();
 
-    public abstract void reportErrors(CompilerErrorHolder compilerErrorHolder);
+    public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
     public abstract ImmutableList<AntlrType> getPossibleTypes();
 

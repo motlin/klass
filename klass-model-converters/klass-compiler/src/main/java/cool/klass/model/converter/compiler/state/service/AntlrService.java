@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -126,7 +126,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return this.serviceCriteriaByContext.get(ctx);
     }
 
-    public void reportDuplicateVerb(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateVerb(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
 
@@ -150,7 +150,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         this.serviceProjectionDispatchState = Objects.requireNonNull(projectionDispatch);
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateKeywords(compilerErrorHolder);
 
@@ -172,7 +172,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         }
     }
 
-    protected void reportDuplicateKeywords(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    protected void reportDuplicateKeywords(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
                 .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
@@ -185,7 +185,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerErrorHolder);
     }
 
-    private void reportInvalidProjection(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    private void reportInvalidProjection(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         AntlrProjection projection = this.serviceProjectionDispatchState.getProjection();
         this.serviceProjectionDispatchState.reportErrors(compilerErrorHolder);
@@ -213,7 +213,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     private void reportInvalidWriteProjection(
             AntlrProjection projection,
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+            @Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableList<AntlrDataTypeProperty<?>> requiredProperties = projection.getKlass()
                 .getDataTypePropertyStates()

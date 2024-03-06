@@ -14,7 +14,6 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionValueContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
-import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferencePathContext;
 
 public class PossibleJoinCriteriaListener extends KlassBaseListener
@@ -69,6 +68,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     @Override
     public void enterCriteriaOperator(CriteriaOperatorContext ctx)
     {
+        super.enterCriteriaOperator(ctx);
         if (ctx.operator().equalityOperator() == null)
         {
             this.allEqualityOperators = false;
@@ -97,8 +97,8 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     @Override
     public void enterTypeMemberReferencePath(TypeMemberReferencePathContext ctx)
     {
+        super.enterTypeMemberReferencePath(ctx);
         ClassReferenceContext                classReferenceContext           = ctx.classReference();
-        MemberReferenceContext               memberReferenceContext          = ctx.memberReference();
         List<AssociationEndReferenceContext> associationEndReferenceContexts = ctx.associationEndReference();
 
         AntlrClass klass = this.domainModelState.getClassByName(classReferenceContext.getText());

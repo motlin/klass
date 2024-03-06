@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -31,7 +31,7 @@ public abstract class AntlrModifier extends AntlrNamedElement
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // intentionally blank
     }

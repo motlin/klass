@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerError;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.test.constants.KlassTestConstants;
 import org.apache.commons.text.StringEscapeUtils;
@@ -18,9 +17,6 @@ import static org.junit.Assert.assertThat;
 
 public class KlassCompilerTest
 {
-    private final CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-    private final KlassCompiler       compiler            = new KlassCompiler(this.compilerErrorHolder);
-
     @Test
     public void stackOverflow()
     {

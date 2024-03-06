@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -60,7 +60,7 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
 
     @Nullable
     protected AntlrClass reportErrorsAssociationEnds(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull List<AssociationEndReferenceContext> associationEndReferenceContexts)
     {
         AntlrClass currentClassState = this.classState;

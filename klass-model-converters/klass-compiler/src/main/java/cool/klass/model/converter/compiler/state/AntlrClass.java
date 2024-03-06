@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -275,7 +275,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportNameErrors(compilerErrorHolder);
         this.reportKeywordCollision(compilerErrorHolder);
@@ -291,7 +291,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 

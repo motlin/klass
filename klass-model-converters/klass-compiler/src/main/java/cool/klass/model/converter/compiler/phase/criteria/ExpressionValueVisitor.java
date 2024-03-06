@@ -4,9 +4,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -38,23 +37,20 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValue>
 {
     @Nonnull
-    private final CompilationUnit  compilationUnit;
+    private final CompilerState compilerState;
+
     @Nonnull
     private final AntlrClass       thisReference;
-    @Nonnull
-    private final AntlrDomainModel domainModelState;
     @Nonnull
     private final IAntlrElement    expressionValueOwner;
 
     public ExpressionValueVisitor(
-            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull CompilerState compilerState,
             @Nonnull AntlrClass thisReference,
-            @Nonnull AntlrDomainModel domainModelState,
             IAntlrElement expressionValueOwner)
     {
-        this.compilationUnit = Objects.requireNonNull(compilationUnit);
+        this.compilerState = Objects.requireNonNull(compilerState);
         this.thisReference = Objects.requireNonNull(thisReference);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 
@@ -71,8 +67,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         AntlrLiteralListValue literalListValue = new AntlrLiteralListValue(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.expressionValueOwner);
 
         ImmutableList<AntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
@@ -87,8 +83,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         // TODO: Recurse here using a different owner?
         KlassVisitor<AntlrLiteralValue> visitor = new LiteralValueVisitor(
-                this.compilationUnit,
-                this.domainModelState,
+                this.compilerState,
                 expressionValueOwner);
         return visitor.visitLiteral(literalCtx);
     }
@@ -101,7 +96,11 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         switch (keyword)
         {
             case "user":
-                return new AntlrUserLiteral(ctx, this.compilationUnit, false, this.expressionValueOwner);
+                return new AntlrUserLiteral(
+                        ctx,
+                        this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                        this.compilerState.getCompilerInputState().isInference(),
+                        this.expressionValueOwner);
             default:
                 throw new AssertionError(keyword);
         }
@@ -113,7 +112,12 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         IdentifierContext identifier   = ctx.identifier();
         String            variableName = identifier.getText();
-        return new AntlrVariableReference(ctx, this.compilationUnit, false, variableName, this.expressionValueOwner);
+        return new AntlrVariableReference(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                variableName,
+                this.expressionValueOwner);
     }
 
     @Nonnull
@@ -138,8 +142,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
         return new AntlrThisMemberReferencePath(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.thisReference,
                 associationEndStates.toImmutable(),
                 dataTypePropertyState,
@@ -152,7 +156,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
         String                className             = classReferenceContext.identifier().getText();
-        AntlrClass            classState            = this.domainModelState.getClassByName(className);
+        AntlrClass            classState            = this.compilerState.getDomainModelState().getClassByName(className);
 
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
@@ -172,8 +176,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
 
         return new AntlrTypeMemberReferencePath(
                 ctx,
-                this.compilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 classState,
                 associationEndStates.toImmutable(),
                 dataTypePropertyState,

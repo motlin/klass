@@ -74,6 +74,18 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         return this.antlrPrimitiveType.isTemporal();
     }
 
+    @Override
+    public boolean isSystem()
+    {
+        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isSystem);
+    }
+
+    @Override
+    public boolean isValid()
+    {
+        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isValid);
+    }
+
     @Nonnull
     @Override
     public PrimitivePropertyBuilder build()

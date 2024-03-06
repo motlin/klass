@@ -3,7 +3,7 @@ package cool.klass.model.converter.compiler.state.operator;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.EqualityOperatorImpl.EqualityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
@@ -30,7 +30,7 @@ public class AntlrEqualityOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {

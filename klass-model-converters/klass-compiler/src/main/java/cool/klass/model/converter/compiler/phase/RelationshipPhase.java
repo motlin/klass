@@ -2,52 +2,35 @@ package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.map.MutableMap;
 
-public class RelationshipPhase extends AbstractDomainModelCompilerPhase
+public class RelationshipPhase extends AbstractCompilerPhase
 {
-    public RelationshipPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            boolean isInference,
-            AntlrDomainModel domainModelState)
+    public RelationshipPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
     public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
-        if (this.thisReference != null)
-        {
-            throw new IllegalStateException();
-        }
+        super.enterRelationship(ctx);
 
-        AntlrAssociation associationState = this.associationState;
-        this.thisReference = associationState.getAssociationEndStates()
-                .getFirstOptional()
-                .map(AntlrAssociationEnd::getType)
-                .orElse(AntlrClass.NOT_FOUND);
+        AntlrAssociation associationState = this.compilerState.getCompilerWalkState().getAssociationState();
 
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
-                this.currentCompilationUnit,
-                this.domainModelState,
-                associationState,
-                this.thisReference);
+                this.compilerState,
+                associationState);
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
         AntlrCriteria             criteriaState             = visitor.visit(criteriaExpressionContext);
@@ -82,7 +65,7 @@ public class RelationshipPhase extends AbstractDomainModelCompilerPhase
 
         if (possibleJoinCriteria)
         {
-            boolean foreignKeysOnThis = this.thisReference == typeWithForeignKeys;
+            boolean foreignKeysOnThis = this.compilerState.getCompilerWalkState().getThisReference() == typeWithForeignKeys;
             criteriaState.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
         }
     }
@@ -92,7 +75,7 @@ public class RelationshipPhase extends AbstractDomainModelCompilerPhase
             AntlrClass targetType)
     {
         PossibleJoinCriteriaListener listener = new PossibleJoinCriteriaListener(
-                this.domainModelState,
+                this.compilerState.getDomainModelState(),
                 targetType);
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         parseTreeWalker.walk(listener, criteriaExpressionContext);

@@ -7,15 +7,18 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -46,15 +49,19 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList());
-        Reflections         reflections         = new Reflections(configurationBuilder);
-        Set<String>         klassLocations      = reflections.getResources(Pattern.compile(".*\\.klass"));
-        CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-        KlassCompiler       klassCompiler       = new KlassCompiler(compilerErrorHolder);
-        DomainModel         domainModel         = klassCompiler.compile(klassLocations);
+        Reflections reflections    = new Reflections(configurationBuilder);
+        Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
 
-        if (compilerErrorHolder.hasCompilerErrors())
+        MutableSet<CompilationUnit> compilationUnits = SetAdapter.adapt(klassLocations)
+                .collect(CompilationUnit::createFromClasspathLocation);
+
+        CompilerState compilerState = new CompilerState(compilationUnits);
+        KlassCompiler klassCompiler = new KlassCompiler(compilerState);
+        DomainModel   domainModel   = klassCompiler.compile();
+
+        ImmutableList<CompilerError> compilerErrors = compilerState.getCompilerErrors();
+        if (compilerErrors.notEmpty())
         {
-            ImmutableList<CompilerError> compilerErrors = compilerErrorHolder.getCompilerErrors();
             for (CompilerError compilerError : compilerErrors)
             {
                 this.getLog().warn(compilerError.toString());

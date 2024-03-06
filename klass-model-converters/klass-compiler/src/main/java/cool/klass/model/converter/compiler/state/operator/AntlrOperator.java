@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -45,7 +45,7 @@ public abstract class AntlrOperator extends AntlrElement
     public abstract AbstractOperatorBuilder<?> build();
 
     public abstract void checkTypes(
-            CompilerErrorHolder compilerErrorHolder,
+            CompilerErrorState compilerErrorHolder,
             ListIterable<AntlrType> sourceTypes,
             ListIterable<AntlrType> targetTypes);
 }

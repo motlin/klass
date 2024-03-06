@@ -2,11 +2,9 @@ package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -22,20 +20,14 @@ import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ClassPhase extends AbstractDomainModelCompilerPhase
+public class ClassPhase extends AbstractCompilerPhase
 {
-    public ClassPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState,
-            boolean isInference)
+    public ClassPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
@@ -45,43 +37,39 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
 
         String classOrUserKeyword = ctx.classOrUser().getText();
 
-        this.classState = new AntlrClass(
+        AntlrClass classState = new AntlrClass(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx.identifier(),
                 ctx.identifier().getText(),
-                this.domainModelState.getNumTopLevelElements() + 1,
-                this.packageContext,
-                this.packageName,
+                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
+                this.compilerState.getAntlrWalkState().getPackageContext(),
+                this.compilerState.getCompilerWalkState().getPackageName(),
                 classOrUserKeyword.equals("user"));
-    }
-
-    @Override
-    public void exitClassDeclaration(ClassDeclarationContext ctx)
-    {
-        this.domainModelState.exitClassDeclaration(this.classState);
-        super.exitClassDeclaration(ctx);
+        this.compilerState.getCompilerWalkState().defineClass(classState);
     }
 
     @Override
     public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
-        int ordinal = this.classState.getNumClassModifiers();
+        super.enterClassModifier(ctx);
+        int ordinal = this.compilerState.getCompilerWalkState().getClassState().getNumClassModifiers();
         AntlrClassModifier classModifierState = new AntlrClassModifier(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx,
                 ctx.getText(),
                 ordinal + 1,
-                this.classState);
-        this.classState.enterClassModifier(classModifierState);
+                this.compilerState.getCompilerWalkState().getClassState());
+        this.compilerState.getCompilerWalkState().getClassState().enterClassModifier(classModifierState);
     }
 
     @Override
     public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
+        super.enterPrimitiveProperty(ctx);
         IdentifierContext     identifier            = ctx.identifier();
         PrimitiveTypeContext  primitiveTypeContext  = ctx.primitiveType();
         OptionalMarkerContext optionalMarkerContext = ctx.optionalMarker();
@@ -98,28 +86,30 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
 
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 identifier,
                 propertyName,
-                this.classState.getNumMembers() + 1,
-                this.classState,
+                this.compilerState.getCompilerWalkState().getClassState().getNumMembers() + 1,
+                this.compilerState.getCompilerWalkState().getClassState(),
                 isOptional,
                 propertyModifiers,
                 primitiveTypeState);
 
-        this.classState.enterDataTypeProperty(primitivePropertyState);
+        this.compilerState.getCompilerWalkState().getClassState().enterDataTypeProperty(primitivePropertyState);
     }
 
     @Override
     public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
+        super.enterEnumerationProperty(ctx);
+
         IdentifierContext           identifier                  = ctx.identifier();
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
         OptionalMarkerContext       optionalMarkerContext       = ctx.optionalMarker();
 
         String           propertyName     = identifier.getText();
-        AntlrEnumeration enumerationState = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
+        AntlrEnumeration enumerationState = this.compilerState.getDomainModelState().getEnumerationByName(enumerationReferenceContext.getText());
         boolean          isOptional       = optionalMarkerContext != null;
 
         // TODO: Superclass above all modifiers. Modifiers hold their owners.
@@ -129,16 +119,17 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
 
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 identifier,
                 propertyName,
-                this.classState.getNumMembers() + 1,
-                this.classState, isOptional,
+                this.compilerState.getCompilerWalkState().getClassState().getNumMembers() + 1,
+                this.compilerState.getCompilerWalkState().getClassState(),
+                isOptional,
                 propertyModifiers,
                 enumerationState);
 
-        this.classState.enterDataTypeProperty(primitivePropertyState);
+        this.compilerState.getCompilerWalkState().getClassState().enterDataTypeProperty(primitivePropertyState);
     }
 
     @Nonnull
@@ -146,8 +137,8 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
     {
         return new AntlrPropertyModifier(
                 context,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 context,
                 context.getText(),
                 ordinal + 1);

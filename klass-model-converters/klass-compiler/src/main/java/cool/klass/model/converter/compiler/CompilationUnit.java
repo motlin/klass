@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.eclipse.collections.api.block.function.Function;
 
@@ -107,6 +108,42 @@ public final class CompilationUnit
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
         return parser;
+    }
+
+    @Nonnull
+    public static CompilationUnit getMacroCompilationUnit(
+            @Nonnull ParserRuleContext parserContext,
+            @Nonnull Class<?> macroContextClass,
+            @Nonnull String sourceCodeText,
+            @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
+    {
+        String sourceName = getMacroSourceName(parserContext, macroContextClass);
+        return createFromText(sourceName, sourceCodeText, parserRule);
+    }
+
+    private static String getMacroSourceName(
+            @Nonnull ParserRuleContext parserContext,
+            @Nonnull Class<?> macroContextClass)
+    {
+        Token  contextToken   = parserContext.getStart();
+        String contextMessage = getContextMessage(contextToken);
+        return String.format(
+                "%s compiler macro (%s)",
+                macroContextClass.getSimpleName(),
+                contextMessage);
+    }
+
+    public static String getContextMessage(@Nonnull Token contextToken)
+    {
+        String sourceName         = contextToken.getInputStream().getSourceName();
+        int    line               = contextToken.getLine();
+        int    charPositionInLine = contextToken.getCharPositionInLine();
+
+        return String.format(
+                "File: %s Line: %d Char: %d",
+                sourceName,
+                line,
+                charPositionInLine + 1);
     }
 
     @Nonnull

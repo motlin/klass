@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -145,7 +145,7 @@ public class AntlrUrl extends AntlrElement
         }
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateParameterErrors(compilerErrorHolder);
         this.reportDuplicateVerbErrors(compilerErrorHolder);
@@ -155,7 +155,7 @@ public class AntlrUrl extends AntlrElement
         this.serviceStates.forEachWith(AntlrService::reportErrors, compilerErrorHolder);
     }
 
-    private void reportDuplicateParameterErrors(CompilerErrorHolder compilerErrorHolder)
+    private void reportDuplicateParameterErrors(CompilerErrorState compilerErrorHolder)
     {
         ImmutableBag<String> duplicateNames = this.urlParameters.getParameterStates()
                 .collect(AntlrNamedElement::getName)
@@ -168,7 +168,7 @@ public class AntlrUrl extends AntlrElement
                 .forEachWith(AntlrParameter::reportDuplicateParameterName, compilerErrorHolder);
     }
 
-    private void reportDuplicateVerbErrors(CompilerErrorHolder compilerErrorHolder)
+    private void reportDuplicateVerbErrors(CompilerErrorState compilerErrorHolder)
     {
         ImmutableBag<Verb> duplicateVerbs = this.serviceStates
                 .collect(AntlrService::getVerbState)
@@ -182,7 +182,7 @@ public class AntlrUrl extends AntlrElement
                 .forEachWith(AntlrService::reportDuplicateVerb, compilerErrorHolder);
     }
 
-    private void reportNoVerbs(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    private void reportNoVerbs(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.serviceStates.isEmpty())
         {

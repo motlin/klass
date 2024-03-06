@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -152,7 +152,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: ☑ Check that there are no duplicate modifiers
 
@@ -178,7 +178,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportNameErrors(compilerErrorHolder);
         this.parameterHolder.reportNameErrors(compilerErrorHolder);

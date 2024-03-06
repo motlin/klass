@@ -3,52 +3,28 @@ package cool.klass.model.converter.compiler.phase;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
-import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
-import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
-import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceMultiplicity;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceProjectionDispatch;
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
-import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
-import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
-import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
-import cool.klass.model.meta.grammar.KlassParser.ParameterModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.api.map.OrderedMap;
 
-public class ServicePhase extends AbstractDomainModelCompilerPhase
+public class ServicePhase extends AbstractCompilerPhase
 {
     @Nullable
     private AntlrServiceGroup serviceGroupState;
@@ -57,97 +33,75 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
     @Nullable
     private AntlrService      serviceState;
 
-    @Nullable
-    private Boolean        inQueryParameterList;
-    @Nullable
-    private AntlrParameter parameterState;
-
-    public ServicePhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            @Nonnull AntlrDomainModel domainModelState,
-            boolean isInference)
+    public ServicePhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
     public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
+        super.enterServiceGroupDeclaration(ctx);
+
         IdentifierContext classNameContext = ctx.classReference().identifier();
         String            className        = classNameContext.getText();
 
         this.serviceGroupState = new AntlrServiceGroup(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 classNameContext,
                 className,
-                this.domainModelState.getNumTopLevelElements() + 1,
-                this.packageContext,
-                this.packageName,
-                this.domainModelState.getClassByName(className));
+                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
+                this.compilerState.getAntlrWalkState().getPackageContext(),
+                this.compilerState.getCompilerWalkState().getPackageName(),
+                this.compilerState.getDomainModelState().getClassByName(className));
     }
 
     @Override
     public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.domainModelState.exitServiceGroupDeclaration(this.serviceGroupState);
+        this.compilerState.getDomainModelState().exitServiceGroupDeclaration(this.serviceGroupState);
         this.serviceGroupState = null;
+        super.exitServiceGroupDeclaration(ctx);
     }
 
     @Override
     public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        this.urlState = new AntlrUrl(ctx, this.currentCompilationUnit, false, this.serviceGroupState);
-        this.inQueryParameterList = false;
+        super.enterUrlDeclaration(ctx);
+        this.urlState = new AntlrUrl(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                this.serviceGroupState);
         this.serviceGroupState.enterUrlDeclaration(this.urlState);
     }
 
     @Override
     public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        // TODO: ♻️ It no longer makes sense to share one url for a bunch of services, because of inference like this
-        if (this.urlState.getServiceStates().anySatisfy(AntlrService::needsVersionCriteria))
-        {
-            this.inQueryParameterList = true;
-
-            this.runCompilerMacro(
-                    ctx.getStart(),
-                    ServicePhase.class.getSimpleName(),
-                    "{version: Integer[0..1] version}",
-                    KlassParser::urlParameterDeclaration);
-        }
-
-        // Resolve service variable references after inferring additional parameters like version
-        OrderedMap<String, AntlrParameter> formalParametersByName = this.urlState.getFormalParametersByName();
-        for (AntlrService serviceState : this.urlState.getServiceStates())
-        {
-            for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
-            {
-                AntlrCriteria criteria = serviceCriteriaState.getCriteria();
-                criteria.resolveServiceVariables(formalParametersByName);
-                // TODO: ❓ Type inference here?
-                criteria.resolveTypes();
-            }
-        }
-
         this.urlState = null;
-        this.inQueryParameterList = null;
+        super.exitUrlDeclaration(ctx);
     }
 
     @Override
     public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
-        VerbContext verb      = ctx.verb();
-        AntlrVerb   antlrVerb = new AntlrVerb(verb, this.currentCompilationUnit, false, Verb.valueOf(verb.getText()));
+        super.enterServiceDeclaration(ctx);
+        VerbContext verb = ctx.verb();
+        AntlrVerb antlrVerb = new AntlrVerb(
+                verb,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                Verb.valueOf(verb.getText()));
         AntlrServiceMultiplicity serviceMultiplicity =
                 this.getServiceMultiplicity(ctx.serviceDeclarationBody().serviceMultiplicityDeclaration());
 
         this.serviceState = new AntlrService(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.urlState,
                 antlrVerb,
                 serviceMultiplicity);
@@ -159,7 +113,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
         {
             return new AntlrServiceMultiplicity(
                     new ParserRuleContext(),
-                    this.currentCompilationUnit,
+                    this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                     true,
                     ServiceMultiplicity.ONE);
         }
@@ -168,8 +122,8 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
 
         return new AntlrServiceMultiplicity(
                 serviceMultiplicityContext,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.getServiceMultiplicity(serviceMultiplicityContext));
     }
 
@@ -190,86 +144,19 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
     @Override
     public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
-        if (this.serviceState.needsVersionCriteriaInferred())
-        {
-            // TODO: ♻️ Get names from model (system, version, number, version)
-            String sourceCodeText = "            version: this.system equalsEdgePoint && this.version.number == version;";
-            this.runCompilerMacro(
-                    ctx.getStart(),
-                    ServicePhase.class.getSimpleName(),
-                    sourceCodeText,
-                    KlassParser::serviceCriteriaDeclaration);
-        }
-
-        if (this.serviceState.needsConflictCriteriaInferred())
-        {
-            // TODO: ♻️ Get names from model (version, version)
-            String sourceCodeText = "            conflict: this.version.number == version;";
-            this.runCompilerMacro(
-                    ctx.getStart(),
-                    ServicePhase.class.getSimpleName(),
-                    sourceCodeText,
-                    KlassParser::serviceCriteriaDeclaration);
-        }
-
         this.urlState.exitServiceDeclaration(this.serviceState);
         this.serviceState = null;
-    }
-
-    @Override
-    public void enterUrlConstant(@Nonnull UrlConstantContext ctx)
-    {
-        AntlrUrlConstant antlrUrlConstant = new AntlrUrlConstant(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                ctx.identifier(),
-                ctx.identifier().getText(),
-                this.urlState.getNumPathSegments() + 1);
-        this.urlState.enterUrlConstant(antlrUrlConstant);
-    }
-
-    @Override
-    public void enterQueryParameterList(QueryParameterListContext ctx)
-    {
-        this.inQueryParameterList = true;
-    }
-
-    @Override
-    public void enterServiceCriteriaDeclaration(@Nonnull ServiceCriteriaDeclarationContext ctx)
-    {
-        ServiceCriteriaKeywordContext serviceCriteriaKeywordContext = ctx.serviceCriteriaKeyword();
-
-        String serviceCriteriaKeyword = serviceCriteriaKeywordContext.getText();
-
-        AntlrServiceCriteria serviceCriteriaState = new AntlrServiceCriteria(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                serviceCriteriaKeyword,
-                this.serviceState);
-
-        CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
-
-        CriteriaVisitor criteriaVisitor = new CriteriaVisitor(
-                this.currentCompilationUnit,
-                this.domainModelState,
-                serviceCriteriaState,
-                this.serviceGroupState.getKlass());
-
-        AntlrCriteria antlrCriteria = criteriaVisitor.visit(criteriaExpressionContext);
-        serviceCriteriaState.setCriteria(antlrCriteria);
-
-        this.serviceState.enterServiceCriteriaDeclaration(serviceCriteriaState);
+        super.exitServiceDeclaration(ctx);
     }
 
     @Override
     public void enterServiceProjectionDispatch(@Nonnull ServiceProjectionDispatchContext ctx)
     {
+        super.enterServiceProjectionDispatch(ctx);
         ProjectionReferenceContext projectionReferenceContext = ctx.projectionReference();
 
         String          projectionName = projectionReferenceContext.identifier().getText();
-        AntlrProjection projection     = this.domainModelState.getProjectionByName(projectionName);
+        AntlrProjection projection     = this.compilerState.getDomainModelState().getProjectionByName(projectionName);
 
         if (ctx.argumentList() != null && !ctx.argumentList().argument().isEmpty())
         {
@@ -278,101 +165,11 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
 
         AntlrServiceProjectionDispatch projectionDispatch = new AntlrServiceProjectionDispatch(
                 ctx,
-                this.currentCompilationUnit,
-                false,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 this.serviceState,
                 projection);
 
         this.serviceState.enterServiceProjectionDispatch(projectionDispatch);
-    }
-
-    @Override
-    public void enterPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
-    {
-        if (this.urlState == null)
-        {
-            return;
-        }
-
-        String        primitiveTypeName = ctx.primitiveType().getText();
-        PrimitiveType primitiveType     = PrimitiveType.byPrettyName(primitiveTypeName);
-        AntlrType     antlrType         = AntlrPrimitiveType.valueOf(primitiveType);
-
-        this.enterParameterDeclaration(ctx, antlrType, ctx.identifier(), ctx.multiplicity());
-    }
-
-    @Override
-    public void exitPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
-    {
-        this.parameterState = null;
-    }
-
-    @Override
-    public void enterEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
-    {
-        if (this.urlState == null)
-        {
-            return;
-        }
-
-        String    enumerationName = ctx.enumerationReference().getText();
-        AntlrType antlrType       = this.domainModelState.getEnumerationByName(enumerationName);
-
-        this.enterParameterDeclaration(ctx, antlrType, ctx.identifier(), ctx.multiplicity());
-    }
-
-    @Override
-    public void exitEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
-    {
-        this.parameterState = null;
-    }
-
-    private void enterParameterDeclaration(
-            @Nonnull ParserRuleContext ctx,
-            @Nonnull AntlrType antlrType,
-            @Nonnull IdentifierContext identifier, @Nonnull MultiplicityContext multiplicityContext)
-    {
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                multiplicityContext,
-                this.currentCompilationUnit,
-                false);
-
-        int ordinal = this.inQueryParameterList
-                ? this.urlState.getNumQueryParameters() + 1
-                : this.urlState.getNumPathSegments() + 1;
-
-        this.parameterState = new AntlrParameter(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                identifier,
-                identifier.getText(),
-                ordinal,
-                antlrType,
-                multiplicityState,
-                this.urlState);
-
-        if (this.inQueryParameterList)
-        {
-            this.urlState.enterQueryParameterDeclaration(this.parameterState);
-        }
-        else
-        {
-            this.urlState.enterPathParameterDeclaration(this.parameterState);
-        }
-    }
-
-    @Override
-    public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
-    {
-        int ordinal = this.parameterState.getNumModifiers();
-        AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                ctx,
-                ctx.getText(),
-                ordinal);
-        this.parameterState.enterParameterModifier(parameterModifierState);
     }
 }

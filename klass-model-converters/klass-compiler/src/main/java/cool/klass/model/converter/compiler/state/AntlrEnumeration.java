@@ -6,7 +6,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -113,19 +113,19 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportNameErrors(compilerErrorHolder);
         this.enumerationLiteralStates.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerErrorHolder);
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         this.logDuplicateLiteralNames(compilerErrorHolder);
         this.logDuplicatePrettyNames(compilerErrorHolder);
     }
 
-    public void logDuplicateLiteralNames(CompilerErrorHolder compilerErrorHolder)
+    public void logDuplicateLiteralNames(CompilerErrorState compilerErrorHolder)
     {
         MutableBag<String> duplicateNames = this.enumerationLiteralStates
                 .collect(AntlrNamedElement::getName)
@@ -138,7 +138,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
                 .forEachWith(AntlrEnumerationLiteral::reportDuplicateName, compilerErrorHolder);
     }
 
-    public void logDuplicatePrettyNames(CompilerErrorHolder compilerErrorHolder)
+    public void logDuplicatePrettyNames(CompilerErrorState compilerErrorHolder)
     {
         MutableBag<String> duplicatePrettyNames = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::getPrettyName)

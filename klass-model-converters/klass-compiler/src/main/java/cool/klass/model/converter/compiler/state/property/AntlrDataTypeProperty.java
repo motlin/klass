@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -78,6 +78,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.isOptional;
     }
 
+    public abstract boolean isSystem();
+
+    public abstract boolean isValid();
+
     public abstract boolean isTemporal();
 
     @Nonnull
@@ -115,7 +119,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     }
 
     @Override
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         // TODO: ☑ Check for duplicate modifiers
         // TODO: ☑ Check for nullable key properties

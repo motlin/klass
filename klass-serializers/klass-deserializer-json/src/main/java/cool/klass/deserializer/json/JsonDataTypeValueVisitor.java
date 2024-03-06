@@ -1,7 +1,10 @@
 package cool.klass.deserializer.json;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
@@ -54,7 +57,10 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
         {
             throw new AssertionError();
         }
-        this.result = this.jsonDataTypeValue.textValue();
+        String textValue = this.jsonDataTypeValue.textValue();
+        Optional<EnumerationLiteral> enumerationLiteral = enumerationProperty.getType().getEnumerationLiterals()
+                .detectOptional(each -> each.getPrettyName().equals(textValue));
+        this.result = enumerationLiteral.get();
     }
 
     @Override

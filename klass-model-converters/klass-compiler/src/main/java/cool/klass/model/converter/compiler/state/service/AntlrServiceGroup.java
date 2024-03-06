@@ -6,7 +6,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
@@ -95,7 +95,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         return (ServiceGroupDeclarationContext) super.getElementContext();
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportNoUrls(compilerErrorHolder);
         this.reportDuplicateUrls(compilerErrorHolder);
@@ -113,7 +113,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         // TODO: Not here, but report if there are more than one service group for a class.
     }
 
-    private void reportTypeNotFound(CompilerErrorHolder compilerErrorHolder)
+    private void reportTypeNotFound(CompilerErrorState compilerErrorHolder)
     {
         if (this.klass != AntlrClass.NOT_FOUND)
         {
@@ -127,7 +127,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
                 reference);
     }
 
-    private void reportDuplicateUrls(CompilerErrorHolder compilerErrorHolder)
+    private void reportDuplicateUrls(CompilerErrorState compilerErrorHolder)
     {
         // TODO: reportDuplicateUrls
         HashBagWithHashingStrategy<AntlrUrl> antlrUrls =
@@ -140,7 +140,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         }
     }
 
-    private void reportNoUrls(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    private void reportNoUrls(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.urlStates.isEmpty())
         {
@@ -152,7 +152,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         }
     }
 
-    public void reportDuplicateServiceGroupClass(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateServiceGroupClass(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
                 "ERR_DUP_SVC: Multiple service groups for class: '%s.%s'.",

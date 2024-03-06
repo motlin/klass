@@ -2,11 +2,9 @@ package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
@@ -15,18 +13,15 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MutableMap;
 
-public class AssociationPhase extends AbstractDomainModelCompilerPhase
+public class AssociationPhase extends AbstractCompilerPhase
 {
-    public AssociationPhase(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            boolean isInference,
-            AntlrDomainModel domainModelState)
+    private AntlrAssociation    associationState;
+    private AntlrAssociationEnd associationEndState;
+
+    public AssociationPhase(CompilerState compilerState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
+        super(compilerState);
     }
 
     @Override
@@ -37,20 +32,20 @@ public class AssociationPhase extends AbstractDomainModelCompilerPhase
         IdentifierContext identifier = ctx.identifier();
         this.associationState = new AntlrAssociation(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 identifier,
                 identifier.getText(),
-                this.domainModelState.getNumTopLevelElements() + 1,
-                this.packageContext,
-                this.packageName);
+                this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
+                this.compilerState.getAntlrWalkState().getPackageContext(),
+                this.compilerState.getCompilerWalkState().getPackageName());
     }
 
     @Override
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
         this.associationState.exitAssociationDeclaration();
-        this.domainModelState.exitAssociationDeclaration(this.associationState);
+        this.compilerState.getDomainModelState().exitAssociationDeclaration(this.associationState);
 
         super.exitAssociationDeclaration(ctx);
     }
@@ -62,17 +57,17 @@ public class AssociationPhase extends AbstractDomainModelCompilerPhase
 
         ClassTypeContext classTypeContext = ctx.classType();
         String           className        = classTypeContext.classReference().getText();
-        AntlrClass       antlrClass       = this.domainModelState.getClassByName(className);
+        AntlrClass       antlrClass       = this.compilerState.getDomainModelState().getClassByName(className);
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
-                this.currentCompilationUnit,
-                this.isInference);
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference());
 
         String associationEndName = ctx.identifier().getText();
         this.associationEndState = new AntlrAssociationEnd(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx.identifier(),
                 associationEndName,
                 this.associationState.getNumAssociationEnds() + 1,
@@ -86,10 +81,11 @@ public class AssociationPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterAssociationEndModifier(@Nonnull AssociationEndModifierContext ctx)
     {
+        super.enterAssociationEndModifier(ctx);
         AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
                 ctx,
-                this.currentCompilationUnit,
-                this.isInference,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
                 ctx,
                 ctx.getText(),
                 this.associationEndState.getNumModifiers() + 1,

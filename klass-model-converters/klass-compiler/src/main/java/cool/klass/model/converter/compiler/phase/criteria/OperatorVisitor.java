@@ -1,8 +1,10 @@
 package cool.klass.model.converter.compiler.phase.criteria;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.operator.AntlrEqualityOperator;
 import cool.klass.model.converter.compiler.state.operator.AntlrInOperator;
 import cool.klass.model.converter.compiler.state.operator.AntlrInequalityOperator;
@@ -17,11 +19,11 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
 {
-    private final CompilationUnit compilationUnit;
+    private final CompilerState compilerState;
 
-    public OperatorVisitor(CompilationUnit compilationUnit)
+    public OperatorVisitor(CompilerState compilerState)
     {
-        this.compilationUnit = compilationUnit;
+        this.compilerState = Objects.requireNonNull(compilerState);
     }
 
     @Nonnull
@@ -35,27 +37,43 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
     @Override
     public AntlrEqualityOperator visitEqualityOperator(@Nonnull EqualityOperatorContext ctx)
     {
-        return new AntlrEqualityOperator(ctx, this.compilationUnit, false, ctx.getText());
+        return new AntlrEqualityOperator(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                ctx.getText());
     }
 
     @Nonnull
     @Override
     public AntlrInequalityOperator visitInequalityOperator(@Nonnull InequalityOperatorContext ctx)
     {
-        return new AntlrInequalityOperator(ctx, this.compilationUnit, false, ctx.getText());
+        return new AntlrInequalityOperator(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                ctx.getText());
     }
 
     @Nonnull
     @Override
     public AntlrInOperator visitInOperator(@Nonnull InOperatorContext ctx)
     {
-        return new AntlrInOperator(ctx, this.compilationUnit, false, ctx.getText());
+        return new AntlrInOperator(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                ctx.getText());
     }
 
     @Nonnull
     @Override
     public AntlrStringOperator visitStringOperator(@Nonnull StringOperatorContext ctx)
     {
-        return new AntlrStringOperator(ctx, this.compilationUnit, false, ctx.getText());
+        return new AntlrStringOperator(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                ctx.getText());
     }
 }

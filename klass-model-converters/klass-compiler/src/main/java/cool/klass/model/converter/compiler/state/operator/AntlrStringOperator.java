@@ -3,7 +3,7 @@ package cool.klass.model.converter.compiler.state.operator;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.StringOperatorImpl.StringOperatorBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -29,7 +29,7 @@ public class AntlrStringOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            CompilerErrorHolder compilerErrorHolder,
+            CompilerErrorState compilerErrorHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             ListIterable<AntlrType> targetTypes)
     {

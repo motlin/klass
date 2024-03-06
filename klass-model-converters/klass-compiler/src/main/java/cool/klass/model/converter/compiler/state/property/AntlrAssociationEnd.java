@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
@@ -139,7 +139,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     @Override
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         // TODO: ☑ Check that there are no duplicate modifiers
 
@@ -196,7 +196,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     public void reportDuplicateVersionProperty(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull AntlrClass antlrClass)
     {
         AntlrAssociationEndModifier versionModifier = this.associationEndModifierStates.detect(
@@ -208,7 +208,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     public void reportDuplicateVersionedProperty(
-            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull AntlrClass antlrClass)
     {
         String message = String.format(

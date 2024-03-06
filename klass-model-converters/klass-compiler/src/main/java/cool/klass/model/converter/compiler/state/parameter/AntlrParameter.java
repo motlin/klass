@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
@@ -107,13 +107,13 @@ public final class AntlrParameter extends AntlrNamedElement
         this.parameterModifiers.add(parameterModifierState);
     }
 
-    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportNameErrors(compilerErrorHolder);
         this.reportTypeErrors(compilerErrorHolder);
     }
 
-    private void reportTypeErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    private void reportTypeErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.typeState != AntlrEnumeration.NOT_FOUND)
         {
@@ -127,7 +127,7 @@ public final class AntlrParameter extends AntlrNamedElement
         compilerErrorHolder.add(message, this, offendingToken);
     }
 
-    public void reportDuplicateParameterName(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportDuplicateParameterName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_PAR: Duplicate parameter: '%s'.", this.getName());
         compilerErrorHolder.add(message, this);

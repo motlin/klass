@@ -3,7 +3,7 @@ package cool.klass.model.converter.compiler.state.criteria;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
@@ -35,7 +35,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
