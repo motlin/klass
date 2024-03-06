@@ -109,7 +109,8 @@ public abstract class AbstractCompilerError
 
         KlassListener errorUnderlineListener = new ErrorUnderlineListener(
                 this.compilationUnit,
-                contextualStrings);
+                contextualStrings,
+                this instanceof RootCompilerError);
         this.offendingContexts.forEachWith(ParserRuleContext::enterRule, errorUnderlineListener);
 
         for (SourceContext sourceContext : this.sourceContexts)

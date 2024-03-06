@@ -40,17 +40,22 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 import static org.fusesource.jansi.Ansi.Color.BLACK;
+import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class ErrorUnderlineListener
         extends AbstractErrorListener
 {
+    private final boolean isRoot;
+
     public ErrorUnderlineListener(
             @Nonnull CompilationUnit compilationUnit,
-            @Nonnull MutableList<AbstractContextString> contextualStrings)
+            @Nonnull MutableList<AbstractContextString> contextualStrings,
+            boolean isRoot)
     {
         super(compilationUnit, contextualStrings);
+        this.isRoot = isRoot;
     }
 
     @Override
@@ -303,7 +308,7 @@ public class ErrorUnderlineListener
                 .collect(AbstractErrorListener::colorize)
                 .makeString("");
 
-        String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(startToken, stopToken);
+        String errorStringUnderlined = this.getErrorLineStringUnderlined(startToken, stopToken);
 
         this.contextualStrings.add(new ContextString(startLine, errorLine));
         // TODO: Something about this
@@ -311,7 +316,7 @@ public class ErrorUnderlineListener
     }
 
     @Nonnull
-    private static String getErrorLineStringUnderlined(@Nonnull Token startToken, @Nonnull Token stopToken)
+    private String getErrorLineStringUnderlined(@Nonnull Token startToken, @Nonnull Token stopToken)
     {
         int start              = startToken.getStartIndex();
         int stop               = stopToken.getStopIndex();
@@ -331,6 +336,6 @@ public class ErrorUnderlineListener
 
         return ansi()
                 .a(whitespaceBuffer.toString())
-                .bg(BLACK).fgBright(RED).a(caretBuffer.toString()).toString();
+                .bg(BLACK).fgBright(this.isRoot ? RED : GREEN).a(caretBuffer.toString()).toString();
     }
 }
