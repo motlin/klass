@@ -22,8 +22,9 @@ public class AntlrProjection extends AntlrProjectionParent
             true,
             new ParserRuleContext(),
             "ambiguous projection",
-            AntlrClass.AMBIGUOUS, null
-    );
+            -1,
+            AntlrClass.AMBIGUOUS,
+            null);
 
     @Nonnull
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
@@ -32,8 +33,9 @@ public class AntlrProjection extends AntlrProjectionParent
             true,
             new ParserRuleContext(),
             "not found projection",
-            AntlrClass.NOT_FOUND, null
-    );
+            -1,
+            AntlrClass.NOT_FOUND,
+            null);
 
     private final String packageName;
 
@@ -45,10 +47,11 @@ public class AntlrProjection extends AntlrProjectionParent
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrClass klass,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, klass);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, klass);
         this.packageName = packageName;
     }
 
@@ -63,7 +66,7 @@ public class AntlrProjection extends AntlrProjectionParent
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.packageName,
+                ordinal, this.packageName,
                 this.klass.getKlassBuilder());
 
         ImmutableList<ProjectionElementBuilder> children = this.children

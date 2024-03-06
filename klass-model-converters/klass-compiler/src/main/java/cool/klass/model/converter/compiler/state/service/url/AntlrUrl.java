@@ -78,6 +78,16 @@ public class AntlrUrl extends AntlrElement
         return this.serviceStates.asUnmodifiable();
     }
 
+    public int getNumPathSegments()
+    {
+        return this.urlPathSegments.size();
+    }
+
+    public int getNumQueryParameters()
+    {
+        return this.urlQueryParameterStates.size();
+    }
+
     public void enterUrlConstant(AntlrUrlConstant antlrUrlConstant)
     {
         this.urlPathSegments.add(antlrUrlConstant);

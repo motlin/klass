@@ -15,6 +15,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull PrimitiveType primitiveType,
             @Nonnull Klass owningKlass,
             boolean isKey,
@@ -25,6 +26,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 elementContext,
                 nameContext,
                 name,
+                ordinal,
                 primitiveType,
                 owningKlass,
                 isKey,
@@ -65,13 +67,22 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull PrimitiveTypeBuilder primitiveTypeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional,
                 boolean isID)
         {
-            super(elementContext, nameContext, name, primitiveTypeBuilder, owningKlassBuilder, isKey, isOptional);
+            super(
+                    elementContext,
+                    nameContext,
+                    name,
+                    ordinal,
+                    primitiveTypeBuilder,
+                    owningKlassBuilder,
+                    isKey,
+                    isOptional);
             this.isID = isID;
         }
 
@@ -86,6 +97,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.typeBuilder.getPrimitiveType(),
                     this.owningKlassBuilder.getKlass(),
                     this.isKey,

@@ -15,9 +15,10 @@ public abstract class ProjectionParent extends NamedElement implements Projectio
     protected ProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name)
+            @Nonnull String name,
+            int ordinal)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
     }
 
     @Override
@@ -38,9 +39,10 @@ public abstract class ProjectionParent extends NamedElement implements Projectio
         protected ProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name)
+                @Nonnull String name,
+                int ordinal)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
         }
 
         public void setChildBuilders(@Nonnull ImmutableList<ProjectionElementBuilder> projectionChildrenBuilders)

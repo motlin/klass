@@ -99,6 +99,7 @@ public class ServicePhase extends AbstractCompilerPhase
                 false,
                 classNameContext,
                 className,
+                this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName,
                 klass);
     }
@@ -237,7 +238,8 @@ public class ServicePhase extends AbstractCompilerPhase
                 this.currentCompilationUnit,
                 false,
                 ctx.identifier(),
-                ctx.identifier().getText());
+                ctx.identifier().getText(),
+                this.urlState.getNumPathSegments() + 1);
         this.urlState.enterUrlConstant(antlrUrlConstant);
     }
 
@@ -333,6 +335,7 @@ public class ServicePhase extends AbstractCompilerPhase
                     false,
                     identifier,
                     identifier.getText(),
+                    this.urlState.getNumQueryParameters() + 1,
                     primitiveTypeState,
                     multiplicityState,
                     this.urlState,
@@ -348,6 +351,7 @@ public class ServicePhase extends AbstractCompilerPhase
                     false,
                     identifier,
                     identifier.getText(),
+                    this.urlState.getNumPathSegments() + 1,
                     primitiveTypeState,
                     multiplicityState,
                     this.urlState,
@@ -383,6 +387,7 @@ public class ServicePhase extends AbstractCompilerPhase
                     false,
                     identifier,
                     identifier.getText(),
+                    this.urlState.getNumQueryParameters() + 1,
                     antlrEnumeration,
                     antlrMultiplicity,
                     this.urlState,
@@ -398,6 +403,7 @@ public class ServicePhase extends AbstractCompilerPhase
                     false,
                     identifier,
                     identifier.getText(),
+                    this.urlState.getNumPathSegments(),
                     antlrEnumeration,
                     antlrMultiplicity,
                     this.urlState,

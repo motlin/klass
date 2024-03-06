@@ -93,6 +93,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
                 false,
                 ctx,
                 name,
+                classState.getNumMembers() + 1,
                 false,
                 Lists.immutable.empty(),
                 classState,

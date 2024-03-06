@@ -19,9 +19,10 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AssociationEnd associationEnd)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
@@ -54,9 +55,10 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
 
@@ -71,6 +73,7 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.associationEndBuilder.getAssociationEnd());
 
             ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);

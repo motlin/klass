@@ -22,6 +22,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             true,
             new ParserRuleContext(),
             "not found enumeration property",
+            -1,
             false,
             Lists.immutable.empty(),
             AntlrClass.NOT_FOUND,
@@ -39,12 +40,22 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
             @Nonnull AntlrEnumeration antlrEnumeration)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, isOptional, modifiers, owningClassState);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                nameContext,
+                name,
+                ordinal,
+                isOptional,
+                modifiers,
+                owningClassState);
         // TODO: is this nullable?
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }
@@ -74,7 +85,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.antlrEnumeration.getEnumerationBuilder(),
+                ordinal, this.antlrEnumeration.getEnumerationBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 this.isKey(),
                 this.isOptional);

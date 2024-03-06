@@ -17,9 +17,10 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathS
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name)
+            @Nonnull String name,
+            int ordinal)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
     }
 
     @Nonnull
@@ -33,7 +34,7 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathS
     @Override
     public UrlPathSegmentBuilder build()
     {
-        return new UrlConstantBuilder(this.elementContext, this.nameContext, this.name);
+        return new UrlConstantBuilder(this.elementContext, this.nameContext, this.name, ordinal);
     }
 
     @Override

@@ -24,13 +24,14 @@ public final class AssociationEnd extends Property<Klass>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull Klass type,
             @Nonnull Klass owningKlass,
             @Nonnull Association owningAssociation,
             @Nonnull Multiplicity multiplicity,
             boolean owned)
     {
-        super(elementContext, nameContext, name, type, owningKlass);
+        super(elementContext, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.owned = owned;
@@ -83,13 +84,14 @@ public final class AssociationEnd extends Property<Klass>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull KlassBuilder type,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull AssociationBuilder owningAssociation,
                 @Nonnull Multiplicity multiplicity,
                 boolean isOwned)
         {
-            super(elementContext, nameContext, name, type, owningKlassBuilder);
+            super(elementContext, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
             this.multiplicity = Objects.requireNonNull(multiplicity);
             this.isOwned = isOwned;
@@ -107,6 +109,7 @@ public final class AssociationEnd extends Property<Klass>
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.typeBuilder.getKlass(),
                     this.owningKlassBuilder.getKlass(),
                     this.owningAssociation.getAssociation(),

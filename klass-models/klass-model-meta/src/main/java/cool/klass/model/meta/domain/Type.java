@@ -11,9 +11,10 @@ public abstract class Type extends PackageableElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, nameContext, name, packageName);
+        super(elementContext, nameContext, name, ordinal, packageName);
     }
 
     public abstract static class TypeBuilder extends PackageableElementBuilder
@@ -22,9 +23,10 @@ public abstract class Type extends PackageableElement
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, nameContext, name, packageName);
+            super(elementContext, nameContext, name, ordinal, packageName);
         }
 
         public abstract Type getType();

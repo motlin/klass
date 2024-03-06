@@ -18,12 +18,13 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull T dataType,
             @Nonnull Klass owningKlass,
             boolean isKey,
             boolean isOptional)
     {
-        super(elementContext, nameContext, name, dataType, owningKlass);
+        super(elementContext, nameContext, name, ordinal, dataType, owningKlass);
         this.key = isKey;
         this.optional = isOptional;
     }
@@ -53,12 +54,13 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull TB typeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, typeBuilder, owningKlassBuilder);
+            super(elementContext, nameContext, name, ordinal, typeBuilder, owningKlassBuilder);
             this.isKey = isKey;
             this.isOptional = isOptional;
         }

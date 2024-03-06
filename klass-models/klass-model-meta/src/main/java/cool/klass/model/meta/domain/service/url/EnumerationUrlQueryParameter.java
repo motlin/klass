@@ -19,11 +19,12 @@ public final class EnumerationUrlQueryParameter extends UrlQueryParameter
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url,
             @Nonnull Enumeration enumeration)
     {
-        super(elementContext, nameContext, name, multiplicity, url);
+        super(elementContext, nameContext, name, ordinal, multiplicity, url);
         this.enumeration = Objects.requireNonNull(enumeration);
     }
 
@@ -44,11 +45,12 @@ public final class EnumerationUrlQueryParameter extends UrlQueryParameter
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
-            super(elementContext, nameContext, name, multiplicity, urlBuilder);
+            super(elementContext, nameContext, name, ordinal, multiplicity, urlBuilder);
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 
@@ -64,6 +66,7 @@ public final class EnumerationUrlQueryParameter extends UrlQueryParameter
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.multiplicity,
                     this.urlBuilder.getUrl(),
                     this.enumerationBuilder.getEnumeration());

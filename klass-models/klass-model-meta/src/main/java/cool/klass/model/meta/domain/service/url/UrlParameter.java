@@ -21,10 +21,11 @@ public abstract class UrlParameter extends NamedElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
         this.url = Objects.requireNonNull(url);
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
@@ -55,10 +56,11 @@ public abstract class UrlParameter extends NamedElement
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
             this.multiplicity = Objects.requireNonNull(multiplicity);
             this.urlBuilder = Objects.requireNonNull(urlBuilder);
         }

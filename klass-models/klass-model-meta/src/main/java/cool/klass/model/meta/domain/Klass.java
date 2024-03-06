@@ -29,11 +29,12 @@ public final class Klass extends Type
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull String packageName,
             boolean isUser,
             boolean isTransient)
     {
-        super(elementContext, nameContext, name, packageName);
+        super(elementContext, nameContext, name, ordinal, packageName);
         this.isUser = isUser;
         this.isTransient = isTransient;
     }
@@ -107,11 +108,12 @@ public final class Klass extends Type
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull String packageName,
                 boolean isUser,
                 boolean isTransient)
         {
-            super(elementContext, nameContext, name, packageName);
+            super(elementContext, nameContext, name, ordinal, packageName);
             this.isUser = isUser;
             this.isTransient = isTransient;
         }
@@ -147,6 +149,7 @@ public final class Klass extends Type
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.packageName,
                     this.isUser,
                     this.isTransient);

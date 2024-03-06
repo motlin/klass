@@ -23,10 +23,11 @@ public final class Association extends PackageableElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull String packageName,
             Criteria criteria)
     {
-        super(elementContext, nameContext, name, packageName);
+        super(elementContext, nameContext, name, ordinal, packageName);
         this.criteria = criteria;
     }
 
@@ -73,10 +74,11 @@ public final class Association extends PackageableElement
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull String packageName,
                 @Nonnull CriteriaBuilder criteriaBuilder)
         {
-            super(elementContext, nameContext, name, packageName);
+            super(elementContext, nameContext, name, ordinal, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
@@ -95,6 +97,7 @@ public final class Association extends PackageableElement
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.packageName,
                     this.criteriaBuilder.build());
 

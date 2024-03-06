@@ -10,9 +10,10 @@ public final class UrlConstant extends NamedElement implements UrlPathSegment
     private UrlConstant(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name)
+            @Nonnull String name,
+            int ordinal)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
     }
 
     @Override
@@ -26,15 +27,16 @@ public final class UrlConstant extends NamedElement implements UrlPathSegment
         public UrlConstantBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name)
+                @Nonnull String name,
+                int ordinal)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
         }
 
         @Override
         public UrlConstant build()
         {
-            return new UrlConstant(this.elementContext, this.nameContext, this.name);
+            return new UrlConstant(this.elementContext, this.nameContext, this.name, this.ordinal);
         }
     }
 }

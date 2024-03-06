@@ -26,11 +26,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.isOptional = isOptional;
         this.modifiers = Objects.requireNonNull(modifiers);
         this.owningClassState = owningClassState;

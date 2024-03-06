@@ -54,6 +54,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 false,
                 nameContext,
                 nameContext.getText(),
+                this.domainModelState.getNumTopLevelElements() + 1,
                 klass,
                 this.packageName);
         this.elementStack.push(antlrProjection);
@@ -64,37 +65,6 @@ public class ProjectionPhase extends AbstractCompilerPhase
     {
         AntlrProjection antlrProjection = (AntlrProjection) this.elementStack.pop();
         this.domainModelState.exitProjectionDeclaration(antlrProjection);
-    }
-
-    @Override
-    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
-    {
-        AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
-
-        IdentifierContext nameContext = ctx.identifier();
-        String            name        = nameContext.getText();
-
-        AntlrClass          antlrClass          = antlrProjectionParent.getKlass();
-        AntlrAssociationEnd antlrAssociationEnd = antlrClass.getAssociationEndByName(name);
-
-        AntlrProjectionAssociationEnd antlrProjectionAssociationEnd = new AntlrProjectionAssociationEnd(
-                ctx,
-                this.currentCompilationUnit,
-                false,
-                nameContext,
-                name,
-                antlrAssociationEnd.getType(),
-                antlrProjectionParent, antlrAssociationEnd);
-
-        antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionAssociationEnd);
-
-        this.elementStack.push(antlrProjectionAssociationEnd);
-    }
-
-    @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
-    {
-        this.elementStack.pop();
     }
 
     @Override
@@ -115,13 +85,47 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                name,
                 nameContext,
+                name,
+                antlrProjectionParent.getNumChildren() + 1,
                 antlrProjectionParent,
-                header, headerText,
+                header,
+                headerText,
                 dataTypeProperty);
 
         antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionPrimitiveMember);
+    }
+
+    @Override
+    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
+    {
+        AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
+
+        IdentifierContext nameContext = ctx.identifier();
+        String            name        = nameContext.getText();
+
+        AntlrClass          antlrClass          = antlrProjectionParent.getKlass();
+        AntlrAssociationEnd antlrAssociationEnd = antlrClass.getAssociationEndByName(name);
+
+        AntlrProjectionAssociationEnd antlrProjectionAssociationEnd = new AntlrProjectionAssociationEnd(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                nameContext,
+                name,
+                antlrProjectionParent.getNumChildren() + 1,
+                antlrAssociationEnd.getType(),
+                antlrProjectionParent, antlrAssociationEnd);
+
+        antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionAssociationEnd);
+
+        this.elementStack.push(antlrProjectionAssociationEnd);
+    }
+
+    @Override
+    public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    {
+        this.elementStack.pop();
     }
 
     @Override

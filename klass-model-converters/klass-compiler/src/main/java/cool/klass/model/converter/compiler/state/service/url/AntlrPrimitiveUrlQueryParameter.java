@@ -23,6 +23,7 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
             true,
             new ParserRuleContext(),
             "ambiguous primitive url parameter",
+            -1,
             AntlrPrimitiveType.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
             AntlrUrl.AMBIGUOUS,
@@ -38,6 +39,7 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrPrimitiveType primitiveTypeState,
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull AntlrUrl urlState,
@@ -49,6 +51,7 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
                 inferred,
                 nameContext,
                 name,
+                ordinal,
                 multiplicityState,
                 urlState,
                 parameterModifiers);
@@ -80,7 +83,7 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.multiplicityState.getMultiplicity(),
+                ordinal, this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
                 this.primitiveTypeState.getPrimitiveType());
         return this.primitiveUrlQueryParameterBuilder;

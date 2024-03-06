@@ -12,10 +12,11 @@ public abstract class UrlPathParameter extends UrlParameter implements UrlPathSe
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url)
     {
-        super(elementContext, nameContext, name, multiplicity, url);
+        super(elementContext, nameContext, name, ordinal, multiplicity, url);
     }
 
     public abstract static class UrlPathParameterBuilder extends UrlParameterBuilder implements UrlPathSegmentBuilder
@@ -24,10 +25,11 @@ public abstract class UrlPathParameter extends UrlParameter implements UrlPathSe
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder)
         {
-            super(elementContext, nameContext, name, multiplicity, urlBuilder);
+            super(elementContext, nameContext, name, ordinal, multiplicity, urlBuilder);
         }
 
         @Nonnull

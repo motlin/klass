@@ -24,6 +24,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             true,
             Element.NO_CONTEXT,
             "ambiguous primitive property name",
+            -1,
             false,
             Lists.immutable.empty(),
             AntlrClass.AMBIGUOUS,
@@ -40,12 +41,22 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, isOptional, modifiers, owningClassState);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                nameContext,
+                name,
+                ordinal,
+                isOptional,
+                modifiers,
+                owningClassState);
         this.antlrPrimitiveType = Objects.requireNonNull(antlrPrimitiveType);
     }
 
@@ -74,7 +85,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.antlrPrimitiveType.build(),
+                ordinal, this.antlrPrimitiveType.build(),
                 this.owningClassState.getKlassBuilder(),
                 this.isKey(),
                 this.isOptional,

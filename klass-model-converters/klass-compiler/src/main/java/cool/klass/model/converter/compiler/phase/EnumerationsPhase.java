@@ -40,6 +40,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 false,
                 identifier,
                 identifier.getText(),
+                this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName);
     }
 
@@ -65,8 +66,8 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                literalName,
-                ctx.identifier(),
+                ctx.identifier(), literalName,
+                this.enumerationState.getNumLiterals() + 1,
                 prettyName,
                 this.enumerationState);
         this.enumerationState.enterEnumerationLiteral(antlrEnumerationLiteral);

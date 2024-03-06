@@ -15,8 +15,8 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(),
             null,
             true,
-            "ambiguous enumeration literal",
-            new ParserRuleContext(),
+            new ParserRuleContext(), "ambiguous enumeration literal",
+            -1,
             null,
             null);
     @Nonnull
@@ -24,8 +24,8 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(),
             null,
             true,
-            "not found enumeration literal",
-            new ParserRuleContext(),
+            new ParserRuleContext(), "not found enumeration literal",
+            -1,
             null,
             null);
 
@@ -38,12 +38,13 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
             @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            int ordinal,
             String prettyName,
             AntlrEnumeration owningEnumeration)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.prettyName = prettyName;
         this.owningEnumeration = owningEnumeration;
     }
@@ -64,7 +65,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.getElementContext(),
                 this.nameContext,
                 this.name,
-                this.prettyName,
+                ordinal, this.prettyName,
                 this.owningEnumeration.getEnumerationBuilder());
         return this.enumerationLiteralBuilder;
     }

@@ -12,15 +12,18 @@ public abstract class NamedElement extends Element
     private final ParserRuleContext nameContext;
     @Nonnull
     private final String            name;
+    private final int               ordinal;
 
     protected NamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name)
+            @Nonnull String name,
+            int ordinal)
     {
         super(elementContext);
         this.nameContext = Objects.requireNonNull(nameContext);
         this.name = Objects.requireNonNull(name);
+        this.ordinal = ordinal;
     }
 
     @Nonnull
@@ -35,21 +38,29 @@ public abstract class NamedElement extends Element
         return this.name;
     }
 
+    public int getOrdinal()
+    {
+        return this.ordinal;
+    }
+
     public abstract static class NamedElementBuilder extends ElementBuilder
     {
         @Nonnull
         protected final ParserRuleContext nameContext;
         @Nonnull
         protected final String            name;
+        protected final int               ordinal;
 
         protected NamedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name)
+                @Nonnull String name,
+                int ordinal)
         {
             super(elementContext);
             this.nameContext = Objects.requireNonNull(nameContext);
             this.name = Objects.requireNonNull(name);
+            this.ordinal = ordinal;
         }
 
         @Nonnull

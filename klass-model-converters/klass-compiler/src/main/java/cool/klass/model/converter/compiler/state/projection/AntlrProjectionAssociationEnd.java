@@ -26,6 +26,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             true,
             new ParserRuleContext(),
             "ambiguous projection",
+            -1,
             AntlrClass.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
             AntlrAssociationEnd.AMBIGUOUS);
@@ -37,6 +38,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             true,
             new ParserRuleContext(),
             "not found projection",
+            -1,
             AntlrClass.NOT_FOUND,
             AntlrProjection.AMBIGUOUS,
             AntlrAssociationEnd.AMBIGUOUS);
@@ -55,11 +57,12 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrClass klass,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrAssociationEnd associationEnd)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, klass);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -76,7 +79,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.associationEnd.getAssociationEndBuilder());
+                ordinal, this.associationEnd.getAssociationEndBuilder());
 
         ImmutableList<ProjectionElementBuilder> projectionMemberBuilders = this.children
                 .collect(AntlrProjectionElement::build)
@@ -91,12 +94,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public AntlrProjectionParent getParent()
     {
         return this.antlrProjectionParent;
-    }
-
-    @Override
-    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        // Intentionally blank. Reference to a named element that gets its name checked.
     }
 
     @Override
@@ -132,6 +129,12 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // Intentionally blank. Reference to a named element that gets its name checked.
     }
 
     @Nonnull

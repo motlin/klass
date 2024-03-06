@@ -29,11 +29,12 @@ public abstract class AntlrUrlParameter extends AntlrNamedElement
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull AntlrUrl urlState,
             ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.urlState = Objects.requireNonNull(urlState);
         this.parameterModifiers = Objects.requireNonNull(parameterModifiers);

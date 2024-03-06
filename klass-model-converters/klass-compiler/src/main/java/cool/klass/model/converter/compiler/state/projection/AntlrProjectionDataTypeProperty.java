@@ -23,8 +23,8 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             new ParserRuleContext(),
             null,
             true,
-            "ambiguous projection member",
-            new ParserRuleContext(),
+            new ParserRuleContext(), "ambiguous projection member",
+            -1,
             AntlrProjection.AMBIGUOUS,
             new HeaderContext(null, -1),
             "ambiguous header",
@@ -43,14 +43,15 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
             @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText = Objects.requireNonNull(headerText);
         this.headerContext = Objects.requireNonNull(headerContext);
@@ -65,7 +66,7 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.headerContext,
+                ordinal, this.headerContext,
                 this.headerText,
                 this.dataTypeProperty.getPropertyBuilder());
     }

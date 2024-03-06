@@ -27,7 +27,8 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             true,
             new ParserRuleContext(),
             "ambiguous enumeration",
-            null);
+            -1, null);
+
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
@@ -35,6 +36,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             true,
             new ParserRuleContext(),
             "not found enumeration",
+            -1,
             null);
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
@@ -49,9 +51,15 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
+    }
+
+    public int getNumLiterals()
+    {
+        return this.enumerationLiteralStates.size();
     }
 
     public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral antlrEnumerationLiteral)
@@ -75,7 +83,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
                 this.getElementContext(),
                 this.getElementContext().identifier(),
                 this.name,
-                this.packageName);
+                ordinal, this.packageName);
 
         ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::build)

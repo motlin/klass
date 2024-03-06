@@ -30,9 +30,10 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -40,6 +41,11 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
     public AntlrClass getKlass()
     {
         return this.klass;
+    }
+
+    public int getNumChildren()
+    {
+        return this.children.size();
     }
 
     public void enterAntlrProjectionMember(@Nonnull AntlrProjectionElement child)

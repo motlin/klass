@@ -25,6 +25,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             true,
             Element.NO_CONTEXT,
             "ambiguous association end",
+            -1,
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
             null,
@@ -35,6 +36,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             true,
             Element.NO_CONTEXT,
             "not found association end",
+            -1,
             AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
             null,
@@ -58,12 +60,13 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
             AntlrMultiplicity antlrMultiplicity,
             @Nonnull ImmutableList<AntlrAssociationEndModifier> modifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
         this.type = Objects.requireNonNull(type);
         this.antlrMultiplicity = antlrMultiplicity;
@@ -96,7 +99,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.type.getKlassBuilder(),
+                ordinal, this.type.getKlassBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 this.owningAssociationState.getAssociationBuilder(),
                 this.antlrMultiplicity.getMultiplicity(),

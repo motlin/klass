@@ -24,14 +24,21 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
             @Nonnull DataTypeProperty<?> property)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText = Objects.requireNonNull(headerText);
         this.property = Objects.requireNonNull(property);
+    }
+
+    @Override
+    public ImmutableList<ProjectionElement> getChildren()
+    {
+        return Lists.immutable.empty();
     }
 
     @Override
@@ -44,12 +51,6 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
     public void exit(ProjectionListener listener)
     {
         listener.exitProjectionDataTypeProperty(this);
-    }
-
-    @Override
-    public ImmutableList<ProjectionElement> getChildren()
-    {
-        return Lists.immutable.empty();
     }
 
     @Nonnull
@@ -77,11 +78,12 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
                 @Nonnull DataTypePropertyBuilder<?, ?> propertyBuilder)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
             this.headerContext = Objects.requireNonNull(headerContext);
             this.headerText = Objects.requireNonNull(headerText);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
@@ -94,6 +96,7 @@ public final class ProjectionDataTypeProperty extends NamedElement implements Pr
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.headerContext,
                     this.headerText,
                     this.propertyBuilder.getProperty());

@@ -50,6 +50,15 @@ public class AntlrDomainModel
     private final MutableOrderedMap<AntlrClass, AntlrServiceGroup> serviceGroupsByClass =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
+    public int getNumTopLevelElements()
+    {
+        return this.enumerationStates.size()
+                + this.classStates.size()
+                + this.associationStates.size()
+                + this.projectionStates.size()
+                + this.serviceGroupStates.size();
+    }
+
     public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
     {
         this.enumerationStates.add(enumerationState);

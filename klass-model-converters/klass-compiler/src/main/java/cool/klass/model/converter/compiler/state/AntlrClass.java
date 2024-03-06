@@ -33,6 +33,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             true,
             new ParserRuleContext(),
             "ambiguous class",
+            -1,
             null,
             Lists.immutable.empty(),
             false)
@@ -58,6 +59,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             true,
             new ParserRuleContext(),
             "not found class",
+            -1,
             null,
             Lists.immutable.empty(),
             false)
@@ -100,11 +102,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             String packageName,
             ImmutableList<AntlrClassModifier> classModifiers,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
         this.classModifiers = Objects.requireNonNull(classModifiers);
         this.isUser = isUser;
     }
@@ -112,6 +115,13 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public MutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
     {
         return this.dataTypePropertyStates;
+    }
+
+    public int getNumMembers()
+    {
+        return this.dataTypePropertyStates.size()
+                // TODO: Parameterized properties
+                + this.associationEndStates.size();
     }
 
     public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -146,7 +156,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.packageName,
+                ordinal, this.packageName,
                 this.isUser,
                 this.hasTransientModifier());
 

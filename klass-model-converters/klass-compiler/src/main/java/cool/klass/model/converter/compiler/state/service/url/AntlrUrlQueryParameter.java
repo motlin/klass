@@ -16,6 +16,7 @@ public abstract class AntlrUrlQueryParameter extends AntlrUrlParameter
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull AntlrUrl urlState,
             ImmutableList<AntlrParameterModifier> parameterModifiers)
@@ -26,6 +27,7 @@ public abstract class AntlrUrlQueryParameter extends AntlrUrlParameter
                 inferred,
                 nameContext,
                 name,
+                ordinal,
                 multiplicityState,
                 urlState,
                 parameterModifiers);

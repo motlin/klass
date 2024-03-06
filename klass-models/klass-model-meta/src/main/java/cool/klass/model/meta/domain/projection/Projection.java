@@ -20,10 +20,11 @@ public final class Projection extends ProjectionParent
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull String packageName,
             @Nonnull Klass klass)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass = Objects.requireNonNull(klass);
     }
@@ -49,19 +50,20 @@ public final class Projection extends ProjectionParent
     public static final class ProjectionBuilder extends ProjectionParentBuilder
     {
         @Nonnull
-        private final String       packageName;
+        private final String packageName;
         @Nonnull
         private final KlassBuilder klassBuilder;
-        private       Projection   projection;
+        private       Projection projection;
 
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
@@ -76,6 +78,7 @@ public final class Projection extends ProjectionParent
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.packageName,
                     this.klassBuilder.getKlass());
 

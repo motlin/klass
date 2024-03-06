@@ -81,17 +81,20 @@ public abstract class AntlrNamedElement extends AntlrElement
     protected final ParserRuleContext nameContext;
     @Nonnull
     protected final String            name;
+    protected final int               ordinal;
 
     protected AntlrNamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name)
+            @Nonnull String name,
+            int ordinal)
     {
         super(elementContext, compilationUnit, inferred);
         this.name = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
+        this.ordinal = ordinal;
     }
 
     @Nonnull

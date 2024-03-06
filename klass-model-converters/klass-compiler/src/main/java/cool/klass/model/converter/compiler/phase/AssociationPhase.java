@@ -55,6 +55,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 false,
                 identifier,
                 identifier.getText(),
+                this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName);
     }
 
@@ -91,6 +92,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 false,
                 ctx.identifier(),
                 associationEndName,
+                this.associationState.getNumAssociationEnds() + 1,
                 this.associationState,
                 antlrClass,
                 antlrMultiplicity,

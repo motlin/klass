@@ -28,6 +28,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             true,
             new ParserRuleContext(),
             "ambiguous association",
+            -1,
             null)
     {
         @Override
@@ -50,14 +51,20 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
     {
         return this.associationEndStates;
+    }
+
+    public int getNumAssociationEnds()
+    {
+        return this.associationEndStates.size();
     }
 
     public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
@@ -116,7 +123,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.packageName,
+                ordinal, this.packageName,
                 criteriaBuilder);
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates

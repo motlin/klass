@@ -15,9 +15,10 @@ public abstract class PackageableElement extends NamedElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, nameContext, name);
+        super(elementContext, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
     }
 
@@ -37,9 +38,10 @@ public abstract class PackageableElement extends NamedElement
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, nameContext, name);
+            super(elementContext, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
         }
     }

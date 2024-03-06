@@ -18,11 +18,12 @@ public final class PrimitiveUrlQueryParameter extends UrlQueryParameter
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Url url,
             @Nonnull PrimitiveType primitiveType)
     {
-        super(elementContext, nameContext, name, multiplicity, url);
+        super(elementContext, nameContext, name, ordinal, multiplicity, url);
         this.primitiveType = Objects.requireNonNull(primitiveType);
     }
 
@@ -43,11 +44,12 @@ public final class PrimitiveUrlQueryParameter extends UrlQueryParameter
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
+                int ordinal,
                 @Nonnull Multiplicity multiplicity,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull PrimitiveType primitiveType)
         {
-            super(elementContext, nameContext, name, multiplicity, urlBuilder);
+            super(elementContext, nameContext, name, ordinal, multiplicity, urlBuilder);
             this.primitiveType = Objects.requireNonNull(primitiveType);
         }
 
@@ -63,6 +65,7 @@ public final class PrimitiveUrlQueryParameter extends UrlQueryParameter
                     this.elementContext,
                     this.nameContext,
                     this.name,
+                    this.ordinal,
                     this.multiplicity,
                     this.urlBuilder.getUrl(),
                     this.primitiveType);

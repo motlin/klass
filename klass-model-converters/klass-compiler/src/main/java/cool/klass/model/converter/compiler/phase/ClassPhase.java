@@ -59,6 +59,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 false,
                 ctx.identifier(),
                 ctx.identifier().getText(),
+                this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName,
                 classModifiers,
                 classOrUserKeyword.equals("user"));
@@ -96,6 +97,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 false,
                 identifier,
                 propertyName,
+                this.classState.getNumMembers() + 1,
                 isOptional,
                 propertyModifiers,
                 this.classState,
@@ -125,6 +127,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 false,
                 identifier,
                 propertyName,
+                this.classState.getNumMembers() + 1,
                 isOptional,
                 propertyModifiers,
                 this.classState,

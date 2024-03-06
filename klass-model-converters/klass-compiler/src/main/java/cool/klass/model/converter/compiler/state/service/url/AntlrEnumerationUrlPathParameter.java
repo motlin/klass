@@ -23,6 +23,7 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             true,
             new ParserRuleContext(),
             "ambiguous enumeration url parameter",
+            -1,
             AntlrEnumeration.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
             AntlrUrl.AMBIGUOUS,
@@ -35,6 +36,7 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             true,
             new ParserRuleContext(),
             "not found enumeration url parameter",
+            -1,
             AntlrEnumeration.NOT_FOUND,
             AntlrMultiplicity.AMBIGUOUS,
             AntlrUrl.AMBIGUOUS,
@@ -49,13 +51,30 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrEnumeration antlrEnumeration,
             @Nonnull AntlrMultiplicity antlrMultiplicity,
             @Nonnull AntlrUrl url,
             ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, antlrMultiplicity, url, parameterModifiers);
+        super(
+                elementContext,
+                compilationUnit,
+                inferred,
+                nameContext,
+                name,
+                ordinal,
+                antlrMultiplicity,
+                url,
+                parameterModifiers);
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrType getType()
+    {
+        return this.antlrEnumeration;
     }
 
     @Nonnull
@@ -68,20 +87,13 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
 
     @Nonnull
     @Override
-    public AntlrType getType()
-    {
-        return this.antlrEnumeration;
-    }
-
-    @Nonnull
-    @Override
     public EnumerationUrlPathParameterBuilder build()
     {
         return new EnumerationUrlPathParameterBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.multiplicityState.getMultiplicity(),
+                ordinal, this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
                 this.antlrEnumeration.getEnumerationBuilder());
     }

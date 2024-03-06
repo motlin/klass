@@ -19,6 +19,7 @@ public abstract class AntlrUrlPathParameter extends AntlrUrlParameter implements
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
+            int ordinal,
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull AntlrUrl urlState,
             ImmutableList<AntlrParameterModifier> parameterModifiers)
@@ -29,6 +30,7 @@ public abstract class AntlrUrlPathParameter extends AntlrUrlParameter implements
                 inferred,
                 nameContext,
                 name,
+                ordinal,
                 multiplicityState,
                 urlState,
                 parameterModifiers);

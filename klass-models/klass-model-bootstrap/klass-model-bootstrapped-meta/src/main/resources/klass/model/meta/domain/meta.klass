@@ -3,8 +3,10 @@ package klass.model.meta.domain
 class Class
     transient
 {
-    name: String key;
-    packageName: String private;
+    name                          : String key;
+    packageName                   : String private;
+    // TODO: Ordinals should have a syntax and be inferred using macros
+    ordinal                       : Integer;
 }
 
 enumeration PrimitiveType
@@ -43,7 +45,9 @@ class PrimitiveProperty
 association ClassHasPrimitiveTypeProperties
 {
     owningClass: Class[1..1];
-    primitiveProperties: PrimitiveProperty[0..*] owned;
+    primitiveProperties: PrimitiveProperty[0..*] owned
+    // TODO: Change the orderBy syntax to orderBy(this.ordinal)
+        orderBy: this.ordinal;
 
     relationship this.name == PrimitiveProperty.className
 }
@@ -130,7 +134,8 @@ class AssociationEnd
     associationName: String;
     direction: AssociationEndDirection;
     multiplicity                  : Multiplicity;
-    resultTypeName: String private;
+    resultTypeName                : String private;
+    ordinal                       : Integer;
 }
 
 // simplification, ideally we'd model an association as having exactly two ends
