@@ -13,6 +13,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
@@ -27,16 +28,21 @@ import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class JavaConstantsMetaModelGenerator
 {
+    private static final Converter<String, String> TO_CONSTANT_CASE = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
+
     @Nonnull
     private final DomainModel domainModel;
     @Nonnull
@@ -504,7 +510,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
-    private <V> String getEnumerationLiteralConstantSourceCode(EnumerationLiteral enumerationLiteral)
+    private String getEnumerationLiteralConstantSourceCode(EnumerationLiteral enumerationLiteral)
     {
         String name          = enumerationLiteral.getName();
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
@@ -748,8 +754,9 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey()\n"
                 + "        {\n"
-                + "            throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                    + \".getKeysMatchingThisForeignKey() not implemented yet\");\n"
+                + "            MutableListMultimap<AssociationEnd, DataTypeProperty> result = Multimaps.mutable.list.empty();\n"
+                + this.getKeysMatchingThisForeignKey(primitiveProperty)
+                + "            return result.toImmutable();\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -772,6 +779,32 @@ public class JavaConstantsMetaModelGenerator
                 + "                    + \"" + this.wrapSourceCode(primitiveProperty.getSourceCode()) + "\";\n"
                 + "        }\n"
                 + "    }\n";
+    }
+
+    private String getKeysMatchingThisForeignKey(DataTypeProperty dataTypeProperty)
+    {
+        return dataTypeProperty
+                .getKeysMatchingThisForeignKey()
+                .keyMultiValuePairsView()
+                .collect(this::getForeignKeySourceCode)
+                .makeString("");
+    }
+
+    private String getForeignKeySourceCode(Pair<AssociationEnd, RichIterable<DataTypeProperty>> each)
+    {
+        return String.format(
+                "            result.put(%s, %s);\n",
+                each.getOne().getName(),
+                each.getTwo().collect(this::getForeignKeySourceCode).makeString());
+    }
+
+    private String getForeignKeySourceCode(DataTypeProperty dataTypeProperty)
+    {
+        return String.format(
+                "%sDomainModel.%s.%s",
+                this.applicationName,
+                dataTypeProperty.getOwningKlass().getName(),
+                dataTypeProperty.getName());
     }
 
     private String getPropertyModifiersSourceCode(ImmutableList<PropertyModifier> propertyModifiers)
@@ -1061,6 +1094,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
+                + this.getAssociationEndModifierConstantsSourceCode(associationEnd)
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public String getName()\n"
@@ -1098,8 +1132,8 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public ImmutableList<AssociationEndModifier> getAssociationEndModifiers()\n"
                 + "        {\n"
-                + "            throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                    + \".getAssociationEndModifiers() not implemented yet\");\n"
+                + "            return Lists.immutable.with(" + associationEnd.getAssociationEndModifiers().collect(
+                NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1143,6 +1177,55 @@ public class JavaConstantsMetaModelGenerator
                 + "                    + \"" + this.wrapSourceCode(associationEnd.getSourceCode()) + "\";\n"
                 + "        }\n"
                 + "    }\n";
+    }
+
+    private String getAssociationEndModifierConstantsSourceCode(AssociationEnd associationEnd)
+    {
+        return associationEnd
+                .getAssociationEndModifiers()
+                .collect(this::getAssociationEndModifierConstantSourceCode)
+                .makeString("");
+    }
+
+    private String getAssociationEndModifierConstantSourceCode(AssociationEndModifier associationEndModifier)
+    {
+        //language=JAVA
+        return ""
+                + "        public static final AssociationEndModifier " + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, associationEndModifier.getName()) + "_MODIFIER = new AssociationEndModifier()\n"
+                + "        {\n"
+                + "            @Override\n"
+                + "            public AssociationEnd getAssociationEnd()\n"
+                + "            {\n"
+                + "                return INSTANCE;\n"
+                + "            }\n"
+                + "\n"
+                + "            @Nonnull\n"
+                + "            @Override\n"
+                + "            public String getName()\n"
+                + "            {\n"
+                + "                return \"" + associationEndModifier.getName() + "\";\n"
+                + "            }\n"
+                + "\n"
+                + "            @Override\n"
+                + "            public int getOrdinal()\n"
+                + "            {\n"
+                + "                return " + associationEndModifier.getOrdinal() + ";\n"
+                + "            }\n"
+                + "\n"
+                + "            @Override\n"
+                + "            public boolean isInferred()\n"
+                + "            {\n"
+                + "                return " + associationEndModifier.isInferred() + ";\n"
+                + "            }\n"
+                + "\n"
+                + "            @Nonnull\n"
+                + "            @Override\n"
+                + "            public String getSourceCode()\n"
+                + "            {\n"
+                + "                return \"\"\n"
+                + "                        + \"" + this.wrapSourceCode(associationEndModifier.getSourceCode()) + "\";\n"
+                + "            }\n"
+                + "        };\n\n";
     }
 
     private String getAssociationEndConstantsSourceCode(Klass klass)
