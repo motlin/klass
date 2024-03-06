@@ -1,0 +1,6 @@
+projection SharedNaturalOneToOneSourceProjection on SharedNaturalOneToOneSource
+{
+    key: "SharedNaturalOneToOneSource key",
+    value: "SharedNaturalOneToOneSource value",
+    target: SharedNaturalOneToOneTargetProjection,
+}

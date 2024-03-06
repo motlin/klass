@@ -1,0 +1,9 @@
+projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
+{
+    number: "PropertiesRequiredVersion number",
+    systemFrom: "PropertiesRequiredVersion systemFrom",
+    systemTo: "PropertiesRequiredVersion systemTo",
+    createdOn: "PropertiesRequiredVersion createdOn",
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
+}

@@ -1,0 +1,19 @@
+projection PropertiesOptionalProjection on PropertiesOptional
+{
+    propertiesOptionalId: "PropertiesOptional propertiesOptionalId",
+    optionalString: "PropertiesOptional optionalString",
+    optionalInteger: "PropertiesOptional optionalInteger",
+    optionalLong: "PropertiesOptional optionalLong",
+    optionalDouble: "PropertiesOptional optionalDouble",
+    optionalFloat: "PropertiesOptional optionalFloat",
+    optionalBoolean: "PropertiesOptional optionalBoolean",
+    optionalInstant: "PropertiesOptional optionalInstant",
+    optionalLocalDate: "PropertiesOptional optionalLocalDate",
+    optionalDerived: "PropertiesOptional optionalDerived",
+    systemFrom: "PropertiesOptional systemFrom",
+    systemTo: "PropertiesOptional systemTo",
+    createdOn: "PropertiesOptional createdOn",
+    version: PropertiesOptionalVersionProjection,
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
+}

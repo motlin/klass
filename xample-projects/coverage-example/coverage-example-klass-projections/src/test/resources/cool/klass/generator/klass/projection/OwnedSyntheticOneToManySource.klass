@@ -1,0 +1,6 @@
+projection OwnedSyntheticOneToManySourceProjection on OwnedSyntheticOneToManySource
+{
+    id: "OwnedSyntheticOneToManySource id",
+    value: "OwnedSyntheticOneToManySource value",
+    targets: OwnedSyntheticOneToManyTargetProjection,
+}

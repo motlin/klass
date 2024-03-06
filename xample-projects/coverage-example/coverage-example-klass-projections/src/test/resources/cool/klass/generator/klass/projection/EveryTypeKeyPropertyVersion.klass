@@ -1,0 +1,9 @@
+projection EveryTypeKeyPropertyVersionProjection on EveryTypeKeyPropertyVersion
+{
+    number: "EveryTypeKeyPropertyVersion number",
+    systemFrom: "EveryTypeKeyPropertyVersion systemFrom",
+    systemTo: "EveryTypeKeyPropertyVersion systemTo",
+    createdOn: "EveryTypeKeyPropertyVersion createdOn",
+    createdBy: UserProjection,
+    lastUpdatedBy: UserProjection,
+}

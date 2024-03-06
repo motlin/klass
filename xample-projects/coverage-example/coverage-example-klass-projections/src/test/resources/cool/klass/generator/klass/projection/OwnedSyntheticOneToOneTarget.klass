@@ -1,0 +1,5 @@
+projection OwnedSyntheticOneToOneTargetProjection on OwnedSyntheticOneToOneTarget
+{
+    id: "OwnedSyntheticOneToOneTarget id",
+    value: "OwnedSyntheticOneToOneTarget value",
+}

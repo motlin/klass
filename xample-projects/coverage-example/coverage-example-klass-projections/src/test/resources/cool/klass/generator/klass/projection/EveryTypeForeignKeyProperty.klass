@@ -1,0 +1,7 @@
+projection EveryTypeForeignKeyPropertyProjection on EveryTypeForeignKeyProperty
+{
+    id: "EveryTypeForeignKeyProperty id",
+    data: "EveryTypeForeignKeyProperty data",
+    systemFrom: "EveryTypeForeignKeyProperty systemFrom",
+    systemTo: "EveryTypeForeignKeyProperty systemTo",
+}

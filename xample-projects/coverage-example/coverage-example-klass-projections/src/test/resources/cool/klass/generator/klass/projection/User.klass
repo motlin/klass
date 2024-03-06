@@ -1,0 +1,9 @@
+projection UserProjection on User
+{
+    userId: "User userId",
+    firstName: "User firstName",
+    lastName: "User lastName",
+    email: "User email",
+    systemFrom: "User systemFrom",
+    systemTo: "User systemTo",
+}

@@ -11,12 +11,11 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PackageableElement;
-import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.RichIterable;
-import org.eclipse.collections.api.set.ImmutableSet;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.tuple.Pair;
 
 public class KlassProjectionGenerator
@@ -31,16 +30,10 @@ public class KlassProjectionGenerator
 
     public void writeKlassFiles(@Nonnull Path outputPath)
     {
-        ImmutableSet<Classifier> classifiersWithProjections = this.domainModel
-                .getProjections()
-                .collect(ProjectionParent::getClassifier)
-                .toSet()
-                .toImmutable();
-
-        this.domainModel
+        ImmutableListMultimap<String, Classifier> classifiersByPackageName = this.domainModel
                 .getClassifiers()
-                // .reject(classifiersWithProjections::contains)
-                .groupBy(PackageableElement::getPackageName)
+                .groupBy(PackageableElement::getPackageName);
+        classifiersByPackageName
                 .keyMultiValuePairsView()
                 .forEachWith(this::writeFile, outputPath);
     }
@@ -89,7 +82,7 @@ public class KlassProjectionGenerator
                 + sourceCode;
     }
 
-    private static String getSourceCode(Classifier classifier)
+    public static String getSourceCode(Classifier classifier)
     {
         String dataTypePropertiesSourceCode = classifier
                 .getDataTypeProperties()

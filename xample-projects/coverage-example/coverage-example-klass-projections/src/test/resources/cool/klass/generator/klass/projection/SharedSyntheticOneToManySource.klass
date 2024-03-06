@@ -1,0 +1,6 @@
+projection SharedSyntheticOneToManySourceProjection on SharedSyntheticOneToManySource
+{
+    id: "SharedSyntheticOneToManySource id",
+    value: "SharedSyntheticOneToManySource value",
+    targets: SharedSyntheticOneToManyTargetProjection,
+}

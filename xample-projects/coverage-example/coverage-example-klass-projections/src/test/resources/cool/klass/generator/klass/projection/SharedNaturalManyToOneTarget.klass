@@ -1,0 +1,5 @@
+projection SharedNaturalManyToOneTargetProjection on SharedNaturalManyToOneTarget
+{
+    key: "SharedNaturalManyToOneTarget key",
+    value: "SharedNaturalManyToOneTarget value",
+}
