@@ -54,7 +54,7 @@ public class ByFinderDataFetcher
         Operation           operation      = this.getOperation((Map<?, ?>) inputOperation);
         Object              inputOrderBy   = arguments.get("orderBy");
         Optional<OrderBy>   orderBys       = this.getOrderBys((List<Map<String, ?>>) inputOrderBy);
-        MithraList<?>       result           = this.finder.findMany(operation);
+        MithraList<?>       result         = this.finder.findMany(operation);
         orderBys.ifPresent(result::setOrderBy);
 
         DataFetchingFieldSelectionSet selectionSet = environment.getSelectionSet();

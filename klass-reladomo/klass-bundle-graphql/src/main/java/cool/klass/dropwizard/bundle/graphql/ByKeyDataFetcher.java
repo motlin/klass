@@ -14,6 +14,7 @@ import cool.klass.reladomo.tree.serializer.ReladomoTreeObjectToMapSerializerList
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingFieldSelectionSet;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
 
 public class ByKeyDataFetcher
@@ -61,7 +62,16 @@ public class ByKeyDataFetcher
                 this.klass);
         rootReladomoTreeNode.toManyAwareWalk(serializerVisitor);
 
-        return serializerVisitor.getResult();
+        MutableList<Object> resultList = serializerVisitor.getResult();
+        if (resultList.isEmpty())
+        {
+            return null;
+        }
+        if (resultList.size() > 1)
+        {
+            throw new IllegalStateException("Expected 1 result, but got " + resultList.size());
+        }
+        return resultList.getOnly();
     }
 
     private void assertEnvironmentContains(DataFetchingEnvironment environment, DataTypeProperty keyProperty)

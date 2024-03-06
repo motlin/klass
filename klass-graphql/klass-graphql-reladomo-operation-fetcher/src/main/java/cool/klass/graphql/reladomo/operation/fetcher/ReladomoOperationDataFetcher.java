@@ -32,18 +32,18 @@ public class ReladomoOperationDataFetcher<T>
     private final DomainModel       domainModel;
     private final ReladomoDataStore dataStore;
     private final Klass             klass;
-    private final RelatedFinder<T>  finder;
+    private final RelatedFinder<?>  finder;
 
     public ReladomoOperationDataFetcher(
             DomainModel domainModel,
-            Klass klass,
-            RelatedFinder<T> finder,
-            ReladomoDataStore dataStore)
+            ReladomoDataStore dataStore,
+            String className,
+            RelatedFinder<?> relatedFinder)
     {
-        this.domainModel = domainModel;
-        this.klass       = Objects.requireNonNull(klass);
-        this.finder      = Objects.requireNonNull(finder);
+        this.domainModel = Objects.requireNonNull(domainModel);
         this.dataStore   = Objects.requireNonNull(dataStore);
+        this.klass       = this.domainModel.getClassByName(className);
+        this.finder      = Objects.requireNonNull(relatedFinder);
     }
 
     @Timed
@@ -74,7 +74,7 @@ public class ReladomoOperationDataFetcher<T>
         return result;
     }
 
-    private Operation compileOperation(RelatedFinder<T> relatedFinder, String inputOperation)
+    private Operation compileOperation(RelatedFinder<?> relatedFinder, String inputOperation)
     {
         try
         {

@@ -1,6 +1,5 @@
 package cool.klass.reladomo.tree.serializer;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -30,69 +29,51 @@ import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.stack.mutable.ArrayStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ReladomoTreeObjectToMapSerializerListener
+public class ReladomoTreeObjectToDTOSerializerListener
         implements ReladomoTreeNodeToManyAwareListener
 {
-    private static final Converter<String, String> LOWER_TO_UPPER_CAMEL =
-            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoTreeObjectToDTOSerializerListener.class);
 
     private static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
-
-    private final ReflectionCache reflectionCache = new ReflectionCache();
 
     private final MutableStack<Object>           contextStack            = new ArrayStack<>();
     private final MutableStack<RelatedFinder<?>> finderStack             = new ArrayStack<>();
     private final MutableStack<Object>           persistentInstanceStack = new ArrayStack<>();
     private final MutableStack<Object>           resultNodeStack         = new ArrayStack<>();
-    private final MutableStack<Object>           resultNodeStack2        = new ArrayStack<>();
 
     private final ReladomoDataStore dataStore;
     private final DomainList        domainList;
     private final Klass             klass;
 
-    private final MutableList<Object> result  = Lists.mutable.empty();
-    private final MutableList<Object> result2 = Lists.mutable.empty();
+    private final MutableList<Object> result = Lists.mutable.empty();
 
-    public ReladomoTreeObjectToMapSerializerListener(
+    public ReladomoTreeObjectToDTOSerializerListener(
             ReladomoDataStore dataStore,
             DomainList domainList,
             Klass klass)
     {
-        this.dataStore  = Objects.requireNonNull(dataStore);
-        this.domainList = Objects.requireNonNull(domainList);
-        this.klass      = Objects.requireNonNull(klass);
+        this.dataStore   = Objects.requireNonNull(dataStore);
+        this.domainList  = Objects.requireNonNull(domainList);
+        this.klass       = Objects.requireNonNull(klass);
     }
 
     public MutableList<Object> getResult()
     {
-        return this.result2;
+        return this.result;
     }
 
     @Override
     public void enterListIndex(int index)
     {
         MutableList<Object>        resultNode     = (MutableList<Object>) this.resultNodeStack.peek();
-        MutableList<Object>        resultNode2    = (MutableList<Object>) this.resultNodeStack2.peek();
         MutableMap<String, Object> nextResultNode = MapAdapter.adapt(new LinkedHashMap<>());
-        Object                     nextResultNode2;
-
-        Object context = this.contextStack.peek();
+        Object                     context        = this.contextStack.peek();
         if (context instanceof ReferenceProperty referenceProperty)
         {
-            Classifier classifier = referenceProperty.getType();
-            String     dtoFQCN    = classifier.getPackageName() + ".dto." + classifier.getName() + "DTO";
-            try
-            {
-                Class<?> aClass = this.reflectionCache.classForName(dtoFQCN);
-                nextResultNode2 = aClass.newInstance();
-            }
-            catch (ReflectiveOperationException e)
-            {
-                throw new RuntimeException(e);
-            }
-
             if (referenceProperty.getType().isAbstract())
             {
                 nextResultNode.put("__typeName", referenceProperty.getType().getName());
@@ -100,17 +81,6 @@ public class ReladomoTreeObjectToMapSerializerListener
         }
         else if (context instanceof Classifier classifier)
         {
-            String dtoFQCN = classifier.getPackageName() + ".dto." + classifier.getName() + "DTO";
-            try
-            {
-                Class<?> aClass = this.reflectionCache.classForName(dtoFQCN);
-                nextResultNode2 = aClass.newInstance();
-            }
-            catch (ReflectiveOperationException e)
-            {
-                throw new RuntimeException(e);
-            }
-
             if (classifier.isAbstract())
             {
                 nextResultNode.put("__typeName", ((Classifier) context).getName());
@@ -121,7 +91,6 @@ public class ReladomoTreeObjectToMapSerializerListener
             throw new AssertionError("Unknown context: " + context);
         }
         resultNode.add(nextResultNode);
-        resultNode2.add(nextResultNode2);
 
         List<Object> persistentInstance     = (List<Object>) this.persistentInstanceStack.peek();
         Object       nextPersistentInstance = persistentInstance.get(index);
@@ -129,7 +98,6 @@ public class ReladomoTreeObjectToMapSerializerListener
         this.contextStack.push(index);
         this.persistentInstanceStack.push(nextPersistentInstance);
         this.resultNodeStack.push(nextResultNode);
-        this.resultNodeStack2.push(nextResultNode2);
     }
 
     @Override
@@ -138,7 +106,6 @@ public class ReladomoTreeObjectToMapSerializerListener
         this.contextStack.pop();
         this.persistentInstanceStack.pop();
         this.resultNodeStack.pop();
-        this.resultNodeStack2.pop();
     }
 
     @Override
@@ -155,7 +122,6 @@ public class ReladomoTreeObjectToMapSerializerListener
         this.finderStack.push(relatedFinder);
         this.persistentInstanceStack.push(this.domainList);
         this.resultNodeStack.push(this.result);
-        this.resultNodeStack2.push(this.result2);
 
         return Optional.of(this.domainList.size());
     }
@@ -167,7 +133,6 @@ public class ReladomoTreeObjectToMapSerializerListener
         this.finderStack.pop();
         this.persistentInstanceStack.pop();
         this.resultNodeStack.pop();
-        this.resultNodeStack2.pop();
     }
 
     @Override
@@ -182,25 +147,13 @@ public class ReladomoTreeObjectToMapSerializerListener
             return;
         }
 
-        MutableMap<String, Object> resultNode  = (MutableMap<String, Object>) this.resultNodeStack.peek();
-        Object                     resultNode2 = this.resultNodeStack2.peek();
+        MutableMap<String, Object> resultNode = (MutableMap<String, Object>) this.resultNodeStack.peek();
 
         Object data = this.dataStore.getDataTypeProperty(persistentInstance, dataTypeProperty);
-        if (data == null)
-        {
-            return;
-        }
-
         Object value = data instanceof EnumerationLiteral enumerationLiteral
                 ? enumerationLiteral.getName()
                 : data;
         resultNode.put(dataTypeProperty.getName(), value);
-
-        var dataTypePropertyVisitor = new ReflectionSetterDataTypePropertyVisitor(
-                this.reflectionCache,
-                resultNode2,
-                data);
-        dataTypeProperty.visit(dataTypePropertyVisitor);
     }
 
     @Override
@@ -285,7 +238,6 @@ public class ReladomoTreeObjectToMapSerializerListener
             Object toOne = this.dataStore.getToOne(persistentInstance, referenceProperty);
             this.persistentInstanceStack.push(toOne);
             MutableMap<String, Object> resultNode     = (MutableMap<String, Object>) this.resultNodeStack.peek();
-            Object resultNode2     = this.resultNodeStack2.peek();
             MutableMap<String, Object> nextResultNode = MapAdapter.adapt(new LinkedHashMap<>());
             Classifier                 type           = referenceProperty.getType();
             if (type.isAbstract())
@@ -294,22 +246,6 @@ public class ReladomoTreeObjectToMapSerializerListener
             }
             resultNode.put(referenceProperty.getName(), nextResultNode);
             this.resultNodeStack.push(nextResultNode);
-            String     dtoFQCN    = type.getPackageName() + ".dto." + type.getName() + "DTO";
-            try
-            {
-                Class<?> aClass = this.reflectionCache.classForName(dtoFQCN);
-                Object nextResultNode2 = aClass.newInstance();
-
-                String   methodName = "set" + LOWER_TO_UPPER_CAMEL.convert(referenceProperty.getName());
-                Class<?> objectClass = resultNode2.getClass();
-                Method   method      = this.reflectionCache.getMethod(objectClass, methodName, aClass);
-                method.invoke(resultNode2, nextResultNode2);
-                this.resultNodeStack2.push(nextResultNode2);
-            }
-            catch (ReflectiveOperationException e)
-            {
-                throw new RuntimeException(e);
-            }
             return Optional.empty();
         }
 
@@ -318,25 +254,9 @@ public class ReladomoTreeObjectToMapSerializerListener
             List<Object> toMany = this.dataStore.getToMany(persistentInstance, referenceProperty);
             this.persistentInstanceStack.push(toMany);
             MutableMap<String, Object> resultNode     = (MutableMap<String, Object>) this.resultNodeStack.peek();
-            Object resultNode2     = this.resultNodeStack2.peek();
             MutableList<Object>        nextResultNode = Lists.mutable.empty();
-            MutableList<Object>        nextResultNode2 = Lists.mutable.empty();
             resultNode.put(referenceProperty.getName(), nextResultNode);
             this.resultNodeStack.push(nextResultNode);
-
-            try
-            {
-                String   methodName = "set" + LOWER_TO_UPPER_CAMEL.convert(referenceProperty.getName());
-                Class<?> objectClass = resultNode2.getClass();
-                Method   method      = this.reflectionCache.getMethod(objectClass, methodName, List.class);
-                method.invoke(resultNode2, nextResultNode2);
-                this.resultNodeStack2.push(nextResultNode2);
-            }
-            catch (ReflectiveOperationException e)
-            {
-                throw new RuntimeException(e);
-            }
-
             return Optional.of(toMany.size());
         }
 
@@ -350,18 +270,18 @@ public class ReladomoTreeObjectToMapSerializerListener
         this.finderStack.pop();
         this.persistentInstanceStack.pop();
         this.resultNodeStack.pop();
-        this.resultNodeStack2.pop();
     }
 
     @Override
     public Optional<Integer> enterReference(ReferenceReladomoTreeNode referenceReladomoTreeNode)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".enterReference() not implemented yet");
+        LOGGER.info("referenceReladomoTreeNode = " + referenceReladomoTreeNode);
+        return Optional.empty();
     }
 
     @Override
     public void exitReference(ReferenceReladomoTreeNode referenceReladomoTreeNode)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".exitReference() not implemented yet");
+        LOGGER.info("referenceReladomoTreeNode = " + referenceReladomoTreeNode);
     }
 }

@@ -142,12 +142,6 @@
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!--endregion-->
 
         <!--region Project runtime dependencies -->
@@ -192,6 +186,13 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-dtos</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard compile dependencies -->
@@ -208,11 +209,6 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-graphql</artifactId>
         </dependency>
 
         <dependency>
@@ -402,6 +398,12 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-bundle-graphql</artifactId>
             <version>${klass.version}</version>
         </dependency>
         <!--endregion-->

@@ -6,16 +6,15 @@ import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import com.stackoverflow.graphql.runtime.wiring.RuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
 import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 
@@ -47,8 +46,7 @@ public class StackOverflowApplication
 
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
-
-        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new RuntimeWiringBuilder()));
+        bootstrap.addBundle(new KlassGraphQLBundle<>());
 
         bootstrap.addBundle(new MigrationsBundle<>()
         {

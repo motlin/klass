@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
-            <version>${liftwizard.version}</version>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-graphql-deep-fetcher</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>

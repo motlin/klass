@@ -42,6 +42,7 @@
         <module>klass-reladomo-sample-data</module>
         <module>klass-reladomo-tree-deep-fetcher</module>
         <module>klass-reladomo-tree-serializer</module>
+        <module>klass-reladomo-tree-serializer-dto</module>
     </modules>
 
 </project>

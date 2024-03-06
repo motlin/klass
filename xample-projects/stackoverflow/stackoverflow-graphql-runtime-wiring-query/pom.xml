@@ -35,13 +35,33 @@
         </dependency>
 
         <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-finder-fetcher</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-graphql-reladomo-finder-fetcher</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-operation-fetcher</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-graphql-reladomo-operation-fetcher</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>

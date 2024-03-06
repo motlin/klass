@@ -153,7 +153,11 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
                 .scalar(JavaPrimitives.GraphQLLong)
                 .scalar(GraphQLLocalDateScalar.INSTANCE);
 
-        builder.type(this.getQueryTypeBuilder(domainModel, dataStore, new ReladomoTreeGraphqlConverter(domainModel)));
+        TypeRuntimeWiring.Builder queryTypeBuilder = this.getQueryTypeBuilder(
+                domainModel,
+                dataStore,
+                new ReladomoTreeGraphqlConverter(domainModel));
+        builder.type(queryTypeBuilder);
 
         domainModel
                 .getClasses()

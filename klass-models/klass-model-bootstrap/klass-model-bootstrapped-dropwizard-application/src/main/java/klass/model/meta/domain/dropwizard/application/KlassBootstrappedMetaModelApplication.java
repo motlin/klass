@@ -2,6 +2,7 @@ package klass.model.meta.domain.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.dropwizard.bundle.graphql.KlassGraphQLBundle;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import io.dropwizard.db.DataSourceFactory;
@@ -16,7 +17,8 @@ import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 public class KlassBootstrappedMetaModelApplication
         extends AbstractKlassBootstrappedMetaModelApplication
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
+            throws Exception
     {
         new KlassBootstrappedMetaModelApplication().run(args);
     }
@@ -40,6 +42,7 @@ public class KlassBootstrappedMetaModelApplication
 
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
+        bootstrap.addBundle(new KlassGraphQLBundle<>());
 
         bootstrap.addBundle(new MigrationsBundle<>()
         {

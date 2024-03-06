@@ -149,12 +149,6 @@
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!--endregion-->
 
         <!--region Project runtime dependencies -->
@@ -199,6 +193,13 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-dtos</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard compile dependencies -->
@@ -229,11 +230,6 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-graphql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
 
@@ -260,11 +256,6 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-named-data-source-factory</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
         </dependency>
         <!--endregion-->
 
@@ -451,7 +442,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-graphql-runtime-wiring</artifactId>
+            <artifactId>klass-bundle-graphql</artifactId>
             <version>${klass.version}</version>
         </dependency>
         <!--endregion-->
@@ -571,16 +562,6 @@
         <dependency>
             <groupId>com.smoketurner.dropwizard</groupId>
             <artifactId>graphql-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-extended-scalars</artifactId>
         </dependency>
 
         <dependency>

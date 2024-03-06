@@ -220,6 +220,11 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-servlet-logging-mdc</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-graphql</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
@@ -389,6 +394,12 @@
             <artifactId>klass-dropwizard-command-model-json</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-bundle-graphql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass runtime dependencies -->
@@ -475,6 +486,16 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-db</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.smoketurner.dropwizard</groupId>
+            <artifactId>graphql-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
 
         <dependency>

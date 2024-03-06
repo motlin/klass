@@ -12,7 +12,12 @@ import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.orderby.OrderBy;
 import com.gs.fw.finder.DomainList;
-import cool.klass.reladomo.graphql.deep.fetcher.GraphQLDeepFetcher;
+import cool.klass.data.store.reladomo.ReladomoDataStore;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.reladomo.tree.RootReladomoTreeNode;
+import cool.klass.model.reladomo.tree.converter.graphql.ReladomoTreeGraphqlConverter;
+import cool.klass.reladomo.tree.deep.fetcher.ReladomoTreeNodeDeepFetcherListener;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import io.liftwizard.graphql.exception.LiftwizardGraphQLException;
@@ -23,16 +28,18 @@ import io.liftwizard.reladomo.graphql.orderby.GraphQLQueryToOrderByConverter;
 public class ReladomoFinderDataFetcher<T>
         implements DataFetcher<List<T>>
 {
-    private final String                               className;
+    private final DomainModel                          domainModel;
+    private final ReladomoDataStore                    dataStore;
     private final AbstractRelatedFinder<T, ?, ?, ?, ?> finder;
-    private final GraphQLDeepFetcher                   deepFetcher;
 
     public ReladomoFinderDataFetcher(
-            String className, AbstractRelatedFinder<T, ?, ?, ?, ?> finder, GraphQLDeepFetcher deepFetcher)
+            DomainModel domainModel,
+            ReladomoDataStore dataStore,
+            AbstractRelatedFinder<T, ?, ?, ?, ?> finder)
     {
-        this.className   = Objects.requireNonNull(className);
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore   = Objects.requireNonNull(dataStore);
         this.finder      = Objects.requireNonNull(finder);
-        this.deepFetcher = Objects.requireNonNull(deepFetcher);
     }
 
     @Timed
@@ -48,7 +55,20 @@ public class ReladomoFinderDataFetcher<T>
         Optional<OrderBy>   orderBys       = this.getOrderBys((List<Map<String, ?>>) inputOrderBy);
         DomainList<T>       result         = (DomainList<T>) this.finder.findMany(operation);
         orderBys.ifPresent(result::setOrderBy);
-        this.deepFetcher.deepFetch(result, this.className, this.finder, environment.getSelectionSet());
+
+        Klass klass                = this.domainModel.getClassByName("Enumeration");
+        var   treeGraphqlConverter = new ReladomoTreeGraphqlConverter(this.domainModel);
+
+        var deepFetcher = new ReladomoTreeNodeDeepFetcherListener(
+                this.dataStore,
+                (DomainList) result,
+                klass);
+        RootReladomoTreeNode rootReladomoTreeNode = treeGraphqlConverter.convert(
+                klass,
+                environment.getSelectionSet());
+
+        deepFetcher.enterRoot(rootReladomoTreeNode);
+
         return result;
     }
 

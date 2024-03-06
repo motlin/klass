@@ -13,7 +13,7 @@
       },
       "body": "test body 1",
       "title": "test title 1",
-      "status": "Open",
+      "status": "OPEN",
       "deleted": false,
       "tags": [
         {

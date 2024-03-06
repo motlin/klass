@@ -1,15 +1,25 @@
 package klass.model.meta.domain.dropwizard.application;
 
+import javax.annotation.Nonnull;
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import com.smoketurner.dropwizard.graphql.GraphQLFactory;
+import io.liftwizard.dropwizard.configuration.graphql.GraphQLFactoryProvider;
 import io.liftwizard.servlet.config.spa.SPARedirectFilterFactory;
 import io.liftwizard.servlet.config.spa.SPARedirectFilterFactoryProvider;
 
 public class KlassBootstrappedMetaModelConfiguration
         extends AbstractKlassConfiguration
-        implements SPARedirectFilterFactoryProvider
+        implements SPARedirectFilterFactoryProvider,
+        GraphQLFactoryProvider
 {
-    private SPARedirectFilterFactory spaRedirectFilterFactory = new SPARedirectFilterFactory();
+    @Nonnull
+    private @Valid SPARedirectFilterFactory spaRedirectFilterFactory = new SPARedirectFilterFactory();
+
+    @Nonnull
+    private @Valid GraphQLFactory graphQLFactory = new GraphQLFactory();
 
     @Override
     @JsonProperty("spaRedirectFilter")
@@ -22,5 +32,19 @@ public class KlassBootstrappedMetaModelConfiguration
     public void setSPARedirectFilterFactory(SPARedirectFilterFactory spaRedirectFilterFactory)
     {
         this.spaRedirectFilterFactory = spaRedirectFilterFactory;
+    }
+
+    @Override
+    @Nonnull
+    @JsonProperty("graphQL")
+    public GraphQLFactory getGraphQLFactory()
+    {
+        return this.graphQLFactory;
+    }
+
+    @JsonProperty("graphQL")
+    public void setGraphQLFactory(@Nonnull GraphQLFactory factory)
+    {
+        this.graphQLFactory = factory;
     }
 }
