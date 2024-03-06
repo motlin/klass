@@ -47,6 +47,11 @@ public class AntlrPropertyModifier extends AntlrModifier
         return this.name.equals("id");
     }
 
+    public boolean isUserId()
+    {
+        return this.name.equals("userId");
+    }
+
     public boolean isDerived()
     {
         return this.name.equals("derived");

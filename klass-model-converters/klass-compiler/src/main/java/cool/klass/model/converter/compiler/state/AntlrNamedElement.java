@@ -74,6 +74,8 @@ public abstract class AntlrNamedElement extends AntlrElement
 
     protected static final ImmutableList<String> JAVA_LITERALS = Lists.immutable.with("true", "false", "null");
 
+    protected static final ImmutableList<String> SQL_KEYWORDS = Lists.immutable.with(/*"user", "User"*/);
+
     protected static final ImmutableList<String> RELADOMO_TYPES =
             Lists.immutable.with("OrderBy");
 
@@ -138,6 +140,12 @@ public abstract class AntlrNamedElement extends AntlrElement
         {
             String message = String.format("'%s' is a reserved Java literal.", this.name);
             compilerErrorHolder.add("ERR_NME_LIT", message, this);
+        }
+
+        if (SQL_KEYWORDS.contains(this.name))
+        {
+            String message = String.format("'%s' is a reserved SQL keyword.", this.name);
+            compilerErrorHolder.add("ERR_SQL_KEY", message, this);
         }
     }
 }

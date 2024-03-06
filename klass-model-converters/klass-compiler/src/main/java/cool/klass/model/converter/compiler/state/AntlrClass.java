@@ -135,6 +135,11 @@ public class AntlrClass extends AntlrClassifier
         this.isUser = isUser;
     }
 
+    public boolean isUser()
+    {
+        return this.isUser;
+    }
+
     @Override
     protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {

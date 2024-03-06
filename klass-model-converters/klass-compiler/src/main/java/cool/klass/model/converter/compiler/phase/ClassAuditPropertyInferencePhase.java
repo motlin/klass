@@ -1,14 +1,18 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Only put audit properties onto version types
 public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
@@ -54,18 +58,38 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
         this.runCompilerMacro(ctx, "    createdOn      : Instant createdOn;\n");
         this.runCompilerMacro(ctx, "    lastUpdatedById: String private lastUpdatedBy;\n");
 
-        // TODO: Should be the user class, not the class named User
-        this.runCompilerMacro(ctx, ""
-                + "    createdBy(): User[1..1] createdBy\n"
-                + "    {\n"
-                + "        this.createdById == User.userId\n"
-                + "    }\n");
+        Optional<AntlrClass> userClassOptional = this.compilerState.getDomainModelState().getUserClassState();
+        if (!userClassOptional.isPresent())
+        {
+            throw new AssertionError("TODO");
+        }
 
-        this.runCompilerMacro(ctx, ""
-                + "    lastUpdatedBy(): User[1..1] lastUpdatedBy\n"
+        AntlrClass userClass = userClassOptional.get();
+
+        ImmutableList<AntlrDataTypeProperty<?>> userIdProperties = userClass
+                .getDataTypeProperties()
+                .select(AntlrDataTypeProperty::isUserId);
+        if (userIdProperties.size() != 1)
+        {
+            throw new AssertionError("TODO");
+        }
+
+        AntlrDataTypeProperty<?> userIdProperty = userIdProperties.getOnly();
+
+        String createdBySourceCodeText = ""
+                + "    createdBy(): " + userClass.getName() + "[1..1] createdBy\n"
                 + "    {\n"
-                + "        this.lastUpdatedById == User.userId\n"
-                + "    }\n");
+                + "        this.createdById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
+                + "    }\n";
+
+        String lastUpdatedBySourceCodeText = ""
+                + "    lastUpdatedBy(): " + userClass.getName() + "[1..1] lastUpdatedBy\n"
+                + "    {\n"
+                + "        this.lastUpdatedById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
+                + "    }\n";
+
+        this.runCompilerMacro(ctx, createdBySourceCodeText);
+        this.runCompilerMacro(ctx, lastUpdatedBySourceCodeText);
     }
 
     private void runCompilerMacro(@Nonnull ParserRuleContext ctx, @Nonnull String sourceCodeText)

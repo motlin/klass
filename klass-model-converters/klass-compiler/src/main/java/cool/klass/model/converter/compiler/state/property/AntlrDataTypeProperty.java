@@ -90,6 +90,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.modifierStates.anySatisfy(AntlrPropertyModifier::isID);
     }
 
+    public boolean isUserId()
+    {
+        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isUserId);
+    }
+
     public boolean isAudit()
     {
         return this.modifierStates.anySatisfy(AntlrPropertyModifier::isAudit);

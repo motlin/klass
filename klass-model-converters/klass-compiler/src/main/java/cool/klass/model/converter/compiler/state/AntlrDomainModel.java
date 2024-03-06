@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -37,6 +38,7 @@ public class AntlrDomainModel
     private final MutableList<AntlrClassifier>      classifierStates      = Lists.mutable.empty();
     private final MutableList<AntlrInterface>       interfaceStates       = Lists.mutable.empty();
     private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           userClassStates       = Lists.mutable.empty();
     private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
     private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
     private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
@@ -66,6 +68,16 @@ public class AntlrDomainModel
     // TODO: Or instead of embedding services inside classes, turn them into named elements. The name of the group can become the name of the resource. The group could have a base url.
     private final MutableOrderedMap<AntlrClass, AntlrServiceGroup> serviceGroupsByClass =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    public Optional<AntlrClass> getUserClassState()
+    {
+        if (this.userClassStates.size() == 1)
+        {
+            return this.userClassStates.getFirstOptional();
+        }
+
+        return Optional.empty();
+    }
 
     public int getNumTopLevelElements()
     {
@@ -129,6 +141,11 @@ public class AntlrDomainModel
         this.topLevelElementStates.add(classState);
         this.classifierStates.add(classState);
         this.classStates.add(classState);
+
+        if (classState.isUser())
+        {
+            this.userClassStates.add(classState);
+        }
 
         this.classifiersByName.compute(
                 classState.getName(),
@@ -272,6 +289,11 @@ public class AntlrDomainModel
 
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
+        if (this.userClassStates.size() > 1)
+        {
+            throw new AssertionError();
+        }
+
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
 
         ImmutableBag<String> duplicateTopLevelNames = topLevelNames
