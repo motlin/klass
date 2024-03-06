@@ -276,8 +276,9 @@ public class ClassifierPhase extends AbstractCompilerPhase
 
     private int getIntegerFromLiteral(IntegerLiteralContext integerLiteralContext)
     {
-        String integerText = integerLiteralContext.getText();
-        return Integer.parseInt(integerText);
+        String  integerText        = integerLiteralContext.getText();
+        String  withoutUnderscores = integerText.replaceAll("_", "");
+        return Integer.decode(withoutUnderscores);
     }
 
     @Nonnull
