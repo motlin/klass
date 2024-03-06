@@ -3,6 +3,8 @@ package cool.klass.model.reladomo.tree;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
+import cool.klass.model.meta.domain.api.Klass;
+import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
@@ -25,25 +27,27 @@ public abstract class AbstractReladomoTreeNode
     }
 
     @Override
-    public MutableMap<String, ReladomoTreeNode> getChildren()
+    public MapIterable<String, ReladomoTreeNode> getChildren()
     {
-        return this.children;
+        return this.children.asUnmodifiable();
     }
 
     @Override
-    public ReladomoTreeNode computeChild(String name, ReladomoTreeNode child)
+    public ReladomoTreeNode computeChild(String childName, ReladomoTreeNode childNode)
     {
-        if (this.getType() != child.getOwningClassifier())
+        if (this.getType() != childNode.getOwningClassifier() && childNode.getOwningClassifier() instanceof Klass)
         {
-            throw new AssertionError(this.getType() + " != " + child.getOwningClassifier());
+            String detailMessage = "Type mismatch: %s != %s for %s".formatted(
+                    this.getType(),
+                    childNode.getOwningClassifier(),
+                    childName);
+            throw new AssertionError(detailMessage);
         }
-        ReladomoTreeNode result = this.children.getIfAbsentPut(name, child);
-        if (result != child)
+        ReladomoTreeNode result = this.children.getIfAbsentPut(childName, childNode);
+        if (!Objects.equals(result, childNode))
         {
-            if (!result.equals(child))
-            {
-                throw new AssertionError();
-            }
+            String detailMessage = "Expected %s but got %s for %s".formatted(result, childNode, childName);
+            throw new AssertionError(detailMessage);
         }
         return result;
     }

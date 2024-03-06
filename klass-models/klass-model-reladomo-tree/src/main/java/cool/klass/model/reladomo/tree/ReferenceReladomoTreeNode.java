@@ -22,6 +22,17 @@ public class ReferenceReladomoTreeNode
     }
 
     @Override
+    public void visit(ReladomoTreeNodeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
+
+    public ReferenceProperty getReferenceProperty()
+    {
+        return this.referenceProperty;
+    }
+
+    @Override
     public Classifier getOwningClassifier()
     {
         return this.referenceProperty.getOwningClassifier();

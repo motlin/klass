@@ -2,7 +2,6 @@ package cool.klass.model.reladomo.tree;
 
 import java.util.Objects;
 
-import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
 
 public class SuperClassReladomoTreeNode
@@ -19,13 +18,19 @@ public class SuperClassReladomoTreeNode
     }
 
     @Override
-    public Classifier getOwningClassifier()
+    public void visit(ReladomoTreeNodeVisitor visitor)
+    {
+        visitor.visitSuperClass(this);
+    }
+
+    @Override
+    public Klass getOwningClassifier()
     {
         return this.klass;
     }
 
     @Override
-    public Classifier getType()
+    public Klass getType()
     {
         return this.superClass;
     }

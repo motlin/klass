@@ -17,6 +17,12 @@ public class RootReladomoTreeNode
     }
 
     @Override
+    public void visit(ReladomoTreeNodeVisitor visitor)
+    {
+        visitor.visitRoot(this);
+    }
+
+    @Override
     public Classifier getOwningClassifier()
     {
         return this.klass;
@@ -44,10 +50,7 @@ public class RootReladomoTreeNode
         stringBuilder.append('\n');
 
         String childIndent = indent + "  ";
-        for (ReladomoTreeNode child : node.getChildren().values())
-        {
-            stringBuilder.append(this.toString(child, childIndent));
-        }
+        node.getChildren().forEachValue(child -> stringBuilder.append(this.toString(child, childIndent)));
 
         return stringBuilder.toString();
     }

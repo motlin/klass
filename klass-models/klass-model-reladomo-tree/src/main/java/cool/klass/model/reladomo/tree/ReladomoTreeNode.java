@@ -1,24 +1,37 @@
 package cool.klass.model.reladomo.tree;
 
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.Type;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Stacks;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.stack.MutableStack;
 
 public interface ReladomoTreeNode
 {
+    void visit(ReladomoTreeNodeVisitor visitor);
+
+    default void walk(ReladomoTreeNodeListener listener)
+    {
+        this.visit(new ReladomoTreeNodeWalkerVisitor(listener));
+    }
+
+    default void toManyAwareWalk(ReladomoTreeNodeToManyAwareListener listener)
+    {
+        this.visit(new ReladomoTreeNodeToManyAwareWalkerVisitor(listener));
+    }
+
     String getName();
 
     Classifier getOwningClassifier();
 
-    Classifier getType();
+    Type getType();
 
-    MutableMap<String, ReladomoTreeNode> getChildren();
+    MapIterable<String, ReladomoTreeNode> getChildren();
 
-    ReladomoTreeNode computeChild(String name, ReladomoTreeNode node);
+    ReladomoTreeNode computeChild(String childName, ReladomoTreeNode childNode);
 
     default String getShortString()
     {
