@@ -19,6 +19,7 @@
         <module>klass-compiler</module>
         <module>klass-grammar</module>
         <module>klass-bootstrap-writer</module>
+        <module>klass-graphql-schema-writer</module>
     </modules>
 
     <dependencyManagement>

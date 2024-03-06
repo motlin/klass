@@ -1,0 +1,4 @@
+type Query {
+	question(id: Long!): Question
+	questions: [Question]
+}

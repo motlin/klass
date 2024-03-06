@@ -10,5 +10,7 @@ public interface Property extends TypedElement
     @Nonnull
     Classifier getOwningClassifier();
 
+    boolean isRequired();
+
     void visit(PropertyVisitor visitor);
 }

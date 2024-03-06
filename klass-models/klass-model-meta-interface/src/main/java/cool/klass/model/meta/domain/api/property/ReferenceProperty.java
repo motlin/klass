@@ -13,6 +13,12 @@ public interface ReferenceProperty extends Property
     @Nonnull
     Multiplicity getMultiplicity();
 
+    @Override
+    default boolean isRequired()
+    {
+        return this.getMultiplicity().isRequired();
+    }
+
     @Nonnull
     Optional<OrderBy> getOrderBy();
 

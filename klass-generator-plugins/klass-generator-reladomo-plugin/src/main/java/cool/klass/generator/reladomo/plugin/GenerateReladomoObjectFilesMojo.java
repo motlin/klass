@@ -15,6 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
+// TODO: GENERATE_RESOURCES default phase?
 @Mojo(name = "generate-reladomo-object-files", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateReladomoObjectFilesMojo extends AbstractGenerateMojo
 {

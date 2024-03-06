@@ -91,7 +91,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
         PrimitiveType primitiveType = (PrimitiveType) dataType;
         if (multiplicity.isToOne())
         {
-            primitiveType.visit(new PrimitiveVisitor(this.stringBuilder, parameter.getName()));
+            primitiveType.visit(new ReladomoPrimitiveVisitor(this.stringBuilder, parameter.getName()));
             return;
         }
 

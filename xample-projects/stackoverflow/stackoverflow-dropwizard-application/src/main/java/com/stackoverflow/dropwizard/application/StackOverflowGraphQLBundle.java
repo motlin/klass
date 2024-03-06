@@ -32,7 +32,7 @@ public class StackOverflowGraphQLBundle extends GraphQLBundle<StackOverflowConfi
         // methods being called so the schema is connected properly.
 
         GraphQLFactory                    factory              = configuration.getGraphQLFactory();
-        StackOverflowRuntimeWiringBuilder runtimeWiringBuilder = new StackOverflowRuntimeWiringBuilder(this.dataStore);
+        StackOverflowRuntimeWiringBuilder runtimeWiringBuilder = new StackOverflowRuntimeWiringBuilder();
         RuntimeWiring                     runtimeWiring        = runtimeWiringBuilder.buildRuntimeWiring();
         factory.setRuntimeWiring(runtimeWiring);
         return factory;

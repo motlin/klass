@@ -12,7 +12,6 @@ import cool.klass.reladomo.test.rule.ReladomoTestFile;
 import cool.klass.reladomo.test.rule.ReladomoTestRule;
 import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
-import com.stackoverflow.graphql.StackOverflowGraphQL;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
@@ -57,8 +56,6 @@ public class GraphQLTest
     @ReladomoTestFile("test-data/existing-question.txt")
     public void smokeTest() throws JSONException
     {
-        StackOverflowGraphQL.runSampleQuery();
-
         Client client = this.getClient("com.stackoverflow.dropwizard.test.GraphQLTest.smokeTest");
 
         //language=GraphQL

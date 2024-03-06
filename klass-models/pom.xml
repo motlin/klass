@@ -23,6 +23,7 @@
         <module>klass-model-meta-schema-json</module>
         <module>klass-model-meta-json</module>
         <module>klass-model-meta-json-pojo</module>
+        <module>graphql-model-meta</module>
     </modules>
 
     <dependencyManagement>

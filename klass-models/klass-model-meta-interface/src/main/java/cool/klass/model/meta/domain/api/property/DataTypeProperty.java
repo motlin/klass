@@ -86,6 +86,7 @@ public interface DataTypeProperty extends Property
 
     boolean isOptional();
 
+    @Override
     default boolean isRequired()
     {
         return !this.isOptional();

@@ -22,6 +22,9 @@
         <module>klass-generator-dto</module>
         <module>klass-generator-meta-constants</module>
         <module>klass-generator-json-view</module>
+        <module>klass-generator-graphql-schema</module>
+        <module>klass-generator-graphql-runtime-wiring</module>
+        <module>klass-generator-graphql-data-fetcher</module>
     </modules>
 
     <dependencyManagement>

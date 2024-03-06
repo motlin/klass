@@ -26,6 +26,7 @@
         <module>klass-reladomo-persistent-writer</module>
         <module>klass-data-store-reladomo</module>
         <module>klass-reladomo-sample-data</module>
+        <module>klass-reladomo-graphql-data-fetcher</module>
     </modules>
 
     <dependencyManagement>

@@ -104,6 +104,7 @@
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
                 <version>${klass.version}</version>
+
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
@@ -112,6 +113,7 @@
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
+
                 <executions>
                     <execution>
                         <goals>
@@ -119,6 +121,7 @@
                         </goals>
                     </execution>
                 </executions>
+
                 <dependencies>
 
                     <dependency>
@@ -283,6 +286,13 @@
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-graphql-schema-scalar-temporal</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
