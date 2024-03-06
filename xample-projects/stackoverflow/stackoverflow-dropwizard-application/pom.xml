@@ -193,11 +193,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.stackoverflow</groupId>
-            <artifactId>stackoverflow-graphql</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -205,31 +200,13 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-connection-manager-h2</artifactId>
             <version>${klass.version}</version>
-			<scope>runtime</scope>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
             <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-test-data</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -263,13 +240,6 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-connection-manager-h2</artifactId>
-            <version>${klass.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
