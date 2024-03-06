@@ -161,6 +161,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-liquibase-schema</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- TODO: Fix inheritance and then remove workaround ddls -->
         <!--
         <dependency>
