@@ -35,7 +35,7 @@ public class AbstractResourceTestCase
 
     protected Client getClient(@Nonnull String clientName)
     {
-        JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
+        var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
         return new JerseyClientBuilder(this.appRule.getEnvironment())
