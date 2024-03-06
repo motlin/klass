@@ -31,16 +31,10 @@ import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
-import org.eclipse.collections.api.multimap.list.ListMultimap;
-import org.eclipse.collections.api.multimap.list.MutableListMultimap;
-import org.eclipse.collections.impl.factory.Multimaps;
 import org.eclipse.collections.impl.tuple.Tuples;
-import org.eclipse.collections.impl.utility.Iterate;
 
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
 public abstract class AbstractDataTypeProperty<T extends DataType>
@@ -360,19 +354,6 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             AbstractDataTypeProperty<T> property = this.getElement();
             property.setKeysMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
             property.setForeignKeysMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
-        }
-
-        public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
-                @Nonnull ListMultimap<InputKey, InputValue> multimap,
-                @Nonnull Function<? super InputKey, ? extends OutputKey> keyFunction,
-                Function<? super InputValue, ? extends OutputValue> valueFunction)
-        {
-            MutableListMultimap<OutputKey, OutputValue> result = Multimaps.mutable.list.empty();
-            multimap.forEachKeyMultiValues((key, multiValues) ->
-                    result.putAll(
-                            keyFunction.valueOf(key),
-                            Iterate.collect(multiValues, valueFunction)));
-            return result.toImmutable();
         }
     }
 }
