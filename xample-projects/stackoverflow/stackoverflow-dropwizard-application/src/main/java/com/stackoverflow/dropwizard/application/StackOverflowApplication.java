@@ -4,15 +4,22 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.dropwizard.bundle.test.data.TestDataGeneratorBundle;
+import cool.klass.dropwizard.bundle.test.data.SampleDataGeneratorBundle;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import com.stackoverflow.service.resource.QuestionResourceManual;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StackOverflowApplication extends AbstractStackOverflowApplication
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StackOverflowApplication.class);
+
     public static void main(String[] args) throws Exception
     {
         new StackOverflowApplication().run(args);
@@ -29,7 +36,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
             bootstrap.addBundle(bundle);
         }
 
-        bootstrap.addBundle(new TestDataGeneratorBundle(this.domainModel, this.dataStore));
+        bootstrap.addBundle(new SampleDataGeneratorBundle(this.domainModel, this.dataStore));
 
         // TODO: application initialization
     }
@@ -40,6 +47,14 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
             @Nonnull Environment environment)
     {
         super.run(configuration, environment);
+
+        Config config = ConfigFactory.load();
+        Config klassConfig  = config.getConfig("klass");
+        ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
+                .setJson(false)
+                .setOriginComments(false);
+        String render = klassConfig.root().render(configRenderOptions);
+        LOGGER.info("Klass HOCON configuration:\n{}", render);
 
         environment.jersey().register(new QuestionResourceManual(this.dataStore));
 

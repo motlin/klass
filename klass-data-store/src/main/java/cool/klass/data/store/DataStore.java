@@ -9,6 +9,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public interface DataStore
 {
+    void runInTransaction(TransactionalCommand transactionalCommand);
+
     void runInTransaction(Runnable runnable);
 
     Object findByKey(Klass klass, ImmutableList<Object> keys);

@@ -17,7 +17,7 @@
         <module>klass-dropwizard-bundle-reladomo</module>
         <module>klass-dropwizard-bundle-h2</module>
         <module>klass-dropwizard-bundle-ddl-executor</module>
-        <module>klass-dropwizard-bundle-test-data</module>
+        <module>klass-dropwizard-bundle-sample-data</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>

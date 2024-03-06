@@ -21,6 +21,8 @@ import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
 import cool.klass.data.store.DataStore;
+import cool.klass.data.store.Transaction;
+import cool.klass.data.store.TransactionalCommand;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -34,6 +36,17 @@ import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 public class ReladomoDataStore implements DataStore
 {
     public static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+
+    @Override
+    public void runInTransaction(TransactionalCommand transactionalCommand)
+    {
+        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+        {
+            Transaction transactionAdapter = new TransactionAdapter(tx);
+            transactionalCommand.run(transactionAdapter);
+            return null;
+        });
+    }
 
     @Override
     public void runInTransaction(Runnable runnable)
