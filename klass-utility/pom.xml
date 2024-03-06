@@ -19,6 +19,8 @@
     <modules>
         <module>klass-clock-incrementing</module>
         <module>klass-context-thread-local</module>
+        <module>klass-serialization-jackson-config</module>
+        <module>klass-serialization-jackson-pretty-printer</module>
     </modules>
 
     <dependencyManagement>

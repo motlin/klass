@@ -16,8 +16,6 @@
     <name>Klass Serialization Jackson (Module Group)</name>
 
     <modules>
-        <module>klass-serialization-jackson-pretty-printer</module>
-        <module>klass-serialization-jackson-config</module>
         <module>klass-serialization-jackson-jsonview</module>
         <module>klass-serialization-jackson-response-dto</module>
         <module>klass-serialization-jackson-module-meta-model</module>
