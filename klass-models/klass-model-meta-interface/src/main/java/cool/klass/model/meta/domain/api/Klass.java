@@ -46,12 +46,14 @@ public interface Klass
                 .map(Classifier::getDataTypeProperties)
                 .orElseGet(Lists.immutable::empty);
 
-        return this
+        ImmutableList<DataTypeProperty> allDataTypeProperties = this
                 .getDeclaredDataTypeProperties()
                 .newWithAll(superClassProperties)
-                .newWithAll(interfaceProperties)
+                .newWithAll(interfaceProperties);
+        ImmutableList<DataTypeProperty> result = allDataTypeProperties
                 .distinctBy(NamedElement::getName)
                 .newWithoutAll(this.getDeclaredDataTypeProperties());
+        return result;
     }
 
     @Override
