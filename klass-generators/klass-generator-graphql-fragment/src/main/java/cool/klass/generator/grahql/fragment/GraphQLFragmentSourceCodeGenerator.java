@@ -121,25 +121,27 @@ public final class GraphQLFragmentSourceCodeGenerator
     {
         String indentation = subClassMode ? "  " : "";
         return indentation + "  " + referenceProperty.getName() + " {\n"
-               + indentation + GraphQLFragmentSourceCodeGenerator.getReferencePropertyBody(referenceProperty)
+               + GraphQLFragmentSourceCodeGenerator.getReferencePropertyBody(referenceProperty, subClassMode)
                + indentation + "  }\n";
     }
 
-    private static String getReferencePropertyBody(ReferenceProperty referenceProperty)
+    private static String getReferencePropertyBody(ReferenceProperty referenceProperty, boolean subClassMode)
     {
+        String indentation = subClassMode ? "  " : "";
+
         if (referenceProperty.isOwned() || GraphQLFragmentSourceCodeGenerator.isOneRequiredToOneOptional(
                 referenceProperty))
         {
-            return "    ..." + referenceProperty.getType().getName() + "Fragment\n";
+            return indentation + "    ..." + referenceProperty.getType().getName() + "Fragment\n";
         }
 
-        String typeNameString = referenceProperty.getType().isAbstract() ? "    __typename\n" : "";
+        String typeNameString =  referenceProperty.getType().isAbstract() ? indentation + "    __typename\n" : "";
 
         String keyPropertiesSourceCode = referenceProperty
                 .getType()
                 .getKeyProperties()
                 .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
-                .collect(dataTypeProperty -> String.format("    %s\n", dataTypeProperty.getName()))
+                .collect(dataTypeProperty -> String.format("    %s%s\n", indentation, dataTypeProperty.getName()))
                 .makeString("");
         return typeNameString + keyPropertiesSourceCode;
     }
