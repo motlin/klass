@@ -28,6 +28,7 @@
         <module>klass-graphql</module>
         <module>klass-firebase-principal</module>
         <module>klass-context-thread-local</module>
+        <module>klass-jackson-module-meta</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
         <module>klass-jackson-response</module>
