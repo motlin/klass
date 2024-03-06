@@ -100,7 +100,26 @@ public class ReladomoOperationCompilerTest
         {
             assertThat(
                     e.getMessage(),
-                    is("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\""));
+                    is("Could not find attribute 'invalidAttributeName' on type 'PropertiesRequired' in this.invalidAttributeName = \"Value\". Valid attributes: [propertiesRequiredId, requiredString, requiredInteger, requiredLong, requiredDouble, requiredFloat, requiredBoolean, requiredInstant, requiredLocalDate, createdById, createdOn, lastUpdatedById, systemFrom, systemTo]"));
+        }
+    }
+
+    @Test
+    public void invalidRelationshipName()
+    {
+        try
+        {
+            var reladomoOperationCompiler = new ReladomoOperationCompiler();
+            reladomoOperationCompiler.compile(
+                    OwnedNaturalOneToManySourceFinder.getFinderInstance(),
+                    "OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\"");
+            fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertThat(
+                    e.getMessage(),
+                    is("Could not find relationship 'invalidRelationshipName' on type 'OwnedNaturalOneToManySource' in OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\". Valid relationships: [target]"));
         }
     }
 
