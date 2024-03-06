@@ -70,7 +70,12 @@ public class SampleDataGeneratorBundle
     {
         if (!(configuration instanceof DomainModelFactoryProvider))
         {
-            throw new IllegalStateException(configuration.getClass().getCanonicalName());
+            String message = String.format(
+                    "Expected configuration to implement %s but found %s",
+                    DomainModelFactoryProvider.class.getCanonicalName(),
+                    configuration.getClass().getCanonicalName());
+            throw new IllegalStateException(message);
+
         }
 
         DomainModelFactoryProvider domainModelFactoryProvider = (DomainModelFactoryProvider) configuration;
@@ -81,7 +86,11 @@ public class SampleDataGeneratorBundle
     {
         if (!(configuration instanceof DataStoreFactoryProvider))
         {
-            throw new IllegalStateException(configuration.getClass().getCanonicalName());
+            String message = String.format(
+                    "Expected configuration to implement %s but found %s",
+                    DataStoreFactoryProvider.class.getCanonicalName(),
+                    configuration.getClass().getCanonicalName());
+            throw new IllegalStateException(message);
         }
 
         DataStoreFactoryProvider dataStoreFactoryProvider = (DataStoreFactoryProvider) configuration;
