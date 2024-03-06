@@ -20,7 +20,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
                 <configuration>
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
@@ -190,20 +189,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-graphql-schema</artifactId>
             <version>${project.version}</version>
@@ -321,6 +306,12 @@
             <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-logging-p6spy</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass compile dependencies -->
@@ -388,6 +379,20 @@
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Compile dependencies -->
@@ -418,12 +423,6 @@
         <!--endregion-->
 
         <!--region Runtime dependencies -->
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-logging-p6spy</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
