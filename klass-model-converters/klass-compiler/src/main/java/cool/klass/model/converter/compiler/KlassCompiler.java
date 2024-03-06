@@ -14,6 +14,7 @@ import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.OrderByPhase;
 import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
+import cool.klass.model.converter.compiler.phase.RelationshipPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
@@ -132,7 +133,11 @@ public class KlassCompiler
                 false,
                 this.domainModelState);
 
-        // TODO: RelationshipPhase should probably be here, and come out of the association phase
+        KlassListener relationshipPhase = new RelationshipPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                false,
+                this.domainModelState);
 
         KlassListener phase8 = new ProjectionPhase(
                 this.compilerErrorHolder,
@@ -160,6 +165,7 @@ public class KlassCompiler
                 phase5,
                 phase6,
                 phase7,
+                relationshipPhase,
                 phase8,
                 phase9,
                 phase10);
