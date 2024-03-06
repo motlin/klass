@@ -9,13 +9,15 @@ association DoubleVersionAssociation
 }
 
 class ExampleSource
+    systemTemporal
 {
-    id: Long key;
+    id    : Long key;
     number: Integer version;
 }
 
 class ExampleTarget
+    systemTemporal
 {
-    id: Long key;
+    id    : Long key;
     number: Integer version;
 }

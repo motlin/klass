@@ -1,17 +1,14 @@
-[33m════════════════════════════════════════[m [35mERR_DUP_PRJ[m [33m════════════════════════════════════════[m
-[31mError: Duplicate member: 'duplicateMember'.[m
+[33m════════════════════════════════════════[m [35mERR_DUP_TOP[m [33m════════════════════════════════════════[m
+[31mError: Duplicate top level item name: 'DuplicateTopLevelElement'.[m
 
-At (DuplicateNamesErrorTest.klass:40)
+At (DuplicateNamesErrorTest.klass:48)
 
 [39m 1║ [35mpackage [39mdummy
-[39m38║ [35mprojection [39mDuplicateTopLevelElement [35mon [39mDuplicateTopLevelElement
-[39m39║ [36m{
-[39m40║     [39mduplicateMember[36m: [34m"Duplicate Header"[36m,
-[39m  ║     [31m^^^^^^^^^^^^^^^
-[39m42║ [36m}
+[39m48║ [35mservice [39mDuplicateTopLevelElement
+[39m  ║         [31m^^^^^^^^^^^^^^^^^^^^^^^^
 [m
-[36mLocation:  [mDuplicateNamesErrorTest.klass:40[m
+[36mLocation:  [mDuplicateNamesErrorTest.klass:48[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m
-[36mLine:      [m40[m
-[36mCharacter: [m5
+[36mLine:      [m48[m
+[36mCharacter: [m9
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

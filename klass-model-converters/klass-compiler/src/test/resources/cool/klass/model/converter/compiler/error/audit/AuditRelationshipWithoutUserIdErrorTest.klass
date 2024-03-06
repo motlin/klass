@@ -8,7 +8,7 @@ class DummyClass systemTemporal versioned audited
 user User systemTemporal versioned
 {
     userId: String id key userId;
-    otherProperty: Long;
+    otherProperty: String;
 }
 
 association CreatedBy

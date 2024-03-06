@@ -27,12 +27,16 @@ association DuplicateTopLevelElement
 {
     duplicateMember: DuplicateTopLevelElement[1..1];
     duplicateMember: DuplicateTopLevelElement[0..1];
+
+    relationship this.duplicateMember == DuplicateTopLevelElement.duplicateMember
 }
 
 association DuplicateAssociationEnd
 {
     duplicateAssociationEnd: DuplicateTopLevelElement[1..1];
     duplicateAssociationEnd: DuplicateTopLevelElement[0..1];
+
+    relationship this.duplicateMember == DuplicateTopLevelElement.duplicateMember
 }
 
 projection DuplicateTopLevelElement on DuplicateTopLevelElement

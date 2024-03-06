@@ -1,15 +1,26 @@
 package com.errors
 
-class DummyClass systemTemporal versioned audited
+class DummyClass
+    systemTemporal
+    versioned
+    audited
 {
-    id: Long id key;
-    createdById1: String createdBy;
+    id              : Long id key;
+    system1         : TemporalRange? system;
+    system2         : TemporalRange? system;
+    systemFrom1     : TemporalInstant? system from;
+    systemFrom2     : TemporalInstant? system from;
+    systemTo1       : TemporalInstant? system to;
+    systemTo2       : TemporalInstant? system to;
+    createdById1    : String createdBy;
     lastUpdatedById1: String lastUpdatedBy;
-    createdById2: String createdBy;
+    createdById2    : String createdBy;
     lastUpdatedById2: String lastUpdatedBy;
 }
 
-user User systemTemporal versioned
+user User
+    systemTemporal
+    versioned
 {
-    id: String id key userId;
+    id              : String id key userId;
 }

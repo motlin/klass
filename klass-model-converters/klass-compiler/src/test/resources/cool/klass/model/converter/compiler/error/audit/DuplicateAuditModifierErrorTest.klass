@@ -8,26 +8,29 @@ user User systemTemporal versioned
 class DummyClass systemTemporal versioned audited
 {
     id             : Long id key;
-    system         : TemporalRange?    system system;
+    system         : TemporalRange?   system system;
     systemFrom     : TemporalInstant? system from from;
-    systemTo       : TemporalInstant? system to to;
-    createdById    : String createdBy createdBy userId final private;
-    createdOn      : Instant createdOn createdOn final;
-    lastUpdatedById: String lastUpdatedBy lastUpdatedBy userId private;
+    systemTo       : TemporalInstant? system to;
+    createdById    : String createdBy userId final private;
+    createdOn      : Instant createdOn final;
+    lastUpdatedById: String lastUpdatedBy userId private;
 
     range          : TemporalRange? system valid;
     from           : TemporalInstant? from;
     to             : TemporalInstant? to;
     systemFromTo   : TemporalInstant? system from to;
-    fromFrom       : TemporalInstant? system system from from;
-    by             : Long private createdBy lastUpdatedBy;
-
 }
 
 class DummyClass2 systemTemporal versioned audited
 {
-    id: Long id key;
+    id             : Long id key;
     createdById    : String createdBy lastUpdatedBy userId final private;
+}
+
+class DummyClass3 systemTemporal versioned audited
+{
+    id             : Long id key;
+    by             : String private createdBy lastUpdatedBy;
 }
 
 association CreatedBy
