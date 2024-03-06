@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import com.gs.fw.common.mithra.MithraManager;
 import com.gs.fw.common.mithra.MithraManagerProvider;
+import com.stackoverflow.dropwizard.command.StackOverflowTestDataGeneratorCommand;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     public void initialize(Bootstrap<StackOverflowConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
+
+        bootstrap.addCommand(new StackOverflowTestDataGeneratorCommand());
 
         // TODO: application initialization
         this.initializeReladomo();

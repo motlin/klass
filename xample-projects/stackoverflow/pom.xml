@@ -37,5 +37,6 @@
         <module>${app.artifactId}-reladomo-ddl-executor</module>
         <module>${app.artifactId}-services</module>
         <module>${app.artifactId}-dropwizard-application</module>
+        <module>stackoverflow-reladomo-test-data</module>
     </modules>
 </project>
