@@ -141,20 +141,6 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
-    {
-        return keyProperty.getKeysMatchingThisForeignKey()
-                .valuesView()
-                .anySatisfyWith(this::isOppositeKey, keyProperty);
-    }
-
-    private boolean isOppositeKey(
-            @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull DataTypeProperty keyProperty)
-    {
-        return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
-    }
-
     private void handlePlainProperty(@Nonnull DataTypeProperty property)
     {
         if (!property.isRequired())

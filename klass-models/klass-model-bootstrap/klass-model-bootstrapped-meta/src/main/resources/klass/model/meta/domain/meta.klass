@@ -899,32 +899,32 @@ association ServiceHasProjection
 
 association ServiceHasQueryCriteria
 {
-    queryService                       : Service[0..1];
-    queryCriteria                 : Criteria[1..1];
+    queryService                  : Service[0..1];
+    queryCriteria                 : Criteria[0..1] owned;
 
     relationship this.queryCriteriaId == Criteria.id
 }
 
 association ServiceHasAuthorizeCriteria
 {
-    authorizeService                       : Service[0..1];
-    authorizeCriteria                 : Criteria[1..1];
+    authorizeService                  : Service[0..1];
+    authorizeCriteria                 : Criteria[0..1] owned;
 
     relationship this.authorizeCriteriaId == Criteria.id
 }
 
 association ServiceHasValidateCriteria
 {
-    validateService                       : Service[0..1];
-    validateCriteria                 : Criteria[1..1];
+    validateService                  : Service[0..1];
+    validateCriteria                 : Criteria[0..1] owned;
 
     relationship this.validateCriteriaId == Criteria.id
 }
 
 association ServiceHasConflictCriteria
 {
-    conflictService                       : Service[0..1];
-    conflictCriteria                 : Criteria[1..1];
+    conflictService                  : Service[0..1];
+    conflictCriteria                 : Criteria[0..1] owned;
 
     relationship this.conflictCriteriaId == Criteria.id
 }
@@ -1675,9 +1675,9 @@ projection ServiceGroupProjection on ServiceGroup
                 name: "ServiceGroup Url Service Projection name",
             },
             queryCriteria      : CriteriaSummaryProjection,
-            authorizeCriteria      : CriteriaSummaryProjection,
-            validateCriteria      : CriteriaSummaryProjection,
-            conflictCriteria      : CriteriaSummaryProjection,
+            authorizeCriteria  : CriteriaSummaryProjection,
+            validateCriteria   : CriteriaSummaryProjection,
+            conflictCriteria   : CriteriaSummaryProjection,
         },
     },
 }

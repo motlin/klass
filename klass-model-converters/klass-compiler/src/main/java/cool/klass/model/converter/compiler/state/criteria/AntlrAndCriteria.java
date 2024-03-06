@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 
@@ -65,9 +64,9 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     }
 
     @Override
-    public void addForeignKeys(@Nonnull AntlrAssociationEnd endWithForeignKeys)
+    public void addForeignKeys()
     {
-        this.left.addForeignKeys(endWithForeignKeys);
-        this.right.addForeignKeys(endWithForeignKeys);
+        this.left.addForeignKeys();
+        this.right.addForeignKeys();
     }
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -272,30 +271,6 @@ public class AntlrAssociation
     public AntlrAssociationEnd getTargetEnd()
     {
         return this.associationEndStates.get(1);
-    }
-
-    // TODO: the name sounds like it returns the to-many side but it returns the to-one side
-    @Nullable
-    public AntlrAssociationEnd getEndWithForeignKeys()
-    {
-        boolean sourceHasForeignKeys = this.getSourceEnd().hasForeignKeys();
-        boolean targetHasForeignKeys = this.getTargetEnd().hasForeignKeys();
-
-        if (sourceHasForeignKeys && !targetHasForeignKeys)
-        {
-            return this.getTargetEnd();
-        }
-        if (targetHasForeignKeys && !sourceHasForeignKeys)
-        {
-            return this.getSourceEnd();
-        }
-        if (sourceHasForeignKeys && targetHasForeignKeys)
-        {
-            // Error covered elsewhere: many-to-1 where many owns one
-            return null;
-        }
-        // Error covered elsewhere: 1-to-1 symmetrical association
-        return null;
     }
 
     public boolean isManyToMany()

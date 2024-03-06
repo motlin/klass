@@ -15,6 +15,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.stack.MutableStack;
@@ -211,8 +212,10 @@ public class RequiredPropertiesValidator
 
     private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
     {
-        return keyProperty.getKeysMatchingThisForeignKey()
+        ListIterable<DataTypeProperty> dataTypeProperties = keyProperty.getKeysMatchingThisForeignKey()
                 .valuesView()
+                .toList();
+        return dataTypeProperties
                 .anySatisfyWith(this::isOppositeKey, keyProperty);
     }
 

@@ -351,7 +351,7 @@ association OwnedNaturalOneToOne
 class OwnedNaturalOneToManySelf
 {
     key: String key;
-    sourceKey: String private;
+    sourceKey: String? private;
     value: String;
 }
 
@@ -408,7 +408,7 @@ association OwnedSyntheticOneToOne
 class OwnedSyntheticOneToManySelf
 {
     id: Long id key;
-    sourceId: Long private;
+    sourceId: Long? private;
     value: String;
 }
 
@@ -488,7 +488,7 @@ association SharedNaturalOneToOne
 class SharedNaturalOneToManySelf
 {
     key: String key;
-    sourceKey: String private;
+    sourceKey: String? private;
     value: String;
 }
 
@@ -545,7 +545,7 @@ association SharedSyntheticOneToOne
 class SharedSyntheticOneToManySelf
 {
     id: Long id key;
-    sourceId: Long private;
+    sourceId: Long? private;
     value: String;
 }
 

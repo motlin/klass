@@ -2755,11 +2755,15 @@
       },
       {
         "name": "queryCriteria",
-        "multiplicity": "1..1",
+        "multiplicity": "0..1",
         "resultType": {
           "name": "Criteria"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2803,11 +2807,15 @@
       },
       {
         "name": "authorizeCriteria",
-        "multiplicity": "1..1",
+        "multiplicity": "0..1",
         "resultType": {
           "name": "Criteria"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2851,11 +2859,15 @@
       },
       {
         "name": "validateCriteria",
-        "multiplicity": "1..1",
+        "multiplicity": "0..1",
         "resultType": {
           "name": "Criteria"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2899,11 +2911,15 @@
       },
       {
         "name": "conflictCriteria",
-        "multiplicity": "1..1",
+        "multiplicity": "0..1",
         "resultType": {
           "name": "Criteria"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "name": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],

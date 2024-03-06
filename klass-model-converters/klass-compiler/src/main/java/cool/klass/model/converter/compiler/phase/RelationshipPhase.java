@@ -48,30 +48,13 @@ public class RelationshipPhase
             return;
         }
 
-        AntlrAssociationEnd endWithForeignKeys = associationState.getEndWithForeignKeys();
-        if (endWithForeignKeys == null)
-        {
-            return;
-        }
-
-        AntlrClass typeWithForeignKeys = endWithForeignKeys.getOwningClassifierState();
-        if (typeWithForeignKeys == AntlrClass.NOT_FOUND || typeWithForeignKeys == AntlrClass.AMBIGUOUS)
-        {
-            return;
-        }
-
-        if (!endWithForeignKeys.isToOne())
-        {
-            throw new AssertionError();
-        }
-
         boolean possibleJoinCriteria = this.hasPossibleJoinCriteria(
                 criteriaExpressionContext,
                 associationState.getTargetEnd().getType());
 
         if (possibleJoinCriteria)
         {
-            criteriaState.addForeignKeys(endWithForeignKeys);
+            criteriaState.addForeignKeys();
         }
     }
 

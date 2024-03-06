@@ -221,16 +221,25 @@ public class AntlrAssociationEnd
         keyProperty.setForeignKeyMatchingThisKey(this, foreignKeyProperty);
     }
 
-    public boolean hasForeignKeys()
+    public boolean hasForeignKey()
     {
-        return this.isOwned()
-                || this.isToMany() && this.opposite.isToOne()
-                || this.isToOneOptional() && this.opposite.isToOneRequired();
+        return this.isToOneRequired() && this.opposite.isToMany()
+                || this.isToOneRequired() && this.opposite.isToOneOptional();
     }
 
     @Override
     protected IdentifierContext getTypeIdentifier()
     {
         return this.getElementContext().classReference().identifier();
+    }
+
+    public boolean isSourceEnd()
+    {
+        return this == this.owningAssociationState.getSourceEnd();
+    }
+
+    public boolean isTargetEnd()
+    {
+        return this == this.owningAssociationState.getTargetEnd();
     }
 }
