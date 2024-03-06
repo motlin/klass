@@ -36,9 +36,8 @@ serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
 classBody: '{' classMember* '}';
 
 // inheritance
-abstractDeclaration: 'abstract' ('(' inheritanceType ')')?;
+abstractDeclaration: 'abstract';
 extendsDeclaration: 'extends' classReference;
-inheritanceType: 'table-per-subclass' | 'table-for-all-subclasses' | 'table-per-class';
 implementsDeclaration: 'implements' interfaceReference (',' interfaceReference)*;
 
 // enumeration

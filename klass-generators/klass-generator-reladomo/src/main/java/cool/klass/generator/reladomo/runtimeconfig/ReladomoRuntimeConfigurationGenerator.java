@@ -18,7 +18,6 @@ import com.gs.fw.common.mithra.mithraruntime.PropertyType;
 import com.gs.fw.common.mithra.mithraruntime.PureObjectsType;
 import cool.klass.generator.reladomo.AbstractReladomoGenerator;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -164,7 +163,6 @@ public class ReladomoRuntimeConfigurationGenerator
                 .getClasses()
                 // TODO: Can a class be transient and abstract? Is that redundant?
                 .reject(Klass::isTransient)
-                .reject(each -> each.getInheritanceType() == InheritanceType.TABLE_PER_SUBCLASS)
                 .collect(PackageableElement::getFullyQualifiedName)
                 .collectWith(
                         ReladomoRuntimeConfigurationGenerator::createMithraObjectConfigurationType,

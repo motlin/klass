@@ -71,13 +71,9 @@ public class QuestionResource
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
-        result.deepFetch(QuestionFinder.answers().version().createdBy());
-        result.deepFetch(QuestionFinder.answers().version().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.answers().createdBy());
-        result.deepFetch(QuestionFinder.answers().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.tags().tag());
-        result.deepFetch(QuestionFinder.version().createdBy());
-        result.deepFetch(QuestionFinder.version().lastUpdatedBy());
+        result.deepFetch(QuestionFinder.answers());
+        result.deepFetch(QuestionFinder.tags());
+        result.deepFetch(QuestionFinder.version());
         result.deepFetch(QuestionFinder.createdBy());
         result.deepFetch(QuestionFinder.lastUpdatedBy());
 
@@ -235,13 +231,9 @@ public class QuestionResource
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
-        result.deepFetch(QuestionFinder.answers().version().createdBy());
-        result.deepFetch(QuestionFinder.answers().version().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.answers().createdBy());
-        result.deepFetch(QuestionFinder.answers().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.tags().tag());
-        result.deepFetch(QuestionFinder.version().createdBy());
-        result.deepFetch(QuestionFinder.version().lastUpdatedBy());
+        result.deepFetch(QuestionFinder.answers());
+        result.deepFetch(QuestionFinder.tags());
+        result.deepFetch(QuestionFinder.version());
         result.deepFetch(QuestionFinder.createdBy());
         result.deepFetch(QuestionFinder.lastUpdatedBy());
 
@@ -264,13 +256,9 @@ public class QuestionResource
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
-        result.deepFetch(QuestionFinder.answers().version().createdBy());
-        result.deepFetch(QuestionFinder.answers().version().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.answers().createdBy());
-        result.deepFetch(QuestionFinder.answers().lastUpdatedBy());
-        result.deepFetch(QuestionFinder.tags().tag());
-        result.deepFetch(QuestionFinder.version().createdBy());
-        result.deepFetch(QuestionFinder.version().lastUpdatedBy());
+        result.deepFetch(QuestionFinder.answers());
+        result.deepFetch(QuestionFinder.tags());
+        result.deepFetch(QuestionFinder.version());
         result.deepFetch(QuestionFinder.createdBy());
         result.deepFetch(QuestionFinder.lastUpdatedBy());
 

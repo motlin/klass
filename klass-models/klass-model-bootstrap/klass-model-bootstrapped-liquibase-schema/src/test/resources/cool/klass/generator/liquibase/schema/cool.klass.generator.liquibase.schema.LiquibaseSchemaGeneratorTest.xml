@@ -59,14 +59,6 @@
             <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="INTERFACE_PK" />
             </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PACKAGE_NAME" type="varchar(100000)">
-                <constraints nullable="false" />
-            </column>
         </createTable>
     </changeSet>
 
@@ -90,15 +82,7 @@
 
             <column name="SUPER_CLASS_NAME" type="varchar(256)" />
 
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PACKAGE_NAME" type="varchar(100000)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="INHERITANCE_TYPE" type="varchar(256)">
+            <column name="ABSTRACT_CLASS" type="boolean">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -134,14 +118,6 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PRIMITIVE_PROPERTY_PK" />
             </column>
 
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="OPTIONAL" type="boolean">
-                <constraints nullable="false" />
-            </column>
-
             <column name="PRIMITIVE_TYPE" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
@@ -159,14 +135,6 @@
             </column>
 
             <column name="ENUMERATION_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="OPTIONAL" type="boolean">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -301,18 +269,6 @@
             <column name="ENUMERATION_NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="MULTIPLICITY" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
         </createTable>
     </changeSet>
 
@@ -320,18 +276,6 @@
         <createTable tableName="PRIMITIVE_PARAMETER">
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PRIMITIVE_PARAMETER_PK" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="MULTIPLICITY" type="varchar(256)">
-                <constraints nullable="false" />
             </column>
 
             <column name="PRIMITIVE_TYPE" type="varchar(256)">
@@ -433,14 +377,6 @@
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="AND_CRITERIA_PK" />
             </column>
-
-            <column name="LEFT_ID" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="RIGHT_ID" type="bigint">
-                <constraints nullable="false" />
-            </column>
         </createTable>
     </changeSet>
 
@@ -448,14 +384,6 @@
         <createTable tableName="OR_CRITERIA">
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="OR_CRITERIA_PK" />
-            </column>
-
-            <column name="LEFT_ID" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="RIGHT_ID" type="bigint">
-                <constraints nullable="false" />
             </column>
         </createTable>
     </changeSet>
@@ -585,18 +513,6 @@
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="THIS_MEMBER_REFERENCE_PATH_PK" />
             </column>
-
-            <column name="CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PROPERTY_CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PROPERTY_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
         </createTable>
     </changeSet>
 
@@ -604,18 +520,6 @@
         <createTable tableName="TYPE_MEMBER_REFERENCE_PATH">
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="TYPE_MEMBER_REFERENCE_PATH_PK" />
-            </column>
-
-            <column name="CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PROPERTY_CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="PROPERTY_NAME" type="varchar(256)">
-                <constraints nullable="false" />
             </column>
         </createTable>
     </changeSet>
@@ -724,17 +628,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ROOT_PROJECTION_PK" />
             </column>
 
-            <column name="PARENT_ID" type="bigint" />
-
             <column name="CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -766,21 +660,11 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROJECTION_WITH_ASSOCIATION_END_PK" />
             </column>
 
-            <column name="PARENT_ID" type="bigint" />
-
             <column name="ASSOCIATION_END_CLASS" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
 
             <column name="ASSOCIATION_END_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -791,24 +675,6 @@
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROJECTION_REFERENCE_PROPERTY_PK" />
             </column>
-
-            <column name="PARENT_ID" type="bigint" />
-
-            <column name="ASSOCIATION_END_CLASS" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ASSOCIATION_END_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
         </createTable>
     </changeSet>
 
@@ -818,25 +684,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROJECTION_PROJECTION_REFERENCE_PK" />
             </column>
 
-            <column name="PARENT_ID" type="bigint" />
-
-            <column name="ASSOCIATION_END_CLASS" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ASSOCIATION_END_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="PROJECTION_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -848,21 +696,11 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PROJECTION_DATA_TYPE_PROPERTY_PK" />
             </column>
 
-            <column name="PARENT_ID" type="bigint" />
-
             <column name="PROPERTY_CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
 
             <column name="PROPERTY_NAME" type="varchar(256)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="ORDINAL" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
         </createTable>

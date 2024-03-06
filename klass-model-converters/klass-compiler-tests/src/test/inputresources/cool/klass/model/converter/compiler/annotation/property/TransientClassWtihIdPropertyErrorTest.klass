@@ -3,6 +3,7 @@ package example
 class AbstractSuperClass
     abstract
 {
+    key: Long key id;
     string: String;
 }
 

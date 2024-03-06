@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
@@ -18,13 +19,12 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
 import com.gs.fw.common.mithra.generator.metamodel.MithraPureObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
-import com.gs.fw.common.mithra.generator.metamodel.SuperClassAttributeType;
-import com.gs.fw.common.mithra.generator.metamodel.SuperClassType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
 import cool.klass.generator.reladomo.AbstractReladomoGenerator;
 import cool.klass.generator.reladomo.CriteriaToRelationshipVisitor;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.InheritanceType;
+import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -39,13 +39,16 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and generate order-bys on association ends.
+
 public class ReladomoObjectFileGenerator
         extends AbstractReladomoGenerator
 {
+    public static final Converter<String, String> TO_LOWER = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
+
     public ReladomoObjectFileGenerator(@Nonnull DomainModel domainModel)
     {
         super(domainModel);
@@ -125,17 +128,7 @@ public class ReladomoObjectFileGenerator
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
 
-        if (this.needsTable(klass))
-        {
-            mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
-        }
-
-        if (klass.isAbstract())
-        {
-            SuperClassType superClassType = new SuperClassType();
-            superClassType.with(klass.getInheritanceType().getPrettyName(), mithraObject);
-            mithraObject.setSuperClassType(superClassType);
-        }
+        mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
 
         ImmutableList<String> superInterfaceNames = klass.getInterfaces().collect(NamedElement::getName);
         mithraObject.setMithraInterfaces(superInterfaceNames.castToList());
@@ -157,26 +150,16 @@ public class ReladomoObjectFileGenerator
         return mithraObject;
     }
 
-    private boolean needsTable(@Nonnull Klass klass)
-    {
-        return klass.getInheritanceType() == InheritanceType.NONE
-               || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
-    }
-
     private ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
     {
-        if (klass.getSuperClass().isEmpty())
-        {
-            return klass.getDataTypeProperties();
-        }
+        ImmutableList<String> superClassPropertyNames = klass
+                .getSuperClass()
+                .map(Classifier::getDataTypeProperties)
+                .orElseGet(Lists.immutable::empty)
+                .collect(NamedElement::getName);
 
-        ImmutableList<DataTypeProperty> superClassProperties = klass.getSuperClass().get().getDataTypeProperties();
-        ImmutableList<DataTypeProperty> dataTypeProperties   = klass.getDataTypeProperties();
-
-        ImmutableList<String> superClassPropertyNames = superClassProperties.collect(NamedElement::getName);
-        ImmutableList<DataTypeProperty> uniqueDataTypeProperties = dataTypeProperties
-                .reject(dtp -> superClassPropertyNames.contains(dtp.getName()));
-        return uniqueDataTypeProperties;
+        return klass.getDataTypeProperties()
+                .select(each -> each.isKey() || !superClassPropertyNames.contains(each.getName()));
     }
 
     private void convertCommonObject(@Nonnull Klass klass, @Nonnull MithraCommonObjectType mithraCommonObject)
@@ -188,41 +171,57 @@ public class ReladomoObjectFileGenerator
         mithraCommonObject.setPackageName(klass.getPackageName());
         mithraCommonObject.setClassName(klass.getName());
         mithraCommonObject.setInitializePrimitivesToNull(true);
-
-        klass.getSuperClass().ifPresent(superClass ->
-        {
-            SuperClassAttributeType superClassAttributeType = new SuperClassAttributeType();
-            superClassAttributeType.setName(superClass.getName());
-            superClassAttributeType.setGenerated(true);
-            mithraCommonObject.setSuperClass(superClassAttributeType);
-        });
     }
 
     private List<RelationshipType> convertRelationships(@Nonnull Klass klass)
     {
         ImmutableList<AssociationEnd> associationEnds = klass.getDeclaredAssociationEnds();
 
+        for (AssociationEnd associationEnd : associationEnds)
+        {
+            int count = 0;
+            if (this.isForwardRelationship(associationEnd))
+            {
+                count++;
+            }
+            if (this.isReverseRelationship(associationEnd))
+            {
+                count++;
+            }
+            if (this.isForwardRelationship(associationEnd.getOpposite()))
+            {
+                count++;
+            }
+            if (this.isReverseRelationship(associationEnd.getOpposite()))
+            {
+                count++;
+            }
+            if (count != 1)
+            {
+                throw new AssertionError("Count: " + count + " " + associationEnd);
+            }
+        }
+
         ImmutableList<AssociationEnd> forward = associationEnds.select(this::isForwardRelationship);
         ImmutableList<AssociationEnd> reverse = associationEnds.select(this::isReverseRelationship);
-
-        // TODO: There's a third set of association ends where both sides are abstract types. For those, we should generate a forward-only relationship
 
         ImmutableList<RelationshipType> relationshipTypes = forward
                 .collectWith(this::convertRelationship, false);
         ImmutableList<RelationshipType> reverseAbstractRelationshipTypes = reverse
                 .collectWith(this::convertRelationship, true);
+        ImmutableList<RelationshipType> subClassRelationships = klass.getSubClasses().collect(this::convertSubClassRelationship);
 
-        return relationshipTypes.newWithAll(reverseAbstractRelationshipTypes).castToList();
+        return relationshipTypes.newWithAll(reverseAbstractRelationshipTypes).newWithAll(subClassRelationships).castToList();
     }
 
     private boolean isForwardRelationship(AssociationEnd associationEnd)
     {
-        return this.isForwardDeclared(associationEnd) && !this.mustBeOnResultType(associationEnd);
+        return this.isForwardDeclared(associationEnd) && !this.mustBeOnResultType(associationEnd.getOpposite());
     }
 
     private boolean isReverseRelationship(AssociationEnd associationEnd)
     {
-        return this.isReverseDeclared(associationEnd) && this.mustBeOnResultType(associationEnd.getOpposite());
+        return this.isReverseDeclared(associationEnd) && this.mustBeOnResultType(associationEnd);
     }
 
     private boolean isForwardDeclared(AssociationEnd associationEnd)
@@ -237,9 +236,7 @@ public class ReladomoObjectFileGenerator
 
     private boolean mustBeOnResultType(AssociationEnd associationEnd)
     {
-        return !associationEnd.getOwningClassifier().isAbstract()
-               && associationEnd.getType().isAbstract()
-               && associationEnd.getMultiplicity().isToMany();
+        return associationEnd.isOwned();
     }
 
     @Nonnull
@@ -253,10 +250,7 @@ public class ReladomoObjectFileGenerator
         AssociationEnd   opposite         = associationEnd.getOpposite();
         RelationshipType relationshipType = new RelationshipType();
         relationshipType.setName(associationEnd.getName());
-        if (!associationEnd.getOwningClassifier().isAbstract())
-        {
-            relationshipType.setReverseRelationshipName(opposite.getName());
-        }
+        relationshipType.setReverseRelationshipName(opposite.getName());
         relationshipType.setCardinality(this.getCardinality(associationEnd, opposite));
         relationshipType.setRelatedIsDependent(associationEnd.isOwned());
         relationshipType.setRelatedObject(associationEnd.getType().getName());
@@ -266,6 +260,31 @@ public class ReladomoObjectFileGenerator
                 reverse);
         relationshipType._setValue(relationshipString);
         return relationshipType;
+    }
+
+    private RelationshipType convertSubClassRelationship(Klass subClass)
+    {
+        Klass superClass = subClass.getSuperClass().get();
+
+        RelationshipType relationshipType = new RelationshipType();
+        relationshipType.setName(TO_LOWER.convert(subClass.getName()) + "SubClass");
+        relationshipType.setReverseRelationshipName(TO_LOWER.convert(superClass.getName()) + "SuperClass");
+        relationshipType.setCardinality(this.getCardinalityType("one-to-one"));
+        relationshipType.setRelatedIsDependent(true);
+        relationshipType.setRelatedObject(subClass.getName());
+
+        String relationshipString =  superClass.getKeyProperties().collectWith(this::getRelationshipClause, subClass).makeString(" and ");
+
+        relationshipType._setValue(relationshipString);
+        return relationshipType;
+    }
+
+    private String getRelationshipClause(DataTypeProperty keyProperty, Klass subClass)
+    {
+        return "this.%s = %s.%s".formatted(
+                keyProperty.getName(),
+                subClass.getName(),
+                keyProperty.getName());
     }
 
     @Nonnull
@@ -284,12 +303,12 @@ public class ReladomoObjectFileGenerator
                 .getOrderBy()
                 .map(OrderBy::getOrderByMemberReferencePaths)
                 .orElseGet(Lists.immutable::empty)
-                .select(this::isConvertibleToOrderBy)
+                .selectWith(this::isConvertibleToOrderBy, associationEnd.getType())
                 .collect(this::convertOrderByMemberReferencePath);
         return orderByStrings.isEmpty() ? null : orderByStrings.makeString();
     }
 
-    private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
+    private boolean isConvertibleToOrderBy(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath, Klass klass)
     {
         ThisMemberReferencePath thisMemberReferencePath = orderByMemberReferencePath.getThisMemberReferencePath();
         DataTypeProperty        property                = thisMemberReferencePath.getProperty();
@@ -300,18 +319,29 @@ public class ReladomoObjectFileGenerator
         }
 
         // Reladomo only supports simple property orderBys, like (title asc), not paths like (question.title asc)
-        if (thisMemberReferencePath.getAssociationEnds().notEmpty())
+        if (orderByMemberReferencePath.getThisMemberReferencePath().getAssociationEnds().notEmpty())
         {
             return false;
         }
 
-        return true;
+        if (property.getOwningClassifier() == klass)
+        {
+            return true;
+        }
+
+        if (property.getOwningClassifier() instanceof Interface anInterface && klass.getInterfaces().contains(anInterface))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private String convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
-        String propertyName           = orderByMemberReferencePath.getThisMemberReferencePath().getProperty().getName();
-        String orderByDirectionString = this.getOrderByDirectionString(orderByMemberReferencePath);
+        DataTypeProperty property               = orderByMemberReferencePath.getThisMemberReferencePath().getProperty();
+        String           propertyName           = property.getName();
+        String           orderByDirectionString = this.getOrderByDirectionString(orderByMemberReferencePath);
         return String.format("%s %s", propertyName, orderByDirectionString);
     }
 
@@ -389,13 +419,13 @@ public class ReladomoObjectFileGenerator
     private AttributeType convertToAttributeType(@Nonnull Klass owningClass, @Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
-        this.convertToAttributeType(dataTypeProperty, owningClass, attributeType);
+        this.convertToAttributeType(owningClass, dataTypeProperty, attributeType);
         return attributeType;
     }
 
     private void convertToAttributeType(
-            @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull Klass owningClass,
+            @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull AttributePureType attributeType)
     {
         String propertyName = dataTypeProperty.getName();
@@ -410,13 +440,13 @@ public class ReladomoObjectFileGenerator
             attributeType.setReadonly(true);
         }
 
-        this.handleType(attributeType, owningClass, dataTypeProperty);
+        this.handleType(owningClass, dataTypeProperty, attributeType);
     }
 
     private void handleType(
-            @Nonnull AttributePureType attributeType,
             @Nonnull Klass owningClass,
-            @Nonnull DataTypeProperty dataTypeProperty)
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull AttributePureType attributeType)
     {
         if (dataTypeProperty instanceof EnumerationProperty)
         {
@@ -432,7 +462,7 @@ public class ReladomoObjectFileGenerator
         if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
-            primitiveType.visit(new AttributeTypeVisitor(attributeType, owningClass, primitiveProperty));
+            primitiveType.visit(new AttributeTypeVisitor(owningClass, primitiveProperty, attributeType));
         }
     }
 
@@ -440,7 +470,7 @@ public class ReladomoObjectFileGenerator
     private AttributePureType convertToAttributePureType(@Nonnull Klass owningClass, @Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributePureType attributeType = new AttributePureType();
-        this.convertToAttributeType(dataTypeProperty, owningClass, attributeType);
+        this.convertToAttributeType(owningClass, dataTypeProperty, attributeType);
         return attributeType;
     }
 }

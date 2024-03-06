@@ -36,12 +36,10 @@ import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
 import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
-import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProperty;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
@@ -64,6 +62,7 @@ import klass.model.meta.domain.MaxLengthPropertyValidation;
 import klass.model.meta.domain.MaxLengthPropertyValidationFinder;
 import klass.model.meta.domain.MaxPropertyValidation;
 import klass.model.meta.domain.MaxPropertyValidationFinder;
+import klass.model.meta.domain.MemberReferencePath;
 import klass.model.meta.domain.MinLengthPropertyValidation;
 import klass.model.meta.domain.MinLengthPropertyValidationFinder;
 import klass.model.meta.domain.MinPropertyValidation;
@@ -77,7 +76,6 @@ import klass.model.meta.domain.PrimitivePropertyFinder;
 import klass.model.meta.domain.ProjectionDataTypePropertyFinder;
 import klass.model.meta.domain.ProjectionProjectionReferenceFinder;
 import klass.model.meta.domain.ProjectionReferencePropertyFinder;
-import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
 import klass.model.meta.domain.PropertyModifierFinder;
 import klass.model.meta.domain.RootProjection;
 import klass.model.meta.domain.RootProjectionFinder;
@@ -181,10 +179,15 @@ public class KlassBootstrapWriter
 
     private void handleInterface(@Nonnull Interface anInterface)
     {
-        var bootstrappedInterface = new klass.model.meta.domain.Interface();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedInterface, anInterface);
+        var boostrappedClassifier = new klass.model.meta.domain.Classifier();
+        boostrappedClassifier.setPackageName(anInterface.getPackageName());
+        boostrappedClassifier.setName(anInterface.getName());
+        boostrappedClassifier.setOrdinal(anInterface.getOrdinal());
         // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
-        bootstrappedInterface.insert();
+        boostrappedClassifier.insert();
+
+        var bootstrappedInterface = new klass.model.meta.domain.Interface();
+        bootstrappedInterface.setClassifierSuperClass(boostrappedClassifier);
 
         this.handleSuperInterfaces(anInterface);
         this.handleClassifierModifiers(anInterface);
@@ -193,11 +196,16 @@ public class KlassBootstrapWriter
 
     private void handleClass(@Nonnull Klass klass)
     {
+        var bootstrappedClassifier = new klass.model.meta.domain.Classifier();
+        bootstrappedClassifier.setPackageName(klass.getPackageName());
+        bootstrappedClassifier.setName(klass.getName());
+        bootstrappedClassifier.setOrdinal(klass.getOrdinal());
+        bootstrappedClassifier.insert();
+
         var bootstrappedClass = new klass.model.meta.domain.Klass();
-        KlassBootstrapWriter.handlePackageableElement(bootstrappedClass, klass);
+        bootstrappedClass.setClassifierSuperClass(bootstrappedClassifier);
         // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
-        bootstrappedClass.setInheritanceType(klass.getInheritanceType().getPrettyName());
-        bootstrappedClass.insert();
+        bootstrappedClass.setAbstractClass(klass.isAbstract());
 
         klass.getSuperClass()
                 .map(NamedElement::getName)
@@ -210,7 +218,7 @@ public class KlassBootstrapWriter
 
     private void handleAssociation(@Nonnull Association association)
     {
-        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(
+        var bootstrappedCriteria = BootstrapCriteriaVisitor.convert(
                 Maps.immutable.empty(),
                 association.getCriteria());
 
@@ -276,51 +284,71 @@ public class KlassBootstrapWriter
             @Override
             public void visitProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
             {
-                klass.model.meta.domain.ProjectionReferenceProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionReferenceProperty();
-                this.handleProjectionWithAssociationEnd(projectionReferenceProperty, bootstrappedProjection);
-                bootstrappedProjection.insert();
+                var bootstrappedProjectionElement = new klass.model.meta.domain.ProjectionElement();
+                bootstrappedProjectionElement.setName(projectionReferenceProperty.getName());
+                bootstrappedProjectionElement.setOrdinal(projectionReferenceProperty.getOrdinal());
+                bootstrappedProjectionElement.setParent(bootstrappedProjectionParent);
+                bootstrappedProjectionElement.insert();
 
-                KlassBootstrapWriter.this.handleProjectionChildren(projectionReferenceProperty, bootstrappedProjection);
+                var bootstrappedProjectionWithAssociationEnd = new klass.model.meta.domain.ProjectionWithAssociationEnd();
+                bootstrappedProjectionWithAssociationEnd.setProjectionElementSuperClass(bootstrappedProjectionElement);
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionReferenceProperty
+                        .getProperty()
+                        .getOwningClassifier()
+                        .getName());
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionReferenceProperty
+                        .getProperty()
+                        .getName());
+
+                var bootstrappedProjection = new klass.model.meta.domain.ProjectionReferenceProperty();
+                bootstrappedProjection.setProjectionWithAssociationEndSuperClass(bootstrappedProjectionWithAssociationEnd);
+
+                KlassBootstrapWriter.this.handleProjectionChildren(
+                        projectionReferenceProperty,
+                        bootstrappedProjectionElement);
             }
 
             @Override
             public void visitProjectionProjectionReference(@Nonnull ProjectionProjectionReference projectionProjectionReference)
             {
-                klass.model.meta.domain.ProjectionProjectionReference bootstrappedProjection = new klass.model.meta.domain.ProjectionProjectionReference();
-                this.handleProjectionWithAssociationEnd(projectionProjectionReference, bootstrappedProjection);
-                bootstrappedProjection.setProjectionName(projectionProjectionReference.getProjection().getName());
-                bootstrappedProjection.insert();
-            }
+                var bootstrappedProjectionElement = new klass.model.meta.domain.ProjectionElement();
+                bootstrappedProjectionElement.setName(projectionProjectionReference.getName());
+                bootstrappedProjectionElement.setOrdinal(projectionProjectionReference.getOrdinal());
+                bootstrappedProjectionElement.setParent(bootstrappedProjectionParent);
+                bootstrappedProjectionElement.insert();
 
-            private void handleProjectionWithAssociationEnd(
-                    @Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd,
-                    @Nonnull ProjectionWithAssociationEndAbstract bootstrappedProjectionWithAssociationEnd)
-            {
-                KlassBootstrapWriter.handleNamedElement(
-                        bootstrappedProjectionWithAssociationEnd,
-                        projectionWithAssociationEnd);
-                bootstrappedProjectionWithAssociationEnd.setParentId(bootstrappedProjectionParent.getId());
-                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionWithAssociationEnd
+                var bootstrappedProjectionWithAssociationEnd = new klass.model.meta.domain.ProjectionWithAssociationEnd();
+                bootstrappedProjectionWithAssociationEnd.setProjectionElementSuperClass(bootstrappedProjectionElement);
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionProjectionReference
                         .getProperty()
                         .getOwningClassifier()
                         .getName());
-                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionWithAssociationEnd
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionProjectionReference
                         .getProperty()
                         .getName());
+
+                var bootstrappedProjection = new klass.model.meta.domain.ProjectionProjectionReference();
+                bootstrappedProjection.setProjectionWithAssociationEndSuperClass(
+                        bootstrappedProjectionWithAssociationEnd);
+                bootstrappedProjection.setProjectionName(projectionProjectionReference.getProjection().getName());
             }
 
             @Override
             public void visitProjectionDataTypeProperty(@Nonnull ProjectionDataTypeProperty projectionDataTypeProperty)
             {
-                klass.model.meta.domain.ProjectionDataTypeProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionDataTypeProperty();
-                KlassBootstrapWriter.handleNamedElement(bootstrappedProjection, projectionDataTypeProperty);
-                bootstrappedProjection.setParentId(bootstrappedProjectionParent.getId());
+                var bootstrappedProjectionElement = new klass.model.meta.domain.ProjectionElement();
+                bootstrappedProjectionElement.setName(projectionDataTypeProperty.getName());
+                bootstrappedProjectionElement.setOrdinal(projectionDataTypeProperty.getOrdinal());
+                bootstrappedProjectionElement.setParent(bootstrappedProjectionParent);
+                bootstrappedProjectionElement.insert();
+
+                var bootstrappedProjection = new klass.model.meta.domain.ProjectionDataTypeProperty();
+                bootstrappedProjection.setProjectionElementSuperClass(bootstrappedProjectionElement);
                 bootstrappedProjection.setPropertyClassifierName(projectionDataTypeProperty
                         .getProperty()
                         .getOwningClassifier()
                         .getName());
                 bootstrappedProjection.setPropertyName(projectionDataTypeProperty.getProperty().getName());
-                bootstrappedProjection.insert();
             }
         });
     }
@@ -349,7 +377,7 @@ public class KlassBootstrapWriter
 
     private void handleUrl(@Nonnull ServiceGroup serviceGroup, @Nonnull Url url)
     {
-        klass.model.meta.domain.Url bootstrappedUrl = new klass.model.meta.domain.Url();
+        var bootstrappedUrl = new klass.model.meta.domain.Url();
         bootstrappedUrl.setClassName(serviceGroup.getKlass().getName());
         bootstrappedUrl.setUrl(url.getUrlString());
         bootstrappedUrl.insert();
@@ -378,10 +406,28 @@ public class KlassBootstrapWriter
             String urlParameterType,
             @Nonnull MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
-        klass.model.meta.domain.Parameter bootstrappedParameter = this.initializeBootstrappedParameter(parameter.getType());
+        var bootstrappedParameter = new klass.model.meta.domain.Parameter();
         handleNamedElement(bootstrappedParameter, parameter);
         bootstrappedParameter.setMultiplicity(parameter.getMultiplicity().getPrettyName());
         bootstrappedParameter.insert();
+
+        DataType dataType = parameter.getType();
+        if (dataType instanceof PrimitiveType primitiveType)
+        {
+            PrimitiveParameter bootstrappedPrimitiveParameter = new PrimitiveParameter();
+            bootstrappedPrimitiveParameter.setPrimitiveType(primitiveType.getPrettyName());
+            bootstrappedPrimitiveParameter.setParameterSuperClass(bootstrappedParameter);
+        }
+        else if (dataType instanceof Enumeration enumeration)
+        {
+            EnumerationParameter bootstrappedEnumerationParameter = new EnumerationParameter();
+            bootstrappedEnumerationParameter.setEnumerationName(enumeration.getName());
+            bootstrappedEnumerationParameter.setParameterSuperClass(bootstrappedParameter);
+        }
+        else
+        {
+            throw new AssertionError();
+        }
 
         UrlParameter bootstrappedUrlParameter = new UrlParameter();
         bootstrappedUrlParameter.setParameter(bootstrappedParameter);
@@ -390,26 +436,6 @@ public class KlassBootstrapWriter
         bootstrappedUrlParameter.insert();
 
         bootstrappedParametersByParameter.put(parameter, bootstrappedParameter);
-    }
-
-    @Nonnull
-    private klass.model.meta.domain.Parameter initializeBootstrappedParameter(DataType dataType)
-    {
-        if (dataType instanceof PrimitiveType primitiveType)
-        {
-            PrimitiveParameter bootstrappedPrimitiveParameter = new PrimitiveParameter();
-            bootstrappedPrimitiveParameter.setPrimitiveType(primitiveType.getPrettyName());
-            return bootstrappedPrimitiveParameter;
-        }
-
-        if (dataType instanceof Enumeration enumeration)
-        {
-            EnumerationParameter bootstrappedEnumerationParameter = new EnumerationParameter();
-            bootstrappedEnumerationParameter.setEnumerationName(enumeration.getName());
-            return bootstrappedEnumerationParameter;
-        }
-
-        throw new AssertionError();
     }
 
     private void handleService(
@@ -450,25 +476,27 @@ public class KlassBootstrapWriter
     {
         for (DataTypeProperty dataTypeProperty : classifier.getDeclaredDataTypeProperties())
         {
+            var bootstrappedDataTypeProperty = new klass.model.meta.domain.DataTypeProperty();
+            bootstrappedDataTypeProperty.setName(dataTypeProperty.getName());
+            bootstrappedDataTypeProperty.setOrdinal(dataTypeProperty.getOrdinal());
+            bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
+            bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
+            bootstrappedDataTypeProperty.insert();
+
+            this.handlePropertyModifiers(classifier, dataTypeProperty);
+            this.handleValidations(classifier, dataTypeProperty);
+
             if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
             {
                 var bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
-                this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedPrimitiveProperty);
+                bootstrappedPrimitiveProperty.setDataTypePropertySuperClass(bootstrappedDataTypeProperty);
                 bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getPrettyName());
-                bootstrappedPrimitiveProperty.insert();
-
-                this.handlePropertyModifiers(classifier, dataTypeProperty);
-                this.handleValidations(classifier, dataTypeProperty);
             }
             else if (dataTypeProperty instanceof EnumerationProperty enumerationProperty)
             {
                 var bootstrappedEnumerationProperty = new klass.model.meta.domain.EnumerationProperty();
-                this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedEnumerationProperty);
+                bootstrappedEnumerationProperty.setDataTypePropertySuperClass(bootstrappedDataTypeProperty);
                 bootstrappedEnumerationProperty.setEnumerationName(enumerationProperty.getType().getName());
-                bootstrappedEnumerationProperty.insert();
-
-                this.handlePropertyModifiers(classifier, dataTypeProperty);
-                this.handleValidations(classifier, dataTypeProperty);
             }
             else
             {
@@ -477,21 +505,11 @@ public class KlassBootstrapWriter
         }
     }
 
-    private void handleDataTypeProperty(
-            @Nonnull Classifier classifier,
-            @Nonnull DataTypeProperty dataTypeProperty,
-            @Nonnull klass.model.meta.domain.DataTypeProperty bootstrappedDataTypeProperty)
-    {
-        KlassBootstrapWriter.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
-        bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
-        bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
-    }
-
     private void handlePropertyModifiers(@Nonnull Classifier classifier, @Nonnull DataTypeProperty dataTypeProperty)
     {
         for (Modifier modifier : dataTypeProperty.getModifiers())
         {
-            klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
+            var bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
             bootstrappedPropertyModifier.setKeyword(modifier.getKeyword());
             bootstrappedPropertyModifier.setOrdinal(modifier.getOrdinal());
             bootstrappedPropertyModifier.setClassifierName(classifier.getName());
@@ -516,7 +534,7 @@ public class KlassBootstrapWriter
     }
 
     @Nonnull
-    private <T extends MithraTransactionalObjectImpl & klass.model.meta.domain.NumericPropertyValidation> Consumer<NumericPropertyValidation> getValidationHandler(
+    private <T extends MithraTransactionalObjectImpl & klass.model.meta.domain.NumericPropertyValidation> Consumer<cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation> getValidationHandler(
             @Nonnull Classifier classifier,
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull Supplier<T> bootstrappedValidationSupplier)
@@ -529,7 +547,7 @@ public class KlassBootstrapWriter
             @Nonnull Classifier classifier,
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull T bootstrappedValidation,
-            @Nonnull NumericPropertyValidation validation)
+            @Nonnull cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation validation)
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
         // TODO: Consider changing inferred: boolean to macroElement: Element
@@ -612,18 +630,22 @@ public class KlassBootstrapWriter
     @Nonnull
     private klass.model.meta.domain.ThisMemberReferencePath bootstrapThisMemberReferencePath(@Nonnull ThisMemberReferencePath thisMemberReferencePath)
     {
-        var bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
-        bootstrappedThisMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
-        bootstrappedThisMemberReferencePath.setPropertyClassName(thisMemberReferencePath
+        MemberReferencePath bootstrappedMemberReferencePath = new MemberReferencePath();
+        bootstrappedMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
+        bootstrappedMemberReferencePath.setPropertyClassName(thisMemberReferencePath
                 .getProperty()
                 .getOwningClassifier()
                 .getName());
-        bootstrappedThisMemberReferencePath.setPropertyName(thisMemberReferencePath.getProperty().getName());
+        bootstrappedMemberReferencePath.setPropertyName(thisMemberReferencePath.getProperty().getName());
+        bootstrappedMemberReferencePath.insert();
+
+        var bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
+        bootstrappedThisMemberReferencePath.setMemberReferencePathSuperClass(bootstrappedMemberReferencePath);
+
         if (thisMemberReferencePath.getAssociationEnds().notEmpty())
         {
             throw new AssertionError("TODO");
         }
-        bootstrappedThisMemberReferencePath.insert();
         return bootstrappedThisMemberReferencePath;
     }
 

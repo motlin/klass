@@ -110,35 +110,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-4-ABSTRACT_VOTE">
-        <createTable tableName="ABSTRACT_VOTE">
-            <column name="SYSTEM_FROM" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="SYSTEM_TO" type="timestamp">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="ABSTRACT_VOTE_PK" />
-            </column>
-
-            <column name="CREATED_BY_ID" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="CREATED_ON" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="DIRECTION" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-table-5-QUESTION_VOTE">
+    <changeSet author="Klass" id="initial-table-4-QUESTION_VOTE">
         <createTable tableName="QUESTION_VOTE">
             <column name="QUESTION_ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="QUESTION_VOTE_PK" />
@@ -170,7 +142,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-6-TAG">
+    <changeSet author="Klass" id="initial-table-5-TAG">
         <createTable tableName="TAG">
             <column name="NAME" type="varchar(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="TAG_PK" />
@@ -202,7 +174,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-7-QUESTION_TAG_MAPPING">
+    <changeSet author="Klass" id="initial-table-6-QUESTION_TAG_MAPPING">
         <createTable tableName="QUESTION_TAG_MAPPING">
             <column name="QUESTION_ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="QUESTION_TAG_MAPPING_PK" />
@@ -222,7 +194,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-8-QUESTION_VERSION">
+    <changeSet author="Klass" id="initial-table-7-QUESTION_VERSION">
         <createTable tableName="QUESTION_VERSION">
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="QUESTION_VERSION_PK" />
@@ -254,7 +226,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-9-ANSWER_VERSION">
+    <changeSet author="Klass" id="initial-table-8-ANSWER_VERSION">
         <createTable tableName="ANSWER_VERSION">
             <column name="ID" type="bigint">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ANSWER_VERSION_PK" />
@@ -286,7 +258,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-10-TAG_VERSION">
+    <changeSet author="Klass" id="initial-table-9-TAG_VERSION">
         <createTable tableName="TAG_VERSION">
             <column name="NAME" type="varchar(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="TAG_VERSION_PK" />
@@ -363,25 +335,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-4-ABSTRACT_VOTE_IDX_CREATED_BY">
-        <createIndex
-                indexName="ABSTRACT_VOTE_IDX_CREATED_BY"
-                tableName="ABSTRACT_VOTE">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-4-ABSTRACT_VOTE_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="ABSTRACT_VOTE_IDX_LAST_UPDATED_BY"
-                tableName="ABSTRACT_VOTE">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-5-QUESTION_VOTE_IDX_QUESTION">
+    <changeSet author="Klass" id="initial-indices-4-QUESTION_VOTE_IDX_QUESTION">
         <createIndex
                 indexName="QUESTION_VOTE_IDX_QUESTION"
                 tableName="QUESTION_VOTE">
@@ -390,7 +344,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-5-QUESTION_VOTE_IDX_CREATED_BY">
+    <changeSet author="Klass" id="initial-indices-4-QUESTION_VOTE_IDX_CREATED_BY">
         <createIndex
                 indexName="QUESTION_VOTE_IDX_CREATED_BY"
                 tableName="QUESTION_VOTE">
@@ -399,7 +353,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-5-QUESTION_VOTE_IDX_LAST_UPDATED_BY">
+    <changeSet author="Klass" id="initial-indices-4-QUESTION_VOTE_IDX_LAST_UPDATED_BY">
         <createIndex
                 indexName="QUESTION_VOTE_IDX_LAST_UPDATED_BY"
                 tableName="QUESTION_VOTE">
@@ -408,7 +362,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-6-TAG_IDX_CREATED_BY">
+    <changeSet author="Klass" id="initial-indices-5-TAG_IDX_CREATED_BY">
         <createIndex
                 indexName="TAG_IDX_CREATED_BY"
                 tableName="TAG">
@@ -417,7 +371,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-6-TAG_IDX_LAST_UPDATED_BY">
+    <changeSet author="Klass" id="initial-indices-5-TAG_IDX_LAST_UPDATED_BY">
         <createIndex
                 indexName="TAG_IDX_LAST_UPDATED_BY"
                 tableName="TAG">
@@ -426,7 +380,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-7-QUESTION_TAG_MAPPING_IDX_QUESTION">
+    <changeSet author="Klass" id="initial-indices-6-QUESTION_TAG_MAPPING_IDX_QUESTION">
         <createIndex
                 indexName="QUESTION_TAG_MAPPING_IDX_QUESTION"
                 tableName="QUESTION_TAG_MAPPING">
@@ -435,7 +389,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-7-QUESTION_TAG_MAPPING_IDX_TAG">
+    <changeSet author="Klass" id="initial-indices-6-QUESTION_TAG_MAPPING_IDX_TAG">
         <createIndex
                 indexName="QUESTION_TAG_MAPPING_IDX_TAG"
                 tableName="QUESTION_TAG_MAPPING">
@@ -444,7 +398,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-8-QUESTION_VERSION_IDX_CREATED_BY">
+    <changeSet author="Klass" id="initial-indices-7-QUESTION_VERSION_IDX_CREATED_BY">
         <createIndex
                 indexName="QUESTION_VERSION_IDX_CREATED_BY"
                 tableName="QUESTION_VERSION">
@@ -453,7 +407,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-8-QUESTION_VERSION_IDX_LAST_UPDATED_BY">
+    <changeSet author="Klass" id="initial-indices-7-QUESTION_VERSION_IDX_LAST_UPDATED_BY">
         <createIndex
                 indexName="QUESTION_VERSION_IDX_LAST_UPDATED_BY"
                 tableName="QUESTION_VERSION">
@@ -462,7 +416,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-9-ANSWER_VERSION_IDX_CREATED_BY">
+    <changeSet author="Klass" id="initial-indices-8-ANSWER_VERSION_IDX_CREATED_BY">
         <createIndex
                 indexName="ANSWER_VERSION_IDX_CREATED_BY"
                 tableName="ANSWER_VERSION">
@@ -471,7 +425,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-9-ANSWER_VERSION_IDX_LAST_UPDATED_BY">
+    <changeSet author="Klass" id="initial-indices-8-ANSWER_VERSION_IDX_LAST_UPDATED_BY">
         <createIndex
                 indexName="ANSWER_VERSION_IDX_LAST_UPDATED_BY"
                 tableName="ANSWER_VERSION">
@@ -480,7 +434,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-10-TAG_VERSION_IDX_CREATED_BY">
+    <changeSet author="Klass" id="initial-indices-9-TAG_VERSION_IDX_CREATED_BY">
         <createIndex
                 indexName="TAG_VERSION_IDX_CREATED_BY"
                 tableName="TAG_VERSION">
@@ -489,7 +443,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-10-TAG_VERSION_IDX_LAST_UPDATED_BY">
+    <changeSet author="Klass" id="initial-indices-9-TAG_VERSION_IDX_LAST_UPDATED_BY">
         <createIndex
                 indexName="TAG_VERSION_IDX_LAST_UPDATED_BY"
                 tableName="TAG_VERSION">

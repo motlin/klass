@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -44,10 +43,7 @@ public class SampleDataGenerator
         this.dataStore.runInTransaction(transaction ->
         {
             transaction.setSystemTime(this.systemTime.toEpochMilli());
-            ImmutableList<Klass> needsTable = this.domainModel
-                    .getClasses()
-                    .select(this::needsTable);
-            needsTable.each(this::generate);
+            this.domainModel.getClasses().each(this::generate);
             return null;
         });
     }
@@ -60,11 +56,5 @@ public class SampleDataGenerator
         }
         this.requiredDataGenerator.generateIfRequired(klass);
         this.optionalDataGenerator.generateIfRequired(klass);
-    }
-
-    private boolean needsTable(@Nonnull Klass klass)
-    {
-        return klass.getInheritanceType() == InheritanceType.NONE
-                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 }

@@ -35,11 +35,6 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
         </dependency>
 

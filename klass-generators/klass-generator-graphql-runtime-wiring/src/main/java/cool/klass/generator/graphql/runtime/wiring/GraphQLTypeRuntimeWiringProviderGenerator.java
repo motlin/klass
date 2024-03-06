@@ -77,7 +77,6 @@ public class GraphQLTypeRuntimeWiringProviderGenerator
     {
         String dataFetchersSourceCode = klass
                 .getProperties()
-                .reject(this::isAbstractReferenceProperty)
                 .collectWith(this::getDataFetcherSourceCode, klass)
                 .makeString("");
 
@@ -100,7 +99,6 @@ public class GraphQLTypeRuntimeWiringProviderGenerator
                 + "\n"
                 + imports.makeString("")
                 + "import cool.klass.graphql.type.runtime.wiring.provider.GraphQLTypeRuntimeWiringProvider;\n"
-                + "import io.liftwizard.reladomo.graphql.deep.fetcher.GraphQLPropertyDataDeepFetcher;\n"
                 + "import io.liftwizard.reladomo.graphql.data.fetcher.*;\n"
                 + "import graphql.schema.PropertyDataFetcher;\n"
                 + "import graphql.schema.idl.TypeRuntimeWiring.Builder;\n"
@@ -125,21 +123,14 @@ public class GraphQLTypeRuntimeWiringProviderGenerator
         return sourceCode;
     }
 
-    private boolean isAbstractReferenceProperty(Property property)
-    {
-        return property instanceof ReferenceProperty && ((ReferenceProperty) property).getType().isAbstract();
-    }
-
     private String getImport(String packageName)
     {
         return "import " + packageName + ".*;\n";
     }
 
-    private String getDataFetcherSourceCode(@Nonnull Property property, Classifier owningClassifier)
+    private String getDataFetcherSourceCode(@Nonnull Property property, Klass owningClass)
     {
-        DataFetcherSourceCodePropertyVisitor visitor = new DataFetcherSourceCodePropertyVisitor(
-                owningClassifier,
-                property);
+        var visitor = new DataFetcherSourceCodePropertyVisitor(owningClass, property);
         property.visit(visitor);
 
         return String.format(

@@ -1,6 +1,7 @@
 package klass.model.meta.domain;
 
-public class ThisMemberReferencePath extends ThisMemberReferencePathAbstract
+public class ThisMemberReferencePath
+        extends ThisMemberReferencePathAbstract
 {
     public ThisMemberReferencePath()
     {
@@ -11,13 +12,14 @@ public class ThisMemberReferencePath extends ThisMemberReferencePathAbstract
     @Override
     public String toString()
     {
-        String associationEndsString = this.getAssociationEnds().isEmpty()
-                ? ""
-                : this.getAssociationEnds()
+        MemberReferencePath memberReferencePath = this.getMemberReferencePathSuperClass();
+        String associationEndsString = memberReferencePath.getAssociationEnds().isEmpty()
+                ? "."
+                : memberReferencePath.getAssociationEnds()
                         .asEcList()
                         .collect(MemberReferencePathAssociationEndMappingAbstract::getAssociationEndName)
-                        .makeString(".");
+                        .makeString(".", ".", ".");
 
-        return "this" + associationEndsString + "." + this.getPropertyName();
+        return "this" + associationEndsString + memberReferencePath.getPropertyName();
     }
 }

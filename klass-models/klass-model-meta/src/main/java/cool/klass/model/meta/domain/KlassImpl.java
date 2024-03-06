@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -27,7 +26,7 @@ public final class KlassImpl
         extends AbstractClassifier
         implements KlassWithSourceCode
 {
-    private final InheritanceType inheritanceType;
+    private final boolean isAbstract;
     private final boolean isUser;
     private final boolean isTransient;
 
@@ -51,14 +50,14 @@ public final class KlassImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull String packageName,
-            @Nonnull InheritanceType inheritanceType,
+            boolean isAbstract,
             boolean isUser,
             boolean isTransient)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
-        this.inheritanceType = Objects.requireNonNull(inheritanceType);
-        this.isUser          = isUser;
-        this.isTransient     = isTransient;
+        this.isAbstract  = isAbstract;
+        this.isUser      = isUser;
+        this.isTransient = isTransient;
     }
 
     @Nonnull
@@ -83,9 +82,9 @@ public final class KlassImpl
     }
 
     @Override
-    public InheritanceType getInheritanceType()
+    public boolean isAbstract()
     {
-        return this.inheritanceType;
+        return this.isAbstract;
     }
 
     @Override
@@ -98,12 +97,6 @@ public final class KlassImpl
     public boolean isTransient()
     {
         return this.isTransient;
-    }
-
-    @Override
-    public boolean isAbstract()
-    {
-        return this.inheritanceType != InheritanceType.NONE;
     }
 
     private void setDeclaredAssociationEnds(ImmutableList<AssociationEnd> declaredAssociationEnds)
@@ -187,10 +180,9 @@ public final class KlassImpl
     public static final class KlassBuilder
             extends ClassifierBuilder<KlassImpl>
     {
-        @Nonnull
-        private final InheritanceType inheritanceType;
-        private final boolean         isUser;
-        private final boolean         isTransient;
+        private final boolean isAbstract;
+        private final boolean isUser;
+        private final boolean isTransient;
 
         @Nullable
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
@@ -205,14 +197,14 @@ public final class KlassImpl
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
                 @Nonnull String packageName,
-                @Nonnull InheritanceType inheritanceType,
+                boolean isAbstract,
                 boolean isUser,
                 boolean isTransient)
         {
             super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
-            this.inheritanceType = Objects.requireNonNull(inheritanceType);
-            this.isUser          = isUser;
-            this.isTransient     = isTransient;
+            this.isAbstract  = isAbstract;
+            this.isUser      = isUser;
+            this.isTransient = isTransient;
         }
 
         public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders)
@@ -235,7 +227,7 @@ public final class KlassImpl
                     this.ordinal,
                     this.getNameContext(),
                     this.packageName,
-                    this.inheritanceType,
+                    this.isAbstract,
                     this.isUser,
                     this.isTransient);
         }

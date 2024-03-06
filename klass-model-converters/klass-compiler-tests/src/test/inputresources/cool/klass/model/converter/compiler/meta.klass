@@ -1,80 +1,89 @@
 package klass.model.meta.domain
+
 interface Element
 {
 }
+
 interface NamedElement
     implements Element
 {
     name: String key maximumLength(256);
     ordinal: Integer;
 }
+
 interface PackageableElement implements NamedElement
 {
     packageName: String maximumLength(100000);
+
     // fullyQualifiedName: String = packageName + "." + name;
 }
+
 class Enumeration implements PackageableElement
 {
 }
+
 class EnumerationLiteral implements NamedElement
 {
     enumerationName               : String key maximumLength(256);
     prettyName                    : String? maximumLength(256);
 }
+
 association EnumerationHasLiterals
 {
     enumeration: Enumeration[1..1];
     enumerationLiterals: EnumerationLiteral[1..*]
         orderBy: this.ordinal;
 }
-enumeration InheritanceType
-{
-    TABLE_PER_SUBCLASS("table-per-subclass"),
-    TABLE_FOR_ALL_SUBCLASSES("table-for-all-subclasses"),
-    TABLE_PER_CLASS("table-per-class"),
-    NONE("none"),
-}
+
 // TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
 // TODO: Ordinals should have a syntax and be inferred using macros
 class Classifier
-    abstract(table-per-class)
+    abstract
     implements PackageableElement
 {
 }
+
 // TODO: Error when transient extends non-transient
 class Interface
     extends Classifier
 {
 }
+
 class ClassifierInterfaceMapping
 {
     classifierName: String key private maximumLength(256);
     interfaceName: String key private maximumLength(256);
 }
+
 association ClassifierHasClassifierInterfaceMapping
 {
     subClassifier: Classifier[1..1];
     superInterfaces               : ClassifierInterfaceMapping[0..*] owned;
 }
+
 association ClassifierInterfaceMappingHasInterface
 {
     superInterface                : Interface[1..1];
     subClassifiers                : ClassifierInterfaceMapping[0..*];
 }
+
 class Klass
     extends Classifier
 {
     superClassName: String? private maximumLength(256);
-    inheritanceType: InheritanceType maximumLength(256);
+    abstractClass: Boolean;
 }
+
 // TODO: Why isn't subClasses showing up in generated code? Reladomo bug?
 association ClassHasSuperClass
 {
     subClasses                    : Klass[0..*];
     superClass                    : Klass[0..1];
+
     // TODO: When this was backwards, I got a confusing error. How can I detect and prevent?
     relationship this.superClassName == Klass.name
 }
+
 enumeration PrimitiveType
 {
     INTEGER("Integer"),
@@ -88,6 +97,7 @@ enumeration PrimitiveType
     TEMPORAL_INSTANT("TemporalInstant"),
     TEMPORAL_RANGE("TemporalRange"),
 }
+
 enumeration Multiplicity
 {
     ZERO_TO_ONE("0..1"),
@@ -95,28 +105,33 @@ enumeration Multiplicity
     ZERO_TO_MANY("0..*"),
     ONE_TO_MANY("1..*"),
 }
+
 class DataTypeProperty
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     classifierName                : String key maximumLength(256);
     optional                      : Boolean;
 }
+
 class PrimitiveProperty
     extends DataTypeProperty
 {
     primitiveType                 : PrimitiveType maximumLength(256);
 }
+
 class EnumerationProperty
     extends DataTypeProperty
 {
     enumerationName               : String private maximumLength(256);
 }
+
 association EnumerationPropertyHasEnumeration
 {
     enumerationProperties         : EnumerationProperty[0..*];
     enumeration                   : Enumeration[1..1];
 }
+
 // TODO: Change the orderBy syntax to orderBy(this.ordinal)
 association ClassifierHasDataTypeTypeProperties
 {
@@ -124,18 +139,21 @@ association ClassifierHasDataTypeTypeProperties
     dataTypeProperties            : DataTypeProperty[0..*] owned
         orderBy: this.ordinal;
 }
+
 association ClassifierHasPrimitiveProperties
 {
     owningClassifier: Classifier[1..1];
     primitiveProperties: PrimitiveProperty[0..*] owned
         orderBy: this.ordinal;
 }
+
 association ClassifierHasEnumerationProperties
 {
     owningClassifier: Classifier[1..1];
     enumerationProperties: EnumerationProperty[0..*] owned
         orderBy: this.ordinal;
 }
+
 interface NumericPropertyValidation
     implements Element
 {
@@ -143,50 +161,63 @@ interface NumericPropertyValidation
     propertyName                  : String key maximumLength(256);
     number: Integer;
 }
+
 class MinLengthPropertyValidation
     implements NumericPropertyValidation
 {
 }
+
 class MaxLengthPropertyValidation
     implements NumericPropertyValidation
 {
 }
+
 class MinPropertyValidation
     implements NumericPropertyValidation
 {
 }
+
 class MaxPropertyValidation
     implements NumericPropertyValidation
 {
 }
+
 association DataTypePropertyHasMinLengthPropertyValidation
 {
     dataTypeProperty              : DataTypeProperty[1..1];
     minLengthValidation           : MinLengthPropertyValidation[0..1];
+
     relationship this.classifierName == MinLengthPropertyValidation.classifierName
             && this.name == MinLengthPropertyValidation.propertyName
 }
+
 association DataTypePropertyHasMaxLengthPropertyValidation
 {
     dataTypeProperty              : DataTypeProperty[1..1];
     maxLengthValidation           : MaxLengthPropertyValidation[0..1];
+
     relationship this.classifierName == MaxLengthPropertyValidation.classifierName
             && this.name == MaxLengthPropertyValidation.propertyName
 }
+
 association PrimitivePropertyHasMinPropertyValidation
 {
     primitiveProperty             : PrimitiveProperty[1..1];
     minValidation                 : MinPropertyValidation[0..1];
+
     relationship this.classifierName == MinPropertyValidation.classifierName
             && this.name == MinPropertyValidation.propertyName
 }
+
 association PrimitivePropertyHasMaxPropertyValidation
 {
     primitiveProperty             : PrimitiveProperty[1..1];
     maxValidation                 : MaxPropertyValidation[0..1];
+
     relationship this.classifierName == MaxPropertyValidation.classifierName
             && this.name == MaxPropertyValidation.propertyName
 }
+
 class PropertyModifier
     implements Element
 {
@@ -195,14 +226,17 @@ class PropertyModifier
     keyword: String key maximumLength(256);
     ordinal: Integer;
 }
+
 association DataTypePropertyHasModifiers
 {
     dataTypeProperty              : DataTypeProperty[1..1];
     propertyModifiers             : PropertyModifier[0..*]
         orderBy: this.ordinal;
+
     relationship this.classifierName == PropertyModifier.classifierName
             && this.name == PropertyModifier.propertyName
 }
+
 class ClassifierModifier
     implements Element
 {
@@ -210,14 +244,16 @@ class ClassifierModifier
     keyword: String key maximumLength(256);
     ordinal: Integer;
 }
+
 association ClassifierHasModifiers
 {
     owningClassifier: Classifier[1..1];
     classifierModifiers: ClassifierModifier[0..*]
         orderBy: this.ordinal;
 }
+
 class Parameter
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     id: Long key id;
@@ -225,72 +261,86 @@ class Parameter
     name: String maximumLength(256);
     multiplicity: Multiplicity maximumLength(256);
 }
+
 class EnumerationParameter
     extends Parameter
 {
     enumerationName: String private maximumLength(256);
 }
+
 class PrimitiveParameter
     extends Parameter
 {
     primitiveType: PrimitiveType maximumLength(256);
 }
+
 class ExpressionValue
-    abstract(table-per-class)
+    abstract
 {
     id      : Long key id;
 }
+
 class UserLiteral
     extends ExpressionValue
 {
 }
+
 class NullLiteral
     extends ExpressionValue
 {
 }
+
 class VariableReference
     extends ExpressionValue
 {
     parameterId: Long private;
 }
+
 class MemberReferencePath
-    abstract(table-per-class)
+    abstract
     extends ExpressionValue
 {
     className: String private maximumLength(256);
     propertyClassName: String private maximumLength(256);
     propertyName: String private maximumLength(256);
 }
+
 association VariableReferenceHasParameter
 {
     variableReferences: VariableReference[0..*];
     parameter: Parameter[1..1];
 }
+
 class Criteria
-    abstract(table-per-class)
+    abstract
     implements Element
 {
     id: Long id key;
 }
+
 class AllCriteria
     extends Criteria
 {
 }
+
 class BinaryCriteria
-    abstract(table-per-class)
+    abstract
     extends Criteria
 {
     leftId        : Long private;
     rightId       : Long private;
 }
+
 class AndCriteria
     extends BinaryCriteria
 {
 }
+
 class OrCriteria
     extends BinaryCriteria
 {
 }
+
 enumeration Operator
 {
     EQUALS("=="),
@@ -304,6 +354,7 @@ enumeration Operator
     STARTS_WITH("startsWith"),
     ENDS_WITH("endsWith"),
 }
+
 class OperatorCriteria
     extends Criteria
 {
@@ -311,36 +362,44 @@ class OperatorCriteria
     targetExpressionId: Long private;
     operator: Operator maximumLength(256);
 }
+
 class EdgePointCriteria
     extends Criteria
 {
     memberReferencePathId: Long private;
 }
+
 enumeration AssociationEndDirection
 {
     SOURCE("source"),
     TARGET("target"),
 }
+
 class Association implements PackageableElement
 {
     criteriaId: Long private;
+
     source(): AssociationEnd[1..1]
     {
         this.name == AssociationEnd.associationName
             && AssociationEnd.direction == AssociationEndDirection.SOURCE
     }
+
     target(): AssociationEnd[1..1]
     {
         this.name == AssociationEnd.associationName
             && AssociationEnd.direction == AssociationEndDirection.TARGET
     }
 }
+
 association AssociationHasCriteria
 {
     association: Association[0..1];
     criteria: Criteria[1..1];
+
     relationship this.criteriaId == Criteria.id
 }
+
 class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
@@ -349,6 +408,7 @@ class AssociationEnd implements NamedElement
     direction                     : AssociationEndDirection maximumLength(256);
     multiplicity                  : Multiplicity maximumLength(256);
 }
+
 // TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)
 // simplification, ideally we'd model an association as having exactly two ends
 association AssociationHasEnds
@@ -357,19 +417,24 @@ association AssociationHasEnds
     associationEnds: AssociationEnd[0..*]
         orderBy: this.direction;
 }
+
 association ClassHasAssociationEnds
 {
     owningClass: Klass[1..1];
     associationEnds: AssociationEnd[0..*];
     // TODO: Order by this.owningAssociation.ordinal
+
     relationship this.name == AssociationEnd.owningClassName
 }
+
 association AssociationEndHasResultType
 {
     associationEndsResultTypeOf: AssociationEnd[0..*];
     resultType: Klass[1..1];
+
     relationship this.resultTypeName == Klass.name
 }
+
 class AssociationEndModifier
     implements Element
 {
@@ -378,87 +443,110 @@ class AssociationEndModifier
     keyword           : String key maximumLength(256);
     ordinal           : Integer;
 }
+
 association AssociationEndHasModifiers
 {
     associationEnd: AssociationEnd[1..1];
     associationEndModifiers: AssociationEndModifier[0..*]
         orderBy: this.ordinal;
+
     relationship this.owningClassName == AssociationEndModifier.owningClassName
             && this.name == AssociationEndModifier.associationEndName
 }
+
 association OperatorCriteriaHasSourceExpressionValue
 {
     operatorCriteriaSourceOf: OperatorCriteria[0..1];
     sourceExpressionValue: ExpressionValue[1..1] owned;
+
     relationship this.sourceExpressionId == ExpressionValue.id
 }
+
 association OperatorCriteriaHasTargetExpressionValue
 {
     operatorCriteriaTargetOf: OperatorCriteria[0..1];
     targetExpressionValue: ExpressionValue[1..1] owned;
+
     relationship this.targetExpressionId == ExpressionValue.id
 }
+
 association MemberReferencePathHasEdgePointCriteria
 {
     memberReferencePath: MemberReferencePath[1..1];
     edgePointCriteria: EdgePointCriteria[1..1] owned;
 }
+
 association EnumerationParameterHasEnumeration
 {
     enumerationParameters: EnumerationParameter[0..*];
     enumeration: Enumeration[1..1];
 }
+
 association MemberReferencePathHasClass
 {
     memberReferencePaths: MemberReferencePath[0..*];
     klass: Klass[1..1];
+
     relationship this.className == Klass.name
 }
+
 class MemberReferencePathAssociationEndMapping
 {
     memberReferencePathId: Long key private;
     associationOwningClassName: String key private maximumLength(256);
     associationEndName: String key private maximumLength(256);
 }
+
 association MemberReferencePathHasMemberReferencePathAssociationEndMapping
 {
     memberReferencePath: MemberReferencePath[1..1];
     associationEnds: MemberReferencePathAssociationEndMapping[0..*];
 }
+
 association MemberReferencePathAssociationEndMappingHasAssociationEnd
 {
     memberReferencePaths: MemberReferencePathAssociationEndMapping[0..*];
     associationEnd: AssociationEnd[1..1];
+
     relationship this.associationOwningClassName == AssociationEnd.owningClassName
             && this.associationEndName == AssociationEnd.name
 }
+
 association DataTypePropertyHasMemberReferencePaths
 {
     memberReferencePaths: MemberReferencePath[0..*];
     dataTypeProperty: DataTypeProperty[1..1];
+
     relationship this.propertyClassName == DataTypeProperty.classifierName
             && this.propertyName == DataTypeProperty.name
 }
+
 class ThisMemberReferencePath
     extends MemberReferencePath
 {
 }
+
 class TypeMemberReferencePath
     extends MemberReferencePath
 {
 }
+
 association BinaryCriteriaHasLeft
 {
     ownerOfLeftCriteria : BinaryCriteria[0..1];
     left                : Criteria[1..1];
+
     relationship this.leftId == Criteria.id
 }
+
 association BinaryCriteriaHasRight
 {
     ownerOfRightCriteria: BinaryCriteria[0..1];
     right               : Criteria[1..1];
+
     relationship this.rightId == Criteria.id
 }
+
 class ParameterizedProperty
     implements NamedElement
 {
@@ -466,19 +554,23 @@ class ParameterizedProperty
     resultTypeName                : String private maximumLength(256);
     multiplicity                  : Multiplicity maximumLength(256);
 }
+
 association ClassHasParameterizedProperties
 {
     owningClass: Klass[1..1];
     parameterizedProperties: ParameterizedProperty[0..*] owned
     // TODO: Sorting by the same property ascending and descending is an interesting test
         orderBy: this.ordinal ascending, this.ordinal descending;
+
     relationship this.name == ParameterizedProperty.owningClassName
 }
+
 enumeration OrderByDirection
 {
     ASCENDING("ascending"),
     DESCENDING("descending"),
 }
+
 class AssociationEndOrderBy
 {
     associationEndClassName: String key private maximumLength(256);
@@ -486,52 +578,65 @@ class AssociationEndOrderBy
     thisMemberReferencePathId: Long key private;
     orderByDirection: OrderByDirection maximumLength(256);
 }
+
 association AssociationEndHasOrderBy
 {
     associationEnd: AssociationEnd[1..1];
     orderBys: AssociationEndOrderBy[0..*];
+
     relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName
             && this.name == AssociationEndOrderBy.associationEndName
 }
+
 association AssociationEndOrderByHasMemberReferencePath
 {
     associationEndOrderBy: AssociationEndOrderBy[0..1];
     thisMemberReferencePath: ThisMemberReferencePath[1..1];
+
     relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
+
 association ParameterizedPropertyHasResultType
 {
     parameterizedPropertiesResultTypeOf: ParameterizedProperty[0..*];
     resultType: Klass[1..1];
+
     relationship this.resultTypeName == Klass.name
 }
+
 class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key maximumLength(256);
     name                          : String key maximumLength(256);
     orderingId                    : Long; // move this to an orderBy and make it private
 }
+
 association ParameterizedPropertyHasOrdering
 {
     parameterizedProperty: ParameterizedProperty[1..1];
     parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*];
+
     relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
             && this.name == ParameterizedPropertyOrdering.name
 }
+
 class ParameterizedPropertyParameter implements NamedElement
 {
     classifierName                : String key private maximumLength(256);
     parameterizedPropertyName     : String key maximumLength(256);
 }
+
 association ParameterizedPropertyHasParameters
 {
     parameterizedProperty         : ParameterizedProperty[1..1];
     parameters                    : ParameterizedPropertyParameter[0..*];
+
     relationship this.owningClassName == ParameterizedPropertyParameter.classifierName
             && this.name == ParameterizedPropertyParameter.parameterizedPropertyName
 }
+
 class ProjectionElement
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     id  : Long key id;
@@ -563,7 +668,7 @@ association NamedProjectionHasRootProjection
 
 // TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
 class ProjectionWithAssociationEnd
-    abstract(table-per-class)
+    abstract
     extends ProjectionElement
 {
     // TODO: Overriding a property (to make it required) should not create a new column
@@ -571,12 +676,14 @@ class ProjectionWithAssociationEnd
     associationEndClass           : String private maximumLength(256);
     associationEndName: String private maximumLength(256);
 }
+
 class ProjectionReferenceProperty
     extends ProjectionWithAssociationEnd
 {
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
 }
+
 class ProjectionProjectionReference
     extends ProjectionWithAssociationEnd
 {
@@ -584,6 +691,7 @@ class ProjectionProjectionReference
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
 }
+
 class ProjectionDataTypeProperty
     extends ProjectionElement
 {
@@ -592,60 +700,76 @@ class ProjectionDataTypeProperty
     propertyClassifierName        : String private maximumLength(256);
     propertyName: String private maximumLength(256);
 }
+
 association ProjectionElementHasChildren
 {
     parent                        : ProjectionElement[0..1];
     children                      : ProjectionElement[0..*];
+
     relationship this.id == ProjectionElement.parentId
 }
+
 association ProjectionWithAssociationEndHasAssociationEnd
 {
     projectionsWithAssociationEnd : ProjectionWithAssociationEnd[0..*];
     associationEnd                : AssociationEnd[1..1];
+
     relationship this.associationEndClass == AssociationEnd.owningClassName
             && this.associationEndName == AssociationEnd.name
 }
+
 association ProjectionDataTypePropertyHasDataTypeProperty
 {
     projectionDataTypeProperties  : ProjectionDataTypeProperty[0..*];
     dataTypeProperty              : DataTypeProperty[1..1];
+
     relationship this.propertyClassifierName == DataTypeProperty.classifierName
             && this.propertyName == DataTypeProperty.name
 }
+
 association RootProjectionHasClass
 {
     projections                   : RootProjection[0..*];
     klass                         : Klass[1..1];
+
     relationship this.className == Klass.name
 }
+
 association ProjectionProjectionReferenceHasProjection
 {
     projectionProjectionReferences: ProjectionProjectionReference[0..*];
     projection                    : NamedProjection[1..1];
+
     relationship this.projectionName == NamedProjection.name
 }
+
 class ServiceGroup
     implements PackageableElement
 {
     className                     : String key maximumLength(256);
 }
+
 association ServiceGroupHasClass
 {
     serviceGroup                  : ServiceGroup[0..1];
     owningClass                   : Klass[1..1];
+
     relationship this.className == Klass.name
 }
+
 class Url
     implements Element
 {
     className                     : String key maximumLength(256);
     url                           : String key maximumLength(8192);
 }
+
 enumeration UrlParameterType
 {
     QUERY("query"),
     PATH("path"),
 }
+
 class UrlParameter
     implements Element
 {
@@ -654,30 +778,38 @@ class UrlParameter
     parameterId                   : Long key private;
     type                          : UrlParameterType;
 }
+
 association UrlHasUrlParameters
 {
     url: Url[1..1];
     parameters                    : UrlParameter[0..*];
+
     relationship this.className == UrlParameter.urlClassName
             && this.url == UrlParameter.urlString
 }
+
 association UrlParameterHasParameter
 {
     urlParameter                  : UrlParameter[0..1];
     parameter                     : Parameter[1..1];
+
     relationship this.parameterId == Parameter.id
 }
+
 association ServiceGroupHasUrls
 {
     serviceGroup                  : ServiceGroup[1..1];
     urls                          : Url[1..*];
+
     relationship this.className == Url.className
 }
+
 enumeration ServiceMultiplicity
 {
     ONE("one"),
     MANY("many"),
 }
+
 enumeration Verb
 {
     GET,
@@ -686,6 +818,7 @@ enumeration Verb
     PATCH,
     DELETE,
 }
+
 class Service
     implements Element
 {
@@ -699,43 +832,56 @@ class Service
     conflictCriteriaId            : Long? private;
     serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
 }
+
 association UrlHasServices
 {
     url: Url[1..1];
     services                      : Service[1..*];
+
     relationship this.className == Service.className
             && this.url == Service.urlString
 }
+
 association ServiceHasProjection
 {
     services: Service[0..*];
     projection                    : NamedProjection[0..1];
+
     relationship this.projectionName == NamedProjection.name
 }
+
 association ServiceHasQueryCriteria
 {
     queryService                  : Service[0..1];
     queryCriteria                 : Criteria[0..1] owned;
+
     relationship this.queryCriteriaId == Criteria.id
 }
+
 association ServiceHasAuthorizeCriteria
 {
     authorizeService                  : Service[0..1];
     authorizeCriteria                 : Criteria[0..1] owned;
+
     relationship this.authorizeCriteriaId == Criteria.id
 }
+
 association ServiceHasValidateCriteria
 {
     validateService                  : Service[0..1];
     validateCriteria                 : Criteria[0..1] owned;
+
     relationship this.validateCriteriaId == Criteria.id
 }
+
 association ServiceHasConflictCriteria
 {
     conflictService                  : Service[0..1];
     conflictCriteria                 : Criteria[0..1] owned;
+
     relationship this.conflictCriteriaId == Criteria.id
 }
+
 class ServiceOrderBy
 {
     serviceClassName: String key private maximumLength(256);
@@ -744,23 +890,28 @@ class ServiceOrderBy
     thisMemberReferencePathId     : Long key private;
     orderByDirection: OrderByDirection;
 }
+
 association ServiceHasOrderBy
 {
     service                       : Service[1..1];
     orderBys                      : ServiceOrderBy[0..*];
 }
+
 association ServiceOrderByHasMemberReferencePath
 {
     serviceOrderBy                : ServiceOrderBy[0..1];
     thisMemberReferencePath       : ThisMemberReferencePath[1..1];
+
     relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
+
 projection EnumerationLiteralProjection on EnumerationLiteral
 {
     name                   : "Enumeration literal name",
     prettyName             : "Enumeration literal pretty name",
     ordinal                : "Enumeration literal ordinal",
 }
+
 projection EnumerationProjection on Enumeration
 {
     name                   : "Enumeration name",
@@ -768,6 +919,7 @@ projection EnumerationProjection on Enumeration
     ordinal                : "Enumeration ordinal",
     enumerationLiterals: EnumerationLiteralProjection,
 }
+
 projection EnumerationSummaryProjection on Enumeration
 {
     name               : "Enumeration name",
@@ -778,6 +930,7 @@ projection EnumerationSummaryProjection on Enumeration
         prettyName: "Enumeration literal pretty name",
     },
 }
+
 service Enumeration
 {
     /meta/enumeration/{enumerationName: String[1..1]}
@@ -803,11 +956,13 @@ service Enumeration
             orderBy     : this.ordinal;
         }
 }
+
 projection InterfaceProjection on Interface
 {
     name                   : "Interface name",
     packageName            : "Interface package name",
     ordinal                : "Interface ordinal",
+
     // TODO: flat many-to-many, or parameterized property
     superInterfaces        :
     {
@@ -874,6 +1029,7 @@ projection InterfaceProjection on Interface
         },
     },
 }
+
 projection InterfaceSummaryProjection on Interface
 {
     name                   : "Interface name",
@@ -892,6 +1048,7 @@ projection InterfaceSummaryProjection on Interface
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
 }
+
 service Interface
 {
     /meta/interface/{interfaceName: String[1..1]}
@@ -917,6 +1074,7 @@ service Interface
             orderBy     : this.ordinal;
         }
 }
+
 projection DataTypePropertyProjection on DataTypeProperty
 {
     name                           : "Property name",
@@ -949,6 +1107,7 @@ projection DataTypePropertyProjection on DataTypeProperty
         number: "Property max validation number",
     },
 }
+
 projection PrimitivePropertyProjection on PrimitiveProperty
 {
     name               : "Primitive property name",
@@ -977,6 +1136,7 @@ projection PrimitivePropertyProjection on PrimitiveProperty
         number: "Max validation number",
     },
 }
+
 projection PrimitivePropertySummaryProjection on PrimitiveProperty
 {
     name               : "Primitive property name",
@@ -1003,6 +1163,7 @@ projection PrimitivePropertySummaryProjection on PrimitiveProperty
         number: "Max validation number",
     },
 }
+
 projection EnumerationPropertyProjection on EnumerationProperty
 {
     name               : "Enumeration property name",
@@ -1026,6 +1187,7 @@ projection EnumerationPropertyProjection on EnumerationProperty
         number: "Max length validation number",
     },
 }
+
 projection EnumerationPropertySummaryProjection on EnumerationProperty
 {
     name               : "Enumeration property name",
@@ -1047,11 +1209,12 @@ projection EnumerationPropertySummaryProjection on EnumerationProperty
         number: "Max length validation number",
     },
 }
+
 projection ClassProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
-    inheritanceType        : "Class inheritanceType",
+    abstractClass          : "Class abstractClass",
     ordinal                : "Class ordinal",
     superClass             :
     {
@@ -1062,6 +1225,7 @@ projection ClassProjection on Klass
             name       : "Super Super Class name",
             packageName: "Super Super Class package name",
         },
+
         // TODO: flat many-to-many, or parameterized property
         superInterfaces:
         {
@@ -1072,6 +1236,7 @@ projection ClassProjection on Klass
             },
         },
     },
+
     // TODO: flat many-to-many, or parameterized property
     superInterfaces        :
     {
@@ -1090,16 +1255,18 @@ projection ClassProjection on Klass
     enumerationProperties  : EnumerationPropertyProjection,
     associationEnds        : AssociationEndProjection,
 }
+
 projection ClassSummaryProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
-    inheritanceType        : "Class inheritanceType",
+    abstractClass          : "Class abstractClass",
     ordinal                : "Class ordinal",
     superClass             :
     {
         name           : "Super Class name",
     },
+
     // TODO: flat many-to-many, or parameterized property
     superInterfaces        :
     {
@@ -1115,6 +1282,7 @@ projection ClassSummaryProjection on Klass
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
 }
+
 service Klass
 {
     /meta/class/{className: String[1..1]}
@@ -1140,6 +1308,7 @@ service Klass
             orderBy     : this.ordinal;
         }
 }
+
 projection ClassifierSummaryProjection on Classifier
 {
     name                   : "Classifier name",
@@ -1148,6 +1317,7 @@ projection ClassifierSummaryProjection on Classifier
     {
         name           : "Super Class name",
     },
+
     // TODO: flat many-to-many, or parameterized property
     superInterfaces        :
     {
@@ -1163,6 +1333,7 @@ projection ClassifierSummaryProjection on Classifier
     primitiveProperties    : PrimitivePropertySummaryProjection,
     enumerationProperties  : EnumerationPropertySummaryProjection,
 }
+
 service Classifier
 {
     /meta/classifier/{classifierName: String[1..1]}
@@ -1181,6 +1352,7 @@ service Classifier
             orderBy     : this.ordinal;
         }
 }
+
 projection AssociationEndProjection on AssociationEnd
 {
     name                   : "Association end name",
@@ -1207,6 +1379,7 @@ projection AssociationEndProjection on AssociationEnd
         ordinal: "Association end modifier ordinal",
     },
 }
+
 projection MemberReferencePathSummaryProjection on MemberReferencePath
 {
     klass           :
@@ -1225,6 +1398,7 @@ projection MemberReferencePathSummaryProjection on MemberReferencePath
         name: "MemberReferencePath Property name",
     },
 }
+
 projection AssociationEndSummaryProjection on AssociationEnd
 {
     name                   : "Association end name",
@@ -1243,6 +1417,7 @@ projection AssociationEndSummaryProjection on AssociationEnd
         orderByDirection       : "Association end order by direction",
     },
 }
+
 projection ExpressionValueProjection on ExpressionValue
 {
     MemberReferencePath.klass           :
@@ -1271,6 +1446,7 @@ projection ExpressionValueProjection on ExpressionValue
         multiplicity                    : "VariableReference parameter multiplicity",
     },
 }
+
 projection ExpressionValueSummaryProjection on ExpressionValue
 {
     MemberReferencePath.klass           :
@@ -1293,6 +1469,7 @@ projection ExpressionValueSummaryProjection on ExpressionValue
         name: "VariableReference parameter name",
     },
 }
+
 projection MemberReferencePathProjection on MemberReferencePath
 {
     klass           :
@@ -1311,6 +1488,7 @@ projection MemberReferencePathProjection on MemberReferencePath
         name: "MemberReferencePath Property name",
     },
 }
+
 projection CriteriaProjection on Criteria
 {
     BinaryCriteria.left                   : CriteriaProjection,
@@ -1320,6 +1498,7 @@ projection CriteriaProjection on Criteria
     OperatorCriteria.targetExpressionValue: ExpressionValueProjection,
     EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,
 }
+
 projection CriteriaSummaryProjection on Criteria
 {
     BinaryCriteria.left                   : CriteriaSummaryProjection,
@@ -1329,6 +1508,7 @@ projection CriteriaSummaryProjection on Criteria
     OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,
     EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,
 }
+
 projection AssociationProjection on Association
 {
     name                   : "Association name",
@@ -1337,6 +1517,7 @@ projection AssociationProjection on Association
     associationEnds        : AssociationEndProjection,
     criteria               : CriteriaProjection,
 }
+
 projection AssociationSummaryProjection on Association
 {
     name                   : "Association name",
@@ -1344,6 +1525,7 @@ projection AssociationSummaryProjection on Association
     associationEnds        : AssociationEndSummaryProjection,
     criteria               : CriteriaSummaryProjection,
 }
+
 service Association
 {
     /meta/association/{associationName: String[1..1]}
@@ -1369,6 +1551,7 @@ service Association
             orderBy     : this.ordinal;
         }
 }
+
 projection ProjectionElementProjection on ProjectionElement
 {
     name                                    : "Projection name",
@@ -1383,13 +1566,13 @@ projection ProjectionElementProjection on ProjectionElement
     children                                : ProjectionElementProjection,
 }
 
-
 projection NamedProjectionProjection on NamedProjection
 {
     name          : "Projection name",
     packageName   : "Projection package name",
     rootProjection: ProjectionElementProjection,
 }
+
 service NamedProjection
 {
     /meta/projection/{projectionName: String[1..1]}
@@ -1415,6 +1598,7 @@ service NamedProjection
             orderBy     : this.ordinal;
         }
 }
+
 projection ServiceGroupProjection on ServiceGroup
 {
     name       : "ServiceGroup name",
@@ -1437,6 +1621,7 @@ projection ServiceGroupProjection on ServiceGroup
         },
     },
 }
+
 projection ServiceGroupSummaryProjection on ServiceGroup
 {
     name       : "ServiceGroup name",
@@ -1456,6 +1641,7 @@ projection ServiceGroupSummaryProjection on ServiceGroup
         },
     },
 }
+
 service ServiceGroup
 {
     /meta/serviceGroup/{serviceGroupName: String[1..1]}

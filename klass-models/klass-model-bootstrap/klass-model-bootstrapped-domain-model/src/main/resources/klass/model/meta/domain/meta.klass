@@ -35,18 +35,10 @@ association EnumerationHasLiterals
         orderBy: this.ordinal ascending;
 }
 
-enumeration InheritanceType
-{
-    TABLE_PER_SUBCLASS("table-per-subclass"),
-    TABLE_FOR_ALL_SUBCLASSES("table-for-all-subclasses"),
-    TABLE_PER_CLASS("table-per-class"),
-    NONE("none"),
-}
-
 // TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
 // TODO: Ordinals should have a syntax and be inferred using macros
 class Classifier
-    abstract(table-per-class)
+    abstract
     implements PackageableElement
 {
 }
@@ -79,7 +71,7 @@ class Klass
     extends Classifier
 {
     superClassName: String? private maximumLength(256);
-    inheritanceType: InheritanceType maximumLength(256);
+    abstractClass: Boolean;
 }
 
 // TODO: Why isn't subClasses showing up in generated code? Reladomo bug?
@@ -115,7 +107,7 @@ enumeration Multiplicity
 }
 
 class DataTypeProperty
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     classifierName                : String key maximumLength(256);
@@ -247,7 +239,7 @@ association ClassifierHasModifiers
 }
 
 class Parameter
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     id: Long key id;
@@ -269,7 +261,7 @@ class PrimitiveParameter
 }
 
 class ExpressionValue
-    abstract(table-per-class)
+    abstract
 {
     id      : Long key id;
 }
@@ -291,7 +283,7 @@ class VariableReference
 }
 
 class MemberReferencePath
-    abstract(table-per-class)
+    abstract
     extends ExpressionValue
 {
     className: String private maximumLength(256);
@@ -306,7 +298,7 @@ association VariableReferenceHasParameter
 }
 
 class Criteria
-    abstract(table-per-class)
+    abstract
     implements Element
 {
     id: Long id key;
@@ -318,7 +310,7 @@ class AllCriteria
 }
 
 class BinaryCriteria
-    abstract(table-per-class)
+    abstract
     extends Criteria
 {
     leftId        : Long private;
@@ -629,7 +621,7 @@ association ParameterizedPropertyHasParameters
 }
 
 class ProjectionElement
-    abstract(table-per-class)
+    abstract
     implements NamedElement
 {
     id  : Long key id;
@@ -662,7 +654,7 @@ association NamedProjectionHasRootProjection
 
 // TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
 class ProjectionWithAssociationEnd
-    abstract(table-per-class)
+    abstract
     extends ProjectionElement
 {
     // TODO: Overriding a property (to make it required) should not create a new column
@@ -1054,7 +1046,7 @@ projection ClassProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
-    inheritanceType        : "Class inheritanceType",
+    abstractClass          : "Class abstractClass",
     ordinal                : "Class ordinal",
     superClass             :
     {
@@ -1099,7 +1091,7 @@ projection ClassSummaryProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
-    inheritanceType        : "Class inheritanceType",
+    abstractClass          : "Class abstractClass",
     ordinal                : "Class ordinal",
     superClass             :
     {

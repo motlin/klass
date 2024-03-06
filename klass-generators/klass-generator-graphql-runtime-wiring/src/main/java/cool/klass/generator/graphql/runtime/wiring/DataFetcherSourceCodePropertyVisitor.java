@@ -5,7 +5,10 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
@@ -17,35 +20,34 @@ import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.PropertyVisitor;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 public final class DataFetcherSourceCodePropertyVisitor
         implements PropertyVisitor
 {
-    public static final ImmutableList<PrimitiveType> SPECIAL_PRIMITIVE_TYPES = Lists.immutable.with(
+    private static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
+            CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
+
+    private static final ImmutableList<PrimitiveType> SPECIAL_PRIMITIVE_TYPES = Lists.immutable.with(
             PrimitiveType.LOCAL_DATE,
             PrimitiveType.INSTANT,
             PrimitiveType.TEMPORAL_INSTANT,
             PrimitiveType.TEMPORAL_RANGE);
+
     @Nonnull
-    private final       Classifier                   owningClassifier;
+    private final Klass    owningClass;
     @Nonnull
-    private final       Property                     property;
+    private final Property property;
 
     private String dataFetcherSourceCode;
 
     public DataFetcherSourceCodePropertyVisitor(
-            Classifier owningClassifier,
+            Klass owningClass,
             Property property)
     {
-        this.owningClassifier = Objects.requireNonNull(owningClassifier);
-        this.property         = Objects.requireNonNull(property);
-    }
-
-    @Nonnull
-    private String getOwningClassifierName()
-    {
-        return this.owningClassifier.getName();
+        this.owningClass = Objects.requireNonNull(owningClass);
+        this.property    = Objects.requireNonNull(property);
     }
 
     @Nonnull
@@ -75,11 +77,13 @@ public final class DataFetcherSourceCodePropertyVisitor
     }
 
     @Nonnull
-    private String getAttributeDataFetcherSourceCode(@Nonnull DataTypeProperty property, @Nonnull PrimitiveType primitiveType)
+    private String getAttributeDataFetcherSourceCode(
+            @Nonnull DataTypeProperty property,
+            @Nonnull PrimitiveType primitiveType)
     {
         if (property.isDerived())
         {
-            return this.getSimplePropertyDataFetcherSourceCode();
+            return this.getDerivedPropertyDataFetcherSourceCode();
         }
 
         String primitiveName = SPECIAL_PRIMITIVE_TYPES.contains(primitiveType)
@@ -92,19 +96,29 @@ public final class DataFetcherSourceCodePropertyVisitor
     @Nonnull
     private String getAttributeDataFetcherSourceCode(String type)
     {
-        return String.format(
-                "new Reladomo%sDataFetcher(%sFinder.%s())",
+        ImmutableList<Klass> superClasses = this.getSuperClassChain();
+
+        String superClassesString = superClasses
+                .collect(NamedElement::getName)
+                .collect(UPPER_TO_LOWER_CAMEL::convert)
+                .collect(each -> "." + each + "SuperClass()")
+                .makeString("");
+
+        String result = String.format(
+                "new Reladomo%sDataFetcher(%sFinder%s.%s())",
                 type,
-                this.getOwningClassifierName(),
+                this.owningClass.getName(),
+                superClassesString,
                 this.property.getName());
+        return result;
     }
 
     @Nonnull
-    private String getSimplePropertyDataFetcherSourceCode()
+    private String getDerivedPropertyDataFetcherSourceCode()
     {
         return String.format(
                 "PropertyDataFetcher.fetching(%s::%s)",
-                this.getOwningClassifierName(),
+                this.owningClass.getName(),
                 this.getMethodName());
     }
 
@@ -136,24 +150,51 @@ public final class DataFetcherSourceCodePropertyVisitor
     {
         return referenceProperty.getMultiplicity().isToMany()
                 ? this.getDeepFetchPropertyDataFetcherSourceCode(referenceProperty)
-                : this.getSimplePropertyDataFetcherSourceCode();
+                : this.getAttributeDataFetcherSourceCode("Relationship");
     }
 
     @Nonnull
     private String getDeepFetchPropertyDataFetcherSourceCode(ReferenceProperty referenceProperty)
     {
-        String typeName        = referenceProperty.getType().getName();
-        String propertyName    = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, referenceProperty.getName());
-        String owningClassName = this.owningClassifier.getName();
+        ImmutableList<Klass> superClasses = this.getSuperClassChain();
 
-        return ""
-                + "new GraphQLPropertyDataDeepFetcher<" + typeName + ">(\n"
-                + "                        " + owningClassName + "::get" + propertyName + ",\n"
-                + "                        " + typeName + "Finder.getFinderInstance())";
+        String superClassesString = superClasses
+                .collect(NamedElement::getName)
+                .collect(UPPER_TO_LOWER_CAMEL::convert)
+                .collect(each -> "." + each + "SuperClass()")
+                .makeString("");
+
+        String result = String.format(
+                "new ReladomoRelationshipDataFetcher<>(%sFinder%s.%s())",
+                this.owningClass.getName(),
+                superClassesString,
+                referenceProperty.getName());
+        return result;
     }
 
     public String getSourceCode()
     {
         return this.dataFetcherSourceCode;
+    }
+
+    private ImmutableList<Klass> getSuperClassChain()
+    {
+        if (this.property instanceof DataTypeProperty dataTypeProperty && dataTypeProperty.isKey())
+        {
+            return Lists.immutable.empty();
+        }
+
+        MutableList<Klass> result = Lists.mutable.empty();
+
+        Classifier propertyClassifier = this.property.getOwningClassifier();
+        Klass      eachClass     = this.owningClass;
+        while (eachClass.getSuperClass().isPresent()
+            && eachClass.getSuperClass().get().isSubTypeOf(propertyClassifier))
+        {
+            Klass superClass = eachClass.getSuperClass().get();
+            result.add(superClass);
+            eachClass = superClass;
+        }
+        return result.toImmutable();
     }
 }

@@ -6,8 +6,12 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public final class TableGenerator
 {
@@ -29,11 +33,11 @@ public final class TableGenerator
         String tableName            = getTableName(klass);
         String propertiesSourceCode = getPropertiesSourceCode(klass, tableName);
 
-        return "    <changeSet author=\"Klass\" id=\"initial-table-" + ordinal +  "-" +  tableName + "\">\n"
-               + "        <createTable tableName=\"" + tableName + "\">\n"
-               + propertiesSourceCode
-               + "        </createTable>\n"
-               + "    </changeSet>\n\n";
+        return "    <changeSet author=\"Klass\" id=\"initial-table-" + ordinal + "-" + tableName + "\">\n"
+                + "        <createTable tableName=\"" + tableName + "\">\n"
+                + propertiesSourceCode
+                + "        </createTable>\n"
+                + "    </changeSet>\n\n";
     }
 
     @Nonnull
@@ -45,12 +49,23 @@ public final class TableGenerator
     @Nonnull
     private static String getPropertiesSourceCode(@Nonnull Klass klass, String tableName)
     {
-        return klass
-                .getDataTypeProperties()
+        return getDataTypeProperties(klass)
                 .reject(DataTypeProperty::isDerived)
                 .reject(DataTypeProperty::isTemporalRange)
                 .collect(dataTypeProperty -> getPropertySourceCode(dataTypeProperty, tableName))
                 .makeString("\n");
+    }
+
+    private static ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
+    {
+        ImmutableList<String> superClassPropertyNames = klass
+                .getSuperClass()
+                .map(Classifier::getDataTypeProperties)
+                .orElseGet(Lists.immutable::empty)
+                .collect(NamedElement::getName);
+
+        return klass.getDataTypeProperties()
+                .select(each -> each.isKey() || !superClassPropertyNames.contains(each.getName()));
     }
 
     private static String getPropertySourceCode(DataTypeProperty dataTypeProperty, String tableName)
@@ -66,8 +81,8 @@ public final class TableGenerator
         }
 
         return "            <column name=\"" + name + "\" type=\"" + dataType + "\">\n"
-               + "                <constraints" + nullability + primaryKey + " />\n"
-               + "            </column>\n";
+                + "                <constraints" + nullability + primaryKey + " />\n"
+                + "            </column>\n";
     }
 
     private static String getDataType(DataTypeProperty dataTypeProperty)

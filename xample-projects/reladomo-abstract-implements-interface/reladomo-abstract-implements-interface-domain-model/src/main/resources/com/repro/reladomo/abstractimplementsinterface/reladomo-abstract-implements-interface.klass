@@ -44,7 +44,7 @@ interface MyInterface
 }
 
 class MyAbstractClass
-    abstract(table-per-subclass)
+    abstract
     implements MyInterface
 {
     id: Long key id;

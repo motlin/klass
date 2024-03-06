@@ -1,16 +1,16 @@
 package com.stackoverflow
 
-association AbstractVoteHasCreatedBy
+association QuestionVoteHasCreatedBy
 {
-    abstractVoteCreatedBy: AbstractVote[0..*];
+    questionVoteCreatedBy: QuestionVote[0..*];
     createdBy: User[1..1] createdBy final;
 
     relationship this.createdById == User.userId
 }
 
-association AbstractVoteHasLastUpdatedBy
+association QuestionVoteHasLastUpdatedBy
 {
-    abstractVoteLastUpdatedBy: AbstractVote[0..*];
+    questionVoteLastUpdatedBy: QuestionVote[0..*];
     lastUpdatedBy: User[1..1] lastUpdatedBy;
 
     relationship this.lastUpdatedById == User.userId

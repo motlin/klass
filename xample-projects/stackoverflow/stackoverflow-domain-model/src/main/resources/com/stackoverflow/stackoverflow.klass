@@ -184,17 +184,6 @@ interface Vote
     direction              : VoteDirection;
 }
 
-class AbstractVote
-    abstract(table-per-subclass)
-    implements Vote
-    systemTemporal
-    audited
-{
-}
-
-// TODO Model AnswerVote
-// TODO Interface Vote
-// TODO superclass AbstractVote
 // TODO Aggregation for number of upvotes and downvotes
 class QuestionVote
     implements Vote

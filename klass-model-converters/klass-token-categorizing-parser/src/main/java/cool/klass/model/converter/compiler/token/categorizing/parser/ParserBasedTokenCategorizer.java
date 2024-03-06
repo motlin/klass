@@ -29,7 +29,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ExtendsDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ImplementsDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.InvalidParameterDeclarationContext;
@@ -153,14 +152,6 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.KEYWORD_ABSTRACT().getSymbol(),
                 TokenCategory.KEYWORD_ABSTRACT);
-    }
-
-    @Override
-    public void enterInheritanceType(InheritanceTypeContext ctx)
-    {
-        this.put(
-                ctx.getStart(),
-                TokenCategory.KEYWORD_INHERITANCE_TYPE);
     }
 
     @Override

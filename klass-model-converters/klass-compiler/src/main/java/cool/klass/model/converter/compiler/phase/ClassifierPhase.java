@@ -10,12 +10,10 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
-import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 
 public class ClassifierPhase
@@ -87,17 +85,7 @@ public class ClassifierPhase
     public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
     {
         super.enterAbstractDeclaration(ctx);
-
-        this.classState.setInheritanceType(InheritanceType.TABLE_PER_SUBCLASS);
-    }
-
-    @Override
-    public void enterInheritanceType(@Nonnull InheritanceTypeContext ctx)
-    {
-        super.enterInheritanceType(ctx);
-
-        InheritanceType inheritanceType = InheritanceType.byPrettyName(ctx.getText());
-        this.classState.setInheritanceType(inheritanceType);
+        this.classState.setAbstract(true);
     }
 
     @Override

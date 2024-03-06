@@ -51,7 +51,6 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ImplementsDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
-import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerValidationParameterContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
@@ -300,20 +299,6 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitAbstractDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterInheritanceType(@Nonnull InheritanceTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterInheritanceType() not implemented yet");
-    }
-
-    @Override
-    public void exitInheritanceType(@Nonnull InheritanceTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitInheritanceType() not implemented yet");
     }
 
     @Override

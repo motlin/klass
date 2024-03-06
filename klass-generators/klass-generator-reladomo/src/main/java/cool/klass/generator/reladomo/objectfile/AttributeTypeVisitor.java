@@ -16,15 +16,15 @@ import io.liftwizard.reladomo.simseq.ObjectSequenceObjectFactory;
 class AttributeTypeVisitor
         implements PrimitiveTypeVisitor
 {
-    private final AttributePureType attributeType;
     private final Klass             owningClass;
     private final PrimitiveProperty primitiveProperty;
+    private final AttributePureType attributeType;
 
-    AttributeTypeVisitor(AttributePureType attributeType, Klass owningClass, PrimitiveProperty primitiveProperty)
+    AttributeTypeVisitor(Klass owningClass, PrimitiveProperty primitiveProperty, AttributePureType attributeType)
     {
-        this.attributeType     = Objects.requireNonNull(attributeType);
         this.owningClass       = Objects.requireNonNull(owningClass);
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
+        this.attributeType     = Objects.requireNonNull(attributeType);
     }
 
     @Override

@@ -44,7 +44,7 @@ class Parent
 }
 
 class AbstractChild
-    abstract(table-per-class)
+    abstract
 {
     parentKey: String;
     childKey: String key;

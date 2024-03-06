@@ -19,7 +19,6 @@ import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
-import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
@@ -133,10 +132,12 @@ public class AntlrClass
     private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final boolean         isUser;
-    private       InheritanceType inheritanceType = InheritanceType.NONE;
+    private final boolean isUser;
 
-    private KlassBuilder         klassBuilder;
+    private boolean isAbstract;
+
+    private KlassBuilder klassBuilder;
+
     @Nonnull
     private Optional<AntlrClass>    superClassState = Optional.empty();
     @Nonnull
@@ -301,17 +302,12 @@ public class AntlrClass
 
     public boolean isAbstract()
     {
-        return this.inheritanceType != InheritanceType.NONE;
+        return this.isAbstract;
     }
 
-    public InheritanceType getInheritanceType()
+    public void setAbstract(boolean isAbstract)
     {
-        return this.inheritanceType;
-    }
-
-    public void setInheritanceType(InheritanceType inheritanceType)
-    {
-        this.inheritanceType = inheritanceType;
+        this.isAbstract = isAbstract;
     }
 
     public void enterExtendsDeclaration(@Nonnull AntlrClass superClassState)
@@ -358,7 +354,7 @@ public class AntlrClass
                 this.ordinal,
                 this.getNameContext(),
                 this.getPackageName(),
-                this.inheritanceType,
+                this.isAbstract,
                 this.isUser,
                 this.isTransient());
 
@@ -494,10 +490,7 @@ public class AntlrClass
 
     private void reportMissingKeyProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        if (!this.hasKeyProperty()
-                && !this.hasIDProperty()
-                && this.inheritanceTypeRequiresKeyProperties()
-                && !this.superClassShouldHaveKey())
+        if (!this.hasKeyProperty() && !this.hasIDProperty())
         {
             String message = String.format("Class '%s' must have at least one key property.", this.getName());
             compilerAnnotationHolder.add("ERR_CLS_KEY", message, this);
@@ -640,18 +633,6 @@ public class AntlrClass
     private boolean hasKeyProperty()
     {
         return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
-    }
-
-    private boolean superClassShouldHaveKey()
-    {
-        return this.superClassState
-                .map(AntlrClass::getInheritanceType)
-                .equals(Optional.of(InheritanceType.TABLE_PER_CLASS));
-    }
-
-    private boolean inheritanceTypeRequiresKeyProperties()
-    {
-        return this.inheritanceType == InheritanceType.NONE || this.inheritanceType == InheritanceType.TABLE_PER_CLASS;
     }
 
     private boolean hasCircularInheritance()

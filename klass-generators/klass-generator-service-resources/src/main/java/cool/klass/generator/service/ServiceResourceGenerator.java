@@ -11,6 +11,9 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -24,7 +27,7 @@ import cool.klass.model.meta.domain.api.order.OrderByDirectionDeclaration;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionWalker;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
@@ -32,6 +35,9 @@ import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import cool.klass.model.reladomo.projection.ReladomoProjectionConverter;
+import cool.klass.model.reladomo.projection.RootReladomoNode;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.tuple.primitive.ObjectBooleanPair;
@@ -39,6 +45,9 @@ import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
 
 public class ServiceResourceGenerator
 {
+    private static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
+            CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
+
     @Nonnull
     private final DomainModel domainModel;
     @Nonnull
@@ -56,7 +65,8 @@ public class ServiceResourceGenerator
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
     }
 
-    public void writeServiceResourceFiles(@Nonnull Path outputPath) throws IOException
+    public void writeServiceResourceFiles(@Nonnull Path outputPath)
+            throws IOException
     {
         for (ServiceGroup serviceGroup : this.domainModel.getServiceGroups())
         {
@@ -79,7 +89,8 @@ public class ServiceResourceGenerator
         }
     }
 
-    private void printStringToFile(@Nonnull Path path, String contents) throws FileNotFoundException
+    private void printStringToFile(@Nonnull Path path, String contents)
+            throws FileNotFoundException
     {
         try (PrintStream printStream = new PrintStream(new FileOutputStream(path.toFile())))
         {
@@ -288,9 +299,9 @@ public class ServiceResourceGenerator
         ServiceProjectionDispatch           serviceProjectionDispatch = projectionDispatch.get();
         Projection                          projection                = serviceProjectionDispatch.getProjection();
 
-        DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
-        ProjectionWalker.walk(projection, deepFetchProjectionListener);
-        ImmutableList<String> deepFetchStrings = deepFetchProjectionListener.getResult();
+        RootReladomoNode projectionReladomoNode = new RootReladomoNode("root", klass);
+        ReladomoProjectionConverter.projectionChildrenToReladomoTree(projectionReladomoNode, projection);
+        ImmutableList<String> deepFetchStrings = projectionReladomoNode.getDeepFetchStrings();
         String deepFetchSourceCode = deepFetchStrings
                 .collect(each -> "        result.deepFetch(" + each + ");\n")
                 .makeString("");
@@ -669,7 +680,6 @@ public class ServiceResourceGenerator
         // TODO: throw a better error than 500 for getOnly
 
         // @formatter:off
-        //language=JAVA
         return ""
                 + "        if (result.isEmpty())\n"
                 + "        {\n"
@@ -841,10 +851,31 @@ public class ServiceResourceGenerator
             throw new AssertionError();
         }
 
-        return String.format(
-                "%sFinder.%s()",
-                thisMemberReferencePath.getKlass().getName(),
-                thisMemberReferencePath.getProperty().getName());
+        Klass                klass          = thisMemberReferencePath.getKlass();
+        DataTypeProperty     property       = thisMemberReferencePath.getProperty();
+        ImmutableList<Klass> superClassPath = this.getSuperClassPath(klass, property.getOwningClassifier());
+        String superClassPathSourceCode = superClassPath
+                .collect(each -> "." + UPPER_TO_LOWER_CAMEL.apply(each.getName()) + "SuperClass()")
+                .makeString("");
+        String result = String.format(
+                "%sFinder%s.%s()",
+                klass.getName(),
+                superClassPathSourceCode,
+                property.getName());
+        return result;
+    }
+
+    private ImmutableList<Klass> getSuperClassPath(Klass klass, Classifier owningClassifier)
+    {
+        MutableList<Klass> result       = Lists.mutable.empty();
+        Klass              currentKlass = klass;
+        while (currentKlass != owningClassifier && currentKlass != null)
+        {
+            Optional<Klass> superClass = currentKlass.getSuperClass();
+            superClass.ifPresent(result::add);
+            currentKlass = superClass.orElse(null);
+        }
+        return result.toImmutable();
     }
 
     @Nonnull
