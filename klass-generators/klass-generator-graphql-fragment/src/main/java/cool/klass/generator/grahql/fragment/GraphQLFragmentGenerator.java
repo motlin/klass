@@ -1,40 +1,45 @@
 package cool.klass.generator.grahql.fragment;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
+import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class GraphQLFragmentGenerator
+        extends AbstractPerPackageGenerator
 {
-    @Nonnull
-    private final DomainModel domainModel;
-    @Nonnull
-    private final String      rootPackageName;
-    @Nonnull
-    private final String      applicationName;
-
-    public GraphQLFragmentGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull String applicationName)
+    public GraphQLFragmentGenerator(@Nonnull DomainModel domainModel)
     {
-        this.domainModel     = Objects.requireNonNull(domainModel);
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.applicationName = Objects.requireNonNull(applicationName);
+        super(domainModel);
     }
 
-    public void writeFragmentFiles(@Nonnull Path outputPath)
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
     {
-        String topLevelElementsCode = this.domainModel.getClasses()
+        return path
+                .resolve("graphql")
+                .resolve("fragment");
+    }
+
+    @Nonnull
+    @Override
+    protected String getFileName()
+    {
+        return "GraphQLFragment.graphqls";
+    }
+
+    @Nonnull
+    @Override
+    protected String getPackageSourceCode(@Nonnull String fullyQualifiedPackage)
+    {
+        String topLevelElementsCode = this.domainModel
+                .getClasses()
                 .collect(this::getSourceCode)
                 .makeString("");
 
@@ -43,21 +48,7 @@ public class GraphQLFragmentGenerator
                 + "\n"
                 + topLevelElementsCode;
 
-        Path fragmentsOutputPath = this.getOutputPath(outputPath);
-        this.printStringToFile(fragmentsOutputPath, sourceCode);
-    }
-
-    @Nonnull
-    private Path getOutputPath(@Nonnull Path outputPath)
-    {
-        String packageRelativePath = this.rootPackageName.replaceAll("\\.", "/");
-        Path outputDirectory = outputPath
-                .resolve(packageRelativePath)
-                .resolve("graphql")
-                .resolve("fragment");
-        outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + ".graphqls";
-        return outputDirectory.resolve(fileName);
+        return sourceCode;
     }
 
     private String getSourceCode(@Nonnull Klass klass)
@@ -72,17 +63,5 @@ public class GraphQLFragmentGenerator
     private String getSourceCode(DataTypeProperty dataTypeProperty)
     {
         return String.format("    %s\n", dataTypeProperty.getName());
-    }
-
-    private void printStringToFile(@Nonnull Path path, String contents)
-    {
-        try (PrintStream printStream = new PrintStream(new FileOutputStream(path.toFile())))
-        {
-            printStream.print(contents);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }

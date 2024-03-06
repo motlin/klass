@@ -26,33 +26,17 @@ public class GenerateGraphQLFragmentMojo
             defaultValue = "${project.build.directory}/generated-resources/graphql-fragment")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true)
-    private String applicationName;
-
-    @Parameter(property = "rootPackageName", required = true)
-    private String rootPackageName;
-
     @Override
     public void execute() throws MojoExecutionException
     {
-        if (!this.outputDirectory.exists())
-        {
-            this.outputDirectory.mkdirs();
-        }
-
         DomainModel domainModel = this.getDomainModel();
 
+        var generator = new GraphQLFragmentGenerator(domainModel);
         Path outputPath = this.outputDirectory.toPath();
-
-        GraphQLFragmentGenerator generator = new GraphQLFragmentGenerator(
-                domainModel,
-                this.rootPackageName,
-                this.applicationName);
-        generator.writeFragmentFiles(outputPath);
+        generator.writeFiles(outputPath);
 
         Resource resource = new Resource();
         resource.setDirectory(this.outputDirectory.getAbsolutePath());
-        // TODO: Should be based on the output path
         this.mavenProject.addResource(resource);
     }
 }
