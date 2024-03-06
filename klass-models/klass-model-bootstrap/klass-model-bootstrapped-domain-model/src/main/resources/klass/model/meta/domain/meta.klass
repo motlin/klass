@@ -436,8 +436,6 @@ association AssociationHasCriteria
 {
     association: Association[0..1];
     criteria: Criteria[1..1];
-
-    relationship this.criteriaId == Criteria.id
 }
 
 association OperatorCriteriaHasSourceExpressionValue
@@ -577,8 +575,6 @@ association AssociationEndOrderByHasMemberReferencePath
 {
     associationEndOrderBy: AssociationEndOrderBy[0..1];
     thisMemberReferencePath: ThisMemberReferencePath[1..1];
-
-    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
 
 association ParameterizedPropertyHasResultType
@@ -777,8 +773,6 @@ association UrlParameterHasParameter
 {
     urlParameter                  : UrlParameter[0..1];
     parameter                     : Parameter[1..1];
-
-    relationship this.parameterId == Parameter.id
 }
 
 association ServiceGroupHasUrls
@@ -886,8 +880,6 @@ association ServiceOrderByHasMemberReferencePath
 {
     serviceOrderBy                : ServiceOrderBy[0..1];
     thisMemberReferencePath       : ThisMemberReferencePath[1..1];
-
-    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
 
 projection EnumerationLiteralProjection on EnumerationLiteral
