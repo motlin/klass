@@ -395,12 +395,14 @@ class Criteria
 class AllCriteria
     extends Criteria
 {
+    id  : Long key private;
 }
 
 class BinaryCriteria
     abstract(table-per-class)
     extends Criteria
 {
+    id  : Long key private;
     leftId        : Long private;
     rightId       : Long private;
 }
@@ -408,16 +410,19 @@ class BinaryCriteria
 class AndCriteria
     extends BinaryCriteria
 {
+    id  : Long key private;
 }
 
 class OrCriteria
     extends BinaryCriteria
 {
+    id  : Long key private;
 }
 
 class OperatorCriteria
     extends Criteria
 {
+    id  : Long key private;
     operator: Operator;
     sourceExpressionId: Long private;
     targetExpressionId: Long private;
@@ -426,6 +431,7 @@ class OperatorCriteria
 class EdgePointCriteria
     extends Criteria
 {
+    id  : Long key private;
     memberReferencePathId: Long private;
 }
 
@@ -462,6 +468,7 @@ class ExpressionValue
 class VariableReference
     extends ExpressionValue
 {
+    id  : Long key private;
     parameterId: Long private;
 }
 
@@ -486,12 +493,14 @@ class Parameter
 class EnumerationParameter
     extends Parameter
 {
+    id  : Long key private;
     enumerationName: String private;
 }
 
 class PrimitiveParameter
     extends Parameter
 {
+    id  : Long key private;
     primitiveType: PrimitiveType;
 }
 
@@ -507,6 +516,7 @@ class MemberReferencePath
     abstract(table-per-class)
     extends ExpressionValue
 {
+    id  : Long key private;
     className: String private;
     propertyClassName: String private;
     propertyName: String private;
@@ -557,12 +567,13 @@ association DataTypePropertyHasMemberReferencePaths
 class ThisMemberReferencePath
     extends MemberReferencePath
 {
-
+    id  : Long key private;
 }
 
 class TypeMemberReferencePath
     extends MemberReferencePath
 {
+    id  : Long key private;
 }
 
 association BinaryCriteriaHasLeft
@@ -682,9 +693,8 @@ class ServiceProjection
     extends ProjectionElement
     implements PackageableElement
 {
+    id  : Long key private;
     // TODO: unique constraint on name
-    // Override to make name not a key
-    name                          : String;
     className                     : String private;
 }
 
@@ -693,6 +703,7 @@ class ProjectionWithAssociationEnd
     abstract(table-per-class)
     extends ProjectionElement
 {
+    id  : Long key private;
     parentId                      : Long private;
     associationEndClass           : String private;
     associationEndName: String private;
@@ -701,17 +712,27 @@ class ProjectionWithAssociationEnd
 class ProjectionAssociationEnd
     extends ProjectionWithAssociationEnd
 {
+    id  : Long key private;
+    parentId                      : Long private;
+    associationEndClass           : String private;
+    associationEndName: String private;
 }
 
 class ProjectionProjectionReference
     extends ProjectionWithAssociationEnd
 {
+    id  : Long key private;
+    parentId                      : Long private;
+    associationEndClass           : String private;
+    associationEndName: String private;
     projectionName                  : String private;
 }
 
 class ProjectionDataTypeProperty
     extends ProjectionElement
 {
+    id  : Long key private;
+    parentId                      : Long private;
     propertyClassifierName        : String private;
     propertyName: String private;
 }
