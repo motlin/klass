@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.annotation;
 
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
@@ -37,30 +39,15 @@ public abstract class AbstractKlassCompilerErrorTestCase
         String   sourceName     = testName + ".klass";
         String   sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText(
-                0,
-                Optional.empty(),
+        CompilationResult compilationResult = AbstractKlassCompilerErrorTestCase.getCompilationResult(
                 sourceName,
                 sourceCodeText);
-        KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
-        CompilationResult compilationResult = compiler.compile();
-        // TODO: Split the ability to assert that there are errors and no domain model, from warnings and yes a domain model
-        if (compilationResult.compilerAnnotations().isEmpty() || compilationResult.domainModelWithSourceCode().isPresent())
+
+        this.handleCompilerAnnotations(compilationResult, testName, callingClass);
+
+        if (compilationResult.domainModelWithSourceCode().isPresent())
         {
             fail("Expected a compile error but found:\n" + sourceCodeText);
-        }
-        else
-        {
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = compilationResult.compilerAnnotations();
-            ImmutableList<String> compilerAnnotationStrings =
-                    compilerAnnotations.collect(RootCompilerAnnotation::toString);
-
-            for (int i = 0; i < compilerAnnotationStrings.size(); i++)
-            {
-                String errorSourceName          = String.format("%s-error-%d.log", testName, i);
-                String compilerAnnotationString = compilerAnnotationStrings.get(i);
-                this.rule.assertFileContents(errorSourceName, compilerAnnotationString, callingClass);
-            }
         }
     }
 
@@ -72,25 +59,42 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
         String sourceCodeText = FileMatchRule.slurp(sourceName, callingClass);
 
+        CompilationResult compilationResult = AbstractKlassCompilerErrorTestCase.getCompilationResult(
+                sourceName,
+                sourceCodeText);
+
+        this.handleCompilerAnnotations(compilationResult, testName, callingClass);
+
+        Optional<DomainModelWithSourceCode> domainModelWithSourceCode = compilationResult.domainModelWithSourceCode();
+        assertTrue(domainModelWithSourceCode.isPresent());
+    }
+
+    @Nonnull
+    private static CompilationResult getCompilationResult(String sourceName, String sourceCodeText)
+    {
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),
                 sourceName,
                 sourceCodeText);
-        KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
-        CompilationResult compilationResult = compiler.compile();
-        ImmutableList<RootCompilerAnnotation> compilerErrors = compilationResult
-                .compilerAnnotations()
-                .select(AbstractCompilerAnnotation::isError);
-        if (compilerErrors.notEmpty())
+        var compiler = new KlassCompiler(compilationUnit);
+        return compiler.compile();
+    }
+
+    private void handleCompilerAnnotations(CompilationResult compilationResult, String testName, Class<?> callingClass)
+    {
+        int errorId   = 0;
+        int warningId = 0;
+
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
+        for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
         {
-            String message = compilerErrors.makeString("\n");
-            fail(message);
-        }
-        else
-        {
-            Optional<DomainModelWithSourceCode> domainModelWithSourceCode = compilationResult.domainModelWithSourceCode();
-            assertTrue(domainModelWithSourceCode.isPresent());
+            String severityString = compilerAnnotation.getSeverityString();
+            int annotationId = compilerAnnotation.getSeverity() == AnnotationSeverity.ERROR
+                    ? errorId++
+                    : warningId++;
+            String annotationSourceName = "%s-%s-%d.log".formatted(testName, severityString, annotationId);
+            this.rule.assertFileContents(annotationSourceName, compilerAnnotation.toString(), callingClass);
         }
     }
 }
