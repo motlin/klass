@@ -189,6 +189,28 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                             sourceOwnedModifier.getElementContext(),
                             targetOwnedModifier.getElementContext()));
         }
+        else if (this.getSourceEnd().isToMany() && this.getTargetEnd().isToOne() && this.getTargetEnd().isOwned())
+        {
+            String message = String.format(
+                    "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
+                    this.getSourceEnd().getOwningClassState().getName(),
+                    this.getSourceEnd().getName());
+            AntlrAssociationEndModifier ownedModifier = this.getTargetEnd()
+                    .getAssociationEndModifiers()
+                    .detect(AntlrAssociationEndModifier::isOwned);
+            compilerErrorHolder.add(message, ownedModifier);
+        }
+        else if (this.getSourceEnd().isToOne() && this.getTargetEnd().isToMany() && this.getSourceEnd().isOwned())
+        {
+            String message = String.format(
+                    "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
+                    this.getTargetEnd().getOwningClassState().getName(),
+                    this.getTargetEnd().getName());
+            AntlrAssociationEndModifier ownedModifier = this.getSourceEnd()
+                    .getAssociationEndModifiers()
+                    .detect(AntlrAssociationEndModifier::isOwned);
+            compilerErrorHolder.add(message, ownedModifier);
+        }
 
         // TODO: reportErrors: Check that both ends aren't versions
 

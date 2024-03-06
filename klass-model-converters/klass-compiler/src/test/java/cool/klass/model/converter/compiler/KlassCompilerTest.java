@@ -1038,10 +1038,37 @@ public class KlassCompilerTest
                 + "    children: Dummy[0..*];\n"
                 + "\n"
                 + "    relationship this.id == Dummy.parentId\n"
+                + "}\n"
+                + "\n"
+                + "association DummyAssociation2\n"
+                + "{\n"
+                + "    children2: Dummy[0..*];\n"
+                + "    parent2: Dummy[0..1] owned;\n"
+                + "\n"
+                + "    relationship this.parentId == Dummy.id\n"
                 + "}\n";
         //</editor-fold>
 
-        this.assertNoCompilerErrors(sourceCodeText);
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 11 Char: 25 Error: ERR_OWN_ONE: Association end 'Dummy.children' is owned, but is on the to-one end of a one-to-many association.\n"
+                        + "package dummy\n"
+                        + "association DummyAssociation\n"
+                        + "{\n"
+                        + "    parent: Dummy[0..1] owned;\n"
+                        + "                        ^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 20 Char: 26 Error: ERR_OWN_ONE: Association end 'Dummy.children2' is owned, but is on the to-one end of a many-to-one association.\n"
+                        + "package dummy\n"
+                        + "association DummyAssociation2\n"
+                        + "{\n"
+                        + "    parent2: Dummy[0..1] owned;\n"
+                        + "                         ^^^^^\n"
+                        + "}\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test
