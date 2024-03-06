@@ -44,6 +44,7 @@
       "liquibase.servicelocator":                  "INFO",
       "liquibase.util":                            "INFO",
       "notprivacysafe.graphql":                    "INFO",
+      "notprivacysafe.graphql.execution.ExecutionStrategy": "DEBUG",
       "org.apache.http":                           "INFO",
       "org.eclipse.jetty":                         "INFO",
       "org.hibernate.validator.internal":          "INFO",
