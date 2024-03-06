@@ -18,6 +18,8 @@ public interface DataStore
 
     void runInTransaction(Runnable runnable);
 
+    List<Object> findAll(Klass klass);
+
     Object findByKey(Klass klass, MapIterable<DataTypeProperty, Object> keys);
 
     default Object getReferenceProperty(Object persistentInstance, ReferenceProperty referenceProperty)
@@ -55,4 +57,8 @@ public interface DataStore
     void purgeAll(@Nonnull Klass klass);
 
     boolean isInstanceOf(Object persistentInstance, Classifier classifier);
+
+    Klass getMostSpecificSubclass(Object persistentInstance, Klass klass);
+
+    Object getSuperClass(Object persistentInstance, Klass klass);
 }

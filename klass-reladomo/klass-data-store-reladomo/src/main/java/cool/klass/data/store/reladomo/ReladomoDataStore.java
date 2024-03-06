@@ -64,11 +64,11 @@ public class ReladomoDataStore
     private static final Marker MARKER = MarkerFactory.getMarker("reladomo transaction stats");
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
 
-    private static final Converter<String, String> LOWER_TO_UPPER =
+    private static final Converter<String, String> LOWER_TO_UPPER_CAMEL =
             CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
-    private static final Converter<String, String> UPPER_CAMEL =
-            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+    private static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
+            CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
 
     private final Supplier<UUID> uuidSupplier;
     private final int            retryCount;
@@ -104,6 +104,13 @@ public class ReladomoDataStore
             runnable.run();
             return null;
         }, this.retryCount);
+    }
+
+    @Override
+    public List<Object> findAll(Klass klass)
+    {
+        RelatedFinder finder = this.getRelatedFinder(klass);
+        return finder.findMany(finder.all());
     }
 
     private static void logTransactionalStats(MithraTransaction reladomoTransaction)
@@ -278,7 +285,7 @@ public class ReladomoDataStore
         {
             try
             {
-                String methodName             = "generateAndSet" + LOWER_TO_UPPER.convert(idProperty.getName());
+                String methodName             = "generateAndSet" + LOWER_TO_UPPER_CAMEL.convert(idProperty.getName());
                 Method generateAndSetIdMethod = persistentInstance.getClass().getMethod(methodName);
                 generateAndSetIdMethod.invoke(persistentInstance);
             }
@@ -466,7 +473,7 @@ public class ReladomoDataStore
     private String getMethodName(Property property)
     {
         String prefix = property.getType() == PrimitiveType.BOOLEAN ? "is" : "get";
-        String suffix = UPPER_CAMEL.convert(property.getName());
+        String suffix = LOWER_TO_UPPER_CAMEL.convert(property.getName());
         return prefix + suffix;
     }
 
@@ -688,13 +695,96 @@ public class ReladomoDataStore
         }
     }
 
+    @Override
+    public Klass getMostSpecificSubclass(Object persistentInstance, Klass klass)
+    {
+        if (!(persistentInstance instanceof MithraObject))
+        {
+            throw new AssertionError("Expected MithraObject but got " + persistentInstance.getClass().getCanonicalName());
+        }
+
+        ImmutableList<Klass> potentialSubClasses = klass
+                .getSubClasses()
+                .select(subClass ->
+                {
+                    MithraObject subClassPersistentInstance = this.getSubClassPersistentInstance(
+                            klass,
+                            subClass,
+                            (MithraObject) persistentInstance);
+                    return subClassPersistentInstance != null;
+                });
+
+        if (potentialSubClasses.isEmpty())
+        {
+            return klass;
+        }
+
+        if (potentialSubClasses.size() == 1)
+        {
+            Klass onlySubClass = potentialSubClasses.getOnly();
+            MithraObject subClassPersistentInstance = this.getSubClassPersistentInstance(
+                    klass,
+                    onlySubClass,
+                    (MithraObject) persistentInstance);
+
+            Klass result = this.getMostSpecificSubclass(subClassPersistentInstance, onlySubClass);
+            return result;
+        }
+
+        throw new AssertionError("Expected one subclass but got " + potentialSubClasses);
+    }
+
+    private MithraObject getSubClassPersistentInstance(
+            Klass klass,
+            Klass subClass,
+            MithraObject persistentInstance)
+    {
+        RelatedFinder<?> finder = this.getRelatedFinder(klass);
+
+        String relationshipName = UPPER_TO_LOWER_CAMEL.convert(subClass.getName()) + "SubClass";
+
+        AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder.getRelationshipFinderByName(relationshipName);
+
+        if (relationshipFinder == null)
+        {
+            String error =
+                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
+                            + relationshipName;
+            throw new AssertionError(error);
+        }
+
+        Object result = relationshipFinder.valueOf(persistentInstance);
+        return (MithraObject) result;
+    }
+
+    @Override
+    public Object getSuperClass(Object persistentInstance, Klass klass)
+    {
+        RelatedFinder<?> finder = this.getRelatedFinder(klass);
+
+        String relationshipName = UPPER_TO_LOWER_CAMEL.convert(klass.getSuperClass().get().getName()) + "SuperClass";
+
+        AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder.getRelationshipFinderByName(relationshipName);
+
+        if (relationshipFinder == null)
+        {
+            String error =
+                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
+                            + relationshipName;
+            throw new AssertionError(error);
+        }
+
+        Object result = relationshipFinder.valueOf(persistentInstance);
+        return result;
+    }
+
     private RelatedFinder<?> getRelatedFinder(@Nonnull MithraObject mithraObject)
     {
         return mithraObject.zGetPortal().getFinder();
     }
 
     @Nonnull
-    private RelatedFinder<?> getRelatedFinder(@Nonnull Classifier classifier)
+    public RelatedFinder<?> getRelatedFinder(@Nonnull Classifier classifier)
     {
         try
         {
