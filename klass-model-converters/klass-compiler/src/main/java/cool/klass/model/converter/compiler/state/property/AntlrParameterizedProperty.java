@@ -152,6 +152,13 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return this.parameterizedPropertyBuilder;
     }
 
+    @Nonnull
+    @Override
+    public ParameterizedPropertyBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.parameterizedPropertyBuilder);
+    }
+
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {

@@ -27,7 +27,7 @@ public class AntlrOrderBy extends AntlrElement
 
     @Nonnull
     private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePathStates = Lists.mutable.empty();
-    private       OrderByBuilder                               orderByBuilder;
+    private       OrderByBuilder                               elementBuilder;
 
     public AntlrOrderBy(
             @Nonnull ParserRuleContext elementContext,
@@ -72,18 +72,13 @@ public class AntlrOrderBy extends AntlrElement
                 compilerErrorHolder);
     }
 
-    public OrderByBuilder getOrderByBuilder()
-    {
-        return Objects.requireNonNull(this.orderByBuilder);
-    }
-
     public OrderByBuilder build()
     {
-        if (this.orderByBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
-        this.orderByBuilder = new OrderByBuilder(
+        this.elementBuilder = new OrderByBuilder(
                 this.elementContext,
                 this.inferred,
                 this.thisContext.getElementBuilder());
@@ -92,7 +87,13 @@ public class AntlrOrderBy extends AntlrElement
                 this.orderByMemberReferencePathStates
                         .collect(AntlrOrderByMemberReferencePath::build)
                         .toImmutable();
-        this.orderByBuilder.setOrderByMemberReferencePathBuilders(orderByMemberReferencePathBuilders);
-        return this.orderByBuilder;
+        this.elementBuilder.setOrderByMemberReferencePathBuilders(orderByMemberReferencePathBuilders);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public OrderByBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

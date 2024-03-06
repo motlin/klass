@@ -12,6 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.property.validation.AbstractPropertyValidation.PropertyValidationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractAntlrPropertyValidation extends AntlrElement
@@ -39,6 +40,10 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
     {
         return Optional.of(this.owningPropertyState);
     }
+
+    public abstract PropertyValidationBuilder build();
+
+    public abstract PropertyValidationBuilder getElementBuilder();
 
     public void reportInvalidType(
             CompilerErrorState compilerErrorHolder,

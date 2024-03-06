@@ -5,14 +5,14 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
-import cool.klass.model.meta.domain.api.projection.ProjectionElement;
+import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AbstractProjectionParent extends AbstractNamedElement implements AbstractProjectionElement, ProjectionParent
 {
-    private ImmutableList<ProjectionElement> children;
+    private ImmutableList<ProjectionChild> children;
 
     protected AbstractProjectionParent(
             @Nonnull ParserRuleContext elementContext,
@@ -25,19 +25,19 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
     }
 
     @Override
-    public ImmutableList<ProjectionElement> getChildren()
+    public ImmutableList<? extends ProjectionChild> getChildren()
     {
         return Objects.requireNonNull(this.children);
     }
 
-    protected void setChildren(@Nonnull ImmutableList<ProjectionElement> children)
+    protected void setChildren(@Nonnull ImmutableList<ProjectionChild> children)
     {
         this.children = Objects.requireNonNull(children);
     }
 
     public abstract static class AbstractProjectionParentBuilder<BuiltElement extends AbstractProjectionParent> extends NamedElementBuilder<BuiltElement>
     {
-        protected ImmutableList<ProjectionElementBuilder> childBuilders;
+        protected ImmutableList<ProjectionChildBuilder> childBuilders;
 
         protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -49,15 +49,16 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
             super(elementContext, inferred, nameContext, name, ordinal);
         }
 
-        public void setChildBuilders(@Nonnull ImmutableList<ProjectionElementBuilder> projectionChildrenBuilders)
+        public void setChildBuilders(@Nonnull ImmutableList<ProjectionChildBuilder> projectionChildrenBuilders)
         {
             this.childBuilders = Objects.requireNonNull(projectionChildrenBuilders);
         }
 
-        protected void buildChildren(@Nonnull AbstractProjectionParent projectionParent)
+        @Override
+        protected void buildChildren()
         {
-            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
-            projectionParent.setChildren(children);
+            ImmutableList<ProjectionChild> children = this.childBuilders.collect(ProjectionChildBuilder::build);
+            this.getElement().setChildren(children);
         }
     }
 }

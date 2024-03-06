@@ -185,6 +185,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         return this.serviceGroupBuilder;
     }
 
+    @Nonnull
     @Override
     public ServiceGroupBuilder getElementBuilder()
     {

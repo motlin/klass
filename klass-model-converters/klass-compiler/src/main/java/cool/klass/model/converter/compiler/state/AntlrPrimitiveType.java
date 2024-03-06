@@ -87,6 +87,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return this.primitiveType;
     }
 
+    @Nonnull
     @Override
     public PrimitiveType getElementBuilder()
     {

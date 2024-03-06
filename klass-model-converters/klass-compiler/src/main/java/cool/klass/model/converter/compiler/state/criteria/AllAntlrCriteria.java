@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -12,6 +14,8 @@ import org.eclipse.collections.api.map.OrderedMap;
 
 public class AllAntlrCriteria extends AntlrCriteria
 {
+    private AllCriteriaBuilder elementBuilder;
+
     public AllAntlrCriteria(
             @Nonnull CriteriaAllContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
@@ -32,7 +36,19 @@ public class AllAntlrCriteria extends AntlrCriteria
     @Override
     public AllCriteriaBuilder build()
     {
-        return new AllCriteriaBuilder(this.elementContext, this.inferred);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new AllCriteriaBuilder(this.elementContext, this.inferred);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public AllCriteriaBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

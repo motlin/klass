@@ -153,6 +153,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         return this.associationBuilder;
     }
 
+    @Nonnull
     @Override
     public AssociationBuilder getElementBuilder()
     {

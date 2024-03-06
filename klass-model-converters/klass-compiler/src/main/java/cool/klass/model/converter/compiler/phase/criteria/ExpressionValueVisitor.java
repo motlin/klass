@@ -14,8 +14,8 @@ import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
 import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberReferencePath;
 import cool.klass.model.converter.compiler.state.value.AntlrVariableReference;
+import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralListValue;
-import cool.klass.model.converter.compiler.state.value.literal.AntlrLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrUserLiteral;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
@@ -72,7 +72,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
                 this.compilerState.getCompilerInputState().isInference(),
                 this.expressionValueOwner);
 
-        ImmutableList<AntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
+        ImmutableList<AbstractAntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
                 .collectWith(this::getAntlrLiteralValue, literalListValue)
                 .toImmutable();
         literalListValue.setLiteralStates(literalStates);
@@ -80,10 +80,10 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         return literalListValue;
     }
 
-    protected AntlrLiteralValue getAntlrLiteralValue(LiteralContext literalCtx, IAntlrElement expressionValueOwner)
+    protected AbstractAntlrLiteralValue getAntlrLiteralValue(LiteralContext literalCtx, IAntlrElement expressionValueOwner)
     {
         // TODO: Recurse here using a different owner?
-        KlassVisitor<AntlrLiteralValue> visitor = new LiteralValueVisitor(
+        KlassVisitor<AbstractAntlrLiteralValue> visitor = new LiteralValueVisitor(
                 this.compilerState,
                 expressionValueOwner);
         return visitor.visitLiteral(literalCtx);
@@ -186,7 +186,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     }
 
     @Override
-    public AntlrLiteralValue visitLiteral(LiteralContext ctx)
+    public AbstractAntlrLiteralValue visitLiteral(LiteralContext ctx)
     {
         return this.getAntlrLiteralValue(ctx, this.expressionValueOwner);
     }

@@ -44,6 +44,9 @@ public abstract class AntlrOperator extends AntlrElement
     @Nonnull
     public abstract AbstractOperatorBuilder<?> build();
 
+    @Nonnull
+    public abstract AbstractOperatorBuilder<?> getElementBuilder();
+
     public abstract void checkTypes(
             CompilerErrorState compilerErrorHolder,
             ListIterable<AntlrType> sourceTypes,

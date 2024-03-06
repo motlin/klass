@@ -18,6 +18,7 @@ import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -28,14 +29,15 @@ import org.eclipse.collections.api.list.ImmutableList;
 // TODO: Refactor this to use DataStore
 public class ReladomoJsonTree implements JsonSerializable
 {
-    private final DataStore                        dataStore;
-    private final MithraObject                     mithraObject;
-    private final ImmutableList<ProjectionElement> projectionElements;
+    private final DataStore    dataStore;
+    private final MithraObject mithraObject;
+
+    private final ImmutableList<? extends ProjectionElement> projectionElements;
 
     public ReladomoJsonTree(
             DataStore dataStore,
             MithraObject mithraObject,
-            @Nonnull ImmutableList<ProjectionElement> projectionElements)
+            @Nonnull ImmutableList<? extends ProjectionElement> projectionElements)
     {
         this.dataStore = dataStore;
         this.mithraObject = Objects.requireNonNull(mithraObject);
@@ -49,7 +51,7 @@ public class ReladomoJsonTree implements JsonSerializable
     public void serialize(
             JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            @Nonnull ImmutableList<ProjectionElement> projectionElements) throws IOException
+            @Nonnull ImmutableList<? extends ProjectionElement> projectionElements) throws IOException
     {
         jsonGenerator.writeStartObject();
         try
@@ -116,15 +118,15 @@ public class ReladomoJsonTree implements JsonSerializable
             MithraObject mithraObject,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
-        ImmutableList<ProjectionElement> children       = projectionAssociationEnd.getChildren();
-        AssociationEnd                   associationEnd = projectionAssociationEnd.getAssociationEnd();
-        Multiplicity                     multiplicity   = associationEnd.getMultiplicity();
+        ImmutableList<? extends ProjectionChild> children = projectionAssociationEnd.getChildren();
 
-        String associationEndName = associationEnd.getName();
+        AssociationEnd associationEnd     = projectionAssociationEnd.getAssociationEnd();
+        Multiplicity   multiplicity       = associationEnd.getMultiplicity();
+        String         associationEndName = associationEnd.getName();
 
         if (multiplicity.isToMany())
         {
-            Object             value    = this.dataStore.getToMany(mithraObject, associationEnd);
+            Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);
             MithraList<MithraObject> mithraList = (MithraList<MithraObject>) Objects.requireNonNull(value);
 
             jsonGenerator.writeArrayFieldStart(associationEndName);
@@ -154,7 +156,7 @@ public class ReladomoJsonTree implements JsonSerializable
 
     public boolean recurse(
             @Nonnull JsonGenerator jsonGenerator,
-            @Nonnull ImmutableList<ProjectionElement> children,
+            @Nonnull ImmutableList<? extends ProjectionElement> children,
             @Nonnull MithraObject eachChildValue)
     {
         try

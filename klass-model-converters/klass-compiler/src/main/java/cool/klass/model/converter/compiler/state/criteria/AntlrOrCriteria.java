@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -10,6 +12,8 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 
 public class AntlrOrCriteria extends AntlrBinaryCriteria
 {
+    private OrCriteriaBuilder elementBuilder;
+
     public AntlrOrCriteria(
             @Nonnull CriteriaExpressionOrContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
@@ -30,7 +34,23 @@ public class AntlrOrCriteria extends AntlrBinaryCriteria
     @Override
     public OrCriteriaBuilder build()
     {
-        return new OrCriteriaBuilder(this.elementContext, this.inferred, this.left.build(), this.right.build());
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new OrCriteriaBuilder(
+                this.elementContext,
+                this.inferred,
+                this.left.build(),
+                this.right.build());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public OrCriteriaBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

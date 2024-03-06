@@ -10,6 +10,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMaxPropertyValidation extends AbstractAntlrNumericPropertyValidation
 {
+    private MaxPropertyValidationBuilder elementBuilder;
+
     public AntlrMaxPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
@@ -20,12 +22,25 @@ public class AntlrMaxPropertyValidation extends AbstractAntlrNumericPropertyVali
         super(elementContext, compilationUnit, inferred, owningPropertyState, number);
     }
 
+    @Override
     public MaxPropertyValidationBuilder build()
     {
-        return new MaxPropertyValidationBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new MaxPropertyValidationBuilder(
                 this.elementContext,
                 this.inferred,
-                this.owningPropertyState.getPropertyBuilder(),
+                this.owningPropertyState.getElementBuilder(),
                 this.number);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public MaxPropertyValidationBuilder getElementBuilder()
+    {
+        return this.elementBuilder;
     }
 }

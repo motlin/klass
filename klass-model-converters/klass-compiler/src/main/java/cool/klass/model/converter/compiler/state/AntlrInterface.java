@@ -126,6 +126,7 @@ public class AntlrInterface extends AntlrClassifier
         return this.interfaceBuilder;
     }
 
+    @Nonnull
     @Override
     public InterfaceBuilder getElementBuilder()
     {

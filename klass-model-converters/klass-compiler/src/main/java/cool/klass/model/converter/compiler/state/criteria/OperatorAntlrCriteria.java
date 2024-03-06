@@ -32,6 +32,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     private AntlrExpressionValue sourceValue;
     @Nullable
     private AntlrExpressionValue targetValue;
+    private OperatorCriteriaBuilder elementBuilder;
 
     public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
@@ -85,13 +86,25 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     @Override
     public OperatorCriteriaBuilder build()
     {
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
         // TODO: Refactor to build the parent before the children
-        return new OperatorCriteriaBuilder(
+        this.elementBuilder = new OperatorCriteriaBuilder(
                 this.elementContext,
                 this.inferred,
                 this.operator.build(),
                 this.sourceValue.build(),
                 this.targetValue.build());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public OperatorCriteriaBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override
@@ -146,7 +159,8 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
         AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypePropertyState();
 
-        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassifierState() == thisMemberReferencePathState.getClassState();
+        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassifierState()
+                == thisMemberReferencePathState.getClassState();
         if (foreignKeysOnThis2 != foreignKeysOnThis)
         {
             throw new AssertionError();
@@ -154,11 +168,15 @@ public class OperatorAntlrCriteria extends AntlrCriteria
 
         if (endWithForeignKeys.getOwningClassifierState() == thisMemberReferencePathState.getClassState())
         {
-            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(thisDataTypePropertyState, typeDataTypePropertyState);
+            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(
+                    thisDataTypePropertyState,
+                    typeDataTypePropertyState);
         }
         else
         {
-            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(typeDataTypePropertyState, thisDataTypePropertyState);
+            endWithForeignKeys.addForeignKeyPropertyMatchingProperty(
+                    typeDataTypePropertyState,
+                    thisDataTypePropertyState);
         }
     }
 

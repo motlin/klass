@@ -8,12 +8,10 @@ import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
-import cool.klass.model.meta.domain.value.AbstractExpressionValue;
-import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class LiteralListValueImpl extends AbstractExpressionValue implements LiteralListValue
+public final class LiteralListValueImpl extends AbstractLiteralValue implements LiteralListValue
 {
     private final Type type;
 
@@ -50,10 +48,10 @@ public final class LiteralListValueImpl extends AbstractExpressionValue implemen
         return this.type;
     }
 
-    public static final class LiteralListValueBuilder extends AbstractExpressionValueBuilder<LiteralListValueImpl>
+    public static final class LiteralListValueBuilder extends AbstractLiteralValueBuilder<LiteralListValueImpl>
     {
-        private final TypeGetter typeBuilder;
-        private ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders;
+        private final TypeGetter                                    typeBuilder;
+        private       ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders;
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,

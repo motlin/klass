@@ -226,6 +226,7 @@ public class AntlrClass extends AntlrClassifier
         this.superClassState = Optional.of(superClassState);
     }
 
+    @Nonnull
     @Override
     public KlassBuilder getElementBuilder()
     {

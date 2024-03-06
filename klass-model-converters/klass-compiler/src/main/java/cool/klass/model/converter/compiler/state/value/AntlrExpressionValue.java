@@ -45,6 +45,9 @@ public abstract class AntlrExpressionValue extends AntlrElement
     @Nonnull
     public abstract AbstractExpressionValueBuilder<?> build();
 
+    @Nonnull
+    public abstract AbstractExpressionValueBuilder<?> getElementBuilder();
+
     public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
     public abstract ImmutableList<AntlrType> getPossibleTypes();

@@ -493,7 +493,7 @@ public abstract class PersistentSynchronizer
             Object persistentInstance,
             ObjectNode incomingJson,
             Klass klass,
-            ImmutableList<ProjectionElement> projectionElements)
+            ImmutableList<? extends ProjectionElement> projectionElements)
     {
     }
 }

@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.TopLevelElement.TopLevelElementBuilder;
 
 public interface AntlrTopLevelElement extends IAntlrElement
 {
+    @Nonnull
     TopLevelElementBuilder getElementBuilder();
 
     @Override

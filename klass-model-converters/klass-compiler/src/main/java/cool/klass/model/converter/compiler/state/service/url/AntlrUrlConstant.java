@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.service.url;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrUrlConstant extends AntlrNamedElement
 {
+    private UrlConstantBuilder elementBuilder;
+
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
@@ -43,7 +46,23 @@ public class AntlrUrlConstant extends AntlrNamedElement
     @Nonnull
     public UrlConstantBuilder build()
     {
-        return new UrlConstantBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new UrlConstantBuilder(
+                this.elementContext,
+                this.inferred,
+                this.nameContext,
+                this.name,
+                this.ordinal);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public UrlConstantBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Nonnull

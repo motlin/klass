@@ -21,6 +21,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
 {
     @Nullable
     private AntlrMemberReferencePath memberExpressionValue;
+    private EdgePointCriteriaBuilder elementBuilder;
 
     public EdgePointAntlrCriteria(
             @Nonnull CriteriaEdgePointContext elementContext,
@@ -57,10 +58,22 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     @Override
     public EdgePointCriteriaBuilder build()
     {
-        return new EdgePointCriteriaBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new EdgePointCriteriaBuilder(
                 this.elementContext,
                 this.inferred,
                 this.memberExpressionValue.build());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public EdgePointCriteriaBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

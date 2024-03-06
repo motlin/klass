@@ -12,9 +12,6 @@ public interface ProjectionParent extends ProjectionElement
     @Nonnull
     Klass getKlass();
 
-    @Override
-    ImmutableList<ProjectionElement> getChildren();
-
     default void visitChildren(ProjectionListener projectionListener)
     {
         for (ProjectionElement projectionElement : this.getChildren())

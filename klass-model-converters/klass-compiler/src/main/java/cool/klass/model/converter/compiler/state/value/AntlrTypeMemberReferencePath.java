@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.value;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -23,6 +24,8 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
 {
+    private TypeMemberReferencePathBuilder elementBuilder;
+
     public AntlrTypeMemberReferencePath(
             @Nonnull TypeMemberReferencePathContext elementContext,
             CompilationUnit compilationUnit,
@@ -46,12 +49,24 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     @Override
     public TypeMemberReferencePathBuilder build()
     {
-        return new TypeMemberReferencePathBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new TypeMemberReferencePathBuilder(
                 this.elementContext,
                 this.inferred,
                 this.classState.getElementBuilder(),
                 this.associationEndStates.collect(AntlrAssociationEnd::getElementBuilder),
-                this.dataTypePropertyState.getPropertyBuilder());
+                this.dataTypePropertyState.getElementBuilder());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public TypeMemberReferencePathBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

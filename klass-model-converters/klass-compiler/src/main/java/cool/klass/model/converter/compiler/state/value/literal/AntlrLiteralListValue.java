@@ -16,7 +16,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 {
-    private ImmutableList<AntlrLiteralValue> literalStates;
+    private ImmutableList<AbstractAntlrLiteralValue> literalStates;
+    private LiteralListValueBuilder          elementBuilder;
 
     public AntlrLiteralListValue(
             @Nonnull ParserRuleContext elementContext,
@@ -27,7 +28,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         super(elementContext, compilationUnit, inferred, expressionValueOwner);
     }
 
-    public void setLiteralStates(ImmutableList<AntlrLiteralValue> literalStates)
+    public void setLiteralStates(ImmutableList<AbstractAntlrLiteralValue> literalStates)
     {
         if (this.literalStates != null)
         {
@@ -40,17 +41,28 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
     @Override
     public LiteralListValueBuilder build()
     {
-        LiteralListValueBuilder literalListValueBuilder = new LiteralListValueBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new LiteralListValueBuilder(
                 this.elementContext,
                 this.inferred,
                 this.getInferredType().getTypeGetter());
 
         ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates
-                .<AbstractLiteralValueBuilder<?>>collect(AntlrLiteralValue::build)
+                .<AbstractLiteralValueBuilder<?>>collect(AbstractAntlrLiteralValue::build)
                 .toImmutable();
-        literalListValueBuilder.setLiteralValueBuilders(literalValueBuilders);
+        this.elementBuilder.setLiteralValueBuilders(literalValueBuilders);
 
-        return literalListValueBuilder;
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public LiteralListValueBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

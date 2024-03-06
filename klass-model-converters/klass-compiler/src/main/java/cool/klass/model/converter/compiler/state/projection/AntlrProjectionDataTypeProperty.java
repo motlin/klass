@@ -12,12 +12,13 @@ import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
-import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implements AntlrProjectionElement
+public class AntlrProjectionDataTypeProperty
+        extends AntlrNamedElement
+        implements AntlrProjectionChild
 {
     @Nonnull
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
@@ -26,19 +27,21 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             true,
             new ParserRuleContext(), "ambiguous projection member",
             -1,
-            AntlrProjection.AMBIGUOUS,
             new HeaderContext(null, -1),
             "ambiguous header",
+            AntlrProjection.AMBIGUOUS,
             AntlrPrimitiveProperty.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrProjectionParent    antlrProjectionParent;
+    private final HeaderContext headerContext;
     @Nonnull
-    private final HeaderContext            headerContext;
+    private final String headerText;
     @Nonnull
-    private final String                   headerText;
+    private final AntlrProjectionParent antlrProjectionParent;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
+
+    private ProjectionDataTypePropertyBuilder projectionDataTypePropertyBuilder;
 
     public AntlrProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -47,9 +50,9 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
+            @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
@@ -67,9 +70,13 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
 
     @Nonnull
     @Override
-    public ProjectionElementBuilder build()
+    public ProjectionDataTypePropertyBuilder build()
     {
-        return new ProjectionDataTypePropertyBuilder(
+        if (this.projectionDataTypePropertyBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.projectionDataTypePropertyBuilder = new ProjectionDataTypePropertyBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
@@ -77,7 +84,15 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
                 this.ordinal,
                 this.headerContext,
                 this.headerText,
-                this.dataTypeProperty.getPropertyBuilder());
+                this.antlrProjectionParent.getElementBuilder(),
+                this.dataTypeProperty.getElementBuilder());
+        return this.projectionDataTypePropertyBuilder;
+    }
+
+    @Nonnull
+    public ProjectionDataTypePropertyBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.projectionDataTypePropertyBuilder);
     }
 
     @Nonnull

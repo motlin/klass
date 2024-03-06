@@ -75,7 +75,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     // TODO: ❗ Service OrderBy
     @Nonnull
     private Optional<AntlrOrderBy>         orderByState = Optional.empty();
-    private ServiceBuilder                 serviceBuilder;
+    private ServiceBuilder                 elementBuilder;
 
     public AntlrService(
             @Nonnull ParserRuleContext elementContext,
@@ -259,15 +259,15 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     public ServiceBuilder build()
     {
-        if (this.serviceBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
 
-        UrlBuilder          urlBuilder          = this.urlState.getUrlBuilder();
+        UrlBuilder          urlBuilder          = this.urlState.getElementBuilder();
         Verb                verb                = this.verbState.getVerb();
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
-        this.serviceBuilder = new ServiceBuilder(
+        this.elementBuilder = new ServiceBuilder(
                 this.elementContext,
                 this.inferred,
                 urlBuilder,
@@ -279,13 +279,19 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             String                     serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
             AntlrCriteria              criteriaState          = serviceCriteriaState.getCriteria();
             AbstractCriteriaBuilder<?> criteriaBuilder        = criteriaState.build();
-            this.serviceBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteriaBuilder);
+            this.elementBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteriaBuilder);
         }
 
         ServiceProjectionDispatchBuilder projectionDispatchBuilder = this.serviceProjectionDispatchState.build();
-        this.serviceBuilder.setProjectionDispatch(projectionDispatchBuilder);
+        this.elementBuilder.setProjectionDispatch(projectionDispatchBuilder);
 
-        return this.serviceBuilder;
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public ServiceBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     public boolean needsVersionCriteriaInferred()

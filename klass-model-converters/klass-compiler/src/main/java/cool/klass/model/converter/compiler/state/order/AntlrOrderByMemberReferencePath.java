@@ -25,6 +25,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
     private final AntlrThisMemberReferencePath thisMemberReferencePathState;
     @Nonnull
     private final AntlrOrderByDirection        orderByDirectionState;
+    private OrderByMemberReferencePathBuilder elementBuilder;
 
     public AntlrOrderByMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
@@ -70,15 +71,26 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
     @Nonnull
     public OrderByMemberReferencePathBuilder build()
     {
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
         ThisMemberReferencePathBuilder     thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
         OrderByDirectionDeclarationBuilder orderByDirectionBuilder        = this.orderByDirectionState.build();
 
-        return new OrderByMemberReferencePathBuilder(
+        this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,
                 this.inferred,
-                this.orderByState.getOrderByBuilder(),
+                this.orderByState.getElementBuilder(),
                 this.ordinal,
                 thisMemberReferencePathBuilder,
                 orderByDirectionBuilder);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public OrderByMemberReferencePathBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

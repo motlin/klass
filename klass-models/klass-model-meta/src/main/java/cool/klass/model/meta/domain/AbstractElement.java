@@ -44,7 +44,12 @@ public abstract class AbstractElement implements Element
         return this.elementContext;
     }
 
+    public interface IElementBuilder
+    {
+    }
+
     public abstract static class ElementBuilder<BuiltElement extends AbstractElement>
+            implements IElementBuilder
     {
         @Nonnull
         protected final ParserRuleContext elementContext;

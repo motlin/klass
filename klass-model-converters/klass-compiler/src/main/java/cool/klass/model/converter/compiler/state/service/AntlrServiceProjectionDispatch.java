@@ -20,9 +20,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrServiceProjectionDispatch extends AntlrElement
 {
     @Nonnull
-    private final AntlrService    serviceState;
+    private final AntlrService                     serviceState;
     @Nonnull
-    private final AntlrProjection projection;
+    private final AntlrProjection                  projection;
+    private       ServiceProjectionDispatchBuilder elementBuilder;
 
     public AntlrServiceProjectionDispatch(
             @Nonnull ParserRuleContext elementContext,
@@ -68,7 +69,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
             return;
         }
 
-        AntlrClass projectionKlass   = this.projection.getKlass();
+        AntlrClass projectionKlass = this.projection.getKlass();
         if (projectionKlass == AntlrClass.NOT_FOUND)
         {
             return;
@@ -95,6 +96,20 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     @Nonnull
     public ServiceProjectionDispatchBuilder build()
     {
-        return new ServiceProjectionDispatchBuilder(this.elementContext, this.inferred, this.projection.getElementBuilder());
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new ServiceProjectionDispatchBuilder(
+                this.elementContext,
+                this.inferred,
+                this.projection.getElementBuilder());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public ServiceProjectionDispatchBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

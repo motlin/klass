@@ -13,7 +13,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrAssociationEndModifier extends AntlrModifier
 {
-    private final AntlrAssociationEnd surroundingElement;
+    private final AntlrAssociationEnd           surroundingElement;
+    private       AssociationEndModifierBuilder elementBuilder;
 
     public AntlrAssociationEndModifier(
             @Nonnull AssociationEndModifierContext elementContext,
@@ -51,15 +52,28 @@ public class AntlrAssociationEndModifier extends AntlrModifier
         return this.name.equals("version");
     }
 
+    @Override
     @Nonnull
     public AssociationEndModifierBuilder build()
     {
-        return new AssociationEndModifierBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new AssociationEndModifierBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal,
                 this.surroundingElement.getElementBuilder());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public AssociationEndModifierBuilder getElementBuilder()
+    {
+        return this.elementBuilder;
     }
 }

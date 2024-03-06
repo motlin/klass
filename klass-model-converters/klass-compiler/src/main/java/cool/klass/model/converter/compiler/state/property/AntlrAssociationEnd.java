@@ -190,6 +190,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         this.opposite = Objects.requireNonNull(opposite);
     }
 
+    @Override
     @Nonnull
     public AssociationEndBuilder getElementBuilder()
     {

@@ -58,7 +58,7 @@ public class AntlrUrl extends AntlrElement
 
     @Nonnull
     private final AntlrServiceGroup serviceGroup;
-    private       UrlBuilder        urlBuilder;
+    private       UrlBuilder        elementBuilder;
 
     public AntlrUrl(
             @Nonnull ParserRuleContext elementContext,
@@ -237,12 +237,12 @@ public class AntlrUrl extends AntlrElement
     @Nonnull
     public UrlBuilder build()
     {
-        if (this.urlBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
 
-        this.urlBuilder = new UrlBuilder(
+        this.elementBuilder = new UrlBuilder(
                 this.elementContext,
                 this.inferred,
                 this.serviceGroup.getElementBuilder());
@@ -250,32 +250,32 @@ public class AntlrUrl extends AntlrElement
         ImmutableList<ElementBuilder<?>> pathSegments = this.urlPathSegments
                 .<ElementBuilder<?>>collect(this::buildPathSegment)
                 .toImmutable();
-        this.urlBuilder.setPathSegments(pathSegments);
+        this.elementBuilder.setPathSegments(pathSegments);
 
         ImmutableList<ParameterBuilder> queryParameterBuilders = this.queryParameters
                 .getParameterStates()
                 .collect(AntlrParameter::build)
                 .toImmutable();
-        this.urlBuilder.setQueryParameterBuilders(queryParameterBuilders);
+        this.elementBuilder.setQueryParameterBuilders(queryParameterBuilders);
 
         ImmutableList<ParameterBuilder> pathParameterBuilders = this.pathParameters
                 .getParameterStates()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
-        this.urlBuilder.setPathParameterBuilders(pathParameterBuilders);
+        this.elementBuilder.setPathParameterBuilders(pathParameterBuilders);
 
         ImmutableList<ParameterBuilder> parameterBuilders = this.urlParameters
                 .getParameterStates()
                 .collect(AntlrParameter::getElementBuilder)
                 .toImmutable();
-        this.urlBuilder.setParameterBuilders(parameterBuilders);
+        this.elementBuilder.setParameterBuilders(parameterBuilders);
 
         ImmutableList<ServiceBuilder> serviceBuilders = this.serviceStates
                 .collect(AntlrService::build)
                 .toImmutable();
-        this.urlBuilder.setServiceBuilders(serviceBuilders);
+        this.elementBuilder.setServiceBuilders(serviceBuilders);
 
-        return this.urlBuilder;
+        return this.elementBuilder;
     }
 
     private ElementBuilder<?> buildPathSegment(IAntlrElement element)
@@ -296,8 +296,8 @@ public class AntlrUrl extends AntlrElement
     }
 
     @Nonnull
-    public UrlBuilder getUrlBuilder()
+    public UrlBuilder getElementBuilder()
     {
-        return Objects.requireNonNull(this.urlBuilder);
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

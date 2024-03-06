@@ -36,7 +36,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     private final Optional<String> prettyName;
     private final AntlrEnumeration owningEnumeration;
 
-    private EnumerationLiteralBuilder enumerationLiteralBuilder;
+    private EnumerationLiteralBuilder elementBuilder;
 
     public AntlrEnumerationLiteral(
             @Nonnull ParserRuleContext elementContext,
@@ -87,12 +87,12 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
 
     public EnumerationLiteralBuilder build()
     {
-        if (this.enumerationLiteralBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
 
-        this.enumerationLiteralBuilder = new EnumerationLiteralBuilder(
+        this.elementBuilder = new EnumerationLiteralBuilder(
                 this.getElementContext(),
                 this.inferred,
                 this.nameContext,
@@ -100,7 +100,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.ordinal,
                 this.prettyName,
                 this.owningEnumeration.getElementBuilder());
-        return this.enumerationLiteralBuilder;
+        return this.elementBuilder;
     }
 
     public void reportDuplicateName(@Nonnull CompilerErrorState compilerErrorHolder)

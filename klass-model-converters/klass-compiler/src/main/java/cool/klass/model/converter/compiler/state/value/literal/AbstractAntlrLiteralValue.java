@@ -8,6 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
+import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractLiteralValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -23,6 +24,14 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
     {
         super(elementContext, compilationUnit, inferred, expressionValueOwner);
     }
+
+    @Override
+    @Nonnull
+    public abstract AbstractLiteralValueBuilder<?> build();
+
+    @Override
+    @Nonnull
+    public abstract AbstractLiteralValueBuilder<?> getElementBuilder();
 
     @Nonnull
     @Override

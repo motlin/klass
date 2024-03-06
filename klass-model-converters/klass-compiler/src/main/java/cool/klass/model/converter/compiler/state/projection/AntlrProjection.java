@@ -8,7 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
-import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -80,14 +80,15 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
                 this.packageName,
                 this.klass.getElementBuilder());
 
-        ImmutableList<ProjectionElementBuilder> children = this.children
-                .collect(AntlrProjectionElement::build)
+        ImmutableList<ProjectionChildBuilder> children = this.children
+                .collect(AntlrProjectionChild::build)
                 .toImmutable();
 
         this.projectionBuilder.setChildBuilders(children);
         return this.projectionBuilder;
     }
 
+    @Nonnull
     @Override
     public ProjectionBuilder getElementBuilder()
     {

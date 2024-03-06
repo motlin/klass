@@ -48,6 +48,8 @@ public abstract class AntlrCriteria extends AntlrElement
     @Nonnull
     public abstract AbstractCriteriaBuilder<?> build();
 
+    public abstract AbstractCriteriaBuilder<?> getElementBuilder();
+
     public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
     public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName);

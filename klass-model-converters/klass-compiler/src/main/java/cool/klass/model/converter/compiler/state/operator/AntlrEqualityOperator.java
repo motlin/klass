@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.operator;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -12,6 +14,8 @@ import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrEqualityOperator extends AntlrOperator
 {
+    private EqualityOperatorBuilder elementBuilder;
+
     public AntlrEqualityOperator(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
@@ -25,7 +29,19 @@ public class AntlrEqualityOperator extends AntlrOperator
     @Override
     public EqualityOperatorBuilder build()
     {
-        return new EqualityOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new EqualityOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public EqualityOperatorBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

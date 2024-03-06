@@ -36,7 +36,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     @Nonnull
     private final AntlrPrimitiveType antlrPrimitiveType;
 
-    private PrimitivePropertyBuilder primitivePropertyBuilder;
+    private PrimitivePropertyBuilder elementBuilder;
 
     public AntlrPrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -92,7 +92,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     @Override
     public PrimitivePropertyBuilder build()
     {
-        if (this.primitivePropertyBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
@@ -100,7 +100,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
                 this.modifierStates.collect(AntlrPropertyModifier::build);
 
-        this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
+        this.elementBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
@@ -113,7 +113,14 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
         this.buildValidations();
 
-        return this.primitivePropertyBuilder;
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public PrimitivePropertyBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override
@@ -147,12 +154,5 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
         this.minValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
         this.maxValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
-    }
-
-    @Nonnull
-    @Override
-    public PrimitivePropertyBuilder getPropertyBuilder()
-    {
-        return Objects.requireNonNull(this.primitivePropertyBuilder);
     }
 }

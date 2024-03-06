@@ -1,8 +1,11 @@
 package cool.klass.model.converter.compiler.state.value.literal;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -11,9 +14,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class AntlrStringLiteralValue extends AntlrLiteralValue
+public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
 {
-    private final String value;
+    private final String                    value;
+    private       StringLiteralValueBuilder elementBuilder;
 
     public AntlrStringLiteralValue(
             @Nonnull ParserRuleContext elementContext,
@@ -26,11 +30,28 @@ public final class AntlrStringLiteralValue extends AntlrLiteralValue
         this.value = value;
     }
 
+    @Override
+    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    {
+    }
+
     @Nonnull
     @Override
     public StringLiteralValueBuilder build()
     {
-        return new StringLiteralValueBuilder(this.elementContext, this.inferred, this.value);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new StringLiteralValueBuilder(this.elementContext, this.inferred, this.value);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public StringLiteralValueBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Nonnull

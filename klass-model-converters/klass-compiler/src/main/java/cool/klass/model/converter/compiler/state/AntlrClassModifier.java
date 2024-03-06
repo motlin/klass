@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,7 @@ public class AntlrClassModifier extends AntlrModifier
             AntlrClass.AMBIGUOUS);
 
     private final AntlrClassifier owningClassifierState;
+    private ClassModifierBuilder  elementBuilder;
 
     public AntlrClassModifier(
             @Nonnull ParserRuleContext elementContext,
@@ -54,15 +56,28 @@ public class AntlrClassModifier extends AntlrModifier
         return this.name.equals("optimisticallyLocked");
     }
 
+    @Override
     @Nonnull
     public ClassModifierBuilder build()
     {
-        return new ClassModifierBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new ClassModifierBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal,
                 this.owningClassifierState.getElementBuilder());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public ClassModifierBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

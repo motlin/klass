@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.meta.domain.AbstractNamedElement.NamedElementBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AntlrModifier extends AntlrNamedElement
@@ -41,4 +42,8 @@ public abstract class AntlrModifier extends AntlrNamedElement
     {
         return true;
     }
+
+    public abstract NamedElementBuilder<?> build();
+
+    public abstract NamedElementBuilder<?> getElementBuilder();
 }

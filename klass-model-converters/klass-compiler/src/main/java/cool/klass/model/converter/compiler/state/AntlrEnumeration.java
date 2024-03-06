@@ -107,6 +107,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         return (EnumerationDeclarationContext) super.getElementContext();
     }
 
+    @Nonnull
     @Override
     public EnumerationBuilder getElementBuilder()
     {

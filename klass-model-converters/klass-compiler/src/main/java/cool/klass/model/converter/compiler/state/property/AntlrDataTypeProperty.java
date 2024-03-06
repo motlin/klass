@@ -145,6 +145,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public abstract DataTypePropertyBuilder<T, ?, ?> build();
 
+    @Nonnull
+    @Override
+    public abstract DataTypePropertyBuilder<T, ?, ?> getElementBuilder();
+
     protected void buildValidations()
     {
         Optional<MinLengthPropertyValidationBuilder> minLengthPropertyValidationBuilders = this.minLengthValidationStates
@@ -160,10 +164,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
                 .collect(AntlrMaxPropertyValidation::build)
                 .detectOptional(x -> true);
 
-        this.getPropertyBuilder().setMinLengthPropertyValidationBuilder(minLengthPropertyValidationBuilders);
-        this.getPropertyBuilder().setMaxLengthPropertyValidationBuilder(maxLengthPropertyValidationBuilders);
-        this.getPropertyBuilder().setMinPropertyValidationBuilder(minPropertyValidationBuilders);
-        this.getPropertyBuilder().setMaxPropertyValidationBuilder(maxPropertyValidationBuilders);
+        this.getElementBuilder().setMinLengthPropertyValidationBuilder(minLengthPropertyValidationBuilders);
+        this.getElementBuilder().setMaxLengthPropertyValidationBuilder(maxLengthPropertyValidationBuilders);
+        this.getElementBuilder().setMinPropertyValidationBuilder(minPropertyValidationBuilders);
+        this.getElementBuilder().setMaxPropertyValidationBuilder(maxPropertyValidationBuilders);
     }
 
     public void build2()
@@ -172,15 +176,15 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
                 AntlrDataTypeProperty.collectKeyMultiValues(
                         this.keyBuildersMatchingThisForeignKey,
                         AntlrAssociationEnd::getElementBuilder,
-                        AntlrDataTypeProperty::getPropertyBuilder);
-        this.getPropertyBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey);
+                        AntlrDataTypeProperty::getElementBuilder);
+        this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey);
 
         ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
                 AntlrDataTypeProperty.collectKeyMultiValues(
                         this.foreignKeyBuildersMatchingThisKey,
                         AntlrAssociationEnd::getElementBuilder,
-                        AntlrDataTypeProperty::getPropertyBuilder);
-        this.getPropertyBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey);
+                        AntlrDataTypeProperty::getElementBuilder);
+        this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey);
     }
 
     public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(
@@ -259,9 +263,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     {
         return this.owningClassifierState;
     }
-
-    @Nonnull
-    public abstract DataTypePropertyBuilder<T, ?, ?> getPropertyBuilder();
 
     @Override
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)

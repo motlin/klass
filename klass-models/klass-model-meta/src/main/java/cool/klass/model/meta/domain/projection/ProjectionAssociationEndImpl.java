@@ -1,17 +1,22 @@
 package cool.klass.model.meta.domain.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.property.AssociationEndImpl;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ProjectionAssociationEndImpl extends AbstractProjectionParent implements ProjectionAssociationEnd
+public final class ProjectionAssociationEndImpl
+        extends AbstractProjectionParent
+        implements ProjectionAssociationEnd
 {
-    // TODO: This is redundant since it can be inferred from the associationEnd
+    @Nonnull
+    private final ProjectionParent   parent;
     @Nonnull
     private final AssociationEndImpl associationEnd;
 
@@ -21,10 +26,18 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            @Nonnull ProjectionParent parent,
             @Nonnull AssociationEndImpl associationEnd)
     {
         super(elementContext, inferred, nameContext, name, ordinal);
+        this.parent = Objects.requireNonNull(parent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
+    }
+
+    @Nonnull
+    public Optional<ProjectionParent> getParent()
+    {
+        return Optional.of(this.parent);
     }
 
     @Override
@@ -36,10 +49,12 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
 
     public static final class ProjectionAssociationEndBuilder
             extends AbstractProjectionParentBuilder<ProjectionAssociationEndImpl>
-            implements ProjectionElementBuilder
+            implements ProjectionChildBuilder
     {
         @Nonnull
-        private final AssociationEndBuilder associationEndBuilder;
+        private final AbstractProjectionParentBuilder<?> parentBuilder;
+        @Nonnull
+        private final AssociationEndBuilder              associationEndBuilder;
 
         public ProjectionAssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -47,9 +62,11 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
+                @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal);
+            this.parentBuilder = Objects.requireNonNull(parentBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
 
@@ -57,17 +74,14 @@ public final class ProjectionAssociationEndImpl extends AbstractProjectionParent
         @Nonnull
         protected ProjectionAssociationEndImpl buildUnsafe()
         {
-            ProjectionAssociationEndImpl projectionAssociationEnd = new ProjectionAssociationEndImpl(
+            return new ProjectionAssociationEndImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
                     this.name,
                     this.ordinal,
+                    this.parentBuilder.getElement(),
                     this.associationEndBuilder.getElement());
-
-            this.buildChildren(projectionAssociationEnd);
-
-            return projectionAssociationEnd;
         }
     }
 }

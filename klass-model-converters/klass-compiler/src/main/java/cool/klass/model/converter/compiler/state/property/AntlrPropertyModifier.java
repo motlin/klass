@@ -14,10 +14,11 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrPropertyModifier extends AntlrModifier
 {
-    public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
+    public static final ImmutableList<String>   AUDIT_PROPERTY_NAMES = Lists.immutable.with(
             "createdBy",
             "createdOn",
             "lastUpdatedBy");
+    private             PropertyModifierBuilder elementBuilder;
 
     public AntlrPropertyModifier(
             @Nonnull ParserRuleContext elementContext,
@@ -68,14 +69,27 @@ public class AntlrPropertyModifier extends AntlrModifier
         return this.name.equals("version");
     }
 
+    @Override
     @Nonnull
     public PropertyModifierBuilder build()
     {
-        return new PropertyModifierBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new PropertyModifierBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public PropertyModifierBuilder getElementBuilder()
+    {
+        return this.elementBuilder;
     }
 }

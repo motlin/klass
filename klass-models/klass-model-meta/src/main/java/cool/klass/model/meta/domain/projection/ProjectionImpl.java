@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionImpl extends AbstractProjectionParent implements TopLevelElement, Projection
@@ -29,6 +31,12 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         super(elementContext, inferred, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass = Objects.requireNonNull(klass);
+    }
+
+    @Override
+    public Optional<ProjectionParent> getParent()
+    {
+        return Optional.empty();
     }
 
     @Override
@@ -70,7 +78,7 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         @Nonnull
         protected ProjectionImpl buildUnsafe()
         {
-            ProjectionImpl projection = new ProjectionImpl(
+            return new ProjectionImpl(
                     this.elementContext,
                     this.inferred,
                     this.nameContext,
@@ -78,10 +86,6 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
                     this.ordinal,
                     this.packageName,
                     this.klassBuilder.getElement());
-
-            this.buildChildren(projection);
-
-            return projection;
         }
     }
 }

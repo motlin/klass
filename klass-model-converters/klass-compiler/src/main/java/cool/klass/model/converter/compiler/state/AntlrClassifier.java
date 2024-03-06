@@ -136,6 +136,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         this.interfaceStates.add(interfaceState);
     }
 
+    @Nonnull
     @Override
     public abstract ClassifierBuilder<?> getElementBuilder();
 

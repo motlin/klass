@@ -9,7 +9,9 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
+import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
+import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionAssociationEndImpl.ProjectionAssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -17,7 +19,7 @@ import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionElement
+public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionChild
 {
     @Nonnull
     public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
@@ -82,14 +84,22 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
                 this.nameContext,
                 this.name,
                 this.ordinal,
+                this.antlrProjectionParent.getElementBuilder(),
                 this.associationEnd.getElementBuilder());
 
-        ImmutableList<ProjectionElementBuilder> projectionMemberBuilders = this.children
-                .collect(AntlrProjectionElement::build)
+        ImmutableList<ProjectionChildBuilder> projectionMemberBuilders = this.children
+                .collect(AntlrProjectionChild::build)
                 .toImmutable();
 
         this.projectionAssociationEndBuilder.setChildBuilders(projectionMemberBuilders);
         return this.projectionAssociationEndBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public AbstractProjectionParentBuilder<? extends AbstractProjectionParent> getElementBuilder()
+    {
+        return Objects.requireNonNull(this.projectionAssociationEndBuilder);
     }
 
     @Nonnull

@@ -37,7 +37,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     @Nonnull
     private final AntlrEnumeration enumerationState;
 
-    private EnumerationPropertyBuilder enumerationPropertyBuilder;
+    private EnumerationPropertyBuilder elementBuilder;
 
     public AntlrEnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -95,7 +95,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     @Override
     public EnumerationPropertyBuilder build()
     {
-        if (this.enumerationPropertyBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
@@ -103,7 +103,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
                 this.modifierStates.collect(AntlrPropertyModifier::build);
 
-        this.enumerationPropertyBuilder = new EnumerationPropertyBuilder(
+        this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
@@ -116,14 +116,14 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
 
         this.buildValidations();
 
-        return this.enumerationPropertyBuilder;
+        return this.elementBuilder;
     }
 
     @Nonnull
     @Override
-    public EnumerationPropertyBuilder getPropertyBuilder()
+    public EnumerationPropertyBuilder getElementBuilder()
     {
-        return Objects.requireNonNull(this.enumerationPropertyBuilder);
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

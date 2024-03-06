@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.operator;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -12,6 +14,8 @@ import org.eclipse.collections.api.list.ListIterable;
 
 public class AntlrInOperator extends AntlrOperator
 {
+    private InOperatorBuilder elementBuilder;
+
     public AntlrInOperator(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
@@ -25,7 +29,19 @@ public class AntlrInOperator extends AntlrOperator
     @Override
     public InOperatorBuilder build()
     {
-        return new InOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new InOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public InOperatorBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

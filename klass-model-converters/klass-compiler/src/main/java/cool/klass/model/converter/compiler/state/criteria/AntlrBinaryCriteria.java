@@ -8,6 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.meta.domain.criteria.AbstractBinaryCriteria.AbstractBinaryCriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.OrderedMap;
 
@@ -24,6 +25,13 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     {
         super(elementContext, compilationUnit, inferred, criteriaOwner);
     }
+
+    @Nonnull
+    @Override
+    public abstract AbstractBinaryCriteriaBuilder<?> build();
+
+    @Override
+    public abstract AbstractBinaryCriteriaBuilder<?> getElementBuilder();
 
     public void setLeft(AntlrCriteria left)
     {

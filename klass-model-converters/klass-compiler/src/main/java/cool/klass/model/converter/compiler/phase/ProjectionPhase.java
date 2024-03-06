@@ -80,9 +80,9 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 nameContext,
                 name,
                 antlrProjectionParent.getNumChildren() + 1,
-                antlrProjectionParent,
                 header,
                 headerText,
+                antlrProjectionParent,
                 dataTypeProperty);
 
         antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionPrimitiveMember);

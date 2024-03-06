@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.api.projection;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.NamedElement;
@@ -11,7 +13,14 @@ public interface ProjectionElement extends NamedElement
     @Override
     String getName();
 
-    ImmutableList<? extends ProjectionElement> getChildren();
+    Optional<ProjectionParent> getParent();
+
+    ImmutableList<? extends ProjectionChild> getChildren();
+
+    default int getDepth()
+    {
+        return 1 + this.getParent().map(ProjectionElement::getDepth).orElse(0);
+    }
 
     void enter(ProjectionListener listener);
 

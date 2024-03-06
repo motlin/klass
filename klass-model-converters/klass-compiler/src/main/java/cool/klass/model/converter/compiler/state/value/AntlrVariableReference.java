@@ -23,7 +23,8 @@ public class AntlrVariableReference extends AntlrExpressionValue
     private final String variableName;
 
     @Nullable
-    private AntlrParameter antlrParameter;
+    private AntlrParameter           antlrParameter;
+    private VariableReferenceBuilder elementBuilder;
 
     public AntlrVariableReference(
             @Nonnull ParserRuleContext elementContext,
@@ -40,10 +41,22 @@ public class AntlrVariableReference extends AntlrExpressionValue
     @Override
     public VariableReferenceBuilder build()
     {
-        return new VariableReferenceBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new VariableReferenceBuilder(
                 this.elementContext,
                 this.inferred,
                 this.antlrParameter.getElementBuilder());
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public VariableReferenceBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 
     @Override

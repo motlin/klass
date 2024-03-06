@@ -59,7 +59,7 @@ public final class AntlrParameter extends AntlrNamedElement
     private final MutableList<AntlrParameterModifier> parameterModifiers = Lists.mutable.empty();
 
     @Nullable
-    private ParameterBuilder parameterBuilder;
+    private ParameterBuilder elementBuilder;
 
     public AntlrParameter(
             @Nonnull ParserRuleContext elementContext,
@@ -142,11 +142,11 @@ public final class AntlrParameter extends AntlrNamedElement
     @Nonnull
     public ParameterBuilder build()
     {
-        if (this.parameterBuilder != null)
+        if (this.elementBuilder != null)
         {
             throw new IllegalStateException();
         }
-        this.parameterBuilder = new ParameterBuilder(
+        this.elementBuilder = new ParameterBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
@@ -155,12 +155,12 @@ public final class AntlrParameter extends AntlrNamedElement
                 // TODO: Fuller interface hierarchy with AntlrType, AntlrDataType, etc.
                 (DataTypeGetter) this.typeState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity());
-        return this.parameterBuilder;
+        return this.elementBuilder;
     }
 
     @Nonnull
     public ParameterBuilder getElementBuilder()
     {
-        return this.parameterBuilder;
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

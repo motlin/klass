@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.order;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -17,6 +18,7 @@ public class AntlrOrderByDirection extends AntlrElement
 {
     @Nonnull
     private final OrderByDirection orderByDirection;
+    private       OrderByDirectionDeclarationBuilder elementBuilder;
 
     public AntlrOrderByDirection(
             @Nullable OrderByDirectionContext orderByDirectionContext,
@@ -70,6 +72,20 @@ public class AntlrOrderByDirection extends AntlrElement
     @Nonnull
     public OrderByDirectionDeclarationBuilder build()
     {
-        return new OrderByDirectionDeclarationBuilder(this.elementContext, this.inferred, this.orderByDirection);
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new OrderByDirectionDeclarationBuilder(
+                this.elementContext,
+                this.inferred,
+                this.orderByDirection);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    public OrderByDirectionDeclarationBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

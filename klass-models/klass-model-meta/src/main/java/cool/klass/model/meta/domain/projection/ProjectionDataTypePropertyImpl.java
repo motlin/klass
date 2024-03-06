@@ -1,21 +1,28 @@
 package cool.klass.model.meta.domain.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
+import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class ProjectionDataTypePropertyImpl extends AbstractNamedElement implements AbstractProjectionElement, ProjectionDataTypeProperty
+public final class ProjectionDataTypePropertyImpl
+        extends AbstractNamedElement
+        implements AbstractProjectionElement, ProjectionDataTypeProperty
 {
     @Nonnull
     private final ParserRuleContext           headerContext;
     @Nonnull
     private final String                      headerText;
+    @Nonnull
+    private final ProjectionParent            parent;
     @Nonnull
     private final AbstractDataTypeProperty<?> property;
 
@@ -27,12 +34,20 @@ public final class ProjectionDataTypePropertyImpl extends AbstractNamedElement i
             int ordinal,
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
+            @Nonnull ProjectionParent parent,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
         super(elementContext, inferred, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText = Objects.requireNonNull(headerText);
+        this.parent = Objects.requireNonNull(parent);
         this.property = Objects.requireNonNull(property);
+    }
+
+    @Override
+    public Optional<ProjectionParent> getParent()
+    {
+        return Optional.of(this.parent);
     }
 
     @Override
@@ -49,14 +64,16 @@ public final class ProjectionDataTypePropertyImpl extends AbstractNamedElement i
         return this.property;
     }
 
-    public static final class ProjectionDataTypePropertyBuilder extends NamedElementBuilder<ProjectionDataTypePropertyImpl> implements ProjectionElementBuilder
+    public static final class ProjectionDataTypePropertyBuilder extends NamedElementBuilder<ProjectionDataTypePropertyImpl> implements ProjectionChildBuilder
     {
         @Nonnull
-        private final ParserRuleContext             headerContext;
+        private final ParserRuleContext                  headerContext;
         @Nonnull
-        private final String                        headerText;
+        private final String                             headerText;
         @Nonnull
-        private final DataTypePropertyBuilder<?, ?, ?> propertyBuilder;
+        private final AbstractProjectionParentBuilder<?> parentBuilder;
+        @Nonnull
+        private final DataTypePropertyBuilder<?, ?, ?>   propertyBuilder;
 
         public ProjectionDataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -66,11 +83,13 @@ public final class ProjectionDataTypePropertyImpl extends AbstractNamedElement i
                 int ordinal,
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
+                @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal);
             this.headerContext = Objects.requireNonNull(headerContext);
             this.headerText = Objects.requireNonNull(headerText);
+            this.parentBuilder = Objects.requireNonNull(parentBuilder);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
         }
 
@@ -86,6 +105,7 @@ public final class ProjectionDataTypePropertyImpl extends AbstractNamedElement i
                     this.ordinal,
                     this.headerContext,
                     this.headerText,
+                    this.parentBuilder.getElement(),
                     this.propertyBuilder.getElement());
         }
     }

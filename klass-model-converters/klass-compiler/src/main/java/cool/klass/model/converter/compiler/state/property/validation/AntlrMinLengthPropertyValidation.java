@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state.property.validation;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -10,6 +12,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMinLengthPropertyValidation extends AbstractAntlrNumericPropertyValidation
 {
+    private MinLengthPropertyValidationBuilder elementBuilder;
+
     public AntlrMinLengthPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
@@ -20,12 +24,25 @@ public class AntlrMinLengthPropertyValidation extends AbstractAntlrNumericProper
         super(elementContext, compilationUnit, inferred, owningPropertyState, number);
     }
 
+    @Override
     public MinLengthPropertyValidationBuilder build()
     {
-        return new MinLengthPropertyValidationBuilder(
+        if (this.elementBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.elementBuilder = new MinLengthPropertyValidationBuilder(
                 this.elementContext,
                 this.inferred,
-                this.owningPropertyState.getPropertyBuilder(),
+                this.owningPropertyState.getElementBuilder(),
                 this.number);
+        return this.elementBuilder;
+    }
+
+    @Nonnull
+    @Override
+    public MinLengthPropertyValidationBuilder getElementBuilder()
+    {
+        return Objects.requireNonNull(this.elementBuilder);
     }
 }

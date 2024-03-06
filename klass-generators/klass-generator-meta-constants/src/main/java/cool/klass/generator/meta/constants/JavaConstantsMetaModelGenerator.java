@@ -1017,36 +1017,28 @@ public class JavaConstantsMetaModelGenerator
 
     private String getPropertyModifierSourceCode(PropertyModifier propertyModifier)
     {
+        // @formatter:off
         return ""
-                + "            PropertyModifier "
-                + propertyModifier.getName()
-                + "_"
-                + PropertyModifier.class.getSimpleName()
-                + " = new PropertyModifier()\n"
+                + "            PropertyModifier " + propertyModifier.getName() + "_" + PropertyModifier.class.getSimpleName() + " = new PropertyModifier()\n"
                 + "            {\n"
                 + "                @Nonnull\n"
                 + "                @Override\n"
                 + "                public String getName()\n"
                 + "                {\n"
                 + "                    return \""
-                + StringEscapeUtils.escapeJava(propertyModifier.getName())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(propertyModifier.getName()) + "\";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public int getOrdinal()\n"
                 + "                {\n"
-                + "                    return "
-                + propertyModifier.getOrdinal()
-                + ";\n"
+                + "                    return " + propertyModifier.getOrdinal() + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
                 + "                public boolean isInferred()\n"
                 + "                {\n"
-                + "                    return "
-                + propertyModifier.isInferred()
-                + ";\n"
+                + "                    return " + propertyModifier.isInferred() + ";\n"
                 + "                }\n"
                 + "\n"
                 + "                @Override\n"
@@ -1060,22 +1052,21 @@ public class JavaConstantsMetaModelGenerator
                 + "                public String getSourceCode()\n"
                 + "                {\n"
                 + "                    return \"\"\n"
-                + "                            + \""
-                + this.wrapSourceCode(propertyModifier.getSourceCode())
+                + "                            + \"" + this.wrapSourceCode(propertyModifier.getSourceCode())
                 + "\";\n"
                 + "                }\n"
                 + "            };\n";
+        // @formatter:on
     }
 
     private String getEnumerationPropertySourceCode(EnumerationProperty enumerationProperty)
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationProperty.getName());
 
+        // @formatter:off
         //language=JAVA
         return ""
-                + "    public static enum "
-                + uppercaseName
-                + "_EnumerationProperty implements EnumerationProperty\n"
+                + "    public static enum " + uppercaseName + "_EnumerationProperty implements EnumerationProperty\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -1084,40 +1075,31 @@ public class JavaConstantsMetaModelGenerator
                 + "        public String getName()\n"
                 + "        {\n"
                 + "            return \""
-                + StringEscapeUtils.escapeJava(enumerationProperty.getName())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(enumerationProperty.getName()) + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return "
-                + enumerationProperty.getOrdinal()
-                + ";\n"
+                + "            return " + enumerationProperty.getOrdinal() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isInferred()\n"
                 + "        {\n"
-                + "            return "
-                + enumerationProperty.isInferred()
-                + ";\n"
+                + "            return " + enumerationProperty.isInferred() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isOptional()\n"
                 + "        {\n"
-                + "            return "
-                + enumerationProperty.isOptional()
-                + ";\n"
+                + "            return " + enumerationProperty.isOptional() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isForeignKey()\n"
                 + "        {\n"
-                + "            return "
-                + enumerationProperty.isForeignKey()
-                + ";\n"
+                + "            return " + enumerationProperty.isForeignKey() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -1155,22 +1137,14 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public Classifier getOwningClassifier()\n"
                 + "        {\n"
-                + "            return "
-                + this.applicationName
-                + "DomainModel."
-                + enumerationProperty.getOwningClassifier().getName()
-                + ";\n"
+                + "            return " + this.applicationName + "DomainModel." + enumerationProperty.getOwningClassifier().getName() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Enumeration getType()\n"
                 + "        {\n"
-                + "            return "
-                + this.applicationName
-                + "DomainModel."
-                + enumerationProperty.getType().getName()
-                + ";\n"
+                + "            return " + this.applicationName + "DomainModel." + enumerationProperty.getType().getName() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1199,10 +1173,10 @@ public class JavaConstantsMetaModelGenerator
                 + "        {\n"
                 + "            return \"\"\n"
                 + "                    + \""
-                + this.wrapSourceCode(enumerationProperty.getSourceCode())
-                + "\";\n"
+                + this.wrapSourceCode(enumerationProperty.getSourceCode()) + "\";\n"
                 + "        }\n"
                 + "    }\n";
+        // @formatter:on
     }
 
     private String getMemberConstantsSourceCode(Classifier classifier)
@@ -1336,11 +1310,10 @@ public class JavaConstantsMetaModelGenerator
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, associationEnd.getName());
 
+        // @formatter:off
         //language=JAVA
         return ""
-                + "    public static enum "
-                + uppercaseName
-                + "_AssociationEnd implements AssociationEnd\n"
+                + "    public static enum " + uppercaseName + "_AssociationEnd implements AssociationEnd\n"
                 + "    {\n"
                 + "        INSTANCE;\n"
                 + "\n"
@@ -1350,74 +1323,53 @@ public class JavaConstantsMetaModelGenerator
                 + "        public String getName()\n"
                 + "        {\n"
                 + "            return \""
-                + StringEscapeUtils.escapeJava(associationEnd.getName())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(associationEnd.getName()) + "\";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public int getOrdinal()\n"
                 + "        {\n"
-                + "            return "
-                + associationEnd.getOrdinal()
-                + ";\n"
+                + "            return " + associationEnd.getOrdinal() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isInferred()\n"
                 + "        {\n"
-                + "            return "
-                + associationEnd.isInferred()
-                + ";\n"
+                + "            return " + associationEnd.isInferred() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Klass getType()\n"
                 + "        {\n"
-                + "            return "
-                + this.applicationName
-                + "DomainModel."
-                + associationEnd.getType().getName()
-                + ";\n"
+                + "            return " + this.applicationName + "DomainModel." + associationEnd.getType().getName() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Multiplicity getMultiplicity()\n"
                 + "        {\n"
-                + "            return Multiplicity."
-                + associationEnd.getMultiplicity().name()
-                + ";\n"
+                + "            return Multiplicity." + associationEnd.getMultiplicity().name() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public ImmutableList<AssociationEndModifier> getAssociationEndModifiers()\n"
                 + "        {\n"
-                + "            return Lists.immutable.with("
-                + associationEnd.getAssociationEndModifiers().collect(
-                NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each
-                + "_MODIFIER").makeString()
-                + ");\n"
+                + "            return Lists.immutable.with(" + associationEnd.getAssociationEndModifiers().collect(NamedElement::getName).collect(TO_CONSTANT_CASE::convert).collect(each -> each + "_MODIFIER").makeString() + ");\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
                 + "        public boolean isOwned()\n"
                 + "        {\n"
-                + "            return "
-                + associationEnd.isOwned()
-                + ";\n"
+                + "            return " + associationEnd.isOwned() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
                 + "        @Override\n"
                 + "        public Association getOwningAssociation()\n"
                 + "        {\n"
-                + "            return "
-                + this.applicationName
-                + "DomainModel."
-                + associationEnd.getOwningAssociation().getName()
-                + ";\n"
+                + "            return " + this.applicationName + "DomainModel." + associationEnd.getOwningAssociation().getName() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Nonnull\n"
@@ -1432,11 +1384,7 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public Klass getOwningClassifier()\n"
                 + "        {\n"
-                + "            return "
-                + this.applicationName
-                + "DomainModel."
-                + associationEnd.getOwningClassifier().getName()
-                + ";\n"
+                + "            return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + ";\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"
@@ -1450,10 +1398,10 @@ public class JavaConstantsMetaModelGenerator
                 + "        {\n"
                 + "            return \"\"\n"
                 + "                    + \""
-                + this.wrapSourceCode(associationEnd.getSourceCode())
-                + "\";\n"
+                + this.wrapSourceCode(associationEnd.getSourceCode()) + "\";\n"
                 + "        }\n"
                 + "    }\n";
+        // @formatter:on
     }
 
     private String getAssociationEndModifierConstantsSourceCode(AssociationEnd associationEnd)
@@ -1466,6 +1414,7 @@ public class JavaConstantsMetaModelGenerator
 
     private String getAssociationEndModifierConstantSourceCode(AssociationEndModifier associationEndModifier)
     {
+        // @formatter:off
         //language=JAVA
         return ""
                 + "        public static final AssociationEndModifier "
@@ -1482,25 +1431,19 @@ public class JavaConstantsMetaModelGenerator
                 + "            @Override\n"
                 + "            public String getName()\n"
                 + "            {\n"
-                + "                return \""
-                + associationEndModifier.getName()
-                + "\";\n"
+                + "                return \"" + associationEndModifier.getName() + "\";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"
                 + "            public int getOrdinal()\n"
                 + "            {\n"
-                + "                return "
-                + associationEndModifier.getOrdinal()
-                + ";\n"
+                + "                return " + associationEndModifier.getOrdinal() + ";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Override\n"
                 + "            public boolean isInferred()\n"
                 + "            {\n"
-                + "                return "
-                + associationEndModifier.isInferred()
-                + ";\n"
+                + "                return " + associationEndModifier.isInferred() + ";\n"
                 + "            }\n"
                 + "\n"
                 + "            @Nonnull\n"
@@ -1508,11 +1451,10 @@ public class JavaConstantsMetaModelGenerator
                 + "            public String getSourceCode()\n"
                 + "            {\n"
                 + "                return \"\"\n"
-                + "                        + \""
-                + this.wrapSourceCode(associationEndModifier.getSourceCode())
-                + "\";\n"
+                + "                        + \"" + this.wrapSourceCode(associationEndModifier.getSourceCode()) + "\";\n"
                 + "            }\n"
                 + "        };\n\n";
+        // @formatter:on
     }
 
     private String getAssociationEndConstantsSourceCode(Klass klass)
@@ -1623,7 +1565,13 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
-                + "    public ImmutableList<ProjectionElement> getChildren()\n"
+                + "    public Optional<ProjectionParent> getParent()\n"
+                + "    {\n"
+                + "        return Optional.empty();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public ImmutableList<? extends ProjectionChild> getChildren()\n"
                 + "    {\n"
                 + "        return Lists.immutable.with(" + projection.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
                 + "    }\n"
@@ -1656,7 +1604,7 @@ public class JavaConstantsMetaModelGenerator
     private String getProjectionChildConstantSourceCode(ProjectionElement projectionElement)
     {
         String name          = projectionElement.getName();
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name);
+        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, name) + projectionElement.getDepth();
         String type          = this.getTypeName(projectionElement);
 
         return MessageFormat.format(
@@ -1693,15 +1641,14 @@ public class JavaConstantsMetaModelGenerator
 
     private String getProjectionDataTypePropertySourceCode(ProjectionDataTypeProperty projectionDataTypeProperty)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionDataTypeProperty.getName());
+        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionDataTypeProperty.getName()) + projectionDataTypeProperty.getDepth();
 
         DataTypeProperty dataTypeProperty = projectionDataTypeProperty.getProperty();
 
+        // @formatter:off
         //language=JAVA
         return ""
-                + "public static enum "
-                + uppercaseName
-                + "_ProjectionDataTypeProperty implements ProjectionDataTypeProperty\n"
+                + "public static enum " + uppercaseName + "_ProjectionDataTypeProperty implements ProjectionDataTypeProperty\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -1710,24 +1657,19 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getName()\n"
                 + "    {\n"
                 + "        return \""
-                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getName())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getName()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return "
-                + projectionDataTypeProperty.getOrdinal()
-                + ";\n"
+                + "        return " + projectionDataTypeProperty.getOrdinal() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return "
-                + projectionDataTypeProperty.isInferred()
-                + ";\n"
+                + "        return " + projectionDataTypeProperty.isInferred() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -1735,21 +1677,20 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getHeaderText()\n"
                 + "    {\n"
                 + "        return \""
-                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getHeaderText())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(projectionDataTypeProperty.getHeaderText()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public DataTypeProperty getProperty()\n"
                 + "    {\n"
-                + "        return "
-                + this.applicationName
-                + "DomainModel."
-                + dataTypeProperty.getOwningClassifier().getName()
-                + "."
-                + dataTypeProperty.getName()
-                + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + dataTypeProperty.getOwningClassifier().getName() + "." + dataTypeProperty.getName() + ";\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public Optional<ProjectionParent> getParent()\n"
+                + "    {\n"
+                + "        return Optional.empty();\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1762,24 +1703,22 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \""
-                + this.wrapSourceCode(projectionDataTypeProperty.getSourceCode())
-                + "\";\n"
+                + "                + \"" + this.wrapSourceCode(projectionDataTypeProperty.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
+        // @formatter:on
     }
 
     private String getProjectionAssociationEndSourceCode(ProjectionAssociationEnd projectionAssociationEnd)
     {
-        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionAssociationEnd.getName());
+        String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionAssociationEnd.getName()) + projectionAssociationEnd.getDepth();
 
         AssociationEnd associationEnd = projectionAssociationEnd.getAssociationEnd();
 
+        // @formatter:off
         //language=JAVA
         return ""
-                + "public static enum "
-                + uppercaseName
-                + "_ProjectionAssociationEnd implements ProjectionAssociationEnd\n"
+                + "public static enum " + uppercaseName + "_ProjectionAssociationEnd implements ProjectionAssociationEnd\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -1790,45 +1729,38 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getName()\n"
                 + "    {\n"
                 + "        return \""
-                + StringEscapeUtils.escapeJava(projectionAssociationEnd.getName())
-                + "\";\n"
+                + StringEscapeUtils.escapeJava(projectionAssociationEnd.getName()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return "
-                + projectionAssociationEnd.getOrdinal()
-                + ";\n"
+                + "        return " + projectionAssociationEnd.getOrdinal() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return "
-                + projectionAssociationEnd.isInferred()
-                + ";\n"
+                + "        return " + projectionAssociationEnd.isInferred() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
-                + "    public ImmutableList<ProjectionElement> getChildren()\n"
+                + "    public Optional<ProjectionParent> getParent()\n"
                 + "    {\n"
-                + "        return Lists.immutable.with("
-                + projectionAssociationEnd.getChildren().collect(ProjectionElement::getName).makeString()
-                + ");\n"
+                + "        return Optional.empty();\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public ImmutableList<? extends ProjectionChild> getChildren()\n"
+                + "    {\n"
+                + "        return Lists.immutable.with(" + projectionAssociationEnd.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public AssociationEnd getAssociationEnd()\n"
                 + "    {\n"
-                + "        return "
-                + this.applicationName
-                + "DomainModel."
-                + associationEnd.getOwningClassifier().getName()
-                + "."
-                + associationEnd.getName()
-                + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1841,12 +1773,11 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \""
-                + this.wrapSourceCode(projectionAssociationEnd.getSourceCode())
-                + "\";\n"
+                + "                + \"" + this.wrapSourceCode(projectionAssociationEnd.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + this.getProjectionChildrenSourceCode(projectionAssociationEnd)
                 + "}\n";
+        // @formatter:on
     }
 }
