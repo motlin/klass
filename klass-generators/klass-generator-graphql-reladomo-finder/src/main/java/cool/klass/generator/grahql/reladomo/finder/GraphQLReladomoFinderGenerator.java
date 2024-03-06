@@ -61,8 +61,7 @@ public class GraphQLReladomoFinderGenerator
         Path outputDirectory = outputPath
                 .resolve(packageRelativePath)
                 .resolve("graphql")
-                .resolve("reladomo")
-                .resolve("finder");
+                .resolve("schema");
         outputDirectory.toFile().mkdirs();
         String fileName = this.applicationName + "Finders.graphqls";
         return outputDirectory.resolve(fileName);

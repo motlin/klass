@@ -26,6 +26,7 @@ graphQL:
   schemaFiles:
     - com/stackoverflow/graphql/schema/StackOverflowQuery.graphqls
     - com/stackoverflow/graphql/schema/StackOverflow.graphqls
+    - io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls
 
 klass:
   clock:

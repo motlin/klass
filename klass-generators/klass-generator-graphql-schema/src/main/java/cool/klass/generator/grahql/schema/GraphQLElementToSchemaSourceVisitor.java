@@ -114,10 +114,10 @@ public class GraphQLElementToSchemaSourceVisitor
         return String.format(
                 "%s: %s%s%s%s",
                 property.getName(),
-                isMany(property) ? "[" : "",
-                getType(property),
-                isMany(property) ? "!]" : "",
-                property.isRequired() ? "!" : "");
+                GraphQLElementToSchemaSourceVisitor.isMany(property) ? "[" : "",
+                GraphQLElementToSchemaSourceVisitor.getType(property),
+                GraphQLElementToSchemaSourceVisitor.isMany(property) ? "!]" : "",
+                property.isRequired() || GraphQLElementToSchemaSourceVisitor.isMany(property) ? "!" : "");
     }
 
     @Nonnull
@@ -128,7 +128,7 @@ public class GraphQLElementToSchemaSourceVisitor
         {
             return "String";
         }
-        if (type == PrimitiveType.INTEGER)
+        if (type == PrimitiveType.INTEGER || type == PrimitiveType.LONG)
         {
             return "Int";
         }

@@ -194,6 +194,20 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-schema-query</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-reladomo-finder</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard compile dependencies -->
@@ -219,6 +233,12 @@
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-schema-attribute</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>

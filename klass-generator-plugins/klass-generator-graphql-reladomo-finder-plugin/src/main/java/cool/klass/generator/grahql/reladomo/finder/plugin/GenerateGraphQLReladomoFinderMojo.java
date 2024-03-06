@@ -23,7 +23,7 @@ public class GenerateGraphQLReladomoFinderMojo
 {
     @Parameter(
             property = "outputDirectory",
-            defaultValue = "${project.build.directory}/generated-resources/graphql-fragment")
+            defaultValue = "${project.build.directory}/generated-resources/graphql-reladomo-finder")
     private File outputDirectory;
 
     @Parameter(property = "applicationName", required = true, readonly = true)

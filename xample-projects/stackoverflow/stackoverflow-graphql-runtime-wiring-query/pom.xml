@@ -23,9 +23,25 @@
         </dependency>
 
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
             <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-finder-fetcher</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-operation-fetcher</artifactId>
         </dependency>
 
         <dependency>
