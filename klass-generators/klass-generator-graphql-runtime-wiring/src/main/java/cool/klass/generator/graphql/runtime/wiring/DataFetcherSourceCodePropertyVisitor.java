@@ -13,10 +13,12 @@ import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.PropertyVisitor;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class DataFetcherSourceCodePropertyVisitor implements PropertyVisitor
+public final class DataFetcherSourceCodePropertyVisitor
+        implements PropertyVisitor
 {
     public static final ImmutableList<PrimitiveType> SPECIAL_PRIMITIVE_TYPES = Lists.immutable.with(
             PrimitiveType.LOCAL_DATE,
@@ -78,7 +80,7 @@ public final class DataFetcherSourceCodePropertyVisitor implements PropertyVisit
             return this.getCustomDataFetcherSourceCode(primitiveType.getPrettyName());
         }
 
-        return this.getPropertyDataFetcherSourceCode();
+        return this.getSimplePropertyDataFetcherSourceCode();
     }
 
     @Nonnull
@@ -94,28 +96,46 @@ public final class DataFetcherSourceCodePropertyVisitor implements PropertyVisit
     @Override
     public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
     {
-        this.dataFetcherSourceCode = this.getPropertyDataFetcherSourceCode();
+        this.dataFetcherSourceCode = this.getSimplePropertyDataFetcherSourceCode();
     }
 
     @Override
     public void visitAssociationEnd(AssociationEnd associationEnd)
     {
-        this.dataFetcherSourceCode = this.getPropertyDataFetcherSourceCode();
+        this.dataFetcherSourceCode = this.getReferencePropertyDataFetcherSourceCode(associationEnd);
     }
 
     @Override
     public void visitParameterizedProperty(ParameterizedProperty parameterizedProperty)
     {
-        this.dataFetcherSourceCode = this.getPropertyDataFetcherSourceCode();
+        this.dataFetcherSourceCode = this.getReferencePropertyDataFetcherSourceCode(parameterizedProperty);
     }
 
     @Nonnull
-    private String getPropertyDataFetcherSourceCode()
+    private String getSimplePropertyDataFetcherSourceCode()
     {
         return String.format(
                 "PropertyDataFetcher.fetching(%s::%s)",
                 this.getOwningClassifierName(),
                 this.getMethodName());
+    }
+
+    private String getReferencePropertyDataFetcherSourceCode(ReferenceProperty referenceProperty)
+    {
+        return referenceProperty.getMultiplicity().isToMany()
+                ? this.getDeepFetchPropertyDataFetcherSourceCode(referenceProperty)
+                : this.getSimplePropertyDataFetcherSourceCode();
+    }
+
+    @Nonnull
+    private String getDeepFetchPropertyDataFetcherSourceCode(ReferenceProperty referenceProperty)
+    {
+        String typeName        = referenceProperty.getType().getName();
+        String propertyName    = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, referenceProperty.getName());
+        String owningClassName = this.owningClassifier.getName();
+        return "                new GraphQLPropertyDataDeepFetcher<" + typeName + ">(\n"
+                + "                        " + owningClassName + "::get" + propertyName + ",\n"
+                + "                        " + typeName + "Finder.getFinderInstance())";
     }
 
     public String getSourceCode()
