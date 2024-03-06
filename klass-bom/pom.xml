@@ -257,7 +257,9 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
-                        <argLine>-XX:-OmitStackTraceInFastThrow -Xms1024m -Xmx2048m -Dslf4j.detectLoggerNameMismatch=true</argLine>
+                        <argLine>-XX:-OmitStackTraceInFastThrow -Xms1024m -Xmx2048m
+                            -Dslf4j.detectLoggerNameMismatch=true
+                        </argLine>
                         <runOrder>random</runOrder>
                         <trimStackTrace>false</trimStackTrace>
                     </configuration>
@@ -501,6 +503,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>28.1-jre</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-annotations</artifactId>
+                <version>1.18</version>
             </dependency>
 
             <dependency>
@@ -755,7 +763,13 @@
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
-                <version>3.9.0</version>
+                <version>3.9.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>3.9.1</version>
             </dependency>
 
             <dependency>
@@ -779,7 +793,7 @@
             <dependency>
                 <groupId>com.google.firebase</groupId>
                 <artifactId>firebase-admin</artifactId>
-                <version>6.8.1</version>
+                <version>6.11.0</version>
             </dependency>
 
             <dependency>
