@@ -50,6 +50,12 @@ public class DomainModelLoader
         MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
                 .collect(CompilationUnit::createFromClasspathLocation);
 
+        if (compilationUnits.isEmpty())
+        {
+            String message = "Could not find any files matching *.klass in urls: " + urls;
+            throw new RuntimeException(message);
+        }
+
         CompilerState     compilerState     = new CompilerState(compilationUnits);
         KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
         CompilationResult compilationResult = klassCompiler.compile();
