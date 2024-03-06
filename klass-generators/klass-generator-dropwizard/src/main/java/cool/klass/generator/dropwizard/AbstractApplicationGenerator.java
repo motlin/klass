@@ -54,9 +54,8 @@ public class AbstractApplicationGenerator
                 + "\n"
                 + "import cool.klass.data.store.DataStore;\n"
                 + "import io.liftwizard.dropwizard.application.AbstractLiftwizardApplication;\n"
-                + "import " + this.rootPackageName + ".service.resource.*;\n"
                 + "import io.dropwizard.setup.Environment;\n"
-                + "import klass.model.meta.domain.service.resource.*;\n"
+                + this.getResourceImports()
                 + "import org.slf4j.Logger;\n"
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
@@ -92,12 +91,28 @@ public class AbstractApplicationGenerator
         this.printStringToFile(javaPath, sourceCode);
     }
 
+    private String getResourceImports()
+    {
+        return this.domainModel
+                .getServiceGroups()
+                .collect(this::getResourceImport)
+                .makeString("");
+    }
+
     private String getRegisterResourcesSourceCode()
     {
         return this.domainModel
                 .getServiceGroups()
                 .collect(this::getRegisterResourceSourceCode)
                 .makeString("");
+    }
+
+    private String getResourceImport(ServiceGroup serviceGroup)
+    {
+        return String.format(
+                "import %s.service.resource.%sResource;;\n",
+                serviceGroup.getPackageName(),
+                serviceGroup.getName());
     }
 
     private String getRegisterResourceSourceCode(@Nonnull ServiceGroup serviceGroup)
