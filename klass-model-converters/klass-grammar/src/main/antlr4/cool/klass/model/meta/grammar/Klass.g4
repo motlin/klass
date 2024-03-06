@@ -80,6 +80,7 @@ serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity ';'
 serviceMultiplicity: one='one' | many='many';
 serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression ';'
     | serviceCriteriaKeyword ':' criteriaExpression {notifyErrorListeners("Missing semi-colon after service criteria declaration.");};
+// TODO: Optional criteria
 serviceCriteriaKeyword: 'criteria' | 'authorize' | 'validate' | 'conflict' | 'version';
 serviceProjectionDispatch: 'projection' ':' projectionReference argumentList? ';'
     | 'projection' ':' projectionReference argumentList? {notifyErrorListeners("Missing semi-colon after service projection dispatch.");};

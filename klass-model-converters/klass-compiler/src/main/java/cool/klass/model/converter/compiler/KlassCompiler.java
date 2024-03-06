@@ -37,6 +37,7 @@ public class KlassCompiler
             InheritancePhase::new,
             ClassTemporalPropertyInferencePhase::new,
             VersionClassInferencePhase::new,
+            // TODO  #46: Add VersionClassAuditPropertyInferencePhase to compiler.
             AssociationPhase::new,
             VersionAssociationInferencePhase::new,
             ParameterizedPropertyPhase::new,

@@ -292,6 +292,8 @@ public class ServiceResourceGenerator
             return "        return result;\n";
         }
 
+        // TODO: throw a better error than 500 for getOnly
+
         // @formatter:off
         //language=JAVA
         return ""

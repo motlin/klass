@@ -55,6 +55,8 @@ public class AntlrEqualityOperator extends AntlrOperator
             return;
         }
 
+        // TODO: If two string types have different maxLengths, warn or error
+
         if (sourceTypes.equals(targetTypes))
         {
             return;

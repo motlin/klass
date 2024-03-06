@@ -27,6 +27,7 @@ public final class ObjectMapperConfig
 
     public static void configure(@Nonnull ObjectMapper objectMapper)
     {
+        // TODO: Move the config stuff to the bundle
         Config config             = ConfigFactory.load();
         Config objectMapperConfig = config.getConfig("klass.jackson.objectmapper");
 
