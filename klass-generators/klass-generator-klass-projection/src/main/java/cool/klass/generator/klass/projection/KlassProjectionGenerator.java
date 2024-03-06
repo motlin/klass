@@ -131,17 +131,13 @@ public class KlassProjectionGenerator
 
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
     {
-        // TODO: Instead of all these heuristics, consider including associations that go forward
-        if (referenceProperty.isOwned())
+        if (!(referenceProperty instanceof AssociationEnd))
         {
             return true;
         }
-        if (referenceProperty instanceof AssociationEnd)
-        {
-            AssociationEnd associationEnd = (AssociationEnd) referenceProperty;
-            return associationEnd.getMultiplicity().isToMany() && !associationEnd.getOpposite().isOwned();
-        }
-        return referenceProperty.getMultiplicity().isToMany();
+
+        AssociationEnd associationEnd = (AssociationEnd) referenceProperty;
+        return associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)
