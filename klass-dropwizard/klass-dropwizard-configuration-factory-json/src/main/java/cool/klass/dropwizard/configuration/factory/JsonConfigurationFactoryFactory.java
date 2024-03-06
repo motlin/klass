@@ -10,6 +10,11 @@ import io.dropwizard.configuration.ConfigurationFactory;
 import io.dropwizard.configuration.ConfigurationFactoryFactory;
 import io.dropwizard.configuration.JsonConfigurationFactory;
 
+/**
+ * Allows configuring Dropwizard using json. Based on {@link io.dropwizard.configuration.DefaultConfigurationFactoryFactory} but replacing yml with json.
+ *
+ * @see io.dropwizard.configuration.DefaultConfigurationFactoryFactory
+ */
 public class JsonConfigurationFactoryFactory<T> implements ConfigurationFactoryFactory<T>
 {
     @Override
