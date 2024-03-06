@@ -10,6 +10,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
+
+    <artifactId>klass-dropwizard-bundles</artifactId>
+
+    <name>Klass Dropwizard Bundles (Module Group)</name>
+
     <modules>
         <module>klass-dropwizard-bundle-auth-filter</module>
         <module>klass-dropwizard-bundle-bootstrap-writer</module>
@@ -25,9 +30,5 @@
         <module>klass-dropwizard-bundle-reladomo-jsonview</module>
         <module>klass-dropwizard-bundle-reladomo-response</module>
     </modules>
-
-    <artifactId>klass-dropwizard-bundles</artifactId>
-
-    <name>Klass Dropwizard Bundles (Module Group)</name>
 
 </project>
