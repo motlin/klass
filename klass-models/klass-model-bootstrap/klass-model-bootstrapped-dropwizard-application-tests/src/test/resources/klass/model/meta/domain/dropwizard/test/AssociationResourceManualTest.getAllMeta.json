@@ -2073,15 +2073,11 @@
     "associationEnds": [
       {
         "name": "namedProjection",
-        "multiplicity": "1..1",
+        "multiplicity": "0..1",
         "resultType": {
           "name": "NamedProjection"
         },
-        "associationEndModifiers": [
-          {
-            "keyword": "owned"
-          }
-        ],
+        "associationEndModifiers": [],
         "orderBys": []
       },
       {

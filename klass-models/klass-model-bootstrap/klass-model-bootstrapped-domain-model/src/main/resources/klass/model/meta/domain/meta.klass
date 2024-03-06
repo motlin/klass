@@ -645,7 +645,7 @@ class NamedProjection
 
 association NamedProjectionHasRootProjection
 {
-    namedProjection: NamedProjection[1..1] owned;
+    namedProjection: NamedProjection[0..1];
     rootProjection: RootProjection[1..1];
 
     relationship this.projectionId == RootProjection.id
