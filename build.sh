@@ -11,7 +11,7 @@ MAVEN='mvnd'
 COMMAND="Build"
 INCREMENTAL=false
 SERIAL=false
-ANALYZE=false
+ANALYZE_SKIP=false
 LIFTWIZARD_RERECORD=false
 
 # Function to print unknown flags and exit
@@ -35,8 +35,8 @@ while [[ $# -gt 0 ]]; do
         --record|-r)
             RECORD=true
             ;;
-        --analyze|-a)
-            ANALYZE=true
+        --no-analyze)
+            ANALYZE_SKIP=true
             ;;
         --pushover|-p)
             PUSHOVER=true
@@ -66,7 +66,7 @@ checkFlag() {
 RECORD=$(checkFlag "RECORD")
 PUSHOVER=$(checkFlag "PUSHOVER")
 SILENT=$(checkFlag "SILENT")
-ANALYZE_SKIP=$(checkFlag "ANALYZE")
+ANALYZE_SKIP=$(checkFlag "ANALYZE_SKIP")
 
 echoSay() {
     echo "$1"
@@ -143,7 +143,7 @@ rm -rf ~/.m2/repository/cool/klass
 echo "Beginning build of commit: $COMMIT_MESSAGE"
 
 if [ "$INCREMENTAL" != true ]; then
-    $MAVEN clean --threads 2C --quiet
+    $MAVEN clean $PARALLELISM --quiet
 fi
 
 $MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
