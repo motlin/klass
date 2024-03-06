@@ -17,17 +17,13 @@
     <name>Klass Reladomo (Module Group)</name>
 
     <modules>
-        <module>klass-reladomo-simulated-sequence</module>
         <module>klass-connection-manager-h2</module>
-        <module>klass-reladomo-simulated-sequence-ddls</module>
         <module>klass-reladomo-ddl-executor</module>
         <module>klass-reladomo-configuration</module>
-        <module>klass-reladomo-test-rule</module>
         <module>klass-reladomo-persistent-writer</module>
         <module>klass-data-store-reladomo</module>
         <module>klass-reladomo-sample-data</module>
         <module>klass-reladomo-graphql-data-fetcher</module>
-        <module>klass-reladomo-timestamp</module>
         <module>klass-reladomo-serialize</module>
         <module>klass-reladomo-persistent-writer-test</module>
         <module>klass-connection-manager-heroku</module>

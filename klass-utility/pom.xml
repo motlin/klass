@@ -19,8 +19,14 @@
     <modules>
         <module>klass-clock-incrementing</module>
         <module>klass-context-thread-local</module>
+        <module>klass-firebase-principal</module>
         <module>klass-junit-rule-match-file</module>
         <module>klass-junit-rule-match-json</module>
+        <module>klass-maven-reladomo-logger</module>
+        <module>klass-reladomo-simulated-sequence</module>
+        <module>klass-reladomo-simulated-sequence-ddls</module>
+        <module>klass-reladomo-test-rule</module>
+        <module>klass-reladomo-timestamp</module>
         <module>klass-serialization-jackson-config</module>
         <module>klass-serialization-jackson-pretty-printer</module>
     </modules>

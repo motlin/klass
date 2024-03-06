@@ -24,7 +24,6 @@
         <module>klass-data-store</module>
         <module>klass-dropwizard</module>
         <module>klass-graphql</module>
-        <module>klass-firebase-principal</module>
         <module>klass-serialization-jackson</module>
         <module>klass-servlet</module>
         <module>xample-projects</module>
