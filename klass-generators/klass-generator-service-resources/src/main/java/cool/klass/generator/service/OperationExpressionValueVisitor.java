@@ -19,6 +19,7 @@ import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
@@ -138,7 +139,15 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
         this.stringBuilder.append("userPrincipalName");
     }
 
-    private String getLiteralString(LiteralValue literalValue)
+    @Override
+    public void visitNullLiteral(@Nonnull NullLiteral nullLiteral)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitNullLiteral() not implemented yet");
+    }
+
+    @Nonnull
+    private String getLiteralString(@Nonnull LiteralValue literalValue)
     {
         StringBuilder stringBuilder = new StringBuilder();
         literalValue.visit(new OperationExpressionValueVisitor(this.finderName, stringBuilder));

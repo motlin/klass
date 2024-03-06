@@ -8,6 +8,7 @@ import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
+import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
@@ -68,5 +69,12 @@ public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisi
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitUserLiteral() not implemented yet");
+    }
+
+    @Override
+    public void visitNullLiteral(@Nonnull NullLiteral nullLiteral)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitNullLiteral() not implemented yet");
     }
 }

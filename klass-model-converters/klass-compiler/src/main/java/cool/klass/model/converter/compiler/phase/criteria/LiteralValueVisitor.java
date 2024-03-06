@@ -8,6 +8,7 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrIntegerLiteralValue;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrNullLiteral;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrStringLiteralValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
@@ -82,11 +83,13 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
                 this.expressionValueOwner);
     }
 
-    @Nonnull
     @Override
     public AbstractAntlrLiteralValue visitNullLiteral(NullLiteralContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitNullLiteral() not implemented yet");
+        return new AntlrNullLiteral(
+                ctx,
+                this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
+                this.compilerState.getCompilerInputState().isInference(),
+                this.expressionValueOwner);
     }
 }

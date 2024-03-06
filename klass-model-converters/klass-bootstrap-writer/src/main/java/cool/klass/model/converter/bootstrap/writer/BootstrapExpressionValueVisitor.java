@@ -15,9 +15,12 @@ import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
+import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 import klass.model.meta.domain.MemberReferencePathAbstract;
+import klass.model.meta.domain.NullLiteralFinder;
+import klass.model.meta.domain.NullLiteralList;
 import klass.model.meta.domain.UserLiteralFinder;
 import klass.model.meta.domain.UserLiteralList;
 import org.eclipse.collections.api.map.ImmutableMap;
@@ -128,5 +131,21 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
         bootstrappedUserLiteral.insert();
 
         this.bootstrappedExpressionValue = bootstrappedUserLiteral;
+    }
+
+    @Override
+    public void visitNullLiteral(@Nonnull NullLiteral nullLiteral)
+    {
+        NullLiteralList nullLiterals = NullLiteralFinder.findMany(NullLiteralFinder.all());
+        if (nullLiterals.notEmpty())
+        {
+            this.bootstrappedExpressionValue = nullLiterals.asEcList().getOnly();
+            return;
+        }
+
+        klass.model.meta.domain.NullLiteral bootstrappedNullLiteral = new klass.model.meta.domain.NullLiteral();
+        bootstrappedNullLiteral.insert();
+
+        this.bootstrappedExpressionValue = bootstrappedNullLiteral;
     }
 }

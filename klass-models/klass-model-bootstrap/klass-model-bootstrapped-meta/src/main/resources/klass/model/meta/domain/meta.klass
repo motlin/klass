@@ -471,6 +471,12 @@ class UserLiteral
     id  : Long key private;
 }
 
+class NullLiteral
+    extends ExpressionValue
+{
+    id  : Long key private;
+}
+
 class VariableReference
     extends ExpressionValue
 {

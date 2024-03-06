@@ -120,7 +120,8 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     @Override
     public void enterLiteral(LiteralContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterLiteral() not implemented yet");
+        // TODO: Not sure if this should count. But the example is:
+        // this.key == Comment.blueprintKey
+        //         && Comment.replyToId == null
     }
 }

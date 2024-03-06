@@ -8,6 +8,9 @@ import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
 import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
+import cool.klass.model.meta.domain.api.operator.Operator;
+import cool.klass.model.meta.domain.api.value.ExpressionValue;
+import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 
 public class CriteriaToRelationshipVisitor implements CriteriaVisitor
 {
@@ -43,9 +46,37 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     @Override
     public void visitOperator(@Nonnull OperatorCriteria operatorCriteria)
     {
-        operatorCriteria.getSourceValue().visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
-        operatorCriteria.getOperator().visit(new OperatorToRelationshipVisitor(this.stringBuilder));
-        operatorCriteria.getTargetValue().visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+        Operator        operator    = operatorCriteria.getOperator();
+        ExpressionValue sourceValue = operatorCriteria.getSourceValue();
+        ExpressionValue targetValue = operatorCriteria.getTargetValue();
+
+        if (targetValue instanceof NullLiteral)
+        {
+            sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+            String reladomoNullOperator = this.getReladomoNullOperator(operator);
+            this.stringBuilder.append(" ");
+            this.stringBuilder.append(reladomoNullOperator);
+            return;
+        }
+
+        sourceValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+        operator.visit(new OperatorToRelationshipVisitor(this.stringBuilder));
+        targetValue.visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
+    }
+
+    @Nonnull
+    private String getReladomoNullOperator(@Nonnull Operator operator)
+    {
+        String operatorText = operator.getOperatorText();
+        switch (operatorText)
+        {
+            case "==":
+                return "is null";
+            case "!=":
+                return "is not null";
+            default:
+                throw new AssertionError();
+        }
     }
 
     @Override
