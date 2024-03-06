@@ -17,6 +17,8 @@ import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrProjectionProjectionReference
         extends AntlrIdentifierElement
@@ -48,6 +50,18 @@ public class AntlrProjectionProjectionReference
         this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty         = Objects.requireNonNull(referenceProperty);
         this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 
     @Nonnull
@@ -104,6 +118,13 @@ public class AntlrProjectionProjectionReference
         {
             String message = String.format("Not found: '%s'.", this.getName());
             compilerErrorHolder.add("ERR_PAE_NFD", message, this);
+        }
+
+        if (this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS
+                || this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS)
+        {
+            String message = String.format("Not found: '%s'.", this.getName());
+            compilerErrorHolder.add("ERR_PAE_AMB", message, this);
         }
 
         if (this.classifier != this.referencedProjectionState.getClassifier()

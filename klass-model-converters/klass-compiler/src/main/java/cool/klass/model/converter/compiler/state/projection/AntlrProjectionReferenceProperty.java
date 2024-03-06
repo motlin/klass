@@ -18,8 +18,11 @@ import cool.klass.model.meta.domain.projection.AbstractProjectionParent.Abstract
 import cool.klass.model.meta.domain.projection.ProjectionReferencePropertyImpl.ProjectionReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrProjectionReferenceProperty
         extends AntlrProjectionParent
@@ -43,6 +46,33 @@ public class AntlrProjectionReferenceProperty
         super(elementContext, compilationUnit, ordinal, nameContext, classifier);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty     = Objects.requireNonNull(referenceProperty);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
+    }
+
+    @Override
+    public Pair<Token, Token> getContextAfter()
+    {
+        return Tuples.pair(
+                this.getElementContext().projectionBody().getStop(),
+                this.getElementContext().PUNCTUATION_COMMA().getSymbol());
+    }
+
+    @Nonnull
+    @Override
+    public ProjectionReferencePropertyContext getElementContext()
+    {
+        return (ProjectionReferencePropertyContext) super.getElementContext();
     }
 
     @Nonnull

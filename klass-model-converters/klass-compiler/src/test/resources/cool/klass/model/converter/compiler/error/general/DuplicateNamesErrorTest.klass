@@ -43,6 +43,11 @@ projection DuplicateTopLevelElement on DuplicateTopLevelElement
 {
     duplicateMember: "Duplicate Header",
     duplicateMember: "Duplicate Header",
+    duplicateMember: DuplicateTopLevelElement,
+    duplicateMember:
+    {
+        duplicateMember: DuplicateTopLevelElement,
+    },
 }
 
 service DuplicateTopLevelElement

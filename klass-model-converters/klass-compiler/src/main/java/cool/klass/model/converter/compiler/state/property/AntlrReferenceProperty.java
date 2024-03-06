@@ -35,7 +35,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         @Override
         public AntlrClassifier getType()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+            return AntlrClassifier.AMBIGUOUS;
         }
 
         @Override

@@ -149,7 +149,7 @@ public abstract class AbstractCompilerError
 
         if (!contextTokens.containsAll(underlinedTokens))
         {
-            throw new AssertionError();
+            throw new AssertionError(underlinedTokens);
         }
 
         if (!contextLines.containsAll(underlinedLines))
