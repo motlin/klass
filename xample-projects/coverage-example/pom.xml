@@ -101,5 +101,6 @@
         <module>coverage-example-dropwizard-application</module>
         <module>coverage-example-meta-model-constants</module>
         <module>coverage-example-json-views</module>
+        <module>liftwizard-reladomo-test-resource-writer-tests</module>
     </modules>
 </project>
