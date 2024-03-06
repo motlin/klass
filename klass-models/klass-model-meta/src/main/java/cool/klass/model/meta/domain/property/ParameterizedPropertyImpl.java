@@ -31,7 +31,7 @@ public final class ParameterizedPropertyImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull KlassImpl type,
-            @Nonnull KlassImpl owningKlass,
+            @Nonnull KlassImpl owningClass,
             @Nonnull Multiplicity multiplicity)
     {
         super(
@@ -41,7 +41,7 @@ public final class ParameterizedPropertyImpl
                 ordinal,
                 nameContext,
                 type,
-                owningKlass,
+                owningClass,
                 multiplicity);
     }
 
@@ -69,7 +69,7 @@ public final class ParameterizedPropertyImpl
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
                 @Nonnull KlassBuilder type,
-                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull KlassBuilder owningClassBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
             super(
@@ -79,7 +79,7 @@ public final class ParameterizedPropertyImpl
                     ordinal,
                     nameContext,
                     type,
-                    owningKlassBuilder,
+                    owningClassBuilder,
                     multiplicity);
         }
 

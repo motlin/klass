@@ -34,7 +34,7 @@ public final class AssociationEndImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull KlassImpl type,
-            @Nonnull KlassImpl owningKlass,
+            @Nonnull KlassImpl owningClass,
             @Nonnull AssociationImpl owningAssociation,
             @Nonnull Multiplicity multiplicity)
     {
@@ -45,7 +45,7 @@ public final class AssociationEndImpl
                 ordinal,
                 nameContext,
                 type,
-                owningKlass,
+                owningClass,
                 multiplicity);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
     }
@@ -95,7 +95,7 @@ public final class AssociationEndImpl
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
                 @Nonnull KlassBuilder type,
-                @Nonnull KlassBuilder owningKlassBuilder,
+                @Nonnull KlassBuilder owningClassBuilder,
                 @Nonnull AssociationBuilder owningAssociation,
                 @Nonnull Multiplicity multiplicity)
         {
@@ -106,7 +106,7 @@ public final class AssociationEndImpl
                     ordinal,
                     nameContext,
                     type,
-                    owningKlassBuilder,
+                    owningClassBuilder,
                     multiplicity);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
         }

@@ -78,7 +78,7 @@ public class ReladomoMergeHookGenerator
     @Nonnull
     private String getMergeHookSourceCode(@Nonnull Klass klass)
     {
-        Klass versionKlass = klass.getVersionProperty().get().getType();
+        Klass versionClass = klass.getVersionProperty().get().getType();
 
         String setKeyPropertiesSourceCode = klass
                 .getKeyProperties()
@@ -100,7 +100,7 @@ public class ReladomoMergeHookGenerator
                 + "import javax.annotation.*;\n"
                 + "\n"
                 + "import " + klass.getFullyQualifiedName() + ";\n"
-                + "import " + versionKlass.getFullyQualifiedName() + ";\n"
+                + "import " + versionClass.getFullyQualifiedName() + ";\n"
                 + "import com.gs.fw.common.mithra.list.merge.MergeBuffer;\n"
                 + "import com.gs.fw.common.mithra.list.merge.MergeHook;\n"
                 + "\n"
@@ -112,7 +112,7 @@ public class ReladomoMergeHookGenerator
                 + "    @Override\n"
                 + "    public InsertInstruction beforeInsertOfNew(@Nonnull " + klass.getName() + " newObject)\n"
                 + "    {\n"
-                + "        " + versionKlass.getName() + " version = new " + versionKlass.getName() + "();\n"
+                + "        " + versionClass.getName() + " version = new " + versionClass.getName() + "();\n"
                 + "        version.setNumber(1);\n"
                 + setKeyPropertiesSourceCode
                 + setAuditPropertiesSourceCode
@@ -125,7 +125,7 @@ public class ReladomoMergeHookGenerator
                 + "            @Nonnull " + klass.getName() + " existing,\n"
                 + "            " + klass.getName() + " incoming)\n"
                 + "    {\n"
-                + "        " + versionKlass.getName() + " existingVersion = existing.getVersion();\n"
+                + "        " + versionClass.getName() + " existingVersion = existing.getVersion();\n"
                 + "        existingVersion.setNumber(existingVersion.getNumber() + 1);\n"
                 + "        return super.matchedWithDifferenceBeforeAttributeCopy(existing, incoming);\n"
                 + "    }\n"
