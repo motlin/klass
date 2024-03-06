@@ -1,0 +1,188 @@
+package cool.klass.xample.coverage
+
+// 'user' is just a special class that represents logged in users
+// There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
+user User
+    read
+    systemTemporal
+{
+    userId   : String key userId;
+    firstName: String?;
+    lastName : String?;
+    email    : String?;
+}
+
+projection UserReadProjection on User
+{
+    userId   : "User id",
+    firstName: "User first name",
+    lastName : "User last name",
+    email    : "User email",
+}
+
+service User
+{
+    /user/{userId: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.userId == userId;
+            projection  : UserReadProjection;
+        }
+    /user
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : UserReadProjection;
+        }
+}
+
+class PropertiesRequired
+{
+    propertiesRequiredId: Long id key;
+    requiredString      : String;
+    requiredInteger     : Integer;
+    requiredLong        : Long;
+    requiredDouble      : Double;
+    requiredFloat       : Float;
+    requiredBoolean     : Boolean;
+    requiredInstant     : Instant;
+    requiredLocalDate   : LocalDate;
+}
+
+projection PropertiesRequiredProjection on PropertiesRequired
+{
+    propertiesRequiredId: "propertiesRequiredId",
+    requiredString      : "requiredString",
+    requiredInteger     : "requiredInteger",
+    requiredLong        : "requiredLong",
+    requiredDouble      : "requiredDouble",
+    requiredFloat       : "requiredFloat",
+    requiredBoolean     : "requiredBoolean",
+    requiredInstant     : "requiredInstant",
+    requiredLocalDate   : "requiredLocalDate",
+}
+
+service PropertiesRequired
+{
+    /api/propertiesRequired/{propertiesRequiredId: Long[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.propertiesRequiredId == propertiesRequiredId;
+            projection  : PropertiesRequiredProjection;
+        }
+}
+
+class PropertiesOptional
+{
+    propertiesOptionalId: Long id key;
+    optionalString      : String?;
+    optionalInteger     : Integer?;
+    optionalLong        : Long?;
+    optionalDouble      : Double?;
+    optionalFloat       : Float?;
+    optionalBoolean     : Boolean?;
+    optionalInstant     : Instant?;
+    optionalLocalDate   : LocalDate?;
+}
+
+projection PropertiesOptionalProjection on PropertiesOptional
+{
+    propertiesOptionalId: "propertiesOptionalId",
+    optionalString      : "optionalString",
+    optionalInteger     : "optionalInteger",
+    optionalLong        : "optionalLong",
+    optionalDouble      : "optionalDouble",
+    optionalFloat       : "optionalFloat",
+    optionalBoolean     : "optionalBoolean",
+    optionalInstant     : "optionalInstant",
+    optionalLocalDate   : "optionalLocalDate",
+}
+
+service PropertiesOptional
+{
+    /api/propertiesOptional/{propertiesOptionalId: Long[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.propertiesOptionalId == propertiesOptionalId;
+            projection  : PropertiesOptionalProjection;
+        }
+}
+
+class AllKeyProperties
+{
+    keyString           : String key;
+    keyInteger          : Integer key;
+    keyLong             : Long key;
+    keyDouble           : Double key;
+    keyFloat            : Float key;
+    keyBoolean          : Boolean key;
+    keyInstant          : Instant key;
+    keyLocalDate        : LocalDate key;
+}
+
+class AllForeignKeyProperties
+{
+    id                  : Long id key;
+    foreignKeyString    : String;
+    foreignKeyInteger   : Integer;
+    foreignKeyLong      : Long;
+    foreignKeyDouble    : Double;
+    foreignKeyFloat     : Float;
+    foreignKeyBoolean   : Boolean;
+    foreignKeyInstant   : Instant;
+    foreignKeyLocalDate : LocalDate;
+}
+
+association AllKeyPropertiesHasAllForeignKeyProperties
+{
+    allKeyProperties: AllKeyProperties[1..1];
+    allForeignKeyProperties: AllForeignKeyProperties[0..*];
+
+    relationship this.keyString == AllForeignKeyProperties.foreignKeyString
+            && this.keyInteger == AllForeignKeyProperties.foreignKeyInteger
+            && this.keyLong == AllForeignKeyProperties.foreignKeyLong
+            && this.keyDouble == AllForeignKeyProperties.foreignKeyDouble
+            && this.keyFloat == AllForeignKeyProperties.foreignKeyFloat
+            && this.keyBoolean == AllForeignKeyProperties.foreignKeyBoolean
+            && this.keyInstant == AllForeignKeyProperties.foreignKeyInstant
+            && this.keyLocalDate == AllForeignKeyProperties.foreignKeyLocalDate
+}
+
+projection AllKeyPropertiesProjection on AllKeyProperties
+{
+    keyString              : "keyString",
+    keyInteger             : "keyInteger",
+    keyLong                : "keyLong",
+    keyDouble              : "keyDouble",
+    keyFloat               : "keyFloat",
+    keyBoolean             : "keyBoolean",
+    keyInstant             : "keyInstant",
+    keyLocalDate           : "keyLocalDate",
+    allForeignKeyProperties:
+    {
+        id                 : "id",
+        foreignKeyString   : "foreignKeyString",
+        foreignKeyInteger  : "foreignKeyInteger",
+        foreignKeyLong     : "foreignKeyLong",
+        foreignKeyDouble   : "foreignKeyDouble",
+        foreignKeyFloat    : "foreignKeyFloat",
+        foreignKeyBoolean  : "foreignKeyBoolean",
+        foreignKeyInstant  : "foreignKeyInstant",
+        foreignKeyLocalDate: "foreignKeyLocalDate",
+    },
+}
+
+service AllKeyProperties
+{
+    /api/allKeyProperties
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : AllKeyPropertiesProjection;
+        }
+}

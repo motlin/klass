@@ -18,5 +18,6 @@
 
     <modules>
         <module>stackoverflow</module>
+        <module>coverage-example</module>
     </modules>
 </project>
