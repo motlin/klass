@@ -1,0 +1,7 @@
+{
+  type: "reladomo",
+  uuid: {
+    type: "seed",
+    seed: "example seed",
+  },
+}

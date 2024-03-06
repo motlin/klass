@@ -5,15 +5,17 @@ import java.net.URL;
 
 import javax.validation.Validator;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
-import io.dropwizard.configuration.YamlConfigurationFactory;
+import io.dropwizard.configuration.JsonConfigurationFactory;
 import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -27,11 +29,11 @@ public class DomainModelConstantFactoryTest
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
-    private final ObjectMapper objectMapper = Jackson.newObjectMapper();
+    private final ObjectMapper objectMapper = getObjectMapper();
     private final Validator    validator    = Validators.newValidator();
 
-    private final YamlConfigurationFactory<DomainModelFactory> factory =
-            new YamlConfigurationFactory<>(DomainModelFactory.class, this.validator, this.objectMapper, "dw");
+    private final JsonConfigurationFactory<DomainModelFactory> factory =
+            new JsonConfigurationFactory<>(DomainModelFactory.class, this.validator, this.objectMapper, "dw");
 
     @Test
     public void isDiscoverable()
@@ -45,9 +47,16 @@ public class DomainModelConstantFactoryTest
     @Test
     public void domainModelConstant() throws Exception
     {
-        URL                resource           = Resources.getResource("test-config.yml");
-        File               yml                = new File(resource.toURI());
-        DomainModelFactory domainModelFactory = this.factory.build(yml);
+        URL                resource           = Resources.getResource("config-test.json5");
+        File               json               = new File(resource.toURI());
+        DomainModelFactory domainModelFactory = this.factory.build(json);
         assertThat(domainModelFactory, instanceOf(DomainModelConstantFactory.class));
+    }
+
+    private static ObjectMapper getObjectMapper()
+    {
+        ObjectMapper objectMapper = Jackson.newObjectMapper();
+        ObjectMapperConfig.configure(objectMapper, true, Include.NON_ABSENT);
+        return objectMapper;
     }
 }

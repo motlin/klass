@@ -1,0 +1,6 @@
+{
+  type          : "compiler",
+  sourcePackages: [
+    "com.example",
+  ],
+}

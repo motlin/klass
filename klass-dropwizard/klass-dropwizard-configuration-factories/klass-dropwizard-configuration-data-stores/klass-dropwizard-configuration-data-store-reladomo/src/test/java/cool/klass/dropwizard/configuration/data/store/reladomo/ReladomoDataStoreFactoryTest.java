@@ -5,15 +5,17 @@ import java.net.URL;
 
 import javax.validation.Validator;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
-import io.dropwizard.configuration.YamlConfigurationFactory;
+import io.dropwizard.configuration.JsonConfigurationFactory;
 import io.dropwizard.jackson.DiscoverableSubtypeResolver;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.Validators;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -27,11 +29,11 @@ public class ReladomoDataStoreFactoryTest
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
 
-    private final ObjectMapper objectMapper = Jackson.newObjectMapper();
+    private final ObjectMapper objectMapper = newObjectMapper();
     private final Validator    validator    = Validators.newValidator();
 
-    private final YamlConfigurationFactory<DataStoreFactory> factory =
-            new YamlConfigurationFactory<>(DataStoreFactory.class, this.validator, this.objectMapper, "dw");
+    private final JsonConfigurationFactory<DataStoreFactory> factory =
+            new JsonConfigurationFactory<>(DataStoreFactory.class, this.validator, this.objectMapper, "dw");
 
     @Test
     public void isDiscoverable()
@@ -45,9 +47,16 @@ public class ReladomoDataStoreFactoryTest
     @Test
     public void reladomoDataStore() throws Exception
     {
-        URL              resource         = Resources.getResource("test-config.yml");
-        File             yml              = new File(resource.toURI());
-        DataStoreFactory dataStoreFactory = this.factory.build(yml);
+        URL              resource         = Resources.getResource("config-test.json5");
+        File             json             = new File(resource.toURI());
+        DataStoreFactory dataStoreFactory = this.factory.build(json);
         assertThat(dataStoreFactory, instanceOf(ReladomoDataStoreFactory.class));
+    }
+
+    private static ObjectMapper newObjectMapper()
+    {
+        ObjectMapper objectMapper = Jackson.newObjectMapper();
+        ObjectMapperConfig.configure(objectMapper, true, Include.NON_ABSENT);
+        return objectMapper;
     }
 }
