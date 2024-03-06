@@ -34,7 +34,7 @@ public class AbstractKlassConfiguration extends Configuration
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
     private @Valid @NotNull H2Factory                h2Factory                = new H2Factory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();
-    private @Valid          DdlExecutorFactory       ddlExecutorFactory;
+    private @Valid @NotNull DdlExecutorFactory       ddlExecutorFactory       = new DdlExecutorFactory();
     private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories;
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory         = new EnabledFactory();

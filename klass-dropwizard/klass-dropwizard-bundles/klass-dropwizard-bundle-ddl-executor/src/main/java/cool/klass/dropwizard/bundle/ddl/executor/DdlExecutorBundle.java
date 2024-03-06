@@ -36,7 +36,7 @@ public class DdlExecutorBundle implements PrioritizedBundle<DdlExecutorFactoryPr
     public void run(DdlExecutorFactoryProvider configuration, Environment environment) throws SQLException
     {
         DdlExecutorFactory ddlExecutorFactory = configuration.getDdlExecutorFactory();
-        if (ddlExecutorFactory == null)
+        if (!ddlExecutorFactory.isEnabled())
         {
             LOGGER.info("{} disabled.", DdlExecutorBundle.class.getSimpleName());
             return;
