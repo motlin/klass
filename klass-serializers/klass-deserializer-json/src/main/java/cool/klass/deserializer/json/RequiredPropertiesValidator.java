@@ -102,7 +102,15 @@ public class RequiredPropertiesValidator
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
         for (DataTypeProperty dataTypeProperty : dataTypeProperties)
         {
-            this.handleDataTypeProperty(dataTypeProperty);
+            this.contextStack.push(dataTypeProperty.getName());
+            try
+            {
+                this.handleDataTypeProperty(dataTypeProperty);
+            }
+            finally
+            {
+                this.contextStack.pop();
+            }
         }
     }
 

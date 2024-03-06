@@ -11,7 +11,7 @@
   "Error at Question.tags[1].name. No such property 'QuestionTagMapping.name' but got {\"name\":{}}. Expected properties: questionId, tagName, system, systemFrom, systemTo, question, tag.",
   "Error at Question.tags[2]. Expected json object but value was string: \"oops\".",
   "Error at Question.version.number. Expected property with type 'QuestionVersion.number: Integer' but got '20000000000' with type 'number'.",
-  "Error at Question. Expected value for required property 'Document.body: String' but value was missing.",
-  "Error at Question.tags[1].tag. Expected key property 'Tag.name' but it was missing.",
-  "Error at Question.version. Expected value for version property 'QuestionVersion.number: Integer' to be 1 during initial creation but value was number."
+  "Error at Question.body. Expected value for required property 'Document.body: String' but value was missing.",
+  "Error at Question.tags[1].tag.name. Expected key property 'Tag.name' but it was missing.",
+  "Error at Question.version.number. Expected value for version property 'QuestionVersion.number: Integer' to be 1 during initial creation but value was number."
 ]

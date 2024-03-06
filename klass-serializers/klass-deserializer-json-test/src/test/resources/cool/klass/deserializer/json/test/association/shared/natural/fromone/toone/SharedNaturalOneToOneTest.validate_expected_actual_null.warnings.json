@@ -1,5 +1,5 @@
 [
-  "Warning at SharedNaturalOneToOneSource. Didn't expect to receive value for root key property 'SharedNaturalOneToOneSource.key: String' but value was null.",
-  "Warning at SharedNaturalOneToOneSource.target. Didn't expect to receive value for foreign key property 'SharedNaturalOneToOneTarget.sourceKey: String' but value was null.",
-  "Warning at SharedNaturalOneToOneSource.target. Didn't expect to receive value for outside projection property 'SharedNaturalOneToOneTarget.value: String' but value was null."
+  "Warning at SharedNaturalOneToOneSource.key. Didn't expect to receive value for root key property 'SharedNaturalOneToOneSource.key: String' but value was null.",
+  "Warning at SharedNaturalOneToOneSource.target.sourceKey. Didn't expect to receive value for foreign key property 'SharedNaturalOneToOneTarget.sourceKey: String' but value was null.",
+  "Warning at SharedNaturalOneToOneSource.target.value. Didn't expect to receive value for outside projection property 'SharedNaturalOneToOneTarget.value: String' but value was null."
 ]
