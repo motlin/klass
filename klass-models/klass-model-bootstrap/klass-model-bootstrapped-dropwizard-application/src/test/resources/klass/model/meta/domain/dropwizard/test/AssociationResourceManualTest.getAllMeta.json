@@ -2659,7 +2659,11 @@
         "resultType": {
           "name": "Service"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
