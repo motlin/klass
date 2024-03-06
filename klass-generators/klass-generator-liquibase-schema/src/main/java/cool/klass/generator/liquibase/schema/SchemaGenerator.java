@@ -36,7 +36,7 @@ public final class SchemaGenerator
         int              ordinal           = index + 1;
         String           tableSourceCode   = TableGenerator.getTable(klass, ordinal);
         String           idxSourceCode     = IndexGenerator.getIndex(klass, ordinal);
-        Optional<String> maybeFkSourceCode = ForeignKeyGenerator.getForeignKey(klass, ordinal);
+        Optional<String> maybeFkSourceCode = ForeignKeyGenerator.getForeignKeys(klass, ordinal);
 
         return tableSourceCode + idxSourceCode + maybeFkSourceCode.orElse("");
     }

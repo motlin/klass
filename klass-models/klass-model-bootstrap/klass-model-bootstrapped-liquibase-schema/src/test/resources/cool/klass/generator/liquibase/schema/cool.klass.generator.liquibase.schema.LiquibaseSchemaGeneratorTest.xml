@@ -150,16 +150,6 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-6-KLASS_FK_SUPER_CLASS">
-        <addForeignKeyConstraint
-                constraintName="KLASS_FK_SUPER_CLASS"
-                baseTableName="KLASS"
-                baseColumnNames="SUPER_CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-7-DATA_TYPE_PROPERTY">
         <createTable tableName="DATA_TYPE_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
@@ -1246,16 +1236,6 @@
                 tableName="PROJECTION_ELEMENT">
             <column name="PARENT_ID" />
         </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-42-PROJECTION_ELEMENT_FK_PARENT">
-        <addForeignKeyConstraint
-                constraintName="PROJECTION_ELEMENT_FK_PARENT"
-                baseTableName="PROJECTION_ELEMENT"
-                baseColumnNames="PARENT_ID"
-                referencedTableName="PROJECTION_ELEMENT"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-43-SERVICE_PROJECTION">

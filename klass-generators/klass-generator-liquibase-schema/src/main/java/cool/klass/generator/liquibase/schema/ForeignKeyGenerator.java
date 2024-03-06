@@ -7,6 +7,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
 
 public final class ForeignKeyGenerator
 {
@@ -15,7 +16,7 @@ public final class ForeignKeyGenerator
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static Optional<String> getForeignKey(Klass klass, int ordinal)
+    public static Optional<String> getForeignKeys(Klass klass, int ordinal)
     {
         MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeys = klass.getForeignKeys();
         if (foreignKeys.isEmpty())
@@ -30,10 +31,20 @@ public final class ForeignKeyGenerator
 
         ImmutableList<String> foreignKeyStrings = foreignKeys
                 .keyValuesView()
+                .reject(ForeignKeyGenerator::isSelfToOneOptional)
                 .collect(keyValuePair -> getForeignKey(keyValuePair.getOne(), keyValuePair.getTwo(), ordinal))
                 .toImmutableList();
         String result = foreignKeyStrings.makeString("");
         return Optional.of(result);
+    }
+
+    private static boolean isSelfToOneOptional(Pair<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> pair)
+    {
+        AssociationEnd associationEnd = pair.getOne();
+        boolean result = associationEnd.isToSelf()
+                && associationEnd.getMultiplicity().isToOne()
+                && !associationEnd.getMultiplicity().isRequired();
+        return result;
     }
 
     private static String getForeignKey(
