@@ -1,1 +1,1 @@
-relationship this.name == ClassifierInterfaceMapping.interfaceName
+relationship this.interfaceName == Interface.name

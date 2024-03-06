@@ -54,11 +54,11 @@ projection InterfaceProjection on Interface
     superInterfaces: ClassifierInterfaceMappingProjection,
     dataTypeProperties: DataTypePropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
-    subClassifiers: ClassifierInterfaceMappingProjection,
 }
 
 projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 {
+    superInterface: InterfaceProjection,
 }
 
 projection KlassProjection on Klass

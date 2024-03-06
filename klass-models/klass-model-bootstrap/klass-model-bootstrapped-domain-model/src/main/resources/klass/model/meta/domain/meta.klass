@@ -71,8 +71,8 @@ association ClassifierHasClassifierInterfaceMapping
 
 association ClassifierInterfaceMappingHasInterface
 {
+    subClassifiers: ClassifierInterfaceMapping[0..*];
     superInterface                : Interface[1..1];
-    subClassifiers                : ClassifierInterfaceMapping[0..*];
 }
 
 class Klass
