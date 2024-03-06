@@ -55,7 +55,7 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-reladomo-database-plugin</artifactId>
+                <artifactId>klass-generator-reladomo-code-plugin</artifactId>
                 <version>${klass.version}</version>
                 <configuration>
                     <definitionsXmlFile>
@@ -64,9 +64,9 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>generate-reladomo-database</id>
+                        <id>generate-reladomo-pojos</id>
                         <goals>
-                            <goal>generate-reladomo-database</goal>
+                            <goal>generate-reladomo-pojos</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -78,6 +78,7 @@
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>
+
             </plugin>
 
         </plugins>

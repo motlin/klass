@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="${rootArtifactId} [display-dependency-updates]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="clean,install" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,19 +10,20 @@
           </option>
           <option name="goals">
             <list>
-              <option value="versions:display-dependency-updates" />
-              <option value="versions:display-property-updates" />
+              <option value="clean" />
+              <option value="install" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />
           <option name="profilesMap">
-            <map />
+            <map>
+            </map>
           </option>
           <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method />
+    <method v="2" />
   </configuration>
 </component>

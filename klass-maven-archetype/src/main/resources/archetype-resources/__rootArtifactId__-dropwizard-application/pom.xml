@@ -24,15 +24,12 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>
-                        -Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml
-                    </commandlineArgs>
+                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
                 </configuration>
             </plugin>
 
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -68,7 +65,7 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
                                 com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
@@ -86,7 +83,7 @@
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-mem</connectionManagerName>
+                            <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
                                 com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
@@ -150,6 +147,13 @@
                 </dependencies>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <ignoreNonCompile>true</ignoreNonCompile>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -164,6 +168,35 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock</artifactId>
         </dependency>
 
         <dependency>
@@ -182,6 +215,81 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-cors</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-object-mapper</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-auth-filter</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-named-data-source</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-reladomo</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -193,8 +301,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-application</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-application</artifactId>
+            <artifactId>klass-dropwizard-configuration</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -219,6 +332,16 @@
         </dependency>
 
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
@@ -226,6 +349,12 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -238,27 +367,43 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
-            <version>2.2.11</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1.1</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-connection-manager-holder</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-sample-data</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
             <scope>test</scope>
         </dependency>
 
