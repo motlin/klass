@@ -400,7 +400,7 @@ class AssociationEnd implements NamedElement
 association AssociationHasEnds
 {
     owningAssociation: Association[1..1];
-    associationEnds: AssociationEnd[0..*]
+    associationEnds: AssociationEnd[0..*] owned
         orderBy: this.direction ascending;
 }
 
