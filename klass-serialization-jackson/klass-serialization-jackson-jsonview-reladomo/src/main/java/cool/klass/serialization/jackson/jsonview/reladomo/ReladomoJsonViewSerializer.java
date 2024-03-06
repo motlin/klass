@@ -67,6 +67,7 @@ public class ReladomoJsonViewSerializer
         KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
         String        projectionName = klassJsonView.getProjectionName();
         Projection    projection     = this.domainModel.getProjectionByName(projectionName);
+        Objects.requireNonNull(projection);
 
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
         // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();
