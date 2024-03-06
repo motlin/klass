@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
-[31mAssociation end 'Dummy.parent2' has multiplicity [0..1] but foreign key 'Dummy.parentId' is required.[m
+[31mAssociation end 'Dummy.parent' has multiplicity [0..1] but foreign key 'Dummy.parentId' is required.[m
 
 Error at location. (ManyOwnsOneAssociationErrorTest.klass:6)
 [40m[40;37m1║ [40;35mpackage [40;97mdummy

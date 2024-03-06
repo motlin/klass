@@ -22,7 +22,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
@@ -557,12 +557,12 @@ public class IncomingUpdateDataModelValidator
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
 
         if (oppositeForeignKeys.notEmpty())
         {
@@ -605,12 +605,12 @@ public class IncomingUpdateDataModelValidator
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
 
         if (oppositeForeignKeys.notEmpty())
         {
@@ -627,7 +627,7 @@ public class IncomingUpdateDataModelValidator
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             AssociationEnd foreignKeyAssociation     = pair.getOne();
             String         foreignKeyAssociationName = foreignKeyAssociation.getName();
@@ -635,7 +635,7 @@ public class IncomingUpdateDataModelValidator
             if (childNode instanceof ObjectNode)
             {
                 Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                        pair.getTwo(),
+                        pair.getTwo().getOnly(),
                         (ObjectNode) childNode);
                 return Objects.requireNonNull(result);
             }

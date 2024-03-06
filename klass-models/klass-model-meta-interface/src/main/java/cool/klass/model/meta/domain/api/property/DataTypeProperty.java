@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyVal
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.map.OrderedMap;
 
 public interface DataTypeProperty extends Property
 {
@@ -34,9 +34,9 @@ public interface DataTypeProperty extends Property
     Optional<MaxPropertyValidation> getMaxPropertyValidation();
 
     // TODO: Should this be a Map, rather than multimap?
-    ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey();
+    OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getKeysMatchingThisForeignKey();
 
-    ImmutableListMultimap<AssociationEnd, DataTypeProperty> getForeignKeysMatchingThisKey();
+    OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getForeignKeysMatchingThisKey();
 
     default boolean isKey()
     {

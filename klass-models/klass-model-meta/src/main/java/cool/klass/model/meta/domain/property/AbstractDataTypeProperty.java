@@ -30,10 +30,13 @@ import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImp
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.multimap.list.ListMultimap;
 import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.eclipse.collections.impl.utility.Iterate;
 
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
@@ -45,8 +48,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
 
     private ImmutableList<Modifier> modifiers;
 
-    private ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey;
-    private ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey;
+    private OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey;
+    private OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> foreignKeysMatchingThisKey;
 
     @Nonnull
     private Optional<MinLengthPropertyValidation> minLengthPropertyValidation = Optional.empty();
@@ -161,12 +164,12 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     }
 
     @Override
-    public ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey()
+    public OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getKeysMatchingThisForeignKey()
     {
         return Objects.requireNonNull(this.keysMatchingThisForeignKey);
     }
 
-    private void setKeysMatchingThisForeignKey(ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey)
+    private void setKeysMatchingThisForeignKey(OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey)
     {
         if (this.keysMatchingThisForeignKey != null)
         {
@@ -176,12 +179,12 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     }
 
     @Override
-    public ImmutableListMultimap<AssociationEnd, DataTypeProperty> getForeignKeysMatchingThisKey()
+    public OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getForeignKeysMatchingThisKey()
     {
         return Objects.requireNonNull(this.foreignKeysMatchingThisKey);
     }
 
-    private void setForeignKeysMatchingThisKey(ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey)
+    private void setForeignKeysMatchingThisKey(OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> foreignKeysMatchingThisKey)
     {
         if (this.foreignKeysMatchingThisKey != null)
         {
@@ -210,10 +213,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     {
         protected final boolean isOptional;
 
-        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
-                keyBuildersMatchingThisForeignKey;
-        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
-                foreignKeyBuildersMatchingThisKey;
+        protected MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> keyBuildersMatchingThisForeignKey;
+        protected MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> foreignKeyBuildersMatchingThisKey;
 
         protected ImmutableList<ModifierBuilder> modifierBuilders;
 
@@ -245,7 +246,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             this.isOptional = isOptional;
         }
 
-        public void setKeyBuildersMatchingThisForeignKey(ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keyBuildersMatchingThisForeignKey)
+        public void setKeyBuildersMatchingThisForeignKey(MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> keyBuildersMatchingThisForeignKey)
         {
             if (this.keyBuildersMatchingThisForeignKey != null)
             {
@@ -254,7 +255,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             this.keyBuildersMatchingThisForeignKey = Objects.requireNonNull(keyBuildersMatchingThisForeignKey);
         }
 
-        public void setForeignKeyBuildersMatchingThisKey(ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeyBuildersMatchingThisKey)
+        public void setForeignKeyBuildersMatchingThisKey(MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> foreignKeyBuildersMatchingThisKey)
         {
             if (this.foreignKeyBuildersMatchingThisKey != null)
             {
@@ -314,23 +315,19 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
 
         public final void build2()
         {
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
-                    this.keyBuildersMatchingThisForeignKey.<AssociationEnd, DataTypeProperty, MutableListMultimap<AssociationEnd, DataTypeProperty>>collectKeyMultiValues(
-                            ElementBuilder::getElement,
-                            dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement(),
-                            Multimaps.mutable.list.empty())
-                            .toImmutable();
+            MutableOrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
+                    this.keyBuildersMatchingThisForeignKey.collect((associationEndBuilder, dataTypePropertyBuilders) -> Tuples.pair(
+                            associationEndBuilder.getElement(),
+                            dataTypePropertyBuilders.collect(dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement())));
 
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey =
-                    this.foreignKeyBuildersMatchingThisKey.<AssociationEnd, DataTypeProperty, MutableListMultimap<AssociationEnd, DataTypeProperty>>collectKeyMultiValues(
-                            ElementBuilder::getElement,
-                            dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement(),
-                            Multimaps.mutable.list.empty())
-                            .toImmutable();
+            MutableOrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> foreignKeysMatchingThisKey =
+                    this.foreignKeyBuildersMatchingThisKey.collect((associationEndBuilder, dataTypePropertyBuilders) -> Tuples.pair(
+                            associationEndBuilder.getElement(),
+                            dataTypePropertyBuilders.collect(dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement())));
 
             AbstractDataTypeProperty<T> property = this.getElement();
-            property.setKeysMatchingThisForeignKey(keysMatchingThisForeignKey);
-            property.setForeignKeysMatchingThisKey(foreignKeysMatchingThisKey);
+            property.setKeysMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
+            property.setForeignKeysMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
         }
 
         public static <InputKey, InputValue, OutputKey, OutputValue> ImmutableListMultimap<OutputKey, OutputValue> collectKeyMultiValues(

@@ -53,11 +53,11 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
         // TODO: Something more reliable, or ban shared foreign keys
         if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
         {
-            Pair<AssociationEnd, DataTypeProperty> pair =
-                    primitiveProperty.getKeysMatchingThisForeignKey().keyValuePairsView().getOnly();
+            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair =
+                    primitiveProperty.getKeysMatchingThisForeignKey().keyValuesView().getOnly();
 
             AssociationEnd   associationEnd = pair.getOne();
-            DataTypeProperty keyProperty    = pair.getTwo();
+            DataTypeProperty keyProperty    = pair.getTwo().getOnly();
             this.result = String.format(
                     "%s %s %d %s",
                     associationEnd.getType().getName(),

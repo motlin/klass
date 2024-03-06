@@ -47,8 +47,9 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -555,10 +556,11 @@ public class ReladomoDataStore
                 .getDataTypeProperties();
         for (DataTypeProperty targetDataTypeProperty : targetDataTypeProperties)
         {
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+            OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
                     targetDataTypeProperty.getKeysMatchingThisForeignKey();
 
-            ImmutableList<DataTypeProperty> keysInRelatedObject = keysMatchingThisForeignKey.get(associationEnd);
+            ImmutableList<DataTypeProperty> keysInRelatedObject = keysMatchingThisForeignKey.getIfAbsentValue(associationEnd,
+                    Lists.immutable.empty());
             if (keysInRelatedObject.isEmpty())
             {
                 continue;

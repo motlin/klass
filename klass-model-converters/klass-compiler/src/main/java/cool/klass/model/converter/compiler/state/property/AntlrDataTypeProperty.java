@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,12 +28,13 @@ import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.multimap.list.MutableListMultimap;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public abstract class AntlrDataTypeProperty<T extends DataType>
         extends AntlrProperty
@@ -167,8 +169,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     protected final MutableList<AntlrMinPropertyValidation>       minValidationStates       = Lists.mutable.empty();
     protected final MutableList<AntlrMaxPropertyValidation>       maxValidationStates       = Lists.mutable.empty();
 
-    private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> keyBuildersMatchingThisForeignKey = Multimaps.mutable.list.empty();
-    private final MutableListMultimap<AntlrAssociationEnd, AntlrDataTypeProperty<?>> foreignKeyBuildersMatchingThisKey = Multimaps.mutable.list.empty();
+    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> keyBuildersMatchingThisForeignKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> foreignKeyBuildersMatchingThisKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -236,14 +238,18 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             AntlrAssociationEnd associationEnd,
             AntlrDataTypeProperty<?> keyProperty)
     {
-        this.keyBuildersMatchingThisForeignKey.put(associationEnd, keyProperty);
+        this.keyBuildersMatchingThisForeignKey
+                .computeIfAbsent(associationEnd, k -> Lists.mutable.empty())
+                .add(keyProperty);
     }
 
     public void setForeignKeyMatchingThisKey(
             AntlrAssociationEnd associationEnd,
             AntlrDataTypeProperty<?> foreignKeyProperty)
     {
-        this.foreignKeyBuildersMatchingThisKey.put(associationEnd, foreignKeyProperty);
+        this.foreignKeyBuildersMatchingThisKey
+                .computeIfAbsent(associationEnd, k -> Lists.mutable.empty())
+                .add(foreignKeyProperty);
     }
 
     public void addMinLengthValidationState(AntlrMinLengthPropertyValidation minLengthValidationState)
@@ -297,22 +303,19 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public void build2()
     {
-        MutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
-                this.keyBuildersMatchingThisForeignKey
-                        .collectKeyMultiValues(
-                                AntlrAssociationEnd::getElementBuilder,
-                                AntlrDataTypeProperty::getElementBuilder,
-                                Multimaps.mutable.list.empty());
-        this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.toImmutable());
+        MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> keysMatchingThisForeignKey =
+                this.keyBuildersMatchingThisForeignKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
+                        associationEnd.getElementBuilder(),
+                        dataTypeProperties.<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::getElementBuilder).toImmutable()));
 
-        MutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
-                this.foreignKeyBuildersMatchingThisKey
-                        .collectKeyMultiValues(
-                                AntlrAssociationEnd::getElementBuilder,
-                                AntlrDataTypeProperty::getElementBuilder,
-                                Multimaps.mutable.list.empty());
+        this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
 
-        this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.toImmutable());
+        MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> foreignKeysMatchingThisKey =
+                this.foreignKeyBuildersMatchingThisKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
+                        associationEnd.getElementBuilder(),
+                        dataTypeProperties.<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::getElementBuilder).toImmutable()));
+
+        this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -357,16 +360,16 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     private void reportInvalidForeignKeyProperties(CompilerErrorState compilerErrorHolder)
     {
-        this.keyBuildersMatchingThisForeignKey.forEachKeyMultiValues((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
+        this.keyBuildersMatchingThisForeignKey.forEach((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
                 compilerErrorHolder,
                 associationEnd,
-                (RichIterable<AntlrDataTypeProperty<?>>) keyBuilders));
+                keyBuilders));
     }
 
     private void reportInvalidForeignKeyProperties(
             CompilerErrorState compilerErrorHolder,
             AntlrAssociationEnd associationEnd,
-            RichIterable<AntlrDataTypeProperty<?>> keyBuilders)
+            ListIterable<AntlrDataTypeProperty<?>> keyBuilders)
     {
         if (keyBuilders.size() > 1)
         {

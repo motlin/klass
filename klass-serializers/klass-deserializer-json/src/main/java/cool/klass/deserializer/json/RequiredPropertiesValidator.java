@@ -15,9 +15,8 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Stacks;
@@ -161,12 +160,6 @@ public class RequiredPropertiesValidator
     {
         // TODO: Handle foreign key properties that are also key properties at the root
 
-        if (this.isForeignKeyWithOpposite(dataTypeProperty))
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
-            return;
-        }
-
         if (this.isForeignKeyMatchingKeyOnPath(dataTypeProperty))
         {
             this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key on path");
@@ -183,6 +176,12 @@ public class RequiredPropertiesValidator
         if (this.isRoot)
         {
             this.handleWarnIfPresent(dataTypeProperty, "root key");
+            return;
+        }
+
+        if (this.isForeignKeyWithOpposite(dataTypeProperty))
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
             return;
         }
 
@@ -203,8 +202,8 @@ public class RequiredPropertiesValidator
 
     private boolean isForeignKeyMatchingKeyOnPath(DataTypeProperty dataTypeProperty)
     {
-        Optional<AssociationEnd> opposite = this.pathHere.map(AssociationEnd::getOpposite);
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = dataTypeProperty.getKeysMatchingThisForeignKey();
+        Optional<AssociationEnd>                                    opposite                   = this.pathHere.map(AssociationEnd::getOpposite);
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = dataTypeProperty.getKeysMatchingThisForeignKey();
         return opposite
                 .map(keysMatchingThisForeignKey::containsKey)
                 .orElse(false);
@@ -212,9 +211,12 @@ public class RequiredPropertiesValidator
 
     private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
     {
-        ListIterable<DataTypeProperty> dataTypeProperties = keyProperty.getKeysMatchingThisForeignKey()
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableList<DataTypeProperty> dataTypeProperties = keysMatchingThisForeignKey
                 .valuesView()
-                .toList();
+                .flatCollect(x -> x)
+                .toList()
+                .toImmutable();
         return dataTypeProperties
                 .anySatisfyWith(this::isOppositeKey, keyProperty);
     }
@@ -608,7 +610,7 @@ public class RequiredPropertiesValidator
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
         if (keysMatchingThisForeignKey.notEmpty())
         {
@@ -617,11 +619,11 @@ public class RequiredPropertiesValidator
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo(),
+                    pair.getTwo().getOnly(),
                     (ObjectNode) childNode);
             return Objects.requireNonNull(result);
         }
@@ -637,7 +639,7 @@ public class RequiredPropertiesValidator
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
@@ -658,11 +660,11 @@ public class RequiredPropertiesValidator
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo(),
+                    pair.getTwo().getOnly(),
                     (ObjectNode) childNode);
             return Objects.requireNonNull(result);
         }

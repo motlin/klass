@@ -22,7 +22,7 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.partition.list.PartitionImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
@@ -627,12 +627,12 @@ public abstract class PersistentSynchronizer
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
 
         if (oppositeForeignKeys.notEmpty())
         {
@@ -651,13 +651,13 @@ public abstract class PersistentSynchronizer
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
             if (childNode instanceof ObjectNode)
             {
                 Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                        pair.getTwo(),
+                        pair.getTwo().getOnly(),
                         (ObjectNode) childNode);
                 return Objects.requireNonNull(result);
             }
@@ -716,12 +716,12 @@ public abstract class PersistentSynchronizer
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
 
         if (oppositeForeignKeys.notEmpty())
         {
