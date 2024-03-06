@@ -12,6 +12,8 @@
 
     <artifactId>klass-token-categories</artifactId>
 
+    <name>Klass Syntax Token Categories</name>
+
     <dependencies>
 
         <dependency>
