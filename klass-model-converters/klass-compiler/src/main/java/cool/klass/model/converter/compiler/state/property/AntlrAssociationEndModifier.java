@@ -70,6 +70,12 @@ public class AntlrAssociationEndModifier extends AntlrModifier
     }
 
     @Override
+    protected boolean isUser()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isUser() not implemented yet");
+    }
+
+    @Override
     @Nonnull
     public AssociationEndModifierBuilder build()
     {

@@ -52,6 +52,12 @@ public class AntlrParameterModifier extends AntlrModifier
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isAudit() not implemented yet");
     }
 
+    @Override
+    protected boolean isUser()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isUser() not implemented yet");
+    }
+
     @Nonnull
     @Override
     public ModifierBuilder<?> build()

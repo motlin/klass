@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
@@ -64,9 +63,16 @@ public class AntlrClassModifier extends AntlrModifier
         return this.name.equals("transient");
     }
 
+    @Override
     public boolean isAudit()
     {
         return this.name.equals("audited");
+    }
+
+    @Override
+    protected boolean isUser()
+    {
+        return this.name.equals("userId");
     }
 
     @Override

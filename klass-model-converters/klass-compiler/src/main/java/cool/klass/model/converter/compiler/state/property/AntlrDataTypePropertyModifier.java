@@ -71,9 +71,16 @@ public class AntlrDataTypePropertyModifier extends AntlrModifier
         return this.name.equals("derived");
     }
 
+    @Override
     public boolean isAudit()
     {
         return AUDIT_PROPERTY_NAMES.contains(this.name);
+    }
+
+    @Override
+    protected boolean isUser()
+    {
+        return this.name.equals("userId");
     }
 
     public boolean isSystem()

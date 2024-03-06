@@ -2640,7 +2640,22 @@ public class KlassCompilerErrorTest
         //</editor-fold>
 
         String[] errors = {
-                "",
+                ""
+                        + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
+                        + "[31mModifier 'userId' requires one 'user' class in the domain model.[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:5)\n"
+                        + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
+                        + "[40;37m3║ [40;35mclass [40;97mUser\n"
+                        + "[40;37m4║ [40;36m{\n"
+                        + "[40;37m5║     [40;33muserId[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;\n"
+                        + "[40;37m ║                        [40;91m^^^^^^\n"
+                        + "[40;37m6║ [40;36m}\n"
+                        + "[m\n"
+                        + "[36mLocation:  [mexample.klass:5[m\n"
+                        + "[36mFile:      [mexample.klass[m\n"
+                        + "[36mLine:      [m5[m\n"
+                        + "[36mCharacter: [m24[m\n",
         };
 
         this.assertCompilerErrors(sourceCodeText, errors);
@@ -2669,7 +2684,7 @@ public class KlassCompilerErrorTest
         String[] errors = {
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2695,7 +2710,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2721,7 +2736,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2747,7 +2762,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Version class macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2765,7 +2780,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (example.klass:3)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2778,7 +2793,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m43[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (example.klass:9)\n"
                         + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2794,7 +2809,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m37[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (example.klass:10)\n"
                         + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2810,7 +2825,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m30[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (example.klass:11)\n"
                         + "[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2846,7 +2861,7 @@ public class KlassCompilerErrorTest
         String[] errors = {
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2867,7 +2882,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m43[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdOn' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2893,7 +2908,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2914,7 +2929,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m43[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2935,7 +2950,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m43[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'createdBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2961,7 +2976,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'lastUpdatedBy' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Audit modifier macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -2987,7 +3002,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (Version class macro)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
@@ -3005,7 +3020,7 @@ public class KlassCompilerErrorTest
                         + "[36mCharacter: [m33[m\n",
                 ""
                         + "[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m\n"
-                        + "[31mModifier 'audited' requires one 'user' class in the domain model .[m\n"
+                        + "[31mModifier 'audited' requires one 'user' class in the domain model.[m\n"
                         + "\n"
                         + "Error at location. (example.klass:3)\n"
                         + "[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors\n"
