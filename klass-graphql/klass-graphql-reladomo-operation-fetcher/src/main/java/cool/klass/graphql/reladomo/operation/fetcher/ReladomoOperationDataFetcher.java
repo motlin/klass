@@ -1,0 +1,89 @@
+package cool.klass.graphql.reladomo.operation.fetcher;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Metered;
+import com.codahale.metrics.annotation.Timed;
+import com.gs.fw.common.mithra.finder.Operation;
+import com.gs.fw.common.mithra.finder.RelatedFinder;
+import com.gs.fw.finder.DomainList;
+import cool.klass.data.store.reladomo.ReladomoDataStore;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.reladomo.tree.RootReladomoTreeNode;
+import cool.klass.model.reladomo.tree.converter.graphql.ReladomoTreeGraphqlConverter;
+import cool.klass.reladomo.tree.deep.fetcher.ReladomoTreeNodeDeepFetcherListener;
+import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
+import io.liftwizard.graphql.exception.LiftwizardGraphQLException;
+import io.liftwizard.model.reladomo.operation.compiler.ReladomoOperationCompiler;
+import org.eclipse.collections.api.factory.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ReladomoOperationDataFetcher<T>
+        implements DataFetcher<List<T>>
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoOperationDataFetcher.class);
+
+    private final DomainModel       domainModel;
+    private final ReladomoDataStore dataStore;
+    private final Klass             klass;
+    private final RelatedFinder<T>  finder;
+
+    public ReladomoOperationDataFetcher(
+            DomainModel domainModel,
+            Klass klass,
+            RelatedFinder<T> finder,
+            ReladomoDataStore dataStore)
+    {
+        this.domainModel = domainModel;
+        this.klass       = Objects.requireNonNull(klass);
+        this.finder      = Objects.requireNonNull(finder);
+        this.dataStore   = Objects.requireNonNull(dataStore);
+    }
+
+    @Timed
+    @Metered
+    @ExceptionMetered
+    @Override
+    public List<T> get(DataFetchingEnvironment environment)
+    {
+        Map<String, Object> arguments      = environment.getArguments();
+        String              inputOperation = (String) arguments.get("operation");
+        Operation           operation      = this.compileOperation(this.finder, inputOperation);
+
+        LOGGER.debug("Executing operation: {}", operation);
+
+        DomainList<T> result               = (DomainList<T>) this.finder.findMany(operation);
+        var           treeGraphqlConverter = new ReladomoTreeGraphqlConverter(this.domainModel);
+
+        var deepFetcher = new ReladomoTreeNodeDeepFetcherListener(
+                this.dataStore,
+                (DomainList) result,
+                this.klass);
+        RootReladomoTreeNode rootReladomoTreeNode = treeGraphqlConverter.convert(
+                this.klass,
+                environment.getSelectionSet());
+
+        deepFetcher.enterRoot(rootReladomoTreeNode);
+
+        return result;
+    }
+
+    private Operation compileOperation(RelatedFinder<T> relatedFinder, String inputOperation)
+    {
+        try
+        {
+            var compiler = new ReladomoOperationCompiler();
+            return compiler.compile(relatedFinder, inputOperation);
+        }
+        catch (RuntimeException e)
+        {
+            throw new LiftwizardGraphQLException(e.getMessage(), Lists.immutable.with(inputOperation), e);
+        }
+    }
+}
