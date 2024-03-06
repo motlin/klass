@@ -8,7 +8,6 @@
     <groupId>cool.klass</groupId>
     <artifactId>klass</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-
     <packaging>pom</packaging>
 
     <name>Klass (Root Module Group)</name>
@@ -345,6 +344,16 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>3.0.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                    <configuration>
+                        <skip>true</skip>
+                        <executable>java</executable>
+                    </configuration>
                 </plugin>
 
                 <plugin>
