@@ -40,13 +40,13 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
     private Mithra generateMithra()
     {
         ImmutableList<MithraObjectResourceType> objectResources = this.domainModel
-                .getKlasses()
+                .getClasses()
                 .reject(Klass::isTransient)
                 .collect(NamedElement::getName)
                 .collect(this::getObjectResource);
 
         ImmutableList<MithraPureObjectResourceType> pureObjectResources = this.domainModel
-                .getKlasses()
+                .getClasses()
                 .select(Klass::isTransient)
                 .collect(NamedElement::getName)
                 .collect(this::getPureObjectResource);

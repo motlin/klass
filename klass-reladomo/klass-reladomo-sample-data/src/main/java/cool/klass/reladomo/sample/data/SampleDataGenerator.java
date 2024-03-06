@@ -42,7 +42,7 @@ public class SampleDataGenerator
         this.dataStore.runInTransaction(transaction ->
         {
             transaction.setSystemTime(this.systemTime.toEpochMilli());
-            ImmutableList<Klass> classesWithTables = this.domainModel.getKlasses().select(this::needsTable);
+            ImmutableList<Klass> classesWithTables = this.domainModel.getClasses().select(this::needsTable);
             classesWithTables.each(this::generate);
         });
     }

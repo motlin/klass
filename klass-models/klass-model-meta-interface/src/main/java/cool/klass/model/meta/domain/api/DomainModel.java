@@ -18,7 +18,7 @@ public interface DomainModel
     ImmutableList<Interface> getInterfaces();
 
     @Nonnull
-    ImmutableList<Klass> getKlasses();
+    ImmutableList<Klass> getClasses();
 
     @Nonnull
     ImmutableList<Association> getAssociations();
@@ -33,7 +33,7 @@ public interface DomainModel
 
     Interface getInterfaceByName(String name);
 
-    Klass getKlassByName(String name);
+    Klass getClassByName(String name);
 
     Association getAssociationByName(String name);
 

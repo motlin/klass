@@ -127,7 +127,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     private ImmutableList<MithraPureObjectConfigurationType> getMithraPureObjectConfigurationTypes()
     {
         return this.domainModel
-                .getKlasses()
+                .getClasses()
                 .select(Klass::isTransient)
                 .collect(PackageableElement::getFullyQualifiedName)
                 .collect(this::getMithraPureObjectConfigurationType);
@@ -145,7 +145,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     private ImmutableList<MithraObjectConfigurationType> getObjectConfigurationTypes()
     {
         return this.domainModel
-                .getKlasses()
+                .getClasses()
                 // TODO: Can a class be transient and abstract? Is that redundant?
                 .reject(Klass::isTransient)
                 .reject(each -> each.getInheritanceType() == InheritanceType.TABLE_PER_SUBCLASS)

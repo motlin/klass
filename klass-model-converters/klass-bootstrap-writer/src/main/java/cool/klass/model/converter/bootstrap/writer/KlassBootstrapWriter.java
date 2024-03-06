@@ -80,7 +80,7 @@ public class KlassBootstrapWriter
             this.handleDataTypeProperties(anInterface);
         }
 
-        for (Klass klass : this.domainModel.getKlasses())
+        for (Klass klass : this.domainModel.getClasses())
         {
             klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
             this.handlePackageableElement(bootstrappedClass, klass);

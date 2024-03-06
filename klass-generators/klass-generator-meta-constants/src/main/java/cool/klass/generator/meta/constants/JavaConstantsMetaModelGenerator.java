@@ -86,7 +86,7 @@ public class JavaConstantsMetaModelGenerator
             this.printStringToFile(path, classSourceCode);
         }
 
-        for (Klass klass : this.domainModel.getKlasses())
+        for (Klass klass : this.domainModel.getClasses())
         {
             Path   path            = this.getOutputPath(outputPath, klass);
             String classSourceCode = this.getClassSourceCode(klass);
@@ -169,9 +169,9 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public ImmutableList<Klass> getKlasses()\n"
+                + "    public ImmutableList<Klass> getClasses()\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getKlasses() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getClasses() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -208,9 +208,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
-                + "    public Klass getKlassByName(String name)\n"
+                + "    public Klass getClassByName(String name)\n"
                 + "    {\n"
-                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getKlassByName() not implemented yet\");\n"
+                + "        throw new UnsupportedOperationException(this.getClass().getSimpleName() + \".getClassByName() not implemented yet\");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"

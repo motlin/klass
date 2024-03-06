@@ -52,7 +52,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 
     public void writeObjectFiles(@Nonnull Path outputPath) throws IOException
     {
-        for (Klass klass : this.domainModel.getKlasses())
+        for (Klass klass : this.domainModel.getClasses())
         {
             this.writeObjectFile(outputPath, klass);
         }

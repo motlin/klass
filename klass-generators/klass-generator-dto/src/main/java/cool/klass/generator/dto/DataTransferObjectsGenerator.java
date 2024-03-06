@@ -44,7 +44,7 @@ public class DataTransferObjectsGenerator
             this.printStringToFile(dtoOutputPath, this.getEnumerationSourceCode(enumeration));
         }
 
-        for (Klass klass : this.domainModel.getKlasses())
+        for (Klass klass : this.domainModel.getClasses())
         {
             Path dtoOutputPath = this.getDtoOutputPath(outputPath, klass);
             this.printStringToFile(dtoOutputPath, this.getClassSourceCode(klass));
