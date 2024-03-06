@@ -201,7 +201,7 @@ class QuestionVote
     systemTemporal
     audited
 {
-    questionId             : Long key;
+    questionId             : Long key final;
     createdById            : String key createdBy userId final;
 }
 
@@ -252,8 +252,8 @@ class Tag
 class QuestionTagMapping
     systemTemporal
 {
-    questionId             : Long key private;
-    tagName                : String key private;
+    questionId             : Long key private final;
+    tagName                : String key private final;
 }
 
 association QuestionHasTagMappings

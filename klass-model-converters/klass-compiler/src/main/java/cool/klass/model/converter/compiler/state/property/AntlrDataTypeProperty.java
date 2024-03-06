@@ -506,6 +506,44 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getTypeParserRuleContext(),
                     AnnotationSeverity.WARNING);
         }
+
+        if (this.isCreatedBy() || this.isLastUpdatedBy())
+        {
+            return;
+        }
+
+        if (!this.isFinal() && associationEnd.isFinal())
+        {
+            String message = String.format(
+                    "Association end '%s.%s' is final [%s] so foreign key '%s.%s' ought to be final.",
+                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
+                    this.getOwningClassifierState().getName(),
+                    this.getName());
+            compilerAnnotationHolder.add("ERR_FOR_FIN", message, this);
+            for (AntlrModifier modifier : associationEnd.getModifiersByName("final"))
+            {
+                compilerAnnotationHolder.add("ERR_FOR_FIN", message, modifier);
+            }
+        }
+
+        if (this.isFinal() && !associationEnd.isFinal())
+        {
+            String message = String.format(
+                    "Association end '%s.%s' is not final [%s] but foreign key '%s.%s' is final. The two properties must match.",
+                    associationEnd.getOwningClassifierState().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
+                    this.getOwningClassifierState().getName(),
+                    this.getName());
+            ImmutableList<AntlrModifier> modifiers = this.getModifiersByName("final");
+            for (AntlrModifier modifier : modifiers)
+            {
+                compilerAnnotationHolder.add("ERR_FOR_FIN", message, modifier);
+            }
+            compilerAnnotationHolder.add("ERR_FOR_FIN", message, associationEnd);
+        }
     }
 
     private void reportInvalidUserIdProperties(CompilerAnnotationState compilerAnnotationHolder)
