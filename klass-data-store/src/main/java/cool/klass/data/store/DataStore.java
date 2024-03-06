@@ -27,7 +27,7 @@ public interface DataStore
     @Nullable
     Object getDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty);
 
-    void setDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty, Object newValue);
+    boolean setDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty, Object newValue);
 
     @Nonnull
     Object instantiate(Klass klass, ImmutableList<Object> keys);

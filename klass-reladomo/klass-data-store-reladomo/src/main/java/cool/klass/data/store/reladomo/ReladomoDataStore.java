@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,6 +30,7 @@ import cool.klass.data.store.DataStore;
 import cool.klass.data.store.Transaction;
 import cool.klass.data.store.TransactionalCommand;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -218,7 +220,68 @@ public class ReladomoDataStore implements DataStore
                     "Domain model and generated code are out of sync. Try rerunning a full clean build.");
         }
 
-        if (dataTypeProperty.isOptional() && attribute.isAttributeNull(persistentInstance))
+        if (attribute.isAttributeNull(persistentInstance))
+        {
+            if (dataTypeProperty.isOptional())
+            {
+                return null;
+            }
+
+            throw new AssertionError(dataTypeProperty);
+        }
+
+        Object result = attribute.valueOf(persistentInstance);
+
+        if (dataTypeProperty.getType() == PrimitiveType.LOCAL_DATE)
+        {
+            return ((java.sql.Date) result).toLocalDate();
+        }
+
+        if (dataTypeProperty.getType() == PrimitiveType.INSTANT)
+        {
+            return ((Timestamp) result).toInstant();
+        }
+
+        boolean isTemporal = dataTypeProperty.isTemporal();
+        if (isTemporal)
+        {
+            Timestamp infinity = ((TimestampAttribute<?>) attribute).getAsOfAttributeInfinity();
+            if (infinity.equals(result))
+            {
+                return null;
+            }
+            // TODO: Consider handling here the case where validTo == systemTo + 1 day, but really means infinity
+            // TODO: Alternately, just enable future dated rows to turn off this optimization
+            return ((Timestamp) result).toInstant();
+        }
+
+        if (dataTypeProperty instanceof EnumerationProperty)
+        {
+            String              prettyName          = (String) result;
+            EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
+            Enumeration         enumeration         = enumerationProperty.getType();
+
+            Optional<EnumerationLiteral> enumerationLiteral = enumeration.getEnumerationLiterals()
+                    .detectOptional(each -> each.getPrettyName().equals(prettyName));
+
+            return enumerationLiteral.orElseThrow(() -> new AssertionError(prettyName));
+        }
+
+        return result;
+    }
+
+    @Nullable
+    public Object getDataTypePropertyLenient(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
+    {
+        RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
+        Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
+        if (attribute == null)
+        {
+            throw new AssertionError(
+                    "Domain model and generated code are out of sync. Try rerunning a full clean build.");
+        }
+
+        if (attribute.isAttributeNull(persistentInstance))
         {
             return null;
         }
@@ -250,19 +313,31 @@ public class ReladomoDataStore implements DataStore
 
         if (dataTypeProperty instanceof EnumerationProperty)
         {
-            String prettyName = (String) result;
-            return ((EnumerationProperty) dataTypeProperty).getType()
-                    .getEnumerationLiterals()
-                    .detectOptional(each -> each.getPrettyName().equals(prettyName))
-                    .get();
+            String              prettyName          = (String) result;
+            EnumerationProperty enumerationProperty = (EnumerationProperty) dataTypeProperty;
+            Enumeration         enumeration         = enumerationProperty.getType();
+
+            Optional<EnumerationLiteral> enumerationLiteral = enumeration.getEnumerationLiterals()
+                    .detectOptional(each -> each.getPrettyName().equals(prettyName));
+
+            return enumerationLiteral.orElseThrow(() -> new AssertionError(prettyName));
         }
 
         return result;
     }
 
     @Override
-    public void setDataTypeProperty(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty, @Nullable Object newValue)
+    public boolean setDataTypeProperty(
+            Object persistentInstance,
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nullable Object newValue)
     {
+        Object oldValue = this.getDataTypePropertyLenient(persistentInstance, dataTypeProperty);
+        if (Objects.equals(oldValue, newValue))
+        {
+            return false;
+        }
+
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
 
@@ -288,6 +363,8 @@ public class ReladomoDataStore implements DataStore
         {
             attribute.setValue(persistentInstance, newValue);
         }
+
+        return true;
     }
 
     @Override
