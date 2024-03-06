@@ -59,6 +59,14 @@ public class RelationshipInferencePhase
             {
                 this.handleTargetAssociationEnd(targetEnd);
             }
+            else if (sourceEnd.isToOne() && targetEnd.isToOneRequired())
+            {
+                this.handleSourceAssociationEnd(sourceEnd);
+            }
+            else if (targetEnd.isToOne() && sourceEnd.isToOneRequired())
+            {
+                this.handleTargetAssociationEnd(targetEnd);
+            }
             else
             {
                 throw new IllegalStateException("Unhandled association end combination: " + association);
