@@ -1,5 +1,6 @@
 package cool.klass.reladomo.persistent.writer;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,8 +15,15 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.stack.MutableStack;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class IncomingUpdateDataModelValidator
 {
@@ -129,25 +137,32 @@ public class IncomingUpdateDataModelValidator
 
     public void handleToMany(
             AssociationEnd associationEnd,
-            JsonNode jsonNode)
+            JsonNode incomingChildInstances)
     {
-        if (!(jsonNode instanceof ArrayNode))
+        if (!(incomingChildInstances instanceof ArrayNode))
         {
-            this.contextStack.push(associationEnd.getName());
-            String error = String.format(
-                    "Error at %s. Expected json array but value was %s.",
-                    this.getContextString(),
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
-            this.contextStack.pop();
+            this.emitNonArrayError(associationEnd, incomingChildInstances);
             return;
         }
 
-        List<Object> childPersistentInstances = this.dataStore.getToMany(
-                this.persistentInstance,
+        ImmutableList<JsonNode> incomingInstancesForInsert = this.filterIncomingInstancesForInsert(
+                incomingChildInstances,
                 associationEnd);
 
-        for (int index = 0; index < jsonNode.size(); index++)
+        // TODO: Figure out how to recurse without checking key
+        ImmutableList<JsonNode> incomingInstancesForUpdate = this.filterIncomingInstancesForUpdate(
+                incomingChildInstances,
+                associationEnd);
+
+        MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
+                incomingInstancesForUpdate,
+                associationEnd);
+
+        MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey = this.getPersistentChildInstancesByKey(
+                incomingChildInstancesByKey,
+                associationEnd);
+
+        for (int index = 0; index < incomingChildInstances.size(); index++)
         {
             String contextString = String.format(
                     "%s[%d]",
@@ -157,9 +172,22 @@ public class IncomingUpdateDataModelValidator
 
             try
             {
-                JsonNode childJsonNode           = jsonNode.get(index);
-                Object   childPersistentInstance = childPersistentInstances.get(index);
-                if (childJsonNode instanceof ObjectNode)
+                JsonNode childJsonNode = incomingChildInstances.path(index);
+                if (this.jsonNodeNeedsIdInferredOnInsert(childJsonNode, associationEnd))
+                {
+                    continue;
+                }
+
+                ImmutableList<Object> keysFromJsonNode        = this.getKeysFromJsonNode(childJsonNode, associationEnd);
+                Object                childPersistentInstance = persistentChildInstancesByKey.get(keysFromJsonNode);
+                /*
+                if (childPersistentInstance == null)
+                {
+                    // TODO: Implement CreateUpdateDataModelValidator and recurse in create mode
+                    return;
+                }
+                */
+                if (childPersistentInstance != null && childJsonNode instanceof ObjectNode)
                 {
                     this.handleAssociationEnd(associationEnd, (ObjectNode) childJsonNode, childPersistentInstance);
                 }
@@ -169,6 +197,86 @@ public class IncomingUpdateDataModelValidator
                 this.contextStack.pop();
             }
         }
+    }
+
+    private MapIterable<ImmutableList<Object>, Object> getPersistentChildInstancesByKey(
+            MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey, AssociationEnd associationEnd)
+    {
+        List<Object> persistentChildInstances = this.dataStore.getToMany(this.persistentInstance, associationEnd);
+        MutableList<Object> nonTerminatedPersistentChildInstances = ListAdapter.adapt(persistentChildInstances)
+                .reject(persistentChildInstance -> this.needsTermination(
+                        persistentChildInstance,
+                        associationEnd.getType(),
+                        incomingChildInstancesByKey));
+        return this.indexPersistentInstances(
+                nonTerminatedPersistentChildInstances,
+                associationEnd.getType());
+    }
+
+    private ImmutableList<JsonNode> filterIncomingInstancesForUpdate(
+            JsonNode incomingChildInstances, AssociationEnd associationEnd)
+    {
+        return Lists.immutable.withAll(incomingChildInstances)
+                .rejectWith(
+                        this::jsonNodeNeedsIdInferredOnInsert,
+                        associationEnd);
+    }
+
+    private ImmutableList<JsonNode> filterIncomingInstancesForInsert(
+            JsonNode incomingChildInstances,
+            AssociationEnd associationEnd)
+    {
+        return Lists.immutable.withAll(incomingChildInstances)
+                .selectWith(
+                        this::jsonNodeNeedsIdInferredOnInsert,
+                        associationEnd);
+    }
+
+    private void emitNonArrayError(AssociationEnd associationEnd, JsonNode incomingChildInstances)
+    {
+        this.contextStack.push(associationEnd.getName());
+        String error = String.format(
+                "Error at %s. Expected json array but value was %s.",
+                this.getContextString(),
+                incomingChildInstances.getNodeType().toString().toLowerCase());
+        this.errors.add(error);
+        this.contextStack.pop();
+    }
+
+    private MapIterable<ImmutableList<Object>, Object> indexPersistentInstances(
+            List<Object> persistentInstances,
+            Klass klass)
+    {
+        // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
+
+        MutableOrderedMap<ImmutableList<Object>, Object> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        for (Object persistentInstance : persistentInstances)
+        {
+            ImmutableList<Object> keysFromPersistentInstance = this.getKeysFromPersistentInstance(
+                    persistentInstance,
+                    klass);
+            result.put(keysFromPersistentInstance, persistentInstance);
+        }
+
+        return result;
+        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
+        // return result.asUnmodifiable();
+    }
+
+    private boolean needsTermination(
+            Object persistentChildInstance,
+            Klass klass,
+            MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
+    {
+        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(persistentChildInstance, klass);
+        return !incomingChildInstancesByKey.containsKey(keys);
+    }
+
+    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, Klass klass)
+    {
+        return klass
+                .getKeyProperties()
+                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
     }
 
     public void handleAssociationEnd(
@@ -193,7 +301,8 @@ public class IncomingUpdateDataModelValidator
                 .reject(DataTypeProperty::isID)
                 .reject(DataTypeProperty::isKey)
                 .reject(DataTypeProperty::isTemporal)
-                .reject(DataTypeProperty::isAudit);
+                .reject(DataTypeProperty::isAudit)
+                .reject(DataTypeProperty::isForeignKey);
 
         this.handleIdProperties(this.klass.getDataTypeProperties().select(DataTypeProperty::isID));
         this.checkPresentPropertiesMatch(this.klass.getDataTypeProperties().select(DataTypeProperty::isTemporal));
@@ -204,7 +313,7 @@ public class IncomingUpdateDataModelValidator
     private void handleIdProperties(ImmutableList<DataTypeProperty> idProperties)
     {
         this.checkPresentPropertiesMatch(idProperties);
-        if (!isRoot)
+        if (!this.isRoot)
         {
             this.checkRequiredPropertiesPresent(idProperties);
         }
@@ -291,5 +400,124 @@ public class IncomingUpdateDataModelValidator
                 .toList()
                 .asReversed()
                 .makeString(".");
+    }
+
+    private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
+            Iterable<JsonNode> incomingInstances,
+            AssociationEnd associationEnd)
+    {
+        MutableOrderedMap<ImmutableList<Object>, JsonNode> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        for (JsonNode incomingInstance : incomingInstances)
+        {
+            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                    incomingInstance,
+                    associationEnd);
+            JsonNode duplicateJsonNode = result.put(keys, incomingInstance);
+            if (duplicateJsonNode != null)
+            {
+                throw new AssertionError("TODO: Test an array of owned children with duplicates with the same key.");
+            }
+        }
+        return result;
+        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
+        // return result.asUnmodifiable();
+    }
+
+    private boolean jsonNodeNeedsIdInferredOnInsert(
+            JsonNode jsonNode,
+            AssociationEnd associationEnd)
+    {
+        return associationEnd
+                .getType()
+                .getKeyProperties()
+                .allSatisfy(keyProperty -> this.jsonNodeNeedsIdInferredOnInsert(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd));
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            JsonNode jsonNode,
+            AssociationEnd associationEnd)
+    {
+        return associationEnd
+                .getType()
+                .getKeyProperties()
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd));
+    }
+
+    private boolean jsonNodeNeedsIdInferredOnInsert(
+            DataTypeProperty keyProperty,
+            JsonNode jsonNode,
+            AssociationEnd associationEnd)
+    {
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+
+        AssociationEnd opposite = associationEnd.getOpposite();
+
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+
+        if (oppositeForeignKeys.notEmpty())
+        {
+            return false;
+        }
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            return false;
+        }
+
+        return JsonDataTypeValueVisitor.dataTypePropertyIsNullInJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
+    }
+
+    private Object getKeyFromJsonNode(
+            DataTypeProperty keyProperty,
+            JsonNode jsonNode,
+            AssociationEnd associationEnd)
+    {
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+
+        AssociationEnd opposite = associationEnd.getOpposite();
+
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+
+        if (oppositeForeignKeys.notEmpty())
+        {
+            Object result = this.dataStore.getDataTypeProperty(
+                    this.persistentInstance,
+                    oppositeForeignKeys.getOnly());
+            return Objects.requireNonNull(result);
+        }
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+
+            JsonNode childNode = jsonNode.path(pair.getOne().getName());
+            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                    pair.getTwo(),
+                    (ObjectNode) childNode);
+            return Objects.requireNonNull(result);
+        }
+
+        Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
+        return Objects.requireNonNull(result);
     }
 }

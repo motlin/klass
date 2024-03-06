@@ -17,20 +17,20 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
 {
     private final Classifier           classifier;
     private final PrimitiveProperty    primitiveProperty;
-    private final JsonNode             jsonNode;
+    private final JsonNode             jsonDataTypeValue;
     private final MutableStack<String> contextStack;
     private final MutableList<String>  errors;
 
     public JsonTypeCheckingPrimitiveTypeVisitor(
             Classifier classifier,
             PrimitiveProperty primitiveProperty,
-            JsonNode jsonNode,
+            JsonNode jsonDataTypeValue,
             MutableStack<String> contextStack,
             MutableList<String> errors)
     {
         this.classifier = Objects.requireNonNull(classifier);
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
-        this.jsonNode = Objects.requireNonNull(jsonNode);
+        this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
         this.contextStack = Objects.requireNonNull(contextStack);
         this.errors = Objects.requireNonNull(errors);
     }
@@ -45,8 +45,8 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
                 this.primitiveProperty.getName(),
                 this.primitiveProperty.getType().getPrettyName(),
                 this.primitiveProperty.isOptional() ? "?" : "",
-                this.jsonNode,
-                this.jsonNode.getNodeType().toString().toLowerCase());
+                this.jsonDataTypeValue,
+                this.jsonDataTypeValue.getNodeType().toString().toLowerCase());
         this.errors.add(error);
     }
 
@@ -55,7 +55,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitString()
     {
-        if (!this.jsonNode.isTextual())
+        if (!this.jsonDataTypeValue.isTextual())
         {
             this.emitTypeError();
         }
@@ -64,7 +64,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitInteger()
     {
-        if (!this.jsonNode.isIntegralNumber() || !this.jsonNode.canConvertToInt())
+        if (!this.jsonDataTypeValue.isIntegralNumber() || !this.jsonDataTypeValue.canConvertToInt())
         {
             this.emitTypeError();
         }
@@ -73,7 +73,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitLong()
     {
-        if (!this.jsonNode.isIntegralNumber() || !this.jsonNode.canConvertToLong())
+        if (!this.jsonDataTypeValue.isIntegralNumber() || !this.jsonDataTypeValue.canConvertToLong())
         {
             this.emitTypeError();
         }
@@ -82,10 +82,10 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitDouble()
     {
-        if (!this.jsonNode.isDouble()
-                && !this.jsonNode.isFloat()
-                && !this.jsonNode.isInt()
-                && !this.jsonNode.isLong())
+        if (!this.jsonDataTypeValue.isDouble()
+                && !this.jsonDataTypeValue.isFloat()
+                && !this.jsonDataTypeValue.isInt()
+                && !this.jsonDataTypeValue.isLong())
         {
             this.emitTypeError();
         }
@@ -94,20 +94,29 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitFloat()
     {
-        if (!this.jsonNode.isDouble()
-                && !this.jsonNode.isFloat()
-                && !this.jsonNode.isInt()
-                && !this.jsonNode.isLong()
-                || this.jsonNode.doubleValue() != this.jsonNode.floatValue())
+        if (!this.jsonDataTypeValue.isDouble()
+                && !this.jsonDataTypeValue.isFloat()
+                && !this.jsonDataTypeValue.isInt()
+                && !this.jsonDataTypeValue.isLong()
+                || !this.hasValidFloatString())
         {
             this.emitTypeError();
         }
     }
 
+    private boolean hasValidFloatString()
+    {
+        double doubleValue  = this.jsonDataTypeValue.doubleValue();
+        float  floatValue   = this.jsonDataTypeValue.floatValue();
+        String doubleString = Double.toString(doubleValue);
+        String floatString  = Float.toString(floatValue);
+        return doubleString.equals(floatString);
+    }
+
     @Override
     public void visitBoolean()
     {
-        if (!this.jsonNode.isBoolean())
+        if (!this.jsonDataTypeValue.isBoolean())
         {
             this.emitTypeError();
         }
@@ -122,12 +131,12 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     @Override
     public void visitLocalDate()
     {
-        if (!this.jsonNode.isTextual())
+        if (!this.jsonDataTypeValue.isTextual())
         {
             this.emitTypeError();
         }
 
-        String text = this.jsonNode.textValue();
+        String text = this.jsonDataTypeValue.textValue();
         if (text.equals("now") || text.equals("infinity"))
         {
             return;
@@ -143,7 +152,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
                     "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by LocalDate.parse().",
                     this.classifier,
                     this.primitiveProperty,
-                    this.jsonNode);
+                    this.jsonDataTypeValue);
             this.errors.add(error);
         }
     }
@@ -162,7 +171,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
 
     private void visitTemporal()
     {
-        if (this.jsonNode.isNull()
+        if (this.jsonDataTypeValue.isNull()
                 && this.primitiveProperty.isTemporalInstant()
                 && this.primitiveProperty.getPropertyModifiers().anySatisfy(PropertyModifier::isTo))
         {
@@ -170,13 +179,13 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
             return;
         }
 
-        if (!this.jsonNode.isTextual())
+        if (!this.jsonDataTypeValue.isTextual())
         {
             this.emitTypeError();
             return;
         }
 
-        String text = this.jsonNode.textValue();
+        String text = this.jsonDataTypeValue.textValue();
         if (text.equals("now") || text.equals("infinity"))
         {
             return;
@@ -192,7 +201,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
                     "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
                     this.classifier,
                     this.primitiveProperty,
-                    this.jsonNode);
+                    this.jsonDataTypeValue);
             this.errors.add(error);
         }
     }

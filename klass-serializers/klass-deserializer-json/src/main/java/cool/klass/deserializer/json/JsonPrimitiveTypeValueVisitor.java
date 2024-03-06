@@ -76,12 +76,21 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
                 && !this.jsonDataTypeValue.isFloat()
                 && !this.jsonDataTypeValue.isInt()
                 && !this.jsonDataTypeValue.isLong()
-                || this.jsonDataTypeValue.doubleValue() != this.jsonDataTypeValue.floatValue())
+                || !this.hasValidFloatString())
         {
             throw new AssertionError();
         }
 
         this.result = this.jsonDataTypeValue.floatValue();
+    }
+
+    private boolean hasValidFloatString()
+    {
+        double doubleValue  = this.jsonDataTypeValue.doubleValue();
+        float  floatValue   = this.jsonDataTypeValue.floatValue();
+        String doubleString = Double.toString(doubleValue);
+        String floatString  = Float.toString(floatValue);
+        return doubleString.equals(floatString);
     }
 
     @Override

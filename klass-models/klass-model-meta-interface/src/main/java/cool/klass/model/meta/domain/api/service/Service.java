@@ -35,7 +35,7 @@ public interface Service extends Element
     @Nonnull
     Optional<Criteria> getVersionCriteria();
 
-    ServiceProjectionDispatch getProjectionDispatch();
+    Optional<ServiceProjectionDispatch> getProjectionDispatch();
 
     @Nonnull
     Optional<OrderBy> getOrderBy();

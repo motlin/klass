@@ -249,7 +249,8 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "{\n"
+        String expected = ""
+                + "{\n"
                 + "  \"name\": \"PackageableElement\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
@@ -341,7 +342,8 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "{\n"
+        String expected = ""
+                + "{\n"
                 + "  \"name\": \"Classifier\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
@@ -721,7 +723,8 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "{\n"
+        String expected = ""
+                + "{\n"
                 + "  \"_type\": \"ServiceProjection\",\n"
                 + "  \"name\": \"ProjectionElementSummaryProjection\",\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
@@ -771,7 +774,8 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "{\n"
+        String expected = ""
+                + "{\n"
                 + "  \"name\": \"ServiceGroup\",\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
                 + "  \"urls\": [\n"

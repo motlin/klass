@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 public class AllKeyPropertiesTest extends AbstractCoverageTest
 {
     @Test
@@ -163,67 +166,133 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
         Client client = this.getClient(
                 "cool.klass.xample.coverage.dropwizard.test.AllKeyPropertiesTest.put");
 
-        //language=JSON
-        String json = ""
-                + "[\n"
-                + "  {\n"
-                + "    \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
-                + "    \"keyInteger\": 1,\n"
-                + "    \"keyLong\": 100000000000,\n"
-                + "    \"keyDouble\": 1.0123456789,\n"
-                + "    \"keyFloat\": 1.0123457,\n"
-                + "    \"keyBoolean\": true,\n"
-                + "    \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "    \"keyLocalDate\": \"1999-12-31\",\n"
-                + "    \"allForeignKeyProperties\": [\n"
-                + "      {\n"
-                + "        \"id\": 1,\n"
-                + "        \"data\": \"edited\"\n"
-                + "      },\n"
-                + "      {\n"
-                + "        \"data\": \"new\"\n"
-                + "      }\n"
-                + "    ]\n"
-                + "  }\n"
-                + "]\n";
+        {
+            Response response = client.target(
+                    String.format(
+                            "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
+                            RULE.getLocalPort()))
+                    .request()
+                    .get();
 
-        Response response = client.target(
-                String.format("http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/", RULE.getLocalPort()))
-                .request()
-                .put(Entity.json(json));
+            this.assertResponseStatus(response, Status.OK);
+            String jsonResponse = response.readEntity(String.class);
 
-        this.assertResponseStatus(response, Status.OK);
+            //language=JSON
+            String expectedJson = ""
+                    + "{\n"
+                    + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "  \"keyInteger\": 1,\n"
+                    + "  \"keyLong\": 1,\n"
+                    + "  \"keyDouble\": 1.0123456789,\n"
+                    + "  \"keyFloat\": 1.0123457,\n"
+                    + "  \"keyBoolean\": true,\n"
+                    + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "  \"keyLocalDate\": \"1999-12-31\",\n"
+                    + "  \"allForeignKeyProperties\": [\n"
+                    + "    {\n"
+                    + "      \"id\": 1,\n"
+                    + "      \"foreignKeyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "      \"foreignKeyInteger\": 1,\n"
+                    + "      \"foreignKeyLong\": 1,\n"
+                    + "      \"foreignKeyDouble\": 1.0123456789,\n"
+                    + "      \"foreignKeyFloat\": 1.0123457,\n"
+                    + "      \"foreignKeyBoolean\": true,\n"
+                    + "      \"foreignKeyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
+                    + "      \"data\": \"AllForeignKeyProperties data 1 ☝\"\n"
+                    + "    }\n"
+                    + "  ]\n"
+                    + "}\n";
 
-        String jsonResponse = response.readEntity(String.class);
+            JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);
+        }
 
-        // TODO: PUT shouldn't actually return anything
-        //language=JSON
-        String expectedJson = ""
-                + "{\n"
-                + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
-                + "  \"keyInteger\": 1,\n"
-                + "  \"keyLong\": 1,\n"
-                + "  \"keyDouble\": 1.0123456789,\n"
-                + "  \"keyFloat\": 1.0123457,\n"
-                + "  \"keyBoolean\": true,\n"
-                + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"keyLocalDate\": \"1999-12-31\",\n"
-                + "  \"allForeignKeyProperties\": [\n"
-                + "    {\n"
-                + "      \"id\": 1,\n"
-                + "      \"foreignKeyString\": \"AllKeyProperties keyString 1 ☝\",\n"
-                + "      \"foreignKeyInteger\": 1,\n"
-                + "      \"foreignKeyLong\": 1,\n"
-                + "      \"foreignKeyDouble\": 1.0123456789,\n"
-                + "      \"foreignKeyFloat\": 1.0123457,\n"
-                + "      \"foreignKeyBoolean\": true,\n"
-                + "      \"foreignKeyInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
-                + "      \"data\": \"AllForeignKeyProperties data 1 ☝\"\n"
-                + "    }\n"
-                + "  ]\n"
-                + "}\n";
+        {
+            //language=JSON
+            String json = ""
+                    + "{\n"
+                    + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "  \"keyInteger\": 1,\n"
+                    + "  \"keyLong\": 100000000000,\n"
+                    + "  \"keyDouble\": 1.0123456789,\n"
+                    + "  \"keyFloat\": 1.0123457,\n"
+                    + "  \"keyBoolean\": true,\n"
+                    + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "  \"keyLocalDate\": \"1999-12-31\",\n"
+                    + "  \"allForeignKeyProperties\": [\n"
+                    + "    {\n"
+                    + "      \"id\": 1,\n"
+                    + "      \"data\": \"edited\"\n"
+                    + "    },\n"
+                    + "    {\n"
+                    + "      \"data\": \"new\"\n"
+                    + "    }\n"
+                    + "  ]\n"
+                    + "}\n";
 
-        JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);
+            Response response = client.target(
+                    String.format(
+                            "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
+                            RULE.getLocalPort()))
+                    .request()
+                    .put(Entity.json(json));
+
+            this.assertResponseStatus(response, Status.NO_CONTENT);
+            String jsonResponse = response.readEntity(String.class);
+            assertThat(jsonResponse, is(""));
+        }
+
+        {
+            Response response = client.target(
+                    String.format(
+                            "http://localhost:%d/api/allKeyProperties/AllKeyProperties keyString 1 ☝/1/1/1.0123456789/1.0123457/true/1999-12-31T23:59:00Z/1999-12-31/",
+                            RULE.getLocalPort()))
+                    .request()
+                    .get();
+
+            this.assertResponseStatus(response, Status.OK);
+            String jsonResponse = response.readEntity(String.class);
+
+            //language=JSON
+            String expectedJson = ""
+                    + "{\n"
+                    + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "  \"keyInteger\": 1,\n"
+                    + "  \"keyLong\": 1,\n"
+                    + "  \"keyDouble\": 1.0123456789,\n"
+                    + "  \"keyFloat\": 1.0123457,\n"
+                    + "  \"keyBoolean\": true,\n"
+                    + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "  \"keyLocalDate\": \"1999-12-31\",\n"
+                    + "  \"allForeignKeyProperties\": [\n"
+                    + "    {\n"
+                    + "      \"id\": 1,\n"
+                    + "      \"foreignKeyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "      \"foreignKeyInteger\": 1,\n"
+                    + "      \"foreignKeyLong\": 1,\n"
+                    + "      \"foreignKeyDouble\": 1.0123456789,\n"
+                    + "      \"foreignKeyFloat\": 1.0123457,\n"
+                    + "      \"foreignKeyBoolean\": true,\n"
+                    + "      \"foreignKeyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
+                    + "      \"data\": \"edited\"\n"
+                    + "    },\n"
+                    + "    {\n"
+                    + "      \"id\": 3,\n"
+                    + "      \"foreignKeyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                    + "      \"foreignKeyInteger\": 1,\n"
+                    + "      \"foreignKeyLong\": 1,\n"
+                    + "      \"foreignKeyDouble\": 1.0123456789,\n"
+                    + "      \"foreignKeyFloat\": 1.0123457,\n"
+                    + "      \"foreignKeyBoolean\": true,\n"
+                    + "      \"foreignKeyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                    + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
+                    + "      \"data\": \"new\"\n"
+                    + "    }\n"
+                    + "  ]\n"
+                    + "}";
+
+            JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);
+        }
     }
 }

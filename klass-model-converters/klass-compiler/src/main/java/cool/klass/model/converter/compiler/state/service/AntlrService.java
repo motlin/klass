@@ -16,10 +16,7 @@ import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
-import cool.klass.model.converter.compiler.state.projection.AntlrProjectionDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
@@ -72,7 +69,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     private final MutableOrderedMap<ServiceCriteriaDeclarationContext, AntlrServiceCriteria> serviceCriteriaByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private AntlrServiceProjectionDispatch serviceProjectionDispatchState;
+    private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState;
     @Nonnull
     private Optional<AntlrOrderBy>         orderByState = Optional.empty();
     private ServiceBuilder                 elementBuilder;
@@ -147,7 +144,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     public void enterServiceProjectionDispatch(@Nonnull AntlrServiceProjectionDispatch projectionDispatch)
     {
-        this.serviceProjectionDispatchState = Objects.requireNonNull(projectionDispatch);
+        this.serviceProjectionDispatchState = Optional.of(projectionDispatch);
     }
 
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -187,8 +184,14 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     private void reportInvalidProjection(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        AntlrProjection projection = this.serviceProjectionDispatchState.getProjection();
-        this.serviceProjectionDispatchState.reportErrors(compilerErrorHolder);
+        if (!this.serviceProjectionDispatchState.isPresent())
+        {
+            return;
+        }
+
+        AntlrServiceProjectionDispatch projectionDispatch = this.serviceProjectionDispatchState.get();
+        AntlrProjection                projection         = projectionDispatch.getProjection();
+        projectionDispatch.reportErrors(compilerErrorHolder);
 
         if (projection == AntlrProjection.NOT_FOUND || projection.getKlass() == AntlrClass.NOT_FOUND)
         {
@@ -208,40 +211,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
             MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
             MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
-        }
-    }
-
-    private void reportInvalidWriteProjection(
-            AntlrProjection projection,
-            @Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        MutableList<AntlrDataTypeProperty<?>> requiredProperties = projection.getKlass()
-                .getDataTypeProperties()
-                .asLazy()
-                .reject(AntlrDataTypeProperty::isOptional)
-                .reject(AntlrDataTypeProperty::isKey)
-                .reject(AntlrDataTypeProperty::isID)
-                .reject(AntlrDataTypeProperty::isTemporal)
-                .reject(AntlrDataTypeProperty::isAudit)
-                .toList();
-
-        MutableList<AntlrDataTypeProperty<?>> includedProperties = projection.getChildren()
-                .selectInstancesOf(AntlrProjectionDataTypeProperty.class)
-                .collect(AntlrProjectionDataTypeProperty::getDataTypeProperty);
-
-        MutableList<AntlrDataTypeProperty<?>> missingProperties = requiredProperties.reject(includedProperties::contains);
-
-        if (missingProperties.notEmpty())
-        {
-            String message = String.format(
-                    "ERR_WRT_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
-                    projection.getName(),
-                    missingProperties.collect(AntlrProperty::getName).makeString());
-
-            compilerErrorHolder.add(
-                    message,
-                    this,
-                    this.serviceProjectionDispatchState.getElementContext().projectionReference());
         }
     }
 
@@ -282,7 +251,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             this.elementBuilder.addCriteriaBuilder(serviceCriteriaKeyword, criteriaBuilder);
         }
 
-        ServiceProjectionDispatchBuilder projectionDispatchBuilder = this.serviceProjectionDispatchState.build();
+        Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder =
+                this.serviceProjectionDispatchState.map(AntlrServiceProjectionDispatch::build);
         this.elementBuilder.setProjectionDispatch(projectionDispatchBuilder);
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);

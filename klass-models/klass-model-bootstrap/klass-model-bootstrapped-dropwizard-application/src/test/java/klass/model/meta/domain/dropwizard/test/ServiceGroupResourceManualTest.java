@@ -75,7 +75,8 @@ public class ServiceGroupResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "[\n"
+        String expected = ""
+                + "[\n"
                 + "  {\n"
                 + "    \"name\": \"Enumeration\",\n"
                 + "    \"packageName\": \"klass.model.meta.domain\",\n"

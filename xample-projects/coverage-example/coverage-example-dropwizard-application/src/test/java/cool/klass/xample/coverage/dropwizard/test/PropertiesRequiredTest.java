@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 public class PropertiesRequiredTest extends AbstractCoverageTest
 {
     @Test
@@ -99,9 +102,9 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 .resolveTemplate("id", 1)
                 .request()
                 .put(Entity.json(json));
-        this.assertResponseStatus(putResponse, Status.OK);
-        String putJsonResponse = putResponse.readEntity(String.class);
-        JSONAssert.assertEquals(json, putJsonResponse, JSONCompareMode.STRICT);
+        this.assertResponseStatus(putResponse, Status.NO_CONTENT);
+        String putStringResponse = putResponse.readEntity(String.class);
+        assertThat(putStringResponse, is(""));
 
         Response getResponse = client.target(
                 String.format("http://localhost:%d/api/propertiesRequired/{id}", RULE.getLocalPort()))

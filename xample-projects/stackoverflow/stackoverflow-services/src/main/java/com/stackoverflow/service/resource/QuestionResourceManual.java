@@ -113,7 +113,7 @@ public class QuestionResourceManual
         MutableList<String> errors = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
-                StackOverflowDomainModel.QuestionWriteProjection.getKlass(),
+                StackOverflowDomainModel.Question,
                 incomingInstance,
                 OperationMode.REPLACE,
                 errors);
@@ -152,10 +152,9 @@ public class QuestionResourceManual
         }
         Object persistentInstance = result.get(0);
 
-        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
         IncomingUpdateDataModelValidator.validate(
                 this.dataStore,
-                projection.getKlass(),
+                StackOverflowDomainModel.Question,
                 persistentInstance,
                 incomingInstance,
                 errors);
@@ -172,7 +171,7 @@ public class QuestionResourceManual
         // TODO: Only increment version number if data actually changed
 
         PersistentReplacer replacer = new PersistentReplacer(this.dataStore);
-        replacer.synchronize(projection.getKlass(), persistentInstance, incomingInstance);
+        replacer.synchronize(StackOverflowDomainModel.Question, persistentInstance, incomingInstance);
     }
 
     @Nonnull

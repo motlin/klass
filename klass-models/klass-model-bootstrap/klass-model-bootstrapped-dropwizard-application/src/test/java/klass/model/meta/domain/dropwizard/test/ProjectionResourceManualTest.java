@@ -75,7 +75,8 @@ public class ProjectionResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "[\n"
+        String expected = ""
+                + "[\n"
                 + "  {\n"
                 + "    \"_type\": \"ServiceProjection\",\n"
                 + "    \"name\": \"EnumerationProjection\",\n"

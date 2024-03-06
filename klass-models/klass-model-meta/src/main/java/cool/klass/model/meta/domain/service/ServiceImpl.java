@@ -10,6 +10,7 @@ import cool.klass.model.meta.domain.api.criteria.Criteria;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
+import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
@@ -33,7 +34,7 @@ public final class ServiceImpl extends AbstractElement implements Service
     private Optional<Criteria> conflictCriteria;
     private Optional<Criteria> versionCriteria;
 
-    private ServiceProjectionDispatchImpl projectionDispatch;
+    private Optional<ServiceProjectionDispatch> projectionDispatch;
 
     @Nonnull
     private Optional<OrderBy> orderBy = Optional.empty();
@@ -153,12 +154,12 @@ public final class ServiceImpl extends AbstractElement implements Service
     }
 
     @Override
-    public ServiceProjectionDispatchImpl getProjectionDispatch()
+    public Optional<ServiceProjectionDispatch> getProjectionDispatch()
     {
         return Objects.requireNonNull(this.projectionDispatch);
     }
 
-    private void setProjectionDispatch(ServiceProjectionDispatchImpl projectionDispatch)
+    private void setProjectionDispatch(Optional<ServiceProjectionDispatch> projectionDispatch)
     {
         if (this.projectionDispatch != null)
         {
@@ -210,7 +211,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         @Nonnull
         private final ServiceMultiplicity serviceMultiplicity;
 
-        private ServiceProjectionDispatchBuilder projectionDispatchBuilder;
+        private Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder;
 
         @Nonnull
         private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
@@ -283,7 +284,7 @@ public final class ServiceImpl extends AbstractElement implements Service
             }
         }
 
-        public void setProjectionDispatch(@Nonnull ServiceProjectionDispatchBuilder projectionDispatchBuilder)
+        public void setProjectionDispatch(@Nonnull Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder)
         {
             this.projectionDispatchBuilder = Objects.requireNonNull(projectionDispatchBuilder);
         }
@@ -304,7 +305,7 @@ public final class ServiceImpl extends AbstractElement implements Service
                     this.verb,
                     this.serviceMultiplicity);
 
-            ServiceProjectionDispatchImpl projectionDispatch = this.projectionDispatchBuilder.build();
+            Optional<ServiceProjectionDispatch> projectionDispatch = this.projectionDispatchBuilder.map(ElementBuilder::build);
             service.setProjectionDispatch(projectionDispatch);
 
             Optional<Criteria> queryCriteria     = this.criteria.map(AbstractCriteriaBuilder::build);

@@ -75,7 +75,8 @@ public class AssociationResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "[\n"
+        String expected = ""
+                + "[\n"
                 + "  {\n"
                 + "    \"name\": \"EnumerationHasLiterals\",\n"
                 + "    \"packageName\": \"klass.model.meta.domain\",\n"

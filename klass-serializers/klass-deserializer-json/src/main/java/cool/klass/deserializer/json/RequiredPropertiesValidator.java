@@ -198,8 +198,10 @@ public class RequiredPropertiesValidator
                 .reject(DataTypeProperty::isID)
                 .reject(DataTypeProperty::isKey)
                 .reject(DataTypeProperty::isTemporal)
-                .reject(DataTypeProperty::isAudit);
+                .reject(DataTypeProperty::isAudit)
+                .reject(DataTypeProperty::isForeignKey);
 
+        // TODO: Handle foreign key properties that are also key properties at the root
         this.handleIdProperties(this.klass.getDataTypeProperties().select(DataTypeProperty::isID));
         this.handleKeyProperties(this.klass.getKeyProperties().reject(DataTypeProperty::isID));
         this.handlePlainProperties(plainProperties);
@@ -217,11 +219,8 @@ public class RequiredPropertiesValidator
             return;
         }
 
-        for (DataTypeProperty idProperty : idProperties)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".handleIdProperties() not implemented yet");
-        }
+        // TODO: Keep track of path used to get here. Key properties should be required for final to-one required properties
+        return;
     }
 
     private void handleKeyProperties(ImmutableList<DataTypeProperty> keyProperties)

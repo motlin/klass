@@ -163,7 +163,7 @@ class AllForeignKeyProperties
 association AllKeyPropertiesHasAllForeignKeyProperties
 {
     allKeyProperties: AllKeyProperties[1..1];
-    allForeignKeyProperties: AllForeignKeyProperties[0..*];
+    allForeignKeyProperties: AllForeignKeyProperties[0..*] owned;
 
     relationship this.keyString == AllForeignKeyProperties.foreignKeyString
             && this.keyInteger == AllForeignKeyProperties.foreignKeyInteger

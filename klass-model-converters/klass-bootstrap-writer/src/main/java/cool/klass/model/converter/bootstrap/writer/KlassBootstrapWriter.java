@@ -42,6 +42,7 @@ import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import klass.model.meta.domain.AssociationEndOrderBy;
@@ -336,9 +337,10 @@ public class KlassBootstrapWriter
         bootstrappedService.setUrlString(url.getUrlString());
         bootstrappedService.setVerb(service.getVerb().name());
         bootstrappedService.setServiceMultiplicity(service.getServiceMultiplicity().getPrettyName());
-        // TODO: Projections aren't required for write services
-        bootstrappedService.setProjectionName(service.getProjectionDispatch().getProjection().getName());
-
+        service.getProjectionDispatch()
+                .map(ServiceProjectionDispatch::getProjection)
+                .map(NamedElement::getName)
+                .ifPresent(bootstrappedService::setProjectionName);
         optionalBootstrappedQueryCriteria.ifPresent(bootstrappedService::setQueryCriteria);
         optionalBootstrappedAuthorizeCriteria.ifPresent(bootstrappedService::setAuthorizeCriteria);
         optionalBootstrappedValidateCriteria.ifPresent(bootstrappedService::setValidateCriteria);

@@ -117,12 +117,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
@@ -152,6 +146,12 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-connection-manager-h2</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>

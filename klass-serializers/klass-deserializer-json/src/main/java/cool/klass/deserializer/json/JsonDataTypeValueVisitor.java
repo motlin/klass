@@ -23,6 +23,12 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
         this.jsonDataTypeValue = jsonDataTypeValue;
     }
 
+    public static boolean dataTypePropertyIsNullInJson(DataTypeProperty dataTypeProperty, ObjectNode incomingJson)
+    {
+        JsonNode jsonDataTypeValue = incomingJson.path(dataTypeProperty.getName());
+        return jsonDataTypeValue.isMissingNode() || jsonDataTypeValue.isNull();
+    }
+
     // TODO: Needs temporal context
     public static Object extractDataTypePropertyFromJson(DataTypeProperty dataTypeProperty, ObjectNode incomingJson)
     {
