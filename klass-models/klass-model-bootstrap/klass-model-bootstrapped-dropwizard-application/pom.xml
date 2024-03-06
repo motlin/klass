@@ -229,6 +229,20 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-clock-system</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-uuid-system</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
