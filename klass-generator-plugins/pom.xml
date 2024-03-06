@@ -23,5 +23,6 @@
         <module>klass-compiler-plugin</module>
         <module>klass-generator-dto-plugin</module>
         <module>klass-generator-meta-constants-plugin</module>
+        <module>klass-generator-json-view-plugin</module>
     </modules>
 </project>
