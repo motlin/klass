@@ -22,8 +22,8 @@ import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd;
-import cool.klass.model.meta.domain.projection.ProjectionMember;
-import cool.klass.model.meta.domain.projection.ProjectionPrimitiveMember;
+import cool.klass.model.meta.domain.projection.ProjectionDataTypeProperty;
+import cool.klass.model.meta.domain.projection.ProjectionElement;
 import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.PrimitiveType;
@@ -36,16 +36,16 @@ public class ReladomoJsonTree implements JsonSerializable
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoJsonTree.class);
 
-    private final MithraObject                    mithraObject;
-    private final ImmutableList<ProjectionMember> projectionMembers;
+    private final MithraObject                     mithraObject;
+    private final ImmutableList<ProjectionElement> projectionElements;
 
     public ReladomoJsonTree(
             MithraObject mithraObject,
-            @Nonnull ImmutableList<ProjectionMember> projectionMembers)
+            @Nonnull ImmutableList<ProjectionElement> projectionElements)
     {
         this.mithraObject = Objects.requireNonNull(mithraObject);
-        this.projectionMembers = Objects.requireNonNull(projectionMembers);
-        if (projectionMembers.isEmpty())
+        this.projectionElements = Objects.requireNonNull(projectionElements);
+        if (projectionElements.isEmpty())
         {
             throw new AssertionError();
         }
@@ -54,34 +54,35 @@ public class ReladomoJsonTree implements JsonSerializable
     public static void serialize(
             JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            @Nonnull ImmutableList<ProjectionMember> projectionMembers) throws IOException
+            @Nonnull ImmutableList<ProjectionElement> projectionElements) throws IOException
     {
         RelatedFinder finder = mithraObject.zGetPortal().getFinder();
 
         jsonGenerator.writeStartObject();
         try
         {
-            for (ProjectionMember projectionMember : projectionMembers)
+            // TODO: Use listener?
+            for (ProjectionElement projectionElement : projectionElements)
             {
-                if (projectionMember instanceof ProjectionPrimitiveMember)
+                if (projectionElement instanceof ProjectionDataTypeProperty)
                 {
                     handleProjectionPrimitiveMember(
                             jsonGenerator,
                             mithraObject,
                             finder,
-                            (ProjectionPrimitiveMember) projectionMember);
+                            (ProjectionDataTypeProperty) projectionElement);
                 }
-                else if (projectionMember instanceof ProjectionAssociationEnd)
+                else if (projectionElement instanceof ProjectionAssociationEnd)
                 {
                     handleProjectionAssociationEnd(
                             jsonGenerator,
                             mithraObject,
                             finder,
-                            (ProjectionAssociationEnd) projectionMember);
+                            (ProjectionAssociationEnd) projectionElement);
                 }
                 else
                 {
-                    throw new AssertionError(projectionMember.getClass().getSimpleName());
+                    throw new AssertionError(projectionElement.getClass().getSimpleName());
                 }
             }
         }
@@ -100,7 +101,7 @@ public class ReladomoJsonTree implements JsonSerializable
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
             @Nonnull RelatedFinder finder,
-            ProjectionPrimitiveMember projectionPrimitiveMember) throws IOException
+            ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
         DataTypeProperty<?> property     = projectionPrimitiveMember.getProperty();
         String              propertyName = property.getName();
@@ -130,9 +131,9 @@ public class ReladomoJsonTree implements JsonSerializable
             RelatedFinder finder,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
-        ImmutableList<ProjectionMember> childrenProjectionMembers = projectionAssociationEnd.getProjectionMembers();
-        AssociationEnd                  associationEnd            = projectionAssociationEnd.getAssociationEnd();
-        Multiplicity                    multiplicity              = associationEnd.getMultiplicity();
+        ImmutableList<ProjectionElement> children = projectionAssociationEnd.getChildren();
+        AssociationEnd                 associationEnd            = projectionAssociationEnd.getAssociationEnd();
+        Multiplicity                   multiplicity              = associationEnd.getMultiplicity();
 
         String associationEndName = associationEnd.getName();
 
@@ -153,7 +154,7 @@ public class ReladomoJsonTree implements JsonSerializable
             try
             {
                 mithraList.forEachWithCursor(eachChildValue ->
-                        recurse(jsonGenerator, childrenProjectionMembers, (MithraObject) eachChildValue));
+                        recurse(jsonGenerator, children, (MithraObject) eachChildValue));
             }
             finally
             {
@@ -163,18 +164,18 @@ public class ReladomoJsonTree implements JsonSerializable
         else
         {
             jsonGenerator.writeFieldName(associationEndName);
-            recurse(jsonGenerator, childrenProjectionMembers, (MithraObject) value);
+            recurse(jsonGenerator, children, (MithraObject) value);
         }
     }
 
     public static boolean recurse(
             @Nonnull JsonGenerator jsonGenerator,
-            @Nonnull ImmutableList<ProjectionMember> childrenProjectionMembers,
+            @Nonnull ImmutableList<ProjectionElement> children,
             @Nonnull MithraObject eachChildValue)
     {
         try
         {
-            ReladomoJsonTree.serialize(jsonGenerator, eachChildValue, childrenProjectionMembers);
+            ReladomoJsonTree.serialize(jsonGenerator, eachChildValue, children);
         }
         catch (IOException e)
         {
@@ -235,7 +236,7 @@ public class ReladomoJsonTree implements JsonSerializable
     {
         try
         {
-            ReladomoJsonTree.serialize(jsonGenerator, this.mithraObject, this.projectionMembers);
+            ReladomoJsonTree.serialize(jsonGenerator, this.mithraObject, this.projectionElements);
         }
         catch (IOException e)
         {

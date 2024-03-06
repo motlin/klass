@@ -10,8 +10,8 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionAssociationEnd;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjectionDataTypeProperty;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionParent;
-import cool.klass.model.converter.compiler.state.projection.AntlrProjectionPrimitiveMember;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
@@ -111,7 +111,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
         AntlrClass               klass            = antlrProjectionParent.getKlass();
         AntlrDataTypeProperty<?> dataTypeProperty = klass.getDataTypePropertyByName(name);
 
-        AntlrProjectionPrimitiveMember antlrProjectionPrimitiveMember = new AntlrProjectionPrimitiveMember(
+        AntlrProjectionDataTypeProperty antlrProjectionPrimitiveMember = new AntlrProjectionDataTypeProperty(
                 ctx,
                 this.currentCompilationUnit,
                 false,

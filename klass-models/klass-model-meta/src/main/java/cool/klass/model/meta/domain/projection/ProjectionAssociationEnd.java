@@ -9,7 +9,7 @@ import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilde
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class ProjectionAssociationEnd extends ProjectionParent implements ProjectionMember
+public final class ProjectionAssociationEnd extends ProjectionParent implements ProjectionElement
 {
     // TODO: This is redundant since it can be inferred from the associationEnd
     @Nonnull
@@ -25,13 +25,25 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
+    @Override
+    public void enter(ProjectionListener listener)
+    {
+        listener.enterProjectionAssociationEnd(this);
+    }
+
+    @Override
+    public void exit(ProjectionListener listener)
+    {
+        listener.exitProjectionAssociationEnd(this);
+    }
+
     @Nonnull
     public AssociationEnd getAssociationEnd()
     {
         return this.associationEnd;
     }
 
-    public static final class ProjectionAssociationEndBuilder extends ProjectionParentBuilder implements ProjectionMemberBuilder
+    public static final class ProjectionAssociationEndBuilder extends ProjectionParentBuilder implements ProjectionElementBuilder
     {
         @Nonnull
         private final AssociationEndBuilder associationEndBuilder;
@@ -61,10 +73,9 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
                     this.name,
                     this.associationEndBuilder.getAssociationEnd());
 
-            ImmutableList<ProjectionMember> projectionMembers = this.projectionMemberBuilders.collect(
-                    ProjectionMemberBuilder::build);
+            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
 
-            this.projectionAssociationEnd.setProjectionMembers(projectionMembers);
+            this.projectionAssociationEnd.setChildren(children);
 
             return this.projectionAssociationEnd;
         }

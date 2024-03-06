@@ -6,7 +6,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionMember.ProjectionMemberBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionElement.ProjectionElementBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -66,11 +66,11 @@ public class AntlrProjection extends AntlrProjectionParent
                 this.packageName,
                 this.klass.getKlassBuilder());
 
-        ImmutableList<ProjectionMemberBuilder> projectionMemberBuilders = this.projectionMembers
-                .collect(AntlrProjectionMember::build)
+        ImmutableList<ProjectionElementBuilder> children = this.children
+                .collect(AntlrProjectionElement::build)
                 .toImmutable();
 
-        this.projectionBuilder.setProjectionMemberBuilders(projectionMemberBuilders);
+        this.projectionBuilder.setChildBuilders(children);
         return this.projectionBuilder;
     }
 
@@ -83,7 +83,7 @@ public class AntlrProjection extends AntlrProjectionParent
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
-        for (AntlrProjectionMember projectionMember : this.projectionMembers)
+        for (AntlrProjectionElement projectionMember : this.children)
         {
             if (duplicateMemberNames.contains(projectionMember.getName()))
             {
@@ -95,8 +95,8 @@ public class AntlrProjection extends AntlrProjectionParent
 
     public ImmutableBag<String> getDuplicateMemberNames()
     {
-        return this.projectionMembers
-                .collect(AntlrProjectionMember::getName)
+        return this.children
+                .collect(AntlrProjectionElement::getName)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();

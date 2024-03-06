@@ -5,13 +5,12 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.NamedElement;
-import cool.klass.model.meta.domain.projection.ProjectionMember.ProjectionMemberBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class ProjectionParent extends NamedElement
+public abstract class ProjectionParent extends NamedElement implements ProjectionElement
 {
-    private ImmutableList<ProjectionMember> projectionMembers;
+    private ImmutableList<ProjectionElement> children;
 
     protected ProjectionParent(
             @Nonnull ParserRuleContext elementContext,
@@ -21,19 +20,20 @@ public abstract class ProjectionParent extends NamedElement
         super(elementContext, nameContext, name);
     }
 
-    public ImmutableList<ProjectionMember> getProjectionMembers()
+    @Override
+    public ImmutableList<ProjectionElement> getChildren()
     {
-        return Objects.requireNonNull(this.projectionMembers);
+        return Objects.requireNonNull(this.children);
     }
 
-    protected void setProjectionMembers(@Nonnull ImmutableList<ProjectionMember> projectionMembers)
+    protected void setChildren(@Nonnull ImmutableList<ProjectionElement> children)
     {
-        this.projectionMembers = Objects.requireNonNull(projectionMembers);
+        this.children = Objects.requireNonNull(children);
     }
 
     public abstract static class ProjectionParentBuilder extends NamedElementBuilder
     {
-        protected ImmutableList<ProjectionMemberBuilder> projectionMemberBuilders;
+        protected ImmutableList<ProjectionElementBuilder> childBuilders;
 
         protected ProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -43,9 +43,9 @@ public abstract class ProjectionParent extends NamedElement
             super(elementContext, nameContext, name);
         }
 
-        public void setProjectionMemberBuilders(@Nonnull ImmutableList<ProjectionMemberBuilder> projectionMemberBuilders)
+        public void setChildBuilders(@Nonnull ImmutableList<ProjectionElementBuilder> projectionChildrenBuilders)
         {
-            this.projectionMemberBuilders = Objects.requireNonNull(projectionMemberBuilders);
+            this.childBuilders = Objects.requireNonNull(projectionChildrenBuilders);
         }
     }
 }

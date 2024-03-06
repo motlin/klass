@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionMember.ProjectionMemberBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -27,6 +26,18 @@ public final class Projection extends ProjectionParent
         super(elementContext, nameContext, name);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass = Objects.requireNonNull(klass);
+    }
+
+    @Override
+    public void enter(ProjectionListener listener)
+    {
+        listener.enterProjection(this);
+    }
+
+    @Override
+    public void exit(ProjectionListener listener)
+    {
+        listener.exitProjection(this);
     }
 
     @Nonnull
@@ -55,12 +66,6 @@ public final class Projection extends ProjectionParent
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
-        @Nonnull
-        public KlassBuilder getKlassBuilder()
-        {
-            return this.klassBuilder;
-        }
-
         public Projection build()
         {
             if (this.projection != null)
@@ -74,10 +79,9 @@ public final class Projection extends ProjectionParent
                     this.packageName,
                     this.klassBuilder.getKlass());
 
-            ImmutableList<ProjectionMember> projectionMembers = this.projectionMemberBuilders.collect(
-                    ProjectionMemberBuilder::build);
+            ImmutableList<ProjectionElement> children = this.childBuilders.collect(ProjectionElementBuilder::build);
 
-            this.projection.setProjectionMembers(projectionMembers);
+            this.projection.setChildren(children);
 
             return this.projection;
         }

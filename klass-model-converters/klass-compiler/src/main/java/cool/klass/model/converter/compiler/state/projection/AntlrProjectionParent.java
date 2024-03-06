@@ -19,8 +19,9 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
     @Nonnull
     protected final AntlrClass klass;
 
-    protected final MutableList<AntlrProjectionMember>               projectionMembers       = Lists.mutable.empty();
-    protected final MutableOrderedMap<String, AntlrProjectionMember> projectionMembersByName = OrderedMapAdapter.adapt(
+    protected final MutableList<AntlrProjectionElement> children = Lists.mutable.empty();
+
+    protected final MutableOrderedMap<String, AntlrProjectionElement> childrenByName = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
     public AntlrProjectionParent(
@@ -41,14 +42,14 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
         return this.klass;
     }
 
-    public void enterAntlrProjectionMember(@Nonnull AntlrProjectionMember antlrProjectionMember)
+    public void enterAntlrProjectionMember(@Nonnull AntlrProjectionElement child)
     {
-        this.projectionMembers.add(antlrProjectionMember);
-        this.projectionMembersByName.compute(
-                antlrProjectionMember.getName(),
+        this.children.add(child);
+        this.childrenByName.compute(
+                child.getName(),
                 (name, builder) -> builder == null
-                        ? antlrProjectionMember
-                        : AntlrProjectionPrimitiveMember.AMBIGUOUS);
+                        ? child
+                        : AntlrProjectionDataTypeProperty.AMBIGUOUS);
     }
 
     public abstract void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts);

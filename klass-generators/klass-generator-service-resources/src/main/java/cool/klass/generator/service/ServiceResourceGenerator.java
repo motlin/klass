@@ -16,6 +16,11 @@ import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.criteria.Criteria;
+import cool.klass.model.meta.domain.projection.BaseProjectionListener;
+import cool.klass.model.meta.domain.projection.Projection;
+import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.projection.ProjectionDataTypeProperty;
+import cool.klass.model.meta.domain.projection.ProjectionWalker;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
@@ -27,6 +32,10 @@ import cool.klass.model.meta.domain.service.url.UrlPathParameter;
 import cool.klass.model.meta.domain.service.url.UrlPathSegment;
 import cool.klass.model.meta.domain.service.url.UrlQueryParameter;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.stack.MutableStack;
+import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.factory.Stacks;
 
 public class ServiceResourceGenerator
 {
@@ -98,6 +107,7 @@ public class ServiceResourceGenerator
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
+                + "import org.eclipse.collections.api.list.MutableList;\n"
                 + "import com.gs.fw.common.mithra.MithraObject;\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
                 + "import cool.klass.model.meta.domain.DomainModel;\n"
@@ -124,6 +134,16 @@ public class ServiceResourceGenerator
                 + "    }\n"
                 + "\n"
                 + serviceMethodsSourceCode
+                + "\n"
+                + "    private List<ReladomoJsonTree> applyProjection(\n"
+                + "            MutableList<? extends MithraObject> mithraObjects,\n"
+                + "            String projectionName)\n"
+                + "    {\n"
+                + "        Projection projection = this.domainModel.getProjectionByName(projectionName);\n"
+                + "        return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
+                + "                mithraObject,\n"
+                + "                projection.getChildren()));\n"
+                + "    }\n"
                 + "}\n";
         return sourceCode;
     }
@@ -196,6 +216,14 @@ public class ServiceResourceGenerator
                 service.getVersionCriteria(),
                 klassName);
 
+        Projection                  projection                  = projectionDispatch.getProjection();
+        DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
+        ProjectionWalker.walk(projection, deepFetchProjectionListener);
+        ImmutableList<String> deepFetchStrings = deepFetchProjectionListener.getResult();
+        String deepFetchString = deepFetchStrings
+                .collect(each -> "        result.deepFetch(" + finderName + "." + each + ");\n")
+                .makeString("");
+
         //language=JAVA
         String sourceCode = ""
                 + "    @Timed\n"
@@ -215,7 +243,8 @@ public class ServiceResourceGenerator
                 + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
-                + "        // TODO: Deep fetch using projection " + projectionName + "\n"
+                + "        // Deep fetch using projection " + projectionName + "\n"
+                + deepFetchString
                 + "\n"
                 + authorizePredicateSourceCode
                 + validatePredicateSourceCode
@@ -251,15 +280,14 @@ public class ServiceResourceGenerator
                     + "        }\n"
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"
-                    + "        Projection projection = this.domainModel.getProjectionByName(\"" + projectionName + "\");\n"
-                    + "        return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());\n";
+                    + "        Projection projection = this.domainModel.getProjectionByName(\""
+                    + projectionName
+                    + "\");\n"
+                    + "        return new ReladomoJsonTree(mithraObject, projection.getChildren());\n";
         }
 
-        return ""
-                + "        Projection projection = this.domainModel.getProjectionByName(\"" + projectionName + "\");\n"
-                + "        return result.asEcList().<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
-                + "                mithraObject,\n"
-                + "                projection.getProjectionMembers()));\n";
+        //language=JAVA
+        return "        return this.applyProjection(result.asEcList(), \"" + projectionName + "\");\n";
     }
 
     @Nonnull
@@ -389,5 +417,41 @@ public class ServiceResourceGenerator
             return "QueryParam";
         }
         throw new AssertionError();
+    }
+
+    private static final class DeepFetchProjectionListener extends BaseProjectionListener
+    {
+        private final MutableStack<String> stack  = Stacks.mutable.empty();
+        private final MutableList<String>  result = Lists.mutable.empty();
+
+        @Override
+        public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+        {
+            this.stack.push(projectionAssociationEnd.getAssociationEnd().getName());
+        }
+
+        @Override
+        public void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+        {
+            this.stack.pop();
+        }
+
+        @Override
+        public void exitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
+        {
+            if (this.stack.isEmpty())
+            {
+                return;
+            }
+            String string = this.stack
+                    .collect(each -> each + "()")
+                    .makeString(".");
+            this.result.add(string);
+        }
+
+        public ImmutableList<String> getResult()
+        {
+            return this.result.distinct().toImmutable();
+        }
     }
 }

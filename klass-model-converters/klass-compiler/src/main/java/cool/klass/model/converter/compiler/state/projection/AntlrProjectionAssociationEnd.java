@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd.ProjectionAssociationEndBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionMember.ProjectionMemberBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionElement.ProjectionElementBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -17,7 +17,7 @@ import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionMember
+public class AntlrProjectionAssociationEnd extends AntlrProjectionParent implements AntlrProjectionElement
 {
     @Nonnull
     public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
@@ -90,11 +90,11 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
                 this.name,
                 this.associationEnd.getAssociationEndBuilder());
 
-        ImmutableList<ProjectionMemberBuilder> projectionMemberBuilders = this.projectionMembers
-                .collect(AntlrProjectionMember::build)
+        ImmutableList<ProjectionElementBuilder> projectionMemberBuilders = this.children
+                .collect(AntlrProjectionElement::build)
                 .toImmutable();
 
-        this.projectionAssociationEndBuilder.setProjectionMemberBuilders(projectionMemberBuilders);
+        this.projectionAssociationEndBuilder.setChildBuilders(projectionMemberBuilders);
         return this.projectionAssociationEndBuilder;
     }
 
@@ -116,7 +116,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
-        for (AntlrProjectionMember projectionMember : this.projectionMembers)
+        for (AntlrProjectionElement projectionMember : this.children)
         {
             if (duplicateMemberNames.contains(projectionMember.getName()))
             {
@@ -128,8 +128,8 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
     public ImmutableBag<String> getDuplicateMemberNames()
     {
-        return this.projectionMembers
-                .collect(AntlrProjectionMember::getName)
+        return this.children
+                .collect(AntlrProjectionElement::getName)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
