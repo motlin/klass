@@ -28,8 +28,10 @@ public interface Klass extends Type, PackageableElement
     @Nonnull
     default Optional<Property> getPropertyByName(String name)
     {
-        ImmutableList<DataTypeProperty> dataTypeProperties = this.getDataTypeProperties().select(each -> each.getName().equals(name));
-        ImmutableList<AssociationEnd>   associationEnds             = this.getAssociationEnds().select(each -> each.getName().equals(name));
+        ImmutableList<DataTypeProperty> dataTypeProperties = this.getDataTypeProperties()
+                .select(each -> each.getName().equals(name));
+        ImmutableList<AssociationEnd> associationEnds = this.getAssociationEnds()
+                .select(each -> each.getName().equals(name));
 
         if (dataTypeProperties.isEmpty() && associationEnds.isEmpty())
         {
@@ -66,4 +68,19 @@ public interface Klass extends Type, PackageableElement
     boolean isUser();
 
     boolean isTransient();
+
+    default boolean isBitemporal()
+    {
+        return this.isValidTemporal() && this.isSystemTemporal();
+    }
+
+    default boolean isValidTemporal()
+    {
+        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isValidTemporal);
+    }
+
+    default boolean isSystemTemporal()
+    {
+        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isSystemTemporal);
+    }
 }

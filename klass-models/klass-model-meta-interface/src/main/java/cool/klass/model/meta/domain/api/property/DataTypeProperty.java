@@ -35,6 +35,11 @@ public interface DataTypeProperty extends Property
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isAudit);
     }
 
+    default boolean isValid()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isValid);
+    }
+
     default boolean isSystem()
     {
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isSystem);
@@ -48,6 +53,16 @@ public interface DataTypeProperty extends Property
     default boolean isTo()
     {
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isTo);
+    }
+
+    default boolean isValidTemporal()
+    {
+        return this.isValid() && this.isTemporalRange();
+    }
+
+    default boolean isSystemTemporal()
+    {
+        return this.isSystem() && this.isTemporalRange();
     }
 
     boolean isOptional();

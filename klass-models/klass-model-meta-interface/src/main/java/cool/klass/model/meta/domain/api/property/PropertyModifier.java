@@ -22,6 +22,11 @@ public interface PropertyModifier extends NamedElement
         return this.getName().equals("id");
     }
 
+    default boolean isValid()
+    {
+        return this.getName().equals("valid");
+    }
+
     default boolean isSystem()
     {
         return this.getName().equals("system");
