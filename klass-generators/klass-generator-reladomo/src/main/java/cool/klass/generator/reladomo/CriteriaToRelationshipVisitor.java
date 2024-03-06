@@ -73,21 +73,12 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     private String getReladomoNullOperator(@Nonnull Operator operator)
     {
         String operatorText = operator.getOperatorText();
-        switch (operatorText)
+        return switch (operatorText)
         {
-            case "==":
-            {
-                return "is null";
-            }
-            case "!=":
-            {
-                return "is not null";
-            }
-            default:
-            {
-                throw new AssertionError();
-            }
-        }
+            case "==" -> "is null";
+            case "!=" -> "is not null";
+            default -> throw new AssertionError();
+        };
     }
 
     @Override

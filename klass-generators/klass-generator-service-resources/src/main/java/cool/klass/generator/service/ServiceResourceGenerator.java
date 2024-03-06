@@ -847,21 +847,12 @@ public class ServiceResourceGenerator
     private String getOrderByDirectionDeclarationSourceCode(@Nonnull OrderByDirectionDeclaration orderByDirectionDeclaration)
     {
         OrderByDirection orderByDirection = orderByDirectionDeclaration.getOrderByDirection();
-        switch (orderByDirection)
+        return switch (orderByDirection)
         {
-            case ASCENDING:
-            {
-                return ".ascendingOrderBy()";
-            }
-            case DESCENDING:
-            {
-                return ".descendingOrderBy()";
-            }
-            default:
-            {
-                throw new AssertionError();
-            }
-        }
+            case ASCENDING -> ".ascendingOrderBy()";
+            case DESCENDING -> ".descendingOrderBy()";
+            default -> throw new AssertionError();
+        };
     }
 
     private String getParameterType(DataType dataType)

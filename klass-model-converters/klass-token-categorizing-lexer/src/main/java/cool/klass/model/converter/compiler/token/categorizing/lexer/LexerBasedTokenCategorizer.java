@@ -63,128 +63,38 @@ public final class LexerBasedTokenCategorizer
             return TokenCategory.LINE_COMMENT;
         }
 
-        switch (token.getType())
+        return switch (token.getType())
         {
-            case KlassLexer.StringLiteral:
-            {
-                return TokenCategory.STRING_LITERAL;
-            }
-            case KlassLexer.IntegerLiteral:
-            {
-                return TokenCategory.INTEGER_LITERAL;
-            }
-            case KlassLexer.BooleanLiteral:
-            {
-                return TokenCategory.BOOLEAN_LITERAL;
-            }
-            case KlassLexer.CharacterLiteral:
-            {
-                return TokenCategory.CHARACTER_LITERAL;
-            }
-            case KlassLexer.FloatingPointLiteral:
-            {
-                return TokenCategory.FLOATING_POINT_LITERAL;
-            }
-            case KlassLexer.PUNCTUATION_LPAREN:
-            {
-                return TokenCategory.PARENTHESIS_LEFT;
-            }
-            case KlassLexer.PUNCTUATION_RPAREN:
-            {
-                return TokenCategory.PARENTHESIS_RIGHT;
-            }
-            case KlassLexer.PUNCTUATION_LBRACE:
-            {
-                return TokenCategory.CURLY_LEFT;
-            }
-            case KlassLexer.PUNCTUATION_RBRACE:
-            {
-                return TokenCategory.CURLY_RIGHT;
-            }
-            case KlassLexer.PUNCTUATION_LBRACK:
-            {
-                return TokenCategory.SQUARE_BRACKET_LEFT;
-            }
-            case KlassLexer.PUNCTUATION_RBRACK:
-            {
-                return TokenCategory.SQUARE_BRACKET_RIGHT;
-            }
-            case KlassLexer.PUNCTUATION_COLON:
-            {
-                return TokenCategory.COLON;
-            }
-            case KlassLexer.PUNCTUATION_SLASH:
-            {
-                return TokenCategory.SLASH;
-            }
-            case KlassLexer.PUNCTUATION_QUESTION:
-            {
-                return TokenCategory.QUESTION;
-            }
-            case KlassLexer.PUNCTUATION_COMMA:
-            {
-                return TokenCategory.COMMA;
-            }
-            case KlassLexer.PUNCTUATION_DOTDOT:
-            {
-                return TokenCategory.DOTDOT;
-            }
-            case KlassLexer.PUNCTUATION_DOT:
-            {
-                return TokenCategory.DOT;
-            }
-            case KlassLexer.PUNCTUATION_SEMI:
-            {
-                return TokenCategory.SEMICOLON;
-            }
-            case KlassLexer.OPERATOR_EQ:
-            {
-                return TokenCategory.OPERATOR_EQ;
-            }
-            case KlassLexer.OPERATOR_NE:
-            {
-                return TokenCategory.OPERATOR_NE;
-            }
-            case KlassLexer.OPERATOR_LT:
-            {
-                return TokenCategory.OPERATOR_LT;
-            }
-            case KlassLexer.OPERATOR_GT:
-            {
-                return TokenCategory.OPERATOR_GT;
-            }
-            case KlassLexer.OPERATOR_LE:
-            {
-                return TokenCategory.OPERATOR_LE;
-            }
-            case KlassLexer.OPERATOR_GE:
-            {
-                return TokenCategory.OPERATOR_GE;
-            }
-            case KlassLexer.VERB_GET:
-            {
-                return TokenCategory.VERB_GET;
-            }
-            case KlassLexer.VERB_POST:
-            {
-                return TokenCategory.VERB_POST;
-            }
-            case KlassLexer.VERB_PUT:
-            {
-                return TokenCategory.VERB_PUT;
-            }
-            case KlassLexer.VERB_PATCH:
-            {
-                return TokenCategory.VERB_PATCH;
-            }
-            case KlassLexer.VERB_DELETE:
-            {
-                return TokenCategory.VERB_DELETE;
-            }
-            default:
-            {
-                return null;
-            }
-        }
+            case KlassLexer.StringLiteral        -> TokenCategory.STRING_LITERAL;
+            case KlassLexer.IntegerLiteral       -> TokenCategory.INTEGER_LITERAL;
+            case KlassLexer.BooleanLiteral       -> TokenCategory.BOOLEAN_LITERAL;
+            case KlassLexer.CharacterLiteral     -> TokenCategory.CHARACTER_LITERAL;
+            case KlassLexer.FloatingPointLiteral -> TokenCategory.FLOATING_POINT_LITERAL;
+            case KlassLexer.PUNCTUATION_LPAREN   -> TokenCategory.PARENTHESIS_LEFT;
+            case KlassLexer.PUNCTUATION_RPAREN   -> TokenCategory.PARENTHESIS_RIGHT;
+            case KlassLexer.PUNCTUATION_LBRACE   -> TokenCategory.CURLY_LEFT;
+            case KlassLexer.PUNCTUATION_RBRACE   -> TokenCategory.CURLY_RIGHT;
+            case KlassLexer.PUNCTUATION_LBRACK   -> TokenCategory.SQUARE_BRACKET_LEFT;
+            case KlassLexer.PUNCTUATION_RBRACK   -> TokenCategory.SQUARE_BRACKET_RIGHT;
+            case KlassLexer.PUNCTUATION_COLON    -> TokenCategory.COLON;
+            case KlassLexer.PUNCTUATION_SLASH    -> TokenCategory.SLASH;
+            case KlassLexer.PUNCTUATION_QUESTION -> TokenCategory.QUESTION;
+            case KlassLexer.PUNCTUATION_COMMA    -> TokenCategory.COMMA;
+            case KlassLexer.PUNCTUATION_DOTDOT   -> TokenCategory.DOTDOT;
+            case KlassLexer.PUNCTUATION_DOT      -> TokenCategory.DOT;
+            case KlassLexer.PUNCTUATION_SEMI     -> TokenCategory.SEMICOLON;
+            case KlassLexer.OPERATOR_EQ          -> TokenCategory.OPERATOR_EQ;
+            case KlassLexer.OPERATOR_NE          -> TokenCategory.OPERATOR_NE;
+            case KlassLexer.OPERATOR_LT          -> TokenCategory.OPERATOR_LT;
+            case KlassLexer.OPERATOR_GT          -> TokenCategory.OPERATOR_GT;
+            case KlassLexer.OPERATOR_LE          -> TokenCategory.OPERATOR_LE;
+            case KlassLexer.OPERATOR_GE          -> TokenCategory.OPERATOR_GE;
+            case KlassLexer.VERB_GET             -> TokenCategory.VERB_GET;
+            case KlassLexer.VERB_POST            -> TokenCategory.VERB_POST;
+            case KlassLexer.VERB_PUT             -> TokenCategory.VERB_PUT;
+            case KlassLexer.VERB_PATCH           -> TokenCategory.VERB_PATCH;
+            case KlassLexer.VERB_DELETE          -> TokenCategory.VERB_DELETE;
+            default                              -> null;
+        };
     }
 }

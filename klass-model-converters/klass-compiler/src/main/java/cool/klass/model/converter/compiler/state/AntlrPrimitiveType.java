@@ -104,52 +104,18 @@ public final class AntlrPrimitiveType
     @Override
     public ImmutableList<AntlrType> getPotentialWiderTypes()
     {
-        switch (this.primitiveType)
+        return switch (this.primitiveType)
         {
-            case INTEGER:
-            {
-                return Lists.immutable.with(INTEGER, LONG, FLOAT, DOUBLE);
-            }
-            case LONG:
-            {
-                return Lists.immutable.with(LONG, DOUBLE);
-            }
-            case DOUBLE:
-            {
-                return Lists.immutable.with(DOUBLE);
-            }
-            case FLOAT:
-            {
-                return Lists.immutable.with(FLOAT, DOUBLE);
-            }
-            case BOOLEAN:
-            {
-                return Lists.immutable.with(BOOLEAN);
-            }
-            case STRING:
-            {
-                return Lists.immutable.with(STRING);
-            }
-            case INSTANT:
-            {
-                return Lists.immutable.with(INSTANT, TEMPORAL_INSTANT, TEMPORAL_RANGE);
-            }
-            case LOCAL_DATE:
-            {
-                return Lists.immutable.with(LOCAL_DATE);
-            }
-            case TEMPORAL_INSTANT:
-            {
-                return Lists.immutable.with(TEMPORAL_INSTANT);
-            }
-            case TEMPORAL_RANGE:
-            {
-                return Lists.immutable.with(TEMPORAL_RANGE);
-            }
-            default:
-            {
-                throw new AssertionError();
-            }
-        }
+            case INTEGER          -> Lists.immutable.with(INTEGER, LONG, FLOAT, DOUBLE);
+            case LONG             -> Lists.immutable.with(LONG, DOUBLE);
+            case DOUBLE           -> Lists.immutable.with(DOUBLE);
+            case FLOAT            -> Lists.immutable.with(FLOAT, DOUBLE);
+            case BOOLEAN          -> Lists.immutable.with(BOOLEAN);
+            case STRING           -> Lists.immutable.with(STRING);
+            case INSTANT          -> Lists.immutable.with(INSTANT, TEMPORAL_INSTANT, TEMPORAL_RANGE);
+            case LOCAL_DATE       -> Lists.immutable.with(LOCAL_DATE);
+            case TEMPORAL_INSTANT -> Lists.immutable.with(TEMPORAL_INSTANT);
+            case TEMPORAL_RANGE   -> Lists.immutable.with(TEMPORAL_RANGE);
+        };
     }
 }

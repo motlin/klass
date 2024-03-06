@@ -197,21 +197,12 @@ public class ReladomoInterfaceFileGenerator
     {
         OrderByDirection orderByDirection =
                 orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection();
-        switch (orderByDirection)
+        return switch (orderByDirection)
         {
-            case ASCENDING:
-            {
-                return "asc";
-            }
-            case DESCENDING:
-            {
-                return "desc";
-            }
-            default:
-            {
-                throw new AssertionError();
-            }
-        }
+            case ASCENDING -> "asc";
+            case DESCENDING -> "desc";
+            default -> throw new AssertionError();
+        };
     }
 
     @Nonnull

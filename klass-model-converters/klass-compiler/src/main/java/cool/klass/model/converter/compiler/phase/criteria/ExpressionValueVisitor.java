@@ -95,21 +95,15 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
     public AntlrExpressionValue visitNativeLiteral(@Nonnull NativeLiteralContext ctx)
     {
         String keyword = ctx.getText();
-        switch (keyword)
+        return switch (keyword)
         {
-            case "user":
-            {
-                return new AntlrUserLiteral(
-                        ctx,
-                        Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                        this.expressionValueOwner,
-                        this.compilerState.getDomainModelState().getUserClassState());
-            }
-            default:
-            {
-                throw new AssertionError(keyword);
-            }
-        }
+            case "user" -> new AntlrUserLiteral(
+                    ctx,
+                    Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                    this.expressionValueOwner,
+                    this.compilerState.getDomainModelState().getUserClassState());
+            default -> throw new AssertionError(keyword);
+        };
     }
 
     @Nonnull

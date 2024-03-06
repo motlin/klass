@@ -54,28 +54,19 @@ public class ReladomoRuntimeConfigurationGenerator
 
     private static CacheType getCacheType(@Nonnull String cacheType)
     {
-        switch (cacheType)
+        return switch (cacheType)
         {
-            case "partial":
-            {
-                return CacheType.PARTIAL;
-            }
-            case "full":
-            {
-                return CacheType.FULL;
-            }
-            case "none":
-            {
-                return CacheType.NONE;
-            }
-            default:
+            case "partial" -> CacheType.PARTIAL;
+            case "full" -> CacheType.FULL;
+            case "none" -> CacheType.NONE;
+            default ->
             {
                 String message = String.format(
                         "Invalid cacheType. Expected one of [partial, full, none] but got: %s",
                         cacheType);
                 throw new RuntimeException(message);
             }
-        }
+        };
     }
 
     public void writeRuntimeConfigFile(@Nonnull Path path) throws IOException
