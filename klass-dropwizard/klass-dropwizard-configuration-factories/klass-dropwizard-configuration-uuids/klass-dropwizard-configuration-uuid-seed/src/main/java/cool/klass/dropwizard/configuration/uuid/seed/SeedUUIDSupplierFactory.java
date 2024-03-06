@@ -1,6 +1,5 @@
 package cool.klass.dropwizard.configuration.uuid.seed;
 
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -33,8 +32,8 @@ public class SeedUUIDSupplierFactory implements UUIDSupplierFactory
     }
 
     @JsonProperty
-    public void setSeed(@Nonnull String seed)
+    public void setSeed(String seed)
     {
-        this.seed = Objects.requireNonNull(seed);
+        this.seed = seed;
     }
 }
