@@ -183,6 +183,7 @@
                                         <requirePluginVersions>
                                             <unCheckedPluginList>
                                                 io.liftwizard:liftwizard-generator-reladomo-code-plugin,
+                                                io.liftwizard:liftwizard-generator-reladomo-database-plugin,
                                                 cool.klass:klass-compiler-plugin,
                                                 cool.klass:klass-generator-dropwizard-plugin,
                                                 cool.klass:klass-generator-dto-plugin,
@@ -199,7 +200,6 @@
                                                 cool.klass:klass-generator-klass-service-plugin,
                                                 cool.klass:klass-generator-meta-constants-plugin,
                                                 cool.klass:klass-generator-react-prop-type-plugin,
-                                                cool.klass:klass-generator-reladomo-database-plugin,
                                                 cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
                                                 cool.klass:klass-generator-reladomo-readable-interface-plugin,
