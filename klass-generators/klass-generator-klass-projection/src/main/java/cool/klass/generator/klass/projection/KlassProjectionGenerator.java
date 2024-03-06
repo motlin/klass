@@ -94,6 +94,7 @@ public class KlassProjectionGenerator
                 .getDataTypeProperties()
                 .reject(DataTypeProperty::isForeignKey)
                 .reject(DataTypeProperty::isPrivate)
+                .reject(DataTypeProperty::isTemporalRange)
                 .collect(KlassProjectionGenerator::getSourceCode)
                 .makeString("");
 
