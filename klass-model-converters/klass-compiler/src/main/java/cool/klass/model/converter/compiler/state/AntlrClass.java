@@ -343,7 +343,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             compilerErrorHolder.add(message, this);
         }
 
-        if (this.dataTypePropertyStates.count(AntlrDataTypeProperty::isKey) == 0)
+        int numKeyProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isKey);
+        if (numKeyProperties == 0)
         {
             String message = String.format("ERR_CLS_KEY: Class '%s' must have at least one key property.", this.name);
             compilerErrorHolder.add(message, this);
@@ -351,7 +352,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
 
         // TODO: Warn if class is owned by multiple
         // TODO: Detect ownership cycles
-        // TODO: Check that there's at least one key property
         // TODO: Check that ID properties aren't part of a composite key
 
         // TODO: parameterized properties

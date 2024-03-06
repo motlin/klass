@@ -57,8 +57,6 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     @Override
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
-
         if (this.classState == AntlrClass.AMBIGUOUS || this.classState == AntlrClass.NOT_FOUND)
         {
             ClassReferenceContext offendingToken = this.getElementContext().classReference();

@@ -35,7 +35,7 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
     @Nullable
     protected AntlrOrderByOwner orderByOwnerState;
 
-    // TODO: Consider abstracting these four pieces of information into a type called CompilationState
+    // TODO: 💡 Consider abstracting these four pieces of information into a type called CompilationState
     protected AbstractDomainModelCompilerPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,

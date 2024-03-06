@@ -228,8 +228,6 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                             this.getTargetEnd().getMultiplicity().getElementContext()));
         }
 
-        // TODO: reportErrors: Check that both ends aren't versions
-
         if (this.getSourceEnd().getType() == AntlrClass.NOT_FOUND || this.getTargetEnd().getType() == AntlrClass.NOT_FOUND)
         {
             this.getSourceEnd().reportTypeNotFound(compilerErrorHolder);
@@ -289,10 +287,10 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         }
         if (sourceHasForeignKeys && targetHasForeignKeys)
         {
-            // TODO: Make sure this error is covered in reportErrors elsewhere.
+            // Error covered elsewhere: many-to-1 where many owns one
             return null;
         }
-        // TODO: Make sure this error is covered in reportErrors elsewhere.
+        // Error covered elsewhere: 1-to-1 symmetrical association
         return null;
     }
 }

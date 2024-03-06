@@ -199,19 +199,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         if (verb == Verb.POST || verb == Verb.PUT)
         {
-            // TODO: Totally redo write projections
-            // reportInvalidWriteProjection(projection, compilerErrorHolder);
-
-            // TODO: Do this after changing the versionClass to versionAssociationEnd
-            /*
-            if (klass.isOptimisticallyLocked())
-            {
-            }
-            else
-            {
-            }
-            */
-
+            // TODO: ☑ Check that [1..*] association ends are non-empty
             // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
             // Include version associationEnds iff the service is optimistically locked
             MutableList<AntlrAssociationEnd> associationEndStates = projection.getKlass().getAssociationEndStates();
@@ -325,7 +313,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         // TODO: PUT many and PATCH many could get the version numbers from the body
         // TODO: DELETE many would have to take a body too?
         // TODO: Or maybe there's no such thing as DELETE many, and it's implied through a merge api
-        // TODO: Also the class should be opportunistically locked
+        // TODO: Also the class should be optimistically locked
 
         return this.urlState.getServiceGroup().getKlass().hasVersion()
                 && this.verbState.getVerb() != Verb.GET

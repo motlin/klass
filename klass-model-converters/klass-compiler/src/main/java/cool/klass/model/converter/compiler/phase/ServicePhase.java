@@ -106,7 +106,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
     @Override
     public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        // TODO: It no longer makes sense to share one url for a bunch of services, because of inference like this
+        // TODO: ♻️ It no longer makes sense to share one url for a bunch of services, because of inference like this
         if (this.urlState.getServiceStates().anySatisfy(AntlrService::needsVersionCriteria))
         {
             this.inQueryParameterList = true;
@@ -114,7 +114,6 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
             this.runCompilerMacro(
                     ctx.getStart(),
                     ServicePhase.class.getSimpleName(),
-                    // TODO: Query parameters should be generated with @NonNull or @Nullable
                     "{version: Integer[0..1] version}",
                     KlassParser::urlParameterDeclaration);
         }
@@ -127,7 +126,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
             {
                 AntlrCriteria criteria = serviceCriteriaState.getCriteria();
                 criteria.resolveServiceVariables(formalParametersByName);
-                // TODO: Type inference here?
+                // TODO: ❓ Type inference here?
                 criteria.resolveTypes();
             }
         }
@@ -192,7 +191,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
     {
         if (this.serviceState.needsVersionCriteriaInferred())
         {
-            // TODO: Get names from model (system, version, number, version)
+            // TODO: ♻️ Get names from model (system, version, number, version)
             String sourceCodeText = "            version: this.system equalsEdgePoint && this.version.number == version;";
             this.runCompilerMacro(
                     ctx.getStart(),
@@ -203,7 +202,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
 
         if (this.serviceState.needsConflictCriteriaInferred())
         {
-            // TODO: Get names from model (version, version)
+            // TODO: ♻️ Get names from model (version, version)
             String sourceCodeText = "            conflict: this.version.number == version;";
             this.runCompilerMacro(
                     ctx.getStart(),

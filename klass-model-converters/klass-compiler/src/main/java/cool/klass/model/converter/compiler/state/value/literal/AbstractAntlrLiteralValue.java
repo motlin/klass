@@ -36,7 +36,6 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
     public void setInferredType(AntlrType inferredType)
     {
         // TODO: set inferred type
-        Objects.requireNonNull(inferredType);
-        this.inferredType = inferredType;
+        this.inferredType = Objects.requireNonNull(inferredType);
     }
 }

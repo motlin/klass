@@ -70,7 +70,7 @@ public class ProjectionPhase extends AbstractDomainModelCompilerPhase
         String            name             = nameContext.getText();
         HeaderContext     header           = ctx.header();
         String            headerQuotedText = header.StringLiteral().getText();
-        // TODO: Unescaping header text?
+        // TODO: ❓ Unescaping header text?
         String            headerText       = headerQuotedText.substring(1, headerQuotedText.length() - 1);
 
         AntlrDataTypeProperty<?> dataTypeProperty = antlrProjectionParent.getKlass().getDataTypePropertyByName(name);
