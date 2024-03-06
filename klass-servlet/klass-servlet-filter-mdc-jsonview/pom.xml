@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-servlet-filter-mdc-jsonview</artifactId>
+    <artifactId>klass-servlet-logging-mdc-clear-jsonview</artifactId>
 
     <name>Klass Servlet Filter: JsonView MDC</name>
 
