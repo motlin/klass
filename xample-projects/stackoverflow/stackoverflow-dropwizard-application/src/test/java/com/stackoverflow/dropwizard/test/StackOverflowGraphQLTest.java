@@ -49,7 +49,8 @@ public class StackOverflowGraphQLTest
                             number,
                         },
                     }
-                }""";
+                }
+                """;
 
         Response response = client
                 .target("http://localhost:{port}/graphql")

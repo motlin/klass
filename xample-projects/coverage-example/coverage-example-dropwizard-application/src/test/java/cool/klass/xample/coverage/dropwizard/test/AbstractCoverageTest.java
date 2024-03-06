@@ -47,7 +47,7 @@ public abstract class AbstractCoverageTest
         var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        String className = this.getClass().getCanonicalName();
+        String className  = this.getClass().getCanonicalName();
         String clientName = className + "." + testName;
 
         return new JerseyClientBuilder(this.appRule.getEnvironment())
