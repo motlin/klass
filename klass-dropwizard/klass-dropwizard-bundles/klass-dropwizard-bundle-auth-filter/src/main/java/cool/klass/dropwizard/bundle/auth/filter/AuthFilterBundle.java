@@ -36,7 +36,7 @@ public class AuthFilterBundle
     {
         List<? extends AuthFilter<?, ? extends Principal>> authFilters = configuration.getAuthFilterFactories()
                 .stream()
-                .map(AuthFilterFactory::getAuthFilter)
+                .map(AuthFilterFactory::createAuthFilter)
                 .collect(Collectors.toList());
 
         if (authFilters.isEmpty())

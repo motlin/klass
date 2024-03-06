@@ -12,8 +12,8 @@ public class AbstractBootstrappedResourceTest extends AbstractResourceTest
     public void bootstrap()
     {
         KlassFactory klassFactory = RULE.getConfiguration().getKlassFactory();
-        DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
+        DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
 
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();

@@ -27,22 +27,16 @@ public class DomainModelCompilerFactory implements DomainModelFactory
 
     @Nonnull
     @Override
-    public DomainModel getDomainModel()
+    public DomainModel createDomainModel()
     {
         if (this.domainModel != null)
         {
             return this.domainModel;
         }
-        this.domainModel = this.createDomainModel();
-        return this.domainModel;
-    }
-
-    @Nonnull
-    private DomainModel createDomainModel()
-    {
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.sourcePackages);
         DomainModelLoader     domainModelLoader            = new DomainModelLoader(klassSourcePackagesImmutable);
-        return domainModelLoader.load();
+        this.domainModel = domainModelLoader.load();
+        return this.domainModel;
     }
 
     @JsonProperty

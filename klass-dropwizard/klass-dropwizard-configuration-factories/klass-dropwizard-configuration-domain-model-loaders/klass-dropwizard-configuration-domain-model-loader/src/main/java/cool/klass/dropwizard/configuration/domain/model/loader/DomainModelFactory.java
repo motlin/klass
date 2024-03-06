@@ -13,5 +13,5 @@ import io.dropwizard.jackson.Discoverable;
 public interface DomainModelFactory extends Discoverable
 {
     @Nonnull
-    DomainModel getDomainModel();
+    DomainModel createDomainModel();
 }

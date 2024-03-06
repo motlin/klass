@@ -87,8 +87,9 @@ public class AbstractApplicationGenerator
                 + "    {\n"
                 + "        super.run(configuration, environment);\n"
                 + "\n"
-                + "        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().getDataStore();\n"
-                + "        Clock     clock     = configuration.getKlassFactory().getClockFactory().getClock();\n"
+                + "        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().create"
+                + "DataStore();\n"
+                + "        Clock     clock     = configuration.getKlassFactory().getClockFactory().createClock();\n"
                 + "\n"
                 + this.getRegisterResourcesSourceCode()
                 + "    }\n"

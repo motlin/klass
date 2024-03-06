@@ -44,8 +44,8 @@ public class BootstrapWriterBundle
         LOGGER.info("Running {}.", BootstrapWriterBundle.class.getSimpleName());
 
         KlassFactory klassFactory = configuration.getKlassFactory();
-        DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
+        DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
 
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();

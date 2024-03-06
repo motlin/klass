@@ -45,7 +45,7 @@ public class ImpersonationAuthFilterFactoryTest
         File              yml               = new File(resource.toURI());
         AuthFilterFactory authFilterFactory = this.factory.build(yml);
         assertThat(authFilterFactory, instanceOf(ImpersonationAuthFilterFactory.class));
-        AuthFilter<?, ? extends Principal> authFilter = authFilterFactory.getAuthFilter();
+        AuthFilter<?, ? extends Principal> authFilter = authFilterFactory.createAuthFilter();
         assertThat(authFilter, instanceOf(OAuthCredentialAuthFilter.class));
     }
 }

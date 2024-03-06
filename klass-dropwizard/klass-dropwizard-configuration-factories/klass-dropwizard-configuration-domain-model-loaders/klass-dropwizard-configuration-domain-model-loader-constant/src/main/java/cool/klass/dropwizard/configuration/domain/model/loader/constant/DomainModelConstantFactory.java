@@ -23,7 +23,7 @@ public class DomainModelConstantFactory implements DomainModelFactory
 
     @Nonnull
     @Override
-    public DomainModel getDomainModel()
+    public DomainModel createDomainModel()
     {
         try
         {

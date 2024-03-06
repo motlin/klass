@@ -34,8 +34,8 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
     @Override
     public void run(@Nonnull ReladomoFactoryProvider configuration, @Nonnull Environment environment)
     {
-        DataStore       dataStore       = configuration.getDataStoreFactory().getDataStore();
-        DomainModel     domainModel     = configuration.getDomainModelFactory().getDomainModel();
+        DataStore       dataStore       = configuration.getDataStoreFactory().createDataStore();
+        DomainModel     domainModel     = configuration.getDomainModelFactory().createDomainModel();
         ReladomoFactory reladomoFactory = configuration.getReladomoFactory();
 
         ReladomoJsonSerializer reladomoJsonSerializer     = new ReladomoJsonSerializer(domainModel, dataStore);

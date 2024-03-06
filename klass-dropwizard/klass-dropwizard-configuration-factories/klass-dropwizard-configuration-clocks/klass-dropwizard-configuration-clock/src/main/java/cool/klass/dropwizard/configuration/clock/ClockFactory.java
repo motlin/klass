@@ -11,5 +11,5 @@ import io.dropwizard.jackson.Discoverable;
 @AutoService(Discoverable.class)
 public interface ClockFactory extends Discoverable
 {
-    Clock getClock();
+    Clock createClock();
 }

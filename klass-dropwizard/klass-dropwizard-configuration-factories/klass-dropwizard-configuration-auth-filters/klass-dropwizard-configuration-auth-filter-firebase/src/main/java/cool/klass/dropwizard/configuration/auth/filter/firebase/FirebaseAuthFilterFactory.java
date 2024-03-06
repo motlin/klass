@@ -24,7 +24,7 @@ public class FirebaseAuthFilterFactory implements AuthFilterFactory
 
     @Nonnull
     @Override
-    public AuthFilter<?, ? extends Principal> getAuthFilter()
+    public AuthFilter<?, ? extends Principal> createAuthFilter()
     {
         FirebaseAuth firebaseAuthFactory = new FirebaseAuth(
                 this.credentialsClasspathLocation,

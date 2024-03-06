@@ -14,7 +14,7 @@ public class ImpersonationAuthFilterFactory implements AuthFilterFactory
 {
     @Nonnull
     @Override
-    public AuthFilter<?, ImpersonatedPrincipal> getAuthFilter()
+    public AuthFilter<?, ImpersonatedPrincipal> createAuthFilter()
     {
         return new Builder<ImpersonatedPrincipal>()
                 .setAuthenticator(new ImpersonationAuthenticator())

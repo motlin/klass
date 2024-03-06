@@ -44,20 +44,15 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
     }
 
     @Override
-    public DataStore getDataStore()
+    public DataStore createDataStore()
     {
         if (this.dataStore != null)
         {
             return this.dataStore;
         }
-        this.dataStore = this.createDataStore();
-        return this.dataStore;
-    }
 
-    @Nonnull
-    public DataStore createDataStore()
-    {
         Supplier<UUID> uuidSupplier = this.uuidFactory.createUUIDSupplier();
-        return new ReladomoDataStore(uuidSupplier, this.retryCount);
+        this.dataStore = new ReladomoDataStore(uuidSupplier, this.retryCount);
+        return this.dataStore;
     }
 }

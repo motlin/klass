@@ -32,8 +32,8 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.run(configuration, environment);
 
-        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().getDataStore();
-        Clock     clock     = configuration.getKlassFactory().getClockFactory().getClock();
+        DataStore dataStore = configuration.getKlassFactory().getDataStoreFactory().createDataStore();
+        Clock     clock     = configuration.getKlassFactory().getClockFactory().createClock();
 
         environment.jersey().register(new QuestionResourceManual(dataStore, clock));
     }

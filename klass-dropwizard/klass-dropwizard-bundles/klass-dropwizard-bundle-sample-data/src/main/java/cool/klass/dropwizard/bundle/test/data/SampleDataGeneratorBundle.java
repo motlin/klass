@@ -46,8 +46,8 @@ public class SampleDataGeneratorBundle
 
         LOGGER.info("Running {}.", SampleDataGeneratorBundle.class.getSimpleName());
 
-        DomainModel           domainModel       = configuration.getDomainModelFactory().getDomainModel();
-        DataStore             dataStore         = configuration.getDataStoreFactory().getDataStore();
+        DomainModel           domainModel       = configuration.getDomainModelFactory().createDomainModel();
+        DataStore             dataStore         = configuration.getDataStoreFactory().createDataStore();
         SampleDataFactory     sampleDataFactory = configuration.getSampleDataFactory();
         Instant               dataInstant       = sampleDataFactory.getDataInstant();
         ImmutableList<String> skippedPackages   = sampleDataFactory.getSkippedPackages();

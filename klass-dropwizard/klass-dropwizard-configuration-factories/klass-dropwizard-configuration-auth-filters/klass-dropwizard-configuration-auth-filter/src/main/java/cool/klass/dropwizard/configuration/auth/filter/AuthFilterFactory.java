@@ -12,5 +12,5 @@ import io.dropwizard.jackson.Discoverable;
 @AutoService(Discoverable.class)
 public interface AuthFilterFactory extends Discoverable
 {
-    AuthFilter<?, ? extends Principal> getAuthFilter();
+    AuthFilter<?, ? extends Principal> createAuthFilter();
 }

@@ -14,7 +14,7 @@ public class SystemClockFactory implements ClockFactory
 {
     @Nonnull
     @Override
-    public Clock getClock()
+    public Clock createClock()
     {
         return Clock.systemUTC();
     }

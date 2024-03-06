@@ -13,5 +13,5 @@ public interface DataStoreFactory extends Discoverable
 {
     UUIDSupplierFactory getUuidFactory();
 
-    DataStore getDataStore();
+    DataStore createDataStore();
 }
