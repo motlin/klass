@@ -65,7 +65,7 @@ public class AntlrServiceCriteria extends AntlrElement
     {
         // TODO: Test coverage of duplicate service criteria
         String message = String.format("ERR_DUP_CRI: Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
-        compilerErrorHolder.add(message, this.getElementContext(), this.antlrCriteria);
+        compilerErrorHolder.add(message, this.antlrCriteria, this.getElementContext());
     }
 
     @Nonnull
@@ -101,8 +101,8 @@ public class AntlrServiceCriteria extends AntlrElement
                     allowedCriteriaTypes);
             compilerErrorHolder.add(
                     error,
-                    this.getElementContext().serviceCriteriaKeyword(),
-                    this);
+                    this,
+                    this.getElementContext().serviceCriteriaKeyword());
         }
     }
 }

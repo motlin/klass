@@ -389,7 +389,8 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = "package dummy\n"
+        String sourceCodeText = ""
+                + "package dummy\n"
                 + "\n"
                 + "association DoubleOwnedAssociation\n"
                 + "{\n"
@@ -400,6 +401,45 @@ public class KlassCompilerTest
                 + "}\n"
                 + "\n"
                 + "class DoubleOwnedClass\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] error = {
+                ""
+                        + "File: example.klass Line: 5 Char: 36 Error: ERR_ASO_OWN: Both associations are owned in association 'DoubleOwnedAssociation'. At most one end may be owned.\n"
+                        + "package dummy\n"
+                        + "association DoubleOwnedAssociation\n"
+                        + "{\n"
+                        + "    source: DoubleOwnedClass[1..1] owned;\n"
+                        + "                                   ^^^^^\n"
+                        + "    target: DoubleOwnedClass[1..1] owned;\n"
+                        + "                                   ^^^^^\n"
+                        + "}\n"
+        };
+
+        this.assertCompilerErrors(sourceCodeText, error);
+    }
+
+    @Ignore
+    @Test
+    public void symmetricalAssociation()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    source: DummyClass[1..1];\n"
+                + "    target: DummyClass[1..1];\n"
+                + "    \n"
+                + "    relationship this.id == DummyClass.id\n"
+                + "}\n"
+                + "\n"
+                + "class DummyClass\n"
                 + "{\n"
                 + "    id: Long key;\n"
                 + "}\n";
@@ -635,7 +675,8 @@ public class KlassCompilerTest
     public void duplicateModifier()
     {
         //language=Klass
-        String sourceCodeText = "package dummy\n"
+        String sourceCodeText = ""
+                + "package dummy\n"
                 + "\n"
                 + "class Dummy\n"
                 + "{\n"
@@ -690,10 +731,111 @@ public class KlassCompilerTest
                 + "projection badProjection on badClass\n"
                 + "{\n"
                 + "    BadPrimitiveProperty: \"Header\",\n"
-                + "}\n";
+                + "}\n"
+                + "\n"
+                + "service badClass\n"
+                + "{\n"
+                + "    /api/bad/{BadParameter: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            projection  : badProjection;\n"
+                + "        }\n"
+                + "}";
         //</editor-fold>
 
-        this.assertNoCompilerErrors(sourceCodeText);
+        // TODO: Package name still needs an error
+        String[] errors = {
+                ""
+                        + "File: example.klass Line: 3 Char: 13 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badEnumeration'.\n"
+                        + "package BADPACKAGE\n"
+                        + "enumeration badEnumeration\n"
+                        + "            ^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 5 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$ but was 'badEnumerationLiteral'.\n"
+                        + "package BADPACKAGE\n"
+                        + "enumeration badEnumeration\n"
+                        + "{\n"
+                        + "    badEnumerationLiteral,\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 8 Char: 7 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badClass'.\n"
+                        + "package BADPACKAGE\n"
+                        + "class badClass\n"
+                        + "      ^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 10 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadPrimitiveProperty'.\n"
+                        + "package BADPACKAGE\n"
+                        + "class badClass\n"
+                        + "{\n"
+                        + "    BadPrimitiveProperty  : String;\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadEnumerationProperty'.\n"
+                        + "package BADPACKAGE\n"
+                        + "class badClass\n"
+                        + "{\n"
+                        + "    BadEnumerationProperty: badEnumeration;\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadParameterizedProperty'.\n"
+                        + "package BADPACKAGE\n"
+                        + "class badClass\n"
+                        + "{\n"
+                        + "    BadParameterizedProperty(BadParameter: String[1..1]): badClass[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 13 Char: 30 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadParameter'.\n"
+                        + "package BADPACKAGE\n"
+                        + "class badClass\n"
+                        + "{\n"
+                        + "    BadParameterizedProperty(BadParameter: String[1..1]): badClass[1..1]\n"
+                        + "                             ^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 29 Char: 13 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badAssociation'.\n"
+                        + "package BADPACKAGE\n"
+                        + "association badAssociation\n"
+                        + "            ^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 31 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadAssociationEndSource'.\n"
+                        + "package BADPACKAGE\n"
+                        + "association badAssociation\n"
+                        + "{\n"
+                        + "    BadAssociationEndSource: badClass[1..1];\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 32 Char: 5 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadAssociationEndTarget'.\n"
+                        + "package BADPACKAGE\n"
+                        + "association badAssociation\n"
+                        + "{\n"
+                        + "    BadAssociationEndTarget: badClass[1..1];\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 37 Char: 12 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badProjection'.\n"
+                        + "package BADPACKAGE\n"
+                        + "projection badProjection on badClass\n"
+                        + "           ^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 42 Char: 9 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badClass'.\n"
+                        + "package BADPACKAGE\n"
+                        + "service badClass\n"
+                        + "        ^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 44 Char: 15 Error: ERR_NME_PAT: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadParameter'.\n"
+                        + "package BADPACKAGE\n"
+                        + "service badClass\n"
+                        + "{\n"
+                        + "    /api/bad/{BadParameter: String[1..1]}\n"
+                        + "              ^^^^^^^^^^^^\n"
+                        + "}\n",
+        };
+        this.assertCompilerErrors(sourceCodeText, errors);
     }
 
     @Test
@@ -701,7 +843,8 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = "package dummy\n"
+        String sourceCodeText = ""
+                + "package dummy\n"
                 + "\n"
                 + "class ClassWithUnresolved\n"
                 + "{\n"
@@ -860,7 +1003,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "association DummyAssociation\n"
                 + "{\n"
-                + "    parent: Dummy[0..1] owned owned;\n"
+                + "    parent: Dummy[0..1];\n"
                 + "    children: Dummy[0..*] owned owned;\n"
                 + "\n"
                 + "    relationship this.id == Dummy.id\n"
@@ -917,7 +1060,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "association DummyAssociation\n"
                 + "{\n"
-                + "    parent: DummyClass[0..1] owned;\n"
+                + "    parent: DummyClass[0..1];\n"
                 + "    children: DummyClass[0..*];\n"
                 + "\n"
                 + "    relationship this.id == DummyClass.parentId\n"
@@ -1002,9 +1145,9 @@ public class KlassCompilerTest
                 + "\n"
                 + "class DuplicateMemberNames\n"
                 + "{\n"
-                + "    duplicateMemberName: String\n"
-                + "    duplicateMemberName: String\n"
-                + "    duplicateMemberName: ExampleEnumeration\n"
+                + "    duplicateMemberName: String;\n"
+                + "    duplicateMemberName: String;\n"
+                + "    duplicateMemberName: ExampleEnumeration;\n"
                 + "\n"
                 + "    duplicateMemberName(): DuplicateMemberNames[1..1]\n"
                 + "    {\n"
@@ -1018,15 +1161,15 @@ public class KlassCompilerTest
                 + "\n"
                 + "association ExampleAssociationWithDuplicateAssociationEnd\n"
                 + "{\n"
-                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]\n"
-                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]\n"
+                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1];\n"
+                + "    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1];\n"
                 + "}\n"
                 + "\n"
                 + "class ExampleClass\n"
                 + "{\n"
-                + "    integerProperty: Integer\n"
-                + "    longProperty: Long\n"
-                + "    stringProperty: String\n"
+                + "    integerProperty: Integer;\n"
+                + "    longProperty: Long;\n"
+                + "    stringProperty: String;\n"
                 + "\n"
                 + "    invalidParameterType(stringParameter: String[1..1]): ExampleClass[1..1]\n"
                 + "    {\n"
@@ -1060,42 +1203,42 @@ public class KlassCompilerTest
                 + "        GET\n"
                 + "        {\n"
                 + "            // Better error messages for missing multiplicity, criteria, projection\n"
-                + "            multiplicity: one\n"
-                + "            criteria: this.stringProperty == invalidParameter\n"
-                + "            projection: ProjectionWithInvalidParameterType(invalidParameter)\n"
+                + "            multiplicity: one;\n"
+                + "            criteria: this.stringProperty == invalidParameter;\n"
+                + "            projection: ProjectionWithInvalidParameterType(invalidParameter);\n"
                 + "        }\n"
                 + "    /api/example/singleParameterInClause?{id: String[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
-                + "            multiplicity: one\n"
-                + "            criteria: this.stringProperty in id\n"
+                + "            multiplicity: one;\n"
+                + "            criteria: this.stringProperty in id;\n"
                 + "\n"
                 + "            // Also missing projection parameter\n"
-                + "            projection: ProjectionWithInvalidParameterType\n"
+                + "            projection: ProjectionWithInvalidParameterType;\n"
                 + "        }\n"
                 + "    // Duplicate urls\n"
                 + "    /api/example/singleParameterInClause?{id: String[0..*]}\n"
                 + "        GET\n"
                 + "        {\n"
-                + "            multiplicity: one\n"
-                + "            criteria: this.stringProperty == id\n"
-                + "            projection: ProjectionWithInvalidParameterType\n"
+                + "            multiplicity: one;\n"
+                + "            criteria: this.stringProperty == id;\n"
+                + "            projection: ProjectionWithInvalidParameterType;\n"
                 + "        }\n"
                 + "    /api/example/{validParameter: Integer[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
                 + "            // Better error messages for missing multiplicity, criteria, projection\n"
-                + "            multiplicity: one\n"
-                + "            criteria: this.stringProperty == invalidParameter\n"
-                + "            projection: ProjectionWithInvalidParameterType(validParameter, validParameter)\n"
+                + "            multiplicity: one;\n"
+                + "            criteria: this.stringProperty == invalidParameter;\n"
+                + "            projection: ProjectionWithInvalidParameterType(validParameter, validParameter);\n"
                 + "        }\n"
                 + "    /api/example/{validParameter: Integer[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
                 + "            // Better error messages for missing multiplicity, criteria, projection\n"
-                + "            multiplicity: one\n"
-                + "            criteria: this.stringProperty == invalidParameter\n"
-                + "            projection: ProjectionWithInvalidParameterType(invalidParameter)\n"
+                + "            multiplicity: one;\n"
+                + "            criteria: this.stringProperty == invalidParameter;\n"
+                + "            projection: ProjectionWithInvalidParameterType(invalidParameter);\n"
                 + "        }\n"
                 + "}\n"
                 + "\n"
@@ -1120,7 +1263,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "class style\n"
                 + "{\n"
-                + "    Style: String\n"
+                + "    Style: String;\n"
                 + "}\n"
                 + "\n"
                 + "enumeration styleenum\n"
@@ -1229,7 +1372,8 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = "package com.errors\n"
+        String sourceCodeText = ""
+                + "package com.errors\n"
                 + "\n"
                 + "class ExampleClass systemTemporal versioned\n"
                 + "{\n"

@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -97,17 +98,14 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
             throw new AssertionError(numAssociationEnds);
         }
 
-        AntlrAssociationEnd sourceAntlrAssociationEnd = this.associationEndStates.get(0);
-        AntlrAssociationEnd targetAntlrAssociationEnd = this.associationEndStates.get(1);
+        AntlrClass sourceType = this.getSourceEnd().getType();
+        AntlrClass targetType = this.getTargetEnd().getType();
 
-        AntlrClass sourceType = sourceAntlrAssociationEnd.getType();
-        AntlrClass targetType = targetAntlrAssociationEnd.getType();
+        this.getSourceEnd().setOpposite(this.getTargetEnd());
+        this.getTargetEnd().setOpposite(this.getSourceEnd());
 
-        sourceAntlrAssociationEnd.setOpposite(targetAntlrAssociationEnd);
-        targetAntlrAssociationEnd.setOpposite(sourceAntlrAssociationEnd);
-
-        sourceAntlrAssociationEnd.setOwningClassState(targetType);
-        targetAntlrAssociationEnd.setOwningClassState(sourceType);
+        this.getSourceEnd().setOwningClassState(targetType);
+        this.getTargetEnd().setOwningClassState(sourceType);
 
         if (sourceType == AntlrClass.NOT_FOUND
                 || targetType == AntlrClass.NOT_FOUND
@@ -117,8 +115,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
             return;
         }
 
-        sourceType.enterAssociationEnd(targetAntlrAssociationEnd);
-        targetType.enterAssociationEnd(sourceAntlrAssociationEnd);
+        targetType.enterAssociationEnd(this.getSourceEnd());
+        sourceType.enterAssociationEnd(this.getTargetEnd());
     }
 
     public AssociationBuilder build()
@@ -169,21 +167,35 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     this.name,
                     numAssociationEnds);
             compilerErrorHolder.add(message, this);
+            return;
         }
 
-        // TODO: reportErrors: Check that both ends aren't owned
+        if (this.getSourceEnd().isOwned() && this.getTargetEnd().isOwned())
+        {
+            String message = String.format(
+                    "ERR_ASO_OWN: Both associations are owned in association '%s'. At most one end may be owned.",
+                    this.name);
+            AntlrAssociationEndModifier sourceOwnedModifier = this.getSourceEnd()
+                    .getAssociationEndModifiers()
+                    .detect(AntlrAssociationEndModifier::isOwned);
+            AntlrAssociationEndModifier targetOwnedModifier = this.getTargetEnd()
+                    .getAssociationEndModifiers()
+                    .detect(AntlrAssociationEndModifier::isOwned);
+
+            compilerErrorHolder.add(
+                    message,
+                    this,
+                    Lists.immutable.with(
+                            sourceOwnedModifier.getElementContext(),
+                            targetOwnedModifier.getElementContext()));
+        }
+
         // TODO: reportErrors: Check that both ends aren't versions
 
-        AntlrAssociationEnd sourceAntlrAssociationEnd = this.associationEndStates.get(0);
-        AntlrAssociationEnd targetAntlrAssociationEnd = this.associationEndStates.get(1);
-
-        AntlrClass sourceType = sourceAntlrAssociationEnd.getType();
-        AntlrClass targetType = targetAntlrAssociationEnd.getType();
-
-        if (sourceType == AntlrClass.NOT_FOUND || targetType == AntlrClass.NOT_FOUND)
+        if (this.getSourceEnd().getType() == AntlrClass.NOT_FOUND || this.getTargetEnd().getType() == AntlrClass.NOT_FOUND)
         {
-            sourceAntlrAssociationEnd.reportTypeNotFound(compilerErrorHolder);
-            targetAntlrAssociationEnd.reportTypeNotFound(compilerErrorHolder);
+            this.getSourceEnd().reportTypeNotFound(compilerErrorHolder);
+            this.getTargetEnd().reportTypeNotFound(compilerErrorHolder);
 
             return;
         }

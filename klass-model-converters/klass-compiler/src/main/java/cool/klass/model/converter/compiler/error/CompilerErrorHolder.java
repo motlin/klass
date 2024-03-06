@@ -20,7 +20,7 @@ public class CompilerErrorHolder
     {
         CompilerError compilerError = new CompilerError(
                 message,
-                offendingParserRuleContext,
+                Lists.immutable.with(offendingParserRuleContext),
                 Lists.immutable.with(parserRuleContexts));
         this.compilerErrors.add(compilerError);
     }
@@ -29,22 +29,39 @@ public class CompilerErrorHolder
     {
         if (element instanceof AntlrNamedElement)
         {
-            this.add(message, ((AntlrNamedElement) element).getNameContext(), element);
+            this.add(message, element, ((AntlrNamedElement) element).getNameContext());
         }
         else
         {
-            this.add(message, element.getElementContext(), element);
+            this.add(message, element, element.getElementContext());
         }
     }
 
     public void add(
             @Nonnull String message,
-            @Nonnull ParserRuleContext offendingParserRuleContext,
-            @Nonnull IAntlrElement element)
+            @Nonnull IAntlrElement element,
+            @Nonnull ParserRuleContext offendingContext)
+    {
+        this.add(message, element, element.getSurroundingElements(), Lists.immutable.with(offendingContext));
+    }
+
+    public void add(
+            @Nonnull String message,
+            @Nonnull IAntlrElement element,
+            @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
+    {
+        this.add(message, element, element.getSurroundingElementsIncludingThis(), offendingContexts);
+    }
+
+    public void add(
+            @Nonnull String message,
+            @Nonnull IAntlrElement element,
+            ImmutableList<IAntlrElement> surroundingElements,
+            ImmutableList<ParserRuleContext> offendingContexts)
     {
         ParserRuleContext outerContext = element.getCompilationUnit().getParserContext();
 
-        ImmutableList<ParserRuleContext> innerContexts = element.getSurroundingElements()
+        ImmutableList<ParserRuleContext> innerContexts = surroundingElements
                 .collect(IAntlrElement::getElementContext);
 
         ImmutableList<ParserRuleContext> allParserRuleContexts = Lists.immutable
@@ -53,7 +70,7 @@ public class CompilerErrorHolder
 
         CompilerError compilerError = new CompilerError(
                 message,
-                offendingParserRuleContext,
+                offendingContexts,
                 allParserRuleContexts);
 
         this.compilerErrors.add(compilerError);

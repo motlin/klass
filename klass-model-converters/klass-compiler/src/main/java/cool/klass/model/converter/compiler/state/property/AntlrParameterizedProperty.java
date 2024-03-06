@@ -176,4 +176,11 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     {
         return Objects.requireNonNull(this.owningClassState);
     }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        super.reportNameErrors(compilerErrorHolder);
+        this.parameterHolder.reportNameErrors(compilerErrorHolder);
+    }
 }

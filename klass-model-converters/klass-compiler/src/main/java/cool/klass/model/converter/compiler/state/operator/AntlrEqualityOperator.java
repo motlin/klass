@@ -55,6 +55,6 @@ public class AntlrEqualityOperator extends AntlrOperator
                 targetTypes.getFirst());
         // Cast is a deliberate assertion
         CriteriaOperatorContext criteriaOperatorContext = (CriteriaOperatorContext) this.elementContext.getParent().getParent();
-        compilerErrorHolder.add(message, criteriaOperatorContext, this);
+        compilerErrorHolder.add(message, this, criteriaOperatorContext);
     }
 }

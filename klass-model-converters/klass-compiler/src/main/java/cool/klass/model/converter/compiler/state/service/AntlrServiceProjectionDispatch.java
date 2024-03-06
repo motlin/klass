@@ -63,8 +63,8 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
 
             compilerErrorHolder.add(
                     String.format("ERR_SER_PRJ: Cannot find projection '%s'", reference.getText()),
-                    reference,
-                    this);
+                    this,
+                    reference);
             return;
         }
 
@@ -81,10 +81,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
                     serviceGroupKlass.getName(),
                     this.projection.getName(),
                     projectionKlass.getName());
-            compilerErrorHolder.add(
-                    error,
-                    this.getElementContext().projectionReference(),
-                    this);
+            compilerErrorHolder.add(error, this, this.getElementContext().projectionReference());
         }
     }
 

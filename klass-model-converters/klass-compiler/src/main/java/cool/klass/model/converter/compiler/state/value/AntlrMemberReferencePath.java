@@ -74,7 +74,7 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
                         "ERR_MEM_EXP: Cannot find member '%s.%s'.",
                         currentClassState.getName(),
                         identifier.getText());
-                compilerErrorHolder.add(message, identifier, this);
+                compilerErrorHolder.add(message, this, identifier);
                 return null;
             }
             currentClassState = associationEndState.getType();

@@ -94,6 +94,12 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     @Nonnull
+    public MutableList<AntlrAssociationEndModifier> getAssociationEndModifiers()
+    {
+        return this.associationEndModifierStates.asUnmodifiable();
+    }
+
+    @Nonnull
     @Override
     public AssociationEndBuilder build()
     {

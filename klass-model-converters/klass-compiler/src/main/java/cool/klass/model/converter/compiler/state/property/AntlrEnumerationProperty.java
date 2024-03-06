@@ -123,7 +123,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         String message = String.format(
                 "ERR_ENM_PRP: Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, offendingToken, this);
+        compilerErrorHolder.add(message, this, offendingToken);
     }
 
     @Nonnull

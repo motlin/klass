@@ -108,7 +108,7 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
 
         if (this.headerText.trim().isEmpty())
         {
-            compilerErrorHolder.add("Empty header string.", this.headerContext, this);
+            compilerErrorHolder.add("Empty header string.", this, this.headerContext);
         }
     }
 

@@ -68,7 +68,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
                     "ERR_MEM_TYP: Cannot find class '%s'.",
                     offendingToken.getText());
 
-            compilerErrorHolder.add(message, offendingToken, this);
+            compilerErrorHolder.add(message, this, offendingToken);
             return;
         }
 
@@ -88,7 +88,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
                     "ERR_TYP_MEM: Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add(message, identifier, this);
+            compilerErrorHolder.add(message, this, identifier);
         }
     }
 

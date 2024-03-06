@@ -124,7 +124,7 @@ public final class AntlrParameter extends AntlrNamedElement
         String message = String.format(
                 "ERR_ENM_PAR: Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, offendingToken, this);
+        compilerErrorHolder.add(message, this, offendingToken);
     }
 
     public void reportDuplicateParameterName(@Nonnull CompilerErrorHolder compilerErrorHolder)

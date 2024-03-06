@@ -76,7 +76,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
                     "ERR_THS_MEM: Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add(message, identifier, this);
+            compilerErrorHolder.add(message, this, identifier);
         }
     }
 

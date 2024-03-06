@@ -110,9 +110,6 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     public void reportDuplicatePrettyName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_LIT: Duplicate enumeration pretty name: '%s'.", this.prettyName);
-        compilerErrorHolder.add(
-                message,
-                this.getElementContext().enumerationPrettyName(),
-                this);
+        compilerErrorHolder.add(message, this, this.getElementContext().enumerationPrettyName());
     }
 }

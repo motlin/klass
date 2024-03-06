@@ -121,8 +121,8 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         ClassReferenceContext reference = this.getElementContext().classReference();
         compilerErrorHolder.add(
                 String.format("ERR_SRG_TYP: Cannot find class '%s'", reference.getText()),
-                reference,
-                this);
+                this,
+                reference);
     }
 
     private void reportDuplicateUrls(CompilerErrorHolder compilerErrorHolder)

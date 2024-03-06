@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.grammar.KlassListener;
-import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -17,23 +16,18 @@ public class CompilerError implements Comparable<CompilerError>
     @Nonnull
     private final String                           message;
     @Nonnull
-    private final ParserRuleContext                offendingParserRuleContext;
+    private final ImmutableList<ParserRuleContext> offendingContexts;
+    @Nonnull
     private final ImmutableList<ParserRuleContext> parserRuleContexts;
-    private final Token                            offendingToken;
 
     public CompilerError(
             @Nonnull String message,
-            @Nonnull ParserRuleContext offendingParserRuleContext,
-            ImmutableList<ParserRuleContext> parserRuleContexts)
+            @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
+            @Nonnull ImmutableList<ParserRuleContext> parserRuleContexts)
     {
         this.message = Objects.requireNonNull(message);
-        this.offendingParserRuleContext = Objects.requireNonNull(offendingParserRuleContext);
-        if (offendingParserRuleContext instanceof EqualityOperatorContext)
-        {
-            throw new AssertionError();
-        }
+        this.offendingContexts = offendingContexts;
         this.parserRuleContexts = parserRuleContexts;
-        this.offendingToken = this.offendingParserRuleContext.getStart();
     }
 
     @Nonnull
@@ -72,28 +66,13 @@ public class CompilerError implements Comparable<CompilerError>
             ruleContext.enterRule(errorContextListener);
         }
 
-        this.offendingParserRuleContext.enterRule(errorUnderlineListener);
+        this.offendingContexts.forEachWith(ParserRuleContext::enterRule, errorUnderlineListener);
 
         for (ParserRuleContext ruleContext : this.parserRuleContexts)
         {
             ruleContext.exitRule(errorContextListener);
         }
         return contextualStrings.toImmutable();
-    }
-
-    private String getSourceName()
-    {
-        return this.offendingToken.getInputStream().getSourceName();
-    }
-
-    private int getLine()
-    {
-        return this.offendingToken.getLine();
-    }
-
-    private int getCharPositionInLine()
-    {
-        return this.offendingToken.getCharPositionInLine();
     }
 
     @Override
@@ -112,5 +91,25 @@ public class CompilerError implements Comparable<CompilerError>
         }
 
         return Integer.compare(this.getCharPositionInLine(), other.getCharPositionInLine());
+    }
+
+    private String getSourceName()
+    {
+        return this.getOffendingToken().getInputStream().getSourceName();
+    }
+
+    private int getLine()
+    {
+        return this.getOffendingToken().getLine();
+    }
+
+    private int getCharPositionInLine()
+    {
+        return this.getOffendingToken().getCharPositionInLine();
+    }
+
+    private Token getOffendingToken()
+    {
+        return this.offendingContexts.getFirst().getStart();
     }
 }

@@ -72,7 +72,7 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
         String message = String.format(
                 "ERR_PRP_TYP: Cannot find class '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, offendingToken, this);
+        compilerErrorHolder.add(message, this, offendingToken);
     }
 
     protected abstract ClassTypeContext getClassType();

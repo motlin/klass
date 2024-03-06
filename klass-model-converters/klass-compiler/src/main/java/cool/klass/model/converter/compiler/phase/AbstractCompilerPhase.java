@@ -197,13 +197,10 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     public void error(
             @Nonnull String message,
-            @Nonnull ParserRuleContext offendingParserRuleContext,
-            @Nonnull IAntlrElement element)
+            @Nonnull IAntlrElement element,
+            @Nonnull ParserRuleContext offendingParserRuleContext)
     {
-        this.compilerErrorHolder.add(
-                message,
-                offendingParserRuleContext,
-                element);
+        this.compilerErrorHolder.add(message, element, offendingParserRuleContext);
     }
 
     public <T extends ParserRuleContext> void runCompilerMacro(

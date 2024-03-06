@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import org.eclipse.collections.api.list.MutableList;
@@ -43,5 +45,10 @@ public final class ParameterHolder implements AntlrParameterOwner
     {
         // TODO: Override MutableOrderedMap.asUnmodifiable
         return this.parameterStatesByName;
+    }
+
+    public void reportNameErrors(CompilerErrorHolder compilerErrorHolder)
+    {
+        this.parameterStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 }

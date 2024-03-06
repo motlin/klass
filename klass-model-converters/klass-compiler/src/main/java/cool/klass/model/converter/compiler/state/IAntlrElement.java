@@ -25,9 +25,18 @@ public interface IAntlrElement
 
     Optional<IAntlrElement> getSurroundingElement();
 
+    default ImmutableList<IAntlrElement> getSurroundingElementsIncludingThis()
+    {
+        return this.gatherSurroundingElements(Lists.mutable.with(this));
+    }
+
     default ImmutableList<IAntlrElement> getSurroundingElements()
     {
-        MutableList<IAntlrElement> result = Lists.mutable.empty();
+        return this.gatherSurroundingElements(Lists.mutable.empty());
+    }
+
+    default ImmutableList<IAntlrElement> gatherSurroundingElements(MutableList<IAntlrElement> result)
+    {
         boolean omitParent = this.omitParentFromSurroundingElements();
         this.getSurroundingElement().ifPresent(element -> element.gatherSurroundingElements(result, omitParent));
         return result.toImmutable();

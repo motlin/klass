@@ -100,8 +100,8 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         {
             compilerErrorHolder.add(
                     String.format("ERR_PRJ_TYP: Cannot find class '%s'", this.getElementContext().classReference().getText()),
-                    this.getElementContext().classReference(),
-                    this);
+                    this,
+                    this.getElementContext().classReference());
         }
 
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();

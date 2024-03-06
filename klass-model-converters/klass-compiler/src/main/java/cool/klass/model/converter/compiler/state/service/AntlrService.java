@@ -130,7 +130,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     {
         String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
 
-        compilerErrorHolder.add(message, this.verbState.getElementContext(), this);
+        compilerErrorHolder.add(message, this, this.verbState.getElementContext());
     }
 
     public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
@@ -226,8 +226,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
                 compilerErrorHolder.add(
                         message,
-                        this.serviceProjectionDispatchState.getElementContext().projectionReference(),
-                        this);
+                        this,
+                        this.serviceProjectionDispatchState.getElementContext().projectionReference());
             }
 
             // TODO: Do this after changing the versionClass to versionAssociationEnd

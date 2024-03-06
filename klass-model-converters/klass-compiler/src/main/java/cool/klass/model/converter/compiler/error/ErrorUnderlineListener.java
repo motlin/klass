@@ -21,7 +21,10 @@ import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.listener.KlassThrowingListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class ErrorUnderlineListener extends KlassThrowingListener
 {
@@ -111,7 +114,7 @@ public class ErrorUnderlineListener extends KlassThrowingListener
             throw new AssertionError();
         }
 
-        this.addUnderlinedToken(serviceCriteriaDeclarationContext, ctx.getStart());
+        this.addUnderlinedToken(serviceCriteriaDeclarationContext, Lists.immutable.with(ctx.getStart()));
     }
 
     @Override
@@ -173,8 +176,10 @@ public class ErrorUnderlineListener extends KlassThrowingListener
         return stringBuilder.toString();
     }
 
-    private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull Token offendingToken)
+    private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull ImmutableList<Token> offendingTokens)
     {
+        ImmutableMap<Integer, Token> tokenByLine = offendingTokens.groupByUniqueKey(Token::getLine);
+
         Token    startToken     = ctx.getStart();
         Token    stopToken      = ctx.getStop();
         int      startLine      = startToken.getLine();
@@ -184,9 +189,10 @@ public class ErrorUnderlineListener extends KlassThrowingListener
 
         for (int lineNumber = startLine; lineNumber <= stopLine; lineNumber++)
         {
-            if (lineNumber == offendingToken.getLine())
+            if (tokenByLine.containsKey(lineNumber))
             {
-                this.addUnderlinedContext(offendingToken, offendingToken, offendingToken.getLine());
+                Token offendingToken = tokenByLine.get(lineNumber);
+                this.addUnderlinedContext(offendingToken, offendingToken, lineNumber);
             }
             else
             {

@@ -60,7 +60,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         {
             // TODO: Cover this with a test
 
-            compilerErrorHolder.add("Literal list with heterogeneous values.", this.elementContext, this);
+            compilerErrorHolder.add("Literal list with heterogeneous values.", this, this.elementContext);
         }
     }
 

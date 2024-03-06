@@ -25,7 +25,7 @@ public class ThrowingErrorListener extends BaseErrorListener
             String msg,
             RecognitionException e)
     {
-        String sourceLine = this.lines[line - 1];
+        String sourceLine = getSourceLine(line);
         String error = String.format(
                 "%s[%d:%d] %s%n%s",
                 this.sourceName,
@@ -34,5 +34,15 @@ public class ThrowingErrorListener extends BaseErrorListener
                 msg,
                 sourceLine);
         throw new ParseCancellationException(error);
+    }
+
+    public String getSourceLine(int line)
+    {
+        if (line == 1)
+        {
+            return this.lines[line - 1];
+        }
+
+        return this.lines[line - 2] + "\n" + this.lines[line - 1];
     }
 }

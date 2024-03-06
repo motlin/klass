@@ -284,6 +284,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
 
         this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.parameterizedPropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
         this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 
