@@ -734,7 +734,7 @@ public class ReladomoDataStore
         throw new AssertionError("Expected one subclass but got " + potentialSubClasses);
     }
 
-    private MithraObject getSubClassPersistentInstance(
+    public MithraObject getSubClassPersistentInstance(
             Klass klass,
             Klass subClass,
             MithraObject persistentInstance)
