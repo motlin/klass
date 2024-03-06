@@ -521,14 +521,19 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             return;
         }
 
-        AntlrModifier modifier = this.getModifiers().detect(AntlrModifier::isVersion);
+        ParserRuleContext offendingToken = this.getTypeParserRuleContext();
+        AntlrModifier     modifier       = this.getModifiers().detect(AntlrModifier::isVersion);
         String message = String.format(
                 "Expected types %s but was '%s' for '%s' property '%s'.",
                 ALLOWED_VERSION_TYPES,
                 antlrType.getName(),
                 modifier,
                 this);
-        compilerErrorHolder.add("ERR_VER_DTP", message, modifier);
+        compilerErrorHolder.add(
+                "ERR_VER_DTP",
+                message,
+                modifier,
+                Lists.immutable.with(offendingToken, modifier.getElementContext()));
     }
 
     private void reportInvalidTemporalProperties(CompilerErrorState compilerErrorHolder)

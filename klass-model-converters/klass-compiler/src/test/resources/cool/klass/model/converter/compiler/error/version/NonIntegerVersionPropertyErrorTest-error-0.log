@@ -7,11 +7,11 @@ At (NonIntegerVersionPropertyErrorTest.klass:7)
 [39m3║ [35mclass [39mExampleVersion [33msystemTemporal
 [39m4║ [36m{
 [39m7║     [39mnumber[36m: [35mString [33mversion[36m;
-[39m ║ [31m                   ^^^^^^^
+[39m ║ [31m            ^^^^^^ ^^^^^^^
 [39m8║ [36m}
 [m
 [36mLocation:  [mNonIntegerVersionPropertyErrorTest.klass:7[m
 [36mFile:      [mNonIntegerVersionPropertyErrorTest.klass[m
 [36mLine:      [m7[m
-[36mCharacter: [m20
+[36mCharacter: [m13
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m
