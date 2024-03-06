@@ -97,7 +97,11 @@ public class PersistentCreator extends PersistentSynchronizer
             Instant transactionTime = this.mutationContext.getTransactionTime();
             if (!this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, transactionTime))
             {
-                throw new AssertionError();
+                String detailMessage = "Expected to set createdOn property: %s on %s to %s".formatted(
+                        primitiveProperty,
+                        persistentInstance,
+                        transactionTime);
+                throw new AssertionError(detailMessage);
             }
         });
     }

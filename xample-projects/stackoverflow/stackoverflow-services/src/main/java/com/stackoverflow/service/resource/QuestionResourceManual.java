@@ -1,11 +1,8 @@
 package com.stackoverflow.service.resource;
 
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,6 +47,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
@@ -68,10 +66,14 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.eclipse.collections.impl.utility.Iterate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/manual")
 public class QuestionResourceManual
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuestionResourceManual.class);
+
     @Nonnull
     private final DomainModel domainModel;
     @Nonnull
@@ -472,22 +474,42 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
+        IncomingCreateDataModelValidator.validate(
+                this.dataStore,
+                klass,
+                incomingInstance,
+                errors,
+                warnings);
+        if (errors.notEmpty())
+        {
+            Response response = Response
+                    .status(Status.BAD_REQUEST)
+                    .entity(errors)
+                    .build();
+            throw new BadRequestException("Incoming data failed validation.", response);
+        }
+        if (warnings.notEmpty())
+        {
+            LOGGER.info("warnings = {}", warnings.makeString("\n", "\n", "\n"));
+            warnings.clear();
+        }
+
+        String            userPrincipalName  = principal.getName();
+        Optional<String>  userId             = Optional.of(userPrincipalName);
+
         Question persistentInstance = MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            Instant  now      = Instant.ofEpochMilli(tx.getProcessingStartTime());
+            Instant  now  = this.clock.instant();
+            tx.setProcessingStartTime(now.toEpochMilli());
+
             Question question = new Question();
-            question.setCreatedById("TODO");
-            question.setLastUpdatedById("TODO");
-            question.setCreatedOn(Timestamp.valueOf(LocalDateTime.ofInstant(now, ZoneOffset.UTC)));
             question.generateAndSetId();
 
-            String           userPrincipalName  = principal.getName();
-            Optional<String> userId             = Optional.of(userPrincipalName);
-            Instant          transactionInstant = Instant.now(this.clock);
-            MutationContext mutationContext = new MutationContext(
+            MutationContext   mutationContext    = new MutationContext(
                     userId,
-                    transactionInstant,
+                    now,
                     Maps.immutable.empty());
+
             PersistentCreator creator = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(klass, question, incomingInstance);
             question.insert();
@@ -498,8 +520,7 @@ public class QuestionResourceManual
         uriBuilder.path(Long.toString(persistentInstance.getId()));
 
         Projection      projection           = this.domainModel.getProjectionByName("QuestionReadProjection");
-        MithraTimestamp transactionTimestamp = DefaultInfinityTimestamp.getDefaultInfinity();
-        Instant         transactionInstant   = transactionTimestamp.toInstant();
+        Instant         transactionInstant   = persistentInstance.getSystem().toInstant();
 
         var responseBuilder = new KlassResponseBuilder(
                 persistentInstance,
