@@ -484,7 +484,7 @@ public class JavaConstantsMetaModelGenerator
                 .collect(this::getEnumerationLiteralSourceCode)
                 .makeString("\n")
                 // https://stackoverflow.com/questions/15888934/how-to-indent-a-multi-line-paragraph-being-written-to-the-console-in-java
-                // https://stackoverflow.com/a/15889069/23572
+                // https://stackoverflow.com/a/15889069
                 // https://stackoverflow.com/questions/11125459/java-regex-negative-lookahead
                 .replaceAll("(?m)^(?!$)", "    ");
     }

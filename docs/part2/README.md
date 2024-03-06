@@ -4,7 +4,7 @@ So far, we've built a simple read service. We could add create, update, and dele
 
 ## Versions
 
-[Here's a real example](https://stackoverflow.com/a/49938998/23572) from Stack Overflow. The answer has 3 versions, at the time of writing. The url returns the latest version. There's a link with text like ["edited Apr 20 at 10:10"](https://stackoverflow.com/posts/49938998/revisions) which you can follow to see all versions. Each version has a number, a timestamp, the author's username, and the full text of the answer at the time.
+[Here's a real example](https://stackoverflow.com/a/49938998) from Stack Overflow. The answer has 3 versions, at the time of writing. The url returns the latest version. There's a link with text like ["edited Apr 20 at 10:10"](https://stackoverflow.com/posts/49938998/revisions) which you can follow to see all versions. Each version has a number, a timestamp, the author's username, and the full text of the answer at the time.
 
 ## Optimistic locking
 
