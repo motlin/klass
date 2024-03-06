@@ -1,15 +1,15 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadPrimitiveProperty'.[m
+[31mName must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadEnumerationProperty'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:10)
+Error at location. (InvalidNamesErrorTest.klass:17)
 [40m[40;37m 1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m 8║ [40;35mclass [40;97mbadInterface
-[40;37m 9║ [40;36m{
-[40;37m10║     [40;97mBadPrimitiveProperty  [40;36m: [40;95mString [40;33mkey[40;36m;
-[40;37m  ║     [40;91m^^^^^^^^^^^^^^^^^^^^
-[40;37m12║ [40;36m}
+[40;37m14║ [40;35mclass [40;97mbadClass
+[40;37m15║ [40;36m{
+[40;37m17║     [40;97mBadEnumerationProperty[40;36m: [40;97mbadEnumeration[40;36m;
+[40;37m  ║     [40;91m^^^^^^^^^^^^^^^^^^^^^^
+[40;37m33║ [40;36m}
 [m
-[36mLocation:  [mInvalidNamesErrorTest.klass:10[m
+[36mLocation:  [mInvalidNamesErrorTest.klass:17[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
-[36mLine:      [m10[m
+[36mLine:      [m17[m
 [36mCharacter: [m5[m

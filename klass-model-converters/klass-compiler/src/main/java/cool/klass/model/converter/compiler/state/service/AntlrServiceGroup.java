@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
@@ -35,6 +36,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.AMBIGUOUS,
             new ParserRuleContext(),
             "klass.meta",
             AntlrClass.AMBIGUOUS);
@@ -53,11 +55,12 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 

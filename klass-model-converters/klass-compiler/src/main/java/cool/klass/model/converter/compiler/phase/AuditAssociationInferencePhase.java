@@ -94,6 +94,7 @@ public class AuditAssociationInferencePhase
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
+                new CompilationUnitPhase(this.compilerState),
                 new TopLevelElementsPhase(this.compilerState),
                 new AssociationPhase(this.compilerState));
 

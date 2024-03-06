@@ -246,7 +246,7 @@ public final class CompilationUnit
                     .flatMap(AntlrElement::getCompilationUnit)
                     .map(CompilationUnit::build);
 
-            this.sourceCodeBuilder = getSourceCodeBuilder(macroSourceCodeBuilder);
+            this.sourceCodeBuilder = this.getSourceCodeBuilder(macroSourceCodeBuilder);
         }
         return this.sourceCodeBuilder;
     }

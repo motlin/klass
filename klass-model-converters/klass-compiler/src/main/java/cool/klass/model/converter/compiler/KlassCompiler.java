@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.phase.AuditAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.AuditPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassifierPhase;
+import cool.klass.model.converter.compiler.phase.CompilationUnitPhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.InheritancePhase;
 import cool.klass.model.converter.compiler.phase.OrderByDirectionInferencePhase;
@@ -40,6 +41,7 @@ public class KlassCompiler
 {
     public static final ImmutableList<Function<CompilerState, KlassListener>> COMPILER_PHASE_BUILDERS =
             Lists.immutable.with(
+                    CompilationUnitPhase::new,
                     TopLevelElementsPhase::new,
                     EnumerationsPhase::new,
                     ClassifierPhase::new,

@@ -1,4 +1,3 @@
-
 package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;

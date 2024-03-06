@@ -7,13 +7,15 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.SourceContext;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
-public class RootCompilerError extends AbstractCompilerError implements Comparable<RootCompilerError>
+public class RootCompilerError
+        extends AbstractCompilerError
+        implements Comparable<RootCompilerError>
 {
     private static final Comparator<RootCompilerError> COMPILER_ERROR_COMPARATOR = Comparator.comparingInt(
             (RootCompilerError each) -> each.getCompilationUnit().getOrdinal())
@@ -29,7 +31,7 @@ public class RootCompilerError extends AbstractCompilerError implements Comparab
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
-            @Nonnull ImmutableList<SourceContext> sourceContexts,
+            @Nonnull ImmutableList<IAntlrElement> sourceContexts,
             @Nonnull String errorCode,
             @Nonnull String message)
     {

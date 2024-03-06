@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.projection;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -8,7 +9,9 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
@@ -27,6 +30,7 @@ public class AntlrProjection
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
             null);
 
@@ -36,9 +40,12 @@ public class AntlrProjection
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
             null);
 
+    @Nonnull
+    private final AntlrCompilationUnit compilationUnitState;
     private final String packageName;
 
     private ProjectionBuilder projectionBuilder;
@@ -48,11 +55,20 @@ public class AntlrProjection
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClassifier classifier,
             String packageName)
     {
         super(elementContext, compilationUnit, nameContext, ordinal, classifier);
-        this.packageName = packageName;
+        this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
+        this.packageName          = packageName;
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IAntlrElement> getSurroundingElement()
+    {
+        return Optional.of(this.compilationUnitState);
     }
 
     @Override

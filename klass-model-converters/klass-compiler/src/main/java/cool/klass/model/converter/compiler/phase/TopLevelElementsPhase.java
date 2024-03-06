@@ -5,7 +5,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 
-public class TopLevelElementsPhase extends AbstractCompilerPhase
+public class TopLevelElementsPhase
+        extends AbstractCompilerPhase
 {
     public TopLevelElementsPhase(@Nonnull CompilerState compilerState)
     {

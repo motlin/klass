@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
@@ -33,6 +34,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
@@ -59,6 +61,8 @@ public class CompilerWalkState
     @Nullable
     private String packageName;
 
+    @Nullable
+    private AntlrCompilationUnit            compilationUnitState;
     @Nullable
     private AntlrTopLevelElement            topLevelDeclarationState;
     @Nullable
@@ -219,9 +223,25 @@ public class CompilerWalkState
         return Objects.requireNonNull(this.currentCompilationUnit);
     }
 
+    @Nullable
+    public AntlrCompilationUnit getCompilationUnitState()
+    {
+        return Objects.requireNonNull(this.compilationUnitState);
+    }
+
     public void enterCompilationUnit(CompilationUnit currentCompilationUnit)
     {
         this.currentCompilationUnit = currentCompilationUnit;
+
+        if (this.compilationUnitState == null)
+        {
+            return;
+        }
+
+        if (this.compilationUnitState.getElementContext() != this.currentCompilationUnit.getParserContext())
+        {
+            throw new AssertionError();
+        }
     }
 
     public void exitCompilationUnit()
@@ -245,6 +265,7 @@ public class CompilerWalkState
         // TODO: It's too easy for this list to get out of sync with the declared fields
         CompilerWalkState compilerWalkState = new CompilerWalkState(this.domainModelState);
         compilerWalkState.currentCompilationUnit          = compilationUnit;
+        compilerWalkState.compilationUnitState            = this.compilationUnitState;
         compilerWalkState.packageNameContext              = this.packageNameContext;
         compilerWalkState.packageName                     = this.packageName;
         compilerWalkState.topLevelDeclarationState        = this.topLevelDeclarationState;
@@ -359,6 +380,10 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.compilationUnitState != other.compilationUnitState)
+        {
+            throw new AssertionError();
+        }
         if (this.currentCompilationUnit != other.currentCompilationUnit)
         {
             throw new AssertionError();
@@ -457,6 +482,24 @@ public class CompilerWalkState
 
     public class ListenerView extends KlassBaseListener
     {
+        @Override
+        public void enterCompilationUnit(CompilationUnitContext ctx)
+        {
+            super.enterCompilationUnit(ctx);
+
+            CompilerWalkState.assertNull(CompilerWalkState.this.compilationUnitState);
+            CompilerWalkState.this.compilationUnitState =
+                    CompilerWalkState.this.domainModelState.getCompilationUnitByContext(ctx);
+        }
+
+        @Override
+        public void exitCompilationUnit(CompilationUnitContext ctx)
+        {
+            super.exitCompilationUnit(ctx);
+
+            CompilerWalkState.this.compilationUnitState = null;
+        }
+
         @Override
         public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
         {

@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.SourceContext;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -28,13 +28,13 @@ public abstract class AbstractCompilerError
     @Nonnull
     private final   ImmutableList<ParserRuleContext> offendingContexts;
     @Nonnull
-    private final   ImmutableList<SourceContext>     sourceContexts;
+    private final   ImmutableList<IAntlrElement>      sourceContexts;
 
     protected AbstractCompilerError(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
-            @Nonnull ImmutableList<SourceContext> sourceContexts)
+            @Nonnull ImmutableList<IAntlrElement> sourceContexts)
     {
         this.macroCause        = Objects.requireNonNull(macroCause);
         this.compilationUnit   = Objects.requireNonNull(compilationUnit);
@@ -107,12 +107,11 @@ public abstract class AbstractCompilerError
     {
         MutableList<AbstractContextString> contextualStrings = Lists.mutable.empty();
 
-        ImmutableList<SourceContext> reversedContext = this.sourceContexts.toReversed();
-        for (SourceContext sourceContext : reversedContext)
+        ImmutableList<IAntlrElement> reversedContext = this.sourceContexts.toReversed();
+        for (IAntlrElement sourceContext : reversedContext)
         {
             ParserRuleContext elementContext  = sourceContext.getElementContext();
-            CompilationUnit   compilationUnit = sourceContext.getCompilationUnit();
-            elementContext.enterRule(new ErrorContextListener(compilationUnit, contextualStrings));
+            elementContext.enterRule(new ErrorContextListener(this.compilationUnit, contextualStrings));
         }
 
         KlassListener errorUnderlineListener = new ErrorUnderlineListener(
@@ -121,11 +120,10 @@ public abstract class AbstractCompilerError
                 this instanceof RootCompilerError);
         this.offendingContexts.forEachWith(ParserRuleContext::enterRule, errorUnderlineListener);
 
-        for (SourceContext sourceContext : this.sourceContexts)
+        for (IAntlrElement sourceContext : this.sourceContexts)
         {
             ParserRuleContext elementContext  = sourceContext.getElementContext();
-            CompilationUnit   compilationUnit = sourceContext.getCompilationUnit();
-            elementContext.exitRule(new ErrorContextListener(compilationUnit, contextualStrings));
+            elementContext.exitRule(new ErrorContextListener(this.compilationUnit, contextualStrings));
         }
         return contextualStrings.toImmutable();
     }

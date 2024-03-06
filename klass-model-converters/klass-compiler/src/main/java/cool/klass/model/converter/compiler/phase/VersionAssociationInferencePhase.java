@@ -53,6 +53,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         String                  klassSourceCode         = this.getSourceCode(keyProperties);
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
+                new CompilationUnitPhase(this.compilerState),
                 new TopLevelElementsPhase(this.compilerState),
                 new AssociationPhase(this.compilerState));
 

@@ -22,6 +22,7 @@ import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
@@ -37,14 +38,18 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrEnumeration>  enumerationStates  = Lists.mutable.empty();
-    private final MutableList<AntlrClassifier>   classifierStates   = Lists.mutable.empty();
-    private final MutableList<AntlrInterface>    interfaceStates    = Lists.mutable.empty();
-    private final MutableList<AntlrClass>        classStates        = Lists.mutable.empty();
-    private final MutableList<AntlrClass>        userClassStates    = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation>  associationStates  = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>   projectionStates   = Lists.mutable.empty();
-    private final MutableList<AntlrServiceGroup> serviceGroupStates = Lists.mutable.empty();
+    private final MutableList<AntlrCompilationUnit> compilationUnitStates = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>     enumerationStates     = Lists.mutable.empty();
+    private final MutableList<AntlrClassifier>      classifierStates      = Lists.mutable.empty();
+    private final MutableList<AntlrInterface>       interfaceStates       = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
+    private final MutableList<AntlrClass>           userClassStates       = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
+
+    private final MutableOrderedMap<CompilationUnitContext, AntlrCompilationUnit> compilationUnitsByContext        =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableOrderedMap<TopLevelDeclarationContext, AntlrTopLevelElement> topLevelElementsByContext        =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -100,6 +105,18 @@ public class AntlrDomainModel
                 this.topLevelElementOrdinalsByContext.size() + 1);
 
         if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public void exitCompilationUnit(@Nonnull AntlrCompilationUnit compilationUnitState)
+    {
+        this.compilationUnitStates.add(compilationUnitState);
+        AntlrCompilationUnit duplicateCompilationUnit = this.compilationUnitsByContext.put(
+                compilationUnitState.getElementContext(),
+                compilationUnitState);
+        if (duplicateCompilationUnit != null)
         {
             throw new AssertionError();
         }
@@ -335,6 +352,11 @@ public class AntlrDomainModel
         return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
     }
 
+    public AntlrCompilationUnit getCompilationUnitByContext(CompilationUnitContext context)
+    {
+        return this.compilationUnitsByContext.get(context);
+    }
+
     public AntlrTopLevelElement getTopLevelElementByContext(TopLevelDeclarationContext context)
     {
         return this.topLevelElementsByContext.get(context);
@@ -403,6 +425,11 @@ public class AntlrDomainModel
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
                 .select(topLevelElementState -> duplicateTopLevelNames.contains(topLevelElementState.getName()))
                 .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerErrorHolder);
+
+        for (AntlrCompilationUnit compilationUnitState : this.compilationUnitStates)
+        {
+            compilationUnitState.reportNameErrors(compilerErrorHolder);
+        }
 
         for (AntlrEnumeration enumerationState : this.enumerationStates)
         {

@@ -48,6 +48,7 @@ public class AntlrClass
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.AMBIGUOUS,
             new ParserRuleContext(),
             "klass.meta",
             false)
@@ -80,6 +81,7 @@ public class AntlrClass
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.NOT_FOUND,
             new ParserRuleContext(),
             "klass.meta",
             false)
@@ -130,11 +132,12 @@ public class AntlrClass
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
         this.isUser = isUser;
     }
 

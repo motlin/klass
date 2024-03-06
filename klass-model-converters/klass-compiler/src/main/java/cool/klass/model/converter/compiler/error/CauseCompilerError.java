@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.SourceContext;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -15,7 +15,7 @@ public class CauseCompilerError extends AbstractCompilerError
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerError> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
-            @Nonnull ImmutableList<SourceContext> sourceContexts)
+            @Nonnull ImmutableList<IAntlrElement> sourceContexts)
     {
         super(compilationUnit, macroCause, offendingContexts, sourceContexts);
     }

@@ -35,6 +35,7 @@ public class AntlrInterface extends AntlrClassifier
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.AMBIGUOUS,
             new ParserRuleContext(),
             "klass.meta")
     {
@@ -52,6 +53,7 @@ public class AntlrInterface extends AntlrClassifier
             Optional.empty(),
             new ParserRuleContext(),
             -1,
+            AntlrCompilationUnit.NOT_FOUND,
             new ParserRuleContext(),
             "klass.meta")
     {
@@ -84,10 +86,11 @@ public class AntlrInterface extends AntlrClassifier
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
     }
 
     @Override
