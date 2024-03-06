@@ -1,7 +1,10 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -35,5 +38,20 @@ public interface Interface
     {
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties());
+    }
+
+    @Override
+    default DataTypeProperty getDataTypePropertyByName(String name)
+    {
+        DataTypeProperty declaredDataTypePropertyByName = this.getDeclaredDataTypePropertyByName(name);
+        if (declaredDataTypePropertyByName != null)
+        {
+            return declaredDataTypePropertyByName;
+        }
+
+        return this.getInterfaces()
+                .asLazy()
+                .collectWith(Interface::getDataTypePropertyByName, name)
+                .detect(Objects::nonNull);
     }
 }

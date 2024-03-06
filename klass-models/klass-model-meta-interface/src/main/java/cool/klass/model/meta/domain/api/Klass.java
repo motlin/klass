@@ -1,5 +1,6 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -50,6 +51,31 @@ public interface Klass
                 .newWithAll(interfaceProperties)
                 .distinctBy(NamedElement::getName)
                 .newWithoutAll(this.getDeclaredDataTypeProperties());
+    }
+
+    @Override
+    default DataTypeProperty getDataTypePropertyByName(String name)
+    {
+        DataTypeProperty declaredDataTypePropertyByName = this.getDeclaredDataTypePropertyByName(name);
+        if (declaredDataTypePropertyByName != null)
+        {
+            return declaredDataTypePropertyByName;
+        }
+
+        DataTypeProperty superClassDataTypeProperty = this
+                .getSuperClass()
+                .map(superClass -> superClass.getDataTypePropertyByName(name))
+                .orElse(null);
+
+        if (superClassDataTypeProperty != null)
+        {
+            return superClassDataTypeProperty;
+        }
+
+        return this.getInterfaces()
+                .asLazy()
+                .collectWith(Classifier::getDataTypePropertyByName, name)
+                .detect(Objects::nonNull);
     }
 
     // TODO: Replace with an implementation that preserves order

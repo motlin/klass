@@ -134,6 +134,8 @@ public interface Classifier
 
     DataTypeProperty getDeclaredDataTypePropertyByName(String name);
 
+    DataTypeProperty getDataTypePropertyByName(String name);
+
     default boolean isTemporal()
     {
         return this.isSystemTemporal() || this.isValidTemporal();
