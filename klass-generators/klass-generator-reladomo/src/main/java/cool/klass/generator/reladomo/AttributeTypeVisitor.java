@@ -3,6 +3,7 @@ package cool.klass.generator.reladomo;
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyType;
 import com.gs.fw.common.mithra.generator.metamodel.SimulatedSequenceType;
+import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
@@ -82,6 +83,9 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
     public void visitInstant()
     {
         this.attributeType.setJavaType("Timestamp");
+        TimezoneConversionType timezoneConversion = new TimezoneConversionType();
+        timezoneConversion.with("convert-to-utc", this.attributeType);
+        this.attributeType.setTimezoneConversion(timezoneConversion);
     }
 
     @Override

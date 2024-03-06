@@ -140,8 +140,8 @@ public class ReladomoDataStore implements DataStore
                     : new Class<?>[]{};
             Constructor<?> constructor = aClass.getConstructor(parameterTypes);
             Object[] constructorArgs = klass.isSystemTemporal()
-                     ? new Object[]{DefaultInfinityTimestamp.getDefaultInfinity()}
-                     : new Object[]{};
+                    ? new Object[]{DefaultInfinityTimestamp.getDefaultInfinity()}
+                    : new Object[]{};
             return constructor.newInstance(constructorArgs);
         }
         catch (ReflectiveOperationException e)
@@ -232,7 +232,7 @@ public class ReladomoDataStore implements DataStore
 
         if (dataTypeProperty.getType() == PrimitiveType.INSTANT)
         {
-            return ((Timestamp) result).toLocalDateTime().toInstant(ZoneOffset.UTC);
+            return ((Timestamp) result).toInstant();
         }
 
         boolean isTemporal = dataTypeProperty.isTemporal();
@@ -281,7 +281,7 @@ public class ReladomoDataStore implements DataStore
         }
         else if (dataTypeProperty.getType() == PrimitiveType.INSTANT)
         {
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant((Instant) newValue, ZoneOffset.UTC));
+            Timestamp timestamp = Timestamp.from((Instant) newValue);
             attribute.setValue(persistentInstance, timestamp);
         }
         else
@@ -375,7 +375,7 @@ public class ReladomoDataStore implements DataStore
         try
         {
             Class<?> persistentInstanceClass = persistentInstance.getClass();
-            Class<?> domainModelClass = Class.forName(classifier.getPackageName() + "." + classifier.getName());
+            Class<?> domainModelClass        = Class.forName(classifier.getPackageName() + "." + classifier.getName());
             return domainModelClass.isAssignableFrom(persistentInstanceClass);
         }
         catch (ClassNotFoundException e)
