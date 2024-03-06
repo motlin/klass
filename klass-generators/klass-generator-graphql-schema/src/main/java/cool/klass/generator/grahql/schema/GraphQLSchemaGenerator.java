@@ -11,7 +11,10 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.graphql.schema.writer.KlassGraphQLModelConverter;
 import cool.klass.model.graphql.domain.GraphQLDomainModel;
 import cool.klass.model.graphql.domain.GraphQLElement;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class GraphQLSchemaGenerator
 {
@@ -37,6 +40,8 @@ public class GraphQLSchemaGenerator
         KlassGraphQLModelConverter klassGraphQLModelConverter = new KlassGraphQLModelConverter(this.domainModel);
         GraphQLDomainModel         graphQLDomainModel         = klassGraphQLModelConverter.convert();
 
+        String scalarsSourceCode = this.getScalarsSourceCode();
+
         String topLevelElementsCode = graphQLDomainModel.getTopLevelElements()
                 .collect(this::getSourceCode)
                 .makeString("");
@@ -47,6 +52,8 @@ public class GraphQLSchemaGenerator
                 + "schema {\n"
                 + "    query: Query\n"
                 + "}\n"
+                + "\n"
+                + scalarsSourceCode
                 + "\n"
                 + topLevelElementsCode;
 
@@ -65,6 +72,40 @@ public class GraphQLSchemaGenerator
         outputDirectory.toFile().mkdirs();
         String fileName = this.applicationName + ".graphqls";
         return outputDirectory.resolve(fileName);
+    }
+
+    private String getScalarsSourceCode()
+    {
+        return this.getTemporalScalarsSourceCode() + this.getPrimitiveScalarsSourceCode();
+    }
+
+    private String getTemporalScalarsSourceCode()
+    {
+        boolean isTemporal = this.domainModel
+                .getClassifiers()
+                .anySatisfy(Classifier::isTemporal);
+
+        if (isTemporal)
+        {
+            return ""
+                    + "scalar Instant\n"
+                    + "scalar TemporalInstant\n"
+                    + "scalar TemporalRange\n";
+        }
+
+        return "";
+    }
+
+    private String getPrimitiveScalarsSourceCode()
+    {
+        boolean containsLong = this.domainModel
+                .getClassifiers()
+                .asLazy()
+                .flatCollect(Classifier::getDeclaredDataTypeProperties)
+                .collect(DataTypeProperty::getType)
+                .contains(PrimitiveType.LONG);
+
+        return containsLong ? "scalar Long\n" : "";
     }
 
     private String getSourceCode(@Nonnull GraphQLElement graphQLElement)

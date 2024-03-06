@@ -52,6 +52,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "import io.liftwizard.graphql.scalar.temporal.GraphQLTemporalScalar;\n"
                 + "import " + this.rootPackageName + ".graphql.runtime.wiring.query." + this.applicationName + "QueryTypeRuntimeWiringProvider;\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getImport).makeString("")
+                + "import graphql.Scalars;\n"
                 + "import graphql.schema.idl.RuntimeWiring;\n"
                 + "\n"
                 + "/**\n"
@@ -67,6 +68,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "                .scalar(new GraphQLTemporalScalar(\"Instant\"))\n"
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalInstant\"))\n"
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalRange\"))\n"
+                + "                .scalar(Scalars.GraphQLLong)\n"
                 + "                .type(new " + this.applicationName + "QueryTypeRuntimeWiringProvider().get())\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("")
                 + "                .build();\n"
