@@ -31,8 +31,12 @@ projection PropertiesRequiredProjection on PropertiesRequired
     requiredLocalDate: "PropertiesRequired requiredLocalDate",
     requiredDerived: "PropertiesRequired requiredDerived",
     version: PropertiesRequiredVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection PropertiesOptionalProjection on PropertiesOptional
@@ -51,8 +55,12 @@ projection PropertiesOptionalProjection on PropertiesOptional
     optionalLocalDate: "PropertiesOptional optionalLocalDate",
     optionalDerived: "PropertiesOptional optionalDerived",
     version: PropertiesOptionalVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
@@ -70,8 +78,12 @@ projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
     createdOn: "EveryTypeKeyProperty createdOn",
     everyTypeForeignKeyProperties: EveryTypeForeignKeyPropertyProjection,
     version: EveryTypeKeyPropertyVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection EveryTypeForeignKeyPropertyProjection on EveryTypeForeignKeyProperty
@@ -119,7 +131,9 @@ projection OwnedNaturalOneToManySelfProjection on OwnedNaturalOneToManySelf
     key: "OwnedNaturalOneToManySelf key",
     value: "OwnedNaturalOneToManySelf value",
     target: OwnedNaturalOneToManySelfProjection,
-    source: OwnedNaturalOneToManySelfProjection,
+    source: {
+        key: "OwnedNaturalOneToManySelf key",
+    },
 }
 
 projection OwnedSyntheticOneToManySourceProjection on OwnedSyntheticOneToManySource
@@ -153,7 +167,9 @@ projection OwnedSyntheticOneToManySelfProjection on OwnedSyntheticOneToManySelf
     id: "OwnedSyntheticOneToManySelf id",
     value: "OwnedSyntheticOneToManySelf value",
     target: OwnedSyntheticOneToManySelfProjection,
-    source: OwnedSyntheticOneToManySelfProjection,
+    source: {
+        id: "OwnedSyntheticOneToManySelf id",
+    },
 }
 
 projection SharedNaturalManyToOneTargetProjection on SharedNaturalManyToOneTarget
@@ -166,14 +182,18 @@ projection SharedNaturalManyToOneSourceProjection on SharedNaturalManyToOneSourc
 {
     key: "SharedNaturalManyToOneSource key",
     value: "SharedNaturalManyToOneSource value",
-    target: SharedNaturalManyToOneTargetProjection,
+    target: {
+        key: "SharedNaturalManyToOneTarget key",
+    },
 }
 
 projection SharedNaturalOneToManySourceProjection on SharedNaturalOneToManySource
 {
     key: "SharedNaturalOneToManySource key",
     value: "SharedNaturalOneToManySource value",
-    targets: SharedNaturalOneToManyTargetProjection,
+    targets: {
+        key: "SharedNaturalOneToManyTarget key",
+    },
 }
 
 projection SharedNaturalOneToManyTargetProjection on SharedNaturalOneToManyTarget
@@ -199,15 +219,21 @@ projection SharedNaturalOneToManySelfProjection on SharedNaturalOneToManySelf
 {
     key: "SharedNaturalOneToManySelf key",
     value: "SharedNaturalOneToManySelf value",
-    target: SharedNaturalOneToManySelfProjection,
-    source: SharedNaturalOneToManySelfProjection,
+    target: {
+        key: "SharedNaturalOneToManySelf key",
+    },
+    source: {
+        key: "SharedNaturalOneToManySelf key",
+    },
 }
 
 projection SharedSyntheticOneToManySourceProjection on SharedSyntheticOneToManySource
 {
     id: "SharedSyntheticOneToManySource id",
     value: "SharedSyntheticOneToManySource value",
-    targets: SharedSyntheticOneToManyTargetProjection,
+    targets: {
+        id: "SharedSyntheticOneToManyTarget id",
+    },
 }
 
 projection SharedSyntheticOneToManyTargetProjection on SharedSyntheticOneToManyTarget
@@ -233,8 +259,12 @@ projection SharedSyntheticOneToManySelfProjection on SharedSyntheticOneToManySel
 {
     id: "SharedSyntheticOneToManySelf id",
     value: "SharedSyntheticOneToManySelf value",
-    target: SharedSyntheticOneToManySelfProjection,
-    source: SharedSyntheticOneToManySelfProjection,
+    target: {
+        id: "SharedSyntheticOneToManySelf id",
+    },
+    source: {
+        id: "SharedSyntheticOneToManySelf id",
+    },
 }
 
 projection ClassOwningClassWithDerivedPropertyProjection on ClassOwningClassWithDerivedProperty
@@ -277,8 +307,12 @@ projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
     systemTo: "PropertiesRequiredVersion systemTo",
     createdOn: "PropertiesRequiredVersion createdOn",
     number: "PropertiesRequiredVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
@@ -287,8 +321,12 @@ projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
     systemTo: "PropertiesOptionalVersion systemTo",
     createdOn: "PropertiesOptionalVersion createdOn",
     number: "PropertiesOptionalVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection EveryTypeKeyPropertyVersionProjection on EveryTypeKeyPropertyVersion
@@ -297,6 +335,10 @@ projection EveryTypeKeyPropertyVersionProjection on EveryTypeKeyPropertyVersion
     systemTo: "EveryTypeKeyPropertyVersion systemTo",
     createdOn: "EveryTypeKeyPropertyVersion createdOn",
     number: "EveryTypeKeyPropertyVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }

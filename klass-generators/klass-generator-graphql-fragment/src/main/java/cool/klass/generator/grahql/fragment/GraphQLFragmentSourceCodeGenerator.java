@@ -148,9 +148,9 @@ public final class GraphQLFragmentSourceCodeGenerator
     private static boolean isOneRequiredToOneOptional(ReferenceProperty referenceProperty)
     {
         return referenceProperty instanceof AssociationEnd associationEnd && associationEnd.getMultiplicity().isToOne()
-               && !associationEnd.getMultiplicity().isRequired()
-               && associationEnd.getOpposite().getMultiplicity().isToOne()
-               && associationEnd.getOpposite().getMultiplicity().isRequired();
+                && !associationEnd.getMultiplicity().isRequired()
+                && associationEnd.getOpposite().getMultiplicity().isToOne()
+                && associationEnd.getOpposite().getMultiplicity().isRequired();
     }
 
     private static boolean includeInProjection(ReferenceProperty referenceProperty)

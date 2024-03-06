@@ -30,12 +30,19 @@ projection QuestionProjection on Question
     title: "Question title",
     status: "Question status",
     deleted: "Question deleted",
-    answers: AnswerProjection,
-    votes: QuestionVoteProjection,
+    answers: {
+        id: "Answer id",
+    },
+    votes: {
+        },
     tags: QuestionTagMappingProjection,
     version: QuestionVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection AnswerProjection on Answer
@@ -47,8 +54,12 @@ projection AnswerProjection on Answer
     body: "Document body",
     deleted: "Answer deleted",
     version: AnswerVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection VoteProjection on Vote
@@ -62,8 +73,12 @@ projection QuestionVoteProjection on QuestionVote
     systemTo: "QuestionVote systemTo",
     createdOn: "QuestionVote createdOn",
     direction: "Vote direction",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection TagProjection on Tag
@@ -74,15 +89,21 @@ projection TagProjection on Tag
     createdOn: "Tag createdOn",
     description: "Tag description",
     version: TagVersionProjection,
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection QuestionTagMappingProjection on QuestionTagMapping
 {
     systemFrom: "QuestionTagMapping systemFrom",
     systemTo: "QuestionTagMapping systemTo",
-    tag: TagProjection,
+    tag: {
+        name: "Tag name",
+    },
 }
 
 projection QuestionVersionProjection on QuestionVersion
@@ -91,8 +112,12 @@ projection QuestionVersionProjection on QuestionVersion
     systemTo: "QuestionVersion systemTo",
     createdOn: "QuestionVersion createdOn",
     number: "QuestionVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection AnswerVersionProjection on AnswerVersion
@@ -101,8 +126,12 @@ projection AnswerVersionProjection on AnswerVersion
     systemTo: "AnswerVersion systemTo",
     createdOn: "AnswerVersion createdOn",
     number: "AnswerVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }
 
 projection TagVersionProjection on TagVersion
@@ -111,6 +140,10 @@ projection TagVersionProjection on TagVersion
     systemTo: "TagVersion systemTo",
     createdOn: "TagVersion createdOn",
     number: "TagVersion number",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
+    createdBy: {
+        userId: "User userId",
+    },
+    lastUpdatedBy: {
+        userId: "User userId",
+    },
 }

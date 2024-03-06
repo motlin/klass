@@ -46,7 +46,7 @@ public final class KlassProjectionSourceCodeGenerator
                 .makeString("");
 
         ImmutableList<Klass> subClasses = classifier instanceof Klass klass
-                ? klass.getSubClasses()
+                ? klass.getSubClassChain()
                 : Lists.immutable.empty();
 
         String subClassesSourceCode = subClasses
@@ -122,8 +122,34 @@ public final class KlassProjectionSourceCodeGenerator
 
     private static String getReferencePropertySourceCode(ReferenceProperty referenceProperty, boolean subClassMode)
     {
+        if (referenceProperty.isOwned() || isOneRequiredToOneOptional(referenceProperty))
+        {
+            String prefix = subClassMode ? referenceProperty.getOwningClassifier().getName() + "." : "";
+            return String.format("    %s%s: %sProjection,\n", prefix, referenceProperty.getName(), referenceProperty.getType().getName());
+        }
+
         String prefix = subClassMode ? referenceProperty.getOwningClassifier().getName() + "." : "";
-        return String.format("    %s%s: %sProjection,\n", prefix, referenceProperty.getName(), referenceProperty.getType().getName());
+        Classifier classifier = referenceProperty.getType();
+
+        ImmutableList<String> keyPropertiesSourceCode = classifier
+                .getKeyProperties()
+                .reject(DataTypeProperty::isPrivate)
+                .reject(property -> property.isForeignKey() && !property.isForeignKeyToSelf())
+                .collectWith(KlassProjectionSourceCodeGenerator::getDataTypePropertySourceCode, subClassMode);
+
+        String result = "    %s%s: {\n%s    },\n".formatted(
+                prefix,
+                referenceProperty.getName(),
+                keyPropertiesSourceCode.makeString("    ", "    ", ""));
+        return result;
+    }
+
+    private static boolean isOneRequiredToOneOptional(ReferenceProperty referenceProperty)
+    {
+        return referenceProperty instanceof AssociationEnd associationEnd && associationEnd.getMultiplicity().isToOne()
+                && !associationEnd.getMultiplicity().isRequired()
+                && associationEnd.getOpposite().getMultiplicity().isToOne()
+                && associationEnd.getOpposite().getMultiplicity().isRequired();
     }
 
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
