@@ -130,6 +130,9 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-response:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-connection-manager:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-connection-manager-holder:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-named-data-source:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-clock-fixed:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-clock-system:jar</ignoredUnusedDeclaredDependency>
