@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -124,10 +125,6 @@ public class CreateVersionPropertiesValidator
         {
             this.handleKeyProperty(dataTypeProperty);
         }
-        else if (dataTypeProperty.isTemporal())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "temporal");
-        }
         else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
             if (dataTypeProperty.isPrivate())
@@ -161,6 +158,14 @@ public class CreateVersionPropertiesValidator
         else if (dataTypeProperty.isDerived())
         {
             this.handleWarnIfPresent(dataTypeProperty, "derived");
+        }
+        else if (dataTypeProperty.getType() == PrimitiveType.TEMPORAL_RANGE)
+        {
+            this.handleErrorIfPresent(dataTypeProperty, "temporal range");
+        }
+        else if (dataTypeProperty.getType() == PrimitiveType.TEMPORAL_INSTANT)
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "temporal");
         }
         else if (dataTypeProperty.isVersion())
         {
