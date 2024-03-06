@@ -48,6 +48,12 @@ public abstract class AbstractContextString
         return ansi().bg(BLACK).fg(WHITE).a(paddedLineNumberString).a(" ").a(string).toString();
     }
 
+    @Override
+    public String toString()
+    {
+        return this.toString(4);
+    }
+
     @Nonnull
     protected abstract String getLineNumberString(int line);
 }
