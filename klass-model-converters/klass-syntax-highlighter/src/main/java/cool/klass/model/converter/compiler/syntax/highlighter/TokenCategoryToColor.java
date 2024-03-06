@@ -278,6 +278,10 @@ public final class TokenCategoryToColor
             {
                 return colorScheme.getOperator();
             }
+            case URL_CONSTANT:
+            {
+                return colorScheme.getUrlConstant();
+            }
             default:
             {
                 throw new AssertionError(tokenCategory);

@@ -136,4 +136,10 @@ public enum DarkColorScheme
         //250
         return new Ansi8BitColor(236);
     }
+
+    @Override
+    public Color getUrlConstant()
+    {
+        return new Ansi8BitColor(34);
+    }
 }

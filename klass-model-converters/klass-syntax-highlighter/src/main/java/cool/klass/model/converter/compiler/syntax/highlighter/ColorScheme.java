@@ -253,4 +253,9 @@ public interface ColorScheme
     {
         return this.getPunctuation();
     }
+
+    default Color getUrlConstant()
+    {
+        return this.getIdentifier();
+    }
 }

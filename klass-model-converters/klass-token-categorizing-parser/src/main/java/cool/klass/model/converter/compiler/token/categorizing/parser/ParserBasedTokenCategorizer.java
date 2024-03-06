@@ -28,7 +28,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ExtendsDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ImplementsDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
@@ -37,6 +36,7 @@ import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.NullLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.OperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
@@ -60,8 +60,8 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -88,14 +88,14 @@ public class ParserBasedTokenCategorizer
     @Nonnull
     public static MapIterable<Token, TokenCategory> findTokenCategoriesFromParser(@Nonnull ParseTree parseTree)
     {
-        ParserBasedTokenCategorizer listener = new ParserBasedTokenCategorizer();
+        var listener = new ParserBasedTokenCategorizer();
         findTokenCategoriesFromParser(parseTree, listener);
         return listener.tokenCategories.asUnmodifiable();
     }
 
     public static void findTokenCategoriesFromParser(ParseTree parseTree, ParseTreeListener listener)
     {
-        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+        var parseTreeWalker = new ParseTreeWalker();
         parseTreeWalker.walk(listener, parseTree);
     }
 
@@ -509,19 +509,20 @@ public class ParserBasedTokenCategorizer
     }
 
     @Override
-    public void enterInOperator(InOperatorContext ctx)
+    public void enterOperator(OperatorContext ctx)
     {
-        this.put(
-                ctx.getStart(),
-                TokenCategory.OPERATOR_IN);
-    }
-
-    @Override
-    public void enterStringOperator(StringOperatorContext ctx)
-    {
-        this.put(
-                ctx.getStart(),
-                TokenCategory.OPERATOR_STRING);
+        if (ctx.inOperator() != null)
+        {
+            this.put(
+                    ctx.getStart(),
+                    TokenCategory.OPERATOR_IN);
+        }
+        else if (ctx.stringOperator() != null)
+        {
+            this.put(
+                    ctx.getStart(),
+                    TokenCategory.OPERATOR_STRING);
+        }
     }
 
     @Override
@@ -546,6 +547,14 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.KEYWORD_SERVICE().getSymbol(),
                 TokenCategory.KEYWORD_SERVICE);
+    }
+
+    @Override
+    public void enterUrlConstant(UrlConstantContext ctx)
+    {
+        this.put(
+                ctx.identifier().getStart(),
+                TokenCategory.URL_CONSTANT);
     }
 
     @Override
@@ -606,6 +615,10 @@ public class ParserBasedTokenCategorizer
 
     private void put(Token token, TokenCategory tokenCategory)
     {
-        this.tokenCategories.put(token, tokenCategory);
+        TokenCategory duplicate = this.tokenCategories.put(token, tokenCategory);
+        if (duplicate != null)
+        {
+            throw new RuntimeException("Duplicate token: " + token.getText());
+        }
     }
 }

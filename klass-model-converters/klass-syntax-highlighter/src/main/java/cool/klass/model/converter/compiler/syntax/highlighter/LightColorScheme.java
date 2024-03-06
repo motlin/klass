@@ -142,4 +142,10 @@ public enum LightColorScheme
         //250
         return new Ansi8BitColor(251);
     }
+
+    @Override
+    public Color getUrlConstant()
+    {
+        return new Ansi8BitColor(34);
+    }
 }
