@@ -1,14 +1,14 @@
 package com.errors
 
-class DummyClass systemTemporal versioned audited
-{
-    id: Long id key;
-}
-
 user User systemTemporal versioned
 {
     userId: String id key userId;
     otherProperty: String;
+}
+
+class DummyClass systemTemporal versioned audited
+{
+    id: Long id key;
 }
 
 association CreatedBy

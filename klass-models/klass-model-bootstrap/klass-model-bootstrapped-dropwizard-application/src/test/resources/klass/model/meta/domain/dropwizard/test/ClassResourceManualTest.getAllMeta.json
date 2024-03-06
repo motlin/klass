@@ -534,22 +534,277 @@
     "enumerationProperties": []
   },
   {
-    "name": "Association",
+    "name": "Parameter",
     "packageName": "klass.model.meta.domain",
-    "inheritanceType": "none",
-    "ordinal": 38,
+    "inheritanceType": "table-per-class",
+    "ordinal": 37,
     "superClass": null,
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "PackageableElement"
+          "name": "NamedElement"
         }
       }
     ],
     "classifierModifiers": [],
     "primitiveProperties": [
       {
-        "name": "criteriaId",
+        "name": "name",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "id"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": [
+      {
+        "name": "multiplicity",
+        "optional": false,
+        "enumeration": {
+          "name": "Multiplicity"
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        }
+      }
+    ]
+  },
+  {
+    "name": "EnumerationParameter",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 38,
+    "superClass": {
+      "name": "Parameter"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "enumerationName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "name": "PrimitiveParameter",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 39,
+    "superClass": {
+      "name": "Parameter"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": [
+      {
+        "name": "primitiveType",
+        "optional": false,
+        "enumeration": {
+          "name": "PrimitiveType"
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        }
+      }
+    ]
+  },
+  {
+    "name": "ExpressionValue",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 40,
+    "superClass": null,
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "id"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "name": "UserLiteral",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 41,
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "name": "NullLiteral",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 42,
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "name": "VariableReference",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 43,
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "parameterId",
         "primitiveType": "Long",
         "optional": false,
         "propertyModifiers": [
@@ -566,23 +821,19 @@
     "enumerationProperties": []
   },
   {
-    "name": "AssociationEnd",
+    "name": "MemberReferencePath",
     "packageName": "klass.model.meta.domain",
-    "inheritanceType": "none",
-    "ordinal": 39,
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "NamedElement"
-        }
-      }
-    ],
+    "inheritanceType": "table-per-class",
+    "ordinal": 44,
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
     "classifierModifiers": [],
     "primitiveProperties": [
       {
-        "name": "owningClassName",
-        "primitiveType": "String",
+        "name": "id",
+        "primitiveType": "Long",
         "optional": false,
         "propertyModifiers": [
           {
@@ -593,26 +844,12 @@
           }
         ],
         "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
+        "maxLengthValidation": null,
         "minValidation": null,
         "maxValidation": null
       },
       {
-        "name": "associationName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "resultTypeName",
+        "name": "className",
         "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
@@ -626,57 +863,14 @@
         },
         "minValidation": null,
         "maxValidation": null
-      }
-    ],
-    "enumerationProperties": [
-      {
-        "name": "direction",
-        "optional": false,
-        "enumeration": {
-          "name": "AssociationEndDirection"
-        },
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        }
       },
       {
-        "name": "multiplicity",
-        "optional": false,
-        "enumeration": {
-          "name": "Multiplicity"
-        },
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        }
-      }
-    ]
-  },
-  {
-    "name": "AssociationEndModifier",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "none",
-    "ordinal": 43,
-    "superClass": null,
-    "superInterfaces": [
-      {
-        "superInterface": {
-          "name": "Element"
-        }
-      }
-    ],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "keyword",
+        "name": "propertyClassName",
         "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
           {
-            "keyword": "key"
+            "keyword": "private"
           }
         ],
         "minLengthValidation": null,
@@ -687,38 +881,12 @@
         "maxValidation": null
       },
       {
-        "name": "ordinal",
-        "primitiveType": "Integer",
-        "optional": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "owningClassName",
+        "name": "propertyName",
         "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
           {
-            "keyword": "key"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "associationEndName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
+            "keyword": "private"
           }
         ],
         "minLengthValidation": null,
@@ -922,7 +1090,7 @@
     "name": "OperatorCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 51,
+    "ordinal": 52,
     "superClass": {
       "name": "Criteria"
     },
@@ -994,7 +1162,7 @@
     "name": "EdgePointCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 52,
+    "ordinal": 53,
     "superClass": {
       "name": "Criteria"
     },
@@ -1036,53 +1204,25 @@
     "enumerationProperties": []
   },
   {
-    "name": "ExpressionValue",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "table-per-class",
-    "ordinal": 54,
-    "superClass": null,
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "id"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
-  },
-  {
-    "name": "UserLiteral",
+    "name": "Association",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
     "ordinal": 55,
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
+    "superClass": null,
+    "superInterfaces": [
+      {
+        "superInterface": {
+          "name": "PackageableElement"
+        }
+      }
+    ],
     "classifierModifiers": [],
     "primitiveProperties": [
       {
-        "name": "id",
+        "name": "criteriaId",
         "primitiveType": "Long",
         "optional": false,
         "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
           {
             "keyword": "private"
           }
@@ -1096,165 +1236,10 @@
     "enumerationProperties": []
   },
   {
-    "name": "NullLiteral",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "none",
-    "ordinal": 56,
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
-  },
-  {
-    "name": "VariableReference",
+    "name": "AssociationEnd",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
     "ordinal": 57,
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "parameterId",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
-  },
-  {
-    "name": "MemberReferencePath",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "table-per-class",
-    "ordinal": 58,
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "className",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyClassName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
-  },
-  {
-    "name": "Parameter",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "table-per-class",
-    "ordinal": 62,
     "superClass": null,
     "superInterfaces": [
       {
@@ -1266,7 +1251,26 @@
     "classifierModifiers": [],
     "primitiveProperties": [
       {
-        "name": "name",
+        "name": "owningClassName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "associationName",
         "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [],
@@ -1278,24 +1282,35 @@
         "maxValidation": null
       },
       {
-        "name": "id",
-        "primitiveType": "Long",
+        "name": "resultTypeName",
+        "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
           {
-            "keyword": "key"
-          },
-          {
-            "keyword": "id"
+            "keyword": "private"
           }
         ],
         "minLengthValidation": null,
-        "maxLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
         "minValidation": null,
         "maxValidation": null
       }
     ],
     "enumerationProperties": [
+      {
+        "name": "direction",
+        "optional": false,
+        "enumeration": {
+          "name": "AssociationEndDirection"
+        },
+        "propertyModifiers": [],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        }
+      },
       {
         "name": "multiplicity",
         "optional": false,
@@ -1311,40 +1326,69 @@
     ]
   },
   {
-    "name": "EnumerationParameter",
+    "name": "AssociationEndModifier",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 63,
-    "superClass": {
-      "name": "Parameter"
-    },
-    "superInterfaces": [],
+    "ordinal": 61,
+    "superClass": null,
+    "superInterfaces": [
+      {
+        "superInterface": {
+          "name": "Element"
+        }
+      }
+    ],
     "classifierModifiers": [],
     "primitiveProperties": [
       {
-        "name": "id",
-        "primitiveType": "Long",
+        "name": "keyword",
+        "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
           {
             "keyword": "key"
-          },
-          {
-            "keyword": "private"
           }
         ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "ordinal",
+        "primitiveType": "Integer",
+        "optional": false,
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
         "minValidation": null,
         "maxValidation": null
       },
       {
-        "name": "enumerationName",
+        "name": "owningClassName",
         "primitiveType": "String",
         "optional": false,
         "propertyModifiers": [
           {
-            "keyword": "private"
+            "keyword": "key"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "associationEndName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
           }
         ],
         "minLengthValidation": null,
@@ -1356,50 +1400,6 @@
       }
     ],
     "enumerationProperties": []
-  },
-  {
-    "name": "PrimitiveParameter",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "none",
-    "ordinal": 64,
-    "superClass": {
-      "name": "Parameter"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": [
-      {
-        "name": "primitiveType",
-        "optional": false,
-        "enumeration": {
-          "name": "PrimitiveType"
-        },
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        }
-      }
-    ]
   },
   {
     "name": "MemberReferencePathAssociationEndMapping",

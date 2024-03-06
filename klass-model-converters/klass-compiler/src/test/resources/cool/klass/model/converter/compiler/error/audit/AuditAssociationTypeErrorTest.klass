@@ -1,15 +1,15 @@
 package com.errors
 
+class NotUserClass systemTemporal versioned
+{
+    id: String id key;
+}
+
 class DummyClass systemTemporal versioned
 {
     id                 : Long id key;
     createdById        : String createdBy userId final private;
     lastUpdatedById    : String lastUpdatedBy userId final private;
-}
-
-class NotUserClass systemTemporal versioned
-{
-    id: String id key;
 }
 
 association CreatedBy

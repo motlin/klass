@@ -38,6 +38,11 @@ service User
         }
 }
 
+class Book
+{
+    title                  : String key;
+}
+
 class AbstractChapter
     abstract(table-per-class)
 {
@@ -56,11 +61,6 @@ class ChapterWithIllustration
     extends AbstractChapter
 {
     illustrationUrl        : String;
-}
-
-class Book
-{
-    title                  : String key;
 }
 
 association ContainerHasItems

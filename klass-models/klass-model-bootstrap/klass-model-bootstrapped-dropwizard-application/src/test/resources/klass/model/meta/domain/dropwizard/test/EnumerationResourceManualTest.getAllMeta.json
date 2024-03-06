@@ -90,20 +90,6 @@
     ]
   },
   {
-    "name": "AssociationEndDirection",
-    "packageName": "klass.model.meta.domain",
-    "enumerationLiterals": [
-      {
-        "name": "SOURCE",
-        "prettyName": "source"
-      },
-      {
-        "name": "TARGET",
-        "prettyName": "target"
-      }
-    ]
-  },
-  {
     "name": "Operator",
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
@@ -146,6 +132,20 @@
       {
         "name": "ENDS_WITH",
         "prettyName": "endsWith"
+      }
+    ]
+  },
+  {
+    "name": "AssociationEndDirection",
+    "packageName": "klass.model.meta.domain",
+    "enumerationLiterals": [
+      {
+        "name": "SOURCE",
+        "prettyName": "source"
+      },
+      {
+        "name": "TARGET",
+        "prettyName": "target"
       }
     ]
   },

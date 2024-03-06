@@ -152,7 +152,7 @@ public class KlassCompilerTest
                     relationship this.enumerationName == Enumeration.name
                 }
                 // TODO: Change the orderBy syntax to orderBy(this.ordinal)
-                                /*
+                /*
                 association ClassifierHasDataTypeTypeProperties
                 {
                     owningClassifier              : Classifier[1..1];
@@ -262,6 +262,119 @@ public class KlassCompilerTest
                         orderBy: this.ordinal;
                     relationship this.name == ClassifierModifier.classifierName
                 }
+                class Parameter
+                    abstract(table-per-class)
+                    implements NamedElement
+                {
+                    // name isn't key
+                    name: String maximumLength(256);
+                    id: Long key id;
+                    multiplicity: Multiplicity maximumLength(256);
+                }
+                class EnumerationParameter
+                    extends Parameter
+                {
+                    id  : Long key private;
+                    enumerationName: String private maximumLength(256);
+                }
+                class PrimitiveParameter
+                    extends Parameter
+                {
+                    id  : Long key private;
+                    primitiveType: PrimitiveType maximumLength(256);
+                }
+                class ExpressionValue
+                    abstract(table-per-class)
+                {
+                    id      : Long key id;
+                }
+                class UserLiteral
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                }
+                class NullLiteral
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                }
+                class VariableReference
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                    parameterId: Long private;
+                }
+                class MemberReferencePath
+                    abstract(table-per-class)
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                    className: String private maximumLength(256);
+                    propertyClassName: String private maximumLength(256);
+                    propertyName: String private maximumLength(256);
+                }
+                association VariableReferenceHasParameter
+                {
+                    variableReferences: VariableReference[0..*];
+                    parameter: Parameter[1..1];
+                    relationship this.parameterId == Parameter.id
+                }
+                class Criteria
+                    abstract(table-per-class)
+                    implements Element
+                {
+                    id: Long id key;
+                }
+                class AllCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                }
+                class BinaryCriteria
+                    abstract(table-per-class)
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    leftId        : Long private;
+                    rightId       : Long private;
+                }
+                class AndCriteria
+                    extends BinaryCriteria
+                {
+                    id  : Long key private;
+                }
+                class OrCriteria
+                    extends BinaryCriteria
+                {
+                    id  : Long key private;
+                }
+                enumeration Operator
+                {
+                    EQUALS("=="),
+                    NOT_EQUALS("!="),
+                    LESS_THAN("<"),
+                    GREATER_THAN(">"),
+                    LESS_THAN_EQUAL("<="),
+                    GREATER_THAN_EQUAL(">="),
+                    IN("in"),
+                    CONTAINS("contains"),
+                    STARTS_WITH("startsWith"),
+                    ENDS_WITH("endsWith"),
+                }
+                class OperatorCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    operator: Operator maximumLength(256);
+                    sourceExpressionId: Long private;
+                    targetExpressionId: Long private;
+                }
+                class EdgePointCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    memberReferencePathId: Long private;
+                }
                 enumeration AssociationEndDirection
                 {
                     SOURCE("source"),
@@ -280,6 +393,12 @@ public class KlassCompilerTest
                         this.name == AssociationEnd.associationName
                             && AssociationEnd.direction == AssociationEndDirection.TARGET
                     }
+                }
+                association AssociationHasCriteria
+                {
+                    association: Association[0..1];
+                    criteria: Criteria[1..1];
+                    relationship this.criteriaId == Criteria.id
                 }
                 class AssociationEnd implements NamedElement
                 {
@@ -327,98 +446,6 @@ public class KlassCompilerTest
                     relationship this.owningClassName == AssociationEndModifier.owningClassName
                             && this.name == AssociationEndModifier.associationEndName
                 }
-                enumeration Operator
-                {
-                    EQUALS("=="),
-                    NOT_EQUALS("!="),
-                    LESS_THAN("<"),
-                    GREATER_THAN(">"),
-                    LESS_THAN_EQUAL("<="),
-                    GREATER_THAN_EQUAL(">="),
-                    IN("in"),
-                    CONTAINS("contains"),
-                    STARTS_WITH("startsWith"),
-                    ENDS_WITH("endsWith"),
-                }
-                class Criteria
-                    abstract(table-per-class)
-                    implements Element
-                {
-                    id: Long id key;
-                }
-                class AllCriteria
-                    extends Criteria
-                {
-                    id  : Long key private;
-                }
-                class BinaryCriteria
-                    abstract(table-per-class)
-                    extends Criteria
-                {
-                    id  : Long key private;
-                    leftId        : Long private;
-                    rightId       : Long private;
-                }
-                class AndCriteria
-                    extends BinaryCriteria
-                {
-                    id  : Long key private;
-                }
-                class OrCriteria
-                    extends BinaryCriteria
-                {
-                    id  : Long key private;
-                }
-                class OperatorCriteria
-                    extends Criteria
-                {
-                    id  : Long key private;
-                    operator: Operator maximumLength(256);
-                    sourceExpressionId: Long private;
-                    targetExpressionId: Long private;
-                }
-                class EdgePointCriteria
-                    extends Criteria
-                {
-                    id  : Long key private;
-                    memberReferencePathId: Long private;
-                }
-                association AssociationHasCriteria
-                {
-                    association: Association[0..1];
-                    criteria: Criteria[1..1];
-                    relationship this.criteriaId == Criteria.id
-                }
-                class ExpressionValue
-                    abstract(table-per-class)
-                {
-                    id      : Long key id;
-                }
-                class UserLiteral
-                    extends ExpressionValue
-                {
-                    id  : Long key private;
-                }
-                class NullLiteral
-                    extends ExpressionValue
-                {
-                    id  : Long key private;
-                }
-                class VariableReference
-                    extends ExpressionValue
-                {
-                    id  : Long key private;
-                    parameterId: Long private;
-                }
-                class MemberReferencePath
-                    abstract(table-per-class)
-                    extends ExpressionValue
-                {
-                    id  : Long key private;
-                    className: String private maximumLength(256);
-                    propertyClassName: String private maximumLength(256);
-                    propertyName: String private maximumLength(256);
-                }
                 association OperatorCriteriaHasSourceExpressionValue
                 {
                     operatorCriteriaSourceOf: OperatorCriteria[0..1];
@@ -436,33 +463,6 @@ public class KlassCompilerTest
                     memberReferencePath: MemberReferencePath[1..1];
                     edgePointCriteria: EdgePointCriteria[1..1] owned;
                     relationship this.id == EdgePointCriteria.memberReferencePathId
-                }
-                class Parameter
-                    abstract(table-per-class)
-                    implements NamedElement
-                {
-                    // name isn't key
-                    name: String maximumLength(256);
-                    id: Long key id;
-                    multiplicity: Multiplicity maximumLength(256);
-                }
-                class EnumerationParameter
-                    extends Parameter
-                {
-                    id  : Long key private;
-                    enumerationName: String private maximumLength(256);
-                }
-                class PrimitiveParameter
-                    extends Parameter
-                {
-                    id  : Long key private;
-                    primitiveType: PrimitiveType maximumLength(256);
-                }
-                association VariableReferenceHasParameter
-                {
-                    variableReferences: VariableReference[0..*];
-                    parameter: Parameter[1..1];
-                    relationship this.parameterId == Parameter.id
                 }
                 association EnumerationParameterHasEnumeration
                 {
@@ -1550,7 +1550,7 @@ public class KlassCompilerTest
                             orderBy     : this.ordinal;
                         }
                 }
-                                """;
+                """;
         //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
