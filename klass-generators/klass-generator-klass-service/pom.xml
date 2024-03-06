@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-generator-service</artifactId>
+    <artifactId>klass-generator-klass-service</artifactId>
 
     <name>Klass Generator: Klass Services</name>
 

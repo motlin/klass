@@ -85,8 +85,8 @@ public class KlassServiceGenerator
     {
         String               className     = klass.getName();
         String               lowercaseName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, className);
-        ListIterable<String> urlPaths      = getUrlPaths(klass);
-        ListIterable<String> criteria      = getCriteria(klass);
+        ListIterable<String> urlPaths      = KlassServiceGenerator.getUrlPaths(klass);
+        ListIterable<String> criteria      = KlassServiceGenerator.getCriteria(klass);
 
         return ""
                 + "service " + className + "\n"

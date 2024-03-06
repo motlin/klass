@@ -10,10 +10,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-generator-service-plugin</artifactId>
+    <artifactId>klass-generator-klass-service-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Klass Generator Plugin: Services</name>
+    <name>Klass Generator Plugin: Klass Services</name>
 
     <prerequisites>
         <maven>3.1.0</maven>
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-generator-service</artifactId>
+            <artifactId>klass-generator-klass-service</artifactId>
             <version>${project.version}</version>
         </dependency>
 
