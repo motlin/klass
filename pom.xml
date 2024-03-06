@@ -30,6 +30,7 @@
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
         <module>klass-jackson-response</module>
+        <module>klass-jetty-admin-login-service</module>
     </modules>
 
     <properties>
