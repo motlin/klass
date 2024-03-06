@@ -9,12 +9,8 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLRuntimeWiringBuilderGenerator
 {
@@ -48,6 +44,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
         Path javaPath = path.resolve(this.applicationName + "RuntimeWiringBuilder.java");
 
         //language=JAVA
+
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"
                 + "\n"
@@ -72,30 +69,14 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "                .scalar(new GraphQLTemporalScalar(\"Instant\"))\n"
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalInstant\"))\n"
                 + "                .scalar(new GraphQLTemporalScalar(\"TemporalRange\"))\n"
-                + this.getPrimitiveScalarsSourceCode()
+                + "                .scalar(Scalars.GraphQLLong)\n"
+                + "                .scalar(new GraphQLLocalDateScalar())\n"
                 + "                .type(new " + this.applicationName + "QueryTypeRuntimeWiringProvider().get())\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("\n") + ";\n"
                 + "    }\n"
                 + "}\n";
 
         this.printStringToFile(javaPath, sourceCode);
-    }
-
-    private String getPrimitiveScalarsSourceCode()
-    {
-        ImmutableList<DataType> dataTypes = this.domainModel
-                .getClassifiers()
-                .asLazy()
-                .flatCollect(Classifier::getDeclaredDataTypeProperties)
-                .collect(DataTypeProperty::getType)
-                .toList()
-                .toImmutable();
-        boolean containsLong      = dataTypes.contains(PrimitiveType.LONG);
-        boolean containsLocalDate = dataTypes.contains(PrimitiveType.LOCAL_DATE);
-
-        String longSourceCode      = containsLong ? "                .scalar(Scalars.GraphQLLong)\n" : "";
-        String localDateSourceCode = containsLocalDate ? "                .scalar(new GraphQLLocalDateScalar())\n" : "";
-        return longSourceCode + localDateSourceCode;
     }
 
     private String getImport(Classifier classifier)
