@@ -53,7 +53,7 @@
             <artifactId>jsr305</artifactId>
         </dependency>
 
-        <!-- TODO: These two dependencies are only needed by cool.klass.generator.reladomo.ReladomoRuntimeConfigurationGenerator. Decide if it's convenient to have all the Reladomo code generators in a single plugin or whether it would be cleaner to split them. -->
+        <!-- TODO: These two dependencies are only needed by cool.klass.generator.reladomo.runtimeconfig.ReladomoRuntimeConfigurationGenerator. Decide if it's convenient to have all the Reladomo code generators in a single plugin or whether it would be cleaner to split them. -->
         <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo</artifactId>

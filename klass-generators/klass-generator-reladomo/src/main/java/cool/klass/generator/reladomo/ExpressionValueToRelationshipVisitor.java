@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
@@ -12,13 +14,14 @@ import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
-public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisitor
+class ExpressionValueToRelationshipVisitor implements ExpressionValueVisitor
 {
+    @Nonnull
     private final StringBuilder stringBuilder;
 
-    public ExpressionValueToRelationshipVisitor(StringBuilder stringBuilder)
+    ExpressionValueToRelationshipVisitor(@Nonnull StringBuilder stringBuilder)
     {
-        this.stringBuilder = stringBuilder;
+        this.stringBuilder = Objects.requireNonNull(stringBuilder);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package cool.klass.generator.reladomo;
+package cool.klass.generator.reladomo.objectfile;
 
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyType;
@@ -10,14 +10,14 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
 
 // TODO: Create a DataTypeVisitor that factors in enumerations too
-public class AttributeTypeVisitor implements PrimitiveTypeVisitor
+class AttributeTypeVisitor implements PrimitiveTypeVisitor
 {
     private final AttributePureType attributeType;
     private final PrimitiveProperty primitiveProperty;
 
-    public AttributeTypeVisitor(AttributePureType attributeType, PrimitiveProperty primitiveProperty)
+    AttributeTypeVisitor(AttributePureType attributeType, PrimitiveProperty primitiveProperty)
     {
-        this.attributeType = attributeType;
+        this.attributeType     = attributeType;
         this.primitiveProperty = primitiveProperty;
     }
 

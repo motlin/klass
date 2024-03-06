@@ -1,4 +1,4 @@
-package cool.klass.generator.reladomo;
+package cool.klass.generator.reladomo.runtimeconfig;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,6 +15,7 @@ import com.gs.fw.common.mithra.mithraruntime.MithraRuntime;
 import com.gs.fw.common.mithra.mithraruntime.MithraRuntimeMarshaller;
 import com.gs.fw.common.mithra.mithraruntime.PropertyType;
 import com.gs.fw.common.mithra.mithraruntime.PureObjectsType;
+import cool.klass.generator.reladomo.AbstractReladomoGenerator;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;

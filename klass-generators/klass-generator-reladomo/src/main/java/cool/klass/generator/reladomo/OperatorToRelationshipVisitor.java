@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.operator.EqualityOperator;
@@ -9,13 +11,14 @@ import cool.klass.model.meta.domain.api.operator.Operator;
 import cool.klass.model.meta.domain.api.operator.OperatorVisitor;
 import cool.klass.model.meta.domain.api.operator.StringOperator;
 
-public class OperatorToRelationshipVisitor implements OperatorVisitor
+class OperatorToRelationshipVisitor implements OperatorVisitor
 {
+    @Nonnull
     private final StringBuilder stringBuilder;
 
-    public OperatorToRelationshipVisitor(StringBuilder stringBuilder)
+    OperatorToRelationshipVisitor(@Nonnull StringBuilder stringBuilder)
     {
-        this.stringBuilder = stringBuilder;
+        this.stringBuilder = Objects.requireNonNull(stringBuilder);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package cool.klass.generator.reladomo;
+package cool.klass.generator.reladomo.interfacefile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,6 +14,8 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraInterface;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipInterfaceType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
+import cool.klass.generator.reladomo.AbstractReladomoGenerator;
+import cool.klass.generator.reladomo.CriteriaToRelationshipVisitor;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Multiplicity;
@@ -32,7 +34,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoInterfaceFileGenerator extends AbstractReladomoGenerator
 {
-    public ReladomoInterfaceFileGenerator(DomainModel domainModel)
+    public ReladomoInterfaceFileGenerator(@Nonnull DomainModel domainModel)
     {
         super(domainModel);
     }

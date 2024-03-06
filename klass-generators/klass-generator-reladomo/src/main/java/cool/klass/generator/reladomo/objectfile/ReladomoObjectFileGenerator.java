@@ -1,4 +1,4 @@
-package cool.klass.generator.reladomo;
+package cool.klass.generator.reladomo.objectfile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,6 +21,8 @@ import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
 import com.gs.fw.common.mithra.generator.metamodel.SuperClassAttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.SuperClassType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
+import cool.klass.generator.reladomo.AbstractReladomoGenerator;
+import cool.klass.generator.reladomo.CriteriaToRelationshipVisitor;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
@@ -43,7 +45,7 @@ import org.eclipse.collections.impl.factory.Lists;
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 {
-    public ReladomoObjectFileGenerator(DomainModel domainModel)
+    public ReladomoObjectFileGenerator(@Nonnull DomainModel domainModel)
     {
         super(domainModel);
     }

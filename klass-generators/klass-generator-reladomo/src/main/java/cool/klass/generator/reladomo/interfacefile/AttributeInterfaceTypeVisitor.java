@@ -1,13 +1,13 @@
-package cool.klass.generator.reladomo;
+package cool.klass.generator.reladomo.interfacefile;
 
 import com.gs.fw.common.mithra.generator.metamodel.AttributeInterfaceType;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
-public class AttributeInterfaceTypeVisitor implements PrimitiveTypeVisitor
+class AttributeInterfaceTypeVisitor implements PrimitiveTypeVisitor
 {
     private final AttributeInterfaceType attributeType;
 
-    public AttributeInterfaceTypeVisitor(AttributeInterfaceType attributeType)
+    AttributeInterfaceTypeVisitor(AttributeInterfaceType attributeType)
     {
         this.attributeType = attributeType;
     }

@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.criteria.AllCriteria;
@@ -14,11 +16,12 @@ import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 
 public class CriteriaToRelationshipVisitor implements CriteriaVisitor
 {
+    @Nonnull
     private final StringBuilder stringBuilder;
 
-    public CriteriaToRelationshipVisitor(StringBuilder stringBuilder)
+    public CriteriaToRelationshipVisitor(@Nonnull StringBuilder stringBuilder)
     {
-        this.stringBuilder = stringBuilder;
+        this.stringBuilder = Objects.requireNonNull(stringBuilder);
     }
 
     @Override
