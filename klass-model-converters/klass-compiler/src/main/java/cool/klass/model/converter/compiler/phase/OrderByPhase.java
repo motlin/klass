@@ -41,7 +41,7 @@ public class OrderByPhase extends AbstractCompilerPhase
                 this.compilerState.getCompilerWalkState().getThisReference(),
                 this.compilerState.getCompilerWalkState().getOrderByOwnerState()));
         AntlrOrderByOwner orderByOwnerState = this.compilerState.getCompilerWalkState().getOrderByOwnerState();
-        orderByOwnerState.setOrderByState(this.orderByState);
+        orderByOwnerState.enterOrderByDeclaration(this.orderByState);
     }
 
     @Override

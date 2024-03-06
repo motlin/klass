@@ -54,9 +54,10 @@ enumerationPrettyName: StringLiteral;
 // association
 associationDeclaration: 'association' identifier associationBody;
 associationBody: '{' associationEnd? associationEnd? relationship? '}';
-associationEnd: identifier ':' classType associationEndModifier* orderByDeclaration? ';'
+associationEnd
+    : identifier ':' classType associationEndModifier* orderByDeclaration? ';'
     | identifier ':' classType associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
-associationEndSignature: identifier ':' classifierReference multiplicity associationEndModifier* ';';
+associationEndSignature: identifier ':' classifierType associationEndModifier* ';';
 relationship: 'relationship' criteriaExpression;
 
 // projection
@@ -105,7 +106,7 @@ primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier
 enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
     | identifier ':' enumerationReference optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
 parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
-parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierReference multiplicity parameterizedPropertyModifier* ';';
+parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierType parameterizedPropertyModifier* ';';
 optionalMarker: '?';
 
 dataTypePropertyValidation
@@ -187,8 +188,8 @@ inOperator: 'in';
 stringOperator: 'contains' | 'startsWith' | 'endsWith';
 
 // Type references
-// TODO: Inline this...
 classType: classReference multiplicity;
+classifierType: classifierReference multiplicity;
 
 // references
 interfaceReference: identifier;

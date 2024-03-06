@@ -3484,4 +3484,63 @@ public class KlassCompilerErrorTest
 
         this.assertCompilerErrors(sourceCodeText, error);
     }
+
+    @Test
+    public void invalidMultiplicity()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    source: DummyClass[2..3];\n"
+                + "    target: DummyClass[4..5];\n"
+                + "    \n"
+                + "    relationship this.id == DummyClass.id\n"
+                + "}\n"
+                + "\n"
+                + "class DummyClass\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_ASO_MUL\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mAssociation end 'source: DummyClass[2..3]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:5)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mdummy\n"
+                        + "\u001B[40;37m3║ \u001B[40;35massociation \u001B[40;97mDummyAssociation\n"
+                        + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m5║     \u001B[40;97msource\u001B[40;36m: \u001B[40;97mDummyClass\u001B[40;36m[\u001B[40;94m2\u001B[40;36m..\u001B[40;94m3\u001B[40;36m]\u001B[40;36m;\n"
+                        + "\u001B[40;37m ║                       \u001B[40;91m^^^^^^\n"
+                        + "\u001B[40;37m9║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:5\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m5\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m23\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_ASO_MUL\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mAssociation end 'target: DummyClass[4..5]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:6)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mdummy\n"
+                        + "\u001B[40;37m3║ \u001B[40;35massociation \u001B[40;97mDummyAssociation\n"
+                        + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m6║     \u001B[40;97mtarget\u001B[40;36m: \u001B[40;97mDummyClass\u001B[40;36m[\u001B[40;94m4\u001B[40;36m..\u001B[40;94m5\u001B[40;36m]\u001B[40;36m;\n"
+                        + "\u001B[40;37m ║                       \u001B[40;91m^^^^^^\n"
+                        + "\u001B[40;37m9║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:6\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m6\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m23\u001B[m\n"
+        };
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
 }

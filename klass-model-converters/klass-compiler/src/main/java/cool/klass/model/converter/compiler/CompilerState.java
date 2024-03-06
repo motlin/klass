@@ -213,6 +213,8 @@ public class CompilerState
         @Override
         public void enterCompilationUnit(CompilationUnitContext ctx)
         {
+            super.enterCompilationUnit(ctx);
+
             CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(ctx);
             CompilerState.this.compilerWalkState.enterCompilationUnit(currentCompilationUnit);
         }
@@ -220,180 +222,240 @@ public class CompilerState
         @Override
         public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
+            super.exitCompilationUnit(ctx);
+
             CompilerState.this.compilerWalkState.exitCompilationUnit();
         }
 
         @Override
         public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
         {
+            super.enterPackageDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterPackageDeclaration(ctx);
         }
 
         @Override
         public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
         {
+            super.enterTopLevelDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterTopLevelDeclaration(ctx);
         }
 
         @Override
         public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
         {
+            super.exitTopLevelDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitTopLevelDeclaration(ctx);
         }
 
         @Override
         public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
         {
+            super.enterInterfaceDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterInterfaceDeclaration(ctx);
         }
 
         @Override
         public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
         {
+            super.exitInterfaceDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitInterfaceDeclaration(ctx);
         }
 
         @Override
         public void enterClassDeclaration(ClassDeclarationContext ctx)
         {
+            super.enterClassDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterClassDeclaration(ctx);
         }
 
         @Override
         public void exitClassDeclaration(ClassDeclarationContext ctx)
         {
+            super.exitClassDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitClassDeclaration(ctx);
         }
 
         @Override
         public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
         {
+            super.enterEnumerationDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterEnumerationDeclaration(ctx);
         }
 
         @Override
         public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
         {
+            super.exitEnumerationDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitEnumerationDeclaration(ctx);
         }
 
         @Override
         public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
         {
+            super.enterAssociationDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterAssociationDeclaration(ctx);
         }
 
         @Override
         public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
         {
+            super.exitAssociationDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitAssociationDeclaration(ctx);
         }
 
         @Override
         public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
+            super.enterAssociationEnd(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterAssociationEnd(ctx);
         }
 
         @Override
         public void exitAssociationEnd(AssociationEndContext ctx)
         {
+            super.exitAssociationEnd(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitAssociationEnd(ctx);
         }
 
         @Override
         public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
         {
+            super.enterAssociationEndSignature(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterAssociationEndSignature(ctx);
         }
 
         @Override
         public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
         {
+            super.exitAssociationEndSignature(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitAssociationEndSignature(ctx);
         }
 
         @Override
         public void enterRelationship(RelationshipContext ctx)
         {
+            super.enterRelationship(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterRelationship(ctx);
         }
 
         @Override
         public void exitRelationship(RelationshipContext ctx)
         {
+            super.exitRelationship(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitRelationship(ctx);
         }
 
         @Override
         public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
         {
+            super.enterProjectionDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterProjectionDeclaration(ctx);
         }
 
         @Override
         public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
         {
+            super.exitProjectionDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitProjectionDeclaration(ctx);
         }
 
         @Override
         public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
         {
+            super.enterServiceGroupDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterServiceGroupDeclaration(ctx);
         }
 
         @Override
         public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
         {
+            super.exitServiceGroupDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitServiceGroupDeclaration(ctx);
         }
 
         @Override
         public void enterUrlDeclaration(UrlDeclarationContext ctx)
         {
+            super.enterUrlDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterUrlDeclaration(ctx);
         }
 
         @Override
         public void exitUrlDeclaration(UrlDeclarationContext ctx)
         {
+            super.exitUrlDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitUrlDeclaration(ctx);
         }
 
         @Override
         public void enterServiceDeclaration(ServiceDeclarationContext ctx)
         {
+            super.enterServiceDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterServiceDeclaration(ctx);
         }
 
         @Override
         public void exitServiceDeclaration(ServiceDeclarationContext ctx)
         {
+            super.exitServiceDeclaration(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitServiceDeclaration(ctx);
         }
 
         @Override
         public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
         {
+            super.enterParameterizedProperty(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterParameterizedProperty(ctx);
         }
 
         @Override
         public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
         {
+            super.exitParameterizedProperty(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitParameterizedProperty(ctx);
         }
 
         @Override
         public void enterClassModifier(ClassModifierContext ctx)
         {
+            super.enterClassModifier(ctx);
+
             CompilerState.this.compilerWalkState.asListener().enterClassModifier(ctx);
         }
 
         @Override
         public void exitClassModifier(ClassModifierContext ctx)
         {
+            super.exitClassModifier(ctx);
+
             CompilerState.this.compilerWalkState.asListener().exitClassModifier(ctx);
         }
     }

@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassType;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -19,11 +20,14 @@ import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<AntlrClass> implements AntlrParameterOwner
+public class AntlrParameterizedProperty
+        extends AntlrReferenceTypeProperty<AntlrClass>
+        implements AntlrParameterOwner, AntlrClassTypeOwner
 {
     @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
@@ -32,9 +36,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
             AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
-            AntlrClass.AMBIGUOUS,
-            AntlrClass.AMBIGUOUS,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrClass.AMBIGUOUS);
     @Nullable
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
@@ -42,9 +44,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
             AbstractElement.NO_CONTEXT,
             "not found association end",
             -1,
-            AntlrClass.AMBIGUOUS,
-            AntlrClass.AMBIGUOUS,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrClass.AMBIGUOUS);
 
     // @Nonnull
     // private final ImmutableList<AntlrParameterizedPropertyModifier> parameterizedPropertyModifierStates;
@@ -57,17 +57,17 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
     private ParameterizedPropertyBuilder parameterizedPropertyBuilder;
     private AntlrCriteria                criteriaState;
 
+    private AntlrClassType classTypeState;
+
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrClass owningClassState,
-            @Nonnull AntlrClass type,
-            @Nonnull AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrClass owningClassState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, type, multiplicityState);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 
@@ -93,6 +93,12 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
     }
 
     @Override
+    public AntlrMultiplicity getMultiplicity()
+    {
+        return this.classTypeState.getMultiplicity();
+    }
+
+    @Override
     public int getNumParameters()
     {
         return this.parameterHolder.getNumParameters();
@@ -102,6 +108,12 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
     public void enterParameterDeclaration(@Nonnull AntlrParameter parameterState)
     {
         this.parameterHolder.enterParameterDeclaration(parameterState);
+    }
+
+    @Override
+    public AntlrParameter getParameterByContext(@Nonnull ParameterDeclarationContext ctx)
+    {
+        return this.parameterHolder.getParameterByContext(ctx);
     }
 
     @Nonnull
@@ -139,9 +151,9 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.type.getElementBuilder(),
+                this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity());
+                this.getMultiplicity().getMultiplicity());
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.parameterizedPropertyBuilder.setOrderByBuilder(orderByBuilder);
@@ -187,5 +199,23 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<Antlr
     {
         super.reportNameErrors(compilerErrorHolder);
         this.parameterHolder.reportNameErrors(compilerErrorHolder);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClass getType()
+    {
+        return this.classTypeState.getType();
+    }
+
+    @Override
+    public void enterClassType(@Nonnull AntlrClassType classTypeState)
+    {
+        if (this.classTypeState != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.classTypeState = Objects.requireNonNull(classTypeState);
     }
 }

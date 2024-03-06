@@ -14,9 +14,13 @@ import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
+import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
+import cool.klass.model.converter.compiler.state.property.AntlrClassTypeOwner;
+import cool.klass.model.converter.compiler.state.property.AntlrClassifierTypeOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
@@ -32,6 +36,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
@@ -70,6 +75,8 @@ public class CompilerWalkState
     @Nullable
     private AntlrParameterizedProperty   parameterizedPropertyState;
     @Nullable
+    private AntlrParameter               parameterState;
+    @Nullable
     private AntlrProjection              projectionState;
     @Nullable
     private AntlrServiceGroup            serviceGroupState;
@@ -86,6 +93,13 @@ public class CompilerWalkState
     private AntlrClassModifier classModifierState;
     @Nullable
     private PackageNameContext packageNameContext;
+
+    @Nullable
+    private AntlrParameterOwner      parameterOwnerState;
+    @Nullable
+    private AntlrClassifierTypeOwner classifierTypeOwnerState;
+    @Nullable
+    private AntlrClassTypeOwner      classTypeOwnerState;
 
     public CompilerWalkState(AntlrDomainModel domainModelState)
     {
@@ -126,6 +140,12 @@ public class CompilerWalkState
     public AntlrAssociation getAssociationState()
     {
         return this.associationState;
+    }
+
+    @Nullable
+    public AntlrAssociationEnd getAssociationEndState()
+    {
+        return this.associationEndState;
     }
 
     @Nullable
@@ -171,6 +191,24 @@ public class CompilerWalkState
     }
 
     @Nullable
+    public AntlrParameterOwner getParameterOwnerState()
+    {
+        return this.parameterOwnerState;
+    }
+
+    @Nullable
+    public AntlrClassifierTypeOwner getClassifierTypeOwnerState()
+    {
+        return this.classifierTypeOwnerState;
+    }
+
+    @Nullable
+    public AntlrClassTypeOwner getClassTypeOwnerState()
+    {
+        return this.classTypeOwnerState;
+    }
+
+    @Nullable
     public CompilationUnit getCurrentCompilationUnit()
     {
         return Objects.requireNonNull(this.currentCompilationUnit);
@@ -212,12 +250,17 @@ public class CompilerWalkState
         compilerWalkState.associationState           = this.associationState;
         compilerWalkState.associationEndState        = this.associationEndState;
         compilerWalkState.parameterizedPropertyState = this.parameterizedPropertyState;
+        compilerWalkState.parameterState             = this.parameterState;
         compilerWalkState.projectionState            = this.projectionState;
         compilerWalkState.serviceGroupState          = this.serviceGroupState;
         compilerWalkState.urlState                   = this.urlState;
         compilerWalkState.serviceState               = this.serviceState;
         compilerWalkState.thisReference              = this.thisReference;
         compilerWalkState.orderByOwnerState          = this.orderByOwnerState;
+        compilerWalkState.classModifierState         = this.classModifierState;
+        compilerWalkState.parameterOwnerState        = this.parameterOwnerState;
+        compilerWalkState.classifierTypeOwnerState   = this.classifierTypeOwnerState;
+        compilerWalkState.classTypeOwnerState        = this.classTypeOwnerState;
         return compilerWalkState;
     }
 
@@ -259,6 +302,10 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.parameterState != null)
+        {
+            throw new AssertionError();
+        }
         if (this.projectionState != null)
         {
             throw new AssertionError();
@@ -280,6 +327,22 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.orderByOwnerState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.classModifierState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.parameterOwnerState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.classifierTypeOwnerState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.classTypeOwnerState != null)
         {
             throw new AssertionError();
         }
@@ -335,6 +398,10 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.parameterState != other.parameterState)
+        {
+            throw new AssertionError();
+        }
         if (this.projectionState != other.projectionState)
         {
             throw new AssertionError();
@@ -363,6 +430,18 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.parameterOwnerState != other.parameterOwnerState)
+        {
+            throw new AssertionError();
+        }
+        if (this.classifierTypeOwnerState != other.classifierTypeOwnerState)
+        {
+            throw new AssertionError();
+        }
+        if (this.classTypeOwnerState != other.classTypeOwnerState)
+        {
+            throw new AssertionError();
+        }
     }
 
     @Nonnull
@@ -376,6 +455,8 @@ public class CompilerWalkState
         @Override
         public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
         {
+            super.enterPackageDeclaration(packageContext);
+
             CompilerWalkState.this.packageNameContext = packageContext.packageName();
             CompilerWalkState.this.packageName        = CompilerWalkState.this.packageNameContext.getText();
         }
@@ -383,6 +464,8 @@ public class CompilerWalkState
         @Override
         public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
+            super.enterTopLevelDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.topLevelDeclarationState);
             CompilerWalkState.this.topLevelDeclarationState =
                     CompilerWalkState.this.domainModelState.getTopLevelElementByContext(ctx);
@@ -391,12 +474,16 @@ public class CompilerWalkState
         @Override
         public void exitTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
+            super.exitTopLevelDeclaration(ctx);
+
             CompilerWalkState.this.topLevelDeclarationState = null;
         }
 
         @Override
         public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
         {
+            super.enterEnumerationDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.enumerationState);
             CompilerWalkState.this.enumerationState = CompilerWalkState.this.domainModelState.getEnumerationByContext(ctx);
         }
@@ -404,12 +491,16 @@ public class CompilerWalkState
         @Override
         public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
         {
+            super.exitEnumerationDeclaration(ctx);
+
             CompilerWalkState.this.enumerationState = null;
         }
 
         @Override
         public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
+            super.enterInterfaceDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.classifierState);
             CompilerWalkState.assertNull(CompilerWalkState.this.interfaceState);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
@@ -424,6 +515,8 @@ public class CompilerWalkState
         @Override
         public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
+            super.exitInterfaceDeclaration(ctx);
+
             CompilerWalkState.this.classifierState = null;
             CompilerWalkState.this.interfaceState  = null;
             CompilerWalkState.this.thisReference   = null;
@@ -432,6 +525,8 @@ public class CompilerWalkState
         @Override
         public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
+            super.enterClassDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.classifierState);
             CompilerWalkState.assertNull(CompilerWalkState.this.classState);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
@@ -446,6 +541,8 @@ public class CompilerWalkState
         @Override
         public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
+            super.exitClassDeclaration(ctx);
+
             CompilerWalkState.this.classifierState = null;
             CompilerWalkState.this.classState      = null;
             CompilerWalkState.this.thisReference   = null;
@@ -454,6 +551,8 @@ public class CompilerWalkState
         @Override
         public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
+            super.enterAssociationDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.associationState);
             CompilerWalkState.this.associationState = CompilerWalkState.this.domainModelState.getAssociationByContext(ctx);
         }
@@ -461,12 +560,16 @@ public class CompilerWalkState
         @Override
         public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
+            super.exitAssociationDeclaration(ctx);
+
             CompilerWalkState.this.associationState = null;
         }
 
         @Override
         public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
+            super.enterAssociationEnd(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.associationEndState);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
@@ -489,14 +592,18 @@ public class CompilerWalkState
         @Override
         public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
+            super.exitAssociationEnd(ctx);
+
             CompilerWalkState.this.associationEndState = null;
-            CompilerWalkState.this.thisReference       = null;
             CompilerWalkState.this.orderByOwnerState   = null;
+            CompilerWalkState.this.thisReference       = null;
         }
 
         @Override
         public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
+            super.enterAssociationEndSignature(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.associationEndSignatureState);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
 
@@ -517,6 +624,8 @@ public class CompilerWalkState
         @Override
         public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
+            super.exitAssociationEndSignature(ctx);
+
             CompilerWalkState.this.associationEndSignatureState = null;
             CompilerWalkState.this.orderByOwnerState            = null;
         }
@@ -524,6 +633,8 @@ public class CompilerWalkState
         @Override
         public void enterRelationship(@Nonnull RelationshipContext ctx)
         {
+            super.enterRelationship(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
 
             if (CompilerWalkState.this.associationState == null)
@@ -540,12 +651,16 @@ public class CompilerWalkState
         @Override
         public void exitRelationship(@Nonnull RelationshipContext ctx)
         {
+            super.exitRelationship(ctx);
+
             CompilerWalkState.this.thisReference = null;
         }
 
         @Override
         public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
+            super.enterProjectionDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.projectionState);
 
             CompilerWalkState.this.projectionState =
@@ -555,14 +670,19 @@ public class CompilerWalkState
         @Override
         public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
+            super.exitProjectionDeclaration(ctx);
+
             CompilerWalkState.this.projectionState = null;
         }
 
         @Override
         public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
         {
+            super.enterParameterizedProperty(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.parameterizedPropertyState);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameterOwnerState);
 
             if (CompilerWalkState.this.classState == null)
             {
@@ -571,18 +691,48 @@ public class CompilerWalkState
             CompilerWalkState.this.parameterizedPropertyState =
                     CompilerWalkState.this.classState.getParameterizedPropertyByContext(ctx);
             CompilerWalkState.this.orderByOwnerState          = CompilerWalkState.this.parameterizedPropertyState;
+            CompilerWalkState.this.parameterOwnerState        = CompilerWalkState.this.parameterizedPropertyState;
         }
 
         @Override
         public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
         {
+            super.exitParameterizedProperty(ctx);
+
             CompilerWalkState.this.parameterizedPropertyState = null;
             CompilerWalkState.this.orderByOwnerState          = null;
+            CompilerWalkState.this.parameterOwnerState        = null;
+        }
+
+        @Override
+        public void enterParameterDeclaration(ParameterDeclarationContext ctx)
+        {
+            super.enterParameterDeclaration(ctx);
+
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameterState);
+
+            if (CompilerWalkState.this.parameterOwnerState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.parameterState =
+                    CompilerWalkState.this.parameterOwnerState.getParameterByContext(ctx);
+        }
+
+        @Override
+        public void exitParameterDeclaration(ParameterDeclarationContext ctx)
+        {
+            super.exitParameterDeclaration(ctx);
+
+            CompilerWalkState.this.parameterState = null;
         }
 
         @Override
         public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
+            super.enterServiceGroupDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.serviceGroupState);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
 
@@ -597,6 +747,8 @@ public class CompilerWalkState
         @Override
         public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
+            super.exitServiceGroupDeclaration(ctx);
+
             CompilerWalkState.this.serviceGroupState = null;
             CompilerWalkState.this.thisReference     = null;
         }
@@ -604,6 +756,8 @@ public class CompilerWalkState
         @Override
         public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
+            super.enterUrlDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.urlState);
             if (CompilerWalkState.this.serviceGroupState == null)
             {
@@ -615,12 +769,16 @@ public class CompilerWalkState
         @Override
         public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
+            super.exitUrlDeclaration(ctx);
+
             CompilerWalkState.this.urlState = null;
         }
 
         @Override
         public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
+            super.enterServiceDeclaration(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.serviceState);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
 
@@ -639,6 +797,8 @@ public class CompilerWalkState
         @Override
         public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
+            super.exitServiceDeclaration(ctx);
+
             CompilerWalkState.this.serviceState      = null;
             CompilerWalkState.this.orderByOwnerState = null;
         }
@@ -646,6 +806,8 @@ public class CompilerWalkState
         @Override
         public void enterClassModifier(@Nonnull ClassModifierContext ctx)
         {
+            super.enterClassModifier(ctx);
+
             CompilerWalkState.assertNull(CompilerWalkState.this.classModifierState);
 
             if (CompilerWalkState.this.classifierState == null)
@@ -660,6 +822,8 @@ public class CompilerWalkState
         @Override
         public void exitClassModifier(@Nonnull ClassModifierContext ctx)
         {
+            super.exitClassModifier(ctx);
+
             CompilerWalkState.this.classModifierState = null;
         }
     }

@@ -71,6 +71,7 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     public void enterCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
         super.enterCriteriaOperator(ctx);
+
         if (ctx.operator().equalityOperator() == null)
         {
             this.allEqualityOperators = false;
@@ -100,10 +101,11 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     public void enterTypeMemberReferencePath(@Nonnull TypeMemberReferencePathContext ctx)
     {
         super.enterTypeMemberReferencePath(ctx);
+
         ClassReferenceContext                classReferenceContext           = ctx.classReference();
         List<AssociationEndReferenceContext> associationEndReferenceContexts = ctx.associationEndReference();
 
-        AntlrClass klass = this.domainModelState.getClassByName(classReferenceContext.getText());
+        AntlrClass klass = this.domainModelState.getClassByName(classReferenceContext.identifier().getText());
 
         if (!associationEndReferenceContexts.isEmpty())
         {
@@ -122,6 +124,8 @@ public class PossibleJoinCriteriaListener extends KlassBaseListener
     @Override
     public void enterLiteral(LiteralContext ctx)
     {
+        super.enterLiteral(ctx);
+
         // TODO: Not sure if this should count. But the example is:
         // this.key == Comment.blueprintKey
         //         && Comment.replyToId == null

@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -23,7 +24,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class AntlrParameter extends AntlrNamedElement
+public final class AntlrParameter
+        extends AntlrNamedElement
+        implements AntlrMultiplicityOwner
 {
     @Nonnull
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
@@ -33,8 +36,8 @@ public final class AntlrParameter extends AntlrNamedElement
             "ambiguous enumeration url parameter",
             -1,
             AntlrEnumeration.AMBIGUOUS,
-            AntlrMultiplicity.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
+
     @Nonnull
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(),
@@ -43,11 +46,8 @@ public final class AntlrParameter extends AntlrNamedElement
             "not found enumeration url parameter",
             -1,
             AntlrEnumeration.NOT_FOUND,
-            AntlrMultiplicity.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
 
-    @Nonnull
-    private final AntlrMultiplicity multiplicityState;
     @Nonnull
     private final IAntlrElement     parameterOwner;
     @Nonnull
@@ -55,6 +55,9 @@ public final class AntlrParameter extends AntlrNamedElement
 
     // TODO: Factor modifiers into type checking
     private final MutableList<AntlrParameterModifier> parameterModifiers = Lists.mutable.empty();
+
+    @Nullable
+    private  AntlrMultiplicity multiplicityState;
 
     @Nullable
     private ParameterBuilder elementBuilder;
@@ -66,12 +69,10 @@ public final class AntlrParameter extends AntlrNamedElement
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrType typeState,
-            @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull IAntlrElement parameterOwner)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.typeState = Objects.requireNonNull(typeState);
-        this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
 
@@ -97,6 +98,16 @@ public final class AntlrParameter extends AntlrNamedElement
     public int getNumModifiers()
     {
         return this.parameterModifiers.size();
+    }
+
+    @Override
+    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicityState)
+    {
+        if (this.multiplicityState != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.multiplicityState = Objects.requireNonNull(multiplicityState);
     }
 
     public void enterParameterModifier(AntlrParameterModifier parameterModifierState)

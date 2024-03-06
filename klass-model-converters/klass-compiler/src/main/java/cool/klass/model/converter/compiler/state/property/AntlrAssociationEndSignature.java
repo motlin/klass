@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrClassifierType;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.AbstractElement;
@@ -23,7 +24,9 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<AntlrClassifier>
+public class AntlrAssociationEndSignature
+        extends AntlrReferenceTypeProperty<AntlrClassifier>
+        implements AntlrClassifierTypeOwner
 {
     @Nullable
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
@@ -32,9 +35,8 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
             AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
-            AntlrClassifier.AMBIGUOUS,
-            AntlrClassifier.AMBIGUOUS,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrClassifier.AMBIGUOUS);
+
     @Nullable
     public static final AntlrAssociationEndSignature NOT_FOUND = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
@@ -43,9 +45,7 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
             "not found association end",
             -1,
             // TODO: Not found here, instead of ambiguous
-            AntlrClassifier.NOT_FOUND,
-            AntlrClassifier.NOT_FOUND,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrClassifier.NOT_FOUND);
 
     @Nonnull
     private final AntlrClassifier owningClassifierState;
@@ -61,17 +61,18 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
     private final MutableOrderedMap<AssociationEndModifierContext, AntlrAssociationEndModifier> associationEndModifiersByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
+    @Nullable
+    private AntlrClassifierType classifierTypeState;
+
     public AntlrAssociationEndSignature(
             @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrClassifier owningClassifierState,
-            @Nonnull AntlrClassifier type,
-            @Nonnull AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrClassifier owningClassifierState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, type, multiplicityState);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
@@ -80,6 +81,12 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.owningClassifierState);
+    }
+
+    @Override
+    public AntlrMultiplicity getMultiplicity()
+    {
+        return this.classifierTypeState.getMultiplicity();
     }
 
     public int getNumModifiers()
@@ -157,7 +164,7 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
     @Override
     protected IdentifierContext getTypeIdentifier()
     {
-        return this.getElementContext().classifierReference().identifier();
+        return this.getElementContext().classifierType().classifierReference().identifier();
     }
 
     @Nonnull
@@ -172,5 +179,23 @@ public class AntlrAssociationEndSignature extends AntlrReferenceTypeProperty<Ant
     {
         parserRuleContexts.add(this.getElementContext());
         this.owningClassifierState.getParserRuleContexts(parserRuleContexts);
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClassifier getType()
+    {
+        return this.classifierTypeState.getType();
+    }
+
+    @Override
+    public void enterClassifierType(@Nonnull AntlrClassifierType classifierTypeState)
+    {
+        if (this.classifierTypeState != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.classifierTypeState = Objects.requireNonNull(classifierTypeState);
     }
 }

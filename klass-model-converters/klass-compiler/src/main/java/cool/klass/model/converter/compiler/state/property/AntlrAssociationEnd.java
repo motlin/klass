@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassType;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
@@ -27,9 +28,12 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
+public class AntlrAssociationEnd
+        extends AntlrReferenceTypeProperty<AntlrClass>
+        implements AntlrClassTypeOwner
 {
     @Nullable
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
@@ -38,9 +42,8 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
             AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
-            AntlrAssociation.AMBIGUOUS,
-            AntlrClass.AMBIGUOUS,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrAssociation.AMBIGUOUS);
+
     @Nullable
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
@@ -49,9 +52,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
             "not found association end",
             -1,
             // TODO: Not found here, instead of ambiguous
-            AntlrAssociation.AMBIGUOUS,
-            AntlrClass.NOT_FOUND,
-            AntlrMultiplicity.AMBIGUOUS);
+            AntlrAssociation.AMBIGUOUS);
 
     @Nonnull
     private final AntlrAssociation owningAssociationState;
@@ -73,17 +74,17 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
     private final MutableOrderedMap<AssociationEndModifierContext, AntlrAssociationEndModifier> associationEndModifiersByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
+    private AntlrClassType classTypeState;
+
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrAssociation owningAssociationState,
-            @Nonnull AntlrClass type,
-            @Nonnull AntlrMultiplicity multiplicityState)
+            @Nonnull AntlrAssociation owningAssociationState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, type, multiplicityState);
+        super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
     }
 
@@ -92,6 +93,12 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.owningAssociationState);
+    }
+
+    @Override
+    public AntlrMultiplicity getMultiplicity()
+    {
+        return this.classTypeState.getMultiplicity();
     }
 
     public int getNumModifiers()
@@ -121,10 +128,10 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.type.getElementBuilder(),
+                this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
                 this.owningAssociationState.getElementBuilder(),
-                this.multiplicityState.getMultiplicity(),
+                this.getMultiplicity().getMultiplicity(),
                 this.isOwned());
 
         ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders =
@@ -152,6 +159,24 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
         if (this.orderByState != null)
         {
             this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+        }
+
+        if (this.getMultiplicity().getMultiplicity() == null)
+        {
+            String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
+                    .collect(Multiplicity::getPrettyName)
+                    .collect(each -> '[' + each + ']')
+                    .makeString();
+
+            String message = String.format(
+                    "Association end '%s: %s[%s..%s]' has invalid multiplicity. Expected one of %s.",
+                    this.getName(),
+                    this.getOwningClassifierState().getName(),
+                    this.getMultiplicity().getLowerBoundText(),
+                    this.getMultiplicity().getUpperBoundText(),
+                    multiplicityChoices);
+
+            compilerErrorHolder.add("ERR_ASO_MUL", message, this.getMultiplicity());
         }
 
         if (this.isVersion() && !this.isOwned())
@@ -269,12 +294,14 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
 
     public boolean isToOne()
     {
-        return this.getMultiplicity().isToOne();
+        AntlrMultiplicity multiplicity = this.getMultiplicity();
+        return multiplicity != null && multiplicity.isToOne();
     }
 
     public boolean isToMany()
     {
-        return this.getMultiplicity().isToMany();
+        AntlrMultiplicity multiplicity = this.getMultiplicity();
+        return multiplicity != null && multiplicity.isToMany();
     }
 
     public void addForeignKeyPropertyMatchingProperty(
@@ -295,11 +322,31 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
 
     public boolean isToOneOptional()
     {
-        return this.getMultiplicity().getMultiplicity() == Multiplicity.ZERO_TO_ONE;
+        AntlrMultiplicity multiplicity = this.getMultiplicity();
+        return multiplicity != null && multiplicity.getMultiplicity() == Multiplicity.ZERO_TO_ONE;
     }
 
     public boolean isToOneRequired()
     {
-        return this.getMultiplicity().getMultiplicity() == Multiplicity.ONE_TO_ONE;
+        AntlrMultiplicity multiplicity = this.getMultiplicity();
+        return multiplicity != null && multiplicity.getMultiplicity() == Multiplicity.ONE_TO_ONE;
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClass getType()
+    {
+        return this.classTypeState.getType();
+    }
+
+    @Override
+    public void enterClassType(@Nonnull AntlrClassType classTypeState)
+    {
+        if (this.classTypeState != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.classTypeState = Objects.requireNonNull(classTypeState);
     }
 }

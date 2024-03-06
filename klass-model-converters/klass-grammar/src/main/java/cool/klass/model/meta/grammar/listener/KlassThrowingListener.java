@@ -22,6 +22,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
@@ -1519,6 +1520,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassType() not implemented yet");
+    }
+
+    @Override
+    public void enterClassifierType(ClassifierTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassifierType() not implemented yet");
+    }
+
+    @Override
+    public void exitClassifierType(ClassifierTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassifierType() not implemented yet");
     }
 
     @Override

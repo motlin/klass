@@ -9,14 +9,19 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassType;
+import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrClassTypeOwner;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 
 public class AssociationPhase extends AbstractCompilerPhase
 {
@@ -24,6 +29,11 @@ public class AssociationPhase extends AbstractCompilerPhase
     private AntlrAssociation    associationState;
     @Nullable
     private AntlrAssociationEnd associationEndState;
+    @Nullable
+    private AntlrClassType      classTypeState;
+
+    @Nullable
+    private AntlrClassTypeOwner classTypeOwnerState;
 
     public AssociationPhase(CompilerState compilerState)
     {
@@ -34,6 +44,11 @@ public class AssociationPhase extends AbstractCompilerPhase
     public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         super.enterAssociationDeclaration(ctx);
+
+        if (this.associationState != null)
+        {
+            throw new IllegalStateException();
+        }
 
         IdentifierContext identifier = ctx.identifier();
         this.associationState = new AntlrAssociation(
@@ -51,6 +66,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         this.associationState.exitAssociationDeclaration();
         this.compilerState.getDomainModelState().exitAssociationDeclaration(this.associationState);
+        this.associationState = null;
 
         super.exitAssociationDeclaration(ctx);
     }
@@ -60,12 +76,14 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         super.enterAssociationEnd(ctx);
 
-        ClassTypeContext classTypeContext = ctx.classType();
-        String           className        = classTypeContext.classReference().getText();
-        AntlrClass       classState       = this.compilerState.getDomainModelState().getClassByName(className);
-        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                classTypeContext.multiplicity(),
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()));
+        if (this.associationEndState != null)
+        {
+            throw new IllegalStateException();
+        }
+        if (this.classTypeOwnerState != null)
+        {
+            throw new IllegalStateException();
+        }
 
         String associationEndName = ctx.identifier().getText();
         this.associationEndState = new AntlrAssociationEnd(
@@ -74,9 +92,8 @@ public class AssociationPhase extends AbstractCompilerPhase
                 ctx.identifier(),
                 associationEndName,
                 this.associationState.getNumAssociationEnds() + 1,
-                this.associationState,
-                classState,
-                multiplicityState);
+                this.associationState);
+        this.classTypeOwnerState = this.associationEndState;
 
         this.associationState.enterAssociationEnd(this.associationEndState);
     }
@@ -86,6 +103,8 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         Objects.requireNonNull(this.associationEndState);
         this.associationEndState = null;
+        this.classTypeOwnerState = null;
+
         super.exitAssociationEnd(ctx);
     }
 
@@ -93,6 +112,7 @@ public class AssociationPhase extends AbstractCompilerPhase
     public void enterAssociationEndModifier(@Nonnull AssociationEndModifierContext ctx)
     {
         super.enterAssociationEndModifier(ctx);
+
         AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
@@ -101,5 +121,70 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.associationEndState.getNumModifiers() + 1,
                 this.associationEndState);
         this.associationEndState.enterAssociationEndModifier(antlrAssociationEndModifier);
+    }
+
+    @Override
+    public void enterClassType(ClassTypeContext ctx)
+    {
+        super.enterClassType(ctx);
+
+        if (this.classTypeState != null)
+        {
+            throw new AssertionError();
+        }
+
+        if (this.classTypeOwnerState == null)
+        {
+            return;
+        }
+
+        this.classTypeState = new AntlrClassType(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                this.classTypeOwnerState);
+        this.classTypeOwnerState.enterClassType(this.classTypeState);
+    }
+
+    @Override
+    public void exitClassType(ClassTypeContext ctx)
+    {
+        this.classTypeState = null;
+
+        super.exitClassType(ctx);
+    }
+
+    @Override
+    public void enterClassReference(ClassReferenceContext ctx)
+    {
+        super.enterClassReference(ctx);
+
+        if (this.classTypeState == null)
+        {
+            return;
+        }
+
+        String           className        = ctx.identifier().getText();
+        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
+        AntlrClass       classState       = domainModelState.getClassByName(className);
+
+        this.classTypeState.enterClassReference(classState);
+    }
+
+    @Override
+    public void enterMultiplicity(MultiplicityContext ctx)
+    {
+        super.enterMultiplicity(ctx);
+
+        if (this.classTypeState == null)
+        {
+            return;
+        }
+
+        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                this.classTypeState);
+
+        this.classTypeState.enterMultiplicity(multiplicityState);
     }
 }

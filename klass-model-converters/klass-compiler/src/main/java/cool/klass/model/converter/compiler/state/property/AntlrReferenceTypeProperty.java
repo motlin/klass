@@ -16,42 +16,31 @@ import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier> extends AntlrProperty<KlassImpl> implements AntlrOrderByOwner
+public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
+        extends AntlrProperty<KlassImpl>
+        implements AntlrOrderByOwner
 {
     @Nonnull
-    protected final Type             type;
-    protected final AntlrMultiplicity      multiplicityState;
-    @Nonnull
-    protected       Optional<AntlrOrderBy> orderByState = Optional.empty();
+    protected Optional<AntlrOrderBy> orderByState = Optional.empty();
 
     protected AntlrReferenceTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
-            int ordinal,
-            @Nonnull Type type,
-            @Nonnull AntlrMultiplicity multiplicityState)
+            int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.type = Objects.requireNonNull(type);
-        this.multiplicityState = Objects.requireNonNull(multiplicityState);
     }
 
     @Override
     @Nonnull
-    public Type getType()
-    {
-        return Objects.requireNonNull(this.type);
-    }
+    public abstract Type getType();
 
-    public AntlrMultiplicity getMultiplicity()
-    {
-        return this.multiplicityState;
-    }
+    public abstract AntlrMultiplicity getMultiplicity();
 
     @Override
-    public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
+    public void enterOrderByDeclaration(@Nonnull Optional<AntlrOrderBy> orderByState)
     {
         if (this.orderByState.isPresent())
         {
@@ -62,7 +51,7 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier> e
 
     public void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.type != AntlrClass.NOT_FOUND)
+        if (this.getType() != AntlrClass.NOT_FOUND)
         {
             return;
         }
