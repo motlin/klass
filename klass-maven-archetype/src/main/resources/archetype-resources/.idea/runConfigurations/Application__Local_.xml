@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="${name} Application (Local)" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="${package}.dropwizard.application.${name}Application" />
-    <module name="stackoverflow-dropwizard-application" />
-    <option name="PROGRAM_PARAMETERS" value="server config.yml" />
-    <option name="VM_PARAMETERS" value="-Dconfig.resource=local.conf" />
+    <module name="${artifactId}-dropwizard-application" />
+    <option name="PROGRAM_PARAMETERS" value="server server-local-demo.json" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <extension name="coverage">
       <pattern>
