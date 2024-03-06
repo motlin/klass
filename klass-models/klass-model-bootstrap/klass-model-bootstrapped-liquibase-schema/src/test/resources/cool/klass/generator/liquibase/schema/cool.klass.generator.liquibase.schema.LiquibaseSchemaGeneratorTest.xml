@@ -190,20 +190,20 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
+    <changeSet author="Klass" id="initial-foreign-key-7-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
         <addForeignKeyConstraint
-                constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="DATA_TYPE_PROPERTY"
+                constraintName="PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="PRIMITIVE_PROPERTY"
                 baseColumnNames="CLASSIFIER_NAME"
                 referencedTableName="CLASSIFIER"
                 referencedColumnNames="NAME"
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
+    <changeSet author="Klass" id="initial-foreign-key-7-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
         <addForeignKeyConstraint
-                constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="DATA_TYPE_PROPERTY"
+                constraintName="ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="ENUMERATION_PROPERTY"
                 baseColumnNames="CLASSIFIER_NAME"
                 referencedTableName="CLASSIFIER"
                 referencedColumnNames="NAME"
@@ -292,40 +292,40 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-10-NUMERIC_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY">
+    <changeSet author="Klass" id="initial-foreign-key-10-MIN_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY">
         <addForeignKeyConstraint
-                constraintName="NUMERIC_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY"
-                baseTableName="NUMERIC_PROPERTY_VALIDATION"
+                constraintName="MIN_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY"
+                baseTableName="MIN_LENGTH_PROPERTY_VALIDATION"
                 baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
                 referencedTableName="DATA_TYPE_PROPERTY"
                 referencedColumnNames="CLASSIFIER_NAME, NAME"
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-10-NUMERIC_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY">
+    <changeSet author="Klass" id="initial-foreign-key-10-MAX_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY">
         <addForeignKeyConstraint
-                constraintName="NUMERIC_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY"
-                baseTableName="NUMERIC_PROPERTY_VALIDATION"
+                constraintName="MAX_LENGTH_PROPERTY_VALIDATION_FK_DATA_TYPE_PROPERTY"
+                baseTableName="MAX_LENGTH_PROPERTY_VALIDATION"
                 baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
                 referencedTableName="DATA_TYPE_PROPERTY"
                 referencedColumnNames="CLASSIFIER_NAME, NAME"
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-10-NUMERIC_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY">
+    <changeSet author="Klass" id="initial-foreign-key-10-MIN_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY">
         <addForeignKeyConstraint
-                constraintName="NUMERIC_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY"
-                baseTableName="NUMERIC_PROPERTY_VALIDATION"
+                constraintName="MIN_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY"
+                baseTableName="MIN_PROPERTY_VALIDATION"
                 baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
                 referencedTableName="PRIMITIVE_PROPERTY"
                 referencedColumnNames="CLASSIFIER_NAME, NAME"
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-10-NUMERIC_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY">
+    <changeSet author="Klass" id="initial-foreign-key-10-MAX_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY">
         <addForeignKeyConstraint
-                constraintName="NUMERIC_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY"
-                baseTableName="NUMERIC_PROPERTY_VALIDATION"
+                constraintName="MAX_PROPERTY_VALIDATION_FK_PRIMITIVE_PROPERTY"
+                baseTableName="MAX_PROPERTY_VALIDATION"
                 baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
                 referencedTableName="PRIMITIVE_PROPERTY"
                 referencedColumnNames="CLASSIFIER_NAME, NAME"

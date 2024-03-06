@@ -5,6 +5,7 @@ import java.util.Optional;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 
 public final class ForeignKeyGenerator
@@ -27,19 +28,20 @@ public final class ForeignKeyGenerator
             return Optional.empty();
         }
 
-        String result = foreignKeys
+        ImmutableList<String> foreignKeyStrings = foreignKeys
                 .keyValuesView()
-                .collect(keyValuePair -> getForeignKey(klass, keyValuePair.getOne(), keyValuePair.getTwo(), ordinal)).makeString("");
+                .collect(keyValuePair -> getForeignKey(keyValuePair.getOne(), keyValuePair.getTwo(), ordinal))
+                .toImmutableList();
+        String result = foreignKeyStrings.makeString("");
         return Optional.of(result);
     }
 
     private static String getForeignKey(
-            Klass klass,
             AssociationEnd associationEnd,
             MutableOrderedMap<DataTypeProperty, DataTypeProperty> dataTypeProperties,
             int ordinal)
     {
-        String tableName = TableGenerator.TABLE_NAME_CONVERTER.convert(klass.getName());
+        String tableName = TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getOwningClassifier().getName());
         String constraintName = tableName
                 + "_FK_"
                 + TableGenerator.TABLE_NAME_CONVERTER.convert(associationEnd.getName());
