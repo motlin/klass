@@ -46,7 +46,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
     }
 
     @Override
-    public ImmutableList<AssociationEnd> getAssociationEnds()
+    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()
     {
         return Objects.requireNonNull(this.associationEnds);
     }

@@ -41,10 +41,42 @@ class Interface
 {
 }
 
+class ClassifierInterfaceMapping
+    transient
+{
+    classifierName: String key private;
+    interfaceName: String key private;
+}
+
+association ClassifierHasClassifierInterfaceMapping
+{
+    subClassifier: Classifier[1..1];
+    superInterfaces: ClassifierInterfaceMapping[0..*] owned;
+
+    relationship this.name == ClassifierInterfaceMapping.classifierName
+}
+
+association ClassifierInterfaceMappingHasInterface
+{
+    superInterface: Interface[1..1];
+    subClassifiers: ClassifierInterfaceMapping[0..*];
+
+    relationship this.name == ClassifierInterfaceMapping.interfaceName
+}
+
 class Class
     extends Classifier
     transient
 {
+    superClassName: String? private;
+}
+
+association ClassHasSuperClass
+{
+    subClasses: Class[0..*];
+    superClass: Class[0..1];
+
+    relationship this.superClassName == Class.name
 }
 
 enumeration PrimitiveType
@@ -531,6 +563,20 @@ projection ClassReadProjection on Class
     packageName          : "Class package name",
     ordinal              : "Class ordinal",
     sourceCode           : "Class source code",
+    superClass           :
+    {
+        name       : "Super Class name",
+        packageName: "Super Class package name",
+    },
+    // TODO: flat many-to-many, or parameterized property
+    superInterfaces      :
+    {
+        superInterface:
+        {
+            name       : "Class name",
+            packageName: "Class package name",
+        },
+    },
     classModifiers       :
     {
         name    : "Class modifier name",

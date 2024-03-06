@@ -44,7 +44,18 @@ public interface Klass extends Classifier
                 .newWithAll(this.getAssociationEnds());
     }
 
-    ImmutableList<AssociationEnd> getAssociationEnds();
+    ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
+
+    default ImmutableList<AssociationEnd> getAssociationEnds()
+    {
+        ImmutableList<AssociationEnd> inheritedAssociationEnds = this.getSuperClass()
+                .map(Klass::getAssociationEnds)
+                .orElseGet(Lists.immutable::empty);
+
+        return this.getDeclaredAssociationEnds()
+                .newWithAll(inheritedAssociationEnds)
+                .distinctBy(NamedElement::getName);
+    }
 
     // TODO: Override for efficiency?
     @Nonnull

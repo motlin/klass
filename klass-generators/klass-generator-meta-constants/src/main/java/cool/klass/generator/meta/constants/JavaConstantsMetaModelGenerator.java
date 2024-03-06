@@ -747,9 +747,9 @@ public class JavaConstantsMetaModelGenerator
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
-                + "    public ImmutableList<AssociationEnd> getAssociationEnds()\n"
+                + "    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()\n"
                 + "    {\n"
-                + "        return Lists.immutable.with(" + klass.getAssociationEnds().collect(NamedElement::getName).makeString() + ");\n"
+                + "        return Lists.immutable.with(" + klass.getDeclaredAssociationEnds().collect(NamedElement::getName).makeString() + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
@@ -800,7 +800,7 @@ public class JavaConstantsMetaModelGenerator
 
     private String getAssociationEndsSourceCode(Klass klass)
     {
-        return klass.getAssociationEnds()
+        return klass.getDeclaredAssociationEnds()
                 .collect(this::getAssociationEndSourceCode)
                 .makeString("\n");
     }
@@ -1473,7 +1473,7 @@ public class JavaConstantsMetaModelGenerator
 
     private String getAssociationEndConstantsSourceCode(Klass klass)
     {
-        return klass.getAssociationEnds()
+        return klass.getDeclaredAssociationEnds()
                 .collect(this::getAssociationEndConstantSourceCode)
                 .makeString("");
     }

@@ -27,7 +27,7 @@ public class ReladomoTestDataGenerator
         MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
             tx.setProcessingStartTime(this.systemTime.toEpochMilli());
-            this.domainModel.getKlasses().each(this::generate);
+            this.domainModel.getKlasses().reject(Klass::isAbstract).each(this::generate);
             return null;
         });
     }

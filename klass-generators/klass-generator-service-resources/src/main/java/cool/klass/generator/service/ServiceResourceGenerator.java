@@ -261,7 +261,7 @@ public class ServiceResourceGenerator
         ProjectionWalker.walk(projection, deepFetchProjectionListener);
         ImmutableList<String> deepFetchStrings = deepFetchProjectionListener.getResult();
         String deepFetchString = deepFetchStrings
-                .collect(each -> "        result.deepFetch(" + finderName + "." + each + ");\n")
+                .collect(each -> "        result.deepFetch(" + each + ");\n")
                 .makeString("");
 
         // @formatter:off

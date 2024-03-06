@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
-import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
-import com.gs.fw.common.mithra.finder.RelatedFinder;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -53,8 +51,6 @@ public class ReladomoJsonTree implements JsonSerializable
             MithraObject mithraObject,
             @Nonnull ImmutableList<ProjectionElement> projectionElements) throws IOException
     {
-        RelatedFinder<?> finder = mithraObject.zGetPortal().getFinder();
-
         jsonGenerator.writeStartObject();
         try
         {
@@ -73,7 +69,6 @@ public class ReladomoJsonTree implements JsonSerializable
                     this.handleProjectionAssociationEnd(
                             jsonGenerator,
                             mithraObject,
-                            finder,
                             (ProjectionAssociationEnd) projectionElement);
                 }
                 else
@@ -119,7 +114,6 @@ public class ReladomoJsonTree implements JsonSerializable
     public void handleProjectionAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            RelatedFinder<?> finder,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
         ImmutableList<ProjectionElement> children       = projectionAssociationEnd.getChildren();
@@ -128,17 +122,9 @@ public class ReladomoJsonTree implements JsonSerializable
 
         String associationEndName = associationEnd.getName();
 
-        AbstractRelatedFinder relationshipFinder =
-                (AbstractRelatedFinder) finder.getRelationshipFinderByName(associationEndName);
-        Object value = relationshipFinder.valueOf(mithraObject);
-        if (value == null)
-        {
-            // Should only happen for to-one optional relationships
-            return;
-        }
-
         if (multiplicity.isToMany())
         {
+            Object             value    = this.dataStore.getToMany(mithraObject, associationEnd);
             MithraList<MithraObject> mithraList = (MithraList<MithraObject>) Objects.requireNonNull(value);
 
             jsonGenerator.writeArrayFieldStart(associationEndName);
@@ -154,6 +140,13 @@ public class ReladomoJsonTree implements JsonSerializable
         }
         else
         {
+            Object value = this.dataStore.getToOne(mithraObject, associationEnd);
+            if (value == null)
+            {
+                // Should only happen for to-one optional relationships
+                return;
+            }
+
             jsonGenerator.writeFieldName(associationEndName);
             this.recurse(jsonGenerator, children, (MithraObject) value);
         }

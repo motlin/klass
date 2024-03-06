@@ -106,7 +106,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraPureObject.setAsOfAttributes(asOfAttributeTypes.castToList());
         mithraPureObject.setAttributes(attributeTypes.castToList());
 
-        mithraPureObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
+        mithraPureObject.setRelationships(this.convertRelationships(klass.getDeclaredAssociationEnds()));
 
         return mithraPureObject;
     }
@@ -145,7 +145,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraObject.setAsOfAttributes(asOfAttributeTypes.castToList());
         mithraObject.setAttributes(attributeTypes.castToList());
 
-        mithraObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
+        mithraObject.setRelationships(this.convertRelationships(klass.getDeclaredAssociationEnds()));
 
         return mithraObject;
     }

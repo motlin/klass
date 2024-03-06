@@ -549,29 +549,6 @@ public class AntlrClass extends AntlrClassifier
         return (ClassDeclarationContext) super.getElementContext();
     }
 
-    public AntlrAssociationEnd getAssociationEndByName(String name)
-    {
-        return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
-    }
-
-    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
-    {
-        return this.associationEndStates.asUnmodifiable();
-    }
-
-    @Nonnull
-    @Override
-    public KlassBuilder getTypeGetter()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getTypeBuilder() not implemented yet");
-    }
-
-    public boolean hasVersion()
-    {
-        return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
-    }
-
     @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
@@ -590,5 +567,35 @@ public class AntlrClass extends AntlrClassifier
         }
 
         return this.getInterfaceDataTypePropertyByName(name);
+    }
+
+    public AntlrAssociationEnd getAssociationEndByName(String name)
+    {
+        if (this.associationEndsByName.containsKey(name))
+        {
+            return this.associationEndsByName.get(name);
+        }
+
+        return this.superClassState
+                .map(superClass -> superClass.getAssociationEndByName(name))
+                .orElse(AntlrAssociationEnd.NOT_FOUND);
+    }
+
+    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
+    {
+        return this.associationEndStates.asUnmodifiable();
+    }
+
+    @Nonnull
+    @Override
+    public KlassBuilder getTypeGetter()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getTypeBuilder() not implemented yet");
+    }
+
+    public boolean hasVersion()
+    {
+        return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
     }
 }

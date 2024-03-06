@@ -114,7 +114,7 @@ public class DataTransferObjectsGenerator
 
         String dataGettersSettersSourceCode = dataTypeProperties.collect(this::getDataGetterSetter).makeString("");
 
-        ImmutableList<AssociationEnd> associationEnds = klass.getAssociationEnds();
+        ImmutableList<AssociationEnd> associationEnds = klass.getDeclaredAssociationEnds();
         String referenceFieldsSourceCode = associationEnds.collect(this::getReferenceField).makeString("");
 
         String referenceGettersSettersSourceCode = associationEnds.collect(this::getReferenceGetterSetter).makeString("");
