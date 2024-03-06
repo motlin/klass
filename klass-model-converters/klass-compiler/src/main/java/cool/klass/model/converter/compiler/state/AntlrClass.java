@@ -339,7 +339,13 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
 
         if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
         {
-            String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
+            String message = String.format("ERR_VER_VER: Class '%s' is a version and has a version.", this.name);
+            compilerErrorHolder.add(message, this);
+        }
+
+        if (this.dataTypePropertyStates.count(AntlrDataTypeProperty::isKey) == 0)
+        {
+            String message = String.format("ERR_CLS_KEY: Class '%s' must have at least one key property.", this.name);
             compilerErrorHolder.add(message, this);
         }
 
