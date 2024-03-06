@@ -268,8 +268,8 @@ projection AssociationProjection on Association
     name: "NamedElement name",
     ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
-    criteria: CriteriaProjection,
     associationEnds: AssociationEndProjection,
+    criteria: CriteriaProjection,
 }
 
 projection AssociationEndProjection on AssociationEnd

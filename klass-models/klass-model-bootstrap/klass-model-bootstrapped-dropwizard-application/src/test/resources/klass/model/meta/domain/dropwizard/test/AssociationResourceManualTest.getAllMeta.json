@@ -823,54 +823,6 @@
     }
   },
   {
-    "name": "AssociationHasCriteria",
-    "packageName": "klass.model.meta.domain",
-    "associationEnds": [
-      {
-        "name": "association",
-        "multiplicity": "0..1",
-        "resultType": {
-          "name": "Association"
-        },
-        "associationEndModifiers": [],
-        "orderBys": []
-      },
-      {
-        "name": "criteria",
-        "multiplicity": "1..1",
-        "resultType": {
-          "name": "Criteria"
-        },
-        "associationEndModifiers": [],
-        "orderBys": []
-      }
-    ],
-    "criteria": {
-      "__typename": "klass.model.meta.domain.OperatorCriteria",
-      "operator": "==",
-      "sourceExpressionValue": {
-        "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
-        "klass": {
-          "name": "Association"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "name": "criteriaId"
-        }
-      },
-      "targetExpressionValue": {
-        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
-        "klass": {
-          "name": "Criteria"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "name": "id"
-        }
-      }
-    }
-  },
-  {
     "name": "AssociationHasEnds",
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
@@ -1119,6 +1071,54 @@
           "dataTypeProperty": {
             "name": "associationEndName"
           }
+        }
+      }
+    }
+  },
+  {
+    "name": "AssociationHasCriteria",
+    "packageName": "klass.model.meta.domain",
+    "associationEnds": [
+      {
+        "name": "association",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "Association"
+        },
+        "associationEndModifiers": [],
+        "orderBys": []
+      },
+      {
+        "name": "criteria",
+        "multiplicity": "1..1",
+        "resultType": {
+          "name": "Criteria"
+        },
+        "associationEndModifiers": [],
+        "orderBys": []
+      }
+    ],
+    "criteria": {
+      "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "operator": "==",
+      "sourceExpressionValue": {
+        "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
+        "klass": {
+          "name": "Association"
+        },
+        "associationEnds": [],
+        "dataTypeProperty": {
+          "name": "criteriaId"
+        }
+      },
+      "targetExpressionValue": {
+        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
+        "klass": {
+          "name": "Criteria"
+        },
+        "associationEnds": [],
+        "dataTypeProperty": {
+          "name": "id"
         }
       }
     }

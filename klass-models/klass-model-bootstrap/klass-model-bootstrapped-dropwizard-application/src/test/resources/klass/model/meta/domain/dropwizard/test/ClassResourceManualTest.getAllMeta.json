@@ -1048,7 +1048,7 @@
   {
     "name": "AssociationEnd",
     "packageName": "klass.model.meta.domain",
-    "ordinal": 54,
+    "ordinal": 53,
     "superInterfaces": [
       {
         "superInterface": {
@@ -1149,7 +1149,7 @@
   {
     "name": "AssociationEndModifier",
     "packageName": "klass.model.meta.domain",
-    "ordinal": 58,
+    "ordinal": 57,
     "superInterfaces": [
       {
         "superInterface": {

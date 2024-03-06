@@ -378,14 +378,6 @@ class Association implements PackageableElement
     }
 }
 
-association AssociationHasCriteria
-{
-    association: Association[0..1];
-    criteria: Criteria[1..1];
-
-    relationship this.criteriaId == Criteria.id
-}
-
 class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
@@ -438,6 +430,14 @@ association AssociationEndHasModifiers
 
     relationship this.owningClassName == AssociationEndModifier.owningClassName
             && this.name == AssociationEndModifier.associationEndName
+}
+
+association AssociationHasCriteria
+{
+    association: Association[0..1];
+    criteria: Criteria[1..1];
+
+    relationship this.criteriaId == Criteria.id
 }
 
 association OperatorCriteriaHasSourceExpressionValue
