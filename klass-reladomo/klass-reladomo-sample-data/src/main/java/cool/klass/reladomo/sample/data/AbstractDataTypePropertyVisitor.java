@@ -51,6 +51,10 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
     public void visitString(@Nonnull PrimitiveProperty primitiveProperty)
     {
         // TODO: Something more reliable, or ban shared foreign keys
+        if (primitiveProperty.getKeysMatchingThisForeignKey().size() > 1)
+        {
+            throw new AssertionError(primitiveProperty);
+        }
         if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
         {
             Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair =
