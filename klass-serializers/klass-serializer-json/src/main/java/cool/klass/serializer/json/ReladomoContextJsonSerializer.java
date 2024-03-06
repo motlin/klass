@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
-import cool.klass.jackson.jsonview.KlassJsonView;
 import cool.klass.jackson.response.KlassResponseMetadata;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
@@ -29,12 +28,13 @@ import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
+import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
 {
     @Nonnull
-    private final DataStore dataStore;
+    private final DataStore             dataStore;
     @Nonnull
     private final KlassResponseMetadata metadata;
 
@@ -43,7 +43,7 @@ public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
             KlassResponseMetadata metadata)
     {
         this.dataStore = Objects.requireNonNull(dataStore);
-        this.metadata = Objects.requireNonNull(metadata);
+        this.metadata  = Objects.requireNonNull(metadata);
     }
 
     @Override

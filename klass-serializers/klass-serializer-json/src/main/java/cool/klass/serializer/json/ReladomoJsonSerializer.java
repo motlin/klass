@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
-import cool.klass.jackson.jsonview.KlassJsonView;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -28,6 +27,7 @@ import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
+import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>

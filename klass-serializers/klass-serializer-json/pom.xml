@@ -30,7 +30,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-jackson-jsonview</artifactId>
+            <artifactId>klass-serialization-jackson-jsonview</artifactId>
             <version>${project.version}</version>
         </dependency>
 
