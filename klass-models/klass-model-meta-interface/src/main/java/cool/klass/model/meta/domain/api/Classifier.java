@@ -163,6 +163,16 @@ public interface Classifier
         return superInterfaces.anySatisfy(this::isStrictSuperTypeOf);
     }
 
+    default boolean isSubTypeOf(Classifier classifier)
+    {
+        if (this == classifier)
+        {
+            return true;
+        }
+
+        return this.isStrictSubTypeOf(classifier);
+    }
+
     default boolean isStrictSubTypeOf(Classifier classifier)
     {
         if (this == classifier)
