@@ -32,3 +32,7 @@ klass:
     type: reladomo
     uuid:
       type: system
+  domainModel:
+    type: compiler
+    sourcePackages:
+      - "klass.model.meta.domain"
