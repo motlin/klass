@@ -16,7 +16,7 @@ class DummyClass systemTemporal versioned audited
     system         : DummyEnumeration system;
     systemFrom     : DummyEnumeration system from;
     systemTo       : DummyEnumeration system to;
-    createdById    : DummyEnumeration createdBy userId final private;
+    createdById    : DummyEnumeration createdBy userId final;
     createdOn      : DummyEnumeration createdOn final;
-    lastUpdatedById: DummyEnumeration lastUpdatedBy userId private;
+    lastUpdatedById: DummyEnumeration lastUpdatedBy userId;
 }

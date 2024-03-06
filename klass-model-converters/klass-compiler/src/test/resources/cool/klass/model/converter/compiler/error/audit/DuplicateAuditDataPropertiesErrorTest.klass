@@ -12,10 +12,10 @@ class DummyClass
     systemFrom2     : TemporalInstant? system from;
     systemTo1       : TemporalInstant? system to;
     systemTo2       : TemporalInstant? system to;
-    createdById1    : String createdBy userId final private;
-    lastUpdatedById1: String lastUpdatedBy userId private;
-    createdById2    : String createdBy userId final private;
-    lastUpdatedById2: String lastUpdatedBy userId private;
+    createdById1    : String createdBy userId final;
+    lastUpdatedById1: String lastUpdatedBy userId;
+    createdById2    : String createdBy userId final;
+    lastUpdatedById2: String lastUpdatedBy userId;
 }
 
 user User

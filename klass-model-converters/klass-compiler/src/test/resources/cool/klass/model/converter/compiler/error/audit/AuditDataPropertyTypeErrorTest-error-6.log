@@ -1,12 +1,12 @@
 [33m════════════════════════════════════════[m [35mERR_AUD_DTP[m [33m════════════════════════════════════════[m
-[31mError: Expected type 'String' but was 'DummyEnumeration' for 'lastUpdatedBy' property 'DummyClass.lastUpdatedById: DummyEnumeration lastUpdatedBy userId private'.[m
+[31mError: Expected type 'String' but was 'DummyEnumeration' for 'lastUpdatedBy' property 'DummyClass.lastUpdatedById: DummyEnumeration lastUpdatedBy userId'.[m
 
 At (AuditDataPropertyTypeErrorTest.klass:21)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m13║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
 [39m14║ [36m{
-[39m21║     [39mlastUpdatedById[36m: [39mDummyEnumeration [33mlastUpdatedBy [33muserId [33mprivate[36m;
+[39m21║     [39mlastUpdatedById[36m: [39mDummyEnumeration [33mlastUpdatedBy [33muserId[36m;
 [39m  ║ [31m                     ^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^
 [39m22║ [36m}
 [m

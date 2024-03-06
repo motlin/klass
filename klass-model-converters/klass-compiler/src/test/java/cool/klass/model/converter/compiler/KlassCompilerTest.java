@@ -517,7 +517,7 @@ public class KlassCompilerTest
                     implements NamedElement
                 {
                     owningClassName               : String key private maximumLength(256);
-                    multiplicity                  : Multiplicity private maximumLength(256);
+                    multiplicity                  : Multiplicity maximumLength(256);
                     resultTypeName                : String private maximumLength(256);
                 }
                 association ClassHasParameterizedProperties
@@ -563,7 +563,7 @@ public class KlassCompilerTest
                 {
                     owningClassName               : String private key maximumLength(256);
                     name                          : String key maximumLength(256);
-                    orderingId                    : Long private;
+                    orderingId                    : Long; // move this to an orderBy and make it private
                 }
                 association ParameterizedPropertyHasOrdering
                 {
@@ -1560,120 +1560,120 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = ""
-                + "package dummy\n"
-                + "\n"
-                + "class OwningClass\n"
-                + "{\n"
-                + "    id: Long key;\n"
-                + "}\n"
-                + "\n"
-                + "class OwnedClass\n"
-                + "{\n"
-                + "    id: Long key;\n"
-                + "    ownerId: Long private;\n"
-                + "}\n"
-                + "\n"
-                + "interface OwningInterface\n"
-                + "{\n"
-                + "    id: Long key;\n"
-                + "    ownedInterfaces: OwnedInterface[0..*];\n"
-                + "}\n"
-                + "\n"
-                + "interface OwnedInterface\n"
-                + "{\n"
-                + "    id: Long key;\n"
-                + "    ownerId: Long private;\n"
-                + "    owningInterface: OwningInterface[1..1];\n"
-                + "}\n"
-                + "\n"
-                + "association OwningClassOwnsOwnedClasses\n"
-                + "{\n"
-                + "    owningClass: OwningClass[1..1];\n"
-                + "    ownedClasses: OwnedClass[0..*] owned;\n"
-                + "\n"
-                + "    relationship this.id == OwnedClass.ownerId\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningClassSummaryProjection on OwningClass\n"
-                + "{\n"
-                + "    id: \"OwningClass Id\",\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedClassSummaryProjection on OwnedClass\n"
-                + "{\n"
-                + "    id: \"OwnedClass Id\",\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningInterfaceSummaryProjection on OwningInterface\n"
-                + "{\n"
-                + "    id: \"OwningInterface Id\",\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedInterfaceSummaryProjection on OwnedInterface\n"
-                + "{\n"
-                + "    id: \"OwnedInterface Id\",\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningClassProjection on OwningClass\n"
-                + "{\n"
-                + "    id          : \"OwningClass Id\",\n"
-                + "    ownedClasses:\n"
-                + "    {\n"
-                + "        id: \"OwnedClass Id\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedClassProjection on OwnedClass\n"
-                + "{\n"
-                + "    id         : \"OwnedClass Id\",\n"
-                + "    owningClass:\n"
-                + "    {\n"
-                + "        id: \"OwningClass Id\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningInterfaceProjection on OwningInterface\n"
-                + "{\n"
-                + "    id             : \"OwningInterface Id\",\n"
-                + "    ownedInterfaces:\n"
-                + "    {\n"
-                + "        id: \"OwnedInterface Id\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedInterfaceProjection on OwnedInterface\n"
-                + "{\n"
-                + "    id             : \"OwnedInterface Id\",\n"
-                + "    owningInterface:\n"
-                + "    {\n"
-                + "        id: \"OwningInterface Id\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningClassDetailedProjection on OwningClass\n"
-                + "{\n"
-                + "    id          : \"OwningClass Id\",\n"
-                + "    ownedClasses: OwnedClassSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedClassDetailedProjection on OwnedClass\n"
-                + "{\n"
-                + "    id         : \"OwnedClass Id\",\n"
-                + "    owningClass: OwningClassSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection OwningInterfaceDetailedProjection on OwningInterface\n"
-                + "{\n"
-                + "    id             : \"OwningInterface Id\",\n"
-                + "    ownedInterfaces: OwnedInterfaceSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection OwnedInterfaceDetailedProjection on OwnedInterface\n"
-                + "{\n"
-                + "    id             : \"OwnedInterface Id\",\n"
-                + "    owningInterface: OwningInterfaceSummaryProjection,\n"
-                + "}\n";
+        String sourceCodeText = """
+                package dummy
+
+                class OwningClass
+                {
+                    id: Long key;
+                }
+
+                class OwnedClass
+                {
+                    id: Long key;
+                    ownerId: Long private;
+                }
+
+                interface OwningInterface
+                {
+                    id: Long key;
+                    ownedInterfaces: OwnedInterface[0..*];
+                }
+
+                interface OwnedInterface
+                {
+                    id: Long key;
+                    owningInterface: OwningInterface[1..1];
+                }
+
+                association OwningClassOwnsOwnedClasses
+                {
+                    owningClass: OwningClass[1..1];
+                    ownedClasses: OwnedClass[0..*] owned;
+
+                    relationship this.id == OwnedClass.ownerId
+                }
+
+                projection OwningClassSummaryProjection on OwningClass
+                {
+                    id: "OwningClass Id",
+                }
+
+                projection OwnedClassSummaryProjection on OwnedClass
+                {
+                    id: "OwnedClass Id",
+                }
+
+                projection OwningInterfaceSummaryProjection on OwningInterface
+                {
+                    id: "OwningInterface Id",
+                }
+
+                projection OwnedInterfaceSummaryProjection on OwnedInterface
+                {
+                    id: "OwnedInterface Id",
+                }
+
+                projection OwningClassProjection on OwningClass
+                {
+                    id          : "OwningClass Id",
+                    ownedClasses:
+                    {
+                        id: "OwnedClass Id",
+                    },
+                }
+
+                projection OwnedClassProjection on OwnedClass
+                {
+                    id         : "OwnedClass Id",
+                    owningClass:
+                    {
+                        id: "OwningClass Id",
+                    },
+                }
+
+                projection OwningInterfaceProjection on OwningInterface
+                {
+                    id             : "OwningInterface Id",
+                    ownedInterfaces:
+                    {
+                        id: "OwnedInterface Id",
+                    },
+                }
+
+                projection OwnedInterfaceProjection on OwnedInterface
+                {
+                    id             : "OwnedInterface Id",
+                    owningInterface:
+                    {
+                        id: "OwningInterface Id",
+                    },
+                }
+
+                projection OwningClassDetailedProjection on OwningClass
+                {
+                    id          : "OwningClass Id",
+                    ownedClasses: OwnedClassSummaryProjection,
+                }
+
+                projection OwnedClassDetailedProjection on OwnedClass
+                {
+                    id         : "OwnedClass Id",
+                    owningClass: OwningClassSummaryProjection,
+                }
+
+                projection OwningInterfaceDetailedProjection on OwningInterface
+                {
+                    id             : "OwningInterface Id",
+                    ownedInterfaces: OwnedInterfaceSummaryProjection,
+                }
+
+                projection OwnedInterfaceDetailedProjection on OwnedInterface
+                {
+                    id             : "OwnedInterface Id",
+                    owningInterface: OwningInterfaceSummaryProjection,
+                }
+                """;
         //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);

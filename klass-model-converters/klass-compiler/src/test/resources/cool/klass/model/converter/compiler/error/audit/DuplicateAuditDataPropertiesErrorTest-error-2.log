@@ -9,7 +9,7 @@ At (DuplicateAuditDataPropertiesErrorTest.klass:17)
 [39m 5║     [33mversioned
 [39m 6║     [33maudited
 [39m 7║ [36m{
-[39m17║     [39mcreatedById2    [36m: [35mString [33mcreatedBy [33muserId [33mfinal [33mprivate[36m;
+[39m17║     [39mcreatedById2    [36m: [35mString [33mcreatedBy [33muserId [33mfinal[36m;
 [39m  ║ [31m                             ^^^^^^^^^
 [39m19║ [36m}
 [m

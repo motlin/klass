@@ -585,7 +585,7 @@ class ParameterizedProperty
     implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
-    multiplicity                  : Multiplicity private maximumLength(256);
+    multiplicity                  : Multiplicity maximumLength(256);
     resultTypeName                : String private maximumLength(256);
 }
 
@@ -642,7 +642,7 @@ class ParameterizedPropertyOrdering
 {
     owningClassName               : String private key maximumLength(256);
     name                          : String key maximumLength(256);
-    orderingId                    : Long private;
+    orderingId                    : Long; // move this to an orderBy and make it private
 }
 
 association ParameterizedPropertyHasOrdering

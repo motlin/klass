@@ -6,7 +6,7 @@ class Question
 {
     id: Long key id;
     title: String;
-    createdById: String final private;
+    createdById: String final;
 }
 
 service Question

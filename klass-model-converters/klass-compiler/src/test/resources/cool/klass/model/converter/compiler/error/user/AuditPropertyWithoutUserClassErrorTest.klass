@@ -6,7 +6,7 @@ class DummyClass systemTemporal versioned audited
     system         : TemporalRange?   system;
     systemFrom     : TemporalInstant? system from;
     systemTo       : TemporalInstant? system to;
-    createdById    : String createdBy userId final private;
+    createdById    : String createdBy userId final;
     createdOn      : Instant createdOn final;
-    lastUpdatedById: String lastUpdatedBy userId final private;
+    lastUpdatedById: String lastUpdatedBy userId final;
 }
