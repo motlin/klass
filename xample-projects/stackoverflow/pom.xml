@@ -96,6 +96,7 @@
 
     <modules>
         <module>stackoverflow-domain-model</module>
+        <module>stackoverflow-domain-model-tests</module>
         <module>stackoverflow-dropwizard-application</module>
         <module>stackoverflow-dtos</module>
         <module>stackoverflow-graphql-data-fetchers</module>

@@ -29,7 +29,7 @@ public class ServiceResourceGeneratorTest
     @Test
     public void stackOverflow()
     {
-        String              sourceCodeText = FileMatchRule.slurp("stackoverflow.klass", this.getClass());
+        String sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,

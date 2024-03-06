@@ -14,18 +14,14 @@
 
     <name>Klass Cross-cutting Tests</name>
 
-    <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/inputresources</directory>
-            </testResource>
-        </testResources>
-    </build>
-
     <dependencies>
+
+        <dependency>
+            <groupId>com.stackoverflow</groupId>
+            <artifactId>stackoverflow-domain-model</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>

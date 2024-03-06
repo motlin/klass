@@ -29,7 +29,7 @@ public class KlassCompilerTest
     @Test
     public void stackOverflow()
     {
-        this.assertNoCompilerErrors("stackoverflow.klass");
+        this.assertNoCompilerErrors("/com/stackoverflow/stackoverflow.klass");
     }
 
     @Test

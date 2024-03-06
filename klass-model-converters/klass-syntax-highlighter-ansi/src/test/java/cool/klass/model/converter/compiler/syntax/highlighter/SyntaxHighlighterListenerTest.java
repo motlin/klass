@@ -49,7 +49,7 @@ public class SyntaxHighlighterListenerTest
     private void testColorScheme(AnsiColorScheme colorScheme)
     {
         Stopwatch           lexerStopwatch = Stopwatch.createStarted();
-        String              sourceCodeText = FileMatchRule.slurp("stackoverflow.klass", this.getClass());
+        String              sourceCodeText = FileMatchRule.slurp("/com/stackoverflow/stackoverflow.klass", this.getClass());
         String              sourceName     = "example.klass";
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
         KlassLexer          lexer          = new KlassLexer(charStream);

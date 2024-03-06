@@ -15,15 +15,6 @@
     <name>Klass Generator: Klass HTML Tests</name>
 
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/inputresources</directory>
-            </testResource>
-        </testResources>
-
         <plugins>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -35,6 +26,13 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.stackoverflow</groupId>
+            <artifactId>stackoverflow-domain-model</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>

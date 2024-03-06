@@ -15,29 +15,4 @@
 
     <name>${app.name} Domain Model</name>
 
-    <build>
-        <plugins>
-
-            <plugin>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-compiler-plugin</artifactId>
-                <version>${klass.version}</version>
-                <configuration>
-                    <klassSourcePackages>
-                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
-                    </klassSourcePackages>
-                    <logCompilerAnnotations>true</logCompilerAnnotations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
-
 </project>

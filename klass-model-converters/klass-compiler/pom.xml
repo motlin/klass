@@ -82,6 +82,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.stackoverflow</groupId>
+            <artifactId>stackoverflow-domain-model</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-match-file</artifactId>
             <scope>test</scope>
