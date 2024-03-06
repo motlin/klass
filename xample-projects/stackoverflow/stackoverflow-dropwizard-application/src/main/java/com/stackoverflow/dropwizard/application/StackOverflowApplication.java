@@ -8,9 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.service.klass.html.KlassHtmlResource;
 import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.db.DataSourceFactory;
@@ -82,12 +80,6 @@ public class StackOverflowApplication
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
-
-        // TODO: Move up to generated abstract class?
-        if (domainModel instanceof DomainModelWithSourceCode)
-        {
-            environment.jersey().register(new KlassHtmlResource((DomainModelWithSourceCode) domainModel));
-        }
 
         environment.jersey().register(new QuestionResourceManual(domainModel, dataStore, clock));
     }

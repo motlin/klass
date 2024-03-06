@@ -4,11 +4,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
-import cool.klass.service.klass.html.KlassHtmlResource;
 import cool.klass.xample.coverage.graphql.runtime.wiring.CoverageExampleRuntimeWiringBuilder;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -82,18 +78,6 @@ public class CoverageExampleApplication
             @Nonnull CoverageExampleConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
-        ObjectMapper objectMapper = environment.getObjectMapper();
-        DomainModel domainModel = configuration
-                .getKlassFactory()
-                .getDomainModelFactory()
-                .createDomainModel(objectMapper);
-
-        // TODO: Move up to generated abstract class?
-        if (domainModel instanceof DomainModelWithSourceCode)
-        {
-            environment.jersey().register(new KlassHtmlResource((DomainModelWithSourceCode) domainModel));
-        }
-
         super.run(configuration, environment);
     }
 }
