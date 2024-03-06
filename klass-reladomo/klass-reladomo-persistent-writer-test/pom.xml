@@ -70,6 +70,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-connection-manager-h2-memory</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections-api</artifactId>
             <scope>test</scope>
@@ -124,6 +130,13 @@
         <dependency>
             <groupId>cool.klass.xample.coverage</groupId>
             <artifactId>coverage-example-reladomo-pojos</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass.xample.coverage</groupId>
+            <artifactId>coverage-example-reladomo-ddls</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>

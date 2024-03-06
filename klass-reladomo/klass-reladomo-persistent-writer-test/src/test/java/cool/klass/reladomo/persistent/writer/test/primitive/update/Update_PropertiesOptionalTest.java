@@ -21,7 +21,7 @@ public class Update_PropertiesOptionalTest
 {
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
-            "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml",
+            "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml",
             "test-data/Update_PropertiesOptionalTest.txt");
 
     private Object persistentInstance;
