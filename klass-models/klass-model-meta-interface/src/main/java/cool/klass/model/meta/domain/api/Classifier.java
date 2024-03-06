@@ -83,9 +83,9 @@ public interface Classifier
         ImmutableList<DataTypeProperty> validFrom = dataTypeProperties.select(DataTypeProperty::isValidFrom);
         ImmutableList<DataTypeProperty> validTo = dataTypeProperties.select(DataTypeProperty::isValidTo);
         ImmutableList<DataTypeProperty> valid = dataTypeProperties.select(DataTypeProperty::isValidRange);
-        ImmutableList<DataTypeProperty> createdBy = dataTypeProperties.select(DataTypeProperty::isCreatedBy);
+        ImmutableList<DataTypeProperty> createdBy = dataTypeProperties.select(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isKey);
         ImmutableList<DataTypeProperty> createdOn = dataTypeProperties.select(DataTypeProperty::isCreatedOn);
-        ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy);
+        ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy).reject(DataTypeProperty::isKey);
 
         ImmutableList<DataTypeProperty> initialDataTypeProperties = Lists.immutable
                 .withAll(keysAndForeignKeys)
