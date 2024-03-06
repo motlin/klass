@@ -113,4 +113,10 @@ public class AntlrMultiplicity extends AntlrElement
     {
         return this.multiplicity != null && this.multiplicity.isToMany();
     }
+
+    @Override
+    public String toString()
+    {
+        return this.multiplicity.getPrettyName();
+    }
 }
