@@ -38,9 +38,8 @@ public final class KlassProjectionSourceCodeGenerator
     {
         String dataTypePropertiesSourceCode = classifier
                 .getDataTypeProperties()
-                .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
                 .reject(DataTypeProperty::isPrivate)
-                .reject(DataTypeProperty::isTemporalRange)
+                .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
                 .collect(KlassProjectionSourceCodeGenerator::getSourceCode)
                 .makeString("");
 
@@ -76,6 +75,6 @@ public final class KlassProjectionSourceCodeGenerator
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
     {
         return !(referenceProperty instanceof AssociationEnd associationEnd)
-                || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
+               || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
     }
 }
