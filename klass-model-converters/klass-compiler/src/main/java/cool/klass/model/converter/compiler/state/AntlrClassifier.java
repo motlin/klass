@@ -410,31 +410,30 @@ public abstract class AntlrClassifier
 
     private void reportIdAndKeyProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        MutableList<String> idProperties = this.dataTypePropertyStates
-                .select(AntlrDataTypeProperty::isId)
-                .collect(AntlrDataTypeProperty::getShortString);
+        MutableList<AntlrDataTypeProperty<?>> idProperties = this.dataTypePropertyStates
+                .select(AntlrDataTypeProperty::isId);
         if (idProperties.isEmpty())
         {
             return;
         }
 
-        MutableList<String> nonIdKeyProperties = this.dataTypePropertyStates
+        MutableList<AntlrDataTypeProperty<?>> nonIdKeyProperties = this.dataTypePropertyStates
                 .select(AntlrDataTypeProperty::isKey)
-                .reject(AntlrDataTypeProperty::isId)
-                .collect(AntlrDataTypeProperty::getShortString);
+                .reject(AntlrDataTypeProperty::isId);
         if (nonIdKeyProperties.isEmpty())
         {
             return;
         }
 
-        String message = String.format(
-                "Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
-                this.getName(),
-                idProperties
-                        .makeString(),
-                nonIdKeyProperties
-                        .makeString());
-        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+        for (AntlrDataTypeProperty<?> idProperty : idProperties)
+        {
+            idProperty.reportIdPropertyWithKeyProperties(compilerErrorHolder);
+        }
+
+        for (AntlrDataTypeProperty<?> nonIdKeyProperty : nonIdKeyProperties)
+        {
+            nonIdKeyProperty.reportKeyPropertyWithIdProperties(compilerErrorHolder);
+        }
     }
 
     private void reportInterfaceNotFound(@Nonnull CompilerErrorState compilerErrorHolder)

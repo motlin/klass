@@ -5,5 +5,3 @@ class ExampleClass
     key: Long key;
     id: Long id key;
 }
-
-// TODO: ERR_KEY_IDS should be reported on properties, not classes.

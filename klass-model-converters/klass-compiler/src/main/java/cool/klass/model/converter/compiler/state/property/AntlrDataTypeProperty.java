@@ -690,4 +690,22 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 this.getType(),
                 this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
     }
+
+    public void reportIdPropertyWithKeyProperties(CompilerErrorState compilerErrorHolder)
+    {
+        String message = String.format(
+                "Class '%s' may have id properties or non-id key properties, but not both. Found id property: %s.",
+                this.getOwningClassifierState().getName(),
+                this);
+        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+    }
+
+    public void reportKeyPropertyWithIdProperties(CompilerErrorState compilerErrorHolder)
+    {
+        String message = String.format(
+                "Class '%s' may have id properties or non-id key properties, but not both. Found non-id key property: %s.",
+                this.getOwningClassifierState().getName(),
+                this);
+        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+    }
 }
