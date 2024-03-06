@@ -63,7 +63,6 @@
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [
-        "klass.model.meta.domain",
         "cool.klass.xample.coverage"
       ]
     },
@@ -137,6 +136,9 @@
       "dataSourceName": "h2-tcp"
     }
   ],
+  "sampleData"        : {
+    "enabled": false
+  },
   "reladomo": {
     "runtimeConfigurationPaths": [
       "reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml"

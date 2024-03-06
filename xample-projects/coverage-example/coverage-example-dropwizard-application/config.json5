@@ -50,7 +50,6 @@
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [
-        "klass.model.meta.domain",
         "cool.klass.xample.coverage"
       ]
     },
@@ -148,7 +147,7 @@
     "maxEntitySize": "1 kilobyte"
   },
   "bootstrap": {
-    "enabled": true
+    "enabled": false
   },
   "graphQL": {
     "enableTracing": false,

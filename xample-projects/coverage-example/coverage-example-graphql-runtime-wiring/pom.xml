@@ -69,7 +69,6 @@
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
-                        <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
