@@ -30,15 +30,15 @@ public class AntlrParameterizedProperty
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClass.AMBIGUOUS);
     @Nullable
     public static final AntlrParameterizedProperty NOT_FOUND = new AntlrParameterizedProperty(
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClass.AMBIGUOUS);
 
     // @Nonnull
@@ -55,11 +55,11 @@ public class AntlrParameterizedProperty
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClass owningClassState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 
@@ -135,8 +135,8 @@ public class AntlrParameterizedProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity());

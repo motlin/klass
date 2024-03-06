@@ -33,8 +33,8 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         this.enumerationState = new AntlrEnumeration(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                identifier,
                 this.compilerState.getOrdinal(ctx),
+                identifier,
                 this.compilerState.getCompilerWalkState().getCompilationUnitState());
     }
 
@@ -61,8 +61,8 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 this.enumerationState.getNumLiterals() + 1,
+                ctx.identifier(),
                 prettyName,
                 this.enumerationState);
         this.enumerationState.enterEnumerationLiteral(enumerationLiteralState);

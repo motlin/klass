@@ -34,16 +34,16 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
     private         ImmutableList<Modifier> modifiers;
 
     protected ReferencePropertyImpl(
-            ParserRuleContext elementContext,
-            Optional<Element> macroElement,
-            SourceCode sourceCode,
-            IdentifierContext nameContext,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<Element> macroElement,
+            @Nullable SourceCode sourceCode,
             int ordinal,
-            T type,
-            AbstractClassifier owningClassifier,
+            @Nonnull IdentifierContext nameContext,
+            @Nonnull T type,
+            @Nonnull AbstractClassifier owningClassifier,
             @Nonnull Multiplicity multiplicity)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, type, owningClassifier);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, type, owningClassifier);
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
@@ -93,13 +93,13 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull TG type,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal, type, owningClassifierBuilder);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext, type, owningClassifierBuilder);
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
 

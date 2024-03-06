@@ -22,15 +22,15 @@ public class AntlrModifier
     public static final AntlrModifier NOT_FOUND = new AntlrModifier(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            new ParserRuleContext(),
             -1,
+            new ParserRuleContext(),
             AntlrClassifier.NOT_FOUND);
 
     public static final AntlrModifier AMBIGUOUS = new AntlrModifier(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(),
             -1,
+            new ParserRuleContext(),
             AntlrClassifier.AMBIGUOUS);
 
     public static final ImmutableList<String> AUDIT_PROPERTY_NAMES = Lists.immutable.with(
@@ -44,11 +44,11 @@ public class AntlrModifier
     public AntlrModifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull ParserRuleContext nameContext,
             @Nonnull AntlrNamedElement surroundingElement)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.surroundingElement = surroundingElement;
     }
 
@@ -174,8 +174,8 @@ public class AntlrModifier
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.surroundingElement.getElementBuilder());
         return this.elementBuilder;
     }

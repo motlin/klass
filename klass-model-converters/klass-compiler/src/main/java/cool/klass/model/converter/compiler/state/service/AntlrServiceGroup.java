@@ -37,8 +37,8 @@ public class AntlrServiceGroup
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClass.AMBIGUOUS);
 
@@ -54,12 +54,12 @@ public class AntlrServiceGroup
     public AntlrServiceGroup(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -174,8 +174,8 @@ public class AntlrServiceGroup
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getPackageName(),
                 this.klass.getElementBuilder());
 

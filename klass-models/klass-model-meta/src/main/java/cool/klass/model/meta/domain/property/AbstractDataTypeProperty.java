@@ -65,13 +65,13 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull T dataType,
             @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, dataType, owningClassifier);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, dataType, owningClassifier);
         this.optional = isOptional;
     }
 
@@ -227,8 +227,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull TG typeBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 boolean isOptional)
@@ -237,8 +237,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
                     elementContext,
                     macroElement,
                     sourceCode,
-                    nameContext,
                     ordinal,
+                    nameContext,
                     typeBuilder,
                     owningClassifierBuilder);
             this.isOptional = isOptional;

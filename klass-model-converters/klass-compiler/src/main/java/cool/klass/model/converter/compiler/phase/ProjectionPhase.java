@@ -78,8 +78,8 @@ public class ProjectionPhase
         AntlrProjectionDataTypeProperty projectionPrimitiveMemberState = new AntlrProjectionDataTypeProperty(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                nameContext,
                 projectionParentState.getNumChildren() + 1,
+                nameContext,
                 header,
                 headerText,
                 projectionParentState,
@@ -107,8 +107,8 @@ public class ProjectionPhase
         AntlrProjectionReferenceProperty projectionReferencePropertyState = new AntlrProjectionReferenceProperty(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                nameContext,
                 projectionParentState.getNumChildren() + 1,
+                nameContext,
                 referenceProperty.getType(),
                 projectionParentState,
                 referenceProperty);
@@ -148,8 +148,8 @@ public class ProjectionPhase
         AntlrProjectionProjectionReference projectionProjectionReferenceState = new AntlrProjectionProjectionReference(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                nameContext,
                 projectionParentState.getNumChildren() + 1,
+                nameContext,
                 referenceProperty.getType(),
                 projectionParentState,
                 referenceProperty,

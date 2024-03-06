@@ -26,7 +26,8 @@ import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class UrlParameterPhase extends AbstractCompilerPhase
+public class UrlParameterPhase
+        extends AbstractCompilerPhase
 {
     @Nullable
     private Boolean        inQueryParameterList;
@@ -64,8 +65,8 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         AntlrUrlConstant antlrUrlConstant = new AntlrUrlConstant(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
-                urlState.getNumPathSegments() + 1);
+                urlState.getNumPathSegments() + 1,
+                ctx.identifier());
         urlState.enterUrlConstant(antlrUrlConstant);
     }
 
@@ -138,8 +139,8 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 ordinal,
+                ctx,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
     }
@@ -162,8 +163,8 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         this.parameterState         = new AntlrParameter(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                identifierContext,
                 ordinal,
+                identifierContext,
                 typeState,
                 urlState);
         this.multiplicityOwnerState = this.parameterState;

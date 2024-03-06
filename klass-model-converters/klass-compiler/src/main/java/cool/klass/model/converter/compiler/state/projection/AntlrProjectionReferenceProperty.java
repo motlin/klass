@@ -31,8 +31,8 @@ public class AntlrProjectionReferenceProperty
     public static final AntlrProjectionReferenceProperty AMBIGUOUS = new AntlrProjectionReferenceProperty(
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
             AntlrAssociationEnd.AMBIGUOUS);
@@ -41,8 +41,8 @@ public class AntlrProjectionReferenceProperty
     public static final AntlrProjectionReferenceProperty NOT_FOUND = new AntlrProjectionReferenceProperty(
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
             AntlrAssociationEnd.NOT_FOUND);
@@ -56,13 +56,13 @@ public class AntlrProjectionReferenceProperty
     public AntlrProjectionReferenceProperty(
             @Nonnull ProjectionReferencePropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrReferenceProperty<?> referenceProperty)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, classifier);
+        super(elementContext, compilationUnit, ordinal, nameContext, classifier);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty     = Objects.requireNonNull(referenceProperty);
     }
@@ -80,8 +80,8 @@ public class AntlrProjectionReferenceProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
 

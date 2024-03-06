@@ -41,8 +41,8 @@ public abstract class AntlrClassifier
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -62,8 +62,8 @@ public abstract class AntlrClassifier
     public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -110,11 +110,11 @@ public abstract class AntlrClassifier
     protected AntlrClassifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
 
     public abstract AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name);

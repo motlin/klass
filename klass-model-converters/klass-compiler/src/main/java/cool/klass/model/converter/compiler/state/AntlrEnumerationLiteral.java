@@ -22,16 +22,16 @@ public class AntlrEnumerationLiteral
     public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             Optional.empty(),
             AntlrEnumeration.AMBIGUOUS);
     @Nonnull
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             Optional.empty(),
             AntlrEnumeration.NOT_FOUND);
 
@@ -45,13 +45,13 @@ public class AntlrEnumerationLiteral
     public AntlrEnumerationLiteral(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull Optional<String> prettyName,
             @Nonnull AntlrEnumeration owningEnumeration)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
-        this.prettyName = prettyName;
+        super(elementContext, compilationUnit, ordinal, nameContext);
+        this.prettyName        = prettyName;
         this.owningEnumeration = Objects.requireNonNull(owningEnumeration);
     }
 
@@ -99,8 +99,8 @@ public class AntlrEnumerationLiteral
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.prettyName,
                 this.owningEnumeration.getElementBuilder());
         return this.elementBuilder;

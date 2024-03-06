@@ -32,8 +32,8 @@ public class AntlrAssociation
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
@@ -56,11 +56,11 @@ public class AntlrAssociation
     public AntlrAssociation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
 
     @Nonnull
@@ -70,6 +70,7 @@ public class AntlrAssociation
         return (AssociationDeclarationContext) this.elementContext;
     }
 
+    @Override
     public AssociationBodyContext getBodyContext()
     {
         return this.getElementContext().associationBody();
@@ -151,8 +152,8 @@ public class AntlrAssociation
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getPackageName(),
                 criteriaBuilder);
 

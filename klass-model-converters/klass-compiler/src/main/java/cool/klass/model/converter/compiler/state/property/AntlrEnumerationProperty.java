@@ -26,8 +26,8 @@ public class AntlrEnumerationProperty
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.NOT_FOUND,
             false,
             AntlrEnumeration.NOT_FOUND);
@@ -41,8 +41,8 @@ public class AntlrEnumerationProperty
     public AntlrEnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull AntlrEnumeration enumerationState)
@@ -50,8 +50,8 @@ public class AntlrEnumerationProperty
         super(
                 elementContext,
                 compilationUnit,
-                nameContext,
                 ordinal,
+                nameContext,
                 owningClassifierState,
                 isOptional);
         this.enumerationState = Objects.requireNonNull(enumerationState);
@@ -89,8 +89,8 @@ public class AntlrEnumerationProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.enumerationState.getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),
                 this.isOptional);

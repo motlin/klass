@@ -46,8 +46,8 @@ public class ServicePhase extends AbstractCompilerPhase
         this.serviceGroupState = new AntlrServiceGroup(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                classNameContext,
                 this.compilerState.getOrdinal(ctx),
+                classNameContext,
                 this.compilerState.getCompilerWalkState().getCompilationUnitState(),
                 this.compilerState.getDomainModelState().getClassByName(className));
     }

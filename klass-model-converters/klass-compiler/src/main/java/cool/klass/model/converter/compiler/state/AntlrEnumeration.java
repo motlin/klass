@@ -28,16 +28,16 @@ public class AntlrEnumeration
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS);
 
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.NOT_FOUND);
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
@@ -50,11 +50,11 @@ public class AntlrEnumeration
     public AntlrEnumeration(
             @Nonnull EnumerationDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
 
     public int getNumLiterals()
@@ -83,8 +83,8 @@ public class AntlrEnumeration
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getElementContext().identifier(),
                 this.ordinal,
+                this.getElementContext().identifier(),
                 this.getPackageName());
 
         ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates

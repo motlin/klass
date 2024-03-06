@@ -41,10 +41,10 @@ public abstract class AntlrProperty
     protected AntlrProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
-            int ordinal)
+            int ordinal,
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
     }
 
     @Override

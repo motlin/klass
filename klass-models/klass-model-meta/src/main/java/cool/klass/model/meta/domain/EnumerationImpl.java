@@ -26,11 +26,11 @@ public final class EnumerationImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull String packageName)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
     }
 
     @Override
@@ -54,11 +54,11 @@ public final class EnumerationImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull String packageName)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         }
 
         public void setEnumerationLiteralBuilders(@Nonnull ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
@@ -74,8 +74,8 @@ public final class EnumerationImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.packageName);
         }
 

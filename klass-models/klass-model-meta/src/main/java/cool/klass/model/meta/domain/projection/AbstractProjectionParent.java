@@ -26,10 +26,10 @@ public abstract class AbstractProjectionParent
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
-            int ordinal)
+            int ordinal,
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
     }
 
     @Override
@@ -53,10 +53,10 @@ public abstract class AbstractProjectionParent
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
-                int ordinal)
+                int ordinal,
+                @Nonnull IdentifierContext nameContext)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         }
 
         public void setChildBuilders(@Nonnull ImmutableList<ProjectionChildBuilder> projectionChildrenBuilders)

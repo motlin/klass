@@ -18,7 +18,8 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 
-public class ClassifierPhase extends AbstractCompilerPhase
+public class ClassifierPhase
+        extends AbstractCompilerPhase
 {
     @Nullable
     private AntlrClassifier classifierState;
@@ -41,8 +42,8 @@ public class ClassifierPhase extends AbstractCompilerPhase
         this.interfaceState  = new AntlrInterface(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                identifier,
                 this.compilerState.getOrdinal(ctx),
+                identifier,
                 this.compilerState.getCompilerWalkState().getCompilationUnitState(),
                 this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName());
@@ -68,8 +69,8 @@ public class ClassifierPhase extends AbstractCompilerPhase
         this.classState      = new AntlrClass(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.classHeader().identifier(),
                 this.compilerState.getOrdinal(ctx),
+                ctx.classHeader().identifier(),
                 this.compilerState.getCompilerWalkState().getCompilationUnitState(),
                 classOrUserKeyword.equals("user"));
         this.classifierState = this.classState;
@@ -111,8 +112,8 @@ public class ClassifierPhase extends AbstractCompilerPhase
         AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 ordinal + 1,
+                ctx,
                 this.classifierState);
 
         this.classifierState.enterModifier(modifierState);

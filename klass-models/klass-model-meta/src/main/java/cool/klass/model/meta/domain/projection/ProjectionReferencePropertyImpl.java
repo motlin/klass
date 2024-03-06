@@ -29,12 +29,12 @@ public final class ProjectionReferencePropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull ProjectionParent parent,
             @Nonnull ReferenceProperty referenceProperty)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.parent            = Objects.requireNonNull(parent);
         this.referenceProperty = Objects.requireNonNull(referenceProperty);
     }
@@ -66,12 +66,12 @@ public final class ProjectionReferencePropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull ReferencePropertyBuilder<?, ?, ?> referencePropertyBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.parentBuilder            = Objects.requireNonNull(parentBuilder);
             this.referencePropertyBuilder = Objects.requireNonNull(referencePropertyBuilder);
         }
@@ -84,8 +84,8 @@ public final class ProjectionReferencePropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.parentBuilder.getElement(),
                     this.referencePropertyBuilder.getElement());
         }

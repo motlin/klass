@@ -36,8 +36,8 @@ public class ProjectionDeclarationPhase
         this.projectionState = new AntlrProjection(
                 ctx,
                 Optional.of(currentCompilationUnit),
-                nameContext,
                 this.compilerState.getOrdinal(ctx),
+                nameContext,
                 this.compilerState.getCompilerWalkState().getCompilationUnitState(),
                 classifier,
                 this.compilerState.getCompilerWalkState().getPackageName());

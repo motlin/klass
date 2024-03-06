@@ -46,8 +46,8 @@ public class CompilationUnitPhase
         AntlrPackage packageState = new AntlrPackage(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.packageName(),
                 -1,
+                ctx.packageName(),
                 this.compilationUnitState);
 
         this.compilationUnitState.enterPackageDeclaration(packageState);

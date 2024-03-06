@@ -46,8 +46,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.AMBIGUOUS,
             false)
     {
@@ -112,8 +112,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.NOT_FOUND,
             false)
     {
@@ -195,12 +195,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.isOptional            = isOptional;
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }

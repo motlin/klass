@@ -24,8 +24,8 @@ public final class AssociationEndSignatureImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AbstractClassifier type,
             @Nonnull AbstractClassifier owningClassifier,
             @Nonnull Multiplicity multiplicity)
@@ -34,8 +34,8 @@ public final class AssociationEndSignatureImpl
                 elementContext,
                 macroElement,
                 sourceCode,
-                nameContext,
                 ordinal,
+                nameContext,
                 type,
                 owningClassifier,
                 multiplicity);
@@ -59,8 +59,8 @@ public final class AssociationEndSignatureImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull ClassifierBuilder<?> type,
                 @Nonnull ClassifierBuilder<?> owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity)
@@ -69,8 +69,8 @@ public final class AssociationEndSignatureImpl
                     elementContext,
                     macroElement,
                     sourceCode,
-                    nameContext,
                     ordinal,
+                    nameContext,
                     type,
                     owningKlassBuilder,
                     multiplicity);
@@ -84,8 +84,8 @@ public final class AssociationEndSignatureImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),
                     this.multiplicity);

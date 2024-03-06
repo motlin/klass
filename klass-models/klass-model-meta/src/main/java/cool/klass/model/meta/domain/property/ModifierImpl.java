@@ -25,11 +25,11 @@ public final class ModifierImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull ParserRuleContext nameContext,
             @Nonnull ModifierOwner modifierOwner)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.modifierOwner = Objects.requireNonNull(modifierOwner);
     }
 
@@ -49,11 +49,11 @@ public final class ModifierImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull ParserRuleContext nameContext,
                 int ordinal,
+                @Nonnull ParserRuleContext nameContext,
                 @Nonnull ElementBuilder<?> surroundingElementBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.surroundingElementBuilder = Objects.requireNonNull(surroundingElementBuilder);
         }
 
@@ -65,8 +65,8 @@ public final class ModifierImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     (ModifierOwner) this.surroundingElementBuilder.getElement());
         }
     }

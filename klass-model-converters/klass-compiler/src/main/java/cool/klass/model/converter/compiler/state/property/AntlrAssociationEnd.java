@@ -33,16 +33,16 @@ public class AntlrAssociationEnd
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrAssociation.AMBIGUOUS);
 
     @Nullable
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             // TODO: Not found here, instead of ambiguous
             AntlrAssociation.AMBIGUOUS);
 
@@ -60,11 +60,11 @@ public class AntlrAssociationEnd
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrAssociation owningAssociationState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
     }
 
@@ -89,8 +89,8 @@ public class AntlrAssociationEnd
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
                 this.owningAssociationState.getElementBuilder(),

@@ -30,12 +30,12 @@ public final class ProjectionImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull String packageName,
             @Nonnull AbstractClassifier classifier)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.packageName = Objects.requireNonNull(packageName);
         this.classifier  = Objects.requireNonNull(classifier);
     }
@@ -73,12 +73,12 @@ public final class ProjectionImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull String packageName,
                 @Nonnull ClassifierBuilder<?> classifierBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.packageName       = Objects.requireNonNull(packageName);
             this.classifierBuilder = Objects.requireNonNull(classifierBuilder);
         }
@@ -91,8 +91,8 @@ public final class ProjectionImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.packageName,
                     this.classifierBuilder.getElement());
         }

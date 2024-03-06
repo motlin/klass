@@ -22,10 +22,10 @@ public class AntlrUrlConstant
     public AntlrUrlConstant(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
-            int ordinal)
+            int ordinal,
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
     }
 
     @Nonnull
@@ -47,8 +47,8 @@ public class AntlrUrlConstant
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
-                this.ordinal);
+                this.ordinal,
+                this.getNameContext());
         return this.elementBuilder;
     }
 

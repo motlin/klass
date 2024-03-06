@@ -34,12 +34,12 @@ public final class AssociationImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull String packageName,
             @Nonnull AbstractCriteria criteria)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         this.criteria = Objects.requireNonNull(criteria);
     }
 
@@ -92,12 +92,12 @@ public final class AssociationImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull String packageName,
                 @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
@@ -114,8 +114,8 @@ public final class AssociationImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.packageName,
                     this.criteriaBuilder.build());
         }

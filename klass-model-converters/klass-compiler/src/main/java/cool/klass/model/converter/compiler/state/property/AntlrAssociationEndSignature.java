@@ -30,16 +30,16 @@ public class AntlrAssociationEndSignature
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.AMBIGUOUS);
 
     @Nullable
     public static final AntlrAssociationEndSignature NOT_FOUND = new AntlrAssociationEndSignature(
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             // TODO: Not found here, instead of ambiguous
             AntlrClassifier.NOT_FOUND);
 
@@ -53,11 +53,11 @@ public class AntlrAssociationEndSignature
     public AntlrAssociationEndSignature(
             @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier owningClassifierState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
@@ -82,8 +82,8 @@ public class AntlrAssociationEndSignature
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getType().getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity());

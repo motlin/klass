@@ -28,8 +28,8 @@ public class AntlrProjectionDataTypeProperty
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             new HeaderContext(null, -1),
             "ambiguous header",
             AntlrProjection.AMBIGUOUS,
@@ -49,14 +49,14 @@ public class AntlrProjectionDataTypeProperty
     public AntlrProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText            = Objects.requireNonNull(headerText);
         this.headerContext         = Objects.requireNonNull(headerContext);
@@ -81,8 +81,8 @@ public class AntlrProjectionDataTypeProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.headerContext,
                 this.headerText,
                 this.antlrProjectionParent.getElementBuilder(),

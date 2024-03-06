@@ -19,12 +19,12 @@ public abstract class AntlrClassReferenceProperty
     protected AntlrClassReference classReferenceState;
 
     public AntlrClassReferenceProperty(
-            ParserRuleContext elementContext,
-            Optional<CompilationUnit> compilationUnit,
-            IdentifierContext nameContext,
-            int ordinal)
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<CompilationUnit> compilationUnit,
+            int ordinal,
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
     }
 
     @Override

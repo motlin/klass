@@ -25,8 +25,8 @@ public class AntlrPrimitiveProperty
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClassifier.AMBIGUOUS,
             false,
             AntlrPrimitiveType.AMBIGUOUS);
@@ -39,8 +39,8 @@ public class AntlrPrimitiveProperty
     public AntlrPrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
@@ -48,8 +48,8 @@ public class AntlrPrimitiveProperty
         super(
                 elementContext,
                 compilationUnit,
-                nameContext,
                 ordinal,
+                nameContext,
                 owningClassifierState,
                 isOptional);
         this.antlrPrimitiveType = Objects.requireNonNull(antlrPrimitiveType);
@@ -87,8 +87,8 @@ public class AntlrPrimitiveProperty
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.antlrPrimitiveType.getPrimitiveType(),
                 this.owningClassifierState.getElementBuilder(),
                 this.isOptional);

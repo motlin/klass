@@ -28,8 +28,8 @@ public final class ParameterizedPropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull KlassImpl type,
             @Nonnull KlassImpl owningKlass,
             @Nonnull Multiplicity multiplicity)
@@ -38,8 +38,8 @@ public final class ParameterizedPropertyImpl
                 elementContext,
                 macroElement,
                 sourceCode,
-                nameContext,
                 ordinal,
+                nameContext,
                 type,
                 owningKlass,
                 multiplicity);
@@ -59,8 +59,8 @@ public final class ParameterizedPropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull KlassBuilder type,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity)
@@ -69,8 +69,8 @@ public final class ParameterizedPropertyImpl
                     elementContext,
                     macroElement,
                     sourceCode,
-                    nameContext,
                     ordinal,
+                    nameContext,
                     type,
                     owningKlassBuilder,
                     multiplicity);
@@ -84,8 +84,8 @@ public final class ParameterizedPropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.typeBuilder.getElement(),
                     (KlassImpl) this.owningClassifierBuilder.getElement(),
                     this.multiplicity);

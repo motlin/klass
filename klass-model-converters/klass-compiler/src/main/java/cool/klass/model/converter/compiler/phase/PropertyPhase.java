@@ -73,8 +73,8 @@ public class PropertyPhase
         this.dataTypePropertyState = new AntlrPrimitiveProperty(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 this.getClassifierState().getNumMembers() + 1,
+                ctx.identifier(),
                 this.getClassifierState(),
                 isOptional,
                 primitiveTypeState);
@@ -108,8 +108,8 @@ public class PropertyPhase
         this.dataTypePropertyState = new AntlrEnumerationProperty(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 this.getClassifierState().getNumMembers() + 1,
+                ctx.identifier(),
                 this.getClassifierState(),
                 isOptional,
                 enumerationState);
@@ -199,8 +199,8 @@ public class PropertyPhase
         AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 this.dataTypePropertyState.getNumModifiers() + 1,
+                ctx,
                 this.dataTypePropertyState);
         this.dataTypePropertyState.enterModifier(modifierState);
     }
@@ -227,8 +227,8 @@ public class PropertyPhase
         this.associationEndSignatureState  = new AntlrAssociationEndSignature(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 this.getClassifierState().getNumMembers() + 1,
+                ctx.identifier(),
                 this.getClassifierState());
         this.classifierReferenceOwnerState = this.associationEndSignatureState;
         this.multiplicityOwnerState        = this.associationEndSignatureState;
@@ -258,8 +258,8 @@ public class PropertyPhase
         AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 this.associationEndSignatureState.getNumModifiers() + 1,
+                ctx,
                 this.associationEndSignatureState);
         this.associationEndSignatureState.enterModifier(antlrAssociationEndModifier);
     }

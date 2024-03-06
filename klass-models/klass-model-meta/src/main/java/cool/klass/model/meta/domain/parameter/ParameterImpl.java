@@ -30,12 +30,12 @@ public final class ParameterImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull Multiplicity multiplicity,
             @Nonnull DataType dataType)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.dataType     = Objects.requireNonNull(dataType);
     }
@@ -73,12 +73,12 @@ public final class ParameterImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull DataTypeGetter dataType,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.dataTypeGetter = Objects.requireNonNull(dataType);
             this.multiplicity   = Objects.requireNonNull(multiplicity);
         }
@@ -91,8 +91,8 @@ public final class ParameterImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.multiplicity,
                     this.dataTypeGetter.getType());
         }

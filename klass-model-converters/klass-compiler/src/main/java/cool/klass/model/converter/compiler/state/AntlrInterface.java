@@ -35,8 +35,8 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS,
             new ParserRuleContext(),
             "klass.meta")
@@ -53,8 +53,8 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.NOT_FOUND,
             new ParserRuleContext(),
             "klass.meta")
@@ -86,13 +86,13 @@ public class AntlrInterface extends AntlrClassifier
     public AntlrInterface(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class AntlrInterface extends AntlrClassifier
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getPackageName());
 
         ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates

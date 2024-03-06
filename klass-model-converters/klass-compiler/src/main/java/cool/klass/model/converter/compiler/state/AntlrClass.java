@@ -49,8 +49,8 @@ public class AntlrClass
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS,
             false)
     {
@@ -80,8 +80,8 @@ public class AntlrClass
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.NOT_FOUND,
             false)
     {
@@ -129,12 +129,12 @@ public class AntlrClass
     public AntlrClass(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
+        super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
         this.isUser = isUser;
     }
 
@@ -193,6 +193,7 @@ public class AntlrClass
                 + this.associationEndSignatureStates.size();
     }
 
+    @Override
     public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
         AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
@@ -328,8 +329,8 @@ public class AntlrClass
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.getPackageName(),
                 this.inheritanceType,
                 this.isUser,
@@ -669,6 +670,7 @@ public class AntlrClass
         return topLevelNames.toImmutable();
     }
 
+    @Override
     public boolean isSubClassOf(AntlrClassifier classifier)
     {
         if (this == classifier)
@@ -703,6 +705,7 @@ public class AntlrClass
         return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().classBody().getStart());
     }
 
+    @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
         if (this.dataTypePropertiesByName.containsKey(name))

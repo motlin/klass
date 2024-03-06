@@ -24,8 +24,8 @@ public final class EnumerationPropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
@@ -34,8 +34,8 @@ public final class EnumerationPropertyImpl
                 elementContext,
                 macroElement,
                 sourceCode,
-                nameContext,
                 ordinal,
+                nameContext,
                 enumeration,
                 owningClassifier,
                 isOptional);
@@ -48,8 +48,8 @@ public final class EnumerationPropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull EnumerationBuilder enumerationBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 boolean isOptional)
@@ -58,8 +58,8 @@ public final class EnumerationPropertyImpl
                     elementContext,
                     macroElement,
                     sourceCode,
-                    nameContext,
                     ordinal,
+                    nameContext,
                     enumerationBuilder,
                     owningClassifierBuilder,
                     isOptional);
@@ -73,8 +73,8 @@ public final class EnumerationPropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.typeBuilder.getElement(),
                     this.owningClassifierBuilder.getElement(),
                     this.isOptional);

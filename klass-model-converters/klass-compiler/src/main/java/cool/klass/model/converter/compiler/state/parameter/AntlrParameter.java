@@ -36,8 +36,8 @@ public final class AntlrParameter
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrEnumeration.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
 
@@ -45,8 +45,8 @@ public final class AntlrParameter
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrEnumeration.NOT_FOUND,
             AntlrParameterizedProperty.AMBIGUOUS);
 
@@ -67,12 +67,12 @@ public final class AntlrParameter
     public AntlrParameter(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrType typeState,
             @Nonnull IAntlrElement parameterOwner)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.typeState      = Objects.requireNonNull(typeState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
@@ -160,8 +160,8 @@ public final class AntlrParameter
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 // TODO: Fuller interface hierarchy with AntlrType, AntlrDataType, etc.
                 (DataTypeGetter) this.typeState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity());

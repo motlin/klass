@@ -25,12 +25,12 @@ public final class EnumerationLiteralImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull Optional<String> prettyName)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, enumeration);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, enumeration);
         this.prettyName = Objects.requireNonNull(prettyName);
     }
 
@@ -53,12 +53,12 @@ public final class EnumerationLiteralImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull Optional<String> prettyName,
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.prettyName         = Objects.requireNonNull(prettyName);
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
@@ -71,8 +71,8 @@ public final class EnumerationLiteralImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.enumerationBuilder.getElement(),
                     this.prettyName);
         }

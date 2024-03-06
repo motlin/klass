@@ -33,8 +33,8 @@ public class AntlrProjection
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
             null);
@@ -43,8 +43,8 @@ public class AntlrProjection
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
             null);
@@ -58,13 +58,13 @@ public class AntlrProjection
     public AntlrProjection(
             @Nonnull ProjectionDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState,
             @Nonnull AntlrClassifier classifier,
             String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, classifier);
+        super(elementContext, compilationUnit, ordinal, nameContext, classifier);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
         this.packageName          = packageName;
     }
@@ -93,8 +93,8 @@ public class AntlrProjection
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.packageName,
                 this.classifier.getElementBuilder());
 

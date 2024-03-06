@@ -35,14 +35,14 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
             @Nonnull ProjectionParent parent,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText    = Objects.requireNonNull(headerText);
         this.parent        = Objects.requireNonNull(parent);
@@ -87,14 +87,14 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext);
             this.headerContext   = Objects.requireNonNull(headerContext);
             this.headerText      = Objects.requireNonNull(headerText);
             this.parentBuilder   = Objects.requireNonNull(parentBuilder);
@@ -109,8 +109,8 @@ public final class ProjectionDataTypePropertyImpl
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
-                    this.getNameContext(),
                     this.ordinal,
+                    this.getNameContext(),
                     this.headerContext,
                     this.headerText,
                     this.parentBuilder.getElement(),

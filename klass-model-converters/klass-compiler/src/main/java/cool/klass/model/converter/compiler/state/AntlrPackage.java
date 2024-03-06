@@ -19,11 +19,11 @@ public class AntlrPackage
     public AntlrPackage(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull ParserRuleContext nameContext,
             int ordinal,
+            @Nonnull ParserRuleContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
     }
 

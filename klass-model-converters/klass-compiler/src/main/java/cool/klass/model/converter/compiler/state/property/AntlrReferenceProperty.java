@@ -28,8 +28,8 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     public static final AntlrReferenceProperty AMBIGUOUS = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
-            -1)
+            -1,
+            new IdentifierContext(null, -1))
     {
         @Nonnull
         @Override
@@ -89,8 +89,8 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     public static final AntlrReferenceProperty NOT_FOUND = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
-            -1)
+            -1,
+            new IdentifierContext(null, -1))
     {
         @Nonnull
         @Override
@@ -154,10 +154,10 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     protected AntlrReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
-            int ordinal)
+            int ordinal,
+            @Nonnull IdentifierContext nameContext)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
     }
 
     @Override

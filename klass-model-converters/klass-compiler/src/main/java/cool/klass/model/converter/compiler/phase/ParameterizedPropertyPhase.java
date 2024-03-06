@@ -80,8 +80,8 @@ public class ParameterizedPropertyPhase
         this.parameterizedPropertyState = new AntlrParameterizedProperty(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 thisReference.getNumMembers() + 1,
+                ctx.identifier(),
                 thisReference);
 
         thisReference.enterParameterizedProperty(this.parameterizedPropertyState);
@@ -204,8 +204,8 @@ public class ParameterizedPropertyPhase
         AntlrModifier modifierState = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 ordinal,
+                ctx,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
     }
@@ -223,8 +223,8 @@ public class ParameterizedPropertyPhase
         this.parameterState         = new AntlrParameter(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                identifierContext,
                 this.parameterOwnerState.getNumParameters() + 1,
+                identifierContext,
                 typeState,
                 (IAntlrElement) this.parameterOwnerState);
         this.multiplicityOwnerState = this.parameterState;

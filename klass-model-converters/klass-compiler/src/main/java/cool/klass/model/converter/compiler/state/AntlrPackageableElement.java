@@ -20,11 +20,11 @@ public abstract class AntlrPackageableElement
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
 
         if (this.compilationUnitState.getElementContext() != this.compilationUnitState.getElementContext())

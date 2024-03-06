@@ -28,8 +28,8 @@ public class AntlrProjectionProjectionReference
     public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClass.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
             AntlrAssociationEnd.AMBIGUOUS,
@@ -39,8 +39,8 @@ public class AntlrProjectionProjectionReference
     public static final AntlrProjectionProjectionReference NOT_FOUND = new AntlrProjectionProjectionReference(
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
-            new IdentifierContext(null, -1),
             -1,
+            new IdentifierContext(null, -1),
             AntlrClass.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
             AntlrAssociationEnd.NOT_FOUND,
@@ -60,14 +60,14 @@ public class AntlrProjectionProjectionReference
     public AntlrProjectionProjectionReference(
             @Nonnull ProjectionProjectionReferenceContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrReferenceProperty<?> referenceProperty,
             @Nonnull AntlrProjection referencedProjectionState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.classifier                = Objects.requireNonNull(classifier);
         this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty         = Objects.requireNonNull(referenceProperty);
@@ -87,8 +87,8 @@ public class AntlrProjectionProjectionReference
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
-                this.getNameContext(),
                 this.ordinal,
+                this.getNameContext(),
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
 

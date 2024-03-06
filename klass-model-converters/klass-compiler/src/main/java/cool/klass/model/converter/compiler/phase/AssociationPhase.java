@@ -42,8 +42,8 @@ public class AssociationPhase
         this.associationState = new AntlrAssociation(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                identifier,
                 this.compilerState.getOrdinal(ctx),
+                identifier,
                 this.compilerState.getCompilerWalkState().getCompilationUnitState());
     }
 
@@ -78,8 +78,8 @@ public class AssociationPhase
         this.associationEndState      = new AntlrAssociationEnd(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx.identifier(),
                 this.associationState.getNumAssociationEnds() + 1,
+                ctx.identifier(),
                 this.associationState);
 
         this.classReferenceOwnerState = this.associationEndState;
@@ -109,8 +109,8 @@ public class AssociationPhase
         AntlrModifier antlrAssociationEndModifier = new AntlrModifier(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                ctx,
                 this.associationEndState.getNumModifiers() + 1,
+                ctx,
                 this.associationEndState);
         this.associationEndState.enterModifier(antlrAssociationEndModifier);
     }

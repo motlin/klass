@@ -35,11 +35,11 @@ public abstract class AntlrProjectionParent
     protected AntlrProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull AntlrClassifier classifier)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal);
+        super(elementContext, compilationUnit, ordinal, nameContext);
         this.classifier = Objects.requireNonNull(classifier);
         if (classifier == AntlrClass.NOT_FOUND
                 || classifier == AntlrClass.AMBIGUOUS

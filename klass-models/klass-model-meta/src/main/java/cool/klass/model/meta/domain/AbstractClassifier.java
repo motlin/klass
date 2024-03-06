@@ -36,11 +36,11 @@ public abstract class AbstractClassifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
-            @Nonnull IdentifierContext nameContext,
             int ordinal,
+            @Nonnull IdentifierContext nameContext,
             @Nonnull String packageName)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
     }
 
     @Nonnull
@@ -113,11 +113,11 @@ public abstract class AbstractClassifier
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
-                @Nonnull IdentifierContext nameContext,
                 int ordinal,
+                @Nonnull IdentifierContext nameContext,
                 @Nonnull String packageName)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, ordinal, nameContext, packageName);
         }
 
         public void setDataTypePropertyBuilders(@Nonnull ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders)
