@@ -428,7 +428,9 @@ public class AntlrClass extends AntlrClassifier
 
     private boolean superClassShouldHaveKey()
     {
-        return this.superClassState.map(AntlrClass::getInheritanceType).equals(Optional.of(InheritanceType.TABLE_PER_CLASS));
+        return this.superClassState
+                .map(AntlrClass::getInheritanceType)
+                .equals(Optional.of(InheritanceType.TABLE_PER_CLASS));
     }
 
     private boolean inheritanceTypeRequiresKeyProperties()
@@ -436,11 +438,37 @@ public class AntlrClass extends AntlrClassifier
         return this.inheritanceType == InheritanceType.NONE || this.inheritanceType == InheritanceType.TABLE_PER_CLASS;
     }
 
+    public void reportDuplicateUserClass(CompilerErrorState compilerErrorHolder)
+    {
+        IdentifierContext offendingToken = this.getElementContext().classHeader().identifier();
+        String message = String.format(
+                "Only one 'user' class is allowed. Found '%s'.",
+                offendingToken.getText());
+        compilerErrorHolder.add("ERR_DUP_USR", message, this, offendingToken);
+    }
+
+    public void reportDuplicateUserProperties(CompilerErrorState compilerErrorHolder)
+    {
+        MutableList<AntlrDataTypeProperty<?>> userIdProperties =
+                this.dataTypePropertyStates.select(AntlrDataTypeProperty::isUserId);
+        if (userIdProperties.size() > 1)
+        {
+            for (AntlrDataTypeProperty<?> userIdProperty : userIdProperties)
+            {
+                userIdProperty.reportDuplicateUserProperty(compilerErrorHolder);
+            }
+        }
+    }
+
     private void reportSuperClassNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.superClassState.equals(Optional.of(AntlrClass.NOT_FOUND)))
         {
-            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this
+                    .getElementContext()
+                    .classHeader()
+                    .extendsDeclaration()
+                    .classReference();
             String message = String.format(
                     "Cannot find class '%s'.",
                     offendingToken.getText());
@@ -458,7 +486,11 @@ public class AntlrClass extends AntlrClassifier
 
         if (!this.superClassState.get().isAbstract())
         {
-            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this
+                    .getElementContext()
+                    .classHeader()
+                    .extendsDeclaration()
+                    .classReference();
             String message = String.format(
                     "Superclass must be abstract '%s'.",
                     offendingToken.getText());
@@ -475,7 +507,11 @@ public class AntlrClass extends AntlrClassifier
             return;
         }
 
-        ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
+        ClassReferenceContext offendingToken = this
+                .getElementContext()
+                .classHeader()
+                .extendsDeclaration()
+                .classReference();
         String message = String.format(
                 "Must be transient to inherit from transient superclass '%s'.",
                 offendingToken.getText());
@@ -506,7 +542,11 @@ public class AntlrClass extends AntlrClassifier
         }
         if (this.superClassState.get().extendsClass(this, Sets.mutable.empty()))
         {
-            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this
+                    .getElementContext()
+                    .classHeader()
+                    .extendsDeclaration()
+                    .classReference();
             String message = String.format(
                     "Circular inheritance '%s'.",
                     offendingToken.getText());

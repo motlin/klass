@@ -998,7 +998,8 @@ public class KlassCompilerErrorTest
     public void invalidValidation()
     {
         //language=Klass
-        String sourceCodeText = "package dummy\n"
+        String sourceCodeText = ""
+                + "package dummy\n"
                 + "\n"
                 + "class Dummy\n"
                 + "{\n"
@@ -2225,7 +2226,8 @@ public class KlassCompilerErrorTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = "package com.errors\n"
+        String sourceCodeText = ""
+                + "package com.errors\n"
                 + "\n"
                 + "user User\n"
                 + "{\n"
@@ -2368,7 +2370,8 @@ public class KlassCompilerErrorTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = "package com.errors\n"
+        String sourceCodeText = ""
+                + "package com.errors\n"
                 + "\n"
                 + "user User\n"
                 + "{\n"
@@ -2464,6 +2467,123 @@ public class KlassCompilerErrorTest
                         + "[36mFile:      [mexample.klass[m\n"
                         + "[36mLine:      [m16[m\n"
                         + "[36mCharacter: [m67[m\n",
+        };
+
+        this.assertCompilerErrors(sourceCodeText, errors);
+    }
+
+    @Test
+    public void duplicateUserClass()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package com.errors\n"
+                + "\n"
+                + "user User1\n"
+                + "{\n"
+                + "    userId1: String key userId;\n"
+                + "    userId2: String key userId;\n"
+                + "}\n"
+                + "\n"
+                + "user User2\n"
+                + "{\n"
+                + "    userId1: String key userId;\n"
+                + "    userId2: String key userId;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String[] errors = {
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_USR\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mOnly one 'user' class is allowed. Found 'User1'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:3)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m3║ \u001B[40;95muser \u001B[40;97mUser1\n"
+                        + "\u001B[40;37m ║      \u001B[40;91m^^^^^\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:3\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m3\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m6\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_UID\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mDuplicate userId property: 'User1.userId1'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:5)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m3║ \u001B[40;95muser \u001B[40;97mUser1\n"
+                        + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m5║     \u001B[40;97muserId1\u001B[40;36m: \u001B[40;95mString \u001B[40;33mkey \u001B[40;33muserId\u001B[40;36m;\n"
+                        + "\u001B[40;37m ║     \u001B[40;91m^^^^^^^\n"
+                        + "\u001B[40;37m7║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:5\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m5\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m5\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_UID\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mDuplicate userId property: 'User1.userId2'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:6)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m3║ \u001B[40;95muser \u001B[40;97mUser1\n"
+                        + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m6║     \u001B[40;97muserId2\u001B[40;36m: \u001B[40;95mString \u001B[40;33mkey \u001B[40;33muserId\u001B[40;36m;\n"
+                        + "\u001B[40;37m ║     \u001B[40;91m^^^^^^^\n"
+                        + "\u001B[40;37m7║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:6\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m6\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m5\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_USR\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mOnly one 'user' class is allowed. Found 'User2'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:9)\n"
+                        + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m9║ \u001B[40;95muser \u001B[40;97mUser2\n"
+                        + "\u001B[40;37m ║      \u001B[40;91m^^^^^\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:9\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m9\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m6\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_UID\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mDuplicate userId property: 'User2.userId1'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:11)\n"
+                        + "\u001B[40m\u001B[40;37m 1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m 9║ \u001B[40;95muser \u001B[40;97mUser2\n"
+                        + "\u001B[40;37m10║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m11║     \u001B[40;97muserId1\u001B[40;36m: \u001B[40;95mString \u001B[40;33mkey \u001B[40;33muserId\u001B[40;36m;\n"
+                        + "\u001B[40;37m  ║     \u001B[40;91m^^^^^^^\n"
+                        + "\u001B[40;37m13║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:11\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m11\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m5\u001B[m\n",
+                ""
+                        + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_DUP_UID\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                        + "\u001B[31mDuplicate userId property: 'User2.userId2'.\u001B[m\n"
+                        + "\n"
+                        + "Error at location. (example.klass:12)\n"
+                        + "\u001B[40m\u001B[40;37m 1║ \u001B[40;35mpackage \u001B[40;97mcom\u001B[40;36m.\u001B[40;97merrors\n"
+                        + "\u001B[40;37m 9║ \u001B[40;95muser \u001B[40;97mUser2\n"
+                        + "\u001B[40;37m10║ \u001B[40;36m{\n"
+                        + "\u001B[40;37m12║     \u001B[40;97muserId2\u001B[40;36m: \u001B[40;95mString \u001B[40;33mkey \u001B[40;33muserId\u001B[40;36m;\n"
+                        + "\u001B[40;37m  ║     \u001B[40;91m^^^^^^^\n"
+                        + "\u001B[40;37m13║ \u001B[40;36m}\n"
+                        + "\u001B[m\n"
+                        + "\u001B[36mLocation:  \u001B[mexample.klass:12\u001B[m\n"
+                        + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                        + "\u001B[36mLine:      \u001B[m12\u001B[m\n"
+                        + "\u001B[36mCharacter: \u001B[m5\u001B[m\n",
         };
 
         this.assertCompilerErrors(sourceCodeText, errors);

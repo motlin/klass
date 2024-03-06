@@ -289,9 +289,14 @@ public class AntlrDomainModel
 
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.userClassStates.size() > 1)
+        for (AntlrClass userClassState : this.userClassStates)
         {
-            throw new AssertionError();
+            if (this.userClassStates.size() > 1)
+            {
+                userClassState.reportDuplicateUserClass(compilerErrorHolder);
+            }
+
+            userClassState.reportDuplicateUserProperties(compilerErrorHolder);
         }
 
         ImmutableList<String> topLevelNames = this.getTopLevelNames();
@@ -367,20 +372,32 @@ public class AntlrDomainModel
     @Nonnull
     public DomainModelBuilder build()
     {
-        ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();
-        ImmutableList<InterfaceBuilder>   interfaceBuilders   = this.interfaceStates.collect(AntlrInterface::build1).toImmutable();
-        ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
+        ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates
+                .collect(AntlrEnumeration::build)
+                .toImmutable();
+        ImmutableList<InterfaceBuilder>   interfaceBuilders   = this.interfaceStates
+                .collect(AntlrInterface::build1)
+                .toImmutable();
+        ImmutableList<KlassBuilder>       classBuilders       = this.classStates
+                .collect(AntlrClass::build1)
+                .toImmutable();
 
         ImmutableList<ClassifierBuilder<?>> classifierBuilders = this.classifierStates.<ClassifierBuilder<?>>collect(
                 AntlrClassifier::getElementBuilder).toImmutable();
 
-        ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
+        ImmutableList<AssociationBuilder> associationBuilders = this.associationStates
+                .collect(AntlrAssociation::build)
+                .toImmutable();
         this.interfaceStates.each(AntlrInterface::build2);
         this.classStates.each(AntlrClass::build2);
 
-        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates.collect(AntlrProjection::build).toImmutable();
+        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates
+                .collect(AntlrProjection::build)
+                .toImmutable();
         this.projectionStates.each(AntlrProjection::build2);
-        ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
+        ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates
+                .collect(AntlrServiceGroup::build)
+                .toImmutable();
 
         ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementStates.collect(
                 AntlrTopLevelElement::getElementBuilder).toImmutable();
