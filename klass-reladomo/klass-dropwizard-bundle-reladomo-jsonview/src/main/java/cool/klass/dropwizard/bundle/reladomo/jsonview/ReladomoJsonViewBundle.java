@@ -11,7 +11,6 @@ import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
 import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
-import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +28,7 @@ public class ReladomoJsonViewBundle
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap)
-    {
-    }
-
-    @Override
-    public void run(@Nonnull Object configuration, @Nonnull Environment environment)
+    public void runWithMdc(@Nonnull Object configuration, @Nonnull Environment environment)
     {
         DataStoreFactoryProvider dataStoreFactoryProvider = this.safeCastConfiguration(
                 DataStoreFactoryProvider.class,
@@ -42,9 +36,9 @@ public class ReladomoJsonViewBundle
 
         LOGGER.info("Running {}.", ReladomoJsonViewBundle.class.getSimpleName());
 
-        DataStoreFactory dataStoreFactory       = dataStoreFactoryProvider.getDataStoreFactory();
-        DataStore dataStore                     = dataStoreFactory.createDataStore();
-        JsonSerializer<MithraObject> serializer = new ReladomoJsonViewSerializer(dataStore);
+        DataStoreFactory             dataStoreFactory = dataStoreFactoryProvider.getDataStoreFactory();
+        DataStore                    dataStore        = dataStoreFactory.createDataStore();
+        JsonSerializer<MithraObject> serializer       = new ReladomoJsonViewSerializer(dataStore);
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(MithraObject.class, serializer);

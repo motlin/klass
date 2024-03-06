@@ -13,7 +13,6 @@ import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
 import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
-import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.Logger;
@@ -32,18 +31,13 @@ public class SampleDataGeneratorBundle
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap)
+    public void runWithMdc(@Nonnull Object configuration, @Nonnull Environment environment)
     {
-    }
-
-    @Override
-    public void run(@Nonnull Object configuration, Environment environment)
-    {
-        SampleDataFactoryProvider  sampleDataFactoryProvider  =
+        SampleDataFactoryProvider sampleDataFactoryProvider =
                 this.safeCastConfiguration(SampleDataFactoryProvider.class, configuration);
         DomainModelFactoryProvider domainModelFactoryProvider =
                 this.safeCastConfiguration(DomainModelFactoryProvider.class, configuration);
-        DataStoreFactoryProvider   dataStoreFactoryProvider   =
+        DataStoreFactoryProvider dataStoreFactoryProvider =
                 this.safeCastConfiguration(DataStoreFactoryProvider.class, configuration);
 
         SampleDataFactory sampleDataFactory = sampleDataFactoryProvider.getSampleDataFactory();
@@ -59,7 +53,7 @@ public class SampleDataGeneratorBundle
         ImmutableList<String> skippedPackages = sampleDataFactory.getSkippedPackages();
 
         DomainModel domainModel = domainModelFactoryProvider.getDomainModelFactory().createDomainModel();
-        DataStore dataStore = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
+        DataStore   dataStore   = dataStoreFactoryProvider.getDataStoreFactory().createDataStore();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 domainModel,

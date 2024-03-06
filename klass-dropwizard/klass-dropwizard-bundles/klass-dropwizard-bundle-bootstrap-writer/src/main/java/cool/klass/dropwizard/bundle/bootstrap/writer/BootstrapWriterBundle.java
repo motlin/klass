@@ -9,7 +9,6 @@ import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
-import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +26,7 @@ public class BootstrapWriterBundle
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap)
-    {
-    }
-
-    @Override
-    public void run(@Nonnull AbstractKlassConfiguration configuration, Environment environment)
+    public void runWithMdc(@Nonnull AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
         boolean enabled = configuration.getBootstrapFactory().isEnabled();
         if (!enabled)

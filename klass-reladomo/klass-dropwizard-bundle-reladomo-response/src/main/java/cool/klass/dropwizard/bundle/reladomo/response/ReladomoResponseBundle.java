@@ -11,7 +11,6 @@ import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.reladomo.KlassResponseReladomoJsonSerializer;
 import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
-import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +28,9 @@ public class ReladomoResponseBundle
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap)
-    {
-    }
-
-    @Override
-    public void run(@Nonnull Object configuration, @Nonnull Environment environment)
+    public void runWithMdc(
+            @Nonnull Object configuration,
+            @Nonnull Environment environment)
     {
         DataStoreFactoryProvider dataStoreFactoryProvider = this.safeCastConfiguration(
                 DataStoreFactoryProvider.class,
