@@ -44,9 +44,9 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     {
         super(domainModel);
         this.connectionManagerFullyQualifiedName = Objects.requireNonNull(connectionManagerFullyQualifiedName);
-        this.isTest = isTest;
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.cacheType = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
+        this.isTest                              = isTest;
+        this.rootPackageName                     = Objects.requireNonNull(rootPackageName);
+        this.cacheType                           = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
     }
 
     private static CacheType getCacheType(@Nonnull String cacheType)

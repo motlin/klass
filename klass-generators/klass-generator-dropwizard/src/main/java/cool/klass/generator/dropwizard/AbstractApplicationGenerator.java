@@ -34,12 +34,12 @@ public class AbstractApplicationGenerator
             @Nonnull String applicationName,
             @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
         this.applicationName = Objects.requireNonNull(applicationName);
-        this.packageName = rootPackageName + ".dropwizard.application";
-        this.now = now;
-        this.relativePath = this.packageName.replaceAll("\\.", "/");
+        this.packageName     = rootPackageName + ".dropwizard.application";
+        this.now             = now;
+        this.relativePath    = this.packageName.replaceAll("\\.", "/");
     }
 
     public void writeAbstractApplicationFile(@Nonnull Path outputPath) throws IOException

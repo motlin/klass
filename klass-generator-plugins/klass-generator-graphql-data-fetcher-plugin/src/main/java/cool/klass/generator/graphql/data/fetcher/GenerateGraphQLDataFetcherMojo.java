@@ -12,10 +12,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-graphql-data-fetchers", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-graphql-data-fetchers",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateGraphQLDataFetcherMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/graphql-data-fetchers")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-sources/graphql-data-fetchers")
     private File outputDirectory;
 
     @Parameter(property = "rootPackageName", required = true, readonly = true)

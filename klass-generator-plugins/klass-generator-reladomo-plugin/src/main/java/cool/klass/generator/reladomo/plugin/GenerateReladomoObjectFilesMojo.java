@@ -16,7 +16,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 // TODO: GENERATE_RESOURCES default phase?
-@Mojo(name = "generate-reladomo-object-files", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-reladomo-object-files",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateReladomoObjectFilesMojo extends AbstractGenerateMojo
 {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-resources/reladomo")
@@ -33,7 +37,7 @@ public class GenerateReladomoObjectFilesMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         DomainModel domainModel = this.getDomainModel();
 
-        ReladomoObjectFileGenerator reladomoObjectFileGenerator = new ReladomoObjectFileGenerator(domainModel);
+        ReladomoObjectFileGenerator    reladomoObjectFileGenerator    = new ReladomoObjectFileGenerator(domainModel);
         ReladomoInterfaceFileGenerator reladomoInterfaceFileGenerator = new ReladomoInterfaceFileGenerator(domainModel);
         try
         {

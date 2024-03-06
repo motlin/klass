@@ -31,10 +31,10 @@ public class JsonViewGenerator
             @Nonnull String applicationName,
             @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
         this.applicationName = Objects.requireNonNull(applicationName);
-        this.now = Objects.requireNonNull(now);
+        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeJsonViews(@Nonnull Path outputPath) throws IOException

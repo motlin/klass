@@ -73,8 +73,9 @@ public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisito
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");
 
-        ImmutableList<String> interfaces           = graphQLClass.getInterfaces();
-        String                implementsSourceCode = interfaces.isEmpty() ? "" : " implements " + interfaces.makeString();
+        ImmutableList<String> interfaces = graphQLClass.getInterfaces();
+
+        String implementsSourceCode = interfaces.isEmpty() ? "" : " implements " + interfaces.makeString();
 
         return ""
                 + "type " + graphQLClass.getName() + implementsSourceCode + " {\n"

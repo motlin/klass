@@ -25,14 +25,14 @@ public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
     private final int        indentLevel;
     private       String     result;
 
-    PropTypeSourceCodeProjectionVisitor(
-            Projection originalProjection,
-            Instant now,
+    public PropTypeSourceCodeProjectionVisitor(
+            @Nonnull Projection originalProjection,
+            @Nonnull Instant now,
             int indentLevel)
     {
         this.originalProjection = Objects.requireNonNull(originalProjection);
-        this.now = Objects.requireNonNull(now);
-        this.indentLevel = indentLevel;
+        this.now                = Objects.requireNonNull(now);
+        this.indentLevel        = indentLevel;
     }
 
     private String getPropTypeSourceCode(@Nonnull ProjectionElement projectionElement)
@@ -67,7 +67,8 @@ public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
                 .collect(this::getPropTypeSourceCode)
                 .makeString("");
 
-        GatherProjectionSelfReferencesVisitor visitor2 = new GatherProjectionSelfReferencesVisitor(this.originalProjection);
+        GatherProjectionSelfReferencesVisitor visitor2 =
+                new GatherProjectionSelfReferencesVisitor(this.originalProjection);
         projection.getChildren().forEachWith(ProjectionElement::visit, visitor2);
         ImmutableList<String> selfReferences = visitor2.getResult();
         String selfReferencesSourceCode = selfReferences

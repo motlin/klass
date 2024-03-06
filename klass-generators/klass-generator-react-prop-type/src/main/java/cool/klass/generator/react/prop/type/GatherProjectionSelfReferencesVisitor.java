@@ -70,10 +70,10 @@ public class GatherProjectionSelfReferencesVisitor implements ProjectionListener
             return;
         }
 
-        AssociationEnd associationEnd = projectionProjectionReference.getProperty();
+        AssociationEnd associationEnd   = projectionProjectionReference.getProperty();
         Multiplicity   multiplicity     = associationEnd.getMultiplicity();
         String         isRequiredSuffix = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
-        String toOnePropType = this.originalProjection.getName() + isRequiredSuffix;
+        String         toOnePropType    = this.originalProjection.getName() + isRequiredSuffix;
         String propType = multiplicity.isToMany()
                 ? "PropTypes.arrayOf(" + toOnePropType + ").isRequired"
                 : toOnePropType;

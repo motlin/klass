@@ -302,7 +302,8 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     @Nonnull
     private String getOrderByDirectionString(@Nonnull OrderByMemberReferencePath orderByMemberReferencePath)
     {
-        OrderByDirection orderByDirection = orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection();
+        OrderByDirection orderByDirection =
+                orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection();
         switch (orderByDirection)
         {
             case ASCENDING:
@@ -379,7 +380,9 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return attributeType;
     }
 
-    private void convertToAttributeType(@Nonnull DataTypeProperty dataTypeProperty, @Nonnull AttributePureType attributeType)
+    private void convertToAttributeType(
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull AttributePureType attributeType)
     {
         String propertyName = dataTypeProperty.getName();
         attributeType.setName(propertyName);

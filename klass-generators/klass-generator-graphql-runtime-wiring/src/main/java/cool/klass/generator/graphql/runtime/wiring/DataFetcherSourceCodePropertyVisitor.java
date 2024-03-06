@@ -35,7 +35,7 @@ public final class DataFetcherSourceCodePropertyVisitor implements PropertyVisit
             Property property)
     {
         this.owningClassifier = Objects.requireNonNull(owningClassifier);
-        this.property = Objects.requireNonNull(property);
+        this.property         = Objects.requireNonNull(property);
     }
 
     @Nonnull

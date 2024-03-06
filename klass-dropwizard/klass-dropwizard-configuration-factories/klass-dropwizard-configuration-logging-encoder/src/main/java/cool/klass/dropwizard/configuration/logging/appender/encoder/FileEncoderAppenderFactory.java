@@ -256,7 +256,8 @@ public class FileEncoderAppenderFactory extends AbstractAppenderFactory<ILogging
     {
         // Creating a size and time policy does not need a separate triggering policy set on the appender because this policy registers the trigger policy
 
-        SizeAndTimeBasedRollingPolicy<ILoggingEvent> sizeAndTimeBasedRollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
+        SizeAndTimeBasedRollingPolicy<ILoggingEvent> sizeAndTimeBasedRollingPolicy =
+                new SizeAndTimeBasedRollingPolicy<>();
 
         FileSize fileSize = new FileSize(this.maxFileSize.toBytes());
         sizeAndTimeBasedRollingPolicy.setMaxFileSize(fileSize);
@@ -268,7 +269,8 @@ public class FileEncoderAppenderFactory extends AbstractAppenderFactory<ILogging
             RollingFileAppender<ILoggingEvent> appender,
             LoggerContext context)
     {
-        TimeBasedFileNamingAndTriggeringPolicy<ILoggingEvent> triggeringPolicy = new DefaultTimeBasedFileNamingAndTriggeringPolicy<>();
+        TimeBasedFileNamingAndTriggeringPolicy<ILoggingEvent> triggeringPolicy =
+                new DefaultTimeBasedFileNamingAndTriggeringPolicy<>();
         triggeringPolicy.setContext(context);
 
         TimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new TimeBasedRollingPolicy<>();

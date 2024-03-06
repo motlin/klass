@@ -14,7 +14,7 @@ public class H2Factory
     private @NotNull String       servletName        = "H2Console";
     private @NotNull String       servletUrlMapping  = "/h2-console/*";
     private @NotNull String       propertiesLocation = "src/main/resources/";
-    private @NotNull List<String> tcpServerArgs = Arrays.asList(
+    private @NotNull List<String> tcpServerArgs      = Arrays.asList(
             "-tcp",
             "-tcpAllowOthers",
             "-tcpDaemon",

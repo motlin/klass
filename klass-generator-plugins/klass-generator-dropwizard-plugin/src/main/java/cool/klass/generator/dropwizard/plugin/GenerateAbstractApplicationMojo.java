@@ -14,10 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-abstract-application", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-abstract-application",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/abstract-application")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-sources/abstract-application")
     private File outputDirectory;
 
     @Parameter(property = "applicationName", required = true, readonly = true)

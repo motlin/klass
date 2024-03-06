@@ -20,7 +20,7 @@ public class FirebaseAuth
 
     public FirebaseAuth(String databaseUrl, String firebaseConfig)
     {
-        this.databaseUrl = Objects.requireNonNull(databaseUrl);
+        this.databaseUrl    = Objects.requireNonNull(databaseUrl);
         this.firebaseConfig = Objects.requireNonNull(firebaseConfig);
     }
 
@@ -44,7 +44,8 @@ public class FirebaseAuth
         }
     }
 
-    private com.google.firebase.auth.FirebaseAuth getFirebaseAuthNoThrow(@Nonnull InputStream firebaseCredentials) throws IOException
+    private com.google.firebase.auth.FirebaseAuth getFirebaseAuthNoThrow(@Nonnull InputStream firebaseCredentials)
+            throws IOException
     {
         Objects.requireNonNull(firebaseCredentials);
         GoogleCredentials credentials = GoogleCredentials.fromStream(firebaseCredentials);

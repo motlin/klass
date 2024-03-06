@@ -14,10 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-data-transfer-objects", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-data-transfer-objects",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateDataTransferObjectsMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/data-transfer-objects")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-sources/data-transfer-objects")
     private File outputDirectory;
 
     @Override

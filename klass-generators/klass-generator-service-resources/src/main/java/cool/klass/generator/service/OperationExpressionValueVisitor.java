@@ -30,9 +30,9 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     private final String        finderName;
     private final StringBuilder stringBuilder;
 
-    public OperationExpressionValueVisitor(String finderName, StringBuilder stringBuilder)
+    public OperationExpressionValueVisitor(@Nonnull String finderName, @Nonnull StringBuilder stringBuilder)
     {
-        this.finderName = Objects.requireNonNull(finderName);
+        this.finderName    = Objects.requireNonNull(finderName);
         this.stringBuilder = Objects.requireNonNull(stringBuilder);
     }
 

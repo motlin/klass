@@ -45,7 +45,8 @@ import org.eclipse.collections.api.tuple.Pair;
 
 public class JavaConstantsMetaModelGenerator
 {
-    private static final Converter<String, String> TO_CONSTANT_CASE = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
+    private static final Converter<String, String> TO_CONSTANT_CASE =
+            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
 
     @Nonnull
     private final DomainModel domainModel;
@@ -60,12 +61,12 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull DomainModel domainModel,
             @Nonnull String applicationName,
             @Nonnull String rootPackageName,
-            Instant now)
+            @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.applicationName = Objects.requireNonNull(applicationName);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now = Objects.requireNonNull(now);
+        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeJavaConstantsMetaModelFiles(@Nonnull Path outputPath) throws IOException
@@ -1835,7 +1836,7 @@ public class JavaConstantsMetaModelGenerator
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, projectionProjectionReference.getName()) + projectionProjectionReference.getDepth();
 
-        AssociationEnd      associationEnd            = projectionProjectionReference.getProperty();
+        AssociationEnd associationEnd = projectionProjectionReference.getProperty();
 
         // @formatter:off
         //language=JAVA

@@ -31,12 +31,12 @@ public class GraphQLDataFetcherGenerator
 
     public GraphQLDataFetcherGenerator(
             @Nonnull DomainModel domainModel,
-            String rootPackageName,
+            @Nonnull String rootPackageName,
             @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now = Objects.requireNonNull(now);
+        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeDataFetcherFiles(@Nonnull Path outputPath)

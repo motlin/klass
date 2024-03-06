@@ -14,7 +14,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-reladomo-class-list", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-reladomo-class-list",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
 {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-resources/reladomo")

@@ -26,12 +26,12 @@ public class GraphQLRuntimeWiringGenerator
 
     public GraphQLRuntimeWiringGenerator(
             @Nonnull DomainModel domainModel,
-            String rootPackageName,
+            @Nonnull String rootPackageName,
             @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now = Objects.requireNonNull(now);
+        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeTypeRuntimeWiringFiles(@Nonnull Path outputPath)
@@ -120,7 +120,9 @@ public class GraphQLRuntimeWiringGenerator
 
     private String getDataFetcherSourceCode(@Nonnull Property property, Classifier owningClassifier)
     {
-        DataFetcherSourceCodePropertyVisitor visitor = new DataFetcherSourceCodePropertyVisitor(owningClassifier, property);
+        DataFetcherSourceCodePropertyVisitor visitor = new DataFetcherSourceCodePropertyVisitor(
+                owningClassifier,
+                property);
         property.visit(visitor);
 
         return String.format(

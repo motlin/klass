@@ -13,10 +13,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-graphql-runtime-wiring", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-graphql-runtime-wiring",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/graphql-runtime-wiring")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-sources/graphql-runtime-wiring")
     private File outputDirectory;
 
     @Parameter(property = "rootPackageName", required = true, readonly = true)

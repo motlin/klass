@@ -22,7 +22,6 @@
             <version>${project.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
@@ -40,7 +39,6 @@
             <artifactId>klass-data-store</artifactId>
             <version>${project.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>

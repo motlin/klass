@@ -55,10 +55,10 @@ public class ServiceResourceGenerator
             @Nonnull String rootPackageName,
             @Nonnull Instant now)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
+        this.domainModel     = Objects.requireNonNull(domainModel);
         this.applicationName = Objects.requireNonNull(applicationName);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now = Objects.requireNonNull(now);
+        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeServiceResourceFiles(@Nonnull Path outputPath) throws IOException

@@ -33,7 +33,7 @@ public class DataTransferObjectsGenerator
     public DataTransferObjectsGenerator(@Nonnull DomainModel domainModel, Instant now)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.now = Objects.requireNonNull(now);
+        this.now         = Objects.requireNonNull(now);
     }
 
     public void writeDataTransferObjectFiles(@Nonnull Path outputPath) throws IOException

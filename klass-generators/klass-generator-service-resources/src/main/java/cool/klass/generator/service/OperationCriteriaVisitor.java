@@ -19,9 +19,9 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     private final String        finderName;
     private final StringBuilder stringBuilder;
 
-    public OperationCriteriaVisitor(String finderName, StringBuilder stringBuilder)
+    public OperationCriteriaVisitor(@Nonnull String finderName, @Nonnull StringBuilder stringBuilder)
     {
-        this.finderName = Objects.requireNonNull(finderName);
+        this.finderName    = Objects.requireNonNull(finderName);
         this.stringBuilder = Objects.requireNonNull(stringBuilder);
     }
 

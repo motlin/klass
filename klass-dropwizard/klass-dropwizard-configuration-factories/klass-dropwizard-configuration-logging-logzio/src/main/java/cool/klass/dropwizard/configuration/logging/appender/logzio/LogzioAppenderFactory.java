@@ -23,8 +23,8 @@ public class LogzioAppenderFactory extends AbstractAppenderFactory<ILoggingEvent
 {
     private @Valid @NotNull String  logzioToken;
     private @Valid @NotNull String  logzioUrl;
-    private @Valid @NotNull String  logzioType         = "java";
-    private                 boolean addHostname        = true;
+    private @Valid @NotNull String  logzioType  = "java";
+    private                 boolean addHostname = true;
 
     private final int     drainTimeoutSec                      = 5;
     private final int     fileSystemFullPercentThreshold       = 98;

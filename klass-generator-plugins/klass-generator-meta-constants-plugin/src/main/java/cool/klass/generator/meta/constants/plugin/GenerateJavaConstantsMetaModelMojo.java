@@ -14,10 +14,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-meta-model-constants", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-meta-model-constants",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateJavaConstantsMetaModelMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/meta-model-constants")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-sources/meta-model-constants")
     private File outputDirectory;
 
     @Parameter(property = "applicationName", required = true, readonly = true)

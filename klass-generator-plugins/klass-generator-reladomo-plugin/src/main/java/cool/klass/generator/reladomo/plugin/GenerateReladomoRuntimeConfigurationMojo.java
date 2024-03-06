@@ -14,16 +14,30 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "generate-reladomo-runtime-configuration", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(
+        name = "generate-reladomo-runtime-configuration",
+        defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
+        threadSafe = true,
+        requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-test-resources/reladomo-runtime-configuration")
+    @Parameter(
+            property = "outputDirectory",
+            defaultValue = "${project.build.directory}/generated-test-resources/reladomo-runtime-configuration")
     private File outputDirectory;
 
-    @Parameter(property = "outputFilename", required = true, readonly = true, defaultValue = "TestReladomoRuntimeConfiguration.xml")
+    @Parameter(
+            property = "outputFilename",
+            required = true,
+            readonly = true,
+            defaultValue = "TestReladomoRuntimeConfiguration.xml")
     private String outputFilename;
 
-    @Parameter(property = "connectionManagerFullyQualifiedName", required = true, readonly = true, defaultValue = "com.gs.fw.common.mithra.test.ConnectionManagerForTests")
+    @Parameter(
+            property = "connectionManagerFullyQualifiedName",
+            required = true,
+            readonly = true,
+            defaultValue = "com.gs.fw.common.mithra.test.ConnectionManagerForTests")
     private String connectionManagerFullyQualifiedName;
 
     @SuppressWarnings("FieldMayBeFinal")
@@ -50,12 +64,13 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
         Path path       = outputPath.resolve(this.outputFilename);
         try
         {
-            ReladomoRuntimeConfigurationGenerator reladomoRuntimeConfigurationGenerator = new ReladomoRuntimeConfigurationGenerator(
-                    domainModel,
-                    this.connectionManagerFullyQualifiedName,
-                    this.isTest,
-                    this.rootPackageName,
-                    this.cacheType);
+            ReladomoRuntimeConfigurationGenerator reladomoRuntimeConfigurationGenerator =
+                    new ReladomoRuntimeConfigurationGenerator(
+                            domainModel,
+                            this.connectionManagerFullyQualifiedName,
+                            this.isTest,
+                            this.rootPackageName,
+                            this.cacheType);
             reladomoRuntimeConfigurationGenerator.writeRuntimeConfigFile(path);
         }
         catch (IOException e)
