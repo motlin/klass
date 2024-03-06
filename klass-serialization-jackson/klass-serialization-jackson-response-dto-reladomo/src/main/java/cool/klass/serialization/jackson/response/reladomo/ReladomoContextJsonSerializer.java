@@ -70,6 +70,12 @@ public class ReladomoContextJsonSerializer
         String        projectionName = klassJsonView.getProjectionName();
         Projection    projection     = this.domainModel.getProjectionByName(projectionName);
 
+        Projection metadataProjection = this.metadata.getProjection();
+        if (!metadataProjection.equals(projection))
+        {
+            throw new AssertionError("Expected " + metadataProjection + ", got " + projection);
+        }
+
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
         // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();
         this.serialize(mithraObject, jsonGenerator, projection);
