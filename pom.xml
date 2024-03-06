@@ -63,6 +63,20 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.skyscreamer/jsonassert -->
+            <dependency>
+                <groupId>org.skyscreamer</groupId>
+                <artifactId>jsonassert</artifactId>
+                <version>${jsonassert.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.vaadin.external.google</groupId>
+                <artifactId>android-json</artifactId>
+                <version>0.0.20131108.vaadin1</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -267,6 +281,16 @@
                 <artifactId>auto-service</artifactId>
                 <version>1.0-rc5</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
             </dependency>
 
         </dependencies>
@@ -622,6 +646,7 @@
                                         <requirePluginVersions>
                                             <unCheckedPluginList>
                                                 cool.klass:klass-generator-dropwizard-plugin,
+                                                cool.klass:klass-generator-dto-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
                                                 cool.klass:klass-compiler-plugin

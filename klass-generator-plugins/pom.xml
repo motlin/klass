@@ -21,5 +21,6 @@
         <module>klass-generator-service-resources-plugin</module>
         <module>klass-generator-dropwizard-plugin</module>
         <module>klass-compiler-plugin</module>
+        <module>klass-generator-dto-plugin</module>
     </modules>
 </project>

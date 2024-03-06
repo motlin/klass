@@ -10,6 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!--TODO: Rename from pojos to reladomo-concrete-classes or something-->
     <artifactId>stackoverflow-reladomo-pojos</artifactId>
 
     <name>${app.name} Reladomo Java POJOs</name>

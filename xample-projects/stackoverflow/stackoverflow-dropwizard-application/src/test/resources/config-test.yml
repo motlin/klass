@@ -15,3 +15,9 @@ logging:
     com.gs.fw.common.mithra.batch.sqllogs: DEBUG
     com.gs.fw.common.mithra.connectionmanager: INFO
     org.eclipse.jetty: INFO
+    org.apache.http: INFO
+  appenders:
+    - type: console
+      # In production, always use UTC. In unit t ests, system is more convenient
+      timeZone: system
+      logFormat: "%highlight(%-5level) [%date{HH:mm:ss}] %logger: %message%n%rootException"

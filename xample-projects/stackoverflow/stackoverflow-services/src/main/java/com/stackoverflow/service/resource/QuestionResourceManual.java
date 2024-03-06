@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
@@ -25,7 +27,6 @@ import javax.ws.rs.core.SecurityContext;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.list.merge.TopLevelMergeOptions;
@@ -33,12 +34,11 @@ import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.projection.Projection;
 import cool.klass.serializer.json.ReladomoJsonTree;
 import com.stackoverflow.Answer;
-import com.stackoverflow.AnswerFinder;
-import com.stackoverflow.AnswerList;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
+import com.stackoverflow.dto.QuestionDTO;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
@@ -98,7 +98,7 @@ public class QuestionResourceManual
     public void method1(
             @PathParam("id") Long id,
             @QueryParam("version") Optional<Integer> optionalVersion,
-            ObjectNode body)
+            @NotNull @Valid QuestionDTO body)
     {
         // Question
 
@@ -114,15 +114,17 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        boolean hasConflict = !result.asEcList().allSatisfy(conflictOperation::matches);
-        if (!hasConflict)
-        {
-            throw new ClientErrorException(Status.CONFLICT);
-        }
         if (result.isEmpty())
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
+
+        boolean hasConflict = !result.asEcList().allSatisfy(conflictOperation::matches);
+        if (hasConflict)
+        {
+            throw new ClientErrorException(Status.CONFLICT);
+        }
+
         if (result.size() > 1)
         {
             throw new InternalServerErrorException("TODO");
@@ -130,21 +132,22 @@ public class QuestionResourceManual
 
         // Validate incoming json
         Question question = new Question();
-        question.setTitle(body.get("title").textValue());
-        question.setBody(body.get("body").textValue());
+        question.setTitle(body.getTitle());
+        question.setBody(body.getBody());
 
-        AnswerList answers = new AnswerList();
-        for (JsonNode answerJsonNode : body.get("answers"))
-        {
-            answers.add(convertJsonNode(answerJsonNode));
-        }
-        question.setAnswers(answers);
+        // AnswerList answers = new AnswerList();
+        // for (JsonNode answerJsonNode : body.get("answers"))
+        // {
+        //     answers.add(convertJsonNode(answerJsonNode));
+        // }
+        // question.setAnswers(answers);
 
         Projection projection = this.domainModel.getProjectionByName("QuestionReadProjection");
 
         // TODO: Version number stuff
         TopLevelMergeOptions<Question> mergeOptions = new TopLevelMergeOptions<>(QuestionFinder.getFinderInstance());
-        mergeOptions.navigateTo(AnswerFinder.question());
+        // TODO: Test dependent relationships (Projito?)
+        // mergeOptions.navigateTo(AnswerFinder.question());
 
         QuestionList questions = new QuestionList();
         questions.add(question);
