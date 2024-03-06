@@ -45,11 +45,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
         </dependency>

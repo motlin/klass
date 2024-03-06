@@ -9,9 +9,9 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -22,19 +22,28 @@ public abstract class AbstractGenerateReladomoMojo extends AbstractMojo
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;
 
-    protected DomainModel getDomainModel()
+    protected DomainModel getDomainModel() throws MojoExecutionException
     {
         Reflections reflections = new Reflections(new ConfigurationBuilder().setScanners(new ResourcesScanner())
                 .setUrls(ClasspathHelper.forPackage(this.rootPackageName)));
         Set<String> klassLocations =
                 reflections.getResources(Pattern.compile(".*\\.klass"));
-        DomainModelBuilder domainModelBuilder = new DomainModelBuilder();
-        MutableList<CompilerError> compilerErrors = Lists.mutable.empty();
+        DomainModelBuilder  domainModelBuilder  = new DomainModelBuilder();
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-        KlassCompiler klassCompiler = new KlassCompiler(domainModelBuilder, compilerErrorHolder);
+        KlassCompiler       klassCompiler       = new KlassCompiler(domainModelBuilder, compilerErrorHolder);
         klassCompiler.compile(klassLocations);
+
+        if (compilerErrorHolder.hasCompilerErrors())
+        {
+            ImmutableList<CompilerError> compilerErrors = compilerErrorHolder.getCompilerErrors();
+            for (CompilerError compilerError : compilerErrors)
+            {
+                this.getLog().warn(compilerError.toString());
+            }
+            throw new MojoExecutionException("There were compiler errors.");
+        }
+
         DomainModel domainModel = domainModelBuilder.build();
-        // TODO: Check if errors are empty
         return domainModel;
     }
 }

@@ -25,4 +25,9 @@ public class CompilerErrorHolder
     {
         return this.compilerErrors.toImmutable();
     }
+
+    public boolean hasCompilerErrors()
+    {
+        return this.compilerErrors.notEmpty();
+    }
 }

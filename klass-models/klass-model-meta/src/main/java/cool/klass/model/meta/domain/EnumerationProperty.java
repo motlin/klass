@@ -1,29 +1,57 @@
 package cool.klass.model.meta.domain;
 
+import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class EnumerationProperty extends DataTypeProperty
+public class EnumerationProperty extends DataTypeProperty<Enumeration>
 {
-    protected EnumerationProperty(String name, Enumeration type)
+    protected EnumerationProperty(
+            ParserRuleContext elementContext,
+            ParserRuleContext nameContext,
+            String name,
+            ParserRuleContext enumerationContext,
+            Enumeration enumeration,
+            ParserRuleContext owningKlassContext,
+            Klass owningKlass,
+            boolean isOptional)
     {
-        super(name, type);
+        super(
+                elementContext,
+                nameContext,
+                name,
+                enumerationContext,
+                enumeration,
+                owningKlassContext,
+                owningKlass,
+                isOptional);
     }
 
-    @Override
-    public Enumeration getType()
-    {
-        return (Enumeration) super.getType();
-    }
-
-    public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder
+    public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder<Enumeration>
     {
         public EnumerationPropertyBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
-                ParserRuleContext typeContext,
+                String name,
+                ParserRuleContext enumerationContext,
+                Enumeration enumeration,
+                KlassBuilder owningKlassBuilder,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, typeContext, isOptional);
+            super(elementContext, nameContext, name, enumerationContext, enumeration, owningKlassBuilder, isOptional);
+        }
+
+        @Override
+        public EnumerationProperty build(ParserRuleContext owningKlassContext, Klass owningKlass)
+        {
+            return new EnumerationProperty(
+                    this.elementContext,
+                    this.nameContext,
+                    this.name,
+                    this.typeContext,
+                    this.type,
+                    owningKlassContext,
+                    owningKlass,
+                    this.isOptional);
         }
     }
 }

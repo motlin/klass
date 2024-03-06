@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -100,10 +101,10 @@ public class AntlrEnumeration
 
     public void build(DomainModelBuilder domainModelBuilder)
     {
-        this.enumerationBuilder = new EnumerationBuilder(this.ctx, this.ctx.identifier(), this.packageName);
-        ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates.collectWith(
-                AntlrEnumerationLiteral::build,
-                this.enumerationBuilder)
+        IdentifierContext identifier = this.ctx.identifier();
+        this.enumerationBuilder = new EnumerationBuilder(this.ctx, identifier, identifier.getText(), this.packageName);
+        ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates
+                .collectWith(AntlrEnumerationLiteral::build, this.enumerationBuilder)
                 .toImmutable();
         this.enumerationBuilder.setEnumerationLiterals(enumerationLiteralBuilders);
 

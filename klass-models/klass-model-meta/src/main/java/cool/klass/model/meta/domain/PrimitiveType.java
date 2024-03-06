@@ -34,7 +34,7 @@ public final class PrimitiveType extends DataType
 
     private PrimitiveType(String name)
     {
-        super(name, "klass.meta");
+        super(NO_CONTEXT, NO_CONTEXT, name, "klass.meta");
     }
 
     public static PrimitiveType valueOf(String name)

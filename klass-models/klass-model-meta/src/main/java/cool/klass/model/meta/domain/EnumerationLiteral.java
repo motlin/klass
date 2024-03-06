@@ -3,45 +3,53 @@ package cool.klass.model.meta.domain;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class EnumerationLiteral extends TypedElement
+public class EnumerationLiteral extends TypedElement<Enumeration>
 {
-    protected EnumerationLiteral(String name, Type type)
+    private final String prettyName;
+
+    protected EnumerationLiteral(
+            ParserRuleContext elementContext,
+            ParserRuleContext nameContext,
+            String name,
+            ParserRuleContext enumerationContext,
+            Enumeration enumeration,
+            String prettyName)
     {
-        super(name, type);
+        super(elementContext, nameContext, name, enumerationContext, enumeration);
+        this.prettyName = prettyName;
+    }
+
+    public String getPrettyName()
+    {
+        return this.prettyName;
     }
 
     public static class EnumerationLiteralBuilder extends NamedElementBuilder
     {
-        private final String             literalName;
         private final String             prettyName;
-        private final EnumerationBuilder enumerationBuilder;
+        private final EnumerationBuilder owningEnumerationBuilder;
 
         public EnumerationLiteralBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
-                String literalName,
+                String name,
                 String prettyName,
-                EnumerationBuilder enumerationBuilder)
+                EnumerationBuilder owningEnumerationBuilder)
         {
-            super(elementContext, nameContext);
-            this.literalName = literalName;
+            super(elementContext, nameContext, name);
             this.prettyName = prettyName;
-            this.enumerationBuilder = enumerationBuilder;
+            this.owningEnumerationBuilder = owningEnumerationBuilder;
         }
 
-        public String getLiteralName()
+        public EnumerationLiteral build(ParserRuleContext enumerationContext, Enumeration enumeration)
         {
-            return this.literalName;
-        }
-
-        public String getPrettyName()
-        {
-            return this.prettyName;
-        }
-
-        public EnumerationBuilder getEnumerationBuilder()
-        {
-            return this.enumerationBuilder;
+            return new EnumerationLiteral(
+                    this.elementContext,
+                    this.nameContext,
+                    this.name,
+                    enumerationContext,
+                    enumeration,
+                    this.prettyName);
         }
     }
 }

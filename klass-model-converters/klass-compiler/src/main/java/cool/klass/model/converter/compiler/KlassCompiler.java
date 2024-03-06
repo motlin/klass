@@ -3,7 +3,6 @@ package cool.klass.model.converter.compiler;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.BuildAntlrStatePhase;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
@@ -23,13 +22,9 @@ import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class KlassCompiler
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KlassCompiler.class);
-
     private final DomainModelBuilder  domainModelBuilder;
     private final CompilerErrorHolder compilerErrorHolder;
 
@@ -99,12 +94,7 @@ public class KlassCompiler
         {
         }
 
-        ImmutableList<CompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
-        if (compilerErrors.notEmpty())
-        {
-            compilerErrors.each(compilerError -> LOGGER.warn("{}", compilerError));
-        }
-        else
+        if (!this.compilerErrorHolder.hasCompilerErrors())
         {
             phase7.build(this.domainModelBuilder);
         }

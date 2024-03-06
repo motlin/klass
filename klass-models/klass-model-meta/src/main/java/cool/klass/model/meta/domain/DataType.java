@@ -7,9 +7,13 @@ import org.antlr.v4.runtime.ParserRuleContext;
  */
 public abstract class DataType extends Type
 {
-    protected DataType(String name, String packageName)
+    protected DataType(
+            ParserRuleContext elementContext,
+            ParserRuleContext nameContext,
+            String name,
+            String packageName)
     {
-        super(name, packageName);
+        super(elementContext, nameContext, name, packageName);
     }
 
     public abstract static class DataTypeBuilder extends TypeBuilder
@@ -17,9 +21,10 @@ public abstract class DataType extends Type
         protected DataTypeBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
+                String name,
                 String packageName)
         {
-            super(elementContext, nameContext, packageName);
+            super(elementContext, nameContext, name, packageName);
         }
     }
 }

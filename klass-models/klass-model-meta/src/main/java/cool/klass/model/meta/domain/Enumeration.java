@@ -6,9 +6,25 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public class Enumeration extends DataType
 {
-    public Enumeration(String name, String packageName)
+    private ImmutableList<EnumerationLiteral> enumerationLiterals;
+
+    public Enumeration(
+            ParserRuleContext elementContext,
+            ParserRuleContext nameContext,
+            String name,
+            String packageName)
     {
-        super(name, packageName);
+        super(elementContext, nameContext, name, packageName);
+    }
+
+    public ImmutableList<EnumerationLiteral> getEnumerationLiterals()
+    {
+        return this.enumerationLiterals;
+    }
+
+    private void setEnumerationLiterals(ImmutableList<EnumerationLiteral> enumerationLiterals)
+    {
+        this.enumerationLiterals = enumerationLiterals;
     }
 
     public static class EnumerationBuilder extends DataTypeBuilder
@@ -18,9 +34,10 @@ public class Enumeration extends DataType
         public EnumerationBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
+                String name,
                 String packageName)
         {
-            super(elementContext, nameContext, packageName);
+            super(elementContext, nameContext, name, packageName);
         }
 
         public void setEnumerationLiterals(ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
@@ -28,9 +45,19 @@ public class Enumeration extends DataType
             this.enumerationLiteralBuilders = enumerationLiteralBuilders;
         }
 
-        public ImmutableList<EnumerationLiteralBuilder> getEnumerationLiteralBuilders()
+        public Enumeration build()
         {
-            return this.enumerationLiteralBuilders;
+            Enumeration enumeration = new Enumeration(
+                    this.elementContext,
+                    this.nameContext,
+                    this.name,
+                    this.packageName);
+
+            ImmutableList<EnumerationLiteral> enumerationLiterals = this.enumerationLiteralBuilders.collect(
+                    each -> each.build(this.getElementContext(), enumeration));
+
+            enumeration.setEnumerationLiterals(enumerationLiterals);
+            return enumeration;
         }
     }
 }

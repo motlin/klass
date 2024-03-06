@@ -11,7 +11,7 @@ import org.eclipse.collections.impl.factory.Lists;
 public class DomainModel
 {
     private final ImmutableList<Enumeration> enumerations;
-    private final ImmutableList<Klass> klasses;
+    private final ImmutableList<Klass>       klasses;
 
     public DomainModel(
             ImmutableList<Enumeration> enumerations,
@@ -34,7 +34,7 @@ public class DomainModel
     public static final class DomainModelBuilder
     {
         private final MutableList<EnumerationBuilder> enumerationBuilders = Lists.mutable.empty();
-        private final MutableList<KlassBuilder> klassBuilders = Lists.mutable.empty();
+        private final MutableList<KlassBuilder>       klassBuilders       = Lists.mutable.empty();
 
         public DomainModelBuilder enumeration(EnumerationBuilder enumerationBuilder)
         {
@@ -50,7 +50,9 @@ public class DomainModel
 
         public DomainModel build()
         {
-            return new DomainModel(Lists.immutable.empty(), Lists.immutable.empty());
+            ImmutableList<Enumeration> enumerations = this.enumerationBuilders.collect(EnumerationBuilder::build).toImmutable();
+            ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build).toImmutable();
+            return new DomainModel(enumerations, klasses);
         }
     }
 }
