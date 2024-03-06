@@ -544,6 +544,24 @@ service ClassWithDerivedProperty
         }
 }
 
+service UserVersion
+{
+    /userVersion/{userId: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.userId == userId;
+            projection  : UserVersionProjection;
+        }
+    /userVersion
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : UserVersionProjection;
+        }
+}
+
 service PropertiesRequiredVersion
 {
     /propertiesRequiredVersion/{propertiesRequiredId: Long[1..1]}

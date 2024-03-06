@@ -12,6 +12,7 @@ projection UserProjection on User
     firstName: "User firstName",
     lastName: "User lastName",
     email: "User email",
+    version: UserVersionProjection,
 }
 
 projection PropertiesRequiredProjection on PropertiesRequired
@@ -257,6 +258,13 @@ projection ClassWithDerivedPropertyProjection on ClassWithDerivedProperty
     derivedOptionalBoolean: "ClassWithDerivedProperty derivedOptionalBoolean",
     derivedOptionalInstant: "ClassWithDerivedProperty derivedOptionalInstant",
     derivedOptionalLocalDate: "ClassWithDerivedProperty derivedOptionalLocalDate",
+}
+
+projection UserVersionProjection on UserVersion
+{
+    systemFrom: "UserVersion systemFrom",
+    systemTo: "UserVersion systemTo",
+    number: "UserVersion number",
 }
 
 projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion

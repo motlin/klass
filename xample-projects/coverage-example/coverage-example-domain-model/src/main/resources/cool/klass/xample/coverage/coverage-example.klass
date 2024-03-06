@@ -3,8 +3,8 @@ package cool.klass.xample.coverage
 // 'user' is just a special class that represents logged in users
 // There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
 user User
-    read
     systemTemporal
+    versioned
 {
     userId   : String key userId;
     firstName: String?;
