@@ -187,6 +187,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
 
         if (this.antlrCriteria == null)
         {
+            // TODO: Editor error matching this one
             String message = String.format(
                     "ERR_REL_INF: Relationship inference not yet supported. '%s' must declare a relationship.",
                     this.name);

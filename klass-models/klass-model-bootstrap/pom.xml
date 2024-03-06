@@ -6,17 +6,18 @@
 
     <parent>
         <groupId>cool.klass</groupId>
-        <artifactId>klass</artifactId>
+        <artifactId>klass-models</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xample-projects</artifactId>
+    <artifactId>klass-model-bootstrap</artifactId>
     <packaging>pom</packaging>
 
-    <name>Klass Xample Projects (Module Group)</name>
+    <name>Klass Bootstrapped Meta Model (Module Group)</name>
 
     <modules>
-        <module>stackoverflow</module>
-        <module>bootstrapped-meta-model</module>
+        <module>klass-model-bootstrapped-meta</module>
+        <module>klass-model-bootstrapped-reladomo-definitions</module>
+        <module>klass-model-bootstrapped-reladomo-pojos</module>
     </modules>
 </project>

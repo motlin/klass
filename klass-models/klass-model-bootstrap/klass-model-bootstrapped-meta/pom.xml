@@ -6,17 +6,22 @@
 
     <parent>
         <groupId>cool.klass</groupId>
-        <artifactId>klass</artifactId>
+        <artifactId>klass-model-bootstrap</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xample-projects</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>klass-model-bootstrapped-meta</artifactId>
+    <packaging>jar</packaging>
 
-    <name>Klass Xample Projects (Module Group)</name>
+    <name>Klass Bootstrapped Meta Model</name>
 
-    <modules>
-        <module>stackoverflow</module>
-        <module>bootstrapped-meta-model</module>
-    </modules>
+    <dependencies>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>
