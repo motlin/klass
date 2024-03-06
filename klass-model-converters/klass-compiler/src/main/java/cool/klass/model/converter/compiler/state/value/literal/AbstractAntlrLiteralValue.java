@@ -37,7 +37,7 @@ public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
     @Override
     public abstract ImmutableList<AntlrType> getPossibleTypes();
 
-    public AntlrType getInferredType()
+    protected AntlrType getInferredType()
     {
         return Objects.requireNonNull(this.inferredType);
     }
