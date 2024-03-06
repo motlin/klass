@@ -47,9 +47,11 @@ public abstract class AntlrElement
 
     protected static String getSourceText(ParserRuleContext parserRuleContext)
     {
-        int startIndex = parserRuleContext.getStart().getStartIndex();
-        int      stopIndex = parserRuleContext.getStop().getStopIndex();
-        Interval interval  = new Interval(startIndex, stopIndex);
+        Objects.requireNonNull(parserRuleContext.getStart());
+        Objects.requireNonNull(parserRuleContext.getStop());
+        int      startIndex = parserRuleContext.getStart().getStartIndex();
+        int      stopIndex  = parserRuleContext.getStop().getStopIndex();
+        Interval interval   = new Interval(startIndex, stopIndex);
         return parserRuleContext.getStart().getInputStream().getText(interval);
     }
 
@@ -94,12 +96,20 @@ public abstract class AntlrElement
 
     public boolean isInSameCompilationUnit(AntlrElement other)
     {
-        return this.compilationUnit.isPresent() && other.compilationUnit.isPresent() && this.compilationUnit.equals(other.compilationUnit);
+        return this.compilationUnit.isPresent()
+                && other.compilationUnit.isPresent()
+                && this.compilationUnit.equals(other.compilationUnit);
     }
 
     public boolean isForwardReference(AntlrElement other)
     {
         return this.isInSameCompilationUnit(other)
                 && this.getElementContext().getStart().getStartIndex() < other.getElementContext().getStart().getStartIndex();
+    }
+
+    @Override
+    public String toString()
+    {
+        return AntlrElement.getSourceText(this.getElementContext());
     }
 }

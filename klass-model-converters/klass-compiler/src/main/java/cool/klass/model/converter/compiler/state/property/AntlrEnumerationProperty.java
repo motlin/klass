@@ -168,7 +168,7 @@ public class AntlrEnumerationProperty
 
         String message = String.format(
                 "Enumeration property '%s' is declared on line %d and has a forward reference to enumeration '%s' which is declared later in the source file '%s' on line %d.",
-                this.toString(),
+                this,
                 this.getElementContext().getStart().getLine(),
                 this.enumerationState.getName(),
                 this.getCompilationUnit().get().getSourceName(),
