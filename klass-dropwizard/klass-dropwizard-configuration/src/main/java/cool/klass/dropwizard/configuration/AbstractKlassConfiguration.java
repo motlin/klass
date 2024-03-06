@@ -91,7 +91,7 @@ public class AbstractKlassConfiguration
         SystemPropertiesFactoryProvider
 {
     // General
-    private @Valid @NotNull KlassFactory            klassFactory            = new KlassFactory();
+    private @Valid          KlassFactory            klassFactory;
     private @Valid @NotNull SystemPropertiesFactory systemPropertiesFactory = new SystemPropertiesFactory();
 
     // Services
@@ -102,7 +102,7 @@ public class AbstractKlassConfiguration
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
 
     // Data
-    private @Valid @NotNull H2Factory                h2Factory            = new H2Factory();
+    private @Valid          H2Factory                h2Factory;
     private @Valid @NotNull List<DdlExecutorFactory> ddlExecutorFactories = Arrays.asList();
     private @Valid @NotNull ReladomoFactory          reladomoFactory      = new ReladomoFactory();
     private @Valid @NotNull SampleDataFactory        sampleDataFactory    = new SampleDataFactory();
