@@ -345,7 +345,8 @@ public class KlassBootstrapWriter
         optionalBootstrappedAuthorizeCriteria.ifPresent(bootstrappedService::setAuthorizeCriteria);
         optionalBootstrappedValidateCriteria.ifPresent(bootstrappedService::setValidateCriteria);
         optionalBootstrappedConflictCriteria.ifPresent(bootstrappedService::setConflictCriteria);
-
+        // TODO: Bootstrap service orderBy
+        Optional<OrderBy> orderBy = service.getOrderBy();
         bootstrappedService.insert();
     }
 
