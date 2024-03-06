@@ -41,8 +41,9 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredFloat\": 1.0123457,\n"
                 + "  \"requiredBoolean\": true,\n"
                 + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
-                + "}\n";
+                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
+                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
+                + "}";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -72,8 +73,9 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredFloat\": 2.0123456,\n"
                 + "  \"requiredBoolean\": false,\n"
                 + "  \"requiredInstant\": \"2000-01-01T00:00:00Z\",\n"
-                + "  \"requiredLocalDate\": \"2000-01-01\"\n"
-                + "}\n";
+                + "  \"requiredLocalDate\": \"2000-01-01\",\n"
+                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
+                + "}";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -94,7 +96,10 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredFloat\": 1.0123457,\n"
                 + "  \"requiredBoolean\": true,\n"
                 + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
+                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
+                + "  \"version\": {\n"
+                + "    \"number\": 1\n"
+                + "  }\n"
                 + "}\n";
 
         Response putResponse = client.target(

@@ -17,4 +17,9 @@ public class PropertiesOptional extends PropertiesOptionalAbstract
     {
         this(DefaultInfinityTimestamp.getDefaultInfinity());
     }
+
+    public String getOptionalDerived()
+    {
+        return "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived";
+    }
 }

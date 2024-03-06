@@ -17,4 +17,9 @@ public class PropertiesRequired extends PropertiesRequiredAbstract
     {
         this(DefaultInfinityTimestamp.getDefaultInfinity());
     }
+
+    public String getRequiredDerived()
+    {
+        return "cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived";
+    }
 }

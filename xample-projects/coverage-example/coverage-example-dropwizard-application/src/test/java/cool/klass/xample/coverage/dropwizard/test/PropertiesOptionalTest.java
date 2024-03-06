@@ -37,8 +37,9 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 + "  \"optionalFloat\": 1.0123457,\n"
                 + "  \"optionalBoolean\": true,\n"
                 + "  \"optionalInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"optionalLocalDate\": \"1999-12-31\"\n"
-                + "}\n";
+                + "  \"optionalLocalDate\": \"1999-12-31\",\n"
+                + "  \"optionalDerived\": \"cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived\"\n"
+                + "}";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -68,8 +69,9 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                 + "  \"optionalFloat\": null,\n"
                 + "  \"optionalBoolean\": null,\n"
                 + "  \"optionalInstant\": null,\n"
-                + "  \"optionalLocalDate\": null\n"
-                + "}\n";
+                + "  \"optionalLocalDate\": null,\n"
+                + "  \"optionalDerived\": \"cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived\"\n"
+                + "}";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 }
