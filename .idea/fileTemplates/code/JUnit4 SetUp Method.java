@@ -1,4 +1,5 @@
 @org.junit.Before
-public void setUp() {
-  ${BODY}
+public void setUp()
+{
+    ${BODY}
 }

@@ -1,4 +1,5 @@
 @org.junit.After
-public void tearDown() {
-  ${BODY}
+public void tearDown()
+{
+    ${BODY}
 }
