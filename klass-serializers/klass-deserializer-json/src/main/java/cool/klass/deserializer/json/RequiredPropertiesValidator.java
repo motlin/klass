@@ -802,7 +802,7 @@ public class RequiredPropertiesValidator
                 if (jsonNode instanceof ObjectNode)
                 {
                     OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
-                    CreateVersionPropertiesValidator validator = new CreateVersionPropertiesValidator(
+                    RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
                             associationEnd.getType(),
                             (ObjectNode) jsonNode,
                             nextMode,
@@ -810,7 +810,8 @@ public class RequiredPropertiesValidator
                             this.warnings,
                             this.contextStack,
                             Optional.of(associationEnd),
-                            false);
+                            false,
+                            this.isInProjection && associationEnd.isOwned());
                     validator.validate();
                 }
             }
