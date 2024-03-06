@@ -31,30 +31,30 @@ public final class StackOverflowTestDataGenerator
     public static Object populateDataInTransaction()
     {
         Question question = new Question();
-        question.setTitle("Example title 1");
-        question.setBody("Example body 1");
-        question.setStatus("Example status 1");
-        question.setCreatedById("Example userId 1");
-        question.setLastUpdatedById("Example userId 1");
+        question.setTitle("Example title 🤪");
+        question.setBody("Example body 🤪");
+        question.setStatus("Example status 🤪");
+        question.setCreatedById("Example userId 🤪");
+        question.setLastUpdatedById("Example userId 🤪");
         question.setCreatedOn(Timestamp.from(Instant.now()));
         question.insert();
 
         Answer answer = new Answer();
-        answer.setBody("Example body 1");
+        answer.setBody("Example body 🤪");
         answer.setQuestion(question);
         answer.insert();
 
         Answer answer2 = new Answer();
-        answer2.setBody("Example body 2");
+        answer2.setBody("Example body 💩");
         answer2.setQuestion(question);
         answer2.insert();
 
         Question question2 = new Question();
-        question2.setTitle("Example title 2");
-        question2.setBody("Example body 2");
-        question2.setStatus("Example status 2");
-        question2.setCreatedById("Example userId 2");
-        question2.setLastUpdatedById("Example userId 2");
+        question2.setTitle("Example title 💩");
+        question2.setBody("Example body 💩");
+        question2.setStatus("Example status 💩");
+        question2.setCreatedById("Example userId 💩");
+        question2.setLastUpdatedById("Example userId 💩");
         question2.setCreatedOn(Timestamp.from(Instant.now()));
         question2.insert();
 

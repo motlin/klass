@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="StackOverflowDdlExecutor (Local)" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="StackOverflow DdlExecutor (Local)" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="com.stackoverflow.reladomo.ddl.executor.StackOverflowDdlExecutor" />
     <module name="stackoverflow-reladomo-ddl-executor" />
     <option name="VM_PARAMETERS" value="-Dconfig.resource=local.conf" />

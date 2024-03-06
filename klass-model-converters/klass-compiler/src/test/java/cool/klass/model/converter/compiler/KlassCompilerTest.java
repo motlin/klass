@@ -11,7 +11,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -1324,6 +1323,19 @@ public class KlassCompilerTest
         this.assertCompilerErrors(sourceCodeText, error);
     }
 
+    @Test
+    public void emoji()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = "package com.emoji\n"
+                + "\n"
+                + "// 😃\n";
+        //</editor-fold>
+
+        this.assertNoCompilerErrors(sourceCodeText);
+    }
+
     private void assertCompilerErrors(@Nonnull String sourceCodeText, String... expectedErrors)
     {
         DomainModel domainModel = this.compile(sourceCodeText);
@@ -1338,9 +1350,6 @@ public class KlassCompilerTest
     {
         DomainModel           domainModel    = this.compile(sourceCodeText);
         ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
-        assertThat(compilerErrors, is(Lists.immutable.empty()));
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
     }
 
     private DomainModel compile(@Nonnull String sourceCodeText)

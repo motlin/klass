@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="StackOverflowApplication (Local)" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="StackOverflow Application (Local)" type="Application" factoryName="Application" singleton="true">
     <option name="MAIN_CLASS_NAME" value="com.stackoverflow.dropwizard.application.StackOverflowApplication" />
     <module name="stackoverflow-dropwizard-application" />
     <option name="PROGRAM_PARAMETERS" value="server config.yml" />

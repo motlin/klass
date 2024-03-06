@@ -28,7 +28,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.initialize(bootstrap);
 
-        bootstrap.addCommand(new StackOverflowTestDataGeneratorCommand());
+        bootstrap.addCommand(new StackOverflowTestDataGeneratorCommand(this));
 
         bootstrap.addBundle(new HttpLoggingBundle());
         bootstrap.addBundle(new ObjectMapperBundle());
