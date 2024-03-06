@@ -375,7 +375,7 @@ public class IncomingCreateDataModelValidator
                     associationEnd,
                     parentJsonNode);
 
-            throw new AssertionError();
+            throw new AssertionError(associationEnd);
         }
     }
 

@@ -286,6 +286,7 @@ public class AntlrAssociation
         return this.associationEndStates.get(1);
     }
 
+    // TODO: the name sounds like it returns the to-many side but it returns the to-one side
     @Nullable
     public AntlrAssociationEnd getEndWithForeignKeys()
     {

@@ -185,7 +185,12 @@ public class RequiredPropertiesValidator
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull DataTypeProperty keyProperty)
     {
-        return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
+        boolean result = dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
+        if (result)
+        {
+            throw new AssertionError("TODO: Is this dead? If so, it's probably because getKeysMatchingThisForeignKey should be getForeignKeysMatchingThisKey.");
+        }
+        return result;
     }
 
     private void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
@@ -436,7 +441,7 @@ public class RequiredPropertiesValidator
     {
         if (this.operationMode == OperationMode.CREATE)
         {
-            // TODO: recurse and error if the version number isn't 1?
+            // TODO: recurse and error only if the version number isn't 1
             this.handleWarnIfPresent(associationEnd, "version");
         }
         else if (this.operationMode == OperationMode.REPLACE)
