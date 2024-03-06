@@ -3278,7 +3278,12 @@
           "packageName": "klass.model.meta.domain",
           "name": "MinLengthPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned",
+            "ordinal": 1
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -3321,7 +3326,12 @@
           "packageName": "klass.model.meta.domain",
           "name": "MaxLengthPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned",
+            "ordinal": 1
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -3364,7 +3374,12 @@
           "packageName": "klass.model.meta.domain",
           "name": "MinPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned",
+            "ordinal": 1
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -3407,7 +3422,12 @@
           "packageName": "klass.model.meta.domain",
           "name": "MaxPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned",
+            "ordinal": 1
+          }
+        ],
         "orderBys": []
       }
     ],

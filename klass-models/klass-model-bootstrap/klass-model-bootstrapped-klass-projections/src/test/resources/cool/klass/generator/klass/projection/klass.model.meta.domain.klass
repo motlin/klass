@@ -100,26 +100,6 @@ projection NumericPropertyValidationProjection on NumericPropertyValidation
     number: "NumericPropertyValidation number",
 }
 
-projection MinLengthPropertyValidationProjection on MinLengthPropertyValidation
-{
-    number: "NumericPropertyValidation number",
-}
-
-projection MaxLengthPropertyValidationProjection on MaxLengthPropertyValidation
-{
-    number: "NumericPropertyValidation number",
-}
-
-projection MinPropertyValidationProjection on MinPropertyValidation
-{
-    number: "NumericPropertyValidation number",
-}
-
-projection MaxPropertyValidationProjection on MaxPropertyValidation
-{
-    number: "NumericPropertyValidation number",
-}
-
 projection PropertyModifierProjection on PropertyModifier
 {
     keyword: "PropertyModifier keyword",

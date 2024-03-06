@@ -409,7 +409,11 @@
         "resultType": {
           "name": "MinLengthPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -484,7 +488,11 @@
         "resultType": {
           "name": "MaxLengthPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -559,7 +567,11 @@
         "resultType": {
           "name": "MinPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -634,7 +646,11 @@
         "resultType": {
           "name": "MaxPropertyValidation"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],

@@ -188,7 +188,7 @@ class MaxPropertyValidation
 association DataTypePropertyHasMinLengthPropertyValidation
 {
     dataTypeProperty              : DataTypeProperty[1..1];
-    minLengthValidation           : MinLengthPropertyValidation[0..1];
+    minLengthValidation           : MinLengthPropertyValidation[0..1] owned;
 
     relationship this.classifierName == MinLengthPropertyValidation.classifierName
             && this.name == MinLengthPropertyValidation.propertyName
@@ -197,7 +197,7 @@ association DataTypePropertyHasMinLengthPropertyValidation
 association DataTypePropertyHasMaxLengthPropertyValidation
 {
     dataTypeProperty              : DataTypeProperty[1..1];
-    maxLengthValidation           : MaxLengthPropertyValidation[0..1];
+    maxLengthValidation           : MaxLengthPropertyValidation[0..1] owned;
 
     relationship this.classifierName == MaxLengthPropertyValidation.classifierName
             && this.name == MaxLengthPropertyValidation.propertyName
@@ -206,7 +206,7 @@ association DataTypePropertyHasMaxLengthPropertyValidation
 association PrimitivePropertyHasMinPropertyValidation
 {
     primitiveProperty             : PrimitiveProperty[1..1];
-    minValidation                 : MinPropertyValidation[0..1];
+    minValidation                 : MinPropertyValidation[0..1] owned;
 
     relationship this.classifierName == MinPropertyValidation.classifierName
             && this.name == MinPropertyValidation.propertyName
@@ -215,7 +215,7 @@ association PrimitivePropertyHasMinPropertyValidation
 association PrimitivePropertyHasMaxPropertyValidation
 {
     primitiveProperty             : PrimitiveProperty[1..1];
-    maxValidation                 : MaxPropertyValidation[0..1];
+    maxValidation                 : MaxPropertyValidation[0..1] owned;
 
     relationship this.classifierName == MaxPropertyValidation.classifierName
             && this.name == MaxPropertyValidation.propertyName
