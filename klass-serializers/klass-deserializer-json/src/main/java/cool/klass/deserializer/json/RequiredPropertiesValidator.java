@@ -511,7 +511,7 @@ public class RequiredPropertiesValidator
             // TODO: recurse and error only if the version number isn't 1
             this.handleWarnIfPresent(associationEnd, "version");
         }
-        else if (this.operationMode == OperationMode.REPLACE)
+        else if (this.operationMode == OperationMode.REPLACE || this.operationMode == OperationMode.PATCH)
         {
             if (this.klass.getKeyProperties().anySatisfy(DataTypeProperty::isID))
             {
@@ -556,6 +556,11 @@ public class RequiredPropertiesValidator
         if (operationMode == OperationMode.REPLACE && associationEnd.isOwned())
         {
             return OperationMode.REPLACE;
+        }
+
+        if (operationMode == OperationMode.PATCH && associationEnd.isOwned())
+        {
+            return OperationMode.PATCH;
         }
 
         throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet: " + operationMode);
