@@ -2,7 +2,6 @@ package cool.klass.generator.uml.nomnoml.plugin;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.uml.nomnoml.UmlNomnomlGenerator;
@@ -47,8 +46,7 @@ public class GenerateUmlNomnomlMojo extends AbstractGenerateMojo
         UmlNomnomlGenerator generator = new UmlNomnomlGenerator(
                 domainModel,
                 this.rootPackageName,
-                this.applicationName,
-                Instant.now());
+                this.applicationName);
         generator.writeUmlDiagram(outputPath);
 
         Resource resource = new Resource();

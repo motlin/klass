@@ -1,7 +1,6 @@
 package cool.klass.generator.react.prop.type.plugin;
 
 import java.io.File;
-import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.react.prop.type.ReactPropTypeGenerator;
@@ -29,9 +28,7 @@ public class GenerateReactPropTypesMojo extends AbstractGenerateMojo
     public void execute() throws MojoExecutionException
     {
         DomainModel domainModel = this.getDomainModel();
-        ReactPropTypeGenerator propTypeGenerator = new ReactPropTypeGenerator(
-                domainModel,
-                Instant.now());
+        ReactPropTypeGenerator propTypeGenerator = new ReactPropTypeGenerator(domainModel);
         propTypeGenerator.writePropTypes(this.outputDirectory.toPath());
 
         Resource resource = new Resource();

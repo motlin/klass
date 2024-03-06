@@ -1,6 +1,5 @@
 package cool.klass.generator.service.test;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import cool.klass.generator.dto.DataTransferObjectsGenerator;
@@ -48,11 +47,7 @@ public class DataTransferObjectGeneratorTest
             DomainModel                  domainModel                  = domainModelCompilationResult.getDomainModel();
             assertThat(domainModel, notNullValue());
 
-            Instant now = Instant.parse("2019-12-31T23:59:59.999Z");
-
-            DataTransferObjectsGenerator dataTransferObjectsGenerator = new DataTransferObjectsGenerator(
-                    domainModel,
-                    now);
+            DataTransferObjectsGenerator dataTransferObjectsGenerator = new DataTransferObjectsGenerator(domainModel);
 
             Klass  klass           = domainModel.getClassByName("Question");
             String klassSourceCode = dataTransferObjectsGenerator.getClassSourceCode(klass);

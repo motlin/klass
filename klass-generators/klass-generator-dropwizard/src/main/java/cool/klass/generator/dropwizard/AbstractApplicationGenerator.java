@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -22,8 +21,6 @@ public class AbstractApplicationGenerator
     @Nonnull
     private final String      applicationName;
     @Nonnull
-    private final Instant     now;
-    @Nonnull
     private final String      packageName;
     @Nonnull
     private final String      relativePath;
@@ -31,14 +28,12 @@ public class AbstractApplicationGenerator
     public AbstractApplicationGenerator(
             @Nonnull DomainModel domainModel,
             @Nonnull String rootPackageName,
-            @Nonnull String applicationName,
-            @Nonnull Instant now)
+            @Nonnull String applicationName)
     {
         this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
         this.applicationName = Objects.requireNonNull(applicationName);
         this.packageName     = rootPackageName + ".dropwizard.application";
-        this.now             = now;
         this.relativePath    = this.packageName.replaceAll("\\.", "/");
     }
 

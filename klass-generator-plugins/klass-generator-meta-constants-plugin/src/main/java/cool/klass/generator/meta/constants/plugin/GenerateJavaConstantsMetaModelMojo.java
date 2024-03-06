@@ -3,7 +3,6 @@ package cool.klass.generator.meta.constants.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.meta.constants.JavaConstantsMetaModelGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -47,8 +46,7 @@ public class GenerateJavaConstantsMetaModelMojo extends AbstractGenerateMojo
             JavaConstantsMetaModelGenerator javaConstantsMetaModelGenerator = new JavaConstantsMetaModelGenerator(
                     domainModel,
                     this.applicationName,
-                    this.rootPackageName,
-                    Instant.now());
+                    this.rootPackageName);
             javaConstantsMetaModelGenerator.writeJavaConstantsMetaModelFiles(outputPath);
         }
         catch (IOException e)

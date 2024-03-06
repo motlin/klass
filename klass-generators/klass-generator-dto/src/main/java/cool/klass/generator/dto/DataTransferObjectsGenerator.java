@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -28,12 +27,10 @@ public class DataTransferObjectsGenerator
 {
     @Nonnull
     private final DomainModel domainModel;
-    private final Instant     now;
 
-    public DataTransferObjectsGenerator(@Nonnull DomainModel domainModel, Instant now)
+    public DataTransferObjectsGenerator(@Nonnull DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.now         = Objects.requireNonNull(now);
     }
 
     public void writeDataTransferObjectFiles(@Nonnull Path outputPath) throws IOException
@@ -109,9 +106,12 @@ public class DataTransferObjectsGenerator
         String dataGettersSettersSourceCode = dataTypeProperties.collect(this::getDataGetterSetter).makeString("");
 
         ImmutableList<AssociationEnd> associationEnds = klass.getDeclaredAssociationEnds();
-        String referenceFieldsSourceCode = associationEnds.collect(this::getReferenceField).makeString("");
 
-        String referenceGettersSettersSourceCode = associationEnds.collect(this::getReferenceGetterSetter).makeString("");
+        String referenceFieldsSourceCode =
+                associationEnds.collect(this::getReferenceField).makeString("");
+
+        String referenceGettersSettersSourceCode =
+                associationEnds.collect(this::getReferenceGetterSetter).makeString("");
 
         boolean hasConstraints = dataTypeProperties
                 .asLazy()

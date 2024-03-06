@@ -2,7 +2,6 @@ package cool.klass.generator.json.view.plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 
 import cool.klass.generator.json.view.JsonViewGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -38,8 +37,7 @@ public class GenerateJsonViewsMojo extends AbstractGenerateMojo
             JsonViewGenerator jsonViewGenerator = new JsonViewGenerator(
                     domainModel,
                     this.rootPackageName,
-                    this.applicationName,
-                    Instant.now());
+                    this.applicationName);
             jsonViewGenerator.writeJsonViews(this.outputDirectory.toPath());
         }
         catch (IOException e)

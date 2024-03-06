@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -24,15 +23,10 @@ public class ReladomoMergeHookGenerator
 
     @Nonnull
     private final DomainModel domainModel;
-    @Nonnull
-    private final Instant     now;
 
-    public ReladomoMergeHookGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull Instant now)
+    public ReladomoMergeHookGenerator(@Nonnull DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.now         = Objects.requireNonNull(now);
     }
 
     public void writeMergeHookFiles(@Nonnull Path outputPath)

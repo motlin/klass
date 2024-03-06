@@ -1,7 +1,6 @@
 package cool.klass.generator.reladomo.merge.hooks.plugin;
 
 import java.io.File;
-import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.reladomo.mergehook.ReladomoMergeHookGenerator;
@@ -33,8 +32,7 @@ public class GenerateReladomoMergeHooksMojo extends AbstractGenerateMojo
 
         DomainModel domainModel = this.getDomainModel();
 
-        Instant                    now       = Instant.now();
-        ReladomoMergeHookGenerator generator = new ReladomoMergeHookGenerator(domainModel, now);
+        ReladomoMergeHookGenerator generator = new ReladomoMergeHookGenerator(domainModel);
 
         generator.writeMergeHookFiles(this.outputDirectory.toPath());
 

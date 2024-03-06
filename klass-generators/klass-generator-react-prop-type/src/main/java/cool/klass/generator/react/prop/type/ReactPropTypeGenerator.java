@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -18,13 +17,10 @@ public class ReactPropTypeGenerator
 {
     @Nonnull
     private final DomainModel domainModel;
-    @Nonnull
-    private final Instant     now;
 
-    public ReactPropTypeGenerator(@Nonnull DomainModel domainModel, @Nonnull Instant now)
+    public ReactPropTypeGenerator(@Nonnull DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.now         = Objects.requireNonNull(now);
     }
 
     public void writePropTypes(@Nonnull Path outputPath)
@@ -38,7 +34,7 @@ public class ReactPropTypeGenerator
 
     private String getPropTypeSourceCode(@Nonnull Projection projection)
     {
-        PropTypeSourceCodeProjectionVisitor visitor = new PropTypeSourceCodeProjectionVisitor(projection, this.now, 0);
+        PropTypeSourceCodeProjectionVisitor visitor = new PropTypeSourceCodeProjectionVisitor(projection, 0);
         projection.visit(visitor);
         return visitor.getResult();
     }

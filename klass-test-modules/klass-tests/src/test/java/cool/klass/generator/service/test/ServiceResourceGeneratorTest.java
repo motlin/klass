@@ -1,6 +1,5 @@
 package cool.klass.generator.service.test;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import cool.klass.generator.service.ServiceResourceGenerator;
@@ -48,13 +47,10 @@ public class ServiceResourceGeneratorTest
             DomainModel                  domainModel                  = domainModelCompilationResult.getDomainModel();
             assertThat(domainModel, notNullValue());
 
-            Instant now = Instant.parse("2019-12-31T23:59:59.999Z");
-
             ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(
                     domainModel,
                     "StackOverflow",
-                    "com.stackoverflow",
-                    now);
+                    "com.stackoverflow");
 
             ServiceGroup serviceGroup           = domainModel.getServiceGroups().getOnly();
             String       serviceGroupSourceCode = serviceResourceGenerator.getServiceGroupSourceCode(serviceGroup);

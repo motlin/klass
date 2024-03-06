@@ -3,7 +3,6 @@ package cool.klass.generator.dto.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.dto.DataTransferObjectsGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -38,9 +37,7 @@ public class GenerateDataTransferObjectsMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            DataTransferObjectsGenerator dataTransferObjectsGenerator = new DataTransferObjectsGenerator(
-                    domainModel,
-                    Instant.now());
+            DataTransferObjectsGenerator dataTransferObjectsGenerator = new DataTransferObjectsGenerator(domainModel);
             dataTransferObjectsGenerator.writeDataTransferObjectFiles(outputPath);
         }
         catch (IOException e)

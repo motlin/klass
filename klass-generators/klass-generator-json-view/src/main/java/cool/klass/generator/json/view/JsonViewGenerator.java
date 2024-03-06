@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -22,19 +21,15 @@ public class JsonViewGenerator
     private final String      rootPackageName;
     @Nonnull
     private final String      applicationName;
-    @Nonnull
-    private final Instant     now;
 
     public JsonViewGenerator(
             @Nonnull DomainModel domainModel,
             @Nonnull String rootPackageName,
-            @Nonnull String applicationName,
-            @Nonnull Instant now)
+            @Nonnull String applicationName)
     {
         this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
         this.applicationName = Objects.requireNonNull(applicationName);
-        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeJsonViews(@Nonnull Path outputPath) throws IOException

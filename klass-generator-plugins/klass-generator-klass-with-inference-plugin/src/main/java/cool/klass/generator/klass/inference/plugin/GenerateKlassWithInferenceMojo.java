@@ -1,7 +1,6 @@
 package cool.klass.generator.klass.inference.plugin;
 
 import java.io.File;
-import java.time.Instant;
 
 import cool.klass.generator.klass.inference.KlassWithInferenceGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -28,9 +27,7 @@ public class GenerateKlassWithInferenceMojo extends AbstractGenerateMojo
     public void execute() throws MojoExecutionException
     {
         DomainModel domainModel = this.getDomainModel();
-        KlassWithInferenceGenerator generator = new KlassWithInferenceGenerator(
-                domainModel,
-                Instant.now());
+        KlassWithInferenceGenerator generator = new KlassWithInferenceGenerator(domainModel);
         generator.writeKlassFiles(this.outputDirectory.toPath());
     }
 }

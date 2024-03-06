@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.text.MessageFormat;
-import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,19 +45,15 @@ public class ServiceResourceGenerator
     private final String      applicationName;
     @Nonnull
     private final String      rootPackageName;
-    @Nonnull
-    private final Instant     now;
 
     public ServiceResourceGenerator(
             @Nonnull DomainModel domainModel,
             @Nonnull String applicationName,
-            @Nonnull String rootPackageName,
-            @Nonnull Instant now)
+            @Nonnull String rootPackageName)
     {
         this.domainModel     = Objects.requireNonNull(domainModel);
         this.applicationName = Objects.requireNonNull(applicationName);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeServiceResourceFiles(@Nonnull Path outputPath) throws IOException

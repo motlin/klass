@@ -3,7 +3,6 @@ package cool.klass.generator.dropwizard.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.dropwizard.AbstractApplicationGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -42,8 +41,7 @@ public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
             AbstractApplicationGenerator abstractApplicationGenerator = new AbstractApplicationGenerator(
                     domainModel,
                     this.rootPackageName,
-                    this.applicationName,
-                    Instant.now());
+                    this.applicationName);
             abstractApplicationGenerator.writeAbstractApplicationFile(outputPath);
         }
         catch (IOException e)

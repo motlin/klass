@@ -2,7 +2,6 @@ package cool.klass.generator.graphql.runtime.wiring.plugin;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.graphql.runtime.wiring.GraphQLRuntimeWiringGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -42,8 +41,7 @@ public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
         {
             GraphQLRuntimeWiringGenerator runtimeWiringGenerator = new GraphQLRuntimeWiringGenerator(
                     domainModel,
-                    this.rootPackageName,
-                    Instant.now());
+                    this.rootPackageName);
             runtimeWiringGenerator.writeTypeRuntimeWiringFiles(outputPath);
         }
         catch (RuntimeException e)

@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -21,17 +20,13 @@ public class GraphQLRuntimeWiringGenerator
     private final DomainModel domainModel;
     @Nonnull
     private final String      rootPackageName;
-    @Nonnull
-    private final Instant     now;
 
     public GraphQLRuntimeWiringGenerator(
             @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull Instant now)
+            @Nonnull String rootPackageName)
     {
         this.domainModel     = Objects.requireNonNull(domainModel);
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.now             = Objects.requireNonNull(now);
     }
 
     public void writeTypeRuntimeWiringFiles(@Nonnull Path outputPath)
