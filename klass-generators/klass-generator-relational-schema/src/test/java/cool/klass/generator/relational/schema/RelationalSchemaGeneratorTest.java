@@ -61,13 +61,13 @@ public class RelationalSchemaGeneratorTest
 
         if (compilationResult instanceof ErrorsCompilationResult errorsCompilationResult)
         {
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.compilerAnnotations();
             String                                message             = compilerAnnotations.makeString("\n");
             fail(message);
         }
         else if (compilationResult instanceof DomainModelCompilationResult domainModelCompilationResult)
         {
-            DomainModel domainModel = domainModelCompilationResult.getDomainModel();
+            DomainModel domainModel = domainModelCompilationResult.domainModel();
             assertThat(domainModel, notNullValue());
 
             RelationalSchemaGenerator generator = new RelationalSchemaGenerator(domainModel);

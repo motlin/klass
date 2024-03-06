@@ -49,7 +49,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         else if (compilationResult instanceof ErrorsCompilationResult)
         {
             ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
             ImmutableList<String> compilerAnnotationStrings =
                     compilerAnnotations.collect(RootCompilerAnnotation::toString);
 
@@ -84,7 +84,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         if (compilationResult instanceof ErrorsCompilationResult)
         {
             ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
             String                                message                 = compilerAnnotations.makeString("\n");
             fail(message);
         }
@@ -92,7 +92,7 @@ public abstract class AbstractKlassCompilerErrorTestCase
         {
             DomainModelCompilationResult domainModelCompilationResult =
                     (DomainModelCompilationResult) compilationResult;
-            DomainModel domainModel = domainModelCompilationResult.getDomainModel();
+            DomainModel domainModel = domainModelCompilationResult.domainModel();
             assertThat(domainModel, notNullValue());
         }
         else

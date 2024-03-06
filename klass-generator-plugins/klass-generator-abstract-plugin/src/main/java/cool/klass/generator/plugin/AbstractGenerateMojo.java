@@ -54,7 +54,7 @@ public abstract class AbstractGenerateMojo
 
         if (compilationResult instanceof DomainModelCompilationResult)
         {
-            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
+            return ((DomainModelCompilationResult) compilationResult).domainModel();
         }
 
         throw new AssertionError(compilationResult.getClass().getSimpleName());
@@ -139,7 +139,7 @@ public abstract class AbstractGenerateMojo
 
         if (compilationResult instanceof DomainModelCompilationResult)
         {
-            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
+            return ((DomainModelCompilationResult) compilationResult).domainModel();
         }
 
         throw new AssertionError(compilationResult.getClass().getSimpleName());
@@ -149,7 +149,7 @@ public abstract class AbstractGenerateMojo
     {
         if (compilationResult instanceof ErrorsCompilationResult errorsCompilationResult)
         {
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.compilerAnnotations();
             for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
             {
                 this.getLog().info(compilerAnnotation.toGitHubAnnotation());

@@ -1691,7 +1691,7 @@ public class KlassCompilerTest
         if (compilationResult instanceof ErrorsCompilationResult)
         {
             ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
             String                                message                 = compilerAnnotations.makeString("\n");
             fail(message);
         }
@@ -1699,7 +1699,7 @@ public class KlassCompilerTest
         {
             DomainModelCompilationResult domainModelCompilationResult =
                     (DomainModelCompilationResult) compilationResult;
-            DomainModel domainModel = domainModelCompilationResult.getDomainModel();
+            DomainModel domainModel = domainModelCompilationResult.domainModel();
             assertThat(domainModel, notNullValue());
         }
         else

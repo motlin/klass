@@ -12,7 +12,6 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -133,12 +132,11 @@ public class CompilerState
 
     @Nonnull
     public CompilationResult getCompilationResult(
-            ImmutableList<SourceCode> sourceCodes,
             ImmutableList<RootCompilerAnnotation> compilerAnnotations)
     {
         if (compilerAnnotations.notEmpty())
         {
-            return new ErrorsCompilationResult(compilerAnnotations, sourceCodes);
+            return new ErrorsCompilationResult(compilerAnnotations);
         }
         return new DomainModelCompilationResult(this.buildDomainModel());
     }

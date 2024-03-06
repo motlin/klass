@@ -46,7 +46,7 @@ public class KlassTopLevelElementHtmlGeneratorTest
         if (compilationResult instanceof ErrorsCompilationResult)
         {
             ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.getCompilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
             String                                message                 = compilerAnnotations.makeString("\n");
             fail(message);
         }
@@ -54,7 +54,7 @@ public class KlassTopLevelElementHtmlGeneratorTest
         {
             DomainModelCompilationResult domainModelCompilationResult =
                     (DomainModelCompilationResult) compilationResult;
-            DomainModelWithSourceCode domainModel = domainModelCompilationResult.getDomainModel();
+            DomainModelWithSourceCode domainModel = domainModelCompilationResult.domainModel();
             assertThat(domainModel, notNullValue());
 
             for (TopLevelElement topLevelElement : domainModel.getTopLevelElements())

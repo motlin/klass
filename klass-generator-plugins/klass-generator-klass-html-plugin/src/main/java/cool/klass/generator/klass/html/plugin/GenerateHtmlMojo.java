@@ -7,13 +7,11 @@ import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.eclipse.collections.api.list.ImmutableList;
 
 @Mojo(
         name = "generate-klass-html",
@@ -40,8 +38,7 @@ public class GenerateHtmlMojo
             throw new AssertionError(compilationResult.getClass().getSimpleName());
         }
 
-        DomainModelWithSourceCode    domainModel = ((DomainModelCompilationResult) compilationResult).getDomainModel();
-        ImmutableList<SourceCode>    sourceCodes = compilationResult.getSourceCodes();
+        DomainModelWithSourceCode    domainModel = ((DomainModelCompilationResult) compilationResult).domainModel();
         KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(domainModel);
         generator.writeHtmlFiles(this.outputDirectory.toPath());
     }

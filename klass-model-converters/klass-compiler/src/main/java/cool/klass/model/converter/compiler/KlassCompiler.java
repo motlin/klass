@@ -39,8 +39,6 @@ import cool.klass.model.converter.compiler.syntax.highlighter.DarkColorScheme;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
 import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
-import cool.klass.model.meta.domain.api.source.SourceCode;
-import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -132,14 +130,10 @@ public class KlassCompiler
             }
         }
 
-        CompilerInputState compilerInputState = this.compilerState.getCompilerInputState();
-        ImmutableList<SourceCodeBuilder> sourceCodeBuilders = compilerInputState
-                .getCompilationUnits()
-                .collect(CompilationUnit::build)
-                .toImmutable();
-        ImmutableList<SourceCode>         sourceCodes               = sourceCodeBuilders.collect(SourceCodeBuilder::build);
-        MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(sourceCodes);
-        MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(sourceCodes);
+        CompilerInputState                compilerInputState        = this.compilerState.getCompilerInputState();
+        ImmutableList<CompilationUnit>    compilationUnits          = compilerInputState.getCompilationUnits().toImmutable();
+        MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(compilationUnits);
+        MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(compilationUnits);
 
         CompilerAnnotationState compilerAnnotationHolder = this.compilerState.getCompilerAnnotationHolder();
 
@@ -153,24 +147,24 @@ public class KlassCompiler
         this.compilerState.reportErrors();
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilerAnnotationHolder.getCompilerAnnotations();
 
-        return this.compilerState.getCompilationResult(sourceCodes, compilerAnnotations);
+        return this.compilerState.getCompilationResult(compilerAnnotations);
     }
 
-    private MapIterable<Token, TokenCategory> getTokenCategoriesFromLexer(ImmutableList<SourceCode> sourceCodes)
+    private MapIterable<Token, TokenCategory> getTokenCategoriesFromLexer(ImmutableList<CompilationUnit> compilationUnits)
     {
         MutableMapIterable<Token, TokenCategory> tokenCategoriesFromLexer = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-        sourceCodes
-                .collect(SourceCode::getTokenStream)
+        compilationUnits
+                .collect(CompilationUnit::getTokenStream)
                 .forEachWith(LexerBasedTokenCategorizer::findTokenCategoriesFromLexer, tokenCategoriesFromLexer);
         return tokenCategoriesFromLexer.asUnmodifiable();
     }
 
-    private MapIterable<Token, TokenCategory> getTokenCategoriesFromParser(ImmutableList<SourceCode> sourceCodes)
+    private MapIterable<Token, TokenCategory> getTokenCategoriesFromParser(ImmutableList<CompilationUnit> compilationUnits)
     {
         var listener = new ParserBasedTokenCategorizer();
 
-        sourceCodes
-                .collect(SourceCode::getParserContext)
+        compilationUnits
+                .collect(CompilationUnit::getParserContext)
                 .forEachWith(ParserBasedTokenCategorizer::findTokenCategoriesFromParser, listener);
         return listener.getTokenCategories();
     }

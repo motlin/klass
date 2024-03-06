@@ -120,7 +120,7 @@ public class DomainModelCompilerLoader
     @Nonnull
     private DomainModelWithSourceCode handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
     {
-        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.getCompilerAnnotations();
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
         for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
         {
             LOGGER.warn(compilerAnnotation.toString());
@@ -131,6 +131,6 @@ public class DomainModelCompilerLoader
     @Nonnull
     private DomainModelWithSourceCode handleSuccess(@Nonnull DomainModelCompilationResult compilationResult)
     {
-        return compilationResult.getDomainModel();
+        return compilationResult.domainModel();
     }
 }
