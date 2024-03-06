@@ -304,6 +304,11 @@ public class RequiredPropertiesValidator
             return;
         }
 
+        if (this.operationMode == OperationMode.PATCH)
+        {
+            return;
+        }
+
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode() || jsonNode.isNull())
         {
