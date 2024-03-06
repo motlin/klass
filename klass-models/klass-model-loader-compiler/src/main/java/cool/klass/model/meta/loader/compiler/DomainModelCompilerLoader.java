@@ -16,7 +16,6 @@ import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.DomainModelLoader;
-import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.reflections.Reflections;
@@ -57,7 +56,7 @@ public class DomainModelCompilerLoader
         LOGGER.info("Scanning source packages: {}", this.klassSourcePackages);
         Instant start = Instant.now();
 
-        ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits();
+        ImmutableList<CompilationUnit> compilationUnits = this.getCompilationUnits();
 
         KlassCompiler             klassCompiler     = new KlassCompiler(compilationUnits);
         CompilationResult         compilationResult = klassCompiler.compile();
@@ -74,7 +73,7 @@ public class DomainModelCompilerLoader
     }
 
     @Nonnull
-    private ImmutableCollection<CompilationUnit> getCompilationUnits()
+    private ImmutableList<CompilationUnit> getCompilationUnits()
     {
         ImmutableList<URL> urls = this.klassSourcePackages.flatCollectWith(
                 ClasspathHelper::forPackage,

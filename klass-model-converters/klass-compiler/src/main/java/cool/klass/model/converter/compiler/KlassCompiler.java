@@ -42,7 +42,6 @@ import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBased
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMapIterable;
@@ -89,7 +88,7 @@ public class KlassCompiler
         this(Lists.immutable.with(compilationUnit));
     }
 
-    public KlassCompiler(ImmutableCollection<CompilationUnit> compilationUnits)
+    public KlassCompiler(ImmutableList<CompilationUnit> compilationUnits)
     {
         // TODO: Move to application run
         AnsiConsole.systemInstall();

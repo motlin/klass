@@ -23,7 +23,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
@@ -74,7 +73,7 @@ public abstract class AbstractGenerateMojo
             throw new MojoExecutionException(message);
         }
 
-        ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits(klassLocations.toImmutable());
+        ImmutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(klassLocations.toImmutable());
 
         // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
         KlassCompiler klassCompiler = new KlassCompiler(compilationUnits);
@@ -183,7 +182,7 @@ public abstract class AbstractGenerateMojo
         ImmutableList<String> klassSourcePackages = Lists.immutable.withAll(this.klassSourcePackages);
         this.getLog().debug("Scanning source packages: " + klassSourcePackages.makeString());
 
-        ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits(
+        ImmutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(
                 classLoader,
                 klassSourcePackages);
 
@@ -192,7 +191,7 @@ public abstract class AbstractGenerateMojo
     }
 
     @Nonnull
-    private ImmutableCollection<CompilationUnit> getCompilationUnits(
+    private ImmutableList<CompilationUnit> getCompilationUnits(
             ClassLoader classLoader,
             ImmutableList<String> klassSourcePackages) throws MojoExecutionException
     {
@@ -207,7 +206,7 @@ public abstract class AbstractGenerateMojo
 
         this.getLog().debug("Found source files on classpath: " + klassLocations);
 
-        ImmutableCollection<CompilationUnit> compilationUnits = Lists.immutable.withAll(klassLocations)
+        ImmutableList<CompilationUnit> compilationUnits = Lists.immutable.withAll(klassLocations)
                 .collectWithIndex((each, index) -> CompilationUnit.createFromClasspathLocation(index, each, classLoader));
 
         if (compilationUnits.isEmpty())
@@ -218,11 +217,11 @@ public abstract class AbstractGenerateMojo
         return compilationUnits;
     }
 
-    private ImmutableCollection<CompilationUnit> getCompilationUnits(ImmutableList<File> klassLocations)
+    private ImmutableList<CompilationUnit> getCompilationUnits(ImmutableList<File> klassLocations)
     {
         this.getLog().debug("Found source files on classpath: " + klassLocations);
 
-        ImmutableCollection<CompilationUnit> compilationUnits = klassLocations
+        ImmutableList<CompilationUnit> compilationUnits = klassLocations
                 .collectWithIndex((each, index) -> CompilationUnit.createFromFile(index, each));
 
         return compilationUnits;
