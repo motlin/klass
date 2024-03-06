@@ -109,7 +109,6 @@ public class RootCompilerAnnotation
         {
             case ERROR -> RED;
             case WARNING -> YELLOW;
-            default -> throw new AssertionError(this.severity);
         };
     }
 

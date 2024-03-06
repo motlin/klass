@@ -408,4 +408,17 @@ public abstract class AbstractCompilerAnnotation
     }
 
     public abstract String toGitHubAnnotation();
+
+    public ImmutableList<Integer> getLines()
+    {
+        MutableList<Integer> result = Lists.mutable.empty();
+        this.getLines(result);
+        return result.toImmutable();
+    }
+
+    protected void getLines(MutableList<Integer> lines)
+    {
+        lines.add(this.getLine());
+        this.macroCause.ifPresent(cause -> cause.getLines(lines));
+    }
 }

@@ -83,20 +83,24 @@ public abstract class AbstractKlassCompilerErrorTestCase
         return compiler.compile();
     }
 
-    private void handleCompilerAnnotations(CompilationResult compilationResult, String testName, Class<?> callingClass)
+    private void handleCompilerAnnotations(
+            CompilationResult compilationResult,
+            String testName,
+            Class<?> callingClass)
     {
-        int errorId   = 0;
-        int warningId = 0;
-
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
         for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
         {
-            String severityString = compilerAnnotation.getSeverityString();
-            int annotationId = compilerAnnotation.getSeverity() == AnnotationSeverity.ERROR
-                    ? errorId++
-                    : warningId++;
-            String annotationSourceName = "%s-%s-%d.log".formatted(testName, severityString, annotationId);
-            this.rule.assertFileContents(annotationSourceName, compilerAnnotation.toString(), callingClass);
+            String annotationSourceName = "%s-%s-%d-%s.log".formatted(
+                    testName,
+                    compilerAnnotation.getLines().toReversed().makeString("_"),
+                    compilerAnnotation.getCharPositionInLine(),
+                    compilerAnnotation.getAnnotationCode());
+
+            this.rule.assertFileContents(
+                    annotationSourceName,
+                    compilerAnnotation.toString(),
+                    callingClass);
         }
 
         ImmutableListMultimap<Object, RootCompilerAnnotation> annotationsByKey =
