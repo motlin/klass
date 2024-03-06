@@ -63,7 +63,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 ? null
                 : prettyNameContext.getText().substring(1, prettyNameContext.getText().length() - 1);
 
-        AntlrEnumerationLiteral antlrEnumerationLiteral = new AntlrEnumerationLiteral(
+        AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
                 ctx,
                 this.currentCompilationUnit,
                 false,
@@ -71,6 +71,6 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 this.enumerationState.getNumLiterals() + 1,
                 prettyName,
                 this.enumerationState);
-        this.enumerationState.enterEnumerationLiteral(antlrEnumerationLiteral);
+        this.enumerationState.enterEnumerationLiteral(enumerationLiteralState);
     }
 }

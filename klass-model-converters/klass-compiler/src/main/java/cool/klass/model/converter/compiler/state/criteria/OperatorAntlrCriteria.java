@@ -8,7 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
@@ -32,7 +32,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
             @Nonnull CriteriaOperatorContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrCriteriaOwner criteriaOwner,
             @Nonnull AntlrOperator operator,
             @Nonnull AntlrExpressionValue sourceValue,
             @Nonnull AntlrExpressionValue targetValue)

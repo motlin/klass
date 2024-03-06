@@ -14,7 +14,7 @@ import cool.klass.model.converter.compiler.state.criteria.EdgePointAntlrCriteria
 import cool.klass.model.converter.compiler.state.criteria.OperatorAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OrAntlrCriteria;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
@@ -40,18 +40,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 {
     @Nonnull
-    private final CompilationUnit  compilationUnit;
+    private final CompilationUnit    compilationUnit;
     @Nonnull
-    private final AntlrDomainModel domainModelState;
+    private final AntlrDomainModel   domainModelState;
     @Nonnull
-    private final CriteriaOwner    criteriaOwner;
+    private final AntlrCriteriaOwner criteriaOwner;
     @Nonnull
-    private final AntlrClass       thisReference;
+    private final AntlrClass         thisReference;
 
     public CriteriaVisitor(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull AntlrDomainModel domainModelState,
-            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrCriteriaOwner criteriaOwner,
             @Nonnull AntlrClass thisReference)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);

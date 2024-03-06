@@ -31,7 +31,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 
     // TODO: Check that it's not NOT_FOUND
     @Nonnull
-    private final AntlrEnumeration antlrEnumeration;
+    private final AntlrEnumeration enumerationState;
 
     private EnumerationPropertyBuilder enumerationPropertyBuilder;
 
@@ -45,7 +45,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             AntlrClass owningClassState,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
-            @Nonnull AntlrEnumeration antlrEnumeration)
+            @Nonnull AntlrEnumeration enumerationState)
     {
         super(
                 elementContext,
@@ -58,14 +58,14 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 modifiers,
                 isOptional);
         // TODO: is this nullable?
-        this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
+        this.enumerationState = Objects.requireNonNull(enumerationState);
     }
 
     @Nonnull
     @Override
     public AntlrEnumeration getType()
     {
-        return this.antlrEnumeration;
+        return this.enumerationState;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.antlrEnumeration.getEnumerationBuilder(),
+                this.enumerationState.getEnumerationBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 propertyModifierBuilders,
                 this.isKey(),

@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -20,13 +20,13 @@ import org.eclipse.collections.impl.factory.Lists;
 public abstract class AntlrCriteria extends AntlrElement
 {
     @Nonnull
-    private final CriteriaOwner criteriaOwner;
+    private final AntlrCriteriaOwner criteriaOwner;
 
     protected AntlrCriteria(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull CriteriaOwner criteriaOwner)
+            @Nonnull AntlrCriteriaOwner criteriaOwner)
     {
         super(elementContext, compilationUnit, inferred);
         this.criteriaOwner = Objects.requireNonNull(criteriaOwner);

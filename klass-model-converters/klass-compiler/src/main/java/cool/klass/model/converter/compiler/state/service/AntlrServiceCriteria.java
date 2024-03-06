@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
+public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaOwner
 {
     @Nonnull
     private final String       serviceCriteriaKeyword;

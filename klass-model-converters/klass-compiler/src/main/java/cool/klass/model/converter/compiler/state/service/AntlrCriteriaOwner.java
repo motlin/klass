@@ -8,7 +8,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface CriteriaOwner
+public interface AntlrCriteriaOwner
 {
     @Nonnull
     AntlrCriteria getCriteria();
@@ -17,6 +17,7 @@ public interface CriteriaOwner
 
     void getParserRuleContexts(MutableList<ParserRuleContext> parserRuleContexts);
 
+    // TODO: ❗ Move this to AntlrElement
     default ImmutableList<ParserRuleContext> getParserRuleContexts()
     {
         MutableList<ParserRuleContext> result = Lists.mutable.empty();

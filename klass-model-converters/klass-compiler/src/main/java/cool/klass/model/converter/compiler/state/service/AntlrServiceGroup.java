@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.service;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -12,13 +13,16 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.url.Url.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.bag.strategy.mutable.HashBagWithHashingStrategy;
 import org.eclipse.collections.impl.block.factory.HashingStrategies;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrServiceGroup extends AntlrPackageableElement
 {
@@ -36,7 +40,9 @@ public class AntlrServiceGroup extends AntlrPackageableElement
     @Nonnull
     private final AntlrClass klass;
 
-    private final MutableList<AntlrUrl> urls = Lists.mutable.empty();
+    private final MutableList<AntlrUrl>                              urlStates     = Lists.mutable.empty();
+    private final MutableOrderedMap<UrlDeclarationContext, AntlrUrl> urlsByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private ServiceGroupBuilder serviceGroupBuilder;
 
@@ -60,9 +66,22 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         return this.klass;
     }
 
-    public void enterUrlDeclaration(@Nonnull AntlrUrl url)
+    public AntlrUrl getUrlByContext(UrlDeclarationContext ctx)
     {
-        this.urls.add(url);
+        return this.urlsByContext.get(ctx);
+    }
+
+    public void enterUrlDeclaration(@Nonnull AntlrUrl urlState)
+    {
+        AntlrUrl duplicate = this.urlsByContext.put(
+                urlState.getElementContext(),
+                urlState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.urlStates.add(urlState);
     }
 
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
@@ -85,9 +104,9 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
         if (this.klass != AntlrClass.NOT_FOUND)
         {
-            for (AntlrUrl url : this.urls)
+            for (AntlrUrl urlState : this.urlStates)
             {
-                url.reportErrors(compilerErrorHolder);
+                urlState.reportErrors(compilerErrorHolder);
             }
         }
 
@@ -109,7 +128,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
 
     private void reportNoUrls(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        if (this.urls.isEmpty())
+        if (this.urlStates.isEmpty())
         {
             String message = String.format(
                     "ERR_SER_EMP: Service group should declare at least one url: '%s'.",
@@ -161,7 +180,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
                 this.packageName,
                 this.klass.getKlassBuilder());
 
-        ImmutableList<UrlBuilder> urlBuilders = this.urls
+        ImmutableList<UrlBuilder> urlBuilders = this.urlStates
                 .collect(AntlrUrl::build)
                 .toImmutable();
 

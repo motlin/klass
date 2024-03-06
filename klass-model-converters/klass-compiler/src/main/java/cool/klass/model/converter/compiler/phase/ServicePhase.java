@@ -138,11 +138,11 @@ public class ServicePhase extends AbstractCompilerPhase
 
         // Resolve service variable references after inferring additional parameters like version
         OrderedMap<String, AntlrUrlParameter> formalParametersByName = this.urlState.getFormalParametersByName();
-        for (AntlrService antlrService : this.urlState.getServiceStates())
+        for (AntlrService serviceState : this.urlState.getServiceStates())
         {
-            for (AntlrServiceCriteria antlrServiceCriteria : antlrService.getServiceCriteriaStates())
+            for (AntlrServiceCriteria serviceCriteriaState : serviceState.getServiceCriteriaStates())
             {
-                AntlrCriteria criteria = antlrServiceCriteria.getCriteria();
+                AntlrCriteria criteria = serviceCriteriaState.getCriteria();
                 criteria.resolveServiceVariables(formalParametersByName);
                 // TODO: Type inference here?
                 criteria.resolveTypes();
@@ -257,7 +257,7 @@ public class ServicePhase extends AbstractCompilerPhase
 
         String serviceCriteriaKeyword = serviceCriteriaKeywordContext.getText();
 
-        AntlrServiceCriteria antlrServiceCriteria = new AntlrServiceCriteria(
+        AntlrServiceCriteria serviceCriteriaState = new AntlrServiceCriteria(
                 ctx,
                 this.currentCompilationUnit,
                 false,
@@ -269,14 +269,14 @@ public class ServicePhase extends AbstractCompilerPhase
         CriteriaVisitor criteriaVisitor = new CriteriaVisitor(
                 this.currentCompilationUnit,
                 this.domainModelState,
-                antlrServiceCriteria,
+                serviceCriteriaState,
                 this.serviceGroupState.getKlass());
 
         AntlrCriteria antlrCriteria = criteriaVisitor.visit(criteriaExpressionContext);
 
-        antlrServiceCriteria.setCriteria(antlrCriteria);
+        serviceCriteriaState.setCriteria(antlrCriteria);
 
-        this.serviceState.enterServiceCriteriaDeclaration(antlrServiceCriteria);
+        this.serviceState.enterServiceCriteriaDeclaration(serviceCriteriaState);
     }
 
     @Override
@@ -369,9 +369,9 @@ public class ServicePhase extends AbstractCompilerPhase
         EnumerationReferenceContext enumerationReferenceContext = ctx.enumerationReference();
         MultiplicityContext         multiplicityContext         = ctx.multiplicity();
 
-        AntlrEnumeration antlrEnumeration = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
+        AntlrEnumeration enumerationState = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
 
-        AntlrMultiplicity antlrMultiplicity = new AntlrMultiplicity(
+        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
                 this.currentCompilationUnit,
                 false);
@@ -382,35 +382,35 @@ public class ServicePhase extends AbstractCompilerPhase
 
         if (this.inQueryParameterList)
         {
-            AntlrEnumerationUrlQueryParameter antlrEnumerationUrlPathParameter = new AntlrEnumerationUrlQueryParameter(
+            AntlrEnumerationUrlQueryParameter enumerationStateUrlPathParameter = new AntlrEnumerationUrlQueryParameter(
                     ctx,
                     this.currentCompilationUnit,
                     false,
                     identifier,
                     identifier.getText(),
                     this.urlState.getNumQueryParameters() + 1,
-                    antlrEnumeration,
-                    antlrMultiplicity,
+                    enumerationState,
+                    multiplicityState,
                     this.urlState,
                     parameterModifiers);
 
-            this.urlState.enterQueryParameterDeclaration(antlrEnumerationUrlPathParameter);
+            this.urlState.enterQueryParameterDeclaration(enumerationStateUrlPathParameter);
         }
         else
         {
-            AntlrEnumerationUrlPathParameter antlrEnumerationUrlPathParameter = new AntlrEnumerationUrlPathParameter(
+            AntlrEnumerationUrlPathParameter enumerationStateUrlPathParameter = new AntlrEnumerationUrlPathParameter(
                     ctx,
                     this.currentCompilationUnit,
                     false,
                     identifier,
                     identifier.getText(),
                     this.urlState.getNumPathSegments(),
-                    antlrEnumeration,
-                    antlrMultiplicity,
+                    enumerationState,
+                    multiplicityState,
                     this.urlState,
                     parameterModifiers);
 
-            this.urlState.enterPathParameterDeclaration(antlrEnumerationUrlPathParameter);
+            this.urlState.enterPathParameterDeclaration(enumerationStateUrlPathParameter);
         }
     }
 

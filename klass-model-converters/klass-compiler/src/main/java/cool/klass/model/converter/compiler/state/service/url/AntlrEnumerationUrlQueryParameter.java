@@ -43,7 +43,7 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
             Lists.immutable.empty());
 
     @Nonnull
-    private final AntlrEnumeration antlrEnumeration;
+    private final AntlrEnumeration enumerationState;
 
     public AntlrEnumerationUrlQueryParameter(
             @Nonnull ParserRuleContext elementContext,
@@ -52,8 +52,8 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrEnumeration antlrEnumeration,
-            @Nonnull AntlrMultiplicity antlrMultiplicity,
+            @Nonnull AntlrEnumeration enumerationState,
+            @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull AntlrUrl url,
             ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
@@ -64,17 +64,17 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
                 nameContext,
                 name,
                 ordinal,
-                antlrMultiplicity,
+                multiplicityState,
                 url,
                 parameterModifiers);
-        this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
+        this.enumerationState = Objects.requireNonNull(enumerationState);
     }
 
     @Nonnull
     @Override
     public AntlrType getType()
     {
-        return this.antlrEnumeration;
+        return this.enumerationState;
     }
 
     @Nonnull
@@ -97,6 +97,6 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
                 this.ordinal,
                 this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
-                this.antlrEnumeration.getEnumerationBuilder());
+                this.enumerationState.getEnumerationBuilder());
     }
 }

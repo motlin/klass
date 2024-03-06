@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
 import cool.klass.model.meta.domain.criteria.EdgePointCriteria.EdgePointCriteriaBuilder;
@@ -25,7 +25,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
             @Nonnull CriteriaEdgePointContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrCriteriaOwner criteriaOwner,
             @Nonnull AntlrMemberExpressionValue memberExpressionValue)
     {
         super(elementContext, compilationUnit, inferred, criteriaOwner);

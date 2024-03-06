@@ -12,7 +12,6 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
@@ -21,7 +20,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrAssociationEnd extends AntlrProperty<Klass>
+public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
 {
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
             new AssociationEndContext(null, -1),
@@ -49,14 +48,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     @Nonnull
     private final AntlrAssociation                           owningAssociationState;
     @Nonnull
-    private final AntlrClass                                 type;
-    private final AntlrMultiplicity                          antlrMultiplicity;
-    @Nonnull
     private final ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates;
-
-    @Nonnull
-    private Optional<AntlrOrderBy> orderByState = Optional.empty();
-    private AntlrClass             owningClassState;
 
     private AntlrAssociationEnd   opposite;
     private AssociationEndBuilder associationEndBuilder;
@@ -70,13 +62,11 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             int ordinal,
             @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
-            AntlrMultiplicity antlrMultiplicity,
+            AntlrMultiplicity multiplicityState,
             @Nonnull ImmutableList<AntlrAssociationEndModifier> associationEndModifierStates)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, type, multiplicityState);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
-        this.type = Objects.requireNonNull(type);
-        this.antlrMultiplicity = antlrMultiplicity;
         this.associationEndModifierStates = Objects.requireNonNull(associationEndModifierStates);
     }
 
@@ -85,13 +75,6 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     public AssociationEndContext getElementContext()
     {
         return (AssociationEndContext) super.getElementContext();
-    }
-
-    @Override
-    @Nonnull
-    public AntlrClass getType()
-    {
-        return this.type;
     }
 
     @Override
@@ -115,36 +98,19 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
                 this.type.getKlassBuilder(),
                 this.owningClassState.getKlassBuilder(),
                 this.owningAssociationState.getAssociationBuilder(),
-                this.antlrMultiplicity.getMultiplicity(),
+                this.multiplicityState.getMultiplicity(),
                 associationEndModifierBuilders,
                 this.isOwned());
 
-        // TODO: OrderByOwner?
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.associationEndBuilder.setOrderByBuilder(orderByBuilder);
 
         return this.associationEndBuilder;
     }
 
-    @Override
-    public AntlrClass getOwningClassState()
-    {
-        return this.owningClassState;
-    }
-
-    public void setOwningClassState(@Nonnull AntlrClass owningClassState)
-    {
-        this.owningClassState = Objects.requireNonNull(owningClassState);
-    }
-
     public boolean isOwned()
     {
         return this.associationEndModifierStates.anySatisfy(AntlrAssociationEndModifier::isOwned);
-    }
-
-    public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
-    {
-        this.orderByState = Objects.requireNonNull(orderByState);
     }
 
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)

@@ -79,7 +79,7 @@ public class AssociationPhase extends AbstractCompilerPhase
 
         String     associationEndName = identifier.getText();
         AntlrClass antlrClass         = this.domainModelState.getClassByName(classReferenceContext.getText());
-        AntlrMultiplicity antlrMultiplicity = new AntlrMultiplicity(
+        AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
                 this.currentCompilationUnit,
                 this.isInference);
@@ -97,12 +97,13 @@ public class AssociationPhase extends AbstractCompilerPhase
                 this.associationState.getNumAssociationEnds() + 1,
                 this.associationState,
                 antlrClass,
-                antlrMultiplicity,
+                multiplicityState,
                 associationEndModifiers);
 
         this.associationState.enterAssociationEnd(antlrAssociationEnd);
     }
 
+    // TODO: This is too early to resolve relationships. It won't be reliable until we're done inferring associations and we've also compiled parameterized properties.
     @Override
     public void enterRelationship(@Nonnull RelationshipContext ctx)
     {

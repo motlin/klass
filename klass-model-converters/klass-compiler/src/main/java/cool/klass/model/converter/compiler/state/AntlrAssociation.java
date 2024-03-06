@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
@@ -23,7 +23,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociation extends AntlrPackageableElement implements CriteriaOwner
+public class AntlrAssociation extends AntlrPackageableElement implements AntlrCriteriaOwner
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
@@ -44,10 +44,9 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
     };
 
     private final MutableList<AntlrAssociationEnd>                              associationEndStates     = Lists.mutable.empty();
-    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(
-            new LinkedHashMap<>());
+    private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private AntlrCriteria antlrCriteria;
+    private AntlrCriteria criteriaState;
 
     private AssociationBuilder associationBuilder;
     private AntlrClass         versionClass;
@@ -137,7 +136,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             throw new AssertionError(numAssociationEnds);
         }
 
-        CriteriaBuilder criteriaBuilder = this.antlrCriteria.build();
+        CriteriaBuilder criteriaBuilder = this.criteriaState.build();
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
@@ -214,7 +213,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
             return;
         }
 
-        if (this.antlrCriteria == null)
+        if (this.criteriaState == null)
         {
             // TODO: Editor error matching this one
             String message = String.format(
@@ -224,7 +223,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         }
         else
         {
-            this.antlrCriteria.reportErrors(compilerErrorHolder, this.getParserRuleContexts());
+            this.criteriaState.reportErrors(compilerErrorHolder, this.getParserRuleContexts());
         }
     }
 
@@ -256,13 +255,13 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
     @Override
     public AntlrCriteria getCriteria()
     {
-        return this.antlrCriteria;
+        return this.criteriaState;
     }
 
     @Override
     public void setCriteria(@Nonnull AntlrCriteria criteria)
     {
-        this.antlrCriteria = Objects.requireNonNull(criteria);
+        this.criteriaState = Objects.requireNonNull(criteria);
     }
 
     @Override

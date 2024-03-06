@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.meta.domain.criteria.AndCriteria.AndCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,7 +16,7 @@ public class AndAntlrCriteria extends BinaryAntlrCriteria
             @Nonnull CriteriaExpressionAndContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrCriteriaOwner criteriaOwner,
             @Nonnull AntlrCriteria left,
             @Nonnull AntlrCriteria right)
     {

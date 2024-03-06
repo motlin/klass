@@ -9,7 +9,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePath.OrderByMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -20,10 +19,9 @@ import org.eclipse.collections.impl.factory.Lists;
 public class AntlrOrderBy extends AntlrElement
 {
     @Nonnull
-    private final AntlrClass          thisContext;
-    // TODO: OrderByOwner
+    private final AntlrClass        thisContext;
     @Nonnull
-    private final AntlrAssociationEnd associationEndState;
+    private final AntlrOrderByOwner orderByOwnerState;
 
     @Nonnull
     private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePathStates = Lists.mutable.empty();
@@ -34,12 +32,11 @@ public class AntlrOrderBy extends AntlrElement
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull AntlrClass thisContext,
-            // TODO: OrderByOwner
-            @Nonnull AntlrAssociationEnd associationEndState)
+            @Nonnull AntlrOrderByOwner orderByOwnerState)
     {
         super(elementContext, compilationUnit, inferred);
         this.thisContext = Objects.requireNonNull(thisContext);
-        this.associationEndState = Objects.requireNonNull(associationEndState);
+        this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
     }
 
     public int getNumProperties()
@@ -73,8 +70,7 @@ public class AntlrOrderBy extends AntlrElement
         this.orderByBuilder = new OrderByBuilder(
                 this.elementContext,
                 this.inferred,
-                this.thisContext.getKlassBuilder(),
-                this.associationEndState.getAssociationEndBuilder());
+                this.thisContext.getKlassBuilder());
 
         ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders =
                 this.orderByMemberReferencePathStates

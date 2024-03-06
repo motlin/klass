@@ -7,12 +7,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.phase.AssociationOrderByPhase;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.ClassPhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
+import cool.klass.model.converter.compiler.phase.OrderByPhase;
+import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
@@ -94,6 +95,7 @@ public class KlassCompiler
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             MutableSet<CompilationUnit> compilationUnits)
     {
+        // TODO: Move isInference before this.domainModelState
         KlassListener phase1 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
@@ -123,12 +125,6 @@ public class KlassCompiler
                 this.domainModelState,
                 false);
 
-        KlassListener associationOrderByPhase = new AssociationOrderByPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelState,
-                false);
-
         KlassListener phase6 = new VersionAssociationInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
@@ -140,6 +136,14 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 this.domainModelState,
                 false);
+
+        KlassListener parameterizedPropertyPhase = new ParameterizedPropertyPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                false,
+                this.domainModelState);
+
+        // TODO: RelationshipPhase should probably be here, and come out of the association phase
 
         // TODO: Redo these 4 phases to use domainModelState
         DeclarationsByNamePhase    phase8  = new DeclarationsByNamePhase();
@@ -162,21 +166,28 @@ public class KlassCompiler
                 this.domainModelState,
                 false);
 
+        KlassListener orderByPhase = new OrderByPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelState,
+                false);
+
         return Lists.immutable.with(
                 phase1,
                 phase2,
                 phase3,
                 phase4,
                 phase5,
-                associationOrderByPhase,
                 phase6,
                 phase7,
+                parameterizedPropertyPhase,
                 phase8,
                 phase9,
                 phase10,
                 phase11,
                 phase12,
-                phase13);
+                phase13,
+                orderByPhase);
     }
 
     @Nullable

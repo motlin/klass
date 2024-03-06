@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.state.service;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -10,6 +11,8 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import cool.klass.model.meta.domain.service.Service.ServiceBuilder;
@@ -29,7 +32,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrService extends AntlrElement
+public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 {
     @Nonnull
     public static final AntlrService AMBIGUOUS = new AntlrService(
@@ -61,6 +64,9 @@ public class AntlrService extends AntlrElement
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private AntlrServiceProjectionDispatch serviceProjectionDispatchState;
+    // TODO: ❗ Service OrderBy
+    @Nonnull
+    private Optional<AntlrOrderBy>         orderByState = Optional.empty();
     private ServiceBuilder                 serviceBuilder;
 
     public AntlrService(
@@ -110,12 +116,12 @@ public class AntlrService extends AntlrElement
                 this.urlState.getServiceGroup().getElementContext());
     }
 
-    public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria antlrServiceCriteria)
+    public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
     {
-        this.serviceCriteriaStates.add(antlrServiceCriteria);
+        this.serviceCriteriaStates.add(serviceCriteriaState);
         AntlrServiceCriteria duplicate = this.serviceCriteriaByContext.put(
-                antlrServiceCriteria.getElementContext(),
-                antlrServiceCriteria);
+                serviceCriteriaState.getElementContext(),
+                serviceCriteriaState);
         if (duplicate != null)
         {
             throw new AssertionError();
@@ -177,6 +183,18 @@ public class AntlrService extends AntlrElement
         return (ServiceDeclarationContext) super.getElementContext();
     }
 
+    @Nonnull
+    public AntlrVerb getVerbState()
+    {
+        return this.verbState;
+    }
+
+    @Override
+    public void setOrderByState(@Nonnull Optional<AntlrOrderBy> orderByState)
+    {
+        this.orderByState = Objects.requireNonNull(orderByState);
+    }
+
     public ServiceBuilder build()
     {
         if (this.serviceBuilder != null)
@@ -187,7 +205,12 @@ public class AntlrService extends AntlrElement
         UrlBuilder          urlBuilder          = this.urlState.getUrlBuilder();
         Verb                verb                = this.verbState.getVerb();
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
-        this.serviceBuilder = new ServiceBuilder(this.elementContext, this.inferred, urlBuilder, verb, serviceMultiplicity);
+        this.serviceBuilder = new ServiceBuilder(
+                this.elementContext,
+                this.inferred,
+                urlBuilder,
+                verb,
+                serviceMultiplicity);
 
         for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
         {
@@ -235,11 +258,5 @@ public class AntlrService extends AntlrElement
                 && this.verbState.getVerb() != Verb.POST
                 && this.serviceMultiplicityState.getServiceMultiplicity() == ServiceMultiplicity.ONE
                 && !this.hasServiceCriteriaKeyword("conflict");
-    }
-
-    @Nonnull
-    public AntlrVerb getVerbState()
-    {
-        return this.verbState;
     }
 }

@@ -113,7 +113,7 @@ public class ClassPhase extends AbstractCompilerPhase
         OptionalMarkerContext       optionalMarkerContext       = ctx.optionalMarker();
 
         String           propertyName     = identifier.getText();
-        AntlrEnumeration antlrEnumeration = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
+        AntlrEnumeration enumerationState = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
         boolean          isOptional       = optionalMarkerContext != null;
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
@@ -129,7 +129,7 @@ public class ClassPhase extends AbstractCompilerPhase
                 this.classState.getNumMembers() + 1,
                 this.classState, isOptional,
                 propertyModifiers,
-                antlrEnumeration);
+                enumerationState);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
     }

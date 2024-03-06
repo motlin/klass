@@ -62,13 +62,13 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         return this.enumerationLiteralStates.size();
     }
 
-    public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral antlrEnumerationLiteral)
+    public void enterEnumerationLiteral(@Nonnull AntlrEnumerationLiteral enumerationLiteralState)
     {
-        this.enumerationLiteralStates.add(antlrEnumerationLiteral);
+        this.enumerationLiteralStates.add(enumerationLiteralState);
         this.enumerationLiteralsByName.compute(
-                antlrEnumerationLiteral.getName(),
+                enumerationLiteralState.getName(),
                 (name, builder) -> builder == null
-                        ? antlrEnumerationLiteral
+                        ? enumerationLiteralState
                         : AntlrEnumerationLiteral.AMBIGUOUS);
     }
 

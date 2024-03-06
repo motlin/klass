@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.domain.ClassModifier.ClassModifierBuilder;
@@ -17,6 +18,7 @@ import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -52,6 +54,13 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
         }
+
+        @Override
+        public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterParameterizedProperty() not implemented yet");
+        }
     };
     @Nonnull
     public static final AntlrClass NOT_FOUND = new AntlrClass(
@@ -78,6 +87,13 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
         }
+
+        @Override
+        public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterParameterizedProperty() not implemented yet");
+        }
     };
 
     private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
@@ -86,6 +102,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    private final MutableList<AntlrParameterizedProperty>                                     parameterizedPropertyStates      = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrParameterizedProperty>                       parameterizedPropertiesByName    =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ParameterizedPropertyContext, AntlrParameterizedProperty> parameterizedPropertiesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     private final MutableList<AntlrClass>       versionClasses      = Lists.mutable.empty();
     private final MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
@@ -121,7 +143,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public int getNumMembers()
     {
         return this.dataTypePropertyStates.size()
-                // TODO: Parameterized properties
+                + this.parameterizedPropertyStates.size()
                 + this.associationEndStates.size();
     }
 
@@ -143,6 +165,29 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
+    }
+
+    public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+    {
+        this.parameterizedPropertyStates.add(parameterizedPropertyState);
+        this.parameterizedPropertiesByName.compute(
+                parameterizedPropertyState.getName(),
+                (name, builder) -> builder == null
+                        ? parameterizedPropertyState
+                        : AntlrParameterizedProperty.AMBIGUOUS);
+
+        AntlrParameterizedProperty duplicate = this.parameterizedPropertiesByContext.put(
+                parameterizedPropertyState.getElementContext(),
+                parameterizedPropertyState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public AntlrParameterizedProperty getParameterizedPropertyByContext(ParameterizedPropertyContext ctx)
+    {
+        return this.parameterizedPropertiesByContext.get(ctx);
     }
 
     public KlassBuilder build1()

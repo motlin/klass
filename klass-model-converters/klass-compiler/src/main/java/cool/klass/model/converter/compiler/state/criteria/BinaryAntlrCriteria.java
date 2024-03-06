@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
+import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -23,7 +23,7 @@ public abstract class BinaryAntlrCriteria extends AntlrCriteria
             @Nonnull ParserRuleContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull CriteriaOwner criteriaOwner,
+            @Nonnull AntlrCriteriaOwner criteriaOwner,
             @Nonnull AntlrCriteria left,
             @Nonnull AntlrCriteria right)
     {

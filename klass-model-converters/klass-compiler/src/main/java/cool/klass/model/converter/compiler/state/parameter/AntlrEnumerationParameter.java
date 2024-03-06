@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler.state.service.url;
+package cool.klass.model.converter.compiler.state.parameter;
 
 import java.util.Objects;
 
@@ -9,15 +9,16 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.meta.domain.service.url.EnumerationUrlPathParameter.EnumerationUrlPathParameterBuilder;
+import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
+import cool.klass.model.meta.domain.parameter.EnumerationParameter.EnumerationParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
+public class AntlrEnumerationParameter extends AntlrParameter
 {
     @Nonnull
-    public static final AntlrEnumerationUrlPathParameter AMBIGUOUS = new AntlrEnumerationUrlPathParameter(
+    public static final AntlrEnumerationParameter AMBIGUOUS = new AntlrEnumerationParameter(
             new ParserRuleContext(),
             null,
             true,
@@ -26,11 +27,11 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             -1,
             AntlrEnumeration.AMBIGUOUS,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrUrl.AMBIGUOUS,
+            AntlrParameterizedProperty.AMBIGUOUS,
             Lists.immutable.empty());
 
     @Nonnull
-    public static final AntlrEnumerationUrlPathParameter NOT_FOUND = new AntlrEnumerationUrlPathParameter(
+    public static final AntlrEnumerationParameter NOT_FOUND = new AntlrEnumerationParameter(
             new ParserRuleContext(),
             null,
             true,
@@ -39,13 +40,14 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             -1,
             AntlrEnumeration.NOT_FOUND,
             AntlrMultiplicity.AMBIGUOUS,
-            AntlrUrl.AMBIGUOUS,
+            AntlrParameterizedProperty.AMBIGUOUS,
             Lists.immutable.empty());
 
     @Nonnull
-    private final AntlrEnumeration enumerationState;
+    private final AntlrEnumeration            enumerationState;
+    private       EnumerationParameterBuilder enumerationParameterBuilder;
 
-    public AntlrEnumerationUrlPathParameter(
+    public AntlrEnumerationParameter(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
@@ -54,8 +56,8 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
             int ordinal,
             @Nonnull AntlrEnumeration enumerationState,
             @Nonnull AntlrMultiplicity multiplicityState,
-            @Nonnull AntlrUrl url,
-            ImmutableList<AntlrParameterModifier> parameterModifiers)
+            @Nonnull AntlrParameterOwner parameterOwner,
+            @Nonnull ImmutableList<AntlrParameterModifier> parameterModifiers)
     {
         super(
                 elementContext,
@@ -65,7 +67,7 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
                 name,
                 ordinal,
                 multiplicityState,
-                url,
+                parameterOwner,
                 parameterModifiers);
         this.enumerationState = Objects.requireNonNull(enumerationState);
     }
@@ -79,24 +81,20 @@ public class AntlrEnumerationUrlPathParameter extends AntlrUrlPathParameter
 
     @Nonnull
     @Override
-    public EnumerationUrlPathParameterBuilder getUrlParameterBuilder()
+    public EnumerationParameterBuilder build()
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getUrlParameterBuilder() not implemented yet");
-    }
-
-    @Nonnull
-    @Override
-    public EnumerationUrlPathParameterBuilder build()
-    {
-        return new EnumerationUrlPathParameterBuilder(
+        if (this.enumerationParameterBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.enumerationParameterBuilder = new EnumerationParameterBuilder(
                 this.elementContext,
                 this.inferred,
                 this.nameContext,
                 this.name,
                 this.ordinal,
                 this.multiplicityState.getMultiplicity(),
-                this.urlState.getUrlBuilder(),
                 this.enumerationState.getEnumerationBuilder());
+        return this.enumerationParameterBuilder;
     }
 }

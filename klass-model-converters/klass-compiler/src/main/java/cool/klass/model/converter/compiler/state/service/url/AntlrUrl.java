@@ -78,6 +78,11 @@ public class AntlrUrl extends AntlrElement
         return this.serviceStates.asUnmodifiable();
     }
 
+    public AntlrService getServiceByContext(ServiceDeclarationContext ctx)
+    {
+        return this.servicesByContext.get(ctx);
+    }
+
     public int getNumPathSegments()
     {
         return this.urlPathSegments.size();
@@ -93,28 +98,28 @@ public class AntlrUrl extends AntlrElement
         this.urlPathSegments.add(antlrUrlConstant);
     }
 
-    public void enterPathParameterDeclaration(@Nonnull AntlrUrlPathParameter antlrPrimitiveParameter)
+    public void enterPathParameterDeclaration(@Nonnull AntlrUrlPathParameter primitiveParameterState)
     {
-        this.urlPathSegments.add(antlrPrimitiveParameter);
-        this.urlParameterStates.add(antlrPrimitiveParameter);
-        this.urlPathParameterStates.add(antlrPrimitiveParameter);
+        this.urlPathSegments.add(primitiveParameterState);
+        this.urlParameterStates.add(primitiveParameterState);
+        this.urlPathParameterStates.add(primitiveParameterState);
 
         this.urlParametersByName.compute(
-                antlrPrimitiveParameter.getName(),
+                primitiveParameterState.getName(),
                 (name, builder) -> builder == null
-                        ? antlrPrimitiveParameter
+                        ? primitiveParameterState
                         : AntlrPrimitiveUrlPathParameter.AMBIGUOUS);
     }
 
-    public void enterQueryParameterDeclaration(@Nonnull AntlrUrlQueryParameter antlrPrimitiveParameter)
+    public void enterQueryParameterDeclaration(@Nonnull AntlrUrlQueryParameter primitiveParameterState)
     {
-        this.urlParameterStates.add(antlrPrimitiveParameter);
-        this.urlQueryParameterStates.add(antlrPrimitiveParameter);
+        this.urlParameterStates.add(primitiveParameterState);
+        this.urlQueryParameterStates.add(primitiveParameterState);
 
         this.urlParametersByName.compute(
-                antlrPrimitiveParameter.getName(),
+                primitiveParameterState.getName(),
                 (name, builder) -> builder == null
-                        ? antlrPrimitiveParameter
+                        ? primitiveParameterState
                         : AntlrPrimitiveUrlQueryParameter.AMBIGUOUS);
     }
 
