@@ -14,6 +14,7 @@ import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -126,21 +127,31 @@ public class AntlrProjectionDataTypeProperty
             compilerErrorHolder.add("ERR_PRJ_HDR", "Empty header string.", this, this.headerContext);
         }
 
-        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND
-                || this.antlrProjectionParent.getClassifier() == AntlrClass.AMBIGUOUS
-                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
-                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
+        AntlrClassifier parentClassifier = this.antlrProjectionParent.getClassifier();
+        if (parentClassifier == AntlrClass.NOT_FOUND
+                || parentClassifier == AntlrClass.AMBIGUOUS
+                || parentClassifier == AntlrClassifier.AMBIGUOUS
+                || parentClassifier == AntlrClassifier.NOT_FOUND)
         {
             return;
         }
 
         if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
-            String message = String.format(
-                    "Cannot find member '%s.%s'.",
-                    this.antlrProjectionParent.getClassifier().getName(),
-                    this.getName());
-            compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
+            AntlrReferenceProperty<?> referenceProperty = parentClassifier.getReferencePropertyByName(this.getName());
+            if (referenceProperty == AntlrReferenceProperty.NOT_FOUND)
+            {
+                String message = String.format("Cannot find member '%s.%s'.", parentClassifier.getName(), this.getName());
+                compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
+            }
+            else
+            {
+                String message = "Leaf projection nodes require a data type property, but found a reference property '%s.%s' with type '%s'".formatted(
+                        parentClassifier.getName(),
+                        referenceProperty.getName(),
+                        referenceProperty.getTypeName());
+                compilerErrorHolder.add("ERR_PRJ_TYP", message, this);
+            }
         }
 
         if (this.dataTypeProperty.isPrivate())

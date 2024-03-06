@@ -1,5 +1,5 @@
-[33m════════════════════════════════════════[m [35mERR_PRJ_DTP[m [33m════════════════════════════════════════[m
-[31mError: Cannot find member 'GoodClass.goodParameterizedProperty3'.[m
+[33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
+[31mError: Leaf projection nodes require a data type property, but found a reference property 'GoodClass.goodParameterizedProperty3' with type 'GoodClass'[m
 
 At (AmbiguousTypesErrorTest.klass:143)
 

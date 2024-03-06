@@ -279,8 +279,14 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         String message = String.format(
                 "Cannot find class '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add("ERR_PRP_TYP", message, this, offendingToken);
+        compilerErrorHolder.add("ERR_REF_TYP", message, this, offendingToken);
     }
 
     protected abstract IdentifierContext getTypeIdentifier();
+
+    @Override
+    public String getTypeName()
+    {
+        return this.getTypeIdentifier().getText();
+    }
 }

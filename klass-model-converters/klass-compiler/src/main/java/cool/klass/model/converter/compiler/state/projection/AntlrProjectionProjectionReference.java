@@ -12,6 +12,8 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
@@ -116,10 +118,11 @@ public class AntlrProjectionProjectionReference
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND
-                || this.antlrProjectionParent.getClassifier() == AntlrClass.AMBIGUOUS
-                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
-                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
+        AntlrClassifier parentClassifier = this.antlrProjectionParent.getClassifier();
+        if (parentClassifier == AntlrClass.NOT_FOUND
+                || parentClassifier == AntlrClass.AMBIGUOUS
+                || parentClassifier == AntlrClassifier.AMBIGUOUS
+                || parentClassifier == AntlrClassifier.NOT_FOUND)
         {
             return;
         }
@@ -132,8 +135,26 @@ public class AntlrProjectionProjectionReference
         if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND
                 || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
-            String message = String.format("Not found: '%s'.", this);
-            compilerErrorHolder.add("ERR_PPR_NFD", message, this);
+            AntlrDataTypeProperty<?> dataTypeProperty = parentClassifier.getDataTypePropertyByName(this.getName());
+            if (dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
+            {
+                String message = String.format(
+                        "Cannot find member '%s.%s'.",
+                        parentClassifier.getName(),
+                        this.getName());
+                compilerErrorHolder.add("ERR_PPR_NFD", message, this);
+            }
+            else
+            {
+                String message = "Projection reference '%s' requires a reference property with type '%s', but found a data type property '%s.%s' with type '%s'.".formatted(
+                        this.referencedProjectionState.getName(),
+                        this.referencedProjectionState.getClassifier().getName(),
+                        parentClassifier.getName(),
+                        this.getName(),
+                        dataTypeProperty.getTypeName());
+
+                compilerErrorHolder.add("ERR_PPR_TYP", message, this);
+            }
         }
         else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
                 || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)

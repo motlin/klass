@@ -58,7 +58,7 @@ public abstract class AntlrClassifier
         @Override
         public String toString()
         {
-            return AntlrClassifier.class + ".AMBIGUOUS";
+            return AntlrClassifier.class.getSimpleName() + ".AMBIGUOUS";
         }
     };
 
@@ -85,7 +85,7 @@ public abstract class AntlrClassifier
         @Override
         public String toString()
         {
-            return AntlrClassifier.class + ".NOT_FOUND";
+            return AntlrClassifier.class.getSimpleName() + ".NOT_FOUND";
         }
     };
 

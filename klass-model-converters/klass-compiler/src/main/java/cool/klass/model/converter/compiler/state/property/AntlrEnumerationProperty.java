@@ -138,6 +138,12 @@ public class AntlrEnumerationProperty
         this.reportTypeNotFound(compilerErrorHolder);
     }
 
+    @Override
+    public String getTypeName()
+    {
+        return this.getElementContext().enumerationReference().getText();
+    }
+
     private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.enumerationState != AntlrEnumeration.NOT_FOUND)

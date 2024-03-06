@@ -141,7 +141,7 @@ public class AntlrInterface extends AntlrClassifier
         return this.interfaceStates
                 .asLazy()
                 .collectWith(AntlrInterface::getReferencePropertyByName, name)
-                .detect(Objects::nonNull);
+                .detectIfNone(Objects::nonNull, () -> AntlrReferenceProperty.NOT_FOUND);
     }
 
     public void build2()

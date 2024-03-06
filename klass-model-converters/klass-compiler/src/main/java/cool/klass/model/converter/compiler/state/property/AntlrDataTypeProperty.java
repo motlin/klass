@@ -94,6 +94,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         @Override
+        public String getTypeName()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeName() not implemented yet");
+        }
+
+        @Override
         protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -150,6 +157,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        public String getTypeName()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeName() not implemented yet");
         }
 
         @Override

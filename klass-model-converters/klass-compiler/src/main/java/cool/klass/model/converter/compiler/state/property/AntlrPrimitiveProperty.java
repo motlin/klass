@@ -122,6 +122,12 @@ public class AntlrPrimitiveProperty
     }
 
     @Override
+    public String getTypeName()
+    {
+        return this.getElementContext().primitiveType().getText();
+    }
+
+    @Override
     protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();

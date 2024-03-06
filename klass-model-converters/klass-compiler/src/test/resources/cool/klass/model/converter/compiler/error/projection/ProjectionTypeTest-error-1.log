@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_ENM_PRP[m [33m════════════════════════════════════════[m
+[31mError: Cannot find enumeration 'UnresolvedEnumeration'.[m
+
+At (ProjectionTypeTest.klass:19)
+
+[39m 1║ [35mpackage [39mdummy
+[39m14║ [35mclass [39mChild
+[39m15║ [36m{
+[39m19║     [39menumPropertyToUnresolvedEnumeration[36m: [39mUnresolvedEnumeration[36m;
+[39m  ║ [31m                                         ^^^^^^^^^^^^^^^^^^^^^
+[39m20║ [36m}
+[m
+[36mLocation:  [mProjectionTypeTest.klass:19[m
+[36mFile:      [mProjectionTypeTest.klass[m
+[36mLine:      [m19[m
+[36mCharacter: [m42
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

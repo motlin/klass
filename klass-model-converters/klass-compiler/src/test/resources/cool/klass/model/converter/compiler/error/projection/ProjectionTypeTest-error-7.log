@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_PPR_TYP[m [33m════════════════════════════════════════[m
+[31mError: Projection reference 'ChildProjection' requires a reference property with type 'Child', but found a data type property 'Parent.enumPropertyToUnresolvedEnumeration' with type 'UnresolvedEnumeration'.[m
+
+At (ProjectionTypeTest.klass:54)
+
+[39m 1║ [35mpackage [39mdummy
+[39m51║ [35mprojection [39mProjection2 [35mon [39mParent
+[39m52║ [36m{
+[39m54║     [39menumPropertyToUnresolvedEnumeration[36m: [39mChildProjection[36m,
+[39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m56║ [36m}
+[m
+[36mLocation:  [mProjectionTypeTest.klass:54[m
+[36mFile:      [mProjectionTypeTest.klass[m
+[36mLine:      [m54[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,18 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_PRP_NFD[m [33m════════════════════════════════════════[m
-[31mError: Not found: 'unresolvedProjectionAssociationEnd'.[m
+[33m════════════════════════════════════════[m [35mERR_TYP_MEM[m [33m════════════════════════════════════════[m
+[31mError: Cannot find member 'Child.unresolvedMember'.[m
 
-At (UnresolvedTypesErrorTest.klass:91)
+At (UnresolvedTypesErrorTest.klass:89)
 
-[39m  1║ [35mpackage [39mdummy
-[39m 87║ [35mprojection [39mParentProjection [35mon [39mParent
-[39m 88║ [36m{
-[39m 91║     [39munresolvedProjectionAssociationEnd[36m: [36m{
-[39m   ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m 93║     [36m}[36m,
-[39m115║ [36m}
+[39m 1║ [35mpackage [39mdummy
+[39m84║ [35massociation [39mBadRelationship2
+[39m85║ [36m{
+[39m89║     [35mrelationship [32mthis[36m.[39munresolvedMember [33m== [39mChild[36m.[39munresolvedMember
+[39m  ║ [31m                                                ^^^^^^^^^^^^^^^^
+[39m90║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:91[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:89[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m91[m
-[36mCharacter: [m5
+[36mLine:      [m89[m
+[36mCharacter: [m49
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

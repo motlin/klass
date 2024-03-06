@@ -15,12 +15,33 @@ class ClassWithUnresolved extends UnresolvedClass implements UnresolvedInterface
     }
 }
 
-association AssociationWithUnresolved
+association AssociationWithUnresolved1
 {
     parent: UnresolvedClass[0..1];
     children: UnresolvedClass[0..*];
 
     relationship this.unresolvedEnumerationProperty == UnresolvedClass.unresolvedEnumerationProperty
+}
+
+association AssociationWithUnresolved2
+{
+    classWithUnresolved: ClassWithUnresolved[0..1];
+    associationEndToUnresolvedClass: UnresolvedClass[0..*];
+
+    relationship this.unresolvedEnumerationProperty == UnresolvedClass.unresolvedEnumerationProperty
+}
+
+projection ProjectionWithUnresolved on ClassWithUnresolved
+{
+    unresolvedDataProperty: "Header",
+    unresolvedEnumerationProperty: "Header",
+    unresolvedParameterizedProperty: {
+        irrelevantProperty:"Header",
+    },
+    unresolvedReferenceProperty:{
+        irrelevantProperty:"Header",
+    },
+    associationEndToUnresolvedClass: "Header",
 }
 
 projection EmptyProjection on ClassWithUnresolved

@@ -209,4 +209,6 @@ public abstract class AntlrProperty
     {
         return true;
     }
+
+    public abstract String getTypeName();
 }
