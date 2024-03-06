@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonDataTypeValueVisitor;
