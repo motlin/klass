@@ -23,7 +23,6 @@ public class AntlrModifier
             new ParserRuleContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found modifier",
             -1,
             AntlrClassifier.NOT_FOUND);
 
@@ -31,7 +30,6 @@ public class AntlrModifier
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous modifier",
             -1,
             AntlrClassifier.AMBIGUOUS);
 
@@ -47,7 +45,6 @@ public class AntlrModifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrNamedElement surroundingElement)
     {

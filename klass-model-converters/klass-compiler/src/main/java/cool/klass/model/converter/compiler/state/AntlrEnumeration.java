@@ -28,7 +28,6 @@ public class AntlrEnumeration
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous enumeration",
             -1,
             new ParserRuleContext(),
             "klass.meta");
@@ -38,7 +37,6 @@ public class AntlrEnumeration
             new EnumerationDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found enumeration",
             -1,
             new ParserRuleContext(),
             "klass.meta");
@@ -54,7 +52,6 @@ public class AntlrEnumeration
             @Nonnull EnumerationDeclarationContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)

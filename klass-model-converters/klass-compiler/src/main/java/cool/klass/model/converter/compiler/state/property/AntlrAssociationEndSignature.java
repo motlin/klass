@@ -32,7 +32,6 @@ public class AntlrAssociationEndSignature
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "ambiguous association end",
             -1,
             AntlrClassifier.AMBIGUOUS);
 
@@ -41,7 +40,6 @@ public class AntlrAssociationEndSignature
             new AssociationEndSignatureContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "not found association end",
             -1,
             // TODO: Not found here, instead of ambiguous
             AntlrClassifier.NOT_FOUND);
@@ -57,11 +55,10 @@ public class AntlrAssociationEndSignature
             @Nonnull AssociationEndSignatureContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 

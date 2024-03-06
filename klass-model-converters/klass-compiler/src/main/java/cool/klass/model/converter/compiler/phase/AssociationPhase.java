@@ -43,7 +43,6 @@ public class AssociationPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifier,
-                identifier.getText(),
                 this.compilerState.getOrdinal(ctx),
                 this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName());
@@ -81,7 +80,6 @@ public class AssociationPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                ctx.identifier().getText(),
                 this.associationState.getNumAssociationEnds() + 1,
                 this.associationState);
 
@@ -113,7 +111,6 @@ public class AssociationPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 this.associationEndState.getNumModifiers() + 1,
                 this.associationEndState);
         this.associationEndState.enterModifier(antlrAssociationEndModifier);

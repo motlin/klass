@@ -34,7 +34,6 @@ public final class AntlrParameter
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous enumeration url parameter",
             -1,
             AntlrEnumeration.AMBIGUOUS,
             AntlrParameterizedProperty.AMBIGUOUS);
@@ -44,7 +43,6 @@ public final class AntlrParameter
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found enumeration url parameter",
             -1,
             AntlrEnumeration.NOT_FOUND,
             AntlrParameterizedProperty.AMBIGUOUS);
@@ -67,7 +65,6 @@ public final class AntlrParameter
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrType typeState,
             @Nonnull IAntlrElement parameterOwner)

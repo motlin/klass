@@ -21,10 +21,9 @@ public abstract class AntlrClassReferenceProperty
             ParserRuleContext elementContext,
             Optional<CompilationUnit> compilationUnit,
             ParserRuleContext nameContext,
-            String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
     }
 
     @Override

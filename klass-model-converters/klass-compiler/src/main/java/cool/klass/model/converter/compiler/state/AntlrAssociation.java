@@ -31,7 +31,6 @@ public class AntlrAssociation
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous association",
             -1,
             new ParserRuleContext(),
             "klass.meta")
@@ -57,7 +56,6 @@ public class AntlrAssociation
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)

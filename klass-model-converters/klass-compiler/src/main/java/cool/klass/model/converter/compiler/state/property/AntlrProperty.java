@@ -36,7 +36,6 @@ public abstract class AntlrProperty
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);

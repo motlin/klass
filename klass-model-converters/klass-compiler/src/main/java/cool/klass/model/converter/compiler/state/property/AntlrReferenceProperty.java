@@ -30,7 +30,6 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
             new ParserRuleContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "ambiguous reference property",
             -1)
     {
         @Nonnull
@@ -92,7 +91,6 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
             new ParserRuleContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "not found reference property",
             -1)
     {
         @Nonnull
@@ -158,10 +156,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
     }
 
     @Override

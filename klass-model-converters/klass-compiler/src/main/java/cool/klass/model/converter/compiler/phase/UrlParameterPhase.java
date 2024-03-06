@@ -65,7 +65,6 @@ public class UrlParameterPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                ctx.identifier().getText(),
                 urlState.getNumPathSegments() + 1);
         urlState.enterUrlConstant(antlrUrlConstant);
     }
@@ -140,7 +139,6 @@ public class UrlParameterPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 ordinal,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
@@ -165,7 +163,6 @@ public class UrlParameterPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifierContext,
-                identifierContext.getText(),
                 ordinal,
                 typeState,
                 urlState);

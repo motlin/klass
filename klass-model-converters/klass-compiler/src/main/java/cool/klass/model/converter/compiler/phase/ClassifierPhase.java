@@ -42,7 +42,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifier,
-                identifier.getText(),
                 this.compilerState.getOrdinal(ctx),
                 this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName());
@@ -69,7 +68,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.classHeader().identifier(),
-                ctx.classHeader().identifier().getText(),
                 this.compilerState.getOrdinal(ctx),
                 this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName(),
@@ -114,7 +112,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 ordinal + 1,
                 this.classifierState);
 

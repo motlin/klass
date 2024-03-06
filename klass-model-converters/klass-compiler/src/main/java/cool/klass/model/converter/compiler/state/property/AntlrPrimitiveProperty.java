@@ -26,7 +26,6 @@ public class AntlrPrimitiveProperty
             new PrimitivePropertyContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "ambiguous primitive property name",
             -1,
             AntlrClassifier.AMBIGUOUS,
             false,
@@ -41,7 +40,6 @@ public class AntlrPrimitiveProperty
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
@@ -51,7 +49,6 @@ public class AntlrPrimitiveProperty
                 elementContext,
                 compilationUnit,
                 nameContext,
-                name,
                 ordinal,
                 owningClassifierState,
                 isOptional);

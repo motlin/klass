@@ -33,7 +33,6 @@ public class AntlrAssociationEnd
             new AssociationEndContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "ambiguous association end",
             -1,
             AntlrAssociation.AMBIGUOUS);
 
@@ -42,7 +41,6 @@ public class AntlrAssociationEnd
             new AssociationEndContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "not found association end",
             -1,
             // TODO: Not found here, instead of ambiguous
             AntlrAssociation.AMBIGUOUS);
@@ -62,11 +60,10 @@ public class AntlrAssociationEnd
             @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrAssociation owningAssociationState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
     }
 

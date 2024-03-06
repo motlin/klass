@@ -25,7 +25,7 @@ public class AntlrProjectionDataTypeProperty
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ParserRuleContext(),
             Optional.empty(),
-            new ParserRuleContext(), "ambiguous projection member",
+            new ParserRuleContext(),
             -1,
             new HeaderContext(null, -1),
             "ambiguous header",
@@ -47,7 +47,6 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull HeaderContext headerContext,
             @Nonnull String headerText,

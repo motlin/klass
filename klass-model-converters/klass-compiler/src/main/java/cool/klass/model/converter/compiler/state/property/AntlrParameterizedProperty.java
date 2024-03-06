@@ -32,7 +32,6 @@ public class AntlrParameterizedProperty
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "ambiguous association end",
             -1,
             AntlrClass.AMBIGUOUS);
     @Nullable
@@ -40,7 +39,6 @@ public class AntlrParameterizedProperty
             new ParameterizedPropertyContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
-            "not found association end",
             -1,
             AntlrClass.AMBIGUOUS);
 
@@ -59,11 +57,10 @@ public class AntlrParameterizedProperty
             @Nonnull ParameterizedPropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass owningClassState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 

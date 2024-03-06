@@ -31,7 +31,6 @@ public class AntlrProjectionReferenceProperty
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous projection",
             -1,
             AntlrClassifier.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
@@ -42,7 +41,6 @@ public class AntlrProjectionReferenceProperty
             new ProjectionReferencePropertyContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found projection",
             -1,
             AntlrClassifier.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
@@ -58,13 +56,12 @@ public class AntlrProjectionReferenceProperty
             @Nonnull ProjectionReferencePropertyContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrReferenceProperty<?> referenceProperty)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, classifier);
+        super(elementContext, compilationUnit, nameContext, ordinal, classifier);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty     = Objects.requireNonNull(referenceProperty);
     }

@@ -47,7 +47,6 @@ public class ServicePhase extends AbstractCompilerPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 classNameContext,
-                className,
                 this.compilerState.getOrdinal(ctx),
                 this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName(),

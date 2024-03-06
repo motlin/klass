@@ -34,7 +34,6 @@ public class AntlrInterface extends AntlrClassifier
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous interface",
             -1,
             new ParserRuleContext(),
             "klass.meta")
@@ -52,7 +51,6 @@ public class AntlrInterface extends AntlrClassifier
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found interface",
             -1,
             new ParserRuleContext(),
             "klass.meta")
@@ -85,7 +83,6 @@ public class AntlrInterface extends AntlrClassifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)

@@ -74,7 +74,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                propertyName,
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState(),
                 isOptional,
@@ -110,7 +109,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                propertyName,
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState(),
                 isOptional,
@@ -202,7 +200,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 this.dataTypePropertyState.getNumModifiers() + 1,
                 this.dataTypePropertyState);
         this.dataTypePropertyState.enterModifier(modifierState);
@@ -231,7 +228,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                associationEndSignatureName,
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState());
         this.classifierReferenceOwnerState = this.associationEndSignatureState;
@@ -263,7 +259,6 @@ public class PropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 this.associationEndSignatureState.getNumModifiers() + 1,
                 this.associationEndSignatureState);
         this.associationEndSignatureState.enterModifier(antlrAssociationEndModifier);

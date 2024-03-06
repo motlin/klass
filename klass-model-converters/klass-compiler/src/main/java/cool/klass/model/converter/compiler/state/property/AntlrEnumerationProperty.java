@@ -25,7 +25,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             new ParserRuleContext(),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found enumeration property",
             -1,
             AntlrClassifier.NOT_FOUND,
             false,
@@ -41,7 +40,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier owningClassifierState,
             boolean isOptional,
@@ -51,7 +49,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
                 elementContext,
                 compilationUnit,
                 nameContext,
-                name,
                 ordinal,
                 owningClassifierState,
                 isOptional);

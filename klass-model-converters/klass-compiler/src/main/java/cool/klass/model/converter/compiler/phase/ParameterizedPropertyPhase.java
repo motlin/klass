@@ -81,7 +81,6 @@ public class ParameterizedPropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
-                ctx.identifier().getText(),
                 thisReference.getNumMembers() + 1,
                 thisReference);
 
@@ -206,7 +205,6 @@ public class ParameterizedPropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx,
-                ctx.getText(),
                 ordinal,
                 this.parameterState);
         this.parameterState.enterModifier(modifierState);
@@ -226,7 +224,6 @@ public class ParameterizedPropertyPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifierContext,
-                identifierContext.getText(),
                 this.parameterOwnerState.getNumParameters() + 1,
                 typeState,
                 (IAntlrElement) this.parameterOwnerState);

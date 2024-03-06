@@ -37,7 +37,6 @@ public class ProjectionDeclarationPhase
                 ctx,
                 Optional.of(currentCompilationUnit),
                 nameContext,
-                nameContext.getText(),
                 this.compilerState.getOrdinal(ctx),
                 classifier,
                 this.compilerState.getCompilerWalkState().getPackageName());
