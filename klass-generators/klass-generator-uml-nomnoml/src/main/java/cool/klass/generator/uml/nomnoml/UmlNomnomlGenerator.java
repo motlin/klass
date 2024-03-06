@@ -14,8 +14,10 @@ import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class UmlNomnomlGenerator
 {
@@ -94,6 +96,7 @@ public class UmlNomnomlGenerator
         String propertiesSourceCode = klass
                 .getDataTypeProperties()
                 .reject(DataTypeProperty::isPrivate)
+                .reject(DataTypeProperty::isTemporalRange)
                 .collect(this::getPropertySourceCode)
                 .makeString(";\n");
 
@@ -131,7 +134,25 @@ public class UmlNomnomlGenerator
 
     private String getPropertySourceCode(DataTypeProperty dataTypeProperty)
     {
-        return "    " + dataTypeProperty;
+        String isOptionalString = dataTypeProperty.isOptional() && !dataTypeProperty.isTemporal() ? "?" : "";
+        ImmutableList<DataTypePropertyModifier> relevantModifiers = dataTypeProperty
+                .getPropertyModifiers()
+                .reject(DataTypePropertyModifier::isAudit)
+                .reject(DataTypePropertyModifier::isFrom)
+                .reject(DataTypePropertyModifier::isTo)
+                .reject(DataTypePropertyModifier::isSystem)
+                .reject(DataTypePropertyModifier::isValid);
+        String propertyModifiersString = relevantModifiers.isEmpty()
+                ? ""
+                :  relevantModifiers
+                        .collect(NamedElement::getName)
+                        .makeString(" // ", " ", "");
+        return String.format(
+                "%s: %s%s%s",
+                dataTypeProperty.getName(),
+                dataTypeProperty.getType(),
+                isOptionalString,
+                propertyModifiersString);
     }
 
     @Nonnull
