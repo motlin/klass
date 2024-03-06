@@ -69,8 +69,6 @@ public class PersistentReplacer extends PersistentSynchronizer
             @Nonnull AssociationEnd associationEnd,
             Object persistentInstance)
     {
-        // TODO: Only increment version if values actually changed
-        // TODO: Always deep-fetch versions
         Object versionPersistentInstance = this.dataStore.getToOne(persistentInstance, associationEnd);
         DataTypeProperty versionProperty = associationEnd.getType()
                 .getDataTypeProperties()
@@ -145,6 +143,6 @@ public class PersistentReplacer extends PersistentSynchronizer
             return new PersistentReplacer(this.mutationContext, this.dataStore, this.inTransaction);
         }
 
-        throw new AssertionError();
+        throw new AssertionError(nextMode);
     }
 }

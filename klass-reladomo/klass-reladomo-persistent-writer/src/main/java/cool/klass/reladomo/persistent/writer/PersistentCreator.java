@@ -189,6 +189,6 @@ public class PersistentCreator extends PersistentSynchronizer
             return new PersistentCreator(this.mutationContext, this.dataStore, this.inTransaction);
         }
 
-        throw new AssertionError();
+        throw new AssertionError(nextMode);
     }
 }

@@ -412,7 +412,7 @@ public class IncomingUpdateDataModelValidator
                     continue;
                 }
 
-                ImmutableList<Object> keysFromJsonNode        = this.getKeysFromJsonNode(childJsonNode, associationEnd);
+                ImmutableList<Object> keysFromJsonNode        = this.getKeysFromJsonNode(childJsonNode, associationEnd, this.objectNode);
                 Object                childPersistentInstance = persistentChildInstancesByKey.get(keysFromJsonNode);
                 /*
                 if (childPersistentInstance == null)
@@ -468,6 +468,22 @@ public class IncomingUpdateDataModelValidator
                         associationEnd);
     }
 
+    private boolean needsTermination(
+            Object persistentChildInstance,
+            @Nonnull Klass klass,
+            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
+    {
+        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(persistentChildInstance, klass);
+        return !incomingChildInstancesByKey.containsKey(keys);
+    }
+
+    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
+    {
+        return klass
+                .getKeyProperties()
+                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
+    }
+
     private void emitNonArrayError(@Nonnull AssociationEnd associationEnd, @Nonnull JsonNode incomingChildInstances)
     {
         this.contextStack.push(associationEnd.getName());
@@ -500,22 +516,6 @@ public class IncomingUpdateDataModelValidator
         // return result.asUnmodifiable();
     }
 
-    private boolean needsTermination(
-            Object persistentChildInstance,
-            @Nonnull Klass klass,
-            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
-    {
-        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(persistentChildInstance, klass);
-        return !incomingChildInstancesByKey.containsKey(keys);
-    }
-
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
-    {
-        return klass
-                .getKeyProperties()
-                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
-    }
-
     @Nonnull
     private MapIterable<ImmutableList<Object>, JsonNode> indexIncomingJsonInstances(
             @Nonnull Iterable<JsonNode> incomingInstances,
@@ -526,7 +526,8 @@ public class IncomingUpdateDataModelValidator
         {
             ImmutableList<Object> keys = this.getKeysFromJsonNode(
                     incomingInstance,
-                    associationEnd);
+                    associationEnd,
+                    this.objectNode);
             JsonNode duplicateJsonNode = result.put(keys, incomingInstance);
             if (duplicateJsonNode != null)
             {
@@ -585,21 +586,24 @@ public class IncomingUpdateDataModelValidator
 
     private ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode parentJsonNode)
     {
-        return associationEnd
-                .getType()
-                .getKeyProperties()
+        Klass type = associationEnd.getType();
+        ImmutableList<DataTypeProperty> keyProperties = type.getKeyProperties();
+        return keyProperties
                 .collect(keyProperty -> this.getKeyFromJsonNode(
                         keyProperty,
                         jsonNode,
-                        associationEnd));
+                        associationEnd,
+                        parentJsonNode));
     }
 
     private Object getKeyFromJsonNode(
             @Nonnull DataTypeProperty keyProperty,
             @Nonnull JsonNode jsonNode,
-            @Nonnull AssociationEnd associationEnd)
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull JsonNode parentJsonNode)
     {
         ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
@@ -625,16 +629,35 @@ public class IncomingUpdateDataModelValidator
 
             Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
 
-            JsonNode childNode = jsonNode.path(pair.getOne().getName());
+            AssociationEnd foreignKeyAssociation     = pair.getOne();
+            String         foreignKeyAssociationName = foreignKeyAssociation.getName();
+            JsonNode childNode = jsonNode.path(foreignKeyAssociationName);
+            if (childNode instanceof ObjectNode)
+            {
+                Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                        pair.getTwo(),
+                        (ObjectNode) childNode);
+                return Objects.requireNonNull(result);
+            }
+            if (childNode.isMissingNode())
+            {
+                Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                        keyProperty,
+                        (ObjectNode) jsonNode);
+                return Objects.requireNonNull(result);
+            }
+            throw new AssertionError(childNode.getClass().getCanonicalName());
+        }
+
+        if (jsonNode instanceof ObjectNode)
+        {
+            ObjectNode objectNode = (ObjectNode) jsonNode;
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo(),
-                    (ObjectNode) childNode);
+                    keyProperty,
+                    objectNode);
             return Objects.requireNonNull(result);
         }
 
-        Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                keyProperty,
-                (ObjectNode) jsonNode);
-        return Objects.requireNonNull(result);
+        throw new AssertionError();
     }
 }
