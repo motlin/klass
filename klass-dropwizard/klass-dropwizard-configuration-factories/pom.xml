@@ -25,6 +25,7 @@
         <module>klass-dropwizard-configuration-reladomo</module>
         <module>klass-dropwizard-configuration-sample-data</module>
         <module>klass-dropwizard-configuration-logging-logzio</module>
+        <module>klass-dropwizard-configuration-logging-encoder</module>
     </modules>
 
     <artifactId>klass-dropwizard-configuration-factories</artifactId>
