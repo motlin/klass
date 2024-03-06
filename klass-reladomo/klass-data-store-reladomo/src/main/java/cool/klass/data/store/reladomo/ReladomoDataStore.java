@@ -29,13 +29,39 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // TODO: Refactor this whole thing to use generated getters/setters instead of Reladomo Attribute
 public class ReladomoDataStore implements DataStore
 {
     public static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
+
+    private final int retryCount;
+
+    public ReladomoDataStore()
+    {
+        Config config         = ConfigFactory.load();
+        Config reladomoConfig = config.getConfig("klass.data.reladomo");
+
+        if (LOGGER.isInfoEnabled())
+        {
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
+                    .setJson(false)
+                    .setOriginComments(false);
+            String render = reladomoConfig.root().render(configRenderOptions);
+            LOGGER.info("Reladomo configuration:\n{}", render);
+        }
+
+        this.retryCount = reladomoConfig.getInt("retryCount");
+    }
 
     @Override
     public void runInTransaction(TransactionalCommand transactionalCommand)
@@ -55,7 +81,7 @@ public class ReladomoDataStore implements DataStore
         {
             runnable.run();
             return null;
-        });
+        }, this.retryCount);
     }
 
     @Override
