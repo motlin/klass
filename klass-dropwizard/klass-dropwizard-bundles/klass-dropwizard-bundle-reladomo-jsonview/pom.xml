@@ -10,17 +10,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-dropwizard-bundle-reladomo</artifactId>
+    <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
 
-    <name>Klass Dropwizard Bundle for Reladomo config</name>
+    <name>Klass Dropwizard Bundle for Reladomo JsonView Serializer</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-configuration</artifactId>
+            <artifactId>klass-serialization-jackson-jsonview-reladomo</artifactId>
             <version>${project.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>cool.klass</groupId>
@@ -35,6 +36,19 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo</artifactId>
         </dependency>
@@ -45,13 +59,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-util</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>

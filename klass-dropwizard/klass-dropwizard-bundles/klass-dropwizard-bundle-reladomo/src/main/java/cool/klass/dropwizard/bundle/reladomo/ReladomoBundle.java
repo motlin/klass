@@ -6,15 +6,10 @@ import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraManagerProvider;
-import com.gs.fw.common.mithra.MithraObject;
-import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactory;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
 import cool.klass.reladomo.configuration.ReladomoConfig;
-import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
-import cool.klass.serialization.jackson.response.KlassResponse;
-import cool.klass.serialization.jackson.response.reladomo.KlassResponseReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.util.Duration;
@@ -42,15 +37,7 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
     {
         LOGGER.info("Running {}.", ReladomoBundle.class.getSimpleName());
 
-        DataStore       dataStore       = configuration.getDataStoreFactory().createDataStore();
         ReladomoFactory reladomoFactory = configuration.getReladomoFactory();
-
-        ReladomoJsonViewSerializer          serializer1 = new ReladomoJsonViewSerializer(dataStore);
-        KlassResponseReladomoJsonSerializer serializer2 = new KlassResponseReladomoJsonSerializer(dataStore);
-
-        // TODO: Split the three serializers into two modules
-        ReladomoConfig.addSerializer(environment.getObjectMapper(), MithraObject.class, serializer1);
-        ReladomoConfig.addSerializer(environment.getObjectMapper(), KlassResponse.class, serializer2);
 
         Duration     transactionTimeout                     = reladomoFactory.getTransactionTimeout();
         int          transactionTimeoutSeconds              = Math.toIntExact(transactionTimeout.toSeconds());
@@ -66,13 +53,13 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
 
         if (enableRetrieveCountMetrics)
         {
-            this.registerRetrieveCountMetrics(environment);
+            ReladomoBundle.registerRetrieveCountMetrics(environment);
         }
 
         LOGGER.info("Completing {}.", ReladomoBundle.class.getSimpleName());
     }
 
-    public void registerRetrieveCountMetrics(@Nonnull Environment environment)
+    private static void registerRetrieveCountMetrics(@Nonnull Environment environment)
     {
         environment.metrics().gauge(
                 "Reladomo database retrieve count",

@@ -22,6 +22,8 @@
         <module>klass-dropwizard-bundle-prioritized-api</module>
         <module>klass-dropwizard-bundle-reladomo</module>
         <module>klass-dropwizard-bundle-sample-data</module>
+        <module>klass-dropwizard-bundle-reladomo-jsonview</module>
+        <module>klass-dropwizard-bundle-reladomo-response</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>

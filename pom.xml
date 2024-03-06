@@ -140,6 +140,8 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-http-logging:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-object-mapper:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-response:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-clock-fixed:jar</ignoredUnusedDeclaredDependency>
