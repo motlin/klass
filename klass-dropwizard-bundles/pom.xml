@@ -18,6 +18,7 @@
         <module>klass-dropwizard-bundle-h2</module>
         <module>klass-dropwizard-bundle-ddl-executor</module>
         <module>klass-dropwizard-bundle-sample-data</module>
+        <module>klass-dropwizard-bundle-bootstrap-writer</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>

@@ -1,9 +1,9 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationLiteralImpl extends AbstractTypedElement<EnumerationImpl> implements EnumerationLiteral
 {
-    @Nullable
-    private final String prettyName;
+    @Nonnull
+    private final Optional<String> prettyName;
 
     private EnumerationLiteralImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -21,23 +21,23 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
             @Nonnull String name,
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
-            @Nullable String prettyName)
+            @Nonnull Optional<String> prettyName)
     {
         super(elementContext, inferred, nameContext, name, ordinal, enumeration);
         this.prettyName = prettyName;
     }
 
+    @Nonnull
     @Override
-    @Nullable
-    public String getPrettyName()
+    public Optional<String> getDeclaredPrettyName()
     {
-        return this.prettyName == null ? this.getName() : this.prettyName;
+        return this.prettyName;
     }
 
     public static final class EnumerationLiteralBuilder extends NamedElementBuilder<EnumerationLiteralImpl>
     {
-        @Nullable
-        private final String             prettyName;
+        @Nonnull
+        private final Optional<String>             prettyName;
         @Nonnull
         private final EnumerationBuilder enumerationBuilder;
 
@@ -47,7 +47,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nullable String prettyName,
+                @Nonnull Optional<String> prettyName,
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal);

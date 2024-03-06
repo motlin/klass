@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -10,11 +12,12 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import org.antlr.v4.runtime.RuleContext;
 
 public class EnumerationsPhase extends AbstractCompilerPhase
 {
     @Nullable
-    private       AntlrEnumeration enumerationState;
+    private AntlrEnumeration enumerationState;
 
     public EnumerationsPhase(CompilerState compilerState)
     {
@@ -52,11 +55,11 @@ public class EnumerationsPhase extends AbstractCompilerPhase
         super.enterEnumerationLiteral(ctx);
         String literalName = ctx.identifier().getText();
 
-        EnumerationPrettyNameContext prettyNameContext = ctx.enumerationPrettyName();
+        Optional<EnumerationPrettyNameContext> prettyNameContext = Optional.ofNullable(ctx.enumerationPrettyName());
 
-        String prettyName = prettyNameContext == null
-                ? null
-                : prettyNameContext.getText().substring(1, prettyNameContext.getText().length() - 1);
+        Optional<String> prettyName = prettyNameContext
+                .map(RuleContext::getText)
+                .map(this::trimQuotes);
 
         AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
                 ctx,
@@ -68,5 +71,11 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 prettyName,
                 this.enumerationState);
         this.enumerationState.enterEnumerationLiteral(enumerationLiteralState);
+    }
+
+    @Nonnull
+    private String trimQuotes(String text)
+    {
+        return text.substring(1, text.length() - 1);
     }
 }

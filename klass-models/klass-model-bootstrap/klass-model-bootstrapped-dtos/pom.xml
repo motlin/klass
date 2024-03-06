@@ -25,6 +25,10 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
+
+        <!--Uncomment these dependencies to enable validations for required properties-->
+        <!--
+
         -->
 
     </dependencies>
@@ -53,7 +57,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
+                        <artifactId>${app.artifactId}-meta</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

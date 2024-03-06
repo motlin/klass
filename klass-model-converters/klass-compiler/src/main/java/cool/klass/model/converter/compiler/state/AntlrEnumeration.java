@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -142,13 +143,15 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     {
         MutableBag<String> duplicatePrettyNames = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::getPrettyName)
-                .reject(Objects::isNull)
+                .select(Optional::isPresent)
+                .collect(Optional::get)
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1);
 
         this.enumerationLiteralStates
                 .asLazy()
-                .select(each -> duplicatePrettyNames.contains(each.getPrettyName()))
+                .select(each -> each.getPrettyName().isPresent())
+                .select(each -> duplicatePrettyNames.contains(each.getPrettyName().get()))
                 .forEachWith(AntlrEnumerationLiteral::reportDuplicatePrettyName, compilerErrorHolder);
     }
 

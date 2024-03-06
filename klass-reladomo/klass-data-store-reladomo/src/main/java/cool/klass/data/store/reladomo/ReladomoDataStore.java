@@ -113,9 +113,9 @@ public class ReladomoDataStore implements DataStore
     {
         try
         {
-            Class<?> aClass = Class.forName(klass.getFullyQualifiedName());
+            Class<?>       aClass      = Class.forName(klass.getFullyQualifiedName());
             Constructor<?> constructor = aClass.getConstructor(Timestamp.class, Timestamp.class);
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(validTime, ZoneOffset.UTC));
+            Timestamp      timestamp   = Timestamp.valueOf(LocalDateTime.ofInstant(validTime, ZoneOffset.UTC));
             // TODO: One of these would be infinity, forgot which one
             return constructor.newInstance(timestamp, timestamp);
         }

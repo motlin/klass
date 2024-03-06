@@ -1,12 +1,19 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public interface EnumerationLiteral extends TypedElement
 {
-    @Nullable
-    String getPrettyName();
+    @Nonnull
+    Optional<String> getDeclaredPrettyName();
+
+    @Nonnull
+    default String getPrettyName()
+    {
+        return this.getDeclaredPrettyName().orElseGet(this::getName);
+    }
 
     @Override
     @Nonnull

@@ -4,14 +4,21 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.dropwizard.bundle.test.data.TestDataGeneratorBundle;
-import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
+import cool.klass.dropwizard.bundle.bootstrap.writer.BootstrapWriterBundle;
+import cool.klass.dropwizard.bundle.test.data.SampleDataGeneratorBundle;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CoverageExampleApplication extends AbstractCoverageExampleApplication
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoverageExampleApplication.class);
+
     public static void main(String[] args) throws Exception
     {
         new CoverageExampleApplication().run(args);
@@ -28,7 +35,8 @@ public class CoverageExampleApplication extends AbstractCoverageExampleApplicati
             bootstrap.addBundle(bundle);
         }
 
-        bootstrap.addBundle(new TestDataGeneratorBundle(this.domainModel, this.dataStore));
+        bootstrap.addBundle(new SampleDataGeneratorBundle(this.domainModel, this.dataStore));
+        bootstrap.addBundle(new BootstrapWriterBundle(this.domainModel, this.dataStore));
 
         // TODO: application initialization
     }
@@ -40,8 +48,12 @@ public class CoverageExampleApplication extends AbstractCoverageExampleApplicati
     {
         super.run(configuration, environment);
 
-        // TODO: Move up to generated superclass
-        KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel);
-        klassBootstrapWriter.bootstrapMetaModel();
+        Config config      = ConfigFactory.load();
+        Config klassConfig = config.getConfig("klass");
+        ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
+                .setJson(false)
+                .setOriginComments(false);
+        String render = klassConfig.root().render(configRenderOptions);
+        LOGGER.info("Klass HOCON configuration:\n{}", render);
     }
 }

@@ -8,7 +8,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import cool.klass.reladomo.test.data.ReladomoTestDataGenerator;
+import cool.klass.reladomo.sample.data.SampleDataGenerator;
 import cool.klass.reladomo.test.rule.ReladomoTestRule;
 import cool.klass.xample.coverage.dropwizard.application.CoverageExampleApplication;
 import cool.klass.xample.coverage.dropwizard.application.CoverageExampleConfiguration;
@@ -39,14 +39,14 @@ public class AbstractCoverageTest
     protected final Instant now = Instant.now();
 
     @Before
-    public void setUpTestData()
+    public void setUpSampleData()
     {
         CoverageExampleApplication application = RULE.getApplication();
-        ReladomoTestDataGenerator reladomoTestDataGenerator = new ReladomoTestDataGenerator(
+        SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 application.getDomainModel(),
                 application.getDataStore(),
                 this.now);
-        reladomoTestDataGenerator.generate();
+        sampleDataGenerator.generate();
     }
 
     protected Client getClient(String clientName)

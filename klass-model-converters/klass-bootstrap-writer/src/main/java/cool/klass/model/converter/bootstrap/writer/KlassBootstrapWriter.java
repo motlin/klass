@@ -1,6 +1,8 @@
 package cool.klass.model.converter.bootstrap.writer;
 
-import com.gs.fw.common.mithra.MithraManagerProvider;
+import java.util.Objects;
+
+import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.DomainModel;
@@ -19,24 +21,22 @@ import klass.model.meta.domain.PrimitivePropertyModifier;
 public class KlassBootstrapWriter
 {
     private final DomainModel domainModel;
+    private final DataStore   dataStore;
 
-    public KlassBootstrapWriter(DomainModel domainModel)
+    public KlassBootstrapWriter(DomainModel domainModel, DataStore dataStore)
     {
-        this.domainModel = domainModel;
+        this.domainModel = Objects.requireNonNull(domainModel);
+        this.dataStore = Objects.requireNonNull(dataStore);
     }
 
     public void bootstrapMetaModel()
     {
-        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
-        {
-            this.bootstrapMetaModelInTransaction();
-            return null;
-        });
+        this.dataStore.runInTransaction(this::bootstrapMetaModelInTransaction);
     }
 
     private void bootstrapMetaModelInTransaction()
     {
-        for (Enumeration enumeration: this.domainModel.getEnumerations())
+        for (Enumeration enumeration : this.domainModel.getEnumerations())
         {
             klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
             bootstrappedEnumeration.setName(enumeration.getName());
@@ -47,19 +47,19 @@ public class KlassBootstrapWriter
             bootstrappedEnumeration.setSourceCode(enumeration.getSourceCode());
             bootstrappedEnumeration.insert();
 
-            for (EnumerationLiteral enumerationLiteral: enumeration.getEnumerationLiterals())
+            for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
             {
                 klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
                 bootstrappedEnumerationLiteral.setName(enumerationLiteral.getName());
                 bootstrappedEnumerationLiteral.setInferred(enumerationLiteral.isInferred());
+                enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
                 bootstrappedEnumerationLiteral.setOrdinal(enumerationLiteral.getOrdinal());
-                bootstrappedEnumerationLiteral.setPrettyName(enumerationLiteral.getPrettyName());
                 bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
                 bootstrappedEnumerationLiteral.insert();
             }
         }
 
-        for (Klass klass: this.domainModel.getKlasses())
+        for (Klass klass : this.domainModel.getKlasses())
         {
             klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
             bootstrappedClass.setName(klass.getName());
@@ -70,7 +70,7 @@ public class KlassBootstrapWriter
             // TODO: Report Reladomo bug. If any of these non-nullable properties are not set, insert() ought to throw but doesn't
             bootstrappedClass.insert();
 
-            for (ClassModifier classModifier: klass.getClassModifiers())
+            for (ClassModifier classModifier : klass.getClassModifiers())
             {
                 klass.model.meta.domain.ClassModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassModifier();
                 bootstrappedClassModifier.setClassName(klass.getName());
@@ -80,7 +80,7 @@ public class KlassBootstrapWriter
                 bootstrappedClassModifier.insert();
             }
 
-            for (DataTypeProperty dataTypeProperty: klass.getDataTypeProperties())
+            for (DataTypeProperty dataTypeProperty : klass.getDataTypeProperties())
             {
                 if (dataTypeProperty instanceof PrimitiveProperty)
                 {
@@ -97,7 +97,7 @@ public class KlassBootstrapWriter
                     bootstrappedPrimitiveProperty.setOptional(primitiveProperty.isOptional());
                     bootstrappedPrimitiveProperty.insert();
 
-                    for (PropertyModifier propertyModifier: dataTypeProperty.getPropertyModifiers())
+                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
                     {
                         PrimitivePropertyModifier primitivePropertyModifier = new PrimitivePropertyModifier();
                         primitivePropertyModifier.setClassName(klass.getName());
@@ -122,7 +122,7 @@ public class KlassBootstrapWriter
                     bootstrappedEnumerationProperty.setOptional(enumerationProperty.isOptional());
                     bootstrappedEnumerationProperty.insert();
 
-                    for (PropertyModifier propertyModifier: dataTypeProperty.getPropertyModifiers())
+                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
                     {
                         EnumerationPropertyModifier enumerationPropertyModifier = new EnumerationPropertyModifier();
                         enumerationPropertyModifier.setClassName(klass.getName());
@@ -140,7 +140,7 @@ public class KlassBootstrapWriter
             }
         }
 
-        for (Association association: this.domainModel.getAssociations())
+        for (Association association : this.domainModel.getAssociations())
         {
             klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
             bootstrappedAssociation.setName(association.getName());
@@ -176,7 +176,7 @@ public class KlassBootstrapWriter
         bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
         bootstrappedAssociationEnd.insert();
 
-        for (AssociationEndModifier associationEndModifier: associationEnd.getAssociationEndModifiers())
+        for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
         {
             klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());

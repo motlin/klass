@@ -4,8 +4,8 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.dropwizard.bundle.bootstrap.writer.BootstrapWriterBundle;
 import cool.klass.dropwizard.bundle.test.data.SampleDataGeneratorBundle;
-import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -37,6 +37,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
         }
 
         bootstrap.addBundle(new SampleDataGeneratorBundle(this.domainModel, this.dataStore));
+        bootstrap.addBundle(new BootstrapWriterBundle(this.domainModel, this.dataStore));
 
         // TODO: application initialization
     }
@@ -48,8 +49,8 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.run(configuration, environment);
 
-        Config config = ConfigFactory.load();
-        Config klassConfig  = config.getConfig("klass");
+        Config config      = ConfigFactory.load();
+        Config klassConfig = config.getConfig("klass");
         ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
                 .setJson(false)
                 .setOriginComments(false);
@@ -57,9 +58,5 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
         LOGGER.info("Klass HOCON configuration:\n{}", render);
 
         environment.jersey().register(new QuestionResourceManual(this.dataStore));
-
-        // TODO: Move up to generated superclass
-        KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel);
-        klassBootstrapWriter.bootstrapMetaModel();
     }
 }

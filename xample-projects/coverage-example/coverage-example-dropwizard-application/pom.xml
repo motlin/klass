@@ -154,6 +154,12 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
@@ -175,6 +181,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
             <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-ddls</artifactId>
+            <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -241,12 +254,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-bootstrap-writer</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -267,12 +274,6 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-connection-manager-h2</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-sample-data</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -354,6 +355,13 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-reladomo-test-rule</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-sample-data</artifactId>
             <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>

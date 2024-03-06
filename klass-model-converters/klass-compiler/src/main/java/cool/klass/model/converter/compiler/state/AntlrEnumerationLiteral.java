@@ -32,7 +32,8 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             null,
             null);
 
-    private final String prettyName;
+    @Nonnull
+    private final Optional<String> prettyName;
     private final AntlrEnumeration owningEnumeration;
 
     private EnumerationLiteralBuilder enumerationLiteralBuilder;
@@ -44,7 +45,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            String prettyName,
+            @Nonnull Optional<String> prettyName,
             AntlrEnumeration owningEnumeration)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
@@ -71,7 +72,8 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         return false;
     }
 
-    public String getPrettyName()
+    @Nonnull
+    public Optional<String> getPrettyName()
     {
         return this.prettyName;
     }
@@ -109,7 +111,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
 
     public void reportDuplicatePrettyName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_LIT: Duplicate enumeration pretty name: '%s'.", this.prettyName);
+        String message = String.format("ERR_DUP_LIT: Duplicate enumeration pretty name: '%s'.", this.prettyName.get());
         compilerErrorHolder.add(message, this, this.getElementContext().enumerationPrettyName());
     }
 }

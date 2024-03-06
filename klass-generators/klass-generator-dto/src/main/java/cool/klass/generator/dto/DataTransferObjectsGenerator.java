@@ -21,7 +21,6 @@ import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -160,10 +159,12 @@ public class DataTransferObjectsGenerator
 
     private String getLiteral(EnumerationLiteral enumerationLiteral)
     {
-        String prettyName = enumerationLiteral.getPrettyName();
-        String name       = enumerationLiteral.getName();
-        String line1      = prettyName == null ? "" : "    @JsonProperty(\"" + prettyName + "\")\n";
-        String line2      = "    " + name + ",\n";
+        String line1 = enumerationLiteral.getDeclaredPrettyName()
+                .map(prettyName -> "    @JsonProperty(\"" + prettyName + "\")\n")
+                .orElse("");
+
+        String line2 = "    " + enumerationLiteral.getName() + ",\n";
+
         return line1 + line2;
     }
 
@@ -228,8 +229,8 @@ public class DataTransferObjectsGenerator
 
     private String getDataField(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        String   annotation = this.getAnnotation(dataTypeProperty);
-        String   type       = this.getType(dataTypeProperty.getType());
+        String annotation = this.getAnnotation(dataTypeProperty);
+        String type       = this.getType(dataTypeProperty.getType());
         return String.format("%s    private %s %s;\n", annotation, type, dataTypeProperty.getName());
     }
 
@@ -241,12 +242,7 @@ public class DataTransferObjectsGenerator
 
     private boolean isNullable(DataTypeProperty dataTypeProperty)
     {
-        if (dataTypeProperty.isTemporal())
-        {
-            return true;
-        }
-        ImmutableList<PropertyModifier> propertyModifiers = dataTypeProperty.getPropertyModifiers();
-        return dataTypeProperty.isOptional() || dataTypeProperty.isKey();
+        return dataTypeProperty.isTemporal() || dataTypeProperty.isOptional() || dataTypeProperty.isKey();
     }
 
     private String getReferenceField(AssociationEnd associationEnd)
@@ -256,7 +252,7 @@ public class DataTransferObjectsGenerator
         // TODO: NotNull shouldn't apply if the ONE_TO_ONE is a version association end.
         String annotation = "";
         // String annotation = multiplicity.isToMany() || multiplicity == Multiplicity.ONE_TO_ONE ? "    @NotNull\n" : "";
-        String type       = this.getType(associationEnd.getType(), multiplicity);
+        String type = this.getType(associationEnd.getType(), multiplicity);
         return String.format("%s    private %s %s;\n", annotation, type, associationEnd.getName());
     }
 }

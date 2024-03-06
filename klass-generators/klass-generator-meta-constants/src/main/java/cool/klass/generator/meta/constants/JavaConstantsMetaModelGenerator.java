@@ -468,10 +468,15 @@ public class JavaConstantsMetaModelGenerator
     {
         String uppercaseName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, enumerationLiteral.getName());
 
+        String declaredPrettyName = enumerationLiteral.getDeclaredPrettyName()
+                .map(StringEscapeUtils::escapeJava)
+                .map(string -> String.format("of(\"%s\")", string))
+                .orElse("empty()");
+
+        // @formatter:off
         //language=JAVA
-        return "public static enum "
-                + uppercaseName
-                + "_EnumerationLiteral implements EnumerationLiteral\n"
+        return ""
+                + "public static enum " + uppercaseName + "_EnumerationLiteral implements EnumerationLiteral\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
@@ -479,45 +484,33 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public String getName()\n"
                 + "    {\n"
-                + "        return \""
-                + StringEscapeUtils.escapeJava(enumerationLiteral.getName())
-                + "\";\n"
+                + "        return \"" + StringEscapeUtils.escapeJava(enumerationLiteral.getName()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return "
-                + enumerationLiteral.getOrdinal()
-                + ";\n"
+                + "        return " + enumerationLiteral.getOrdinal() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public boolean isInferred()\n"
                 + "    {\n"
-                + "        return "
-                + enumerationLiteral.isInferred()
-                + ";\n"
+                + "        return " + enumerationLiteral.isInferred() + ";\n"
                 + "    }\n"
                 + "\n"
-                + "    @Nullable\n"
+                + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public String getPrettyName()\n"
+                + "    public Optional<String> getDeclaredPrettyName()\n"
                 + "    {\n"
-                + "        return \""
-                + StringEscapeUtils.escapeJava(enumerationLiteral.getPrettyName())
-                + "\";\n"
+                + "        return Optional." + declaredPrettyName + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public Enumeration getType()\n"
                 + "    {\n"
-                + "        return "
-                + this.applicationName
-                + "DomainModel."
-                + enumerationLiteral.getType().getName()
-                + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + enumerationLiteral.getType().getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -530,11 +523,10 @@ public class JavaConstantsMetaModelGenerator
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \""
-                + this.wrapSourceCode(enumerationLiteral.getSourceCode())
-                + "\";\n"
+                + "                + \"" + this.wrapSourceCode(enumerationLiteral.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "}\n";
+        // @formatter:on
     }
 
     private String getEnumerationLiteralConstantsSourceCode(Enumeration enumeration)

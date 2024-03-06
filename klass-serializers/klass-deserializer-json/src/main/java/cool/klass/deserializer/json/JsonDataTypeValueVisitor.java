@@ -58,7 +58,8 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
             throw new AssertionError();
         }
         String textValue = this.jsonDataTypeValue.textValue();
-        Optional<EnumerationLiteral> enumerationLiteral = enumerationProperty.getType().getEnumerationLiterals()
+        Optional<EnumerationLiteral> enumerationLiteral = enumerationProperty.getType()
+                .getEnumerationLiterals()
                 .detectOptional(each -> each.getPrettyName().equals(textValue));
         this.result = enumerationLiteral.get();
     }

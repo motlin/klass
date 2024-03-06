@@ -134,7 +134,7 @@ class EnumerationLiteral
     enumerationName               : String key;
     name                          : String key;
     inferred                      : Boolean;
-    prettyName                    : String;
+    prettyName                    : String?;
     ordinal                       : Integer;
 }
 
