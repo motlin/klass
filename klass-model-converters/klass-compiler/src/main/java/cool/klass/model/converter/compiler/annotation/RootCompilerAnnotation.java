@@ -55,6 +55,12 @@ public class RootCompilerAnnotation
         this.message        = Objects.requireNonNull(message);
     }
 
+    @Nonnull
+    public String getAnnotationCode()
+    {
+        return this.annotationCode;
+    }
+
     @Override
     public int compareTo(@Nonnull RootCompilerAnnotation other)
     {

@@ -11,6 +11,8 @@ import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -96,5 +98,24 @@ public abstract class AbstractKlassCompilerErrorTestCase
             String annotationSourceName = "%s-%s-%d.log".formatted(testName, severityString, annotationId);
             this.rule.assertFileContents(annotationSourceName, compilerAnnotation.toString(), callingClass);
         }
+
+        ImmutableListMultimap<Object, RootCompilerAnnotation> annotationsByKey =
+                compilerAnnotations.groupBy(this::getAnnotationKey);
+        annotationsByKey.forEachKeyMultiValues((key, compilerAnnotations1) ->
+        {
+            if (compilerAnnotations1.size() > 1)
+            {
+                fail("Found multiple compiler annotations for key: " + key);
+            }
+        });
+    }
+
+    private ImmutableList<Object> getAnnotationKey(RootCompilerAnnotation rootCompilerAnnotation)
+    {
+        return Lists.immutable.with(
+                rootCompilerAnnotation.getFilenameWithoutDirectory(),
+                rootCompilerAnnotation.getLine(),
+                rootCompilerAnnotation.getCharPositionInLine(),
+                rootCompilerAnnotation.getAnnotationCode());
     }
 }
