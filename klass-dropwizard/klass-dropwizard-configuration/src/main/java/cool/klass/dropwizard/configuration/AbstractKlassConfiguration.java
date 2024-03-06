@@ -19,7 +19,6 @@ import com.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactoryProv
 import com.liftwizard.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
 import com.liftwizard.dropwizard.configuration.cors.CorsFactory;
 import com.liftwizard.dropwizard.configuration.cors.CorsFactoryProvider;
-import com.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import com.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import com.liftwizard.dropwizard.configuration.enabled.EnabledFactory;
 import com.liftwizard.dropwizard.configuration.h2.H2Factory;
@@ -53,7 +52,7 @@ public class AbstractKlassConfiguration
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
     private @Valid @NotNull H2Factory                h2Factory                = new H2Factory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();
-    private @Valid @NotNull DdlExecutorFactory       ddlExecutorFactory       = new DdlExecutorFactory();
+    private @Valid @NotNull EnabledFactory           ddlExecutorFactory       = new EnabledFactory();
     private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories      = Arrays.asList();
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory         = new EnabledFactory();
@@ -134,13 +133,13 @@ public class AbstractKlassConfiguration
 
     @Override
     @JsonProperty("ddlExecutor")
-    public DdlExecutorFactory getDdlExecutorFactory()
+    public EnabledFactory getDdlExecutorFactory()
     {
         return this.ddlExecutorFactory;
     }
 
     @JsonProperty("ddlExecutor")
-    public void setDdlExecutor(DdlExecutorFactory ddlExecutorFactory)
+    public void setDdlExecutor(EnabledFactory ddlExecutorFactory)
     {
         this.ddlExecutorFactory = ddlExecutorFactory;
     }
