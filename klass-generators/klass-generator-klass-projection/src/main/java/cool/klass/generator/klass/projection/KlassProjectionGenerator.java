@@ -33,7 +33,9 @@ public class KlassProjectionGenerator
     @Override
     protected Path getPluginRelativePath(Path path)
     {
-        return path.resolve("klass").resolve("projection");
+        return path
+                .resolve("klass")
+                .resolve("projection");
     }
 
     @Override

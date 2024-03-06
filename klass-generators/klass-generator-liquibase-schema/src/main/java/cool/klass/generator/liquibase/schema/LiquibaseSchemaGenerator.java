@@ -28,7 +28,9 @@ public class LiquibaseSchemaGenerator
     @Override
     protected Path getPluginRelativePath(Path path)
     {
-        return path.resolve("liquibase").resolve("schema");
+        return path
+                .resolve("liquibase")
+                .resolve("schema");
     }
 
     @Override

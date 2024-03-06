@@ -19,7 +19,9 @@ public class KlassServiceGenerator
     @Override
     protected Path getPluginRelativePath(Path path)
     {
-        return path.resolve("klass").resolve("service");
+        return path
+                .resolve("klass")
+                .resolve("service");
     }
 
     @Override
