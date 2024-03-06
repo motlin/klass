@@ -510,9 +510,9 @@
             </dependency>
 
             <dependency>
-                <groupId>io.dropwizard-bundles</groupId>
-                <artifactId>dropwizard-configurable-assets-bundle</artifactId>
-                <version>1.3.5</version>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-assets</artifactId>
+                <version>1.3.12</version>
             </dependency>
 
             <dependency>
