@@ -44,9 +44,9 @@
       {
         "type": "buffered",
         "timeZone": "system",
-        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) [%white(%thread)] %blue(%marker) {%magenta(%mdc)} %green(%logger): %message%n%red(%rootException)",
-        "includeCallerData": true
-      }
+        "logFormat": "%highlight(%-5level) %cyan(%date{HH:mm:ss}) %gray(%file:%line) [%white(%thread)] %blue(%marker) {%magenta(%mdc)} %green(%logger): %message%n%red(%rootException)",
+        "includeCallerData": true,
+      },
     ]
   },
   "klass": {
@@ -174,6 +174,17 @@
     "dryRun": false,
   },
   "bootstrap": {
-    "enabled": false
+    "enabled": true
   },
+  "graphQL": {
+    "enableTracing": false,
+    "queryCache": "maximumSize=10000",
+    "schemaFiles": [
+      "io/liftwizard/graphql/schema/query/QuerySchema.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls",
+      "klass/model/meta/domain/graphql/schema/query/GraphQLQuerySchema.graphqls",
+      "klass/model/meta/domain/graphql/schema/finder/GraphQLFinders.graphqls",
+      "klass/model/meta/domain/graphql/schema/GraphQLSchema.graphqls",
+    ]
+  }
 }
