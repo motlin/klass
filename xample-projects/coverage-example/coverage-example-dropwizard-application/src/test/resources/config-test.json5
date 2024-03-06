@@ -137,7 +137,7 @@
     }
   ],
   "sampleData"        : {
-    "enabled": false
+    "enabled": true
   },
   "reladomo": {
     "runtimeConfigurationPaths": [

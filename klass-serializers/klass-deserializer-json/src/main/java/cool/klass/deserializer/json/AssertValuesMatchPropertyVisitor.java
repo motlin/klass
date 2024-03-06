@@ -15,35 +15,41 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 
-public class JsonValueVisitor implements PropertyVisitor
+public class AssertValuesMatchPropertyVisitor
+        implements PropertyVisitor
 {
     @Nonnull
-    private final JsonNode jsonDataTypeValue;
-    private final Object value;
+    private final JsonNode             jsonDataTypeValue;
+    private final Object               value;
+    @Nonnull
+    private final String               propertyKind;
     @Nonnull
     private final MutableStack<String> contextStack;
     @Nonnull
-    private final MutableList<String> errors;
+    private final MutableList<String>  errors;
 
-    public JsonValueVisitor(
-            JsonNode jsonDataTypeValue,
+    public AssertValuesMatchPropertyVisitor(
+            @Nonnull JsonNode jsonDataTypeValue,
             Object value,
-            MutableStack<String> contextStack,
-            MutableList<String> errors)
+            @Nonnull String propertyKind,
+            @Nonnull MutableStack<String> contextStack,
+            @Nonnull MutableList<String> errors)
     {
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
-        this.value = value;
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.errors = Objects.requireNonNull(errors);
+        this.value             = value;
+        this.propertyKind      = Objects.requireNonNull(propertyKind);
+        this.contextStack      = Objects.requireNonNull(contextStack);
+        this.errors            = Objects.requireNonNull(errors);
     }
 
     @Override
     public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
     {
-        PrimitiveTypeVisitor visitor = new JsonPrimitiveValueCheckingVisitor(
+        PrimitiveTypeVisitor visitor = new AssertValuesMatchPrimitiveTypeVisitor(
                 primitiveProperty,
                 this.jsonDataTypeValue,
                 this.value,
+                this.propertyKind,
                 this.contextStack,
                 this.errors);
         primitiveProperty.getType().visit(visitor);

@@ -99,8 +99,8 @@ public class Update_PropertiesRequiredTest
                 + "}\n";
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
-                "Error at PropertiesRequired.system. Mismatched value for property 'PropertiesRequired.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-                "Error at PropertiesRequired.version.system. Mismatched value for property 'PropertiesRequiredVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.");
+                "Error at PropertiesRequired.system. Mismatched value for temporal property 'PropertiesRequired.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+                "Error at PropertiesRequired.version.system. Mismatched value for temporal property 'PropertiesRequiredVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesRequired. Didn't expect to receive value for derived property 'PropertiesRequired.requiredDerived: String' but value was string: \"PropertiesRequired requiredDerived 1 ☝\".",
                 "Warning at PropertiesRequired. Didn't expect to receive value for temporal property 'PropertiesRequired.system: TemporalRange?' but value was string: \"1999-12-31T23:59:59.999Z\".",
@@ -333,8 +333,8 @@ public class Update_PropertiesRequiredTest
                 "Incoming 'PropertiesRequired' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
                 "Incoming 'PropertiesRequired' has property 'createdOn: Instant createdOn' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
                 "Error at PropertiesRequired.version. Expected json object but value was string: \"PropertiesRequired requiredString 1 ☝\".",
-                "Error at PropertiesRequired.createdById. Mismatched value for property 'PropertiesRequired.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.",
-                "Error at PropertiesRequired.lastUpdatedById. Mismatched value for property 'PropertiesRequired.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.");
+                "Error at PropertiesRequired.createdById. Mismatched value for audit property 'PropertiesRequired.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.",
+                "Error at PropertiesRequired.lastUpdatedById. Mismatched value for audit property 'PropertiesRequired.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesRequired. Didn't expect to receive value for derived property 'PropertiesRequired.requiredDerived: String' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
                 "Warning at PropertiesRequired. Didn't expect to receive value for temporal property 'PropertiesRequired.system: TemporalRange?' but value was string: \"PropertiesRequired requiredString 1 ☝\".",

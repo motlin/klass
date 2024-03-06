@@ -84,7 +84,7 @@ public class Update_PropertiesOptionalTest
                 + "}\n";
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
-                "Error at PropertiesOptional.version.number. Mismatched value for property 'PropertiesOptionalVersion.number: Integer'. Expected absent value or '1' but value was '2'.");
+                "Error at PropertiesOptional.version.number. Mismatched value for version property 'PropertiesOptionalVersion.number: Integer'. Expected absent value or '1' but value was '2'.");
 
         this.validate(incomingJson, this.persistentInstance, expectedErrors);
     }
@@ -125,8 +125,8 @@ public class Update_PropertiesOptionalTest
                 + "}\n";
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
-                "Error at PropertiesOptional.system. Mismatched value for property 'PropertiesOptional.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-                "Error at PropertiesOptional.version.system. Mismatched value for property 'PropertiesOptionalVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.");
+                "Error at PropertiesOptional.system. Mismatched value for temporal property 'PropertiesOptional.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+                "Error at PropertiesOptional.version.system. Mismatched value for temporal property 'PropertiesOptionalVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesOptional. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was string: \"PropertiesOptional optionalDerived 1 ☝\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.system: TemporalRange?' but value was string: \"1999-12-31T23:59:59.999Z\".",
@@ -343,8 +343,8 @@ public class Update_PropertiesOptionalTest
                 "Incoming 'PropertiesOptional' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
                 "Incoming 'PropertiesOptional' has property 'createdOn: Instant createdOn' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
                 "Error at PropertiesOptional.version. Expected json object but value was string: \"PropertiesOptional requiredString 1 ☝\".",
-                "Error at PropertiesOptional.createdById. Mismatched value for property 'PropertiesOptional.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.",
-                "Error at PropertiesOptional.lastUpdatedById. Mismatched value for property 'PropertiesOptional.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.");
+                "Error at PropertiesOptional.createdById. Mismatched value for audit property 'PropertiesOptional.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.",
+                "Error at PropertiesOptional.lastUpdatedById. Mismatched value for audit property 'PropertiesOptional.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.");
 
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesOptional. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was string: \"PropertiesOptional optionalString 1 ☝\".",

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
+import cool.klass.deserializer.json.AssertValuesMatchPropertyVisitor;
 import cool.klass.deserializer.json.JsonDataTypeValueVisitor;
-import cool.klass.deserializer.json.JsonValueVisitor;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -124,23 +124,36 @@ public class IncomingUpdateDataModelValidator
 
     private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        if (dataTypeProperty.isTemporal() || dataTypeProperty.isAudit())
+        if (dataTypeProperty.isTemporal())
         {
-            this.checkPropertyMatchesIfPresent(dataTypeProperty);
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
+            return;
         }
-        else if (dataTypeProperty.isVersion())
+        if (dataTypeProperty.isAudit())
         {
-            this.checkPropertyMatchesIfPresent(dataTypeProperty);
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "audit");
+            return;
+        }
+        if (dataTypeProperty.isVersion())
+        {
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "version");
+            return;
+        }
+        if (dataTypeProperty.isFinal())
+        {
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "final");
         }
     }
 
-    private void checkPropertyMatchesIfPresent(@Nonnull DataTypeProperty dataTypeProperty)
+    private void checkPropertyMatchesIfPresent(
+            @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull String propertyKind)
     {
         this.contextStack.push(dataTypeProperty.getName());
 
         try
         {
-            this.checkPropertyMatches(dataTypeProperty);
+            this.checkPropertyMatches(dataTypeProperty, propertyKind);
         }
         finally
         {
@@ -148,7 +161,7 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    private void checkPropertyMatches(@Nonnull DataTypeProperty property)
+    private void checkPropertyMatches(@Nonnull DataTypeProperty property, @Nonnull String propertyKind)
     {
         JsonNode jsonDataTypeValue = this.objectNode.path(property.getName());
         if (jsonDataTypeValue.isMissingNode())
@@ -157,9 +170,10 @@ public class IncomingUpdateDataModelValidator
         }
 
         Object persistentValue = this.dataStore.getDataTypeProperty(this.persistentInstance, property);
-        PropertyVisitor visitor = new JsonValueVisitor(
+        PropertyVisitor visitor = new AssertValuesMatchPropertyVisitor(
                 jsonDataTypeValue,
                 persistentValue,
+                propertyKind,
                 this.contextStack,
                 this.errors);
         property.visit(visitor);

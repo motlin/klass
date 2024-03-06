@@ -292,12 +292,13 @@ public class ReladomoDataStore
             return this.getPropertyReflectively(persistentInstance, dataTypeProperty);
         }
 
-        RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
-        Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
+        RelatedFinder<?> finder        = this.getRelatedFinder((MithraObject) persistentInstance);
+        String           attributeName = dataTypeProperty.getName();
+        Attribute        attribute     = finder.getAttributeByName(attributeName);
         if (attribute == null)
         {
-            throw new AssertionError(
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build.");
+            String error = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find attribute: " + attributeName;
+            throw new AssertionError(error);
         }
 
         if (attribute.isAttributeNull(persistentInstance))

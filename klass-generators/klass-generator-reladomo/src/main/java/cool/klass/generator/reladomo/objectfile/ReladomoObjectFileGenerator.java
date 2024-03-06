@@ -395,10 +395,10 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         attributeType.setColumnName(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName));
         attributeType.setPrimaryKey(dataTypeProperty.isKey());
         attributeType.setNullable(dataTypeProperty.isOptional());
-        // TODO: final properties
         if (dataTypeProperty.isKey() || dataTypeProperty.isFinal())
         {
             attributeType.setFinalGetter(true);
+            // TODO: Final should only mean that the synchronizers can't change it
             attributeType.setReadonly(true);
         }
 

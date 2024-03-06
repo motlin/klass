@@ -9,6 +9,7 @@
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptional" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.AllKeyProperties" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.AllForeignKeyProperties" cacheType="partial" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.FinalProperties" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySource" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManyTarget" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToOneSource" cacheType="partial" />

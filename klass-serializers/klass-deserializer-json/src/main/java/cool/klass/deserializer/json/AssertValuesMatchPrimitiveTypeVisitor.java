@@ -13,7 +13,8 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 
-public class JsonPrimitiveValueCheckingVisitor implements PrimitiveTypeVisitor
+public class AssertValuesMatchPrimitiveTypeVisitor
+        implements PrimitiveTypeVisitor
 {
     @Nonnull
     private final PrimitiveProperty    primitiveProperty;
@@ -21,22 +22,26 @@ public class JsonPrimitiveValueCheckingVisitor implements PrimitiveTypeVisitor
     private final JsonNode             jsonDataTypeValue;
     private final Object               persistentValue;
     @Nonnull
+    private final String               propertyKind;
+    @Nonnull
     private final MutableStack<String> contextStack;
     @Nonnull
     private final MutableList<String>  errors;
 
-    public JsonPrimitiveValueCheckingVisitor(
-            PrimitiveProperty primitiveProperty,
-            JsonNode jsonDataTypeValue,
+    public AssertValuesMatchPrimitiveTypeVisitor(
+            @Nonnull PrimitiveProperty primitiveProperty,
+            @Nonnull JsonNode jsonDataTypeValue,
             Object persistentValue,
-            MutableStack<String> contextStack,
-            MutableList<String> errors)
+            @Nonnull String propertyKind,
+            @Nonnull MutableStack<String> contextStack,
+            @Nonnull MutableList<String> errors)
     {
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
-        this.persistentValue = persistentValue;
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.errors = Objects.requireNonNull(errors);
+        this.persistentValue   = persistentValue;
+        this.propertyKind      = Objects.requireNonNull(propertyKind);
+        this.contextStack      = Objects.requireNonNull(contextStack);
+        this.errors            = Objects.requireNonNull(errors);
     }
 
     @Override
@@ -203,8 +208,9 @@ public class JsonPrimitiveValueCheckingVisitor implements PrimitiveTypeVisitor
         }
 
         String error = String.format(
-                "Error at %s. Mismatched value for property '%s.%s: %s%s'. Expected absent value or '%s' but value was '%s'.",
+                "Error at %s. Mismatched value for %s property '%s.%s: %s%s'. Expected absent value or '%s' but value was '%s'.",
                 this.getContextString(),
+                this.propertyKind,
                 this.primitiveProperty.getOwningClassifier().getName(),
                 this.primitiveProperty.getName(),
                 this.primitiveProperty.getType(),

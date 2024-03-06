@@ -266,6 +266,43 @@ service AllKeyProperties
         }
 }
 
+class FinalProperties
+{
+    id  : Long key id;
+    data: String final;
+}
+
+projection FinalPropertiesProjection on FinalProperties
+{
+    id  : "FinalProperties id",
+    data: "FinalProperties data",
+}
+
+service FinalProperties
+{
+    /finalProperties/{id: Long[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.id == id;
+            projection  : FinalPropertiesProjection;
+        }
+        PUT
+        {
+            criteria    : this.id == id;
+        }
+    /finalProperties
+        POST
+        {
+        }
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : FinalPropertiesProjection;
+        }
+}
+
 // TODO: unowned
 // TODO: many-to-one
 

@@ -146,7 +146,7 @@ primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 
 // modifiers
 classifierModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient'
     | identifier {notifyErrorListeners("Unrecognized Classifier modifier: " + _input.LT(-1).getText());};
-dataTypePropertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived'
+dataTypePropertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived' | 'final'
     | identifier {notifyErrorListeners("Unrecognized DataTypeProperty modifier: " + _input.LT(-1).getText());};
 associationEndModifier: 'owned' | 'final' | 'version' | 'private'
     | identifier {notifyErrorListeners("Unrecognized AssociationEnd modifier: " + _input.LT(-1).getText());};

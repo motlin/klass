@@ -334,12 +334,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-sample-data</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -420,11 +414,6 @@
         <dependency>
             <groupId>com.smoketurner.dropwizard</groupId>
             <artifactId>graphql-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
         <dependency>
