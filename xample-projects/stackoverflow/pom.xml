@@ -52,6 +52,12 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.graphql-java</groupId>
+                <artifactId>graphql-java</artifactId>
+                <version>14.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -84,17 +90,17 @@
 
     <modules>
         <module>${app.artifactId}-domain-model</module>
+        <module>${app.artifactId}-dropwizard-application</module>
+        <module>${app.artifactId}-dtos</module>
+        <module>${app.artifactId}-graphql-data-fetchers</module>
+        <module>${app.artifactId}-graphql-runtime-wiring</module>
+        <module>${app.artifactId}-graphql-schema</module>
+        <module>${app.artifactId}-json-views</module>
+        <module>${app.artifactId}-meta-model-constants</module>
+        <module>${app.artifactId}-reladomo-ddls</module>
         <module>${app.artifactId}-reladomo-definitions</module>
         <module>${app.artifactId}-reladomo-pojos</module>
-        <module>${app.artifactId}-reladomo-ddls</module>
         <module>${app.artifactId}-services</module>
-        <module>${app.artifactId}-dtos</module>
-        <module>${app.artifactId}-meta-model-constants</module>
-        <module>${app.artifactId}-json-views</module>
-        <module>${app.artifactId}-graphql-schema</module>
-        <module>${app.artifactId}-graphql-runtime-wiring</module>
-        <module>${app.artifactId}-dropwizard-application</module>
-        <module>stackoverflow-graphql-data-fetchers</module>
     </modules>
 
 </project>
