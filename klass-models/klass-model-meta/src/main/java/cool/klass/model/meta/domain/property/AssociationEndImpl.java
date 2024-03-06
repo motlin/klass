@@ -163,4 +163,15 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             this.element.setOrderBy(orderBy);
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s.%s: %s[%s]",
+                this.getOwningKlass().getName(),
+                this.getName(),
+                this.getType().getName(),
+                this.multiplicity.getPrettyName());
+    }
 }
