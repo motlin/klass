@@ -119,7 +119,7 @@
     "schemaFiles": [
       "klass/model/meta/domain/graphql/schema/query/KlassBootstrappedMetaModelQuery.graphqls",
       "klass/model/meta/domain/graphql/schema/KlassBootstrappedMetaModelFinders.graphqls",
-      "klass/model/meta/domain/graphql/schema/KlassBootstrappedMetaModel.graphqls",
+      "klass/model/meta/domain/graphql/schema/GraphQLSchema.graphqls",
       "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   }

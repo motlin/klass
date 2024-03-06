@@ -1,37 +1,41 @@
 package cool.klass.generator.grahql.schema;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 
 public class GraphQLSchemaGenerator
+        extends AbstractPerPackageGenerator
 {
-    @Nonnull
-    private final DomainModel domainModel;
-    @Nonnull
-    private final String      rootPackageName;
-    @Nonnull
-    private final String      applicationName;
-
-    public GraphQLSchemaGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull String applicationName)
+    public GraphQLSchemaGenerator(@Nonnull DomainModel domainModel)
     {
-        this.domainModel     = Objects.requireNonNull(domainModel);
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.applicationName = Objects.requireNonNull(applicationName);
+        super(domainModel);
     }
 
-    public void writeSchemaFiles(@Nonnull Path outputPath)
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
+    {
+        return path
+                .resolve("graphql")
+                .resolve("schema");
+    }
+
+    @Nonnull
+    @Override
+    protected String getFileName()
+    {
+        return "GraphQLSchema.graphqls";
+    }
+
+    @Nonnull
+    @Override
+    protected String getPackageSourceCode(@Nonnull String fullyQualifiedPackage)
     {
         String orderBySourceCode = this.domainModel
                 .getClassifiers()
@@ -53,21 +57,7 @@ public class GraphQLSchemaGenerator
                 + "# Top Level Elements\n"
                 + topLevelElementsCode;
 
-        Path schemaOutputPath = this.getOutputPath(outputPath);
-        this.printStringToFile(schemaOutputPath, sourceCode);
-    }
-
-    @Nonnull
-    private Path getOutputPath(@Nonnull Path outputPath)
-    {
-        String packageRelativePath = this.rootPackageName.replaceAll("\\.", "/");
-        Path outputDirectory = outputPath
-                .resolve(packageRelativePath)
-                .resolve("graphql")
-                .resolve("schema");
-        outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + ".graphqls";
-        return outputDirectory.resolve(fileName);
+        return sourceCode;
     }
 
     private String getOrderBySourceCode(Classifier classifier)
@@ -84,17 +74,5 @@ public class GraphQLSchemaGenerator
         var visitor = new GraphQLElementToSchemaSourceVisitor();
         topLevelElement.visit(visitor);
         return visitor.getSourceCode();
-    }
-
-    private void printStringToFile(@Nonnull Path path, String contents)
-    {
-        try (var printStream = new PrintStream(new FileOutputStream(path.toFile())))
-        {
-            printStream.print(contents);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }

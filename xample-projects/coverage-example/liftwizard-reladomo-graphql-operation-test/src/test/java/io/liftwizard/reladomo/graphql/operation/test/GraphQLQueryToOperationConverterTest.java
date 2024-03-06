@@ -432,7 +432,7 @@ public class GraphQLQueryToOperationConverterTest
     @Nonnull
     private TypeDefinitionRegistry getRegistry()
     {
-        var typeRegistry          = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/CoverageExample.graphqls");
+        var typeRegistry          = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls");
         var attributeTypeRegistry = this.getRegistry("/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls");
         var queryTypeRegistry     = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls");
         var findersTypeRegistry   = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls");
