@@ -13,10 +13,9 @@
     --klass-color-parameter-name: #BB88FF;
     --klass-color-property-name: #9876AA;
     --klass-color-literal: #6897BB;
-    --klass-color-string-literal: "6A8759";
+    --klass-color-string-literal: #6A8759;
     --klass-color-url-constant: #00FF00;
 
-    /* Silver */
     --klass-color-semicolon: #CC7832;
 
     --klass-color-declaration: #A9B7C6;
