@@ -166,7 +166,7 @@ public class AntlrModifier
 
     public boolean isTransient()
     {
-        return this.getKeyword().equals("transient");
+        return this.is("transient");
     }
 
     @Nonnull
