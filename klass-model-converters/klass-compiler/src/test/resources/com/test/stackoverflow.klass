@@ -57,20 +57,20 @@ class Question
             && Answer.deleted == false
     }
 
-    // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom     : Instant
-    systemTo       : Instant
-
     // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system         : Instant
+    system             : TemporalRange
+
+    // These two properties are implied by systemTemporal, and are not supposed to actually be declared
+    systemFrom         : TemporalInstant
+    systemTo           : TemporalInstant
 
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById    : String
+    createdById        : String
 
     // createdOn, or createdDate?
-    createdOn      : Instant
-    lastUpdatedById: String
+    createdOn          : Instant
+    lastUpdatedById    : String
 
     createdBy(): User[1..1]
     {

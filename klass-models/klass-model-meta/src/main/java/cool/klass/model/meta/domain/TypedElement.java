@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class TypedElement<T extends Type> extends NamedElement
 {
-    private final T type;
+    protected final T type;
 
     protected TypedElement(
             ParserRuleContext elementContext,

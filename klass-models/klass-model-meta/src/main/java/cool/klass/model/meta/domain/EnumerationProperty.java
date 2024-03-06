@@ -25,6 +25,24 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                 isOptional);
     }
 
+    @Override
+    public boolean isTemporalRange()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isTemporalInstant()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isTemporal()
+    {
+        return false;
+    }
+
     public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder<Enumeration, EnumerationBuilder>
     {
         private EnumerationProperty enumerationProperty;

@@ -85,4 +85,16 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
     {
         this.attributeType.setJavaType("Date");
     }
+
+    @Override
+    public void visitTemporalInstant()
+    {
+        throw new AssertionError();
+    }
+
+    @Override
+    public void visitTemporalRange()
+    {
+        throw new AssertionError();
+    }
 }

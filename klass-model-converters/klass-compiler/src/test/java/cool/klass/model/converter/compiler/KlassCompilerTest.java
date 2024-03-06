@@ -32,6 +32,10 @@ public class KlassCompilerTest
         Set<String> klassLocations = this.getResourceNames("com.test");
 
         DomainModel domainModel = compiler.compile(klassLocations);
+        for (CompilerError compilerError : compilerErrorHolder.getCompilerErrors())
+        {
+            LOGGER.warn("{}", compilerError);
+        }
         assertFalse(compilerErrorHolder.hasCompilerErrors());
         assertNotNull(domainModel);
     }

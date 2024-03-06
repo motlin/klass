@@ -19,4 +19,8 @@ public interface PrimitiveTypeVisitor
     void visitInstant();
 
     void visitLocalDate();
+
+    void visitTemporalInstant();
+
+    void visitTemporalRange();
 }

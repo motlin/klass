@@ -34,6 +34,12 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
         return this.optional;
     }
 
+    public abstract boolean isTemporalRange();
+
+    public abstract boolean isTemporalInstant();
+
+    public abstract boolean isTemporal();
+
     public abstract static class DataTypePropertyBuilder<T extends DataType, TB extends DataTypeBuilder<T>> extends PropertyBuilder<T, TB>
     {
         protected final boolean isKey;

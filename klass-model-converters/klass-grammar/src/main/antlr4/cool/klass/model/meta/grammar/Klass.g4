@@ -88,7 +88,7 @@ argument
 multiplicity: '[' multiplicityBody ']';
 multiplicityBody: lowerBound=IntegerLiteral '..' upperBound=(IntegerLiteral | '*');
 
-primitiveType: 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate';
+primitiveType: 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked';
@@ -153,7 +153,7 @@ keywordValidAsIdentifier
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     // TODO: Split these keywords out, since they're really only ok as enumeration literals
-    | 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate'
+    | 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange'
     ;
 
 literal
