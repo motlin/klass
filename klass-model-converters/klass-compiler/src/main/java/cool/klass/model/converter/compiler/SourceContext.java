@@ -24,4 +24,13 @@ public class SourceContext
     {
         return this.elementContext;
     }
+
+    @Override
+    public String toString()
+    {
+        return "SourceContext{"
+                + "compilationUnit=" + this.compilationUnit
+                + ", elementContext=" + this.elementContext.getText()
+                + '}';
+    }
 }
