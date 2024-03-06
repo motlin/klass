@@ -5,7 +5,6 @@ import java.util.Optional;
 import cool.klass.generator.service.ServiceResourceGenerator;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
@@ -30,8 +29,7 @@ public class ServiceResourceGeneratorTest
                 Optional.empty(),
                 "example.klass",
                 KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT);
-        CompilerState     compilerState     = new CompilerState(compilationUnit);
-        KlassCompiler     compiler          = new KlassCompiler(compilerState);
+        KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
 
         if (compilationResult instanceof ErrorsCompilationResult)

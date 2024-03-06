@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import cool.klass.model.meta.loader.DomainModelLoader;
+import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -36,7 +36,9 @@ public class DomainModelCompilerFactory
             return this.domainModel;
         }
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.sourcePackages);
-        DomainModelLoader     domainModelLoader            = new DomainModelLoader(klassSourcePackagesImmutable);
+        DomainModelCompilerLoader domainModelLoader        = new DomainModelCompilerLoader(
+                klassSourcePackagesImmutable,
+                Thread.currentThread().getContextClassLoader());
         this.domainModel = domainModelLoader.load();
         return this.domainModel;
     }

@@ -5,14 +5,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
@@ -23,10 +21,10 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -84,33 +82,50 @@ public abstract class AbstractGenerateMojo
             throw new MojoExecutionException(message);
         }
 
-        ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
-        this.getLog().debug("Scanning source packages: " + klassSourcePackagesImmutable.makeString());
-
         ClassLoader classLoader = this.getClassLoader();
 
-        ImmutableList<URL> urls = klassSourcePackagesImmutable.flatCollectWith(
+        return this.load(classLoader);
+    }
+
+    @Nonnull
+    private CompilationResult load(ClassLoader classLoader) throws MojoExecutionException
+    {
+        ImmutableList<String> klassSourcePackages = Lists.immutable.withAll(this.klassSourcePackages);
+        this.getLog().debug("Scanning source packages: " + klassSourcePackages.makeString());
+
+        ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits(
+                classLoader,
+                klassSourcePackages);
+
+        KlassCompiler klassCompiler = new KlassCompiler(compilationUnits);
+        return klassCompiler.compile();
+    }
+
+    @Nonnull
+    private ImmutableCollection<CompilationUnit> getCompilationUnits(
+            ClassLoader classLoader,
+            ImmutableList<String> klassSourcePackages) throws MojoExecutionException
+    {
+        ImmutableList<URL> urls = klassSourcePackages.flatCollectWith(
                 ClasspathHelper::forPackage,
                 classLoader);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(urls.castToList());
         Reflections reflections    = new Reflections(configurationBuilder);
-        Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
-        if (klassLocations.isEmpty())
-        {
-            String message = "Could not find any klass locations. Scanned: " + klassSourcePackagesImmutable;
-            throw new MojoExecutionException(message);
-        }
+        ImmutableList<String> klassLocations = Lists.immutable.withAll(reflections.getResources(Pattern.compile(".*\\.klass")));
 
-        this.getLog().debug("Found klass locations: " + SetAdapter.adapt(klassLocations).makeString());
+        this.getLog().debug("Found source files on classpath: " + klassLocations);
 
-        MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
+        ImmutableCollection<CompilationUnit> compilationUnits = Lists.immutable.withAll(klassLocations)
                 .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
 
-        CompilerState compilerState = new CompilerState(compilationUnits);
-        KlassCompiler klassCompiler = new KlassCompiler(compilerState);
-        return klassCompiler.compile();
+        if (compilationUnits.isEmpty())
+        {
+            String message = "Could not find any files matching *.klass in urls: " + urls;
+            throw new MojoExecutionException(message);
+        }
+        return compilationUnits;
     }
 
     @Nonnull
@@ -122,7 +137,7 @@ public abstract class AbstractGenerateMojo
             MutableList<URL> projectClasspathList = Lists.mutable.empty();
             for (String element : classpathElements)
             {
-                URL url = this.getUrl(element);
+                URL url = AbstractGenerateMojo.getUrl(element);
                 projectClasspathList.add(url);
             }
 
@@ -136,7 +151,7 @@ public abstract class AbstractGenerateMojo
     }
 
     @Nonnull
-    private URL getUrl(@Nonnull String classpathElement) throws MojoExecutionException
+    private static URL getUrl(@Nonnull String classpathElement) throws MojoExecutionException
     {
         try
         {

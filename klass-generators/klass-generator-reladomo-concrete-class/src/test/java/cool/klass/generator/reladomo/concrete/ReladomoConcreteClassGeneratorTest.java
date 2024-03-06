@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
@@ -57,8 +56,7 @@ public class ReladomoConcreteClassGeneratorTest
                 Optional.empty(),
                 "example.klass",
                 klassSourceCode);
-        CompilerState     compilerState     = new CompilerState(compilationUnit);
-        KlassCompiler     compiler          = new KlassCompiler(compilerState);
+        KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
 
         if (compilationResult instanceof ErrorsCompilationResult)

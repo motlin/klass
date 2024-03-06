@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,43 +11,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <!--TODO: Rename klass-model-loader-classpath-->
     <artifactId>klass-model-loader</artifactId>
 
-    <name>Klass Domain Model Loader: Source Code from Classpath</name>
+    <name>Klass Domain Model Loader</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-source-code-meta-interface</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-compiler</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
@@ -55,4 +29,5 @@
         </dependency>
 
     </dependencies>
+
 </project>

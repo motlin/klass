@@ -899,8 +899,7 @@ public class KlassCompilerTest
                 Optional.empty(),
                 "example.klass",
                 sourceCodeText);
-        CompilerState     compilerState     = new CompilerState(compilationUnit);
-        KlassCompiler     compiler          = new KlassCompiler(compilerState);
+        KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
         if (compilationResult instanceof ErrorsCompilationResult)
         {

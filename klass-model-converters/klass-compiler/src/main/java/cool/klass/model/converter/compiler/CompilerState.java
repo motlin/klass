@@ -40,8 +40,8 @@ import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.function.Function;
+import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.OrderedMaps;
@@ -57,12 +57,7 @@ public class CompilerState
     private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalkStates =
             OrderedMaps.adapt(new LinkedHashMap<>());
 
-    public CompilerState(CompilationUnit compilationUnit)
-    {
-        this(Lists.mutable.with(compilationUnit));
-    }
-
-    public CompilerState(@Nonnull MutableList<CompilationUnit> compilationUnits)
+    public CompilerState(@Nonnull ImmutableCollection<CompilationUnit> compilationUnits)
     {
         this.compilerInputState = new CompilerInputState(compilationUnits);
     }

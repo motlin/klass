@@ -18,6 +18,7 @@
 
     <modules>
         <module>klass-model-bootstrap</module>
+        <module>klass-model-loader-compiler</module>
         <module>klass-model-loader</module>
         <module>klass-model-meta-interface</module>
         <module>klass-model-meta-json-pojo</module>

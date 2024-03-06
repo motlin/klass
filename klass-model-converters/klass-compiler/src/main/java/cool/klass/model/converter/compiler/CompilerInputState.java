@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
@@ -18,9 +19,9 @@ public class CompilerInputState
     private final MutableList<CompilationUnit>                   compilationUnits;
     private final MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext;
 
-    public CompilerInputState(@Nonnull MutableList<CompilationUnit> compilationUnits)
+    public CompilerInputState(@Nonnull ImmutableCollection<CompilationUnit> compilationUnits)
     {
-        this.compilationUnits          = compilationUnits;
+        this.compilationUnits          = compilationUnits.toList();
         this.compilationUnitsByContext = compilationUnits.groupByUniqueKey(
                 CompilationUnit::getParserContext,
                 MapAdapter.adapt(new IdentityHashMap<>()));

@@ -30,6 +30,7 @@ import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhas
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.fusesource.jansi.AnsiConsole;
@@ -65,12 +66,17 @@ public class KlassCompiler
 
     private final CompilerState compilerState;
 
-    public KlassCompiler(CompilerState compilerState)
+    public KlassCompiler(CompilationUnit compilationUnit)
+    {
+        this(Lists.immutable.with(compilationUnit));
+    }
+
+    public KlassCompiler(ImmutableCollection<CompilationUnit> compilationUnits)
     {
         // TODO: Move to application run
         AnsiConsole.systemInstall();
 
-        this.compilerState = compilerState;
+        this.compilerState = new CompilerState(compilationUnits);
     }
 
     private void executeCompilerPhase(KlassListener compilerPhase)

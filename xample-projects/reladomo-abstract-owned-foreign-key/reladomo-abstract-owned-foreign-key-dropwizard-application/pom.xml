@@ -192,7 +192,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-loader</artifactId>
+            <artifactId>klass-model-loader-compiler</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
