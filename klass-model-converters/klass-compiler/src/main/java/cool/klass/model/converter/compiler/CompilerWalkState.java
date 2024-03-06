@@ -81,6 +81,8 @@ public class CompilerWalkState
     private AntlrOrderByOwner  orderByOwnerState;
     @Nullable
     private AntlrClassModifier classModifierState;
+    @Nullable
+    private PackageNameContext packageNameContext;
 
     public CompilerWalkState(AntlrDomainModel domainModelState)
     {
@@ -91,6 +93,18 @@ public class CompilerWalkState
     public String getPackageName()
     {
         return this.packageName;
+    }
+
+    @Nullable
+    public PackageNameContext getPackageNameContext()
+    {
+        return this.packageNameContext;
+    }
+
+    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
+    {
+        this.packageNameContext = packageContext.packageName();
+        this.packageName        = this.packageNameContext.getText();
     }
 
     @Nullable
@@ -189,12 +203,7 @@ public class CompilerWalkState
     {
         this.currentCompilationUnit = null;
         this.packageName            = null;
-    }
-
-    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
-    {
-        PackageNameContext packageNameContext = ctx.packageName();
-        this.packageName = packageNameContext.getText();
+        this.packageNameContext     = null;
     }
 
     public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
@@ -475,6 +484,7 @@ public class CompilerWalkState
         // TODO: It's too easy for this list to get out of sync with the declared fields
         CompilerWalkState compilerWalkState = new CompilerWalkState(this.domainModelState);
         compilerWalkState.currentCompilationUnit     = compilationUnit;
+        compilerWalkState.packageNameContext         = this.packageNameContext;
         compilerWalkState.packageName                = this.packageName;
         compilerWalkState.topLevelDeclarationState   = this.topLevelDeclarationState;
         compilerWalkState.enumerationState           = this.enumerationState;
@@ -495,6 +505,10 @@ public class CompilerWalkState
 
     public void assertEmpty()
     {
+        if (this.packageNameContext != null)
+        {
+            throw new AssertionError();
+        }
         if (this.packageName != null)
         {
             throw new AssertionError();

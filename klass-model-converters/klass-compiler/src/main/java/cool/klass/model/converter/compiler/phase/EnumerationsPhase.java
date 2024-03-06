@@ -36,7 +36,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 identifier,
                 identifier.getText(),
                 this.compilerState.getOrdinal(ctx),
-                this.compilerState.getAntlrWalkState().getPackageContext(),
+                this.compilerState.getCompilerWalkState().getPackageNameContext(),
                 this.compilerState.getCompilerWalkState().getPackageName());
     }
 
