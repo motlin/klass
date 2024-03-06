@@ -717,7 +717,6 @@
     <inspection_tool class="NoButtonGroup" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="NoLabelFor" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="NoScrollPane" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="NoTailRecursionAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NonBooleanMethodNameMayNotStartWithQuestion" enabled="true" level="INFO" enabled_by_default="true">
       <option name="questionString" value="is,can,has,could,will,shall,check,contains,equals,startsWith,endsWith" />
       <option name="ignoreBooleanMethods" value="false" />
@@ -1450,6 +1449,7 @@
       <option name="allowedClasses">
         <set>
           <option value="org.eclipse.collections.impl.test.Verify" />
+          <option value="org.hamcrest.CoreMatchers" />
           <option value="org.hamcrest.Matchers" />
           <option value="org.junit.Assert" />
         </set>
