@@ -21,6 +21,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
@@ -28,6 +29,7 @@ import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
 {
@@ -88,7 +90,8 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
             }
 
             // TODO: Use listener?
-            for (ProjectionElement projectionElement : projectionParent.getChildren())
+            ImmutableList<? extends ProjectionChild> children = projectionParent.getChildren();
+            for (ProjectionElement projectionElement : children)
             {
                 if (projectionElement instanceof ProjectionDataTypeProperty)
                 {
