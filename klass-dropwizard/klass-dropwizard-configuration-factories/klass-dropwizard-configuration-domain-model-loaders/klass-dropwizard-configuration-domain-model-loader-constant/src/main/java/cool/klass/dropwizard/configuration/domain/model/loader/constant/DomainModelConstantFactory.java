@@ -15,7 +15,8 @@ import cool.klass.model.meta.domain.api.DomainModel;
 
 @JsonTypeName("constant")
 @AutoService(DomainModelFactory.class)
-public class DomainModelConstantFactory implements DomainModelFactory
+public class DomainModelConstantFactory
+        implements DomainModelFactory
 {
     // TODO: Add @NotBlank validation
     // javax.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'javax.validation.constraints.NotBlank' validating type 'java.lang.String'. Check configuration for 'fullyQualifiedClassName'

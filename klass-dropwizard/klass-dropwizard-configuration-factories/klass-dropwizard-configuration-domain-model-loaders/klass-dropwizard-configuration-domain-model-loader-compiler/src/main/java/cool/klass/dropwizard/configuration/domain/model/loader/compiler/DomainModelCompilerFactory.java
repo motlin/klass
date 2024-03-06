@@ -19,7 +19,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @JsonTypeName("compiler")
 @AutoService(DomainModelFactory.class)
-public class DomainModelCompilerFactory implements DomainModelFactory
+public class DomainModelCompilerFactory
+        implements DomainModelFactory
 {
     @NotEmpty
     private @Valid @NotNull List<String> sourcePackages = Arrays.asList("klass.model.meta.domain");
