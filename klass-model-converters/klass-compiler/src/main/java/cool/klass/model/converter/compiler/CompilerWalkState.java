@@ -170,26 +170,6 @@ public class CompilerWalkState
         return this.classModifierState;
     }
 
-    public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
-    {
-        if (this.currentCompilationUnit != compilationUnit)
-        {
-            throw new AssertionError();
-        }
-
-        CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
-
-        try
-        {
-            this.currentCompilationUnit = compilationUnit;
-            runnable.run();
-        }
-        finally
-        {
-            this.currentCompilationUnit = oldCompilationUnit;
-        }
-    }
-
     @Nullable
     public CompilationUnit getCurrentCompilationUnit()
     {
