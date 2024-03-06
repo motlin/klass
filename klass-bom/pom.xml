@@ -33,11 +33,12 @@
         <jsonassert.version>1.5.0</jsonassert.version>
         <junit.version>4.13-beta-2</junit.version>
         <logback.version>1.3.0-alpha4</logback.version>
-        <maven-api.version>3.6.0</maven-api.version>
+        <maven-api.version>3.6.1</maven-api.version>
         <maven-plugin-annotations.version>3.6.0</maven-plugin-annotations.version>
         <maven-project.version>3.0-alpha-2</maven-project.version>
         <plexus-component-annotations.version>2.0.0</plexus-component-annotations.version>
         <plexus-utils.version>3.2.0</plexus-utils.version>
+        <plexus-classworlds.version>2.6.0</plexus-classworlds.version>
         <reflections.version>0.9.11</reflections.version>
         <reladomo.version>17.0.2</reladomo.version>
         <slf4j.version>1.8.0-beta4</slf4j.version>
@@ -558,23 +559,21 @@
             </dependency>
 
             <dependency>
-                <!--org.apache.maven:maven-plugin-api:3.5.3-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.1.0-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.0.17-->
-
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-plugin-api</artifactId>
                 <version>${maven-api.version}</version>
             </dependency>
 
             <dependency>
-                <!--org.apache.maven:maven-plugin-api:3.5.3-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.1.0-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.0.17-->
-
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-utils</artifactId>
                 <version>${plexus-utils.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-classworlds</artifactId>
+                <version>${plexus-classworlds.version}</version>
             </dependency>
 
             <dependency>
