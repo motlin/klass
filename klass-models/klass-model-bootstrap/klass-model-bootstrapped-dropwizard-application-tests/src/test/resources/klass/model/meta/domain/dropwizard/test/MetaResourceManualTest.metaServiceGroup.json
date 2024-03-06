@@ -21,7 +21,7 @@
       ]
     },
     {
-      "url": "/meta/serviceGroup/{serviceGroupName}",
+      "url": "/meta/serviceGroup/{name}",
       "services": [
         {
           "verb": "GET",
@@ -45,7 +45,7 @@
             "targetExpressionValue": {
               "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
-                "name": "serviceGroupName"
+                "name": "name"
               }
             }
           },
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "url": "/meta/serviceGroup/{serviceGroupName}/summary",
+      "url": "/meta/serviceGroup/{name}/summary",
       "services": [
         {
           "verb": "GET",
@@ -80,7 +80,7 @@
             "targetExpressionValue": {
               "__typename": "klass.model.meta.domain.VariableReference",
               "parameter": {
-                "name": "serviceGroupName"
+                "name": "name"
               }
             }
           },

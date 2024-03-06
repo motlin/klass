@@ -1,5 +1,58 @@
 [
   {
+    "name": "PackageableElementResource",
+    "packageName": "klass.model.meta.domain",
+    "urls": [
+      {
+        "url": "/meta/packageableElement",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "many",
+            "projection": {
+              "name": "PackageableElementProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.AllCriteria"
+            }
+          }
+        ]
+      },
+      {
+        "url": "/meta/packageableElement/{name}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "PackageableElementProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
+                "klass": {
+                  "name": "PackageableElement"
+                },
+                "associationEnds": [],
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "__typename": "klass.model.meta.domain.VariableReference",
+                "parameter": {
+                  "name": "name"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "EnumerationResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
@@ -14,38 +67,6 @@
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.AllCriteria"
-            }
-          }
-        ]
-      },
-      {
-        "url": "/meta/enumeration/{enumerationName}",
-        "services": [
-          {
-            "verb": "GET",
-            "serviceMultiplicity": "one",
-            "projection": {
-              "name": "EnumerationProjection"
-            },
-            "queryCriteria": {
-              "__typename": "klass.model.meta.domain.OperatorCriteria",
-              "operator": "==",
-              "sourceExpressionValue": {
-                "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
-                "klass": {
-                  "name": "Enumeration"
-                },
-                "associationEnds": [],
-                "dataTypeProperty": {
-                  "name": "name"
-                }
-              },
-              "targetExpressionValue": {
-                "__typename": "klass.model.meta.domain.VariableReference",
-                "parameter": {
-                  "name": "enumerationName"
-                }
-              }
             }
           }
         ]
@@ -76,6 +97,38 @@
                 "__typename": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "enumerationName"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "url": "/meta/enumeration/{name}",
+        "services": [
+          {
+            "verb": "GET",
+            "serviceMultiplicity": "one",
+            "projection": {
+              "name": "EnumerationProjection"
+            },
+            "queryCriteria": {
+              "__typename": "klass.model.meta.domain.OperatorCriteria",
+              "operator": "==",
+              "sourceExpressionValue": {
+                "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
+                "klass": {
+                  "name": "Enumeration"
+                },
+                "associationEnds": [],
+                "dataTypeProperty": {
+                  "name": "name"
+                }
+              },
+              "targetExpressionValue": {
+                "__typename": "klass.model.meta.domain.VariableReference",
+                "parameter": {
+                  "name": "name"
                 }
               }
             }
@@ -497,7 +550,7 @@
         ]
       },
       {
-        "url": "/meta/serviceGroup/{serviceGroupName}",
+        "url": "/meta/serviceGroup/{name}",
         "services": [
           {
             "verb": "GET",
@@ -521,7 +574,7 @@
               "targetExpressionValue": {
                 "__typename": "klass.model.meta.domain.VariableReference",
                 "parameter": {
-                  "name": "serviceGroupName"
+                  "name": "name"
                 }
               }
             }
@@ -529,7 +582,7 @@
         ]
       },
       {
-        "url": "/meta/serviceGroup/{serviceGroupName}/summary",
+        "url": "/meta/serviceGroup/{name}/summary",
         "services": [
           {
             "verb": "GET",
@@ -553,7 +606,7 @@
               "targetExpressionValue": {
                 "__typename": "klass.model.meta.domain.VariableReference",
                 "parameter": {
-                  "name": "serviceGroupName"
+                  "name": "name"
                 }
               }
             }

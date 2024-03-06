@@ -37,7 +37,7 @@
         {
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
-            "id": 168,
+            "id": 170,
             "klass": {
               "name": "PropertyModifier",
               "packageName": "klass.model.meta.domain"

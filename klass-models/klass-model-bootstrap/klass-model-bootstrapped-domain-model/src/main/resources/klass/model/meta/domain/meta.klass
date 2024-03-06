@@ -912,13 +912,133 @@ projection EnumerationSummaryProjection on Enumeration
     },
 }
 
-service EnumerationResource on Enumeration
+projection PackageableElementProjection on PackageableElement
 {
-    /meta/enumeration/{enumerationName: String[1..1]}
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    Enumeration.enumerationLiterals: EnumerationLiteralProjection,
+    Classifier.superInterfaces: ClassifierInterfaceMappingProjection,
+    Classifier.classifierModifiers: ClassifierModifierProjection,
+    Classifier.dataTypeProperties: DataTypePropertyProjection,
+    Klass.abstractClass: "Klass abstractClass",
+    Klass.superClass: {
+        NamedElement.name: "NamedElement name",
+    },
+    /*
+    TODO: Support duplicate property names with different class names inside projections
+    Klass.associationEnds: {
+        NamedElement.name: "NamedElement name",
+    },
+    */
+    Klass.parameterizedProperties: ParameterizedPropertyProjection,
+    Association.associationEnds: AssociationEndProjection,
+    Association.criteria: {
+        Criteria.id: "Criteria id",
+    },
+    NamedProjection.rootProjection: {
+        ProjectionElement.id: "ProjectionElement id",
+    },
+    ServiceGroup.owningClass: {
+        NamedElement.name: "NamedElement name",
+    },
+    ServiceGroup.urls: UrlProjection,
+}
+
+projection ClassifierModifierProjection on ClassifierModifier
+{
+    keyword: "ClassifierModifier keyword",
+    ordinal: "ClassifierModifier ordinal",
+}
+
+projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
+{
+    superInterface: {
+        name: "NamedElement name",
+    },
+}
+
+projection ParameterizedPropertyProjection on ParameterizedProperty
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    multiplicity: "ParameterizedProperty multiplicity",
+    resultType: {
+        name: "NamedElement name",
+    },
+    parameterizedPropertyOrderings: ParameterizedPropertyOrderingProjection,
+    parameters: {
+        name: "NamedElement name",
+    },
+}
+
+projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrdering
+{
+    orderingId: "ParameterizedPropertyOrdering orderingId",
+}
+
+projection UrlProjection on Url
+{
+    url: "Url url",
+    parameters: UrlParameterProjection,
+    services: ServiceProjection,
+}
+
+projection UrlParameterProjection on UrlParameter
+{
+    type: "UrlParameter type",
+    parameter: {
+        id: "Parameter id",
+    },
+}
+
+projection ServiceProjection on Service
+{
+    verb: "Service verb",
+    serviceMultiplicity: "Service serviceMultiplicity",
+    projection: {
+        name: "NamedElement name",
+    },
+    queryCriteria: CriteriaProjection,
+    authorizeCriteria: CriteriaProjection,
+    validateCriteria: CriteriaProjection,
+    conflictCriteria: CriteriaProjection,
+    orderBys: ServiceOrderByProjection,
+}
+
+projection ServiceOrderByProjection on ServiceOrderBy
+{
+    orderByDirection: "ServiceOrderBy orderByDirection",
+    thisMemberReferencePath: {
+        id: "ExpressionValue id",
+    },
+}
+
+service PackageableElementResource on PackageableElement
+{
+    /meta/packageableElement/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == enumerationName;
+            criteria    : this.name == name;
+            projection  : PackageableElementProjection;
+        }
+    /meta/packageableElement
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : PackageableElementProjection;
+        }
+}
+
+service EnumerationResource on Enumeration
+{
+    /meta/enumeration/{name: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == name;
             projection  : EnumerationProjection;
         }
     /meta/enumeration/{enumerationName: String[1..1]}/summary
@@ -1506,18 +1626,18 @@ projection ServiceGroupSummaryProjection on ServiceGroup
 
 service ServiceGroupResource on ServiceGroup
 {
-    /meta/serviceGroup/{serviceGroupName: String[1..1]}
+    /meta/serviceGroup/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == serviceGroupName;
+            criteria    : this.name == name;
             projection  : ServiceGroupProjection;
         }
-    /meta/serviceGroup/{serviceGroupName: String[1..1]}/summary
+    /meta/serviceGroup/{name: String[1..1]}/summary
         GET
         {
             multiplicity: one;
-            criteria    : this.name == serviceGroupName;
+            criteria    : this.name == name;
             projection  : ServiceGroupSummaryProjection;
         }
     /meta/serviceGroup

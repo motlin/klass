@@ -26,119 +26,119 @@
         }
       },
       {
-        "name": "InterfaceProjection",
-        "ordinal": 121,
+        "name": "PackageableElementProjection",
+        "ordinal": 120,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 4
         }
       },
       {
-        "name": "InterfaceSummaryProjection",
-        "ordinal": 122,
+        "name": "ClassifierModifierProjection",
+        "ordinal": 121,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 5
         }
       },
       {
-        "name": "DataTypePropertyProjection",
-        "ordinal": 124,
+        "name": "ClassifierInterfaceMappingProjection",
+        "ordinal": 122,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 6
         }
       },
       {
-        "name": "ClassProjection",
-        "ordinal": 125,
+        "name": "ParameterizedPropertyProjection",
+        "ordinal": 123,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 7
         }
       },
       {
-        "name": "ClassSummaryProjection",
-        "ordinal": 126,
+        "name": "ParameterizedPropertyOrderingProjection",
+        "ordinal": 124,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 8
         }
       },
       {
-        "name": "ClassifierSummaryProjection",
-        "ordinal": 128,
+        "name": "UrlProjection",
+        "ordinal": 125,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 9
         }
       },
       {
-        "name": "ThisMemberReferencePathProjection",
-        "ordinal": 130,
+        "name": "UrlParameterProjection",
+        "ordinal": 126,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 10
         }
       },
       {
-        "name": "AssociationEndProjection",
-        "ordinal": 131,
+        "name": "ServiceProjection",
+        "ordinal": 127,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 11
         }
       },
       {
-        "name": "MemberReferencePathAssociationEndMappingProjection",
-        "ordinal": 132,
+        "name": "ServiceOrderByProjection",
+        "ordinal": 128,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 12
         }
       },
       {
-        "name": "MemberReferencePathSummaryProjection",
-        "ordinal": 133,
+        "name": "InterfaceProjection",
+        "ordinal": 131,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 13
         }
       },
       {
-        "name": "AssociationEndSummaryProjection",
-        "ordinal": 134,
+        "name": "InterfaceSummaryProjection",
+        "ordinal": 132,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 14
         }
       },
       {
-        "name": "ExpressionValueProjection",
-        "ordinal": 135,
+        "name": "DataTypePropertyProjection",
+        "ordinal": 134,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 15
         }
       },
       {
-        "name": "ExpressionValueSummaryProjection",
-        "ordinal": 136,
+        "name": "ClassProjection",
+        "ordinal": 135,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 16
         }
       },
       {
-        "name": "MemberReferencePathProjection",
-        "ordinal": 137,
+        "name": "ClassSummaryProjection",
+        "ordinal": 136,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 17
         }
       },
       {
-        "name": "CriteriaProjection",
+        "name": "ClassifierSummaryProjection",
         "ordinal": 138,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -146,31 +146,31 @@
         }
       },
       {
-        "name": "CriteriaSummaryProjection",
-        "ordinal": 139,
+        "name": "ThisMemberReferencePathProjection",
+        "ordinal": 140,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 19
         }
       },
       {
-        "name": "AssociationProjection",
-        "ordinal": 140,
+        "name": "AssociationEndProjection",
+        "ordinal": 141,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 20
         }
       },
       {
-        "name": "AssociationSummaryProjection",
-        "ordinal": 141,
+        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "ordinal": 142,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 21
         }
       },
       {
-        "name": "ProjectionElementProjection",
+        "name": "MemberReferencePathSummaryProjection",
         "ordinal": 143,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -178,7 +178,7 @@
         }
       },
       {
-        "name": "NamedProjectionProjection",
+        "name": "AssociationEndSummaryProjection",
         "ordinal": 144,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -186,19 +186,91 @@
         }
       },
       {
-        "name": "ServiceGroupProjection",
-        "ordinal": 146,
+        "name": "ExpressionValueProjection",
+        "ordinal": 145,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 24
         }
       },
       {
-        "name": "ServiceGroupSummaryProjection",
-        "ordinal": 147,
+        "name": "ExpressionValueSummaryProjection",
+        "ordinal": 146,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 25
+        }
+      },
+      {
+        "name": "MemberReferencePathProjection",
+        "ordinal": 147,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 26
+        }
+      },
+      {
+        "name": "CriteriaProjection",
+        "ordinal": 148,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 27
+        }
+      },
+      {
+        "name": "CriteriaSummaryProjection",
+        "ordinal": 149,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 28
+        }
+      },
+      {
+        "name": "AssociationProjection",
+        "ordinal": 150,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 29
+        }
+      },
+      {
+        "name": "AssociationSummaryProjection",
+        "ordinal": 151,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 30
+        }
+      },
+      {
+        "name": "ProjectionElementProjection",
+        "ordinal": 153,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 31
+        }
+      },
+      {
+        "name": "NamedProjectionProjection",
+        "ordinal": 154,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 32
+        }
+      },
+      {
+        "name": "ServiceGroupProjection",
+        "ordinal": 156,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 33
+        }
+      },
+      {
+        "name": "ServiceGroupSummaryProjection",
+        "ordinal": 157,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 34
         }
       }
     ]
