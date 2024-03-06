@@ -34,6 +34,7 @@ public final class ProjectionAssociationEndImpl
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
+    @Override
     @Nonnull
     public Optional<ProjectionParent> getParent()
     {

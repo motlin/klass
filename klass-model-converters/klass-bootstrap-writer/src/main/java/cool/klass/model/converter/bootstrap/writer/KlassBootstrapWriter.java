@@ -433,9 +433,7 @@ public class KlassBootstrapWriter
             Supplier<klass.model.meta.domain.NumericPropertyValidation> bootstrappedValidationSupplier)
     {
         return validation ->
-        {
-            this.handleValidation(classifier, dataTypeProperty, bootstrappedValidationSupplier.get(), validation);
-        };
+                this.handleValidation(classifier, dataTypeProperty, bootstrappedValidationSupplier.get(), validation);
     }
 
     protected void handleValidation(

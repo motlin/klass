@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
@@ -19,7 +18,6 @@ import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 import klass.model.meta.domain.MemberReferencePathAbstract;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 
 public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
@@ -65,9 +63,8 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
             MemberReferencePath memberExpressionValue,
             MemberReferencePathAbstract bootstrappedMemberReferencePath)
     {
-        Klass                         klass           = memberExpressionValue.getKlass();
-        ImmutableList<AssociationEnd> associationEnds = memberExpressionValue.getAssociationEnds();
-        DataTypeProperty              property        = memberExpressionValue.getProperty();
+        Klass            klass    = memberExpressionValue.getKlass();
+        DataTypeProperty property = memberExpressionValue.getProperty();
 
         bootstrappedMemberReferencePath.setClassName(klass.getName());
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());

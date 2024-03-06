@@ -95,12 +95,14 @@ public final class DomainModelImpl implements DomainModel
         return this.enumerations;
     }
 
+    @Override
     @Nonnull
     public ImmutableList<Classifier> getClassifiers()
     {
         return this.classifiers;
     }
 
+    @Override
     @Nonnull
     public ImmutableList<Interface> getInterfaces()
     {

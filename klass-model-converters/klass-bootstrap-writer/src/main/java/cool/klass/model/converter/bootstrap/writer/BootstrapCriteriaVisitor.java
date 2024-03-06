@@ -14,11 +14,9 @@ import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.MemberReferencePath;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 
 public class BootstrapCriteriaVisitor implements CriteriaVisitor
@@ -93,10 +91,9 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
         klass.model.meta.domain.MemberReferencePath bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
         bootstrappedMemberReferencePath.insert();
 
-        MemberReferencePath           memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
-        Klass                         klass                 = memberExpressionValue.getKlass();
-        ImmutableList<AssociationEnd> associationEnds       = memberExpressionValue.getAssociationEnds();
-        DataTypeProperty              property              = memberExpressionValue.getProperty();
+        MemberReferencePath memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
+        Klass               klass                 = memberExpressionValue.getKlass();
+        DataTypeProperty    property              = memberExpressionValue.getProperty();
 
         bootstrappedMemberReferencePath.setClassName(klass.getName());
         bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
@@ -113,7 +110,7 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
             klass.model.meta.domain.BinaryCriteria bootstrappedCriteria,
             BinaryCriteria binaryCriteria)
     {
-        klass.model.meta.domain.Criteria bootstrappedLeft  = BootstrapCriteriaVisitor.convert(
+        klass.model.meta.domain.Criteria bootstrappedLeft = BootstrapCriteriaVisitor.convert(
                 this.bootstrappedParametersByParameter,
                 binaryCriteria.getLeft());
         klass.model.meta.domain.Criteria bootstrappedRight = BootstrapCriteriaVisitor.convert(
