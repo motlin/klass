@@ -124,10 +124,6 @@ public class CreateVersionPropertiesValidator
         {
             this.handleKeyProperty(dataTypeProperty);
         }
-        else if (dataTypeProperty.isDerived())
-        {
-            this.handleWarnIfPresent(dataTypeProperty, "derived");
-        }
         else if (dataTypeProperty.isTemporal())
         {
             this.handleWarnIfPresent(dataTypeProperty, "temporal");
@@ -161,6 +157,10 @@ public class CreateVersionPropertiesValidator
         else if (dataTypeProperty.isPrivate())
         {
             this.handleErrorIfPresent(dataTypeProperty, "private");
+        }
+        else if (dataTypeProperty.isDerived())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "derived");
         }
         else if (dataTypeProperty.isVersion())
         {
