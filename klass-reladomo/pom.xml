@@ -28,6 +28,7 @@
         <module>klass-reladomo-sample-data</module>
         <module>klass-reladomo-graphql-data-fetcher</module>
         <module>klass-reladomo-timestamp</module>
+        <module>klass-reladomo-serialize</module>
     </modules>
 
     <dependencyManagement>
