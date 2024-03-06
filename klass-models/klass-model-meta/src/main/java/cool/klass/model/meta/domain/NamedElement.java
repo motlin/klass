@@ -43,5 +43,10 @@ public abstract class NamedElement extends Element
             this.nameContext = Objects.requireNonNull(nameContext);
             this.name = Objects.requireNonNull(name);
         }
+
+        public String getName()
+        {
+            return this.name;
+        }
     }
 }

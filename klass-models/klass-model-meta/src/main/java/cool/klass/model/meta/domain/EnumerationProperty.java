@@ -1,17 +1,16 @@
 package cool.klass.model.meta.domain;
 
+import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class EnumerationProperty extends DataTypeProperty<Enumeration>
+public final class EnumerationProperty extends DataTypeProperty<Enumeration>
 {
-    protected EnumerationProperty(
+    private EnumerationProperty(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
-            ParserRuleContext enumerationContext,
             Enumeration enumeration,
-            ParserRuleContext owningKlassContext,
             Klass owningKlass,
             boolean isKey,
             boolean isOptional)
@@ -20,22 +19,21 @@ public class EnumerationProperty extends DataTypeProperty<Enumeration>
                 elementContext,
                 nameContext,
                 name,
-                enumerationContext,
                 enumeration,
-                owningKlassContext,
                 owningKlass,
                 isKey,
                 isOptional);
     }
 
-    public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder<Enumeration>
+    public static class EnumerationPropertyBuilder extends DataTypePropertyBuilder<Enumeration, EnumerationBuilder>
     {
+        private EnumerationProperty enumerationProperty;
+
         public EnumerationPropertyBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                ParserRuleContext enumerationContext,
-                Enumeration enumeration,
+                EnumerationBuilder enumerationBuilder,
                 KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
@@ -44,26 +42,28 @@ public class EnumerationProperty extends DataTypeProperty<Enumeration>
                     elementContext,
                     nameContext,
                     name,
-                    enumerationContext,
-                    enumeration,
+                    enumerationBuilder,
                     owningKlassBuilder,
                     isKey,
                     isOptional);
         }
 
         @Override
-        public EnumerationProperty build(ParserRuleContext owningKlassContext, Klass owningKlass)
+        public EnumerationProperty build(Klass owningKlass)
         {
-            return new EnumerationProperty(
+            if (this.enumerationProperty != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.enumerationProperty = new EnumerationProperty(
                     this.elementContext,
                     this.nameContext,
                     this.name,
-                    this.typeContext,
-                    this.type,
-                    owningKlassContext,
-                    owningKlass,
+                    this.typeBuilder.getEnumeration(),
+                    this.owningKlassBuilder.getKlass(),
                     this.isKey,
                     this.isOptional);
+            return this.enumerationProperty;
         }
     }
 }

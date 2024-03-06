@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
@@ -112,4 +114,22 @@ public abstract class PrimitiveType extends DataType
     }
 
     public abstract void visit(PrimitiveTypeVisitor visitor);
+
+    public static class PrimitiveTypeBuilder extends DataTypeBuilder<PrimitiveType>
+    {
+        private final PrimitiveType primitiveType;
+
+        public PrimitiveTypeBuilder(
+                ParserRuleContext elementContext,
+                PrimitiveType primitiveType)
+        {
+            super(elementContext, elementContext, elementContext.getText(), "klass.meta");
+            this.primitiveType = primitiveType;
+        }
+
+        public PrimitiveType getPrimitiveType()
+        {
+            return this.primitiveType;
+        }
+    }
 }

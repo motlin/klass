@@ -1,14 +1,16 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Objects;
+
 import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class Enumeration extends DataType
+public final class Enumeration extends DataType
 {
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 
-    public Enumeration(
+    private Enumeration(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
@@ -27,37 +29,45 @@ public class Enumeration extends DataType
         this.enumerationLiterals = enumerationLiterals;
     }
 
-    public static class EnumerationBuilder extends DataTypeBuilder
+    public static class EnumerationBuilder extends DataTypeBuilder<Enumeration>
     {
-        private ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
+        private final ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
+        private       Enumeration                              enumeration;
 
         public EnumerationBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                String packageName)
+                String packageName,
+                ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
         {
             super(elementContext, nameContext, name, packageName);
-        }
-
-        public void setEnumerationLiterals(ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
-        {
             this.enumerationLiteralBuilders = enumerationLiteralBuilders;
         }
 
         public Enumeration build()
         {
-            Enumeration enumeration = new Enumeration(
+            if (this.enumeration != null)
+            {
+                throw new IllegalStateException();
+            }
+
+            this.enumeration = new Enumeration(
                     this.elementContext,
                     this.nameContext,
                     this.name,
                     this.packageName);
 
             ImmutableList<EnumerationLiteral> enumerationLiterals = this.enumerationLiteralBuilders.collect(
-                    each -> each.build(this.getElementContext(), enumeration));
+                    each -> each.build(this.getElementContext(), this.enumeration));
 
-            enumeration.setEnumerationLiterals(enumerationLiterals);
-            return enumeration;
+            this.enumeration.setEnumerationLiterals(enumerationLiterals);
+            return this.enumeration;
+        }
+
+        public Enumeration getEnumeration()
+        {
+            return Objects.requireNonNull(this.enumeration);
         }
     }
 }

@@ -1,17 +1,16 @@
 package cool.klass.model.meta.domain;
 
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
+public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 {
-    protected PrimitiveProperty(
+    private PrimitiveProperty(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
-            ParserRuleContext dataTypeContext,
             PrimitiveType primitiveType,
-            ParserRuleContext owningKlassContext,
             Klass owningKlass,
             boolean isKey,
             boolean isOptional)
@@ -20,40 +19,35 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 elementContext,
                 nameContext,
                 name,
-                dataTypeContext,
                 primitiveType,
-                owningKlassContext,
                 owningKlass,
                 isKey,
                 isOptional);
     }
 
-    public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType>
+    public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveTypeBuilder>
     {
         public PrimitivePropertyBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                ParserRuleContext typeContext,
-                PrimitiveType primitiveType,
+                PrimitiveTypeBuilder primitiveTypeBuilder,
                 KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, typeContext, primitiveType, owningKlassBuilder, isKey, isOptional);
+            super(elementContext, nameContext, name, primitiveTypeBuilder, owningKlassBuilder, isKey, isOptional);
         }
 
         @Override
-        public PrimitiveProperty build(ParserRuleContext owningKlassContext, Klass owningKlass)
+        public PrimitiveProperty build(Klass owningKlass)
         {
             return new PrimitiveProperty(
                     this.elementContext,
                     this.nameContext,
                     this.name,
-                    this.typeContext,
-                    this.type,
-                    owningKlassContext,
-                    owningKlass,
+                    this.typeBuilder.getPrimitiveType(),
+                    this.owningKlassBuilder.getKlass(),
                     this.isKey,
                     this.isOptional);
         }

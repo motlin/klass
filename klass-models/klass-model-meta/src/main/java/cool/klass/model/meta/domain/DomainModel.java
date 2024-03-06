@@ -2,23 +2,25 @@ package cool.klass.model.meta.domain;
 
 import java.util.Objects;
 
+import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
-public class DomainModel
+public final class DomainModel
 {
     private final ImmutableList<Enumeration> enumerations;
     private final ImmutableList<Klass>       klasses;
+    private final ImmutableList<Association> associations;
 
-    public DomainModel(
+    private DomainModel(
             ImmutableList<Enumeration> enumerations,
-            ImmutableList<Klass> klasses)
+            ImmutableList<Klass> klasses,
+            ImmutableList<Association> associations)
     {
         this.enumerations = enumerations;
         this.klasses = klasses;
+        this.associations = associations;
     }
 
     public ImmutableList<Enumeration> getEnumerations()
@@ -31,28 +33,37 @@ public class DomainModel
         return this.klasses;
     }
 
+    public ImmutableList<Association> getAssociations()
+    {
+        return this.associations;
+    }
+
     public static final class DomainModelBuilder
     {
-        private final MutableList<EnumerationBuilder> enumerationBuilders = Lists.mutable.empty();
-        private final MutableList<KlassBuilder>       klassBuilders       = Lists.mutable.empty();
+        private final ImmutableList<EnumerationBuilder> enumerationBuilders;
+        private final ImmutableList<KlassBuilder>       klassBuilders;
+        private final ImmutableList<AssociationBuilder> associationBuilders;
 
-        public DomainModelBuilder enumeration(EnumerationBuilder enumerationBuilder)
+        public DomainModelBuilder(
+                ImmutableList<EnumerationBuilder> enumerationBuilders,
+                ImmutableList<KlassBuilder> klassBuilders,
+                ImmutableList<AssociationBuilder> associationBuilders)
         {
-            this.enumerationBuilders.add(Objects.requireNonNull(enumerationBuilder));
-            return this;
-        }
-
-        public DomainModelBuilder klass(KlassBuilder klassBuilder)
-        {
-            this.klassBuilders.add(Objects.requireNonNull(klassBuilder));
-            return this;
+            this.enumerationBuilders = Objects.requireNonNull(enumerationBuilders);
+            this.klassBuilders = Objects.requireNonNull(klassBuilders);
+            this.associationBuilders = Objects.requireNonNull(associationBuilders);
         }
 
         public DomainModel build()
         {
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.collect(EnumerationBuilder::build).toImmutable();
-            ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build).toImmutable();
-            return new DomainModel(enumerations, klasses);
+            ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build1).toImmutable();
+
+            this.klassBuilders.each(KlassBuilder::build2);
+
+            ImmutableList<Association> associations = this.associationBuilders.collect(AssociationBuilder::build).toImmutable();
+
+            return new DomainModel(enumerations, klasses, associations);
         }
     }
 }

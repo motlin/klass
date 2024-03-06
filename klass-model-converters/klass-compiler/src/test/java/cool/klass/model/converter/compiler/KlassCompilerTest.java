@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import org.junit.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -16,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class KlassCompilerTest
@@ -25,18 +25,15 @@ public class KlassCompilerTest
     @Test
     public void compile()
     {
-        DomainModelBuilder domainModelBuilder = new DomainModelBuilder();
         // TODO: Just create the error holder inside the constructor?
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-        KlassCompiler       compiler            = new KlassCompiler(domainModelBuilder, compilerErrorHolder);
+        KlassCompiler       compiler            = new KlassCompiler(compilerErrorHolder);
 
         Set<String> klassLocations = this.getResourceNames("com.test");
 
-        compiler.compile(klassLocations);
-
+        DomainModel domainModel = compiler.compile(klassLocations);
         assertFalse(compilerErrorHolder.hasCompilerErrors());
-        DomainModel domainModel = domainModelBuilder.build();
-        // TODO assertions
+        assertNotNull(domainModel);
     }
 
     protected Set<String> getResourceNames(String packageName)
@@ -51,9 +48,8 @@ public class KlassCompilerTest
     @Test
     public void errors()
     {
-        DomainModelBuilder  domainModelBuilder  = new DomainModelBuilder();
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-        KlassCompiler       compiler            = new KlassCompiler(domainModelBuilder, compilerErrorHolder);
+        KlassCompiler       compiler            = new KlassCompiler(compilerErrorHolder);
 
         Set<String> klassLocations = this.getResourceNames("errors");
         compiler.compile(klassLocations);
@@ -62,6 +58,7 @@ public class KlassCompilerTest
         {
             LOGGER.warn("{}", compilerError);
         }
+        assertTrue(compilerErrorHolder.hasCompilerErrors());
         // TODO assertions
     }
 }

@@ -4,39 +4,36 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.converter.compiler.phase.BuildAntlrStatePhase;
+import cool.klass.model.converter.compiler.phase.AssociationPhase;
+import cool.klass.model.converter.compiler.phase.ClassPhase;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
-import cool.klass.model.converter.compiler.phase.MembersByNamePhase;
+import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
 import cool.klass.model.converter.compiler.phase.TopLevelElementNameCountPhase;
 import cool.klass.model.converter.compiler.phase.TopLevelElementNameDuplicatePhase;
+import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 
 public class KlassCompiler
 {
-    private final DomainModelBuilder  domainModelBuilder;
     private final CompilerErrorHolder compilerErrorHolder;
 
-    public KlassCompiler(
-            DomainModelBuilder domainModelBuilder,
-            CompilerErrorHolder compilerErrorHolder)
+    public KlassCompiler(CompilerErrorHolder compilerErrorHolder)
     {
-        this.domainModelBuilder = domainModelBuilder;
         this.compilerErrorHolder = compilerErrorHolder;
     }
 
-    public void compile(Set<String> classpathLocations)
+    public DomainModel compile(Set<String> classpathLocations)
     {
         MutableSet<CompilationUnit> compilationUnits =
                 SetAdapter.adapt(classpathLocations).collect(CompilationUnit::getCompilationUnit);
@@ -59,17 +56,32 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 phase5);
 
-        BuildAntlrStatePhase phase7 = new BuildAntlrStatePhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                phase5);
+        AntlrDomainModel domainModelState = new AntlrDomainModel(this.compilerErrorHolder);
 
-        MembersByNamePhase phase8 = new MembersByNamePhase(
+        EnumerationsPhase phase7 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                phase3,
-                phase4,
-                phase5);
+                domainModelState);
+
+        ClassPhase phase8 = new ClassPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                domainModelState);
+
+        // TODO: Phase for inference on classes?
+        // Like adding temporal and audit properties, and version types and version associations
+
+        AssociationPhase phase9 = new AssociationPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                domainModelState);
+
+        /*
+        DomainModelBuilderPhase domainModelBuilderPhase = new DomainModelBuilderPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelBuilder);
+        */
 
         this.executeCompilerPhase(compilationUnits, phase1);
         this.executeCompilerPhase(compilationUnits, phase2);
@@ -79,25 +91,16 @@ public class KlassCompiler
         this.executeCompilerPhase(compilationUnits, phase6);
         this.executeCompilerPhase(compilationUnits, phase7);
         this.executeCompilerPhase(compilationUnits, phase8);
+        this.executeCompilerPhase(compilationUnits, phase9);
 
-        ImmutableList<KlassListener> phases = Lists.immutable.with(
-                phase1,
-                phase2,
-                phase3,
-                phase4,
-                phase5,
-                phase6,
-                phase7,
-                phase8);
-
-        for (KlassListener phase : phases)
-        {
-        }
+        domainModelState.reportErrors();
 
         if (!this.compilerErrorHolder.hasCompilerErrors())
         {
-            phase7.build(this.domainModelBuilder);
+            DomainModelBuilder domainModelBuilder = domainModelState.build();
+            return domainModelBuilder.build();
         }
+        return null;
     }
 
     protected void executeCompilerPhase(

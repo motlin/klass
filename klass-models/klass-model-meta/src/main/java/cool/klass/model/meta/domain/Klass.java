@@ -1,15 +1,16 @@
 package cool.klass.model.meta.domain;
 
-import cool.klass.model.meta.domain.Property.PropertyBuilder;
+import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class Klass extends Type
+public final class Klass extends Type
 {
-    private ImmutableList<Property<?>>         properties;
     private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
+    private ImmutableList<AssociationEnd>      associationEnds;
 
-    public Klass(
+    private Klass(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
@@ -18,16 +19,14 @@ public class Klass extends Type
         super(elementContext, nameContext, name, packageName);
     }
 
-    public ImmutableList<Property<?>> getProperties()
+    public ImmutableList<AssociationEnd> getAssociationEnds()
     {
-        return this.properties;
+        return this.associationEnds;
     }
 
-    private void setProperties(ImmutableList<Property<?>> properties)
+    private void setAssociationEnds(ImmutableList<AssociationEnd> associationEnds)
     {
-        this.properties = properties;
-        this.dataTypeProperties = (ImmutableList<DataTypeProperty<?>>) (ImmutableList<?>) properties
-                .selectInstancesOf(DataTypeProperty.class);
+        this.associationEnds = associationEnds;
     }
 
     public ImmutableList<DataTypeProperty<?>> getDataTypeProperties()
@@ -35,9 +34,16 @@ public class Klass extends Type
         return this.dataTypeProperties;
     }
 
-    public static final class KlassBuilder extends TypeBuilder
+    private void setDataTypeProperties(ImmutableList<DataTypeProperty<?>> dataTypeProperties)
     {
-        private ImmutableList<PropertyBuilder<?>> propertyBuilders;
+        this.dataTypeProperties = dataTypeProperties;
+    }
+
+    public static final class KlassBuilder extends TypeBuilder<Klass>
+    {
+        private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
+        private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
+        private Klass                                        klass;
 
         public KlassBuilder(
                 ParserRuleContext elementContext,
@@ -48,25 +54,55 @@ public class Klass extends Type
             super(elementContext, nameContext, name, packageName);
         }
 
-        public void setProperties(ImmutableList<PropertyBuilder<?>> propertyBuilders)
+        public void setDataTypePropertyBuilders(ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders)
         {
-            this.propertyBuilders = propertyBuilders;
+            this.dataTypePropertyBuilders = dataTypePropertyBuilders;
         }
 
-        public Klass build()
+        public void setAssociationEndBuilders(ImmutableList<AssociationEndBuilder> associationEndBuilders)
         {
-            Klass klass = new Klass(
+            this.associationEndBuilders = associationEndBuilders;
+        }
+
+        public Klass build1()
+        {
+            if (this.klass != null)
+            {
+                throw new IllegalStateException();
+            }
+
+            this.klass = new Klass(
                     this.elementContext,
                     this.nameContext,
                     this.name,
                     this.packageName);
 
-            ImmutableList<Property<?>> properties = this.propertyBuilders
-                    .<Property<?>>collect(each -> each.build(this.elementContext, klass))
+            ImmutableList<DataTypeProperty<?>> dataTypeProperties = this.dataTypePropertyBuilders
+                    .<DataTypeProperty<?>>collect(dataTypePropertyBuilder -> dataTypePropertyBuilder.build(this.klass))
                     .toImmutable();
 
-            klass.setProperties(properties);
-            return klass;
+            this.klass.setDataTypeProperties(dataTypeProperties);
+            return this.klass;
+        }
+
+        public Klass build2()
+        {
+            if (this.klass == null)
+            {
+                throw new IllegalStateException();
+            }
+
+            ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
+                    .collectWith(AssociationEndBuilder::build, this.klass)
+                    .toImmutable();
+
+            this.klass.setAssociationEnds(associationEnds);
+            return this.klass;
+        }
+
+        public Klass getKlass()
+        {
+            return this.klass;
         }
     }
 }

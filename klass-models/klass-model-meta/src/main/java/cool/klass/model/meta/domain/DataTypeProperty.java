@@ -1,25 +1,25 @@
 package cool.klass.model.meta.domain;
 
+import cool.klass.model.meta.domain.DataType.DataTypeBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class DataTypeProperty<T extends DataType> extends Property<T>
+// TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
+public abstract class DataTypeProperty<T extends DataType> extends Property<T>
 {
     private final boolean key;
     private final boolean optional;
 
-    public DataTypeProperty(
+    protected DataTypeProperty(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
-            ParserRuleContext dataTypeContext,
             T dataType,
-            ParserRuleContext owningKlassContext,
             Klass owningKlass,
             boolean isKey,
             boolean isOptional)
     {
-        super(elementContext, nameContext, name, dataTypeContext, dataType, owningKlassContext, owningKlass);
+        super(elementContext, nameContext, name, dataType, owningKlass);
         this.key = isKey;
         this.optional = isOptional;
     }
@@ -34,7 +34,7 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
         return this.optional;
     }
 
-    public abstract static class DataTypePropertyBuilder<T extends DataType> extends PropertyBuilder<T>
+    public abstract static class DataTypePropertyBuilder<T extends DataType, TB extends DataTypeBuilder<T>> extends PropertyBuilder<T, TB>
     {
         protected final boolean isKey;
         protected final boolean isOptional;
@@ -43,15 +43,17 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                ParserRuleContext typeContext,
-                T type,
+                TB typeBuilder,
                 KlassBuilder owningKlassBuilder,
                 boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, typeContext, type, owningKlassBuilder);
+            super(elementContext, nameContext, name, typeBuilder, owningKlassBuilder);
             this.isKey = isKey;
             this.isOptional = isOptional;
         }
+
+        @Override
+        public abstract DataTypeProperty<T> build(Klass owningKlass);
     }
 }

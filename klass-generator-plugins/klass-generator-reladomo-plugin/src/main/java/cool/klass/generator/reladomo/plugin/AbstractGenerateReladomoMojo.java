@@ -7,7 +7,6 @@ import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -28,10 +27,9 @@ public abstract class AbstractGenerateReladomoMojo extends AbstractMojo
                 .setUrls(ClasspathHelper.forPackage(this.rootPackageName)));
         Set<String> klassLocations =
                 reflections.getResources(Pattern.compile(".*\\.klass"));
-        DomainModelBuilder  domainModelBuilder  = new DomainModelBuilder();
         CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
-        KlassCompiler       klassCompiler       = new KlassCompiler(domainModelBuilder, compilerErrorHolder);
-        klassCompiler.compile(klassLocations);
+        KlassCompiler       klassCompiler       = new KlassCompiler(compilerErrorHolder);
+        DomainModel         domainModel         = klassCompiler.compile(klassLocations);
 
         if (compilerErrorHolder.hasCompilerErrors())
         {
@@ -43,7 +41,6 @@ public abstract class AbstractGenerateReladomoMojo extends AbstractMojo
             throw new MojoExecutionException("There were compiler errors.");
         }
 
-        DomainModel domainModel = domainModelBuilder.build();
         return domainModel;
     }
 }

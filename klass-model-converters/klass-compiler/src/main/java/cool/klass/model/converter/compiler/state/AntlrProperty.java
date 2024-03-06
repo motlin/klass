@@ -1,6 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
-import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import java.util.Objects;
+
+import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.Property.PropertyBuilder;
 import cool.klass.model.meta.domain.Type;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -8,28 +10,35 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public abstract class AntlrProperty<C extends ParserRuleContext, T extends Type>
 {
     public static final AntlrProperty<ParserRuleContext, Type> AMBIGUOUS = new AntlrProperty<ParserRuleContext, Type>(
-            null,
-            null)
+            Element.NO_CONTEXT,
+            Element.NO_CONTEXT,
+            "ambiguous property"
+    )
     {
         @Override
-        public PropertyBuilder<Type> build(KlassBuilder klassBuilder)
+        public PropertyBuilder<Type, ?> build()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented");
         }
     };
 
-    protected final C ctx;
-    protected final String name;
+    protected final C                 context;
+    protected final ParserRuleContext nameContext;
+    protected final String            name;
 
-    protected AntlrProperty(C ctx, String name)
+    protected AntlrProperty(
+            C context,
+            ParserRuleContext nameContext,
+            String name)
     {
-        this.ctx = ctx;
-        this.name = name;
+        this.context = Objects.requireNonNull(context);
+        this.nameContext = Objects.requireNonNull(nameContext);
+        this.name = Objects.requireNonNull(name);
     }
 
-    public C getCtx()
+    public ParserRuleContext getNameContext()
     {
-        return this.ctx;
+        return this.nameContext;
     }
 
     public String getName()
@@ -37,5 +46,5 @@ public abstract class AntlrProperty<C extends ParserRuleContext, T extends Type>
         return this.name;
     }
 
-    public abstract PropertyBuilder<T> build(KlassBuilder klassBuilder);
+    public abstract PropertyBuilder<T, ?> build();
 }

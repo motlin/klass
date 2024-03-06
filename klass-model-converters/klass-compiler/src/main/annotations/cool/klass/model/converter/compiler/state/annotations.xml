@@ -1,0 +1,80 @@
+<root>
+    <item name='cool.klass.model.converter.compiler.state.AntlrAssociationEnd AntlrAssociationEnd(cool.klass.model.meta.grammar.KlassParser.AssociationEndContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrMultiplicity, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrAssociationEndModifier&gt;) 0'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrAssociationEnd AntlrAssociationEnd(cool.klass.model.meta.grammar.KlassParser.AssociationEndContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrMultiplicity, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrAssociationEndModifier&gt;) 1'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrAssociationEnd AntlrAssociationEnd(cool.klass.model.meta.grammar.KlassParser.AssociationEndContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrMultiplicity, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrAssociationEndModifier&gt;) 2'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty AntlrDataTypeProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass) 0'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty AntlrDataTypeProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass) 1'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty AntlrDataTypeProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass) 2'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty AntlrDataTypeProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass) 4'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty AntlrDataTypeProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass) 5'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty modifiers'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrDataTypeProperty owningClassState'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumeration AntlrEnumeration(java.lang.String, cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext, java.lang.String) 1'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumeration AntlrEnumeration(java.lang.String, cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext, java.lang.String) 2'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumeration context'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumeration name'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 0'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 1'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 2'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 4'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 5'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrEnumerationProperty AntlrEnumerationProperty(cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext, org.antlr.v4.runtime.ParserRuleContext, java.lang.String, boolean, org.eclipse.collections.api.list.ImmutableList&lt;cool.klass.model.converter.compiler.state.AntlrPropertyModifier&gt;, cool.klass.model.converter.compiler.state.AntlrClass, cool.klass.model.converter.compiler.state.AntlrEnumeration) 6'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty AntlrProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String) 0'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty AntlrProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String) 1'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty AntlrProperty(C, org.antlr.v4.runtime.ParserRuleContext, java.lang.String) 2'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty context'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty name'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+    <item name='cool.klass.model.converter.compiler.state.AntlrProperty nameContext'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+</root>

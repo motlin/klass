@@ -1,74 +1,58 @@
 package cool.klass.model.converter.compiler.state;
 
-import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
-import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
 import cool.klass.model.meta.domain.PrimitiveType;
-import cool.klass.model.meta.domain.Property.PropertyBuilder;
-import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
+import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
-import org.eclipse.collections.api.set.ImmutableSet;
-import org.eclipse.collections.impl.factory.Sets;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrPrimitiveProperty extends AntlrProperty<PrimitivePropertyContext, PrimitiveType>
+public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitivePropertyContext, PrimitiveType>
 {
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
-            null,
-            null,
-            null,
+            new PrimitivePropertyContext(null, -1),
+            Element.NO_CONTEXT,
+            "ambiguous primitive property name",
             false,
-            Sets.immutable.empty());
+            Lists.immutable.empty(),
+            null,
+            null);
 
-    private final PrimitiveType        primitiveType;
-    private final boolean              isOptional;
-    private final ImmutableSet<String> modifiers;
+    private final PrimitiveTypeBuilder primitiveTypeBuilder;
 
     private PrimitivePropertyBuilder primitivePropertyBuilder;
 
     public AntlrPrimitiveProperty(
-            PrimitivePropertyContext ctx,
+            PrimitivePropertyContext context,
+            ParserRuleContext nameContext,
             String name,
-            PrimitiveType primitiveType,
             boolean isOptional,
-            ImmutableSet<String> modifiers)
+            ImmutableList<AntlrPropertyModifier> modifiers,
+            PrimitiveTypeBuilder primitiveTypeBuilder,
+            AntlrClass owningClassState)
     {
-        super(ctx, name);
-        this.primitiveType = primitiveType;
-        this.isOptional = isOptional;
-        this.modifiers = modifiers;
-    }
-
-    public PrimitiveType getPrimitiveType()
-    {
-        return this.primitiveType;
-    }
-
-    public boolean isOptional()
-    {
-        return this.isOptional;
+        super(context, nameContext, name, isOptional, modifiers, owningClassState);
+        this.primitiveTypeBuilder = primitiveTypeBuilder;
     }
 
     @Override
-    public PropertyBuilder<PrimitiveType> build(KlassBuilder klassBuilder)
+    public PrimitivePropertyBuilder build()
     {
-        EscapedIdentifierContext escapedIdentifierContext = this.ctx.escapedIdentifier();
-        String                   name                     = EscapedIdentifierVisitor.get(escapedIdentifierContext);
-        String                   primitiveTypeName        = this.ctx.primitiveType().getText();
+        if (this.primitivePropertyBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
 
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
-                this.ctx,
-                escapedIdentifierContext,
-                name,
-                this.ctx.primitiveType(),
-                PrimitiveType.valueOf(primitiveTypeName),
-                klassBuilder,
+                this.context,
+                this.nameContext,
+                this.name,
+                this.primitiveTypeBuilder,
+                this.owningClassState.getKlassBuilder(),
                 this.isKey(),
                 this.isOptional);
         return this.primitivePropertyBuilder;
-    }
-
-    public boolean isKey()
-    {
-        return this.modifiers.contains("key");
     }
 }

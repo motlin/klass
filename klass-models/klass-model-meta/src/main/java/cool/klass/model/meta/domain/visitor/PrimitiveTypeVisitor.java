@@ -1,4 +1,4 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.visitor;
 
 public interface PrimitiveTypeVisitor
 {

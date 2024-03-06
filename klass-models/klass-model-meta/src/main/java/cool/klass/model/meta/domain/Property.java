@@ -1,30 +1,24 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Objects;
+
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.Type.TypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class Property<T extends Type> extends TypedElement<T>
 {
-    private final ParserRuleContext owningKlassContext;
-    private final Klass             owningKlass;
+    private final Klass owningKlass;
 
     protected Property(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
-            ParserRuleContext typeContext,
             T type,
-            ParserRuleContext owningKlassContext,
             Klass owningKlass)
     {
-        super(elementContext, nameContext, name, typeContext, type);
-        this.owningKlassContext = owningKlassContext;
+        super(elementContext, nameContext, name, type);
         this.owningKlass = owningKlass;
-    }
-
-    public ParserRuleContext getOwningKlassContext()
-    {
-        return this.owningKlassContext;
     }
 
     public Klass getOwningKlass()
@@ -32,22 +26,21 @@ public abstract class Property<T extends Type> extends TypedElement<T>
         return this.owningKlass;
     }
 
-    public abstract static class PropertyBuilder<T extends Type> extends TypedElementBuilder<T>
+    public abstract static class PropertyBuilder<T extends Type, TB extends TypeBuilder<T>> extends TypedElementBuilder<T, TB>
     {
-        private final KlassBuilder owningKlassBuilder;
+        protected final KlassBuilder owningKlassBuilder;
 
         protected PropertyBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                ParserRuleContext typeContext,
-                T type,
+                TB typeBuilder,
                 KlassBuilder owningKlassBuilder)
         {
-            super(elementContext, nameContext, name, typeContext, type);
-            this.owningKlassBuilder = owningKlassBuilder;
+            super(elementContext, nameContext, name, typeBuilder);
+            this.owningKlassBuilder = Objects.requireNonNull(owningKlassBuilder);
         }
 
-        public abstract Property<T> build(ParserRuleContext owningKlassContext, Klass owningKlass);
+        public abstract Property<T> build(Klass owningKlass);
     }
 }

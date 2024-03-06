@@ -51,7 +51,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
     private final MutableOrderedMap<ClassDeclarationContext, MutableOrderedMap<String, AssociationEndContext>>
             associationEndsByName       = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    public MembersByNamePhase(
+    protected MembersByNamePhase(
             CompilerErrorHolder compilerErrorHolder,
             MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
             DeclarationsByNamePhase declarationsByNamePhase,
@@ -90,7 +90,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
     @Override
     public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
     {
-        String name = EscapedIdentifierVisitor.get(ctx.escapedIdentifier());
+        String name = EscapedIdentifierVisitor.getName(ctx.escapedIdentifier());
 
         MutableOrderedMap<String, ParserRuleContext> members = this.classMembersByName.getIfAbsentPut(
                 this.classDeclarationContext,
@@ -128,7 +128,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
     @Override
     public void enterEnumerationProperty(EnumerationPropertyContext ctx)
     {
-        String name = EscapedIdentifierVisitor.get(ctx.escapedIdentifier());
+        String name = EscapedIdentifierVisitor.getName(ctx.escapedIdentifier());
 
         MutableOrderedMap<String, ParserRuleContext> members = this.classMembersByName.getIfAbsentPut(
                 this.classDeclarationContext,

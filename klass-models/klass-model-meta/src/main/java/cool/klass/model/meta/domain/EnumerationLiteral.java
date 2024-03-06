@@ -1,13 +1,12 @@
 package cool.klass.model.meta.domain;
 
-import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class EnumerationLiteral extends TypedElement<Enumeration>
+public final class EnumerationLiteral extends TypedElement<Enumeration>
 {
     private final String prettyName;
 
-    protected EnumerationLiteral(
+    private EnumerationLiteral(
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
@@ -15,7 +14,7 @@ public class EnumerationLiteral extends TypedElement<Enumeration>
             Enumeration enumeration,
             String prettyName)
     {
-        super(elementContext, nameContext, name, enumerationContext, enumeration);
+        super(elementContext, nameContext, name, enumeration);
         this.prettyName = prettyName;
     }
 
@@ -26,30 +25,51 @@ public class EnumerationLiteral extends TypedElement<Enumeration>
 
     public static class EnumerationLiteralBuilder extends NamedElementBuilder
     {
-        private final String             prettyName;
-        private final EnumerationBuilder owningEnumerationBuilder;
+        public static final EnumerationLiteralBuilder AMBIGUOUS = new EnumerationLiteralBuilder(
+                NO_CONTEXT,
+                NO_CONTEXT,
+                "ambiguous enumeration literal",
+                null);
+
+        private final String prettyName;
+
+        private EnumerationLiteral enumerationLiteral;
 
         public EnumerationLiteralBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                String prettyName,
-                EnumerationBuilder owningEnumerationBuilder)
+                String prettyName)
         {
             super(elementContext, nameContext, name);
             this.prettyName = prettyName;
-            this.owningEnumerationBuilder = owningEnumerationBuilder;
+        }
+
+        public String getPrettyName()
+        {
+            return this.prettyName;
         }
 
         public EnumerationLiteral build(ParserRuleContext enumerationContext, Enumeration enumeration)
         {
-            return new EnumerationLiteral(
+            if (this.enumerationLiteral != null)
+            {
+                throw new IllegalStateException();
+            }
+
+            this.enumerationLiteral = new EnumerationLiteral(
                     this.elementContext,
                     this.nameContext,
                     this.name,
                     enumerationContext,
                     enumeration,
                     this.prettyName);
+            return this.enumerationLiteral;
+        }
+
+        public EnumerationLiteral getEnumerationLiteral()
+        {
+            return this.enumerationLiteral;
         }
     }
 }

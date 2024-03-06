@@ -1,0 +1,5 @@
+<root>
+    <item name='cool.klass.model.converter.compiler.EscapedIdentifierVisitor org.antlr.v4.runtime.ParserRuleContext getNameContext(cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext)'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+</root>

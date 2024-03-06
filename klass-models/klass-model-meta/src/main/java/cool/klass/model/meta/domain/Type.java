@@ -14,7 +14,7 @@ public abstract class Type extends PackageableElement
         super(elementContext, nameContext, name, packageName);
     }
 
-    public abstract static class TypeBuilder extends PackageableElementBuilder
+    public abstract static class TypeBuilder<T extends Type> extends PackageableElementBuilder
     {
         protected TypeBuilder(
                 ParserRuleContext elementContext,
