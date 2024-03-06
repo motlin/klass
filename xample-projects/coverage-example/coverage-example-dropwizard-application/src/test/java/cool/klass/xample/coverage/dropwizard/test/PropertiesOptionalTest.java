@@ -1,33 +1,52 @@
 package cool.klass.xample.coverage.dropwizard.test;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
-public class PropertiesOptionalTest extends AbstractCoverageTest
+public class PropertiesOptionalTest
+        extends AbstractCoverageTest
 {
     @Test
-    public void getFirst() throws JSONException
+    public void getFirst()
     {
-        Client client = this.getClient(
-                "cool.klass.xample.coverage.dropwizard.test.PropertiesOptionalTest.getFirst");
+        Client client = this.getClient("getFirst");
 
-        Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.appRule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/propertiesOptional/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
 
-        this.assertResponseStatus(response, Status.OK);
+        this.assertResponse("getFirst", Status.OK, response);
+    }
 
-        String jsonResponse = response.readEntity(String.class);
+    @Test
+    public void getSecond()
+    {
+        Client client = this.getClient("getSecond");
+
+        Response response = client
+                .target("http://localhost:{port}/api/propertiesOptional/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("id", 2)
+                .request()
+                .get();
+
+        this.assertResponse("getSecond", Status.OK, response);
+    }
+
+    @Test
+    public void putFirst()
+    {
+        Client client = this.getClient("putFirst");
+
         //language=JSON
-        String expected = """
+        String json = """
                 {
                   "propertiesOptionalId": 1,
                   "optionalString": "PropertiesOptional optionalString 1 ☝",
@@ -38,40 +57,28 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
                   "optionalBoolean": true,
                   "optionalInstant": "1999-12-31T23:59:00Z",
                   "optionalLocalDate": "1999-12-31",
-                  "optionalDerived": "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived"
-                }""";
-        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
-    }
+                  "version": {
+                    "number": 1
+                  }
+                }
+                """;
 
-    @Test
-    public void getSecond() throws JSONException
-    {
-        Client client = this.getClient(
-                "cool.klass.xample.coverage.dropwizard.test.PropertiesOptionalTest.getSecond");
+        Response putResponse = client
+                .target("http://localhost:{port}/api/propertiesOptional/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("id", 1)
+                .request()
+                .put(Entity.json(json));
 
-        Response response = client.target(
-                String.format("http://localhost:%d/api/propertiesOptional/{id}", this.appRule.getLocalPort()))
-                .resolveTemplate("id", 2)
+        this.assertResponse("putFirst1", Status.NO_CONTENT, putResponse);
+
+        Response getResponse = client
+                .target("http://localhost:{port}/api/propertiesOptional/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
+                .resolveTemplate("id", 1)
                 .request()
                 .get();
 
-        this.assertResponseStatus(response, Status.OK);
-
-        String jsonResponse = response.readEntity(String.class);
-        //language=JSON
-        String expected = """
-                {
-                  "propertiesOptionalId": 2,
-                  "optionalString": null,
-                  "optionalInteger": null,
-                  "optionalLong": null,
-                  "optionalDouble": null,
-                  "optionalFloat": null,
-                  "optionalBoolean": null,
-                  "optionalInstant": null,
-                  "optionalLocalDate": null,
-                  "optionalDerived": "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived"
-                }""";
-        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
+        this.assertResponse("putFirst2", Status.OK, getResponse);
     }
 }
