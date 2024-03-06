@@ -164,7 +164,10 @@ public abstract class AbstractGenerateMojo
                 this.getLog().warn(warning.toString());
             }
 
-            throw new MojoExecutionException("There were compiler errors.");
+            if (errors.notEmpty())
+            {
+                throw new MojoExecutionException("There were compiler errors.");
+            }
         }
     }
 
