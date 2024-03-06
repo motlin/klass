@@ -7,6 +7,12 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 public interface PrimitiveProperty extends DataTypeProperty
 {
     @Override
+    default void visit(PropertyVisitor visitor)
+    {
+        visitor.visitPrimitiveProperty(this);
+    }
+
+    @Override
     default boolean isTemporalRange()
     {
         return this.getType().isTemporalRange();

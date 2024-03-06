@@ -6,6 +6,12 @@ import cool.klass.model.meta.domain.api.Enumeration;
 
 public interface EnumerationProperty extends DataTypeProperty
 {
+    @Override
+    default void visit(PropertyVisitor visitor)
+    {
+        visitor.visitEnumerationProperty(this);
+    }
+
     @Nonnull
     @Override
     Enumeration getType();

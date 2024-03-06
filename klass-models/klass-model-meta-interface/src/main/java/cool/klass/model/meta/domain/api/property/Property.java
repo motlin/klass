@@ -9,4 +9,6 @@ public interface Property extends TypedElement
 {
     @Nonnull
     Klass getOwningKlass();
+
+    void visit(PropertyVisitor visitor);
 }

@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.DataType;
 import org.eclipse.collections.api.list.ImmutableList;
 
-// TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
 public interface DataTypeProperty extends Property
 {
     @Nonnull

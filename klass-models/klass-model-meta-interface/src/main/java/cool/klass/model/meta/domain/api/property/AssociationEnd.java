@@ -1,20 +1,17 @@
 package cool.klass.model.meta.domain.api.property;
 
-import java.util.Optional;
-
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Association;
-import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.order.OrderBy;
 import org.eclipse.collections.api.list.ImmutableList;
 
-// TODO: Super class for reference-type-property?
-public interface AssociationEnd extends Property
+public interface AssociationEnd extends ReferenceProperty
 {
-    @Nonnull
-    Multiplicity getMultiplicity();
+    @Override
+    default void visit(PropertyVisitor visitor)
+    {
+        visitor.visitAssociationEnd(this);
+    }
 
     @Nonnull
     ImmutableList<AssociationEndModifier> getAssociationEndModifiers();
@@ -25,11 +22,4 @@ public interface AssociationEnd extends Property
 
     @Nonnull
     Association getOwningAssociation();
-
-    @Nonnull
-    Optional<OrderBy> getOrderBy();
-
-    @Override
-    @Nonnull
-    Klass getType();
 }
