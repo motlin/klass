@@ -1,6 +1,6 @@
 [
   {
-    "_type": "Interface",
+    "@type": "klass.model.meta.domain.Interface",
     "name": "Element",
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [],
@@ -50,7 +50,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Interface",
+    "@type": "klass.model.meta.domain.Interface",
     "name": "NamedElement",
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [
@@ -96,7 +96,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Interface",
+    "@type": "klass.model.meta.domain.Interface",
     "name": "PackageableElement",
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [
@@ -126,7 +126,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Enumeration",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -142,7 +142,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "EnumerationLiteral",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -191,7 +191,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Classifier",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -207,7 +207,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Interface",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -219,7 +219,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ClassifierInterfaceMapping",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -272,7 +272,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Klass",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -321,7 +321,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "DataTypeProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -380,7 +380,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "PrimitiveProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -419,7 +419,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "EnumerationProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -450,7 +450,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Interface",
+    "@type": "klass.model.meta.domain.Interface",
     "name": "PropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superInterfaces": [
@@ -465,7 +465,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "NumericPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -530,7 +530,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MinLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -542,7 +542,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MaxLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -554,7 +554,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MinPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -566,7 +566,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MaxPropertyValidation",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -578,7 +578,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "PropertyModifier",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -631,7 +631,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ClassifierModifier",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -666,7 +666,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Association",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -699,7 +699,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "AssociationEnd",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -796,7 +796,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "AssociationEndModifier",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -849,7 +849,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Criteria",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -885,7 +885,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "AllCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -917,7 +917,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "BinaryCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -981,7 +981,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "AndCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1013,7 +1013,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "OrCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1045,7 +1045,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "OperatorCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1123,7 +1123,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "EdgePointCriteria",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1171,7 +1171,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ExpressionValue",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1201,7 +1201,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "UserLiteral",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1233,7 +1233,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "NullLiteral",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1265,7 +1265,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "VariableReference",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1313,7 +1313,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Parameter",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1377,7 +1377,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "EnumerationParameter",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1427,7 +1427,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "PrimitiveParameter",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1473,7 +1473,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MemberReferencePath",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1559,7 +1559,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "MemberReferencePathAssociationEndMapping",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1631,7 +1631,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ThisMemberReferencePath",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1663,7 +1663,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "TypeMemberReferencePath",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -1695,7 +1695,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ParameterizedProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1769,7 +1769,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "AssociationEndOrderBy",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1855,7 +1855,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ParameterizedPropertyOrdering",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1933,7 +1933,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ParameterizedPropertyParameter",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1989,7 +1989,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ProjectionElement",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -2055,7 +2055,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ServiceProjection",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -2111,7 +2111,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ProjectionWithAssociationEnd",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -2195,7 +2195,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ProjectionReferenceProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -2279,7 +2279,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ProjectionProjectionReference",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -2381,7 +2381,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ProjectionDataTypeProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": {
@@ -2465,7 +2465,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ServiceGroup",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -2500,7 +2500,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Url",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -2553,7 +2553,7 @@
     "enumerationProperties": []
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "UrlParameter",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -2643,7 +2643,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Service",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -2809,7 +2809,7 @@
     ]
   },
   {
-    "_type": "Klass",
+    "@type": "klass.model.meta.domain.Klass",
     "name": "ServiceOrderBy",
     "packageName": "klass.model.meta.domain",
     "superClass": null,

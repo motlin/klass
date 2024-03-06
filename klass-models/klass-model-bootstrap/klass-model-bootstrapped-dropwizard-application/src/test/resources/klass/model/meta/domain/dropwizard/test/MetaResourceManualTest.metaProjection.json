@@ -1,31 +1,31 @@
 {
-  "_type": "ServiceProjection",
+  "@type": "klass.model.meta.domain.ServiceProjection",
   "name": "ProjectionElementSummaryProjection",
   "packageName": "klass.model.meta.domain",
   "children": [
     {
-      "_type": "ProjectionDataTypeProperty",
+      "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
       "name": "name",
       "children": []
     },
     {
-      "_type": "ProjectionDataTypeProperty",
+      "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
       "name": "packageName",
       "children": []
     },
     {
-      "_type": "ProjectionReferenceProperty",
+      "@type": "klass.model.meta.domain.ProjectionReferenceProperty",
       "name": "projection",
       "children": [
         {
-          "_type": "ProjectionDataTypeProperty",
+          "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
           "name": "name",
           "children": []
         }
       ]
     },
     {
-      "_type": "ProjectionProjectionReference",
+      "@type": "klass.model.meta.domain.ProjectionProjectionReference",
       "name": "children",
       "projection": {
         "name": "ProjectionElementSummaryProjection"

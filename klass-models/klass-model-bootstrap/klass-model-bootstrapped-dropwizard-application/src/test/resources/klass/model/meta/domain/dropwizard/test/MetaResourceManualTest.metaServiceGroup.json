@@ -12,7 +12,7 @@
             "name": "ServiceGroupSummaryProjection"
           },
           "queryCriteria": {
-            "_type": "AllCriteria"
+            "@type": "klass.model.meta.domain.AllCriteria"
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
@@ -30,10 +30,10 @@
             "name": "ServiceGroupProjection"
           },
           "queryCriteria": {
-            "_type": "OperatorCriteria",
+            "@type": "klass.model.meta.domain.OperatorCriteria",
             "operator": "==",
             "sourceExpressionValue": {
-              "_type": "ThisMemberReferencePath",
+              "@type": "klass.model.meta.domain.ThisMemberReferencePath",
               "klass": {
                 "name": "ServiceGroup"
               },
@@ -43,7 +43,7 @@
               }
             },
             "targetExpressionValue": {
-              "_type": "VariableReference",
+              "@type": "klass.model.meta.domain.VariableReference",
               "parameter": {
                 "name": "serviceGroupName"
               }
@@ -65,10 +65,10 @@
             "name": "ServiceGroupSummaryProjection"
           },
           "queryCriteria": {
-            "_type": "OperatorCriteria",
+            "@type": "klass.model.meta.domain.OperatorCriteria",
             "operator": "==",
             "sourceExpressionValue": {
-              "_type": "ThisMemberReferencePath",
+              "@type": "klass.model.meta.domain.ThisMemberReferencePath",
               "klass": {
                 "name": "ServiceGroup"
               },
@@ -78,7 +78,7 @@
               }
             },
             "targetExpressionValue": {
-              "_type": "VariableReference",
+              "@type": "klass.model.meta.domain.VariableReference",
               "parameter": {
                 "name": "serviceGroupName"
               }

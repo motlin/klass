@@ -13,7 +13,7 @@
               "name": "EnumerationSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -28,10 +28,10 @@
               "name": "EnumerationProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Enumeration"
                 },
@@ -41,7 +41,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "enumerationName"
                 }
@@ -60,10 +60,10 @@
               "name": "EnumerationSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Enumeration"
                 },
@@ -73,7 +73,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "enumerationName"
                 }
@@ -98,7 +98,7 @@
               "name": "InterfaceSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -113,10 +113,10 @@
               "name": "InterfaceProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Interface"
                 },
@@ -126,7 +126,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "interfaceName"
                 }
@@ -145,10 +145,10 @@
               "name": "InterfaceSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Interface"
                 },
@@ -158,7 +158,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "interfaceName"
                 }
@@ -183,7 +183,7 @@
               "name": "ClassSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -198,10 +198,10 @@
               "name": "ClassProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Klass"
                 },
@@ -211,7 +211,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "className"
                 }
@@ -230,10 +230,10 @@
               "name": "ClassSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Klass"
                 },
@@ -243,7 +243,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "className"
                 }
@@ -268,7 +268,7 @@
               "name": "ClassifierSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -283,10 +283,10 @@
               "name": "ClassifierSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Classifier"
                 },
@@ -296,7 +296,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "classifierName"
                 }
@@ -321,7 +321,7 @@
               "name": "AssociationSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -336,10 +336,10 @@
               "name": "AssociationProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Association"
                 },
@@ -349,7 +349,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "associationName"
                 }
@@ -368,10 +368,10 @@
               "name": "AssociationSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "Association"
                 },
@@ -381,7 +381,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "associationName"
                 }
@@ -406,7 +406,7 @@
               "name": "ProjectionElementSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -421,10 +421,10 @@
               "name": "ProjectionElementProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "ServiceProjection"
                 },
@@ -434,7 +434,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "projectionName"
                 }
@@ -453,10 +453,10 @@
               "name": "ProjectionElementSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "ServiceProjection"
                 },
@@ -466,7 +466,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "projectionName"
                 }
@@ -491,7 +491,7 @@
               "name": "ServiceGroupSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "AllCriteria"
+              "@type": "klass.model.meta.domain.AllCriteria"
             }
           }
         ]
@@ -506,10 +506,10 @@
               "name": "ServiceGroupProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "ServiceGroup"
                 },
@@ -519,7 +519,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "serviceGroupName"
                 }
@@ -538,10 +538,10 @@
               "name": "ServiceGroupSummaryProjection"
             },
             "queryCriteria": {
-              "_type": "OperatorCriteria",
+              "@type": "klass.model.meta.domain.OperatorCriteria",
               "operator": "==",
               "sourceExpressionValue": {
-                "_type": "ThisMemberReferencePath",
+                "@type": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
                   "name": "ServiceGroup"
                 },
@@ -551,7 +551,7 @@
                 }
               },
               "targetExpressionValue": {
-                "_type": "VariableReference",
+                "@type": "klass.model.meta.domain.VariableReference",
                 "parameter": {
                   "name": "serviceGroupName"
                 }

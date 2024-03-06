@@ -36,10 +36,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Enumeration"
         },
@@ -49,7 +49,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "EnumerationLiteral"
         },
@@ -88,10 +88,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Classifier"
         },
@@ -101,7 +101,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ClassifierInterfaceMapping"
         },
@@ -136,10 +136,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Interface"
         },
@@ -149,7 +149,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ClassifierInterfaceMapping"
         },
@@ -184,10 +184,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -197,7 +197,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -232,10 +232,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "EnumerationProperty"
         },
@@ -245,7 +245,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Enumeration"
         },
@@ -293,10 +293,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Classifier"
         },
@@ -306,7 +306,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "PrimitiveProperty"
         },
@@ -354,10 +354,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Classifier"
         },
@@ -367,7 +367,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "EnumerationProperty"
         },
@@ -402,12 +402,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -417,7 +417,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MinLengthPropertyValidation"
           },
@@ -428,10 +428,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -441,7 +441,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MinLengthPropertyValidation"
           },
@@ -477,12 +477,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -492,7 +492,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MaxLengthPropertyValidation"
           },
@@ -503,10 +503,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -516,7 +516,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MaxLengthPropertyValidation"
           },
@@ -552,12 +552,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "PrimitiveProperty"
           },
@@ -567,7 +567,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MinPropertyValidation"
           },
@@ -578,10 +578,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "PrimitiveProperty"
           },
@@ -591,7 +591,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MinPropertyValidation"
           },
@@ -627,12 +627,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "PrimitiveProperty"
           },
@@ -642,7 +642,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MaxPropertyValidation"
           },
@@ -653,10 +653,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "PrimitiveProperty"
           },
@@ -666,7 +666,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "MaxPropertyValidation"
           },
@@ -715,12 +715,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -730,7 +730,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "PropertyModifier"
           },
@@ -741,10 +741,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -754,7 +754,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "PropertyModifier"
           },
@@ -803,10 +803,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Classifier"
         },
@@ -816,7 +816,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ClassifierModifier"
         },
@@ -864,10 +864,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Association"
         },
@@ -877,7 +877,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "AssociationEnd"
         },
@@ -912,10 +912,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -925,7 +925,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "AssociationEnd"
         },
@@ -960,10 +960,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "AssociationEnd"
         },
@@ -973,7 +973,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -1021,12 +1021,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1036,7 +1036,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEndModifier"
           },
@@ -1047,10 +1047,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1060,7 +1060,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEndModifier"
           },
@@ -1096,10 +1096,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Association"
         },
@@ -1109,7 +1109,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -1144,10 +1144,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "OperatorCriteria"
         },
@@ -1157,7 +1157,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ExpressionValue"
         },
@@ -1192,10 +1192,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "OperatorCriteria"
         },
@@ -1205,7 +1205,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ExpressionValue"
         },
@@ -1244,10 +1244,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "MemberReferencePath"
         },
@@ -1257,7 +1257,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "EdgePointCriteria"
         },
@@ -1292,10 +1292,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "VariableReference"
         },
@@ -1305,7 +1305,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Parameter"
         },
@@ -1340,10 +1340,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "EnumerationParameter"
         },
@@ -1353,7 +1353,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Enumeration"
         },
@@ -1388,10 +1388,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "MemberReferencePath"
         },
@@ -1401,7 +1401,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -1436,10 +1436,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "MemberReferencePath"
         },
@@ -1449,7 +1449,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "MemberReferencePathAssociationEndMapping"
         },
@@ -1484,12 +1484,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "MemberReferencePathAssociationEndMapping"
           },
@@ -1499,7 +1499,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1510,10 +1510,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "MemberReferencePathAssociationEndMapping"
           },
@@ -1523,7 +1523,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1559,12 +1559,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "MemberReferencePath"
           },
@@ -1574,7 +1574,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -1585,10 +1585,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "MemberReferencePath"
           },
@@ -1598,7 +1598,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -1634,10 +1634,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "BinaryCriteria"
         },
@@ -1647,7 +1647,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -1682,10 +1682,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "BinaryCriteria"
         },
@@ -1695,7 +1695,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -1759,10 +1759,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -1772,7 +1772,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ParameterizedProperty"
         },
@@ -1807,12 +1807,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1822,7 +1822,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEndOrderBy"
           },
@@ -1833,10 +1833,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -1846,7 +1846,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEndOrderBy"
           },
@@ -1882,10 +1882,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "AssociationEndOrderBy"
         },
@@ -1895,7 +1895,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ThisMemberReferencePath"
         },
@@ -1930,10 +1930,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ParameterizedProperty"
         },
@@ -1943,7 +1943,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -1978,12 +1978,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ParameterizedProperty"
           },
@@ -1993,7 +1993,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "ParameterizedPropertyOrdering"
           },
@@ -2004,10 +2004,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ParameterizedProperty"
           },
@@ -2017,7 +2017,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "ParameterizedPropertyOrdering"
           },
@@ -2053,12 +2053,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ParameterizedProperty"
           },
@@ -2068,7 +2068,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "ParameterizedPropertyParameter"
           },
@@ -2079,10 +2079,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ParameterizedProperty"
           },
@@ -2092,7 +2092,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "ParameterizedPropertyParameter"
           },
@@ -2128,10 +2128,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ProjectionElement"
         },
@@ -2141,7 +2141,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ProjectionElement"
         },
@@ -2176,12 +2176,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ProjectionWithAssociationEnd"
           },
@@ -2191,7 +2191,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -2202,10 +2202,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ProjectionWithAssociationEnd"
           },
@@ -2215,7 +2215,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "AssociationEnd"
           },
@@ -2251,12 +2251,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ProjectionDataTypeProperty"
           },
@@ -2266,7 +2266,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -2277,10 +2277,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "ProjectionDataTypeProperty"
           },
@@ -2290,7 +2290,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "DataTypeProperty"
           },
@@ -2326,10 +2326,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ServiceProjection"
         },
@@ -2339,7 +2339,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -2374,10 +2374,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ProjectionProjectionReference"
         },
@@ -2387,7 +2387,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ServiceProjection"
         },
@@ -2422,10 +2422,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ServiceGroup"
         },
@@ -2435,7 +2435,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Klass"
         },
@@ -2470,12 +2470,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "Url"
           },
@@ -2485,7 +2485,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "UrlParameter"
           },
@@ -2496,10 +2496,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "Url"
           },
@@ -2509,7 +2509,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "UrlParameter"
           },
@@ -2545,10 +2545,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "UrlParameter"
         },
@@ -2558,7 +2558,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Parameter"
         },
@@ -2593,10 +2593,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ServiceGroup"
         },
@@ -2606,7 +2606,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Url"
         },
@@ -2641,12 +2641,12 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "Url"
           },
@@ -2656,7 +2656,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "Service"
           },
@@ -2667,10 +2667,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "Url"
           },
@@ -2680,7 +2680,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "Service"
           },
@@ -2716,10 +2716,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Service"
         },
@@ -2729,7 +2729,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ServiceProjection"
         },
@@ -2764,10 +2764,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Service"
         },
@@ -2777,7 +2777,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -2812,10 +2812,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Service"
         },
@@ -2825,7 +2825,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -2860,10 +2860,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Service"
         },
@@ -2873,7 +2873,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -2908,10 +2908,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "Service"
         },
@@ -2921,7 +2921,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "Criteria"
         },
@@ -2956,14 +2956,14 @@
       }
     ],
     "criteria": {
-      "_type": "AndCriteria",
+      "@type": "klass.model.meta.domain.AndCriteria",
       "left": {
-        "_type": "AndCriteria",
+        "@type": "klass.model.meta.domain.AndCriteria",
         "left": {
-          "_type": "OperatorCriteria",
+          "@type": "klass.model.meta.domain.OperatorCriteria",
           "operator": "==",
           "sourceExpressionValue": {
-            "_type": "ThisMemberReferencePath",
+            "@type": "klass.model.meta.domain.ThisMemberReferencePath",
             "klass": {
               "name": "Service"
             },
@@ -2973,7 +2973,7 @@
             }
           },
           "targetExpressionValue": {
-            "_type": "TypeMemberReferencePath",
+            "@type": "klass.model.meta.domain.TypeMemberReferencePath",
             "klass": {
               "name": "ServiceOrderBy"
             },
@@ -2984,10 +2984,10 @@
           }
         },
         "right": {
-          "_type": "OperatorCriteria",
+          "@type": "klass.model.meta.domain.OperatorCriteria",
           "operator": "==",
           "sourceExpressionValue": {
-            "_type": "ThisMemberReferencePath",
+            "@type": "klass.model.meta.domain.ThisMemberReferencePath",
             "klass": {
               "name": "Service"
             },
@@ -2997,7 +2997,7 @@
             }
           },
           "targetExpressionValue": {
-            "_type": "TypeMemberReferencePath",
+            "@type": "klass.model.meta.domain.TypeMemberReferencePath",
             "klass": {
               "name": "ServiceOrderBy"
             },
@@ -3009,10 +3009,10 @@
         }
       },
       "right": {
-        "_type": "OperatorCriteria",
+        "@type": "klass.model.meta.domain.OperatorCriteria",
         "operator": "==",
         "sourceExpressionValue": {
-          "_type": "ThisMemberReferencePath",
+          "@type": "klass.model.meta.domain.ThisMemberReferencePath",
           "klass": {
             "name": "Service"
           },
@@ -3022,7 +3022,7 @@
           }
         },
         "targetExpressionValue": {
-          "_type": "TypeMemberReferencePath",
+          "@type": "klass.model.meta.domain.TypeMemberReferencePath",
           "klass": {
             "name": "ServiceOrderBy"
           },
@@ -3058,10 +3058,10 @@
       }
     ],
     "criteria": {
-      "_type": "OperatorCriteria",
+      "@type": "klass.model.meta.domain.OperatorCriteria",
       "operator": "==",
       "sourceExpressionValue": {
-        "_type": "ThisMemberReferencePath",
+        "@type": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
           "name": "ServiceOrderBy"
         },
@@ -3071,7 +3071,7 @@
         }
       },
       "targetExpressionValue": {
-        "_type": "TypeMemberReferencePath",
+        "@type": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
           "name": "ThisMemberReferencePath"
         },
