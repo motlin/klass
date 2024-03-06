@@ -10,15 +10,7 @@
     {
       "superInterface": {
         "name": "PackageableElement",
-        "packageName": "klass.model.meta.domain",
-        "superInterfaces": [
-          {
-            "superInterface": {
-              "name": "NamedElement",
-              "packageName": "klass.model.meta.domain"
-            }
-          }
-        ]
+        "packageName": "klass.model.meta.domain"
       }
     }
   ],

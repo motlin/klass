@@ -157,28 +157,6 @@
                 "_type": "ProjectionDataTypeProperty",
                 "name": "packageName",
                 "children": []
-              },
-              {
-                "_type": "ProjectionAssociationEnd",
-                "name": "superInterfaces",
-                "children": [
-                  {
-                    "_type": "ProjectionAssociationEnd",
-                    "name": "superInterface",
-                    "children": [
-                      {
-                        "_type": "ProjectionDataTypeProperty",
-                        "name": "name",
-                        "children": []
-                      },
-                      {
-                        "_type": "ProjectionDataTypeProperty",
-                        "name": "packageName",
-                        "children": []
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           }
@@ -1044,28 +1022,6 @@
                 "_type": "ProjectionDataTypeProperty",
                 "name": "packageName",
                 "children": []
-              },
-              {
-                "_type": "ProjectionAssociationEnd",
-                "name": "superInterfaces",
-                "children": [
-                  {
-                    "_type": "ProjectionAssociationEnd",
-                    "name": "superInterface",
-                    "children": [
-                      {
-                        "_type": "ProjectionDataTypeProperty",
-                        "name": "name",
-                        "children": []
-                      },
-                      {
-                        "_type": "ProjectionDataTypeProperty",
-                        "name": "packageName",
-                        "children": []
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           }

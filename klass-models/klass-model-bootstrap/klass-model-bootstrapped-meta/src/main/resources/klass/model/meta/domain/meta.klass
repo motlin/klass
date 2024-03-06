@@ -1034,14 +1034,6 @@ projection InterfaceProjection on Interface
         {
             name           : "Super interface name",
             packageName    : "Super interface package name",
-            superInterfaces:
-            {
-                superInterface:
-                {
-                    name       : "Super Super interface name",
-                    packageName: "Super Super interface package name",
-                },
-            },
         },
     },
     classifierModifiers    :
@@ -1343,14 +1335,6 @@ projection ClassProjection on Klass
         {
             name           : "Super interface name",
             packageName    : "Super interface package name",
-            superInterfaces:
-            {
-                superInterface:
-                {
-                    name       : "Super Super interface name",
-                    packageName: "Super Super interface package name",
-                },
-            },
         },
     },
     /*
