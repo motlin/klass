@@ -1660,6 +1660,10 @@ projection ProjectionElementProjection on ProjectionElement
 {
     name                                       : "Projection name",
     ServiceProjection.packageName              : "Projection package name",
+    ServiceProjection.klass                    :
+    {
+        name: "Projection klass name",
+    },
     ProjectionProjectionReference.projection   :
     {
         name: "Projection reference name",
@@ -1671,6 +1675,10 @@ projection ProjectionElementSummaryProjection on ProjectionElement
 {
     name                                       : "Projection name",
     ServiceProjection.packageName              : "Projection package name",
+    ServiceProjection.klass                    :
+    {
+        name: "Projection klass name",
+    },
     ProjectionProjectionReference.projection   :
     {
         name: "Projection reference name",
