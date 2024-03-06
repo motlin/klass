@@ -37,6 +37,7 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
+import cool.klass.model.meta.domain.api.property.Property;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -50,7 +51,8 @@ public class ReladomoDataStore implements DataStore
 {
     public static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
+    private static final Logger                    LOGGER      = LoggerFactory.getLogger(ReladomoDataStore.class);
+    private static final Converter<String, String> UPPER_CAMEL = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
     private final int retryCount;
 
@@ -211,6 +213,11 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object getDataTypeProperty(@Nonnull Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
+        if (dataTypeProperty.isDerived())
+        {
+            return this.getPropertyReflectively(persistentInstance, dataTypeProperty);
+        }
+
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
         if (attribute == null)
@@ -270,16 +277,22 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Nullable
-    public Object getDataTypePropertyLenient(
+    private Object getDataTypePropertyLenient(
             @Nonnull Object persistentInstance,
             @Nonnull DataTypeProperty dataTypeProperty)
     {
+        if (dataTypeProperty.isDerived())
+        {
+            return this.getPropertyReflectively(persistentInstance, dataTypeProperty);
+        }
+
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
         if (attribute == null)
         {
             throw new AssertionError(
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build.");
+                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find: "
+                            + dataTypeProperty);
         }
 
         if (attribute.isAttributeNull(persistentInstance))
@@ -327,12 +340,44 @@ public class ReladomoDataStore implements DataStore
         return result;
     }
 
+    public Object getPropertyReflectively(
+            @Nonnull Object persistentInstance,
+            @Nonnull Property property)
+    {
+        try
+        {
+            Classifier owningClassifier   = property.getOwningClassifier();
+            String     fullyQualifiedName = owningClassifier.getFullyQualifiedName();
+            Class<?>   aClass             = Class.forName(fullyQualifiedName);
+            String     methodName         = this.getMethodName(property);
+            Method     method             = aClass.getMethod(methodName);
+            return method.invoke(persistentInstance);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Nonnull
+    private String getMethodName(Property property)
+    {
+        String prefix = property.getType() == PrimitiveType.BOOLEAN ? "is" : "get";
+        String suffix = UPPER_CAMEL.convert(property.getName());
+        return prefix + suffix;
+    }
+
     @Override
     public boolean setDataTypeProperty(
             @Nonnull Object persistentInstance,
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nullable Object newValue)
     {
+        if (dataTypeProperty.isDerived())
+        {
+            throw new AssertionError(dataTypeProperty);
+        }
+
         Object oldValue = this.getDataTypePropertyLenient(persistentInstance, dataTypeProperty);
         if (Objects.equals(oldValue, newValue))
         {

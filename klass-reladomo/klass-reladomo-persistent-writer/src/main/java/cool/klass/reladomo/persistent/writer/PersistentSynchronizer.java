@@ -196,6 +196,7 @@ public abstract class PersistentSynchronizer
         return dataTypeProperty.isForeignKey()
                 || dataTypeProperty.isAudit()
                 || dataTypeProperty.isTemporal()
+                || dataTypeProperty.isDerived()
                 || this.hasReferencePropertyDependentOnDataTypeProperty(klass, dataTypeProperty)
                 || dataTypeProperty.isKey() && !this.shouldWriteKey()
                 || dataTypeProperty.isID() && !this.shouldWriteId();
