@@ -89,11 +89,6 @@ public final class LexerBasedTokenCategorizer
             case KlassLexer.OPERATOR_GT          -> TokenCategory.OPERATOR_GT;
             case KlassLexer.OPERATOR_LE          -> TokenCategory.OPERATOR_LE;
             case KlassLexer.OPERATOR_GE          -> TokenCategory.OPERATOR_GE;
-            case KlassLexer.VERB_GET             -> TokenCategory.VERB_GET;
-            case KlassLexer.VERB_POST            -> TokenCategory.VERB_POST;
-            case KlassLexer.VERB_PUT             -> TokenCategory.VERB_PUT;
-            case KlassLexer.VERB_PATCH           -> TokenCategory.VERB_PATCH;
-            case KlassLexer.VERB_DELETE          -> TokenCategory.VERB_DELETE;
             default                              -> null;
         };
     }

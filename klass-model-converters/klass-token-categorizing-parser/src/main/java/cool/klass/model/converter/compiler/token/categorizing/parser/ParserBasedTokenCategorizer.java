@@ -63,6 +63,7 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContex
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -611,6 +612,35 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.KEYWORD_PROJECTION().getSymbol(),
                 TokenCategory.KEYWORD_PROJECTION);
+    }
+
+    @Override
+    public void enterVerb(VerbContext ctx)
+    {
+        if (ctx.VERB_GET() != null)
+        {
+            this.put(ctx.VERB_GET().getSymbol(), TokenCategory.VERB_GET);
+        }
+        else if (ctx.VERB_POST() != null)
+        {
+            this.put(ctx.VERB_POST().getSymbol(), TokenCategory.VERB_POST);
+        }
+        else if (ctx.VERB_PUT() != null)
+        {
+            this.put(ctx.VERB_PUT().getSymbol(), TokenCategory.VERB_PUT);
+        }
+        else if (ctx.VERB_PATCH() != null)
+        {
+            this.put(ctx.VERB_PATCH().getSymbol(), TokenCategory.VERB_PATCH);
+        }
+        else if (ctx.VERB_DELETE() != null)
+        {
+            this.put(ctx.VERB_DELETE().getSymbol(), TokenCategory.VERB_DELETE);
+        }
+        else
+        {
+            throw new AssertionError(ctx);
+        }
     }
 
     private void put(Token token, TokenCategory tokenCategory)

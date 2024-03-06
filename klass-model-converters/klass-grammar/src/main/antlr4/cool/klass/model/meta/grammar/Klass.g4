@@ -220,7 +220,7 @@ keywordValidAsIdentifier
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
-    | 'criteria'
+    | 'criteria' | 'authorize' | 'validate' | 'conflict'
     // classifierModifier
     | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'transient'
     // dataTypePropertyModifier
@@ -231,7 +231,7 @@ keywordValidAsIdentifier
     | 'createdBy' | 'lastUpdatedBy'
     // parameterModifier
     | 'version' | 'userId' | 'id'
-    | verb
+    | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
     | serviceCategoryModifier
     | inOperator | stringOperator
     // TODO: Split these primitive type keywords out, since they're really only ok as enumeration literals
