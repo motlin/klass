@@ -42,4 +42,13 @@ public interface AssociationEnd
 
     @Nonnull
     Association getOwningAssociation();
+
+    default boolean hasRealKeys()
+    {
+        return this.getType()
+                .getKeyProperties()
+                .anySatisfy(keyProperty ->
+                        !keyProperty.isForeignKeyWithOpposite()
+                                && !keyProperty.isForeignKeyMatchingKeyOnPath(this));
+    }
 }

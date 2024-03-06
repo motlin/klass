@@ -11,6 +11,7 @@ import cool.klass.model.meta.domain.api.property.validation.MaxPropertyValidatio
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
@@ -128,5 +129,31 @@ public interface DataTypeProperty
     default boolean isDerived()
     {
         return this.getModifiers().anySatisfy(Modifier::isDerived);
+    }
+
+    default boolean isForeignKeyWithOpposite()
+    {
+        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = this.getKeysMatchingThisForeignKey();
+        ImmutableList<DataTypeProperty> dataTypeProperties = keysMatchingThisForeignKey
+                .valuesView()
+                .flatCollect(x -> x)
+                .toList()
+                .toImmutable();
+        return dataTypeProperties
+                .anySatisfyWith((dataTypeProperty, keyProperty1) -> keyProperty1.isOppositeKey(dataTypeProperty), this);
+    }
+
+    default boolean isOppositeKey(
+            @Nonnull DataTypeProperty dataTypeProperty)
+    {
+        return dataTypeProperty
+                .getForeignKeysMatchingThisKey()
+                .containsValue(Lists.immutable.with(this));
+    }
+
+    default boolean isForeignKeyMatchingKeyOnPath(AssociationEnd pathHere)
+    {
+        var opposite = pathHere.getOpposite();
+        return this.getKeysMatchingThisForeignKey().containsKey(opposite);
     }
 }
