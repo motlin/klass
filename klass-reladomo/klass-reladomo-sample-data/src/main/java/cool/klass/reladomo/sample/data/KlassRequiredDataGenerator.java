@@ -1,22 +1,22 @@
 package cool.klass.reladomo.sample.data;
 
 import cool.klass.data.store.DataStore;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class KlassRequiredDataGenerator extends AbstractKlassDataGenerator
 {
-    public KlassRequiredDataGenerator(DataStore dataStore, Klass klass)
+    private final RequiredDataTypePropertyVisitor visitor = new RequiredDataTypePropertyVisitor();
+
+    public KlassRequiredDataGenerator(DataStore dataStore)
     {
-        super(dataStore, klass);
+        super(dataStore);
     }
 
     @Override
     protected Object getNonNullValue(DataTypeProperty dataTypeProperty)
     {
-        RequiredDataTypePropertyVisitor visitor = new RequiredDataTypePropertyVisitor();
-        dataTypeProperty.visit(visitor);
-        return visitor.getResult();
+        dataTypeProperty.visit(this.visitor);
+        return this.visitor.getResult();
     }
 
     @Override

@@ -2,33 +2,25 @@ package cool.klass.reladomo.sample.data;
 
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 
 public abstract class AbstractKlassDataGenerator
 {
     protected final DataStore dataStore;
-    protected final Klass     klass;
 
-    protected AbstractKlassDataGenerator(DataStore dataStore, Klass klass)
+    protected AbstractKlassDataGenerator(DataStore dataStore)
     {
         this.dataStore = dataStore;
-        this.klass = klass;
     }
 
     protected abstract Object getNonNullValue(DataTypeProperty dataTypeProperty);
 
-    public void generateIfRequired()
+    public void generateIfRequired(Klass klass)
     {
-        ImmutableList<DataTypeProperty> keyProperties = this.klass.getKeyProperties().reject(DataTypeProperty::isID);
+        Object persistentInstance = this.instantiate(klass);
 
-        ImmutableList<Object> keyValues = keyProperties.collect(this::getNonNullValue);
-
-        Object persistentInstance = this.instantiate(keyValues);
-
-        this.klass.getDataTypeProperties()
+        klass.getDataTypeProperties()
                 .reject(DataTypeProperty::isKey)
                 .reject(DataTypeProperty::isSystem)
                 .each(dataTypeProperty -> this.generateIfRequired(persistentInstance, dataTypeProperty));
@@ -36,13 +28,16 @@ public abstract class AbstractKlassDataGenerator
         this.dataStore.insert(persistentInstance);
     }
 
-    private Object instantiate(ImmutableList<Object> keyValues)
+    private Object instantiate(Klass klass)
     {
-        if (this.klass.isValidTemporal())
+        ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties().reject(DataTypeProperty::isID);
+        ImmutableList<Object> keyValues = keyProperties.collect(this::getNonNullValue);
+
+        if (klass.isValidTemporal())
         {
             throw new AssertionError();
         }
-        return this.dataStore.instantiate(this.klass, keyValues);
+        return this.dataStore.instantiate(klass, keyValues);
     }
 
     protected abstract void generateIfRequired(Object persistentInstance, DataTypeProperty dataTypeProperty);
@@ -55,27 +50,7 @@ public abstract class AbstractKlassDataGenerator
             return;
         }
 
-        if (dataTypeProperty.isForeignKey())
-        {
-            DataTypeProperty keyProperty = this.getMatchingKeyProperty(dataTypeProperty);
-            Object           value       = this.getNonNullValue(keyProperty);
-            this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, value);
-        }
-        else
-        {
-            Object value = this.getNonNullValue(dataTypeProperty);
-            this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, value);
-        }
-    }
-
-    private DataTypeProperty getMatchingKeyProperty(DataTypeProperty dataTypeProperty)
-    {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = dataTypeProperty.getKeysMatchingThisForeignKey();
-        if (keysMatchingThisForeignKey.size() > 1)
-        {
-            // TODO: Throw or do something better in this case
-            return dataTypeProperty;
-        }
-        return keysMatchingThisForeignKey.valuesView().getOnly();
+        Object value = this.getNonNullValue(dataTypeProperty);
+        this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, value);
     }
 }

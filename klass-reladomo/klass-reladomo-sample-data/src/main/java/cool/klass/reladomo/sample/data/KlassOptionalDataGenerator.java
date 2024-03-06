@@ -1,22 +1,22 @@
 package cool.klass.reladomo.sample.data;
 
 import cool.klass.data.store.DataStore;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class KlassOptionalDataGenerator extends AbstractKlassDataGenerator
 {
-    protected KlassOptionalDataGenerator(DataStore dataStore, Klass klass)
+    private final OptionalDataTypePropertyVisitor visitor = new OptionalDataTypePropertyVisitor();
+
+    protected KlassOptionalDataGenerator(DataStore dataStore)
     {
-        super(dataStore, klass);
+        super(dataStore);
     }
 
     @Override
     protected Object getNonNullValue(DataTypeProperty dataTypeProperty)
     {
-        OptionalDataTypePropertyVisitor visitor = new OptionalDataTypePropertyVisitor();
-        dataTypeProperty.visit(visitor);
-        return visitor.getResult();
+        dataTypeProperty.visit(this.visitor);
+        return this.visitor.getResult();
     }
 
     @Override

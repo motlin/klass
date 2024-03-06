@@ -16,6 +16,9 @@ public class SampleDataGenerator
     private final Instant               systemTime;
     private final ImmutableList<String> skippedPackages;
 
+    private final KlassRequiredDataGenerator requiredDataGenerator;
+    private final KlassOptionalDataGenerator optionalDataGenerator;
+
     public SampleDataGenerator(
             DomainModel domainModel,
             DataStore dataStore,
@@ -26,6 +29,9 @@ public class SampleDataGenerator
         this.dataStore = Objects.requireNonNull(dataStore);
         this.systemTime = Objects.requireNonNull(systemTime);
         this.skippedPackages = Objects.requireNonNull(skippedPackages);
+
+        this.requiredDataGenerator = new KlassRequiredDataGenerator(this.dataStore);
+        this.optionalDataGenerator = new KlassOptionalDataGenerator(this.dataStore);
     }
 
     public void generate()
@@ -43,7 +49,7 @@ public class SampleDataGenerator
         {
             return;
         }
-        new KlassRequiredDataGenerator(this.dataStore, klass).generateIfRequired();
-        new KlassOptionalDataGenerator(this.dataStore, klass).generateIfRequired();
+        this.requiredDataGenerator.generateIfRequired(klass);
+        this.optionalDataGenerator.generateIfRequired(klass);
     }
 }
