@@ -234,7 +234,7 @@
                                             </excludes>
                                         </bannedDependencies>
                                         <banDuplicatePomDependencyVersions />
-                                        <!--<reactorModuleConvergence />-->
+                                        <reactorModuleConvergence />
                                     </rules>
                                 </configuration>
                                 <goals>
