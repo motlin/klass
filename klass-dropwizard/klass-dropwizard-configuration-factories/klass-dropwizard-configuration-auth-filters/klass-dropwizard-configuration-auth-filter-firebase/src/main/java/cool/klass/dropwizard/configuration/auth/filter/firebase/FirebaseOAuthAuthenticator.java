@@ -20,12 +20,12 @@ public class FirebaseOAuthAuthenticator implements Authenticator<String, Firebas
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseOAuthAuthenticator.class);
 
-    private static final String FIREBASE_UID            = "klass.auth.firebaseUid";
-    private static final String FIREBASE_NAME           = "klass.auth.firebaseName";
-    // private static final String FIREBASE_EMAIL          = "klass.auth.firebaseEmail";
-    // private static final String FIREBASE_EMAIL_VERIFIED = "klass.auth.firebaseEmailVerified";
-    // private static final String FIREBASE_ISSUER         = "klass.auth.firebaseIssuer";
-    // private static final String FIREBASE_PICTURE        = "klass.auth.firebasePicture";
+    private static final String FIREBASE_UID            = "klass.auth.firebase.uid";
+    private static final String FIREBASE_NAME           = "klass.auth.firebase.name";
+    // private static final String FIREBASE_EMAIL          = "klass.auth.firebase.email";
+    // private static final String FIREBASE_EMAIL_VERIFIED = "klass.auth.firebase.emailVerified";
+    // private static final String FIREBASE_ISSUER         = "klass.auth.firebase.issuer";
+    // private static final String FIREBASE_PICTURE        = "klass.auth.firebase.picture";
 
     private static final ImmutableList<String> MDC_KEYS = Lists.immutable.with(
             FIREBASE_UID,
