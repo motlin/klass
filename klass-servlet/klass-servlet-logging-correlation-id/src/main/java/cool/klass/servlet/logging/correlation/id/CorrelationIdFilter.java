@@ -1,4 +1,4 @@
-package cool.klass.servlet.filter.mdc;
+package cool.klass.servlet.logging.correlation.id;
 
 import java.util.Objects;
 import java.util.Optional;
