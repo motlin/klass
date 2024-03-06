@@ -68,7 +68,7 @@ public class GenerateJsonModelCommand<T extends Configuration>
     }
 
     @Override
-    protected void run(Environment environment, Namespace namespace, T configuration) throws Exception
+    protected void run(Environment environment, Namespace namespace, T configuration)
     {
         DomainModelFactoryProvider domainModelFactoryProvider = safeCastConfiguration(
                 DomainModelFactoryProvider.class,
