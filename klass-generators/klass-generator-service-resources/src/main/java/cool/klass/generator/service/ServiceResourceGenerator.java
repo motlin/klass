@@ -258,7 +258,6 @@ public class ServiceResourceGenerator
 
         ImmutableList<String> parameterStrings1 = pathParameters.newWithAll(queryParameters)
                 .collectWith(this::getParameterSourceCode, parameterIndent);
-        // TODO: This version query parameter should be inferred during the compilation of the service
         ImmutableList<String> parameterStrings = hasAuthorizeCriteria
                 ? parameterStrings1.newWith(parameterIndent + "@Context SecurityContext securityContext")
                 : parameterStrings1;
@@ -274,7 +273,6 @@ public class ServiceResourceGenerator
         String authorizeOperationSourceCode = this.getOperation(finderName, service.getAuthorizeCriteria(), "authorize");
         String validateOperationSourceCode  = this.getOperation(finderName, service.getValidateCriteria(), "validate");
         String conflictOperationSourceCode  = this.getOperation(finderName, service.getConflictCriteria(), "conflict");
-        String versionOperationSourceCode   = this.getOptionalOperation(finderName, service.getVersionCriteria(), "version");
 
         String authorizePredicateSourceCode = this.checkPredicate(service.getAuthorizeCriteria(), "authorize", "isAuthorized", "ForbiddenException()");
         String validatePredicateSourceCode  = this.checkPredicate(service.getValidateCriteria(), "validate", "isValidated", "BadRequestException()");
@@ -282,7 +280,6 @@ public class ServiceResourceGenerator
 
         String executeOperationSourceCode = this.getExecuteOperationSourceCode(
                 service.getQueryCriteria(),
-                service.getVersionCriteria(),
                 klassName);
 
         Optional<ServiceProjectionDispatch> projectionDispatch        = service.getProjectionDispatch();
@@ -316,7 +313,6 @@ public class ServiceResourceGenerator
                 + authorizeOperationSourceCode
                 + validateOperationSourceCode
                 + conflictOperationSourceCode
-                + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
                 + "        // Deep fetch using projection " + projection.getName() + "\n"
@@ -393,10 +389,6 @@ public class ServiceResourceGenerator
                 finderName,
                 service.getConflictCriteria(),
                 "conflict");
-        String versionOperationSourceCode = this.getOptionalOperation(
-                finderName,
-                service.getVersionCriteria(),
-                "version");
 
         String authorizePredicateSourceCode = this.checkPredicate(
                 service.getAuthorizeCriteria(),
@@ -416,7 +408,6 @@ public class ServiceResourceGenerator
 
         String executeOperationSourceCode = this.getExecuteOperationSourceCode(
                 service.getQueryCriteria(),
-                service.getVersionCriteria(),
                 klassName);
 
         ImmutableList<String> deepFetchStrings = DeepFetchWalker.walk(serviceGroup.getKlass());
@@ -441,7 +432,6 @@ public class ServiceResourceGenerator
                 + authorizeOperationSourceCode
                 + validateOperationSourceCode
                 + conflictOperationSourceCode
-                + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
                 + deepFetchSourceCode
@@ -529,10 +519,6 @@ public class ServiceResourceGenerator
                 finderName,
                 service.getConflictCriteria(),
                 "conflict");
-        String versionOperationSourceCode = this.getOptionalOperation(
-                finderName,
-                service.getVersionCriteria(),
-                "version");
 
         String authorizePredicateSourceCode = this.checkPredicate(
                 service.getAuthorizeCriteria(),
@@ -552,7 +538,6 @@ public class ServiceResourceGenerator
 
         String executeOperationSourceCode = this.getExecuteOperationSourceCode(
                 service.getQueryCriteria(),
-                service.getVersionCriteria(),
                 klassName);
 
         ImmutableList<String> deepFetchStrings = DeepFetchWalker.walk(serviceGroup.getKlass());
@@ -607,7 +592,6 @@ public class ServiceResourceGenerator
                 + authorizeOperationSourceCode
                 + validateOperationSourceCode
                 + conflictOperationSourceCode
-                + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
                 + deepFetchSourceCode
@@ -743,7 +727,6 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getExecuteOperationSourceCode(
             @Nonnull Optional<Criteria> queryCriteria,
-            @Nonnull Optional<Criteria> versionCriteria,
             String klassName)
     {
         if (!queryCriteria.isPresent())
@@ -751,11 +734,9 @@ public class ServiceResourceGenerator
             return "";
         }
 
-        String versionClause = versionCriteria.isPresent() ? ".and(versionOperation)" : "";
         return MessageFormat.format(
-                "        {0}List result = {0}Finder.findMany(queryOperation{1});\n",
-                klassName,
-                versionClause);
+                "        {0}List result = {0}Finder.findMany(queryOperation);\n",
+                klassName);
     }
 
     @Nonnull
