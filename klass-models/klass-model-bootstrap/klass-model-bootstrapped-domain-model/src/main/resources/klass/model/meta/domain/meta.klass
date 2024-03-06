@@ -141,30 +141,24 @@ association EnumerationPropertyHasEnumeration
 }
 
 // TODO: Change the orderBy syntax to orderBy(this.ordinal)
-/*
 association ClassifierHasDataTypeTypeProperties
 {
     owningClassifier              : Classifier[1..1];
     dataTypeProperties            : DataTypeProperty[0..*] owned
         orderBy: this.ordinal;
-
-    relationship this.name == DataTypeProperty.classifierName
 }
-*/
 
-// TODO: Owned
 association ClassifierHasPrimitiveProperties
 {
     owningClassifier: Classifier[1..1];
-    primitiveProperties: PrimitiveProperty[0..*]
+    primitiveProperties: PrimitiveProperty[0..*] owned
         orderBy: this.ordinal;
 }
 
-// TODO: Owned
 association ClassifierHasEnumerationProperties
 {
     owningClassifier: Classifier[1..1];
-    enumerationProperties: EnumerationProperty[0..*]
+    enumerationProperties: EnumerationProperty[0..*] owned
         orderBy: this.ordinal;
 }
 
@@ -543,7 +537,6 @@ association MemberReferencePathAssociationEndMappingHasAssociationEnd
             && this.associationEndName == AssociationEnd.name
 }
 
-// TODO: These associations only work in one direction
 association DataTypePropertyHasMemberReferencePaths
 {
     memberReferencePaths: MemberReferencePath[0..*];
@@ -731,7 +724,6 @@ class ProjectionDataTypeProperty
 
 association ProjectionElementHasChildren
 {
-    // TODO: Validate that foreign key is optional if association end is optional and vice versa
     parent                        : ProjectionElement[0..1];
     children                      : ProjectionElement[0..*];
 

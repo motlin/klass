@@ -1,1 +1,1 @@
-relationship this.id == EdgePointCriteria.memberReferencePathId
+relationship this.enumerationName == Enumeration.name

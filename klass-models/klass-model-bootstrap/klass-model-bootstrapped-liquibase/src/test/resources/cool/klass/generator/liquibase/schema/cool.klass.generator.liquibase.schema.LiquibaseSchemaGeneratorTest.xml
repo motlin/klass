@@ -200,6 +200,16 @@
         />
     </changeSet>
 
+    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="DATA_TYPE_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
     <changeSet author="Klass" id="initial-table-8-PRIMITIVE_PROPERTY">
         <createTable tableName="PRIMITIVE_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
@@ -222,6 +232,16 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-8-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="PRIMITIVE_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-foreign-key-8-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
@@ -274,6 +294,16 @@
                 tableName="ENUMERATION_PROPERTY">
             <column name="ENUMERATION_NAME" />
         </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="ENUMERATION_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
