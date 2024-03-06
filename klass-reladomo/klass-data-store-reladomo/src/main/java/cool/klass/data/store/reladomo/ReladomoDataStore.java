@@ -51,10 +51,13 @@ import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 // TODO: Refactor this whole thing to use generated getters/setters instead of Reladomo Attribute
 public class ReladomoDataStore implements DataStore
 {
+    private static final Marker MARKER = MarkerFactory.getMarker("reladomo transaction stats");
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
 
     private static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
@@ -112,6 +115,7 @@ public class ReladomoDataStore implements DataStore
                 String.valueOf(reladomoTransaction.getDatabaseRetrieveCount()));
 
         LOGGER.debug(
+                MARKER,
                 "{} transaction: {}, identityHashCode: {}",
                 context,
                 reladomoTransaction,
