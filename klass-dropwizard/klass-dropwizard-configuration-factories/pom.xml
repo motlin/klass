@@ -22,7 +22,6 @@
         <module>klass-dropwizard-configuration-h2</module>
         <module>klass-dropwizard-configuration-ddl-executor</module>
         <module>klass-dropwizard-configuration-cors</module>
-        <module>klass-dropwizard-configuration-auth-filters</module>
         <module>klass-dropwizard-configuration-logging-filters</module>
         <module>klass-dropwizard-configuration-sample-data</module>
         <module>klass-dropwizard-configuration-logging-logzio</module>

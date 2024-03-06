@@ -17,7 +17,6 @@
     <name>Klass Utility (Module Group)</name>
 
     <modules>
-        <module>klass-firebase-principal</module>
         <module>klass-junit-rule-match-file</module>
         <module>klass-junit-rule-match-json</module>
         <module>klass-logging-logback-filter-requesturl</module>
