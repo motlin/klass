@@ -1,15 +1,20 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public interface Classifier
         extends Type, ModifierOwner, TopLevelElement
@@ -135,5 +140,27 @@ public interface Classifier
         }
 
         return superInterfaces.anySatisfyWith(Interface::isStrictSubTypeOf, classifier);
+    }
+
+    @Nonnull
+    default MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> getForeignKeys()
+    {
+        MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeyConstraints =
+                OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+        for (DataTypeProperty foreignKey : this.getDataTypeProperties())
+        {
+            OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = foreignKey.getKeysMatchingThisForeignKey();
+
+            keysMatchingThisForeignKey.forEachKeyValue((associationEnd, key) ->
+            {
+                MutableOrderedMap<DataTypeProperty, DataTypeProperty> dataTypeProperties = foreignKeyConstraints.computeIfAbsent(
+                        associationEnd,
+                        ignored -> OrderedMapAdapter.adapt(new LinkedHashMap<>()));
+                dataTypeProperties.put(foreignKey, key);
+            });
+        }
+
+        return foreignKeyConstraints;
     }
 }
