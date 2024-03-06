@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-uuid</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-uuid</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>

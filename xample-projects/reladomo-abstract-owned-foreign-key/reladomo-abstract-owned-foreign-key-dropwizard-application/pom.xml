@@ -227,9 +227,9 @@
 
         <!--TODO: This should be a runtime dependency, but the DdlExecutorCommand currently has a hard dependency-->
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-connection-manager-h2</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-connection-manager-h2</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -263,9 +263,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-simulated-sequence</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -297,9 +297,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-test-rule</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -395,7 +395,7 @@
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
-                    <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
+                    <!--<missing>${project.build.directory}/h2db/liftwizard-app-h2.mv.db</missing>-->
                 <!--</file>-->
             </activation>
             <build>

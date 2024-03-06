@@ -13,8 +13,8 @@ import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
-import cool.klass.dropwizard.configuration.uuid.UUIDSupplierFactory;
-import cool.klass.dropwizard.configuration.uuid.seed.SeedUUIDSupplierFactory;
+import com.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
+import com.liftwizard.dropwizard.configuration.uuid.seed.SeedUUIDSupplierFactory;
 
 @JsonTypeName("reladomo")
 @AutoService(DataStoreFactory.class)

@@ -8,9 +8,9 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
+import com.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
 public class KlassResponseMetadata
 {

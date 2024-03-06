@@ -7,7 +7,7 @@ import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
-import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
+import com.liftwizard.reladomo.simseq.ObjectSequenceObjectFactory;
 
 // TODO: Create a DataTypeVisitor that factors in enumerations too
 class AttributeTypeVisitor implements PrimitiveTypeVisitor

@@ -211,9 +211,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-clock</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -223,22 +223,22 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-reladomo</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-reladomo</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-clock-system</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock-system</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-uuid-system</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-uuid-system</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -278,9 +278,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-simulated-sequence</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -306,9 +306,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-connection-manager-h2</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-connection-manager-h2</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -320,9 +320,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-test-rule</artifactId>
-            <version>${klass.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -339,16 +339,16 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-junit-rule-match-json</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-json</artifactId>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-auth-filter-impersonation</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -421,7 +421,7 @@
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
-                <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
+                    <!--<missing>${project.build.directory}/h2db/liftwizard-app-h2.mv.db</missing>-->
                 <!--</file>-->
             </activation>
             <build>

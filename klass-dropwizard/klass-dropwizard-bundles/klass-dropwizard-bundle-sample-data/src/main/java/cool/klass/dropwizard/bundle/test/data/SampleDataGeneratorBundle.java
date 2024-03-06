@@ -6,13 +6,13 @@ import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactoryProvider;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactory;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
+import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;

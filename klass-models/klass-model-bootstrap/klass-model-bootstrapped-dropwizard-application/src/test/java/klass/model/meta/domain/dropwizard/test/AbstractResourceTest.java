@@ -7,9 +7,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import cool.klass.dropwizard.configuration.reladomo.ReladomoFactory;
-import cool.klass.junit.rule.match.json.JsonMatchRule;
-import cool.klass.reladomo.test.rule.ReladomoTestRule;
+import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
+import com.liftwizard.junit.rule.match.json.JsonMatchRule;
+import com.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;

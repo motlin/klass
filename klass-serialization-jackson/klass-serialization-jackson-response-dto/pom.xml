@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-logging-slf4j-mdc-closeable</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-logging-mdc-closeable</artifactId>
+            <version>0.1.0</version>
             <scope>compile</scope>
         </dependency>
 

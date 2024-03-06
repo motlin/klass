@@ -23,15 +23,15 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-prioritized-api</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-task-reladomo-clear-cache</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-task-reladomo-clear-cache</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -49,44 +49,44 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-config-logging</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-config</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-ddl-executor</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-h2</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-h2</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-http</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-object-mapper</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-object-mapper</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-reladomo</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -119,9 +119,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-simulated-sequence-ddls</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
+            <version>0.1.0</version>
             <scope>runtime</scope>
         </dependency>
 

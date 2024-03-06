@@ -4,11 +4,11 @@ import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
+import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;

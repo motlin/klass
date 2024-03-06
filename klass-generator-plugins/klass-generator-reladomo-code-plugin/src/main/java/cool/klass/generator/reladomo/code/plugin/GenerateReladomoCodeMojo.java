@@ -3,7 +3,7 @@ package cool.klass.generator.reladomo.code.plugin;
 import java.io.File;
 
 import com.gs.fw.common.mithra.generator.CoreMithraGenerator;
-import cool.klass.maven.reladomo.logger.MavenReladomoLogger;
+import com.liftwizard.maven.reladomo.logger.MavenReladomoLogger;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;

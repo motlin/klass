@@ -6,9 +6,9 @@ import java.util.ServiceLoader;
 import javax.annotation.Nonnull;
 
 import ch.qos.logback.classic.Level;
-import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
-import cool.klass.dropwizard.task.reladomo.clear.cache.ReladomoClearCacheTask;
+import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
+import com.liftwizard.dropwizard.task.reladomo.clear.cache.ReladomoClearCacheTask;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;

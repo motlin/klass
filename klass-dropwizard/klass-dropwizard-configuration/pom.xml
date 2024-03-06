@@ -17,9 +17,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-clock</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -35,45 +35,45 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-http-logging</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-http</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-h2</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-h2</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-ddl-executor</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-ddl-executor</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-cors</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-cors</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-auth-filter</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-auth-filter</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-object-mapper</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-object-mapper</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-reladomo</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-reladomo</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -83,9 +83,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-clock-fixed</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock-fixed</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -101,15 +101,15 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-enabled</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-enabled</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-config-logging</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-config</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>

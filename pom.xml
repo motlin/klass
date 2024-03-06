@@ -19,9 +19,11 @@
         <module>klass-generator-plugins</module>
         <module>klass-generators</module>
         <module>klass-graphql</module>
+        <module>klass-logging</module>
         <module>klass-maven-archetype</module>
         <module>klass-model-converters</module>
         <module>klass-models</module>
+        <module>klass-reladomo</module>
         <module>klass-serialization-jackson</module>
         <module>klass-serializers</module>
         <module>klass-test-modules</module>
@@ -40,6 +42,8 @@
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
         <project.build.outputTimestamp>1970-01-01T00:00:00Z</project.build.outputTimestamp>
+
+        <liftwizard.version>0.1.0</liftwizard.version>
     </properties>
 
     <build>
@@ -128,29 +132,30 @@
                                     <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-config-logging:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-logging-config:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-cors:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-ddl-executor:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-http-logging:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-object-mapper:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-ddl-executor:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-logging-http:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-object-mapper:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-response:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-clock-fixed:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-clock-system:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-clock-fixed:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-clock-system:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-compiler:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-constant:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-uuid-seed:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-uuid-system:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-uuid-seed:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-config-uuid-system:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-meta:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls-workaround:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence-ddls:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-reladomo-simulated-sequence-ddls:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.liftwizard:liftwizard-reladomo-simulated-sequence:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>org.eclipse.collections:eclipse-collections:jar</ignoredUnusedDeclaredDependency>
                                 </ignoredUnusedDeclaredDependencies>
                             </configuration>

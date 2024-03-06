@@ -1,7 +1,7 @@
 package cool.klass.serialization.jackson.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
+import com.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
 public class KlassResponsePagination
 {

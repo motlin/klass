@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>cool.klass</groupId>
+        <artifactId>klass</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>klass-reladomo</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Klass Reladomo (Module Group)</name>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.liftwizard</groupId>
+                <artifactId>liftwizard-bom</artifactId>
+                <version>0.1.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>klass-data-store-reladomo</module>
+        <module>klass-dropwizard-bundle-reladomo-jsonview</module>
+        <module>klass-dropwizard-bundle-reladomo-response</module>
+        <module>klass-reladomo-persistent-writer-test</module>
+        <module>klass-reladomo-persistent-writer</module>
+        <module>klass-reladomo-sample-data</module>
+    </modules>
+
+</project>
