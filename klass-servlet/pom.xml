@@ -19,7 +19,6 @@
     <modules>
         <module>klass-jetty-admin-login-service</module>
         <module>klass-servlet-filter-mdc</module>
-        <module>klass-servlet-filter-mdc-response</module>
         <module>klass-servlet-filter-mdc-jsonview</module>
         <module>klass-servlet-filter-structured-logging</module>
     </modules>
