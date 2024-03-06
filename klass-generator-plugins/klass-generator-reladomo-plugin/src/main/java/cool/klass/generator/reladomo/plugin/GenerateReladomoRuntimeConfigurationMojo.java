@@ -33,6 +33,9 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;
 
+    @Parameter(property = "cacheType", required = true, readonly = true, defaultValue = "partial")
+    private String cacheType;
+
     @Override
     public void execute() throws MojoExecutionException
     {
@@ -51,7 +54,8 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
                     domainModel,
                     this.connectionManagerFullyQualifiedName,
                     this.isTest,
-                    this.rootPackageName);
+                    this.rootPackageName,
+                    this.cacheType);
             reladomoRuntimeConfigurationGenerator.writeRuntimeConfigFile(path);
         }
         catch (IOException e)

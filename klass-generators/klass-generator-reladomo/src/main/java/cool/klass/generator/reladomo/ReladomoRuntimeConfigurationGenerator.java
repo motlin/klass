@@ -2,6 +2,7 @@ package cool.klass.generator.reladomo;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -19,32 +20,55 @@ import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGenerator
 {
     // "cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager"
     // "com.gs.fw.common.mithra.test.ConnectionManagerForTests"
-    private final String  connectionManagerFullyQualifiedName;
-    private final boolean isTest;
-    private final String  rootPackageName;
+    @Nonnull
+    private final String    connectionManagerFullyQualifiedName;
+    private final boolean   isTest;
+    @Nonnull
+    private final String    rootPackageName;
+    @Nonnull
+    private final CacheType cacheType;
 
     public ReladomoRuntimeConfigurationGenerator(
-            DomainModel domainModel,
-            String connectionManagerFullyQualifiedName,
+            @Nonnull DomainModel domainModel,
+            @Nonnull String connectionManagerFullyQualifiedName,
             boolean isTest,
-            String rootPackageName)
+            @Nonnull String rootPackageName,
+            @Nonnull String cacheType)
     {
         super(domainModel);
         this.connectionManagerFullyQualifiedName = Objects.requireNonNull(connectionManagerFullyQualifiedName);
         this.isTest = isTest;
         this.rootPackageName = Objects.requireNonNull(rootPackageName);
+        this.cacheType = ReladomoRuntimeConfigurationGenerator.getCacheType(cacheType);
+    }
+
+    private static CacheType getCacheType(String cacheType)
+    {
+        switch (cacheType)
+        {
+            case "partial":
+                return CacheType.PARTIAL;
+            case "full":
+                return CacheType.FULL;
+            case "none":
+                return CacheType.NONE;
+            default:
+                String message = String.format(
+                        "Invalid cacheType. Expected one of [partial, full, none] but got: %s",
+                        cacheType);
+                throw new RuntimeException(message);
+        }
     }
 
     public void writeRuntimeConfigFile(@Nonnull Path path) throws IOException
     {
-        MithraRuntime mithraRuntime = this.generateMithraRuntime();
+        MithraRuntime mithraRuntime = this.getMithraRuntime();
 
         MithraRuntimeMarshaller mithraRuntimeMarshaller = new MithraRuntimeMarshaller();
         mithraRuntimeMarshaller.setIndent(true);
@@ -57,41 +81,22 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     }
 
     @Nonnull
-    public MithraRuntime generateMithraRuntime()
+    private MithraRuntime getMithraRuntime()
     {
-        return this.getMithraRuntime(
-                this.connectionManagerFullyQualifiedName,
-                this.getPropertyTypes());
-    }
-
-    @Nonnull
-    public MithraRuntime getMithraRuntime(
-            String connectionManagerFullyQualifiedName,
-            @Nonnull ImmutableList<PropertyType> propertyTypes)
-    {
-        MithraRuntime mithraRuntime = new MithraRuntime();
-        mithraRuntime.setConnectionManagers(this.getConnectionManagerTypes(
-                connectionManagerFullyQualifiedName,
-                propertyTypes));
+        MithraRuntime         mithraRuntime     = new MithraRuntime();
+        ConnectionManagerType connectionManager = this.getConnectionManager();
+        mithraRuntime.setConnectionManagers(Lists.mutable.with(connectionManager));
         mithraRuntime.setPureObjects(this.getPureObjectsType());
         return mithraRuntime;
     }
 
-    public ImmutableList<PropertyType> getPropertyTypes()
+    private ImmutableList<PropertyType> getPropertyTypes()
     {
         return this.isTest
-                ? Lists.immutable.with(this.getPropertyType("resourceName", "testdb"))
+                ? Lists.immutable.with(ReladomoRuntimeConfigurationGenerator.createPropertyType(
+                "resourceName",
+                "testdb"))
                 : Lists.immutable.empty();
-    }
-
-    private MutableList<ConnectionManagerType> getConnectionManagerTypes(
-            String connectionManagerFullyQualifiedName,
-            @Nonnull ImmutableList<PropertyType> propertyTypes)
-    {
-        ConnectionManagerType connectionManagerType = this.getConnectionManager(
-                connectionManagerFullyQualifiedName,
-                propertyTypes);
-        return Lists.mutable.with(connectionManagerType);
     }
 
     @Nonnull
@@ -104,7 +109,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     }
 
     @Nonnull
-    public PropertyType getPropertyType(String name, String value)
+    private static PropertyType createPropertyType(String name, String value)
     {
         PropertyType propertyType = new PropertyType();
         propertyType.setName(name);
@@ -113,13 +118,14 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     }
 
     @Nonnull
-    private ConnectionManagerType getConnectionManager(
-            String connectionManagerFullyQualifiedName,
-            @Nonnull ImmutableList<PropertyType> propertyTypes)
+    private ConnectionManagerType getConnectionManager()
     {
+        ImmutableList<PropertyType> propertyTypes = this.getPropertyTypes();
+        List<PropertyType>          properties    = propertyTypes.castToList();
+
         ConnectionManagerType connectionManagerType = new ConnectionManagerType();
-        connectionManagerType.setClassName(connectionManagerFullyQualifiedName);
-        connectionManagerType.setProperties(propertyTypes.castToList());
+        connectionManagerType.setClassName(this.connectionManagerFullyQualifiedName);
+        connectionManagerType.setProperties(properties);
         connectionManagerType.setMithraObjectConfigurations(this.getConnectionManagerObjectConfigurationTypes().castToList());
         return connectionManagerType;
     }
@@ -130,13 +136,13 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
                 .getClasses()
                 .select(Klass::isTransient)
                 .collect(PackageableElement::getFullyQualifiedName)
-                .collect(this::getMithraPureObjectConfigurationType);
+                .collect(ReladomoRuntimeConfigurationGenerator::createMithraPureObjectConfigurationType);
     }
 
     private ImmutableList<MithraObjectConfigurationType> getConnectionManagerObjectConfigurationTypes()
     {
         ImmutableList<MithraObjectConfigurationType> objectConfigurationTypes              = this.getObjectConfigurationTypes();
-        MithraObjectConfigurationType                objectSequenceObjectConfigurationType = this.getObjectSequenceObjectConfigurationType();
+        MithraObjectConfigurationType                objectSequenceObjectConfigurationType = ReladomoRuntimeConfigurationGenerator.createObjectSequenceObjectConfigurationType();
 
         return Lists.immutable.with(objectSequenceObjectConfigurationType)
                 .newWithAll(objectConfigurationTypes);
@@ -150,19 +156,21 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
                 .reject(Klass::isTransient)
                 .reject(each -> each.getInheritanceType() == InheritanceType.TABLE_PER_SUBCLASS)
                 .collect(PackageableElement::getFullyQualifiedName)
-                .collectWith(this::getMithraObjectConfigurationType, CacheType.PARTIAL);
+                .collectWith(
+                        ReladomoRuntimeConfigurationGenerator::createMithraObjectConfigurationType,
+                        this.cacheType);
     }
 
     @Nonnull
-    private MithraObjectConfigurationType getObjectSequenceObjectConfigurationType()
+    private static MithraObjectConfigurationType createObjectSequenceObjectConfigurationType()
     {
-        return this.getMithraObjectConfigurationType(
+        return ReladomoRuntimeConfigurationGenerator.createMithraObjectConfigurationType(
                 "cool.klass.reladomo.simseq.ObjectSequence",
                 CacheType.NONE);
     }
 
     @Nonnull
-    private MithraObjectConfigurationType getMithraObjectConfigurationType(
+    private static MithraObjectConfigurationType createMithraObjectConfigurationType(
             String fullyQualifiedClassName,
             CacheType cacheType)
     {
@@ -173,7 +181,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     }
 
     @Nonnull
-    private MithraPureObjectConfigurationType getMithraPureObjectConfigurationType(String fullyQualifiedClassName)
+    private static MithraPureObjectConfigurationType createMithraPureObjectConfigurationType(String fullyQualifiedClassName)
     {
         MithraPureObjectConfigurationType mithraPureObjectConfigurationType = new MithraPureObjectConfigurationType();
         mithraPureObjectConfigurationType.setClassName(fullyQualifiedClassName);

@@ -62,6 +62,24 @@
                     </execution>
 
                     <execution>
+                        <id>generate-fully-cached-runtime-configuration</id>
+                        <goals>
+                            <goal>generate-reladomo-runtime-configuration</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
+                            </outputDirectory>
+                            <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
+                            <connectionManagerFullyQualifiedName>
+                                cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager
+                            </connectionManagerFullyQualifiedName>
+                            <isTest>false</isTest>
+                            <cacheType>full</cacheType>
+                        </configuration>
+                    </execution>
+
+                    <execution>
                         <id>generate-test-runtime-configuration</id>
                         <goals>
                             <goal>generate-reladomo-runtime-configuration</goal>
