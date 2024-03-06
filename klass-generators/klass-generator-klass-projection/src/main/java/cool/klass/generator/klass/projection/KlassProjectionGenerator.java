@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.RichIterable;
@@ -30,8 +31,6 @@ public class KlassProjectionGenerator
 
     public void writeKlassFiles(@Nonnull Path outputPath)
     {
-        // TODO: Classifiers instead of Klasses
-
         ImmutableSet<Classifier> classifiersWithProjections = this.domainModel
                 .getProjections()
                 .collect(ProjectionParent::getClassifier)
@@ -40,7 +39,7 @@ public class KlassProjectionGenerator
 
         this.domainModel
                 .getClassifiers()
-                .reject(classifiersWithProjections::contains)
+                // .reject(classifiersWithProjections::contains)
                 .groupBy(PackageableElement::getPackageName)
                 .keyMultiValuePairsView()
                 .forEachWith(this::writeFile, outputPath);
@@ -77,7 +76,7 @@ public class KlassProjectionGenerator
     {
         String sourceCode = classifiers
                 .collect(KlassProjectionGenerator::getSourceCode)
-                .makeString("\n\n");
+                .makeString("\n");
 
         //language=Klass
         return ""
@@ -102,6 +101,9 @@ public class KlassProjectionGenerator
         String referencePropertiesSourceCode = classifier
                 .getProperties()
                 .selectInstancesOf(ReferenceProperty.class)
+                // TODO Pull up these modifiers onto ReferenceProperty
+                .select(each -> each.getMultiplicity().isToMany() || each instanceof AssociationEnd && ((AssociationEnd) each).isOwned())
+                .reject(each -> each instanceof AssociationEnd && ((AssociationEnd) each).isPrivate())
                 .collect(KlassProjectionGenerator::getSourceCode)
                 .makeString("");
 
@@ -124,7 +126,7 @@ public class KlassProjectionGenerator
 
     private static String getSourceCode(ReferenceProperty referenceProperty)
     {
-        return String.format("%s: %sProjection,", referenceProperty.getName(), referenceProperty.getType().getName());
+        return String.format("    %s: %sProjection,\n", referenceProperty.getName(), referenceProperty.getType().getName());
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)
