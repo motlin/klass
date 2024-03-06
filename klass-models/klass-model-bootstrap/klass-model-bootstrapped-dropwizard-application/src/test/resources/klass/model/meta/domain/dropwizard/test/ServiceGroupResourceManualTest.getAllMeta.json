@@ -393,7 +393,7 @@
     ]
   },
   {
-    "name": "ServiceProjection",
+    "name": "NamedProjection",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -403,7 +403,7 @@
             "verb": "GET",
             "serviceMultiplicity": "many",
             "projection": {
-              "name": "ProjectionElementSummaryProjection"
+              "name": "NamedProjectionProjection"
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.AllCriteria"
@@ -418,7 +418,7 @@
             "verb": "GET",
             "serviceMultiplicity": "one",
             "projection": {
-              "name": "ProjectionElementProjection"
+              "name": "NamedProjectionProjection"
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
@@ -426,7 +426,7 @@
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
-                  "name": "ServiceProjection"
+                  "name": "NamedProjection"
                 },
                 "associationEnds": [],
                 "dataTypeProperty": {
@@ -450,7 +450,7 @@
             "verb": "GET",
             "serviceMultiplicity": "one",
             "projection": {
-              "name": "ProjectionElementSummaryProjection"
+              "name": "NamedProjectionProjection"
             },
             "queryCriteria": {
               "__typename": "klass.model.meta.domain.OperatorCriteria",
@@ -458,7 +458,7 @@
               "sourceExpressionValue": {
                 "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
                 "klass": {
-                  "name": "ServiceProjection"
+                  "name": "NamedProjection"
                 },
                 "associationEnds": [],
                 "dataTypeProperty": {

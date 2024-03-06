@@ -1,7 +1,7 @@
 {
   "name": "DataTypePropertyHasModifiers",
   "packageName": "klass.model.meta.domain",
-  "ordinal": 34,
+  "ordinal": 33,
   "associationEnds": [
     {
       "name": "dataTypeProperty",

@@ -11,20 +11,20 @@
     }
   ],
   "classifierModifiers": [],
-  "primitiveProperties": [
+  "dataTypeProperties": [
     {
+      "__typename": "klass.model.meta.domain.PrimitiveProperty",
       "name": "packageName",
       "primitiveType": "String",
+      "minValidation": null,
+      "maxValidation": null,
       "optional": false,
       "ordinal": 1,
       "propertyModifiers": [],
       "minLengthValidation": null,
       "maxLengthValidation": {
         "number": 100000
-      },
-      "minValidation": null,
-      "maxValidation": null
+      }
     }
-  ],
-  "enumerationProperties": []
+  ]
 }

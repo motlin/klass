@@ -1,50 +1,47 @@
 {
-  "@type": "klass.model.meta.domain.ServiceProjection",
-  "name": "ProjectionElementSummaryProjection",
+  "name": "ProjectionElementProjection",
   "packageName": "klass.model.meta.domain",
-  "klass": {
-    "name": "ProjectionElement"
-  },
-  "children": [
-    {
-      "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-      "name": "name",
-      "children": []
+  "rootProjection": {
+    "name": "ProjectionElementProjection",
+    "klass": {
+      "name": "ProjectionElement"
     },
-    {
-      "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-      "name": "packageName",
-      "children": []
-    },
-    {
-      "@type": "klass.model.meta.domain.ProjectionReferenceProperty",
-      "name": "klass",
-      "children": [
-        {
-          "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-          "name": "name",
-          "children": []
-        }
-      ]
-    },
-    {
-      "@type": "klass.model.meta.domain.ProjectionReferenceProperty",
-      "name": "projection",
-      "children": [
-        {
-          "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-          "name": "name",
-          "children": []
-        }
-      ]
-    },
-    {
-      "@type": "klass.model.meta.domain.ProjectionProjectionReference",
-      "name": "children",
-      "projection": {
-        "name": "ProjectionElementSummaryProjection"
+    "children": [
+      {
+        "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "name",
+        "children": []
       },
-      "children": []
-    }
-  ]
+      {
+        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "name": "klass",
+        "children": [
+          {
+            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "name": "name",
+            "children": []
+          }
+        ]
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
+        "name": "projection",
+        "children": [
+          {
+            "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+            "name": "name",
+            "children": []
+          }
+        ]
+      },
+      {
+        "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
+        "name": "children",
+        "projection": {
+          "name": "ProjectionElementProjection"
+        },
+        "children": []
+      }
+    ]
+  }
 }

@@ -1,9 +1,7 @@
 {
   "name": "Classifier",
   "packageName": "klass.model.meta.domain",
-  "inheritanceType": "table-per-class",
-  "ordinal": 8,
-  "superClass": null,
+  "ordinal": 7,
   "superInterfaces": [
     {
       "superInterface": {
@@ -13,8 +11,9 @@
     }
   ],
   "classifierModifiers": [],
-  "primitiveProperties": [],
-  "enumerationProperties": [],
+  "dataTypeProperties": [],
+  "abstractClass": true,
+  "superClass": null,
   "associationEnds": [
     {
       "name": "superInterfaces",
@@ -40,42 +39,6 @@
       ]
     },
     {
-      "name": "primitiveProperties",
-      "ordinal": 2,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "owningClass": {
-        "name": "Classifier",
-        "packageName": "klass.model.meta.domain"
-      },
-      "resultType": {
-        "name": "PrimitiveProperty",
-        "packageName": "klass.model.meta.domain"
-      },
-      "owningAssociation": {
-        "name": "ClassifierHasPrimitiveProperties"
-      },
-      "associationEndModifiers": []
-    },
-    {
-      "name": "enumerationProperties",
-      "ordinal": 2,
-      "direction": "target",
-      "multiplicity": "0..*",
-      "owningClass": {
-        "name": "Classifier",
-        "packageName": "klass.model.meta.domain"
-      },
-      "resultType": {
-        "name": "EnumerationProperty",
-        "packageName": "klass.model.meta.domain"
-      },
-      "owningAssociation": {
-        "name": "ClassifierHasEnumerationProperties"
-      },
-      "associationEndModifiers": []
-    },
-    {
       "name": "classifierModifiers",
       "ordinal": 2,
       "direction": "target",
@@ -92,6 +55,29 @@
         "name": "ClassifierHasModifiers"
       },
       "associationEndModifiers": []
+    },
+    {
+      "name": "dataTypeProperties",
+      "ordinal": 2,
+      "direction": "target",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "name": "Classifier",
+        "packageName": "klass.model.meta.domain"
+      },
+      "resultType": {
+        "name": "DataTypeProperty",
+        "packageName": "klass.model.meta.domain"
+      },
+      "owningAssociation": {
+        "name": "ClassifierHasDataTypeTypeProperties"
+      },
+      "associationEndModifiers": [
+        {
+          "keyword": "owned",
+          "ordinal": 1
+        }
+      ]
     }
   ]
 }

@@ -1,27 +1,5 @@
 [
   {
-    "name": "InheritanceType",
-    "packageName": "klass.model.meta.domain",
-    "enumerationLiterals": [
-      {
-        "name": "TABLE_PER_SUBCLASS",
-        "prettyName": "table-per-subclass"
-      },
-      {
-        "name": "TABLE_FOR_ALL_SUBCLASSES",
-        "prettyName": "table-for-all-subclasses"
-      },
-      {
-        "name": "TABLE_PER_CLASS",
-        "prettyName": "table-per-class"
-      },
-      {
-        "name": "NONE",
-        "prettyName": "none"
-      }
-    ]
-  },
-  {
     "name": "PrimitiveType",
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
