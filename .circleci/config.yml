@@ -14,8 +14,8 @@ jobs:
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: klass-{{ checksum "pom.xml" }}
 
-      - run: mvn -N io.takari:maven:wrapper -Dmaven=3.6.1
-      - run: ./mvnw de.qaware.maven:go-offline-maven-plugin:1.1.0:resolve-dependencies --no-transfer-progress --activate-profiles !shade,!run-demo
+      - run: mvn -N io.takari:maven:wrapper -Dmaven=3.6.2
+      - run: ./mvnw de.qaware.maven:go-offline-maven-plugin:1.1.0:resolve-dependencies --activate-profiles !shade,!run-demo
 
       - save_cache:
           paths:

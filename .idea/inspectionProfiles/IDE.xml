@@ -560,6 +560,9 @@
     <inspection_tool class="JpaORMDomInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JpaQlInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JpaQueryApiInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JsonStandardCompliance" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="myWarnAboutMultipleTopLevelValues" value="false" />
+    </inspection_tool>
     <inspection_tool class="KeySetIterationMayUseEntrySet" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LabeledStatement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LambdaCanBeMethodCall" enabled="true" level="Inspection" enabled_by_default="true" />
@@ -1662,8 +1665,8 @@
       <option name="ignoreReferences" value="true" />
       <option name="ignoreComplexLiterals" value="false" />
     </inspection_tool>
-    <inspection_tool class="UnqualifiedFieldAccess" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnqualifiedMethodAccess" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UnqualifiedFieldAccess" enabled="true" level="Inspection" enabled_by_default="true" />
+    <inspection_tool class="UnqualifiedMethodAccess" enabled="true" level="Inspection" enabled_by_default="true" />
     <inspection_tool class="UnqualifiedStaticUsage" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignoreStaticFieldAccesses" value="true" />
       <option name="m_ignoreStaticMethodCalls" value="false" />
