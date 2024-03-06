@@ -8,22 +8,22 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
-import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
-import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.projection.ProjectionReferencePropertyWithSourceCode;
+import cool.klass.model.meta.domain.api.source.property.ReferencePropertyWithSourceCode;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 
 public final class ProjectionReferencePropertyImpl
         extends AbstractProjectionParent
-        implements ProjectionReferenceProperty
+        implements ProjectionReferencePropertyWithSourceCode
 {
     @Nonnull
-    private final ProjectionParent  parent;
+    private final ProjectionParent                parent;
     @Nonnull
-    private final ReferenceProperty referenceProperty;
+    private final ReferencePropertyWithSourceCode referenceProperty;
 
     private ProjectionReferencePropertyImpl(
             @Nonnull ProjectionReferencePropertyContext elementContext,
@@ -32,7 +32,7 @@ public final class ProjectionReferencePropertyImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull ProjectionParent parent,
-            @Nonnull ReferenceProperty referenceProperty)
+            @Nonnull ReferencePropertyWithSourceCode referenceProperty)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.parent            = Objects.requireNonNull(parent);
@@ -55,7 +55,7 @@ public final class ProjectionReferencePropertyImpl
 
     @Override
     @Nonnull
-    public ReferenceProperty getProperty()
+    public ReferencePropertyWithSourceCode getProperty()
     {
         return this.referenceProperty;
     }

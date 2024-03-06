@@ -10,6 +10,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -19,7 +20,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class KlassImpl
         extends AbstractClassifier
-        implements Klass
+        implements KlassWithSourceCode
 {
     private final InheritanceType inheritanceType;
     private final boolean         isUser;

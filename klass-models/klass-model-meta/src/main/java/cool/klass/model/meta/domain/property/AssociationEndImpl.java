@@ -13,16 +13,16 @@ import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.AssociationEndWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEndImpl
         extends ReferencePropertyImpl<KlassImpl>
-        implements AssociationEnd
+        implements AssociationEndWithSourceCode
 {
     @Nonnull
     private final AssociationImpl owningAssociation;

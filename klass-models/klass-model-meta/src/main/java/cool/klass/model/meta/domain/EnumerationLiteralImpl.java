@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.source.EnumerationLiteralWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -16,7 +16,7 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 
 public final class EnumerationLiteralImpl
         extends AbstractTypedElement<EnumerationImpl>
-        implements EnumerationLiteral
+        implements EnumerationLiteralWithSourceCode
 {
     @Nonnull
     private final Optional<String> prettyName;

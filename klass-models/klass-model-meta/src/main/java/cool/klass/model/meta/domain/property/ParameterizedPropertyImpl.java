@@ -10,16 +10,16 @@ import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.ParameterizedPropertyWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 
 // TODO: Super class for reference-type-property?
 public final class ParameterizedPropertyImpl
         extends ReferencePropertyImpl<KlassImpl>
-        implements ParameterizedProperty
+        implements ParameterizedPropertyWithSourceCode
 {
     // @Nonnull
     // private final ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers;

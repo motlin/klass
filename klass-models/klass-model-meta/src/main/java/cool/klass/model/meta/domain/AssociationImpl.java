@@ -6,12 +6,11 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.source.AssociationWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -21,7 +20,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class AssociationImpl
         extends AbstractPackageableElement
-        implements Association, TopLevelElementWithSourceCode
+        implements AssociationWithSourceCode
 {
     @Nonnull
     private final AbstractCriteria criteria;

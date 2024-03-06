@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractIdentifierElement;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.projection.ProjectionDataTypePropertyWithSourceCode;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionDataTypePropertyImpl
         extends AbstractIdentifierElement
-        implements AbstractProjectionElement, ProjectionDataTypeProperty
+        implements AbstractProjectionElement, ProjectionDataTypePropertyWithSourceCode
 {
     @Nonnull
     private final ParserRuleContext           headerContext;

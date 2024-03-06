@@ -9,17 +9,16 @@ import javax.annotation.Nullable;
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
+import cool.klass.model.meta.domain.api.source.projection.ProjectionWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 
 public final class ProjectionImpl
         extends AbstractProjectionParent
-        implements Projection, TopLevelElementWithSourceCode
+        implements ProjectionWithSourceCode
 {
     @Nonnull
     private final String             packageName;

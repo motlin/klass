@@ -8,24 +8,24 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
-import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.order.OrderBy;
-import cool.klass.model.meta.domain.api.property.ReferenceProperty;
+import cool.klass.model.meta.domain.api.source.ClassifierWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.ReferencePropertyWithSourceCode;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class ReferencePropertyImpl<T extends Classifier>
+public abstract class ReferencePropertyImpl<T extends ClassifierWithSourceCode>
         extends AbstractProperty<T>
-        implements ReferenceProperty
+        implements ReferencePropertyWithSourceCode
 {
     @Nonnull
     protected final Multiplicity            multiplicity;
@@ -78,7 +78,7 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
         this.modifiers = modifiers;
     }
 
-    public abstract static class ReferencePropertyBuilder<T extends Classifier, TG extends TypeGetter, BuiltElement extends ReferencePropertyImpl<T>>
+    public abstract static class ReferencePropertyBuilder<T extends ClassifierWithSourceCode, TG extends TypeGetter, BuiltElement extends ReferencePropertyImpl<T>>
             extends PropertyBuilder<T, TG, BuiltElement>
     {
         @Nonnull

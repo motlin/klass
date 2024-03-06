@@ -9,16 +9,16 @@ import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.AssociationEndSignatureWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 
 // TODO: Super class for reference-type-property?
 public final class AssociationEndSignatureImpl
         extends ReferencePropertyImpl<AbstractClassifier>
-        implements AssociationEndSignature
+        implements AssociationEndSignatureWithSourceCode
 {
     private AssociationEndSignatureImpl(
             @Nonnull AssociationEndSignatureContext elementContext,
@@ -69,7 +69,7 @@ public final class AssociationEndSignatureImpl
                 int ordinal,
                 @Nonnull IdentifierContext nameContext,
                 @Nonnull ClassifierBuilder<?> type,
-                @Nonnull ClassifierBuilder<?> owningKlassBuilder,
+                @Nonnull ClassifierBuilder<?> owningClassifierBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
             super(
@@ -79,7 +79,7 @@ public final class AssociationEndSignatureImpl
                     ordinal,
                     nameContext,
                     type,
-                    owningKlassBuilder,
+                    owningClassifierBuilder,
                     multiplicity);
         }
 

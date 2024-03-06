@@ -9,15 +9,15 @@ import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.PrimitivePropertyWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 
 public final class PrimitivePropertyImpl
         extends AbstractDataTypeProperty<PrimitiveType>
-        implements PrimitiveProperty
+        implements PrimitivePropertyWithSourceCode
 {
     private PrimitivePropertyImpl(
             @Nonnull PrimitivePropertyContext elementContext,

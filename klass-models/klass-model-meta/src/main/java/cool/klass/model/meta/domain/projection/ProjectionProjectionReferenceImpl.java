@@ -8,12 +8,12 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractIdentifierElement;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
-import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
-import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.projection.ProjectionProjectionReferenceWithSourceCode;
+import cool.klass.model.meta.domain.api.source.projection.ProjectionWithSourceCode;
+import cool.klass.model.meta.domain.api.source.property.ReferencePropertyWithSourceCode;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -23,12 +23,12 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceCo
 
 public final class ProjectionProjectionReferenceImpl
         extends AbstractIdentifierElement
-        implements ProjectionProjectionReference
+        implements ProjectionProjectionReferenceWithSourceCode
 {
     @Nonnull
-    private final ProjectionParent  parent;
+    private final ProjectionParent                parent;
     @Nonnull
-    private final ReferenceProperty referenceProperty;
+    private final ReferencePropertyWithSourceCode referenceProperty;
 
     private ProjectionImpl referencedProjection;
 
@@ -39,7 +39,7 @@ public final class ProjectionProjectionReferenceImpl
             int ordinal,
             @Nonnull IdentifierContext nameContext,
             @Nonnull ProjectionParent parent,
-            @Nonnull ReferenceProperty referenceProperty)
+            @Nonnull ReferencePropertyWithSourceCode referenceProperty)
     {
         super(elementContext, macroElement, sourceCode, ordinal, nameContext);
         this.parent            = Objects.requireNonNull(parent);
@@ -54,7 +54,7 @@ public final class ProjectionProjectionReferenceImpl
     }
 
     @Override
-    public Projection getProjection()
+    public ProjectionWithSourceCode getProjection()
     {
         return this.referencedProjection;
     }
@@ -68,7 +68,7 @@ public final class ProjectionProjectionReferenceImpl
 
     @Override
     @Nonnull
-    public ReferenceProperty getProperty()
+    public ReferencePropertyWithSourceCode getProperty()
     {
         return this.referenceProperty;
     }

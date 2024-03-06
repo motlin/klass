@@ -20,6 +20,7 @@ import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyVal
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.DataTypePropertyWithSourceCode;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
@@ -42,7 +43,7 @@ import org.eclipse.collections.impl.utility.Iterate;
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
 public abstract class AbstractDataTypeProperty<T extends DataType>
         extends AbstractProperty<T>
-        implements DataTypeProperty
+        implements DataTypePropertyWithSourceCode
 {
     private final boolean optional;
 

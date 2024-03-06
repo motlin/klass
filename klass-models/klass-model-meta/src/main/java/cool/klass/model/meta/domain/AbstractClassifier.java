@@ -7,15 +7,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
-import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.source.ClassifierWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
@@ -25,7 +24,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AbstractClassifier
         extends AbstractPackageableElement
-        implements Classifier, TopLevelElementWithSourceCode
+        implements ClassifierWithSourceCode
 {
     private ImmutableList<DataTypeProperty> dataTypeProperties;
     private ImmutableList<Modifier>         modifiers;

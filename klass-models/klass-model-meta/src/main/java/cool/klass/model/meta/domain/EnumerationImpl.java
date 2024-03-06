@@ -7,18 +7,17 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.source.EnumerationWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class EnumerationImpl
         extends AbstractPackageableElement
-        implements Enumeration, TopLevelElementWithSourceCode
+        implements EnumerationWithSourceCode
 {
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 

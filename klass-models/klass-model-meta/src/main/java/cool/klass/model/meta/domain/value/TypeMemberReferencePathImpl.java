@@ -11,7 +11,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
+import cool.klass.model.meta.domain.api.source.value.TypeMemberReferencePathWithSourceCode;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -20,7 +20,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class TypeMemberReferencePathImpl
         extends AbstractMemberReferencePath
-        implements TypeMemberReferencePath
+        implements TypeMemberReferencePathWithSourceCode
 {
     private TypeMemberReferencePathImpl(
             @Nonnull TypeMemberReferencePathContext elementContext,

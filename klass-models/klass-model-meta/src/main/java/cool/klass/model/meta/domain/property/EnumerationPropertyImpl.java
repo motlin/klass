@@ -10,15 +10,15 @@ import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.property.EnumerationPropertyWithSourceCode;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 
 public final class EnumerationPropertyImpl
         extends AbstractDataTypeProperty<EnumerationImpl>
-        implements EnumerationProperty
+        implements EnumerationPropertyWithSourceCode
 {
     private EnumerationPropertyImpl(
             @Nonnull EnumerationPropertyContext elementContext,
