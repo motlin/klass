@@ -574,6 +574,7 @@ public class MetaResourceManualTest
                 + "    }\n"
                 + "  ],\n"
                 + "  \"criteria\": {\n"
+                + "    \"_type\": \"klass.model.meta.domain.Criteria\",\n"
                 + "    \"id\": 2,\n"
                 + "    \"operator\": \"==\"\n"
                 + "  }\n"

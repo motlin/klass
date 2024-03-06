@@ -99,7 +99,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection.getChildren());
+        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
     }
 
     @Timed
@@ -224,7 +224,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection.getChildren());
+        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
     }
 
     @Nonnull
@@ -303,7 +303,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection.getChildren());
+        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
     }
 
     @Nonnull
@@ -337,7 +337,7 @@ public class QuestionResourceManual
         MithraObject mithraObject = Iterate.getOnly(result);
 
         Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonTree(this.dataStore, mithraObject, projection.getChildren());
+        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);
     }
 
     @Timed
@@ -429,6 +429,6 @@ public class QuestionResourceManual
         return mithraObjects.collect(mithraObject -> new ReladomoJsonTree(
                 this.dataStore,
                 mithraObject,
-                projection.getChildren()));
+                projection));
     }
 }

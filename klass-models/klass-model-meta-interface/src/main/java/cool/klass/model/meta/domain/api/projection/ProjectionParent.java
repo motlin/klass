@@ -44,4 +44,12 @@ public interface ProjectionParent extends ProjectionElement
                 .reject(associationEndsInProjection::contains)
                 .reject(optionalReturnPath::contains);
     }
+
+    default boolean hasPolymorphicChildren()
+    {
+        return this.getChildren()
+                .asLazy()
+                .selectInstancesOf(ProjectionChild.class)
+                .anySatisfy(ProjectionChild::isPolymorphic);
+    }
 }

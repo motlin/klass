@@ -164,7 +164,7 @@ public class ServiceResourceGenerator
                 + "        return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
                 + "                this.dataStore,\n"
                 + "                mithraObject,\n"
-                + "                projection.getChildren()));\n"
+                + "                projection));\n"
                 + "    }\n"
                 + "}\n";
         // @formatter:on
@@ -331,7 +331,7 @@ public class ServiceResourceGenerator
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"
                     + "        Projection projection = " + this.applicationName + "DomainModel." + projectionName + ";\n"
-                    + "        return new ReladomoJsonTree(this.dataStore, mithraObject, projection.getChildren());\n";
+                    + "        return new ReladomoJsonTree(this.dataStore, mithraObject, projection);\n";
 
             // @formatter:on
         }
