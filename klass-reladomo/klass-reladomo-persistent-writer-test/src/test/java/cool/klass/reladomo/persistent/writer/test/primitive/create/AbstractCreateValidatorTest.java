@@ -8,13 +8,18 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.test.AbstractValidatorTest;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
-import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
+
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public abstract class AbstractCreateValidatorTest
         extends AbstractValidatorTest
@@ -28,13 +33,17 @@ public abstract class AbstractCreateValidatorTest
     @Override
     protected final void validate(@Nonnull ObjectNode incomingInstance, Object persistentInstance)
     {
+        Klass klass = this.getKlass();
+        ImmutableMap<DataTypeProperty, Object> propertyDataFromUrl = this.getPropertyDataFromUrl();
+        propertyDataFromUrl.forEachKey(property -> assertThat(property.getOwningClassifier(), sameInstance(klass)));
+
         JsonTypeCheckingValidator.validate(
                 incomingInstance,
-                this.getKlass(),
+                klass,
                 this.actualErrors);
 
         RequiredPropertiesValidator.validate(
-                this.getKlass(),
+                klass,
                 incomingInstance,
                 this.getMode(),
                 this.actualErrors,
@@ -43,12 +52,12 @@ public abstract class AbstractCreateValidatorTest
         MutationContext mutationContext = new MutationContext(
                 Optional.of("test user 1"),
                 Instant.parse("1999-12-31T23:59:59.999Z"),
-                Maps.immutable.empty());
+                propertyDataFromUrl);
 
         IncomingCreateDataModelValidator.validate(
                 this.reladomoDataStore,
                 this.domainModel.getUserClass().get(),
-                this.getKlass(),
+                klass,
                 mutationContext,
                 incomingInstance,
                 this.actualErrors,

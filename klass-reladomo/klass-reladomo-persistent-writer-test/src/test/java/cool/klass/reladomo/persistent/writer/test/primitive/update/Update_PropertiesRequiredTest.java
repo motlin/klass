@@ -128,4 +128,11 @@ public class Update_PropertiesRequiredTest
     {
         return OperationMode.REPLACE;
     }
+
+    @Override
+    protected ImmutableMap<DataTypeProperty, Object> getPropertyDataFromUrl()
+    {
+        DataTypeProperty dataTypeProperty = this.getKlass().getDataTypePropertyByName("propertiesRequiredId");
+        return Maps.immutable.with(dataTypeProperty, 1L);
+    }
 }

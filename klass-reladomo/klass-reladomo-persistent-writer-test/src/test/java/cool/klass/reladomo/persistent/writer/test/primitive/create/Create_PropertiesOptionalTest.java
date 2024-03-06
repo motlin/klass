@@ -6,7 +6,10 @@ import javax.annotation.Nonnull;
 
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
+import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.junit.Test;
 
 public class Create_PropertiesOptionalTest
@@ -97,5 +100,12 @@ public class Create_PropertiesOptionalTest
     protected OperationMode getMode()
     {
         return OperationMode.CREATE;
+    }
+
+    @Override
+    protected ImmutableMap<DataTypeProperty, Object> getPropertyDataFromUrl()
+    {
+        DataTypeProperty dataTypeProperty = this.getKlass().getDataTypePropertyByName("propertiesOptionalId");
+        return Maps.immutable.with(dataTypeProperty, 1L);
     }
 }

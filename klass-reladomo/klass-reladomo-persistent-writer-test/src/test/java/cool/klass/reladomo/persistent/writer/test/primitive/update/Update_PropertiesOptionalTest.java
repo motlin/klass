@@ -131,4 +131,11 @@ public class Update_PropertiesOptionalTest
     {
         return OperationMode.REPLACE;
     }
+
+    @Override
+    protected ImmutableMap<DataTypeProperty, Object> getPropertyDataFromUrl()
+    {
+        DataTypeProperty dataTypeProperty = this.getKlass().getDataTypePropertyByName("propertiesOptionalId");
+        return Maps.immutable.with(dataTypeProperty, 1L);
+    }
 }

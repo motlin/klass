@@ -11,7 +11,6 @@ import cool.klass.deserializer.json.RequiredPropertiesValidator;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.test.AbstractValidatorTest;
-import org.eclipse.collections.api.factory.Maps;
 
 public abstract class AbstractUpdateValidatorTest
         extends AbstractValidatorTest
@@ -34,7 +33,7 @@ public abstract class AbstractUpdateValidatorTest
         MutationContext mutationContext = new MutationContext(
                 Optional.of("test user 1"),
                 Instant.parse("1999-12-31T23:59:59.999Z"),
-                Maps.immutable.empty());
+                this.getPropertyDataFromUrl());
 
         IncomingUpdateDataModelValidator.validate(
                 this.reladomoDataStore,

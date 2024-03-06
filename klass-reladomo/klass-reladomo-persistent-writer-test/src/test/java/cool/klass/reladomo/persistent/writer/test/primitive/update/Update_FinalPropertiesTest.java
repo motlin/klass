@@ -57,4 +57,11 @@ public class Update_FinalPropertiesTest
     {
         return OperationMode.REPLACE;
     }
+
+    @Override
+    protected ImmutableMap<DataTypeProperty, Object> getPropertyDataFromUrl()
+    {
+        DataTypeProperty dataTypeProperty = this.getKlass().getDataTypePropertyByName("id");
+        return Maps.immutable.with(dataTypeProperty, 1L);
+    }
 }
