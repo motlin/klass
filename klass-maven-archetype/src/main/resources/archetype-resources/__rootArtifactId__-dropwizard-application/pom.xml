@@ -294,12 +294,6 @@
             <version>${klass.version}</version>
         </dependency>
 
-        <!--TODO: This should be a runtime dependency, but the DdlExecutorCommand currently has a hard dependency-->
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-connection-manager-h2</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
