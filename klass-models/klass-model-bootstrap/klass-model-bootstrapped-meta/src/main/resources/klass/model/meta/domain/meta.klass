@@ -10,7 +10,7 @@ interface Element
 interface NamedElement
     implements Element
 {
-    name: String;
+    name: String key;
     ordinal: Integer;
 }
 
@@ -23,20 +23,12 @@ interface PackageableElement implements NamedElement
 
 class Enumeration implements PackageableElement
 {
-    name                          : String key;
-    inferred                      : Boolean;
-    packageName                   : String private;
-    ordinal                       : Integer;
-    sourceCode                    : String maximumLength(100000);
 }
 
 class EnumerationLiteral implements NamedElement
 {
     enumerationName               : String key;
-    name                          : String key;
-    inferred                      : Boolean;
     prettyName                    : String?;
-    ordinal                       : Integer;
 }
 
 association EnumerationHasLiterals
@@ -57,17 +49,11 @@ enumeration InheritanceType
 }
 
 // TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
+// TODO: Ordinals should have a syntax and be inferred using macros
 class Classifier
     abstract(table-per-class)
     implements PackageableElement
 {
-    name      : String key;
-    inferred  : Boolean;
-    packageName: String;
-
-    // TODO: Ordinals should have a syntax and be inferred using macros
-    ordinal: Integer;
-    sourceCode: String maximumLength(100000);
 }
 
 // TODO: Error when transient extends non-transient
@@ -85,15 +71,15 @@ class ClassifierInterfaceMapping
 association ClassifierHasClassifierInterfaceMapping
 {
     subClassifier: Classifier[1..1];
-    superInterfaces: ClassifierInterfaceMapping[0..*] owned;
+    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;
 
     relationship this.name == ClassifierInterfaceMapping.classifierName
 }
 
 association ClassifierInterfaceMappingHasInterface
 {
-    superInterface: Interface[1..1];
-    subClassifiers: ClassifierInterfaceMapping[0..*];
+    superInterface                : Interface[1..1];
+    subClassifiers                : ClassifierInterfaceMapping[0..*];
 
     relationship this.name == ClassifierInterfaceMapping.interfaceName
 }
@@ -105,11 +91,13 @@ class Klass
     inheritanceType: InheritanceType;
 }
 
+// TODO: Why isn't subClasses showing up in generated code? Reladomo bug?
 association ClassHasSuperClass
 {
-    subClasses: Klass[0..*];
-    superClass: Klass[0..1];
+    subClasses                    : Klass[0..*];
+    superClass                    : Klass[0..1];
 
+    // TODO: When this was backwards, I got a confusing error. How can I detect and prevent?
     relationship this.superClassName == Klass.name
 }
 
@@ -139,38 +127,37 @@ class DataTypeProperty
     abstract(table-per-class)
     implements NamedElement
 {
-    classifierName: String key;
-    name      : String key;
-    inferred  : Boolean;
-    optional  : Boolean;
-    key       : Boolean;
-    ordinal   : Integer;
+    classifierName                : String key;
+    optional                      : Boolean;
+    key                           : Boolean;
 }
 
-class PrimitiveProperty extends DataTypeProperty
+class PrimitiveProperty
+    extends DataTypeProperty
 {
-    primitiveType: PrimitiveType;
-    id: Boolean;
+    primitiveType                 : PrimitiveType;
+    id                            : Boolean;
 }
 
-class EnumerationProperty extends DataTypeProperty
+class EnumerationProperty
+    extends DataTypeProperty
 {
-    enumerationName: String private;
+    enumerationName               : String private;
 }
 
 association EnumerationPropertyHasEnumeration
 {
-    enumerationProperty: EnumerationProperty[0..*];
-    enumeration: Enumeration[1..1];
+    enumerationProperty           : EnumerationProperty[0..*];
+    enumeration                   : Enumeration[1..1];
 
     relationship this.enumerationName == Enumeration.name
 }
 
+// TODO: Change the orderBy syntax to orderBy(this.ordinal)
 association ClassifierHasDataTypeTypeProperties
 {
-    // TODO: Change the orderBy syntax to orderBy(this.ordinal)
-    owningClassifier: Classifier[1..1];
-    dataTypeProperties: DataTypeProperty[0..*] owned
+    owningClassifier              : Classifier[1..1];
+    dataTypeProperties            : DataTypeProperty[0..*] owned
         orderBy: this.ordinal;
 
     relationship this.name == DataTypeProperty.classifierName
@@ -198,57 +185,82 @@ interface PropertyValidation implements Element
 {
 }
 
-interface NumericPropertyValidation implements PropertyValidation
+class NumericPropertyValidation
+    abstract(table-per-subclass)
+    implements PropertyValidation
 {
+    classifierName                : String key;
+    propertyName                  : String key;
     number: Integer;
 }
 
 class MinLengthPropertyValidation
-    implements NumericPropertyValidation
+    extends NumericPropertyValidation
 {
-    classifierName: String key;
-    propertyName: String key;
-    number: Integer;
 }
 
 class MaxLengthPropertyValidation
-    implements NumericPropertyValidation
+    extends NumericPropertyValidation
 {
-    classifierName: String key;
-    propertyName: String key;
-    number: Integer;
 }
 
 class MinPropertyValidation
-    implements NumericPropertyValidation
+    extends NumericPropertyValidation
 {
-    classifierName: String key;
-    propertyName: String key;
-    number: Integer;
 }
 
 class MaxPropertyValidation
-    implements NumericPropertyValidation
+    extends NumericPropertyValidation
 {
-    classifierName: String key;
-    propertyName: String key;
-    number        : Integer;
+}
+
+association DataTypePropertyHasMinLengthPropertyValidation
+{
+    dataTypeProperty              : DataTypeProperty[1..1];
+    minLengthValidation           : MinLengthPropertyValidation[0..1];
+
+    relationship this.classifierName == MinLengthPropertyValidation.classifierName
+            && this.name == MinLengthPropertyValidation.propertyName
+}
+
+association DataTypePropertyHasMaxLengthPropertyValidation
+{
+    dataTypeProperty              : DataTypeProperty[1..1];
+    maxLengthValidation           : MaxLengthPropertyValidation[0..1];
+
+    relationship this.classifierName == MaxLengthPropertyValidation.classifierName
+            && this.name == MaxLengthPropertyValidation.propertyName
+}
+
+association PrimitivePropertyHasMinPropertyValidation
+{
+    primitiveProperty             : PrimitiveProperty[1..1];
+    minValidation                 : MinPropertyValidation[0..1];
+
+    relationship this.classifierName == MinPropertyValidation.classifierName
+            && this.name == MinPropertyValidation.propertyName
+}
+
+association PrimitivePropertyHasMaxPropertyValidation
+{
+    primitiveProperty             : PrimitiveProperty[1..1];
+    maxValidation                 : MaxPropertyValidation[0..1];
+
+    relationship this.classifierName == MaxPropertyValidation.classifierName
+            && this.name == MaxPropertyValidation.propertyName
 }
 
 class PropertyModifier
     implements NamedElement
 {
-    classifierName: String key;
-    propertyName  : String key;
-    name          : String key;
-    inferred      : Boolean;
-    ordinal       : Integer;
+    classifierName                : String key;
+    propertyName                  : String key;
 }
 
 association DataTypePropertyHasModifiers
 {
-    dataTypeProperty: DataTypeProperty[1..1];
-    propertyModifiers: PropertyModifier[0..*]
+    dataTypeProperty              : DataTypeProperty[1..1];
+    propertyModifiers             : PropertyModifier[0..*]
         orderBy: this.ordinal;
 
     relationship this.classifierName == PropertyModifier.classifierName
@@ -259,9 +271,6 @@ class ClassifierModifier
     implements NamedElement
 {
     classifierName: String key;
-    name: String key;
-    inferred: Boolean;
-    ordinal: Integer;
 }
 
 association ClassifierHasModifiers
@@ -281,12 +290,6 @@ enumeration AssociationEndDirection
 
 class Association implements PackageableElement
 {
-    name                          : String key;
-    inferred                      : Boolean;
-    packageName                   : String;
-    ordinal                       : Integer;
-    sourceCode                    : String maximumLength(100000);
-
     source(): AssociationEnd[1..1]
     {
         this.name == AssociationEnd.associationName
@@ -303,13 +306,10 @@ class Association implements PackageableElement
 class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private;
-    name                          : String key;
-    inferred                      : Boolean;
     associationName               : String;
     direction                     : AssociationEndDirection;
     multiplicity                  : Multiplicity;
     resultTypeName                : String private;
-    ordinal                       : Integer;
 }
 
 // simplification, ideally we'd model an association as having exactly two ends
@@ -344,9 +344,6 @@ class AssociationEndModifier
 {
     owningClassName               : String key;
     associationEndName            : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    ordinal                       : Integer;
 }
 
 association AssociationEndHasModifiers
@@ -363,11 +360,8 @@ class ParameterizedProperty
     implements NamedElement
 {
     owningClassName               : String key private;
-    name                          : String key;
-    inferred                      : Boolean;
     multiplicity                  : Multiplicity;
     resultTypeName                : String private;
-    ordinal                       : Integer;
 }
 
 association ClassHasParameterizedProperties
@@ -499,19 +493,17 @@ association OrderingPartHasEnumerationProperty
 
 association ParameterizedPropertyHasParameters
 {
-    parameterizedProperty: ParameterizedProperty[1..1];
-    parameters: ParameterizedPropertyParameter[0..*];
+    parameterizedProperty         : ParameterizedProperty[1..1];
+    parameters                    : ParameterizedPropertyParameter[0..*];
 
-    relationship this.owningClassName == ParameterizedPropertyParameter.parameterizedPropertyClassName
+    relationship this.owningClassName == ParameterizedPropertyParameter.classifierName
             && this.name == ParameterizedPropertyParameter.parameterizedPropertyName
 }
 
-class ParameterizedPropertyParameter
+class ParameterizedPropertyParameter implements NamedElement
 {
-    parameterizedPropertyClassName: String key private;
+    classifierName                : String key private;
     parameterizedPropertyName     : String key;
-    name                          : String;
-    inferred                      : Boolean;
 }
 
 /*
@@ -537,9 +529,9 @@ enumeration Verb
 
 class Service
 {
-    className          : String key;
-    urlString          : String key;
-    verb               : Verb key;
+    className                     : String key;
+    urlString                     : String key;
+    verb                          : Verb key;
     serviceMultiplicity: ServiceMultiplicity;
 }
 
@@ -579,35 +571,55 @@ association UrlHasServices
             && this.url == Service.urlString
 }
 
-projection ClassReadProjection on Klass
+projection EnumerationReadProjection on Enumeration
 {
-    name                 : "Class name",
-    inferred             : "Class inferred",
-    packageName          : "Class package name",
-    ordinal              : "Class ordinal",
-    sourceCode           : "Class source code",
-    sourceCodeWithInference           : "Class source code with inference",
-    superClass           :
+    name                   : "Enumeration name",
+    inferred               : "Enumeration inferred",
+    packageName            : "Enumeration package name",
+    ordinal                : "Enumeration ordinal",
+    sourceCode             : "Enumeration sourceCode",
+    sourceCodeWithInference: "Enumeration sourceCodeWithInference",
+    enumerationLiterals    :
     {
-        name       : "Super Class name",
-        packageName: "Super Class package name",
-        superClass           :
-        {
-            name       : "Super Super Class name",
-            packageName: "Super Super Class package name",
-        },
-        // TODO: flat many-to-many, or parameterized property
-        superInterfaces      :
-        {
-            superInterface:
-            {
-                name       : "Super Class Super Interface name",
-                packageName: "Super Class Super Interface package name",
-            },
-        },
+        prettyName             : "Enumeration literal pretty name",
+        name                   : "Enumeration literal name",
+        inferred               : "Enumeration literal inferred",
+        ordinal                : "Enumeration literal ordinal",
+        sourceCode             : "Enumeration literal sourceCode",
+        sourceCodeWithInference: "Enumeration literal sourceCodeWithInference",
     },
+}
+
+service Enumeration
+{
+    /api/meta/enumeration/{enumerationName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == enumerationName;
+            projection  : EnumerationReadProjection;
+        }
+    /api/meta/enumeration
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : EnumerationReadProjection;
+            orderBy     : this.ordinal;
+        }
+}
+
+projection InterfaceReadProjection on Interface
+{
+    name                   : "Interface name",
+    inferred               : "Interface inferred",
+    packageName            : "Interface package name",
+    ordinal                : "Interface ordinal",
+    sourceCode             : "Interface source code",
+    sourceCodeWithInference: "Interface source code with inference",
+
     // TODO: flat many-to-many, or parameterized property
-    superInterfaces      :
+    superInterfaces        :
     {
         superInterface:
         {
@@ -617,76 +629,278 @@ projection ClassReadProjection on Klass
             {
                 superInterface:
                 {
-                    name           : "Super Super interface name",
-                    packageName    : "Super Super interface package name",
+                    name       : "Super Super interface name",
+                    packageName: "Super Super interface package name",
                 },
             },
         },
     },
-    classifierModifiers       :
+    classifierModifiers    :
     {
-        name    : "Class modifier name",
-        inferred: "Class modifier inferred",
-        ordinal : "Class modifier ordinal",
+        name    : "Interface modifier name",
+        inferred: "Interface modifier inferred",
+        ordinal : "Interface modifier ordinal",
     },
-    dataTypeProperties:
+    dataTypeProperties     :
     {
-        name             : "Property name",
-        inferred         : "Property inferred",
-        optional         : "Property is optional",
-        key              : "Property is key",
-        ordinal          : "Property ordinal",
-        propertyModifiers:
+        name               : "Property name",
+        inferred           : "Property inferred",
+        optional           : "Property is optional",
+        key                : "Property is key",
+        ordinal            : "Property ordinal",
+        propertyModifiers  :
         {
             name    : "Property modifier name",
             inferred: "Property modifier inferred",
             ordinal : "Property modifier ordinal",
         },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
     },
-    primitiveProperties  :
+    primitiveProperties    :
     {
-        name             : "Primitive property name",
-        inferred         : "Primitive property inferred",
-        primitiveType    : "Primitive property type",
-        optional         : "Primitive property is optional",
-        key              : "Primitive property is key",
-        id               : "Primitive property is id",
-        ordinal          : "Primitive property ordinal",
-        propertyModifiers:
+        name               : "Primitive property name",
+        inferred           : "Primitive property inferred",
+        primitiveType      : "Primitive property type",
+        optional           : "Primitive property is optional",
+        key                : "Primitive property is key",
+        id                 : "Primitive property is id",
+        ordinal            : "Primitive property ordinal",
+        propertyModifiers  :
         {
             name    : "Primitive property modifier name",
             inferred: "Primitive property modifier inferred",
             ordinal : "Primitive property modifier ordinal",
         },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
+        minValidation      :
+        {
+            number: "Min validation number",
+        },
+        maxValidation      :
+        {
+            number: "Max validation number",
+        },
     },
-    enumerationProperties:
+    enumerationProperties  :
     {
-        name                        : "Enumeration property name",
-        inferred                    : "Enumeration property inferred",
-        optional                    : "Enumeration property is optional",
-        key                         : "Enumeration property is key",
-        ordinal                     : "Enumeration property ordinal",
-        enumeration                 :
+        name               : "Enumeration property name",
+        inferred           : "Enumeration property inferred",
+        optional           : "Enumeration property is optional",
+        key                : "Enumeration property is key",
+        ordinal            : "Enumeration property ordinal",
+        enumeration        :
         {
             name    : "Enumeration name",
             inferred: "Enumeration inferred",
         },
-        propertyModifiers:
+        propertyModifiers  :
         {
             name    : "Enumeration property modifier name",
             inferred: "Enumeration property inferred",
             ordinal : "Enumeration property modifier ordinal",
         },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
     },
-    associationEnds      :
+}
+
+service Interface
+{
+    /api/meta/interface/{interfaceName: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == interfaceName;
+            projection  : InterfaceReadProjection;
+        }
+    /api/meta/interface
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : InterfaceReadProjection;
+            orderBy     : this.ordinal;
+        }
+}
+
+projection ClassReadProjection on Klass
+{
+    name                   : "Class name",
+    inferred               : "Class inferred",
+    packageName            : "Class package name",
+    ordinal                : "Class ordinal",
+    sourceCode             : "Class source code",
+    sourceCodeWithInference: "Class source code with inference",
+    superClass             :
+    {
+        name           : "Super Class name",
+        packageName    : "Super Class package name",
+        superClass     :
+        {
+            name       : "Super Super Class name",
+            packageName: "Super Super Class package name",
+        },
+
+        // TODO: flat many-to-many, or parameterized property
+        superInterfaces:
+        {
+            superInterface:
+            {
+                name       : "Super Class Super Interface name",
+                packageName: "Super Class Super Interface package name",
+            },
+        },
+    },
+
+    // TODO: flat many-to-many, or parameterized property
+    superInterfaces        :
+    {
+        superInterface:
+        {
+            name           : "Super interface name",
+            packageName    : "Super interface package name",
+            superInterfaces:
+            {
+                superInterface:
+                {
+                    name       : "Super Super interface name",
+                    packageName: "Super Super interface package name",
+                },
+            },
+        },
+    },
+    /*
+    subClasses         :
+    {
+        name       : "Sub Class name",
+        packageName: "Sub Class package name",
+    },
+    */
+    classifierModifiers    :
+    {
+        name    : "Class modifier name",
+        inferred: "Class modifier inferred",
+        ordinal : "Class modifier ordinal",
+    },
+    dataTypeProperties     :
+    {
+        name               : "Property name",
+        inferred           : "Property inferred",
+        optional           : "Property is optional",
+        key                : "Property is key",
+        ordinal            : "Property ordinal",
+        propertyModifiers  :
+        {
+            name    : "Property modifier name",
+            inferred: "Property modifier inferred",
+            ordinal : "Property modifier ordinal",
+        },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
+    },
+    primitiveProperties    :
+    {
+        name               : "Primitive property name",
+        inferred           : "Primitive property inferred",
+        primitiveType      : "Primitive property type",
+        optional           : "Primitive property is optional",
+        key                : "Primitive property is key",
+        id                 : "Primitive property is id",
+        ordinal            : "Primitive property ordinal",
+        propertyModifiers  :
+        {
+            name    : "Primitive property modifier name",
+            inferred: "Primitive property modifier inferred",
+            ordinal : "Primitive property modifier ordinal",
+        },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
+        minValidation      :
+        {
+            number: "Min validation number",
+        },
+        maxValidation      :
+        {
+            number: "Max validation number",
+        },
+    },
+    enumerationProperties  :
+    {
+        name               : "Enumeration property name",
+        inferred           : "Enumeration property inferred",
+        optional           : "Enumeration property is optional",
+        key                : "Enumeration property is key",
+        ordinal            : "Enumeration property ordinal",
+        enumeration        :
+        {
+            name    : "Enumeration name",
+            inferred: "Enumeration inferred",
+        },
+        propertyModifiers  :
+        {
+            name    : "Enumeration property modifier name",
+            inferred: "Enumeration property inferred",
+            ordinal : "Enumeration property modifier ordinal",
+        },
+        minLengthValidation:
+        {
+            number: "Min length validation number",
+        },
+        maxLengthValidation:
+        {
+            number: "Max length validation number",
+        },
+    },
+    associationEnds        :
     {
         name                   : "Association end name",
         inferred               : "Association end inferred",
+        ordinal                : "Association end ordinal",
+        sourceCode             : "Association end source code",
+        sourceCodeWithInference: "Association end sourceCodeWithInference",
         direction              : "Association end direction",
         multiplicity           : "Association end multiplicity",
+        owningClass            :
+        {
+            name       : "Association end owning class name",
+            packageName: "Association end owning class package name",
+        },
         resultType             :
         {
-            name: "Association end result type name",
+            name       : "Association end result class name",
+            packageName: "Association end result class package name",
         },
         owningAssociation      :
         {
@@ -722,29 +936,40 @@ service Klass
 
 projection AssociationReadProjection on Association
 {
-    name           : "Association name",
-    inferred       : "Association inferred",
-    packageName    : "Association package name",
-    ordinal        : "Association ordinal",
-    sourceCode     : "Association source code",
-    associationEnds:
+    name                   : "Association name",
+    inferred               : "Association inferred",
+    packageName            : "Association package name",
+    ordinal                : "Association ordinal",
+    sourceCode             : "Association source code",
+    sourceCodeWithInference: "Association sourceCodeWithInference",
+    associationEnds        :
     {
-        name        : "Association end name",
-        inferred    : "Association end inferred",
-        direction   : "Association end direction",
-        multiplicity: "Association end multiplicity",
-        ordinal     : "Association end ordinal",
-        /*
-        owningClass :
+        name                   : "Association end name",
+        inferred               : "Association end inferred",
+        ordinal                : "Association end ordinal",
+        sourceCode             : "Association end source code",
+        sourceCodeWithInference: "Association end sourceCodeWithInference",
+        direction              : "Association end direction",
+        multiplicity           : "Association end multiplicity",
+        owningClass            :
         {
             name       : "Association end owning class name",
             packageName: "Association end owning class package name",
         },
-        */
-        resultType  :
+        resultType             :
         {
             name       : "Association end result class name",
             packageName: "Association end result class package name",
+        },
+        owningAssociation      :
+        {
+            name: "Association end owning association name",
+        },
+        associationEndModifiers:
+        {
+            name    : "Association end modifier name",
+            inferred: "Association end modifier inferred",
+            ordinal : "Association end modifier ordinal",
         },
     },
 }
