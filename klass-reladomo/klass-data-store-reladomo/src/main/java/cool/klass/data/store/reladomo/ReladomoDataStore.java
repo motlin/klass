@@ -225,7 +225,11 @@ public class ReladomoDataStore
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties().reject(DataTypeProperty::isID);
         if (keyProperties.size() != keys.size())
         {
-            throw new AssertionError();
+            String error = String.format(
+                    "Expected one key for each key property in %s but got %s",
+                    keyProperties,
+                    keys);
+            throw new IllegalArgumentException(error);
         }
         for (int i = 0; i < keyProperties.size(); i++)
         {
