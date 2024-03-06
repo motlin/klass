@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="klass [dependency:go-offline]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="${rootArtifactId} [dependency:go-offline]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />

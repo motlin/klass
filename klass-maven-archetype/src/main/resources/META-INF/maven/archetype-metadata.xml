@@ -52,7 +52,7 @@
                     <directory>src/main/resources</directory>
                 </fileSet>
 
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-domain-model.iml</include>
@@ -67,19 +67,7 @@
                 dir="__rootArtifactId__-reladomo-definitions"
                 name="${rootArtifactId}-reladomo-definitions">
             <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/test/resources</directory>
-                </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-reladomo-definitions.iml</include>
@@ -96,7 +84,7 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
                 </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-reladomo-pojos.iml</include>
@@ -110,19 +98,7 @@
                 dir="__rootArtifactId__-reladomo-ddls"
                 name="${rootArtifactId}-reladomo-ddls">
             <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/test/resources</directory>
-                </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-reladomo-ddls.iml</include>
@@ -139,16 +115,7 @@
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
                 </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/test/resources</directory>
-                </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-services.iml</include>
@@ -168,13 +135,7 @@
                 <fileSet encoding="UTF-8">
                     <directory>src/main/resources</directory>
                 </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/test/resources</directory>
-                </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-reladomo-test-data.iml</include>
@@ -186,33 +147,39 @@
         <module
                 id="${rootArtifactId}-dtos"
                 dir="__rootArtifactId__-dtos"
-                name="${rootArtifactId}-dtos" />
+                name="${rootArtifactId}-dtos">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-dtos.iml</include>
+                    </includes>
+                </fileSet>
+            </fileSets>
+        </module>
 
         <module
                 id="${rootArtifactId}-dropwizard-application"
                 dir="__rootArtifactId__-dropwizard-application"
                 name="${rootArtifactId}-dropwizard-application">
             <fileSets>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>.gitignore</include>
                         <include>config.yml</include>
                         <include>README.md</include>
-                        <include>__rootArtifactId__-dtos.iml</include>
+                        <include>__rootArtifactId__-dropwizard-application.iml</include>
                     </includes>
                 </fileSet>
 
                 <fileSet filtered="true" packaged="true" encoding="UTF-8">
                     <directory>src/main/java</directory>
                 </fileSet>
-                <fileSet encoding="UTF-8">
+                <fileSet encoding="UTF-8" filtered="true">
                     <directory>src/main/resources</directory>
                 </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
+                <fileSet encoding="UTF-8" filtered="true">
                     <directory>src/test/resources</directory>
                 </fileSet>
             </fileSets>
@@ -223,19 +190,7 @@
                 dir="__rootArtifactId__-meta-model-constants"
                 name="${rootArtifactId}-meta-model-constants">
             <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/test/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/test/resources</directory>
-                </fileSet>
-                <fileSet>
+                <fileSet filtered="true">
                     <directory></directory>
                     <includes>
                         <include>__rootArtifactId__-meta-model-constants.iml</include>
