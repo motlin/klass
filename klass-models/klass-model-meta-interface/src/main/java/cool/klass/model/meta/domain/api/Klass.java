@@ -35,6 +35,8 @@ public interface Klass
 
     ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
 
+    AssociationEnd getDeclaredAssociationEndByName(String name);
+
     ImmutableList<AssociationEnd> getAssociationEnds();
 
     AssociationEnd getAssociationEndByName(String name);

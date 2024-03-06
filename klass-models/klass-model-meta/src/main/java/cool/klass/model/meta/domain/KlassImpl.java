@@ -32,7 +32,7 @@ public final class KlassImpl
     private final boolean isTransient;
 
     private ImmutableList<AssociationEnd>        declaredAssociationEnds;
-
+    private ImmutableMap<String, AssociationEnd> declaredAssociationEndsByName;
     private ImmutableList<AssociationEnd>        associationEnds;
     private ImmutableMap<String, AssociationEnd> associationEndsByName;
 
@@ -41,8 +41,8 @@ public final class KlassImpl
     @Nonnull
     private Optional<AssociationEnd> versionedProperty = Optional.empty();
 
-    private Optional<Klass>          superClass;
-    private ImmutableList<Klass>     subClasses;
+    private Optional<Klass>      superClass;
+    private ImmutableList<Klass> subClasses;
 
     private KlassImpl(
             @Nonnull ClassDeclarationContext elementContext,
@@ -106,12 +106,6 @@ public final class KlassImpl
         return this.inheritanceType != InheritanceType.NONE;
     }
 
-    @Override
-    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()
-    {
-        return Objects.requireNonNull(this.declaredAssociationEnds);
-    }
-
     private void setDeclaredAssociationEnds(ImmutableList<AssociationEnd> declaredAssociationEnds)
     {
         if (this.declaredAssociationEnds != null)
@@ -119,6 +113,19 @@ public final class KlassImpl
             throw new IllegalStateException();
         }
         this.declaredAssociationEnds       = Objects.requireNonNull(declaredAssociationEnds);
+        this.declaredAssociationEndsByName = this.declaredAssociationEnds.groupByUniqueKey(AssociationEnd::getName);
+    }
+
+    @Override
+    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()
+    {
+        return Objects.requireNonNull(this.declaredAssociationEnds);
+    }
+
+    @Override
+    public AssociationEnd getDeclaredAssociationEndByName(String name)
+    {
+        return this.declaredAssociationEndsByName.get(name);
     }
 
     private void setAssociationEnds(ImmutableList<AssociationEnd> associationEnds)
@@ -127,10 +134,10 @@ public final class KlassImpl
         {
             throw new IllegalStateException();
         }
-        this.associationEnds = Objects.requireNonNull(associationEnds);
+        this.associationEnds       = Objects.requireNonNull(associationEnds);
         this.associationEndsByName = this.associationEnds.groupByUniqueKey(AssociationEnd::getName);
 
-        this.versionProperty = this.associationEnds.detectOptional(AssociationEnd::isVersion);
+        this.versionProperty   = this.associationEnds.detectOptional(AssociationEnd::isVersion);
         this.versionedProperty = this.associationEnds.detectOptional(AssociationEnd::isVersioned);
     }
 
@@ -188,7 +195,7 @@ public final class KlassImpl
         @Nullable
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
 
-        private Optional<KlassBuilder> superClassBuilder;
+        private Optional<KlassBuilder>      superClassBuilder;
         private ImmutableList<KlassBuilder> subClassBuilders;
 
         public KlassBuilder(
