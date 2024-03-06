@@ -44,9 +44,13 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.OrderedMaps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CompilerState
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompilerState.class);
+
     @Nonnull
     private final CompilerInputState      compilerInputState;
     private final CompilerAnnotationState compilerAnnotationHolder = new CompilerAnnotationState();
@@ -145,9 +149,18 @@ public class CompilerState
     @Nonnull
     private DomainModelWithSourceCode buildDomainModel()
     {
-        if (this.compilerAnnotationHolder.hasCompilerAnnotations())
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = this.compilerAnnotationHolder.getCompilerAnnotations();
+        ImmutableList<RootCompilerAnnotation> errors = compilerAnnotations.select(AbstractCompilerAnnotation::isError);
+        ImmutableList<RootCompilerAnnotation> warnings = compilerAnnotations.select(AbstractCompilerAnnotation::isWarning);
+
+        if (errors.notEmpty())
         {
-            throw new AssertionError(this.compilerAnnotationHolder.getCompilerAnnotations().makeString());
+            throw new AssertionError(this.compilerAnnotationHolder.getCompilerAnnotations().makeString("\n"));
+        }
+
+        for (RootCompilerAnnotation warning : warnings)
+        {
+            LOGGER.warn(warning.toString());
         }
 
         ImmutableList<CompilationUnit> compilationUnits   = this.compilerInputState.getCompilationUnits().toImmutable();
