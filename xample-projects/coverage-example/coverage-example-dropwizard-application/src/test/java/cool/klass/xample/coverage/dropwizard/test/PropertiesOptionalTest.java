@@ -27,19 +27,19 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": 1,\n"
-                + "  \"optionalString\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"optionalInteger\": 1,\n"
-                + "  \"optionalLong\": 100000000000,\n"
-                + "  \"optionalDouble\": 1.0123456789,\n"
-                + "  \"optionalFloat\": 1.0123457,\n"
-                + "  \"optionalBoolean\": true,\n"
-                + "  \"optionalInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"optionalLocalDate\": \"1999-12-31\",\n"
-                + "  \"optionalDerived\": \"cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived\"\n"
-                + "}";
+        String expected = """
+                {
+                  "propertiesOptionalId": 1,
+                  "optionalString": "PropertiesOptional optionalString 1 ☝",
+                  "optionalInteger": 1,
+                  "optionalLong": 100000000000,
+                  "optionalDouble": 1.0123456789,
+                  "optionalFloat": 1.0123457,
+                  "optionalBoolean": true,
+                  "optionalInstant": "1999-12-31T23:59:00Z",
+                  "optionalLocalDate": "1999-12-31",
+                  "optionalDerived": "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived"
+                }""";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -59,19 +59,19 @@ public class PropertiesOptionalTest extends AbstractCoverageTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"propertiesOptionalId\": 2,\n"
-                + "  \"optionalString\": null,\n"
-                + "  \"optionalInteger\": null,\n"
-                + "  \"optionalLong\": null,\n"
-                + "  \"optionalDouble\": null,\n"
-                + "  \"optionalFloat\": null,\n"
-                + "  \"optionalBoolean\": null,\n"
-                + "  \"optionalInstant\": null,\n"
-                + "  \"optionalLocalDate\": null,\n"
-                + "  \"optionalDerived\": \"cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived\"\n"
-                + "}";
+        String expected = """
+                {
+                  "propertiesOptionalId": 2,
+                  "optionalString": null,
+                  "optionalInteger": null,
+                  "optionalLong": null,
+                  "optionalDouble": null,
+                  "optionalFloat": null,
+                  "optionalBoolean": null,
+                  "optionalInstant": null,
+                  "optionalLocalDate": null,
+                  "optionalDerived": "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived"
+                }""";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 }

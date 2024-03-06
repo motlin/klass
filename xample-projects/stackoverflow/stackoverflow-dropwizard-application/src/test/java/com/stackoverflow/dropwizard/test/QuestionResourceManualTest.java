@@ -87,34 +87,35 @@ public class QuestionResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"id\": 1,\n"
-                + "  \"title\": \"test title 1\",\n"
-                + "  \"body\": \"test body 1\",\n"
-                + "  \"status\": \"Open\",\n"
-                + "  \"deleted\": false,\n"
-                + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 1\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 2\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 2\n"
-                + "  }\n"
-                + "}\n";
+        String expected = """
+                {
+                  "id": 1,
+                  "title": "test title 1",
+                  "body": "test body 1",
+                  "status": "Open",
+                  "deleted": false,
+                  "systemFrom": "1999-12-31T23:59:59.999Z",
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "tags": [
+                    {
+                      "tag": {
+                        "name": "test tag 1"
+                      }
+                    },
+                    {
+                      "tag": {
+                        "name": "test tag 2"
+                      }
+                    }
+                  ],
+                  "version": {
+                    "number": 2
+                  }
+                }
+                """;
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -126,38 +127,39 @@ public class QuestionResourceManualTest
                 this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_invalid_data");
 
         //language=JSON
-        String invalidJson = ""
-                + "{\n"
-                + "  \"title\": 1,\n"
-                + "  \"status\": \"Invalid Choice\",\n"
-                + "  \"deleted\": [],\n"
-                + "  \"extra\": \"extra\",\n"
-                + "  \"answers\": [\n"
-                + "    {\n"
-                + "      \"body\": 2,\n"
-                + "      \"nestedExtra\": \"nestedExtra\",\n"
-                + "      \"nestedExtraNull\": null\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"name\": [\n"
-                + "        {}\n"
-                + "      ],\n"
-                + "      \"tag\": []\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"name\": {\n"
-                + "        \"name\": {}\n"
-                + "      },\n"
-                + "      \"tag\": {}\n"
-                + "    },\n"
-                + "    \"oops\"\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 20000000000\n"
-                + "  }\n"
-                + "}\n";
+        String invalidJson = """
+                {
+                  "title": 1,
+                  "status": "Invalid Choice",
+                  "deleted": [],
+                  "extra": "extra",
+                  "answers": [
+                    {
+                      "body": 2,
+                      "nestedExtra": "nestedExtra",
+                      "nestedExtraNull": null
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "name": [
+                        {}
+                      ],
+                      "tag": []
+                    },
+                    {
+                      "name": {
+                        "name": {}
+                      },
+                      "tag": {}
+                    },
+                    "oops"
+                  ],
+                  "version": {
+                    "number": 20000000000
+                  }
+                }
+                """;
 
         Response response = client.target(
                         String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
@@ -200,28 +202,29 @@ public class QuestionResourceManualTest
         //<editor-fold desc="POST valid json, status: CREATED">
         {
             //language=JSON
-            String validJson = ""
-                    + "{\n"
-                    + "  \"title\": \"example title 2\",\n"
-                    + "  \"body\": \"example body 2\",\n"
-                    + "  \"status\": \"Open\",\n"
-                    + "  \"deleted\": false,\n"
-                    + "  \"createdById\": \"TODO\",\n"
-                    + "  \"lastUpdatedById\": \"TODO\",\n"
-                    + "  \"answers\": [],\n"
-                    + "  \"tags\": [\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 1\"\n"
-                    + "      }\n"
-                    + "    },\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 3\"\n"
-                    + "      }\n"
-                    + "    }\n"
-                    + "  ]\n"
-                    + "}\n";
+            String validJson = """
+                    {
+                      "title": "example title 2",
+                      "body": "example body 2",
+                      "status": "Open",
+                      "deleted": false,
+                      "createdById": "TODO",
+                      "lastUpdatedById": "TODO",
+                      "answers": [],
+                      "tags": [
+                        {
+                          "tag": {
+                            "name": "test tag 1"
+                          }
+                        },
+                        {
+                          "tag": {
+                            "name": "test tag 3"
+                          }
+                        }
+                      ]
+                    }
+                    """;
 
             Response response = client.target(
                             String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
@@ -251,32 +254,33 @@ public class QuestionResourceManualTest
 
             String jsonResponse = response.readEntity(String.class);
             //language=JSON
-            String expected = ""
-                    + "{\n"
-                    + "  \"id\": 2,\n"
-                    + "  \"title\": \"example title 2\",\n"
-                    + "  \"body\": \"example body 2\",\n"
-                    + "  \"status\": \"Open\",\n"
-                    + "  \"deleted\": false,\n"
-                    + "  \"systemTo\": null,\n"
-                    + "  \"createdById\": \"TODO\",\n"
-                    + "  \"lastUpdatedById\": \"TODO\",\n"
-                    + "  \"tags\": [\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 1\"\n"
-                    + "      }\n"
-                    + "    },\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 3\"\n"
-                    + "      }\n"
-                    + "    }\n"
-                    + "  ],\n"
-                    + "  \"version\": {\n"
-                    + "    \"number\": 1\n"
-                    + "  }\n"
-                    + "}\n";
+            String expected = """
+                    {
+                      "id": 2,
+                      "title": "example title 2",
+                      "body": "example body 2",
+                      "status": "Open",
+                      "deleted": false,
+                      "systemTo": null,
+                      "createdById": "TODO",
+                      "lastUpdatedById": "TODO",
+                      "tags": [
+                        {
+                          "tag": {
+                            "name": "test tag 1"
+                          }
+                        },
+                        {
+                          "tag": {
+                            "name": "test tag 3"
+                          }
+                        }
+                      ],
+                      "version": {
+                        "number": 1
+                      }
+                    }
+                    """;
             JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
         }
         //</editor-fold>
@@ -289,35 +293,36 @@ public class QuestionResourceManualTest
         Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_invalid_id");
 
         //language=JSON
-        String json = ""
-                + "{\n"
-                + "  \"id\": 2,\n"
-                + "  \"title\": \"edited title 1\",\n"
-                + "  \"body\": \"edited body 1\",\n"
-                + "  \"status\": \"On hold\",\n"
-                + "  \"deleted\": true,\n"
-                + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"answers\": [],\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 1\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 3\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 2\n"
-                + "  }\n"
-                + "}\n";
+        String json = """
+                {
+                  "id": 2,
+                  "title": "edited title 1",
+                  "body": "edited body 1",
+                  "status": "On hold",
+                  "deleted": true,
+                  "systemFrom": "1999-12-31T23:59:59.999Z",
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "answers": [],
+                  "tags": [
+                    {
+                      "tag": {
+                        "name": "test tag 1"
+                      }
+                    },
+                    {
+                      "tag": {
+                        "name": "test tag 3"
+                      }
+                    }
+                  ],
+                  "version": {
+                    "number": 2
+                  }
+                }
+                """;
 
         Response response = client.target(
                         String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
@@ -337,18 +342,19 @@ public class QuestionResourceManualTest
         Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_conflict");
 
         //language=JSON
-        String validJson = ""
-                + "{\n"
-                + "  \"title\": \"edited title 1\",\n"
-                + "  \"body\": \"edited body 1\",\n"
-                + "  \"status\": \"Open\",\n"
-                + "  \"deleted\": false,\n"
-                + "  \"answers\": [],\n"
-                + "  \"tags\": [],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 2\n"
-                + "  }\n"
-                + "}\n";
+        String validJson = """
+                {
+                  "title": "edited title 1",
+                  "body": "edited body 1",
+                  "status": "Open",
+                  "deleted": false,
+                  "answers": [],
+                  "tags": [],
+                  "version": {
+                    "number": 2
+                  }
+                }
+                """;
 
         Response response = client.target(
                         String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
@@ -371,34 +377,35 @@ public class QuestionResourceManualTest
         //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
             //language=JSON
-            String validJson = ""
-                    + "{\n"
-                    + "  \"id\": 1,\n"
-                    + "  \"title\": \"edited title 1\",\n"
-                    + "  \"body\": \"edited body 1\",\n"
-                    + "  \"status\": \"On hold\",\n"
-                    + "  \"deleted\": true,\n"
-                    + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                    + "  \"systemTo\": null,\n"
-                    + "  \"createdById\": \"test user 1\",\n"
-                    + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                    + "  \"lastUpdatedById\": \"test user 1\",\n"
-                    + "  \"tags\": [\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 1\"\n"
-                    + "      }\n"
-                    + "    },\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 3\"\n"
-                    + "      }\n"
-                    + "    }\n"
-                    + "  ],\n"
-                    + "  \"version\": {\n"
-                    + "    \"number\": 2\n"
-                    + "  }\n"
-                    + "}\n";
+            String validJson = """
+                    {
+                      "id": 1,
+                      "title": "edited title 1",
+                      "body": "edited body 1",
+                      "status": "On hold",
+                      "deleted": true,
+                      "systemFrom": "1999-12-31T23:59:59.999Z",
+                      "systemTo": null,
+                      "createdById": "test user 1",
+                      "createdOn": "1999-12-31T23:59:59.999Z",
+                      "lastUpdatedById": "test user 1",
+                      "tags": [
+                        {
+                          "tag": {
+                            "name": "test tag 1"
+                          }
+                        },
+                        {
+                          "tag": {
+                            "name": "test tag 3"
+                          }
+                        }
+                      ],
+                      "version": {
+                        "number": 2
+                      }
+                    }
+                    """;
 
             Response response = client.target(
                             String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
@@ -421,33 +428,33 @@ public class QuestionResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"id\": 1,\n"
-                + "  \"title\": \"edited title 1\",\n"
-                + "  \"body\": \"edited body 1\",\n"
-                + "  \"status\": \"On hold\",\n"
-                + "  \"deleted\": true,\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 1\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 3\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 3\n"
-                + "  }\n"
-                + "}";
+        String expected = """
+                {
+                  "id": 1,
+                  "title": "edited title 1",
+                  "body": "edited body 1",
+                  "status": "On hold",
+                  "deleted": true,
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "tags": [
+                    {
+                      "tag": {
+                        "name": "test tag 1"
+                      }
+                    },
+                    {
+                      "tag": {
+                        "name": "test tag 3"
+                      }
+                    }
+                  ],
+                  "version": {
+                    "number": 3
+                  }
+                }""";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
 
         // TODO: PUT with owned children, with all four cases of unchanged, created, updated, deleted
@@ -461,34 +468,35 @@ public class QuestionResourceManualTest
         Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_unchanged");
 
         //language=JSON
-        String json = ""
-                + "{\n"
-                + "  \"id\": 1,\n"
-                + "  \"title\": \"test title 1\",\n"
-                + "  \"body\": \"test body 1\",\n"
-                + "  \"status\": \"Open\",\n"
-                + "  \"deleted\": false,\n"
-                + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"tags\": [\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 1\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"tag\": {\n"
-                + "        \"name\": \"test tag 2\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ],\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 2\n"
-                + "  }\n"
-                + "}\n";
+        String json = """
+                {
+                  "id": 1,
+                  "title": "test title 1",
+                  "body": "test body 1",
+                  "status": "Open",
+                  "deleted": false,
+                  "systemFrom": "1999-12-31T23:59:59.999Z",
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "tags": [
+                    {
+                      "tag": {
+                        "name": "test tag 1"
+                      }
+                    },
+                    {
+                      "tag": {
+                        "name": "test tag 2"
+                      }
+                    }
+                  ],
+                  "version": {
+                    "number": 2
+                  }
+                }
+                """;
 
         Response response = client.target(
                         String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))

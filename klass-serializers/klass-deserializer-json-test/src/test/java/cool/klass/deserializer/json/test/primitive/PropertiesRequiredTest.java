@@ -17,18 +17,19 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_good() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 1,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": 1,\n"
-                + "  \"requiredLong\": 100000000000,\n"
-                + "  \"requiredDouble\": 1.0123456789,\n"
-                + "  \"requiredFloat\": 1.0123457,\n"
-                + "  \"requiredBoolean\": true,\n"
-                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": 1,
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": 1,
+                  "requiredLong": 100000000000,
+                  "requiredDouble": 1.0123456789,
+                  "requiredFloat": 1.0123457,
+                  "requiredBoolean": true,
+                  "requiredInstant": "1999-12-31T23:59:00Z",
+                  "requiredLocalDate": "1999-12-31"
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
@@ -40,35 +41,36 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_extra_properties() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 1,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": 1,\n"
-                + "  \"requiredLong\": 100000000000,\n"
-                + "  \"requiredDouble\": 1.0123456789,\n"
-                + "  \"requiredFloat\": 1.0123457,\n"
-                + "  \"requiredBoolean\": true,\n"
-                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
-                + "  \"requiredDerived\": \"PropertiesRequired requiredDerived 1 ☝\",\n"
-                + "  \"system\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "  \"lastUpdatedById\": \"test user 1\",\n"
-                + "  \"version\": {\n"
-                + "    \"propertiesRequiredId\": 1,\n"
-                + "    \"number\": 1,\n"
-                + "    \"system\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"systemTo\": null,\n"
-                + "    \"createdById\": \"test user 1\",\n"
-                + "    \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "    \"lastUpdatedById\": \"test user 1\",\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": 1,
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": 1,
+                  "requiredLong": 100000000000,
+                  "requiredDouble": 1.0123456789,
+                  "requiredFloat": 1.0123457,
+                  "requiredBoolean": true,
+                  "requiredInstant": "1999-12-31T23:59:00Z",
+                  "requiredLocalDate": "1999-12-31",
+                  "requiredDerived": "PropertiesRequired requiredDerived 1 ☝",
+                  "system": "1999-12-31T23:59:59.999Z",
+                  "systemFrom": "1999-12-31T23:59:59.999Z",
+                  "systemTo": null,
+                  "createdById": "test user 1",
+                  "createdOn": "1999-12-31T23:59:59.999Z",
+                  "lastUpdatedById": "test user 1",
+                  "version": {
+                    "propertiesRequiredId": 1,
+                    "number": 1,
+                    "system": "1999-12-31T23:59:59.999Z",
+                    "systemFrom": "1999-12-31T23:59:59.999Z",
+                    "systemTo": null,
+                    "createdById": "test user 1",
+                    "createdOn": "1999-12-31T23:59:59.999Z",
+                    "lastUpdatedById": "test user 1",
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
@@ -109,26 +111,27 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_expected_primitive_actual_array() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": [],\n"
-                + "  \"requiredString\": [],\n"
-                + "  \"requiredInteger\": [],\n"
-                + "  \"requiredLong\": [],\n"
-                + "  \"requiredDouble\": [],\n"
-                + "  \"requiredFloat\": [],\n"
-                + "  \"requiredBoolean\": [],\n"
-                + "  \"requiredInstant\": [],\n"
-                + "  \"requiredLocalDate\": [],\n"
-                + "  \"requiredDerived\": [],\n"
-                + "  \"system\": [],\n"
-                + "  \"systemFrom\": [],\n"
-                + "  \"systemTo\": [],\n"
-                + "  \"createdById\": [],\n"
-                + "  \"createdOn\": [],\n"
-                + "  \"lastUpdatedById\": [],\n"
-                + "  \"version\": [],\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": [],
+                  "requiredString": [],
+                  "requiredInteger": [],
+                  "requiredLong": [],
+                  "requiredDouble": [],
+                  "requiredFloat": [],
+                  "requiredBoolean": [],
+                  "requiredInstant": [],
+                  "requiredLocalDate": [],
+                  "requiredDerived": [],
+                  "system": [],
+                  "systemFrom": [],
+                  "systemTo": [],
+                  "createdById": [],
+                  "createdOn": [],
+                  "lastUpdatedById": [],
+                  "version": [],
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesRequired.propertiesRequiredId. Expected property with type 'PropertiesRequired.propertiesRequiredId: Long' but got '[]' with type 'array'.",
@@ -166,26 +169,27 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_expected_primitive_actual_object() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": {},\n"
-                + "  \"requiredString\": {},\n"
-                + "  \"requiredInteger\": {},\n"
-                + "  \"requiredLong\": {},\n"
-                + "  \"requiredDouble\": {},\n"
-                + "  \"requiredFloat\": {},\n"
-                + "  \"requiredBoolean\": {},\n"
-                + "  \"requiredInstant\": {},\n"
-                + "  \"requiredLocalDate\": {},\n"
-                + "  \"requiredDerived\": {},\n"
-                + "  \"system\": {},\n"
-                + "  \"systemFrom\": {},\n"
-                + "  \"systemTo\": {},\n"
-                + "  \"createdById\": {},\n"
-                + "  \"createdOn\": {},\n"
-                + "  \"lastUpdatedById\": {},\n"
-                + "  \"version\": {},\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": {},
+                  "requiredString": {},
+                  "requiredInteger": {},
+                  "requiredLong": {},
+                  "requiredDouble": {},
+                  "requiredFloat": {},
+                  "requiredBoolean": {},
+                  "requiredInstant": {},
+                  "requiredLocalDate": {},
+                  "requiredDerived": {},
+                  "system": {},
+                  "systemFrom": {},
+                  "systemTo": {},
+                  "createdById": {},
+                  "createdOn": {},
+                  "lastUpdatedById": {},
+                  "version": {},
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesRequired.propertiesRequiredId. Expected property with type 'PropertiesRequired.propertiesRequiredId: Long' but got '{}' with type 'object'.",
@@ -222,26 +226,27 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_expected_primitive_actual_null() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": null,\n"
-                + "  \"requiredString\": null,\n"
-                + "  \"requiredInteger\": null,\n"
-                + "  \"requiredLong\": null,\n"
-                + "  \"requiredDouble\": null,\n"
-                + "  \"requiredFloat\": null,\n"
-                + "  \"requiredBoolean\": null,\n"
-                + "  \"requiredInstant\": null,\n"
-                + "  \"requiredLocalDate\": null,\n"
-                + "  \"requiredDerived\": null,\n"
-                + "  \"system\": null,\n"
-                + "  \"systemFrom\": null,\n"
-                + "  \"systemTo\": null,\n"
-                + "  \"createdById\": null,\n"
-                + "  \"createdOn\": null,\n"
-                + "  \"lastUpdatedById\": null,\n"
-                + "  \"version\": null,\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": null,
+                  "requiredString": null,
+                  "requiredInteger": null,
+                  "requiredLong": null,
+                  "requiredDouble": null,
+                  "requiredFloat": null,
+                  "requiredBoolean": null,
+                  "requiredInstant": null,
+                  "requiredLocalDate": null,
+                  "requiredDerived": null,
+                  "system": null,
+                  "systemFrom": null,
+                  "systemTo": null,
+                  "createdById": null,
+                  "createdOn": null,
+                  "lastUpdatedById": null,
+                  "version": null,
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredString: String' but value was null.",
@@ -270,26 +275,27 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
     public void validate_expected_primitive_actual_string() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredLong\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredDouble\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredFloat\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredBoolean\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInstant\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredLocalDate\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredDerived\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"system\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"systemFrom\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"systemTo\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"createdById\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"createdOn\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"lastUpdatedById\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"version\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "propertiesRequiredId": "PropertiesRequired requiredString 1 ☝",
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": "PropertiesRequired requiredString 1 ☝",
+                  "requiredLong": "PropertiesRequired requiredString 1 ☝",
+                  "requiredDouble": "PropertiesRequired requiredString 1 ☝",
+                  "requiredFloat": "PropertiesRequired requiredString 1 ☝",
+                  "requiredBoolean": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInstant": "PropertiesRequired requiredString 1 ☝",
+                  "requiredLocalDate": "PropertiesRequired requiredString 1 ☝",
+                  "requiredDerived": "PropertiesRequired requiredString 1 ☝",
+                  "system": "PropertiesRequired requiredString 1 ☝",
+                  "systemFrom": "PropertiesRequired requiredString 1 ☝",
+                  "systemTo": "PropertiesRequired requiredString 1 ☝",
+                  "createdById": "PropertiesRequired requiredString 1 ☝",
+                  "createdOn": "PropertiesRequired requiredString 1 ☝",
+                  "lastUpdatedById": "PropertiesRequired requiredString 1 ☝",
+                  "version": "PropertiesRequired requiredString 1 ☝",
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at PropertiesRequired.propertiesRequiredId. Expected property with type 'PropertiesRequired.propertiesRequiredId: Long' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",

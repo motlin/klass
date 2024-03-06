@@ -160,11 +160,12 @@ public class EveryTypeKeyPropertyTest extends AbstractCoverageTest
         String jsonResponse = response.readEntity(String.class);
 
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"code\" : 405,\n"
-                + "  \"message\" : \"HTTP 405 Method Not Allowed\"\n"
-                + "}\n";
+        String expected = """
+                {
+                  "code" : 405,
+                  "message" : "HTTP 405 Method Not Allowed"
+                }
+                """;
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 

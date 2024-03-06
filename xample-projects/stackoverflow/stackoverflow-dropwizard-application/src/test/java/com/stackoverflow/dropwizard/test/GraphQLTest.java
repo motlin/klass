@@ -68,57 +68,57 @@ public class GraphQLTest
         Client client = this.getClient("com.stackoverflow.dropwizard.test.GraphQLTest.smokeTest");
 
         //language=GraphQL
-        String query = ""
-                + "query {\n"
-                + "    question(id: 1) {\n"
-                + "        id,\n"
-                + "        title,\n"
-                + "        body,\n"
-                + "        status,\n"
-                + "        deleted,\n"
-                + "        systemFrom,\n"
-                + "        systemTo,\n"
-                + "        createdById,\n"
-                + "        createdOn,\n"
-                + "        lastUpdatedById,\n"
-                + "        tags {\n"
-                + "            name,\n"
-                + "        },\n"
-                + "        version {\n"
-                + "            number,\n"
-                + "        },\n"
-                + "    }\n"
-                + "}";
+        String query = """
+                query {
+                    question(id: 1) {
+                        id,
+                        title,
+                        body,
+                        status,
+                        deleted,
+                        systemFrom,
+                        systemTo,
+                        createdById,
+                        createdOn,
+                        lastUpdatedById,
+                        tags {
+                            name,
+                        },
+                        version {
+                            number,
+                        },
+                    }
+                }""";
 
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"data\": {\n"
-                + "    \"question\": {\n"
-                + "      \"id\": 1,\n"
-                + "      \"title\": \"test title 1\",\n"
-                + "      \"body\": \"test body 1\",\n"
-                + "      \"status\": \"OPEN\",\n"
-                + "      \"deleted\": false,\n"
-                + "      \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "      \"systemTo\": null,\n"
-                + "      \"createdById\": \"test user 1\",\n"
-                + "      \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                + "      \"lastUpdatedById\": \"test user 1\",\n"
-                + "      \"tags\": [\n"
-                + "        {\n"
-                + "          \"name\": \"test tag 1\"\n"
-                + "        },\n"
-                + "        {\n"
-                + "          \"name\": \"test tag 2\"\n"
-                + "        }\n"
-                + "      ],\n"
-                + "      \"version\": {\n"
-                + "        \"number\": 2\n"
-                + "      }\n"
-                + "    }\n"
-                + "  }\n"
-                + "}";
+        String expected = """
+                {
+                  "data": {
+                    "question": {
+                      "id": 1,
+                      "title": "test title 1",
+                      "body": "test body 1",
+                      "status": "OPEN",
+                      "deleted": false,
+                      "systemFrom": "1999-12-31T23:59:59.999Z",
+                      "systemTo": null,
+                      "createdById": "test user 1",
+                      "createdOn": "1999-12-31T23:59:59.999Z",
+                      "lastUpdatedById": "test user 1",
+                      "tags": [
+                        {
+                          "name": "test tag 1"
+                        },
+                        {
+                          "name": "test tag 2"
+                        }
+                      ],
+                      "version": {
+                        "number": 2
+                      }
+                    }
+                  }
+                }""";
 
         {
             // POST a body with field `query`

@@ -143,10 +143,11 @@ public class GraphQLRuntimeWiringGenerator
         property.visit(visitor);
 
         return String.format(
-                ""
-                        + "        builder.dataFetcher(\n"
-                        + "                \"%s\",\n"
-                        + "                %s);\n",
+                """
+                                builder.dataFetcher(
+                                        "%s",
+                                        %s);
+                        """,
                 property.getName(),
                 visitor.getSourceCode());
     }

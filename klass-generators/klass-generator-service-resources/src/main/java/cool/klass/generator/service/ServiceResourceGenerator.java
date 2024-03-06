@@ -110,11 +110,12 @@ public class ServiceResourceGenerator
                 .collect(Service::getVerb)
                 .contains(Verb.PUT);
         String writeImports = hasWriteServices
-                ? ""
-                + "import javax.validation.constraints.NotNull;\n"
-                + "import com.fasterxml.jackson.databind.node.ObjectNode;\n"
-                + "import cool.klass.deserializer.json.*;\n"
-                + "import cool.klass.reladomo.persistent.writer.*;\n"
+                ? """
+                import javax.validation.constraints.NotNull;
+                import com.fasterxml.jackson.databind.node.ObjectNode;
+                import cool.klass.deserializer.json.*;
+                import cool.klass.reladomo.persistent.writer.*;
+                """
                 : "";
 
         // @formatter:off

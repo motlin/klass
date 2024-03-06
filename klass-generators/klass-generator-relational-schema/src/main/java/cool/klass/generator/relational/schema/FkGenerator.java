@@ -58,12 +58,16 @@ public final class FkGenerator
                 .collect(DdlGenerator.COLUMN_NAME_CONVERTER::convert)
                 .makeString(", ");
 
-        String format = "alter table %s add constraint %s foreign key (\n"
-                + "    %s\n"
-                + ")\n"
-                + "references %s(\n"
-                + "    %s\n"
-                + ");\n\n";
+        //language=SQL
+        String format = """
+                alter table %s add constraint %s foreign key (
+                    %s
+                )
+                references %s(
+                    %s
+                );
+
+                """;
 
         return format.formatted(
                 tableName,

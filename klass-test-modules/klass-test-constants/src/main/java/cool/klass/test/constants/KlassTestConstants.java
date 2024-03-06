@@ -4,440 +4,440 @@ public final class KlassTestConstants
 {
     //<editor-fold desc="source code">
     //language=Klass
-    public static final String STACK_OVERFLOW_SOURCE_CODE_TEXT = ""
-            + "/*\n"
-            + " * Simplified StackOverflow domain model. One question has many answers.\n"
-            + " */\n"
-            + "\n"
-            + "// TODO: There should be a maven plugin that compiles the klass files and does nothing else, just to fail the build at the right module\n"
-            + "package com.stackoverflow\n"
-            + "\n"
-            + "// 'user' is just a special class that represents logged in users\n"
-            + "// There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable\n"
-            + "user User\n"
-            + "    read\n"
-            + "    systemTemporal\n"
-            + "{\n"
-            + "    // `read` keyword with no projection means create read services with the default read projection\n"
-            + "    // The default read projection includes just this class and all its properties\n"
-            + "    userId                 : String key userId;\n"
-            + "\n"
-            + "    // TODO: String max lengths\n"
-            + "    firstName              : String?;\n"
-            + "    lastName: String?;\n"
-            + "\n"
-            + "    // TODO: Consider adding primitive types like email address and url\n"
-            + "    email                  : String?;\n"
-            + "\n"
-            + "    // TODO: Unique property sets\n"
-            + "}\n"
-            + "\n"
-            + "enumeration Status\n"
-            + "{\n"
-            + "    OPEN(\"Open\"),\n"
-            + "    ON_HOLD(\"On hold\"),\n"
-            + "    CLOSED(\"Closed\"),\n"
-            + "}\n"
-            + "\n"
-            + "interface Document\n"
-            + "{\n"
-            + "    id                     : Long key id;\n"
-            + "    body                   : String;\n"
-            + "\n"
-            + "    // votes          : Vote[0..*];\n"
-            + "}\n"
-            + "\n"
-            + "// TODO: Sets of unique properties other than keys\n"
-            + "// TODO: Try to infer whether a query is for a unique item and assert multiplicity one\n"
-            + "// TODO: Check for ownership cycles and give a good error message\n"
-            + "// TODO: Errors for using reserved names like system, systemFrom, systemTo, etc.\n"
-            + "// TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal\n"
-            + "class Question\n"
-            + "    implements Document\n"
-            + "    read(QuestionReadProjection)\n"
-            + "    systemTemporal\n"
-            + "    versioned\n"
-            + "    audited\n"
-            + "{\n"
-            + "    // TODO: When copying id to QuestionVersion, id should be Long key but not id.\n"
-            + "    id                     : Long key id;\n"
-            + "    title                  : String;\n"
-            + "\n"
-            + "    // TODO: Statemachine\n"
-            + "    status                 : Status;\n"
-            + "    deleted: Boolean;\n"
-            + "\n"
-            + "    // TODO: Consider type inference on paramterized property parameters based on usage in relationship\n"
-            + "    // orderBy natural key ascending is the default\n"
-            + "    answersWithSubstring(substring: String[1..1]): Answer[0..*]\n"
-            + "        orderBy: this.id ascending\n"
-            + "    {\n"
-            + "        this.id == Answer.questionId\n"
-            + "            && Answer.body contains substring\n"
-            + "    }\n"
-            + "\n"
-            + "    activeAnswers(): Answer[0..*]\n"
-            + "    {\n"
-            + "        this.id == Answer.questionId\n"
-            + "            && Answer.deleted == false\n"
-            + "    }\n"
-            + "\n"
-            + "    /*\n"
-            + "    voteBy(userId: String[1..1] userId): QuestionVote[0..1]\n"
-            + "    {\n"
-            + "        this.id == QuestionVote.questionId\n"
-            + "    }\n"
-            + "\n"
-            + "    upvotes: Integer\n"
-            + "    {\n"
-            + "        count(this.votes.direction == VoteDirection.UP)\n"
-            + "    }\n"
-            + "\n"
-            + "    downvotes: Integer\n"
-            + "    {\n"
-            + "        count(this.votes.direction == VoteDirection.DOWN)\n"
-            + "    }\n"
-            + "    */\n"
-            + "\n"
-            + "    // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}\n"
-            + "    system                 : TemporalRange? system;\n"
-            + "\n"
-            + "    // These two properties are implied by systemTemporal, and are not supposed to actually be declared\n"
-            + "    systemFrom             : TemporalInstant? system from;\n"
-            + "    systemTo               : TemporalInstant? system to;\n"
-            + "\n"
-            + "    // TODO: private properties must not be used in projections\n"
-            + "    // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared\n"
-            + "    // They could automatically be part of read projections and not write projections\n"
-            + "    createdById            : String createdBy userId final private;\n"
-            + "\n"
-            + "    // createdOn, or createdDate?\n"
-            + "    createdOn              : Instant createdOn final;\n"
-            + "    lastUpdatedById        : String lastUpdatedBy userId private;\n"
-            + "\n"
-            + "    // createdBy(): User[1..1] createdBy\n"
-            + "    // {\n"
-            + "    //     this.createdById == User.userId\n"
-            + "    // }\n"
-            + "    //\n"
-            + "    // lastUpdatedBy(): User[1..1] lastUpdatedBy\n"
-            + "    // {\n"
-            + "    //     this.lastUpdatedById == User.userId\n"
-            + "    // }\n"
-            + "}\n"
-            + "\n"
-            + "// The _Version class is implied by the versioned annotation, and not supposed to actually be declared\n"
-            + "// TODO: If you do declare one, we'd need a special keyword version instead of class\n"
-            + "// TODO: Needs a syntax like versions(Question)\n"
-            + "// TODO: Error message if versions does point to a version, if the versioned type isn't systemTemporal, maybe also if the versioned type isn't systemTemporal/versioned\n"
-            + "/*\n"
-            + "class QuestionVersion\n"
-            + "    systemTemporal\n"
-            + "    versions(Question)\n"
-            + "{\n"
-            + "    // Key properties copied from Question\n"
-            + "    key id            : ID\n"
-            + "\n"
-            + "    // The version number\n"
-            + "    // It gets incremented automatically when anything in the version projection gets edited\n"
-            + "    // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64\n"
-            + "    // TODO: Consider a primitive property type VersionNumber\n"
-            + "    number            : Integer\n"
-            + "}\n"
-            + "*/\n"
-            + "\n"
-            + "class Answer\n"
-            + "    implements Document\n"
-            + "    systemTemporal\n"
-            + "    versioned\n"
-            + "    audited\n"
-            + "{\n"
-            + "    id                     : Long key id;\n"
-            + "    deleted                : Boolean;\n"
-            + "\n"
-            + "    // TODO: questionId: Long private *final*\n"
-            + "    questionId             : Long private;\n"
-            + "}\n"
-            + "\n"
-            + "// TODO: Error message if versions doesn't point to a version class\n"
-            + "association QuestionHasAnswer\n"
-            + "{\n"
-            + "    question               : Question[1..1] final;\n"
-            + "    answers                : Answer[0..*]\n"
-            + "        orderBy: this.id ascending;\n"
-            + "\n"
-            + "    // ordering by primary key ascending is the default\n"
-            + "}\n"
-            + "\n"
-            + "// The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared\n"
-            + "// It could automatically be part of read projections and not write projections\n"
-            + "/*\n"
-            + "association QuestionHasVersion\n"
-            + "{\n"
-            + "    question: Question[1..1];\n"
-            + "    version: QuestionVersion[1..1];\n"
-            + "\n"
-            + "    // implied\n"
-            + "    relationship this.id == QuestionVersion.id\n"
-            + "            && this.system == QuestionVersion.system\n"
-            + "}\n"
-            + "*/\n"
-            + "\n"
-            + "enumeration VoteDirection\n"
-            + "{\n"
-            + "    UP(\"up\"),\n"
-            + "    DOWN(\"down\"),\n"
-            + "}\n"
-            + "\n"
-            + "interface Vote\n"
-            + "{\n"
-            + "    direction              : VoteDirection;\n"
-            + "}\n"
-            + "\n"
-            + "class AbstractVote\n"
-            + "    abstract(table-per-subclass)\n"
-            + "    implements Vote\n"
-            + "    systemTemporal\n"
-            + "    audited\n"
-            + "{\n"
-            + "    direction              : VoteDirection;\n"
-            + "}\n"
-            + "\n"
-            + "// TODO Model AnswerVote\n"
-            + "// TODO Interface Vote\n"
-            + "// TODO superclass AbstractVote\n"
-            + "// TODO Aggregation for number of upvotes and downvotes\n"
-            + "class QuestionVote\n"
-            + "    extends AbstractVote\n"
-            + "    systemTemporal\n"
-            + "    audited\n"
-            + "{\n"
-            + "    questionId             : Long key;\n"
-            + "    createdById            : String key createdBy userId final;\n"
-            + "    direction              : VoteDirection;\n"
-            + "}\n"
-            + "\n"
-            + "association QuestionHasVotes\n"
-            + "{\n"
-            + "    question               : Question[1..1] final;\n"
-            + "    votes                  : QuestionVote[0..*];\n"
-            + "}\n"
-            + "\n"
-            + "projection QuestionVoteWriteProjection on QuestionVote\n"
-            + "{\n"
-            + "\n"
-            + "}\n"
-            + "\n"
-            + "/*\n"
-            + "service QuestionVote\n"
-            + "{\n"
-            + "    /question/vote/{questionId: Long[1..1]}\n"
-            + "        PUT\n"
-            + "        {\n"
-            + "            multiplicity: one;\n"
-            + "            criteria    : this.questionId == questionId && this.createdById == userId;\n"
-            + "            validate    : this.question.createdById != userId\n"
-            + "                && (this == null\n"
-            + "                || this.systemFrom > now - (5 * 60 * 1000)\n"
-            + "                || this.systemFrom < this.question.systemFrom);\n"
-            + "            projection  : QuestionVoteWriteProjection;\n"
-            + "        }\n"
-            + "        DELETE\n"
-            + "        {\n"
-            + "            multiplicity: one;\n"
-            + "            criteria    : this.questionId == questionId && this.createdById == userId;\n"
-            + "            validate    : this.systemFrom > now - (5 * 60 * 1000)\n"
-            + "                    || this.systemFrom < this.question.systemFrom);\n"
-            + "            projection  : QuestionVoteWriteProjection;\n"
-            + "        }\n"
-            + "}\n"
-            + "*/\n"
-            + "\n"
-            + "class Tag\n"
-            + "    systemTemporal\n"
-            + "    versioned\n"
-            + "    audited\n"
-            + "{\n"
-            + "    name                   : String key;\n"
-            + "    description            : String;\n"
-            + "}\n"
-            + "\n"
-            + "class QuestionTagMapping\n"
-            + "    systemTemporal\n"
-            + "{\n"
-            + "    questionId             : Long key private;\n"
-            + "    tagName                : String key private;\n"
-            + "}\n"
-            + "\n"
-            + "association QuestionHasTagMappings\n"
-            + "{\n"
-            + "    question               : Question[1..1] final;\n"
-            + "    tags: QuestionTagMapping[0..*] owned\n"
-            + "        orderBy: this.tagName;\n"
-            + "}\n"
-            + "\n"
-            + "association TagHasQuestionMappings\n"
-            + "{\n"
-            + "    tag                    : Tag[1..1] final;\n"
-            + "    questions              : QuestionTagMapping[0..*]\n"
-            + "        orderBy: this.questionId;\n"
-            + "}\n"
-            + "\n"
-            + "// TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection\n"
-            + "projection QuestionReadProjection on Question\n"
-            + "{\n"
-            + "    // field names are \"includes\", field values are column headers when serializing to a tabular format\n"
-            + "    id             : \"Question id\",\n"
-            + "    title          : \"Question title\",\n"
-            + "    body           : \"Question body\",\n"
-            + "    status         : \"Question status\",\n"
-            + "    deleted        : \"Question is deleted\",\n"
-            + "    systemFrom     : \"Question system From\",\n"
-            + "    systemTo       : \"Question system To\",\n"
-            + "    createdOn      : \"Question created on\",\n"
-            + "    answers        :\n"
-            + "    {\n"
-            + "        id  : \"Answer id\",\n"
-            + "        body: \"Answer body\",\n"
-            + "    },\n"
-            + "    tags           :\n"
-            + "    {\n"
-            + "        tag:\n"
-            + "        {\n"
-            + "            name: \"Question tag name\",\n"
-            + "        },\n"
-            + "    },\n"
-            + "    version        :\n"
-            + "    {\n"
-            + "        number: \"Question version number\",\n"
-            + "    },\n"
-            + "}\n"
-            + "\n"
-            + "// TODO: Type inference on projection paramters\n"
-            + "/*\n"
-            + "projection FilteredAnswersProjection(substring: String[1..1]) on Question\n"
-            + "{\n"
-            + "    title                          : \"Question title\",\n"
-            + "    body                           : \"Question body\",\n"
-            + "    answersWithSubstring(substring):\n"
-            + "    {\n"
-            + "        body: \"Answer body\",\n"
-            + "    },\n"
-            + "}\n"
-            + "*/\n"
-            + "\n"
-            + "// Just embed inside the Question class?\n"
-            + "service Question\n"
-            + "{\n"
-            + "    // TODO: matrix url params\n"
-            + "    /*\n"
-            + "        /question/{id: Long[1..1]}/{substring: String[1..1]}\n"
-            + "            GET\n"
-            + "            {\n"
-            + "                multiplicity: many\n"
-            + "                criteria    : this.id == id\n"
-            + "                projection  : FilteredAnswersProjection(substring)\n"
-            + "            }\n"
-            + "        /question/{titleSubstring: String[1..1]}\n"
-            + "            GET\n"
-            + "            {\n"
-            + "                multiplicity: many\n"
-            + "                criteria    : this.title startsWith titleSubstring\n"
-            + "                projection  : QuestionReadProjection\n"
-            + "            }\n"
-            + "    */\n"
-            + "\n"
-            + "    // TODO: Service syntax. Parameter must be a message type or projection type.\n"
-            + "    /*\n"
-            + "    read getById(id: Long[1..1]): QuestionReadProjection[1]\n"
-            + "    {\n"
-            + "        resource: QuestionResource\n"
-            + "        url     : /question/{id: Long[1..1]}\n"
-            + "        criteria: this.id == id\n"
-            + "    }\n"
-            + "    */\n"
-            + "\n"
-            + "    // TODO: Consider forcing exact type matches. Meaning id's type here would be ID, not Long.\n"
-            + "    /question/{id: Long[1..1]}\n"
-            + "        GET\n"
-            + "        {\n"
-            + "            multiplicity: one;\n"
-            + "            criteria    : this.id == id;\n"
-            + "            projection  : QuestionReadProjection;\n"
-            + "\n"
-            + "            // TODO: format: json\n"
-            + "        }\n"
-            + "        PUT\n"
-            + "        {\n"
-            + "            // PUT, PATCH, and DELETE should implicitly get ?{version: Integer[1..1]} due to optimistic locking\n"
-            + "            // TODO Version should be a primitive type, as in {version: Version[1..1]}\n"
-            + "            multiplicity: one;\n"
-            + "            criteria    : this.id == id;\n"
-            + "\n"
-            + "            // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed\n"
-            + "            // TODO: Allow anonymous/undeclared projections created from all owned association ends\n"
-            + "        }\n"
-            + "        DELETE\n"
-            + "        {\n"
-            + "            // TODO\n"
-            + "            // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking\n"
-            + "            multiplicity: one;\n"
-            + "            criteria    : this.id == id;\n"
-            + "\n"
-            + "            // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400\n"
-            + "            // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`\n"
-            + "            authorize   : this.createdById == user;\n"
-            + "        }\n"
-            + "    /question/in?{ids: Long[0..*]}\n"
-            + "        GET\n"
-            + "        {\n"
-            + "            multiplicity: many;\n"
-            + "            criteria    : this.id in ids;\n"
-            + "            projection  : QuestionReadProjection;\n"
-            + "        }\n"
-            + "\n"
-            + "    // TODO: Test urls containing unusual characters like emoji, and %20\n"
-            + "    /*\n"
-            + "    /question/firstTwo\n"
-            + "        GET\n"
-            + "        {\n"
-            + "            // TODO: Warn if multiplicity is one and criteria uses in clause, or anything other than equality on a unique property\n"
-            + "            multiplicity: many;\n"
-            + "            criteria    : this.id in (1, 2);\n"
-            + "            projection  : QuestionReadProjection;\n"
-            + "        }\n"
-            + "    */\n"
-            + "    /question\n"
-            + "        POST\n"
-            + "        {\n"
-            + "            multiplicity: one;\n"
-            + "        }\n"
-            + "    /*\n"
-            + "    GET\n"
-            + "    {\n"
-            + "        multiplicity: many;\n"
-            + "        criteria    : this.title startsWith \"Why do\";\n"
-            + "        projection  : QuestionReadProjection;\n"
-            + "    }\n"
-            + "    */\n"
-            + "\n"
-            + "    // TODO: Type inference on url parameters\n"
-            + "    // TODO: Consider adding a primitive type UserId\n"
-            + "    /user/{userId: String[1..1]}/questions\n"
-            + "        GET\n"
-            + "        {\n"
-            + "            //?page=1&pageSize=25\n"
-            + "            multiplicity: many;\n"
-            + "            criteria    : this.createdById == userId;\n"
-            + "            projection  : QuestionReadProjection;\n"
-            + "\n"
-            + "            // Deliberately shallow\n"
-            + "            orderBy     : this.createdOn;\n"
-            + "\n"
-            + "            // pageSize: ???\n"
-            + "            // page: ???\n"
-            + "        }\n"
-            + "}\n";
+    public static final String STACK_OVERFLOW_SOURCE_CODE_TEXT = """
+            /*
+             * Simplified StackOverflow domain model. One question has many answers.
+             */
+
+            // TODO: There should be a maven plugin that compiles the klass files and does nothing else, just to fail the build at the right module
+            package com.stackoverflow
+
+            // 'user' is just a special class that represents logged in users
+            // There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
+            user User
+                read
+                systemTemporal
+            {
+                // `read` keyword with no projection means create read services with the default read projection
+                // The default read projection includes just this class and all its properties
+                userId                 : String key userId;
+
+                // TODO: String max lengths
+                firstName              : String?;
+                lastName: String?;
+
+                // TODO: Consider adding primitive types like email address and url
+                email                  : String?;
+
+                // TODO: Unique property sets
+            }
+
+            enumeration Status
+            {
+                OPEN("Open"),
+                ON_HOLD("On hold"),
+                CLOSED("Closed"),
+            }
+
+            interface Document
+            {
+                id                     : Long key id;
+                body                   : String;
+
+                // votes          : Vote[0..*];
+            }
+
+            // TODO: Sets of unique properties other than keys
+            // TODO: Try to infer whether a query is for a unique item and assert multiplicity one
+            // TODO: Check for ownership cycles and give a good error message
+            // TODO: Errors for using reserved names like system, systemFrom, systemTo, etc.
+            // TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal
+            class Question
+                implements Document
+                read(QuestionReadProjection)
+                systemTemporal
+                versioned
+                audited
+            {
+                // TODO: When copying id to QuestionVersion, id should be Long key but not id.
+                id                     : Long key id;
+                title                  : String;
+
+                // TODO: Statemachine
+                status                 : Status;
+                deleted: Boolean;
+
+                // TODO: Consider type inference on paramterized property parameters based on usage in relationship
+                // orderBy natural key ascending is the default
+                answersWithSubstring(substring: String[1..1]): Answer[0..*]
+                    orderBy: this.id ascending
+                {
+                    this.id == Answer.questionId
+                        && Answer.body contains substring
+                }
+
+                activeAnswers(): Answer[0..*]
+                {
+                    this.id == Answer.questionId
+                        && Answer.deleted == false
+                }
+
+                /*
+                voteBy(userId: String[1..1] userId): QuestionVote[0..1]
+                {
+                    this.id == QuestionVote.questionId
+                }
+
+                upvotes: Integer
+                {
+                    count(this.votes.direction == VoteDirection.UP)
+                }
+
+                downvotes: Integer
+                {
+                    count(this.votes.direction == VoteDirection.DOWN)
+                }
+                */
+
+                // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
+                system                 : TemporalRange? system;
+
+                // These two properties are implied by systemTemporal, and are not supposed to actually be declared
+                systemFrom             : TemporalInstant? system from;
+                systemTo               : TemporalInstant? system to;
+
+                // TODO: private properties must not be used in projections
+                // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
+                // They could automatically be part of read projections and not write projections
+                createdById            : String createdBy userId final private;
+
+                // createdOn, or createdDate?
+                createdOn              : Instant createdOn final;
+                lastUpdatedById        : String lastUpdatedBy userId private;
+
+                // createdBy(): User[1..1] createdBy
+                // {
+                //     this.createdById == User.userId
+                // }
+                //
+                // lastUpdatedBy(): User[1..1] lastUpdatedBy
+                // {
+                //     this.lastUpdatedById == User.userId
+                // }
+            }
+
+            // The _Version class is implied by the versioned annotation, and not supposed to actually be declared
+            // TODO: If you do declare one, we'd need a special keyword version instead of class
+            // TODO: Needs a syntax like versions(Question)
+            // TODO: Error message if versions does point to a version, if the versioned type isn't systemTemporal, maybe also if the versioned type isn't systemTemporal/versioned
+            /*
+            class QuestionVersion
+                systemTemporal
+                versions(Question)
+            {
+                // Key properties copied from Question
+                key id            : ID
+
+                // The version number
+                // It gets incremented automatically when anything in the version projection gets edited
+                // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64
+                // TODO: Consider a primitive property type VersionNumber
+                number            : Integer
+            }
+            */
+
+            class Answer
+                implements Document
+                systemTemporal
+                versioned
+                audited
+            {
+                id                     : Long key id;
+                deleted                : Boolean;
+
+                // TODO: questionId: Long private *final*
+                questionId             : Long private;
+            }
+
+            // TODO: Error message if versions doesn't point to a version class
+            association QuestionHasAnswer
+            {
+                question               : Question[1..1] final;
+                answers                : Answer[0..*]
+                    orderBy: this.id ascending;
+
+                // ordering by primary key ascending is the default
+            }
+
+            // The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared
+            // It could automatically be part of read projections and not write projections
+            /*
+            association QuestionHasVersion
+            {
+                question: Question[1..1];
+                version: QuestionVersion[1..1];
+
+                // implied
+                relationship this.id == QuestionVersion.id
+                        && this.system == QuestionVersion.system
+            }
+            */
+
+            enumeration VoteDirection
+            {
+                UP("up"),
+                DOWN("down"),
+            }
+
+            interface Vote
+            {
+                direction              : VoteDirection;
+            }
+
+            class AbstractVote
+                abstract(table-per-subclass)
+                implements Vote
+                systemTemporal
+                audited
+            {
+                direction              : VoteDirection;
+            }
+
+            // TODO Model AnswerVote
+            // TODO Interface Vote
+            // TODO superclass AbstractVote
+            // TODO Aggregation for number of upvotes and downvotes
+            class QuestionVote
+                extends AbstractVote
+                systemTemporal
+                audited
+            {
+                questionId             : Long key;
+                createdById            : String key createdBy userId final;
+                direction              : VoteDirection;
+            }
+
+            association QuestionHasVotes
+            {
+                question               : Question[1..1] final;
+                votes                  : QuestionVote[0..*];
+            }
+
+            projection QuestionVoteWriteProjection on QuestionVote
+            {
+            }
+
+            /*
+            service QuestionVote
+            {
+                /question/vote/{questionId: Long[1..1]}
+                    PUT
+                    {
+                        multiplicity: one;
+                        criteria    : this.questionId == questionId && this.createdById == userId;
+                        validate    : this.question.createdById != userId
+                            && (this == null
+                            || this.systemFrom > now - (5 * 60 * 1000)
+                            || this.systemFrom < this.question.systemFrom);
+                        projection  : QuestionVoteWriteProjection;
+                    }
+                    DELETE
+                    {
+                        multiplicity: one;
+                        criteria    : this.questionId == questionId && this.createdById == userId;
+                        validate    : this.systemFrom > now - (5 * 60 * 1000)
+                                || this.systemFrom < this.question.systemFrom);
+                        projection  : QuestionVoteWriteProjection;
+                    }
+            }
+            */
+
+            class Tag
+                systemTemporal
+                versioned
+                audited
+            {
+                name                   : String key;
+                description            : String;
+            }
+
+            class QuestionTagMapping
+                systemTemporal
+            {
+                questionId             : Long key private;
+                tagName                : String key private;
+            }
+
+            association QuestionHasTagMappings
+            {
+                question               : Question[1..1] final;
+                tags: QuestionTagMapping[0..*] owned
+                    orderBy: this.tagName;
+            }
+
+            association TagHasQuestionMappings
+            {
+                tag                    : Tag[1..1] final;
+                questions              : QuestionTagMapping[0..*]
+                    orderBy: this.questionId;
+            }
+
+            // TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection
+            projection QuestionReadProjection on Question
+            {
+                // field names are "includes", field values are column headers when serializing to a tabular format
+                id             : "Question id",
+                title          : "Question title",
+                body           : "Question body",
+                status         : "Question status",
+                deleted        : "Question is deleted",
+                systemFrom     : "Question system From",
+                systemTo       : "Question system To",
+                createdOn      : "Question created on",
+                answers        :
+                {
+                    id  : "Answer id",
+                    body: "Answer body",
+                },
+                tags           :
+                {
+                    tag:
+                    {
+                        name: "Question tag name",
+                    },
+                },
+                version        :
+                {
+                    number: "Question version number",
+                },
+            }
+
+            // TODO: Type inference on projection paramters
+            /*
+            projection FilteredAnswersProjection(substring: String[1..1]) on Question
+            {
+                title                          : "Question title",
+                body                           : "Question body",
+                answersWithSubstring(substring):
+                {
+                    body: "Answer body",
+                },
+            }
+            */
+
+            // Just embed inside the Question class?
+            service Question
+            {
+                // TODO: matrix url params
+                /*
+                    /question/{id: Long[1..1]}/{substring: String[1..1]}
+                        GET
+                        {
+                            multiplicity: many
+                            criteria    : this.id == id
+                            projection  : FilteredAnswersProjection(substring)
+                        }
+                    /question/{titleSubstring: String[1..1]}
+                        GET
+                        {
+                            multiplicity: many
+                            criteria    : this.title startsWith titleSubstring
+                            projection  : QuestionReadProjection
+                        }
+                */
+
+                // TODO: Service syntax. Parameter must be a message type or projection type.
+                /*
+                read getById(id: Long[1..1]): QuestionReadProjection[1]
+                {
+                    resource: QuestionResource
+                    url     : /question/{id: Long[1..1]}
+                    criteria: this.id == id
+                }
+                */
+
+                // TODO: Consider forcing exact type matches. Meaning id's type here would be ID, not Long.
+                /question/{id: Long[1..1]}
+                    GET
+                    {
+                        multiplicity: one;
+                        criteria    : this.id == id;
+                        projection  : QuestionReadProjection;
+
+                        // TODO: format: json
+                    }
+                    PUT
+                    {
+                        // PUT, PATCH, and DELETE should implicitly get ?{version: Integer[1..1]} due to optimistic locking
+                        // TODO Version should be a primitive type, as in {version: Version[1..1]}
+                        multiplicity: one;
+                        criteria    : this.id == id;
+
+                        // TODO: Consider 'conflict' 409, 412 Precondition Failed, or 417 Expectation Failed
+                        // TODO: Allow anonymous/undeclared projections created from all owned association ends
+                    }
+                    DELETE
+                    {
+                        // TODO
+                        // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
+                        multiplicity: one;
+                        criteria    : this.id == id;
+
+                        // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400
+                        // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`
+                        authorize   : this.createdById == user;
+                    }
+                /question/in?{ids: Long[0..*]}
+                    GET
+                    {
+                        multiplicity: many;
+                        criteria    : this.id in ids;
+                        projection  : QuestionReadProjection;
+                    }
+
+                // TODO: Test urls containing unusual characters like emoji, and %20
+                /*
+                /question/firstTwo
+                    GET
+                    {
+                        // TODO: Warn if multiplicity is one and criteria uses in clause, or anything other than equality on a unique property
+                        multiplicity: many;
+                        criteria    : this.id in (1, 2);
+                        projection  : QuestionReadProjection;
+                    }
+                */
+                /question
+                    POST
+                    {
+                        multiplicity: one;
+                    }
+                /*
+                GET
+                {
+                    multiplicity: many;
+                    criteria    : this.title startsWith "Why do";
+                    projection  : QuestionReadProjection;
+                }
+                */
+
+                // TODO: Type inference on url parameters
+                // TODO: Consider adding a primitive type UserId
+                /user/{userId: String[1..1]}/questions
+                    GET
+                    {
+                        //?page=1&pageSize=25
+                        multiplicity: many;
+                        criteria    : this.createdById == userId;
+                        projection  : QuestionReadProjection;
+
+                        // Deliberately shallow
+                        orderBy     : this.createdOn;
+
+                        // pageSize: ???
+                        // page: ???
+                    }
+            }
+            """;
     //</editor-fold>
 
     private KlassTestConstants()

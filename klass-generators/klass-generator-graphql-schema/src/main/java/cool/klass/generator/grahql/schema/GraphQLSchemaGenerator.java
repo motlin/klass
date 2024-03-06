@@ -97,10 +97,11 @@ public class GraphQLSchemaGenerator
 
         if (isTemporal)
         {
-            return ""
-                    + "scalar Instant\n"
-                    + "scalar TemporalInstant\n"
-                    + "scalar TemporalRange\n";
+            return """
+                    scalar Instant
+                    scalar TemporalInstant
+                    scalar TemporalRange
+                    """;
         }
 
         return "";

@@ -86,10 +86,11 @@ public class ReladomoMergeHookGenerator
                 .makeString("");
 
         String setAuditPropertiesOnCreateSourceCode = klass.isAudited()
-                ? ""
-                + "        version.setCreatedOn(newObject.getCreatedOn());\n"
-                + "        version.setCreatedById(newObject.getCreatedById());\n"
-                + "        version.setLastUpdatedById(newObject.getLastUpdatedById());\n"
+                ? """
+                        version.setCreatedOn(newObject.getCreatedOn());
+                        version.setCreatedById(newObject.getCreatedById());
+                        version.setLastUpdatedById(newObject.getLastUpdatedById());
+                """
                 : "";
 
         String setAuditPropertiesOnUpdateSourceCode = klass.isAudited()

@@ -31,19 +31,19 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 1,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": 1,\n"
-                + "  \"requiredLong\": 100000000000,\n"
-                + "  \"requiredDouble\": 1.0123456789,\n"
-                + "  \"requiredFloat\": 1.0123457,\n"
-                + "  \"requiredBoolean\": true,\n"
-                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
-                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
-                + "}";
+        String expected = """
+                {
+                  "propertiesRequiredId": 1,
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": 1,
+                  "requiredLong": 100000000000,
+                  "requiredDouble": 1.0123456789,
+                  "requiredFloat": 1.0123457,
+                  "requiredBoolean": true,
+                  "requiredInstant": "1999-12-31T23:59:00Z",
+                  "requiredLocalDate": "1999-12-31",
+                  "requiredDerived": "cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived"
+                }""";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -63,19 +63,19 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 2,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 2 ✌\",\n"
-                + "  \"requiredInteger\": 2,\n"
-                + "  \"requiredLong\": 200000000000,\n"
-                + "  \"requiredDouble\": 2.0123456789,\n"
-                + "  \"requiredFloat\": 2.0123456,\n"
-                + "  \"requiredBoolean\": false,\n"
-                + "  \"requiredInstant\": \"2000-01-01T00:00:00Z\",\n"
-                + "  \"requiredLocalDate\": \"2000-01-01\",\n"
-                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
-                + "}";
+        String expected = """
+                {
+                  "propertiesRequiredId": 2,
+                  "requiredString": "PropertiesRequired requiredString 2 ✌",
+                  "requiredInteger": 2,
+                  "requiredLong": 200000000000,
+                  "requiredDouble": 2.0123456789,
+                  "requiredFloat": 2.0123456,
+                  "requiredBoolean": false,
+                  "requiredInstant": "2000-01-01T00:00:00Z",
+                  "requiredLocalDate": "2000-01-01",
+                  "requiredDerived": "cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived"
+                }""";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 
@@ -86,21 +86,22 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 "cool.klass.xample.coverage.dropwizard.test.PropertiesRequiredTest.putFirst");
 
         //language=JSON
-        String json = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 1,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": 1,\n"
-                + "  \"requiredLong\": 100000000000,\n"
-                + "  \"requiredDouble\": 1.0123456789,\n"
-                + "  \"requiredFloat\": 1.0123457,\n"
-                + "  \"requiredBoolean\": true,\n"
-                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
-                + "  \"version\": {\n"
-                + "    \"number\": 1\n"
-                + "  }\n"
-                + "}\n";
+        String json = """
+                {
+                  "propertiesRequiredId": 1,
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": 1,
+                  "requiredLong": 100000000000,
+                  "requiredDouble": 1.0123456789,
+                  "requiredFloat": 1.0123457,
+                  "requiredBoolean": true,
+                  "requiredInstant": "1999-12-31T23:59:00Z",
+                  "requiredLocalDate": "1999-12-31",
+                  "version": {
+                    "number": 1
+                  }
+                }
+                """;
 
         Response putResponse = client.target(
                 String.format("http://localhost:%d/api/propertiesRequired/{id}", this.appRule.getLocalPort()))
@@ -121,19 +122,20 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
 
         String jsonResponse = getResponse.readEntity(String.class);
         //language=JSON
-        String expected = ""
-                + "{\n"
-                + "  \"propertiesRequiredId\": 1,\n"
-                + "  \"requiredString\": \"PropertiesRequired requiredString 1 ☝\",\n"
-                + "  \"requiredInteger\": 1,\n"
-                + "  \"requiredLong\": 100000000000,\n"
-                + "  \"requiredDouble\": 1.0123456789,\n"
-                + "  \"requiredFloat\": 1.0123457,\n"
-                + "  \"requiredBoolean\": true,\n"
-                + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
-                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
-                + "}\n";
+        String expected = """
+                {
+                  "propertiesRequiredId": 1,
+                  "requiredString": "PropertiesRequired requiredString 1 ☝",
+                  "requiredInteger": 1,
+                  "requiredLong": 100000000000,
+                  "requiredDouble": 1.0123456789,
+                  "requiredFloat": 1.0123457,
+                  "requiredBoolean": true,
+                  "requiredInstant": "1999-12-31T23:59:00Z",
+                  "requiredLocalDate": "1999-12-31",
+                  "requiredDerived": "cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived"
+                }
+                """;
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
 }
