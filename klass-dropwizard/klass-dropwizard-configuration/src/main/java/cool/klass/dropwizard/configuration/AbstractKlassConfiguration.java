@@ -1,5 +1,6 @@
 package cool.klass.dropwizard.configuration;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,7 +36,7 @@ public class AbstractKlassConfiguration extends Configuration
     private @Valid @NotNull H2Factory                h2Factory                = new H2Factory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();
     private @Valid @NotNull DdlExecutorFactory       ddlExecutorFactory       = new DdlExecutorFactory();
-    private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories;
+    private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories      = Arrays.asList();
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory         = new EnabledFactory();
     private @Valid @NotNull ReladomoFactory          reladomoFactory          = new ReladomoFactory();
