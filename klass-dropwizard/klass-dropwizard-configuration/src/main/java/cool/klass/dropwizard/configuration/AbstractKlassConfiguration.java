@@ -14,6 +14,7 @@ import cool.klass.dropwizard.configuration.config.logging.ConfigLoggingFactoryPr
 import cool.klass.dropwizard.configuration.cors.CorsFactory;
 import cool.klass.dropwizard.configuration.cors.CorsFactoryProvider;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
+import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
@@ -39,7 +40,8 @@ public class AbstractKlassConfiguration extends Configuration
         ObjectMapperFactoryProvider,
         ReladomoFactoryProvider,
         SampleDataFactoryProvider,
-        ConfigLoggingFactoryProvider
+        ConfigLoggingFactoryProvider,
+        DataStoreFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
@@ -60,7 +62,6 @@ public class AbstractKlassConfiguration extends Configuration
         return this.getKlassFactory().getDataStoreFactory();
     }
 
-    @Override
     @JsonIgnore
     public DomainModelFactory getDomainModelFactory()
     {
