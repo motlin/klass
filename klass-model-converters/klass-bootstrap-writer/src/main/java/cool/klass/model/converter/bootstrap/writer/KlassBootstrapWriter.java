@@ -442,7 +442,6 @@ public class KlassBootstrapWriter
 
                 var bootstrappedPrimitiveProperty = new klass.model.meta.domain.PrimitiveProperty();
                 this.handleDataTypeProperty(classifier, dataTypeProperty, bootstrappedPrimitiveProperty);
-                bootstrappedPrimitiveProperty.setId(dataTypeProperty.isID());
                 bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getPrettyName());
                 bootstrappedPrimitiveProperty.insert();
 
@@ -475,7 +474,6 @@ public class KlassBootstrapWriter
     {
         KlassBootstrapWriter.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
         bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
-        bootstrappedDataTypeProperty.setKey(dataTypeProperty.isKey());
         bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
     }
 

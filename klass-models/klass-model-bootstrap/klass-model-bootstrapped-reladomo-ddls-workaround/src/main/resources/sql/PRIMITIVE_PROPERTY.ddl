@@ -4,6 +4,5 @@ create table PRIMITIVE_PROPERTY
 (
     classifier_name varchar(256) not null,
     name varchar(256) not null,
-    primitive_type varchar(256) not null,
-    id boolean not null
+    primitive_type varchar(256) not null
 );

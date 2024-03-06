@@ -129,14 +129,12 @@ class DataTypeProperty
 {
     classifierName                : String key maximumLength(256);
     optional                      : Boolean;
-    key                           : Boolean;
 }
 
 class PrimitiveProperty
     extends DataTypeProperty
 {
     primitiveType                 : PrimitiveType maximumLength(256);
-    id                            : Boolean;
 }
 
 class EnumerationProperty
@@ -1048,8 +1046,6 @@ projection InterfaceProjection on Interface
         inferred           : "Primitive property inferred",
         primitiveType      : "Primitive property type",
         optional           : "Primitive property is optional",
-        key                : "Primitive property is key",
-        id                 : "Primitive property is id",
         ordinal            : "Primitive property ordinal",
         propertyModifiers  :
         {
@@ -1079,7 +1075,6 @@ projection InterfaceProjection on Interface
         name               : "Enumeration property name",
         inferred           : "Enumeration property inferred",
         optional           : "Enumeration property is optional",
-        key                : "Enumeration property is key",
         ordinal            : "Enumeration property ordinal",
         enumeration        :
         {
@@ -1154,8 +1149,6 @@ projection DataTypePropertyProjection on DataTypeProperty
     inferred                       : "Property inferred",
     PrimitiveProperty.primitiveType: "Property primitive type",
     optional                       : "Property is optional",
-    key                            : "Property is key",
-    PrimitiveProperty.id           : "Property is id",
     ordinal                        : "Property ordinal",
     EnumerationProperty.enumeration:
     {
@@ -1192,8 +1185,6 @@ projection PrimitivePropertyProjection on PrimitiveProperty
     inferred           : "Primitive property inferred",
     primitiveType      : "Primitive property type",
     optional           : "Primitive property is optional",
-    key                : "Primitive property is key",
-    id                 : "Primitive property is id",
     ordinal            : "Primitive property ordinal",
     propertyModifiers  :
     {
@@ -1224,8 +1215,6 @@ projection PrimitivePropertySummaryProjection on PrimitiveProperty
     name               : "Primitive property name",
     primitiveType      : "Primitive property type",
     optional           : "Primitive property is optional",
-    key                : "Primitive property is key",
-    id                 : "Primitive property is id",
     propertyModifiers  :
     {
         name    : "Primitive property modifier name",
@@ -1253,7 +1242,6 @@ projection EnumerationPropertyProjection on EnumerationProperty
     name               : "Enumeration property name",
     inferred           : "Enumeration property inferred",
     optional           : "Enumeration property is optional",
-    key                : "Enumeration property is key",
     ordinal            : "Enumeration property ordinal",
     enumeration        :
     {
@@ -1280,7 +1268,6 @@ projection EnumerationPropertySummaryProjection on EnumerationProperty
 {
     name               : "Enumeration property name",
     optional           : "Enumeration property is optional",
-    key                : "Enumeration property is key",
     enumeration        :
     {
         name    : "Enumeration name",

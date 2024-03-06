@@ -9,8 +9,6 @@
         "name": "inferred",
         "primitiveType": "Boolean",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -21,8 +19,6 @@
         "name": "sourceCode",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -35,8 +31,6 @@
         "name": "sourceCodeWithInference",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -64,8 +58,6 @@
         "name": "name",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -82,8 +74,6 @@
         "name": "ordinal",
         "primitiveType": "Integer",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -109,8 +99,6 @@
         "name": "packageName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {

@@ -14,8 +14,6 @@
       "name": "packageName",
       "primitiveType": "String",
       "optional": false,
-      "key": false,
-      "id": false,
       "propertyModifiers": [],
       "minLengthValidation": null,
       "maxLengthValidation": {

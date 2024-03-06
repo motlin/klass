@@ -20,8 +20,6 @@
       "inferred": false,
       "primitiveType": "String",
       "optional": false,
-      "key": false,
-      "id": false,
       "ordinal": 1,
       "propertyModifiers": [],
       "minLengthValidation": null,

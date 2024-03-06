@@ -10,8 +10,6 @@
         "name": "inferred",
         "primitiveType": "Boolean",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -22,8 +20,6 @@
         "name": "sourceCode",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -36,8 +32,6 @@
         "name": "sourceCodeWithInference",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -66,8 +60,6 @@
         "name": "name",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -84,8 +76,6 @@
         "name": "ordinal",
         "primitiveType": "Integer",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -112,8 +102,6 @@
         "name": "packageName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -159,8 +147,6 @@
         "name": "enumerationName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -177,8 +163,6 @@
         "name": "prettyName",
         "primitiveType": "String",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -230,8 +214,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -251,8 +233,6 @@
         "name": "interfaceName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -285,8 +265,6 @@
         "name": "superClassName",
         "primitiveType": "String",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -304,7 +282,6 @@
       {
         "name": "inheritanceType",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "InheritanceType"
         },
@@ -334,8 +311,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -352,20 +327,6 @@
         "name": "optional",
         "primitiveType": "Boolean",
         "optional": false,
-        "key": false,
-        "id": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "key",
-        "primitiveType": "Boolean",
-        "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -384,25 +345,11 @@
     },
     "superInterfaces": [],
     "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Boolean",
-        "optional": false,
-        "key": false,
-        "id": false,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
+    "primitiveProperties": [],
     "enumerationProperties": [
       {
         "name": "primitiveType",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "PrimitiveType"
         },
@@ -428,8 +375,6 @@
         "name": "enumerationName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -478,8 +423,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -496,8 +439,6 @@
         "name": "propertyName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -514,8 +455,6 @@
         "name": "number",
         "primitiveType": "Integer",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -591,8 +530,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -609,8 +546,6 @@
         "name": "propertyName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -644,8 +579,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -679,8 +612,6 @@
         "name": "criteriaId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -712,8 +643,6 @@
         "name": "owningClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -733,8 +662,6 @@
         "name": "associationName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -747,8 +674,6 @@
         "name": "resultTypeName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -766,7 +691,6 @@
       {
         "name": "direction",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "AssociationEndDirection"
         },
@@ -779,7 +703,6 @@
       {
         "name": "multiplicity",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "Multiplicity"
         },
@@ -809,8 +732,6 @@
         "name": "owningClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -827,8 +748,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -862,8 +781,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": true,
         "propertyModifiers": [
           {
             "name": "id"
@@ -894,8 +811,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -926,8 +841,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -945,8 +858,6 @@
         "name": "leftId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -961,8 +872,6 @@
         "name": "rightId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -990,8 +899,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1022,8 +929,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1054,8 +959,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1073,8 +976,6 @@
         "name": "sourceExpressionId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1089,8 +990,6 @@
         "name": "targetExpressionId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1106,7 +1005,6 @@
       {
         "name": "operator",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "Operator"
         },
@@ -1132,8 +1030,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1151,8 +1047,6 @@
         "name": "memberReferencePathId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1178,8 +1072,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": true,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1210,8 +1102,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1242,8 +1132,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1274,8 +1162,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1293,8 +1179,6 @@
         "name": "parameterId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1326,8 +1210,6 @@
         "name": "name",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -1340,8 +1222,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": true,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1360,7 +1240,6 @@
       {
         "name": "multiplicity",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "Multiplicity"
         },
@@ -1386,8 +1265,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1405,8 +1282,6 @@
         "name": "enumerationName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1436,8 +1311,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1456,7 +1329,6 @@
       {
         "name": "primitiveType",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "PrimitiveType"
         },
@@ -1482,8 +1354,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1501,8 +1371,6 @@
         "name": "className",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1519,8 +1387,6 @@
         "name": "propertyClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1537,8 +1403,6 @@
         "name": "propertyName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1566,8 +1430,6 @@
         "name": "memberReferencePathId",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1585,8 +1447,6 @@
         "name": "associationOwningClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1606,8 +1466,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1640,8 +1498,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1672,8 +1528,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1708,8 +1562,6 @@
         "name": "owningClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1729,8 +1581,6 @@
         "name": "resultTypeName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1748,7 +1598,6 @@
       {
         "name": "multiplicity",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "Multiplicity"
         },
@@ -1776,8 +1625,6 @@
         "name": "associationEndClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1797,8 +1644,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1818,8 +1663,6 @@
         "name": "thisMemberReferencePathId",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1838,7 +1681,6 @@
       {
         "name": "orderByDirection",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "OrderByDirection"
         },
@@ -1862,8 +1704,6 @@
         "name": "owningClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1883,8 +1723,6 @@
         "name": "name",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1901,8 +1739,6 @@
         "name": "inferred",
         "primitiveType": "Boolean",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": null,
@@ -1913,8 +1749,6 @@
         "name": "orderingId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -1946,8 +1780,6 @@
         "name": "classifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -1967,8 +1799,6 @@
         "name": "parameterizedPropertyName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2002,8 +1832,6 @@
         "name": "name",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
@@ -2016,8 +1844,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": true,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2035,8 +1861,6 @@
         "name": "parentId",
         "primitiveType": "Long",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2070,8 +1894,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2089,8 +1911,6 @@
         "name": "className",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2120,8 +1940,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2139,8 +1957,6 @@
         "name": "parentId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2155,8 +1971,6 @@
         "name": "associationEndClass",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2173,8 +1987,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2204,8 +2016,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2223,8 +2033,6 @@
         "name": "parentId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2239,8 +2047,6 @@
         "name": "associationEndClass",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2257,8 +2063,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2288,8 +2092,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2307,8 +2109,6 @@
         "name": "parentId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2323,8 +2123,6 @@
         "name": "associationEndClass",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2341,8 +2139,6 @@
         "name": "associationEndName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2359,8 +2155,6 @@
         "name": "projectionName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2390,8 +2184,6 @@
         "name": "id",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2409,8 +2201,6 @@
         "name": "parentId",
         "primitiveType": "Long",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2425,8 +2215,6 @@
         "name": "propertyClassifierName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2443,8 +2231,6 @@
         "name": "propertyName",
         "primitiveType": "String",
         "optional": false,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2478,8 +2264,6 @@
         "name": "className",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2513,8 +2297,6 @@
         "name": "className",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2531,8 +2313,6 @@
         "name": "url",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2566,8 +2346,6 @@
         "name": "urlClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2587,8 +2365,6 @@
         "name": "urlString",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2608,8 +2384,6 @@
         "name": "parameterId",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2628,7 +2402,6 @@
       {
         "name": "type",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "UrlParameterType"
         },
@@ -2656,8 +2429,6 @@
         "name": "className",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2674,8 +2445,6 @@
         "name": "urlString",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2692,8 +2461,6 @@
         "name": "projectionName",
         "primitiveType": "String",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2710,8 +2477,6 @@
         "name": "queryCriteriaId",
         "primitiveType": "Long",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2726,8 +2491,6 @@
         "name": "authorizeCriteriaId",
         "primitiveType": "Long",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2742,8 +2505,6 @@
         "name": "validateCriteriaId",
         "primitiveType": "Long",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2758,8 +2519,6 @@
         "name": "conflictCriteriaId",
         "primitiveType": "Long",
         "optional": true,
-        "key": false,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "private"
@@ -2775,7 +2534,6 @@
       {
         "name": "verb",
         "optional": false,
-        "key": true,
         "enumeration": {
           "name": "Verb"
         },
@@ -2792,7 +2550,6 @@
       {
         "name": "serviceMultiplicity",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "ServiceMultiplicity"
         },
@@ -2816,8 +2573,6 @@
         "name": "serviceClassName",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2837,8 +2592,6 @@
         "name": "serviceUrlString",
         "primitiveType": "String",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2858,8 +2611,6 @@
         "name": "thisMemberReferencePathId",
         "primitiveType": "Long",
         "optional": false,
-        "key": true,
-        "id": false,
         "propertyModifiers": [
           {
             "name": "key"
@@ -2878,7 +2629,6 @@
       {
         "name": "serviceVerb",
         "optional": false,
-        "key": true,
         "enumeration": {
           "name": "Verb"
         },
@@ -2896,7 +2646,6 @@
       {
         "name": "orderByDirection",
         "optional": false,
-        "key": false,
         "enumeration": {
           "name": "OrderByDirection"
         },

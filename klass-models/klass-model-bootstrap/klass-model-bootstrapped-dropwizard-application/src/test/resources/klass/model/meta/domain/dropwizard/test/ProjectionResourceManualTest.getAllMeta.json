@@ -218,16 +218,6 @@
           },
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "key",
-            "children": []
-          },
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "id",
-            "children": []
-          },
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
             "name": "ordinal",
             "children": []
           },
@@ -315,11 +305,6 @@
           {
             "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
             "name": "optional",
-            "children": []
-          },
-          {
-            "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "name": "key",
             "children": []
           },
           {
@@ -484,16 +469,6 @@
       },
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "key",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "id",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "ordinal",
         "children": []
       },
@@ -610,16 +585,6 @@
       },
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "key",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "id",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "ordinal",
         "children": []
       },
@@ -714,16 +679,6 @@
         "children": []
       },
       {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "key",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "id",
-        "children": []
-      },
-      {
         "@type": "klass.model.meta.domain.ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
@@ -801,11 +756,6 @@
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "optional",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "key",
         "children": []
       },
       {
@@ -890,11 +840,6 @@
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "optional",
-        "children": []
-      },
-      {
-        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "name": "key",
         "children": []
       },
       {
