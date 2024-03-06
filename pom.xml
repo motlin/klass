@@ -211,6 +211,7 @@
                                         </requireMavenVersion>
                                         <requirePluginVersions>
                                             <unCheckedPluginList>
+                                                io.liftwizard:liftwizard-generator-reladomo-code-plugin,
                                                 cool.klass:klass-compiler-plugin,
                                                 cool.klass:klass-generator-dropwizard-plugin,
                                                 cool.klass:klass-generator-dto-plugin,
