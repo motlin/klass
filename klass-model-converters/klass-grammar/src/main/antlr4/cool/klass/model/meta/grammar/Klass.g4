@@ -47,8 +47,8 @@ implementsDeclaration: 'implements' interfaceReference (',' interfaceReference)*
 
 // enumeration
 enumerationDeclaration: 'enumeration' identifier enumerationBody;
-enumerationBody: '{' (enumerationLiteral ',')* '}';
-enumerationLiteral: identifier ('(' enumerationPrettyName ')')?;
+enumerationBody: '{' enumerationLiteral* '}';
+enumerationLiteral: identifier ('(' enumerationPrettyName ')')? ',';
 enumerationPrettyName: StringLiteral;
 
 // association
@@ -62,13 +62,13 @@ relationship: 'relationship' criteriaExpression;
 
 // projection
 projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classifierReference projectionBody;
-projectionBody: '{' (projectionMember ',')* '}';
+projectionBody: '{' projectionMember* '}';
 projectionMember: projectionPrimitiveMember | projectionReferenceProperty | projectionParameterizedProperty | projectionProjectionReference;
 // TODO: Rename projectionPrimitiveMember --> projectionDataTypeMember
-projectionPrimitiveMember: (classifierReference '.')? identifier ':' header;
-projectionReferenceProperty: (classifierReference '.')? identifier ':' projectionBody;
-projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference;
-projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBody;
+projectionPrimitiveMember: (classifierReference '.')? identifier ':' header ',';
+projectionReferenceProperty: (classifierReference '.')? identifier ':' projectionBody ',';
+projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference ',';
+projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBody ',';
 header: StringLiteral;
 
 // service
