@@ -15,8 +15,6 @@ class AmbiguousClass {
 class AmbiguousClass {
     key: String key;
 }
-projection AmbiguousProjection on GoodClass {}
-projection AmbiguousProjection on GoodClass {}
 
 class GoodClass
 {
@@ -39,6 +37,9 @@ class GoodClass
         this.goodProperty == GoodClass.goodProperty
     }
 }
+
+projection AmbiguousProjection on GoodClass {}
+projection AmbiguousProjection on GoodClass {}
 
 interface InterfaceWithAmbiguousImplements implements AmbiguousInterface
 {

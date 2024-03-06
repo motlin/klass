@@ -1,17 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
 [31mError: Leaf projection nodes require a data type property, but found a reference property 'GoodClass.goodParameterizedProperty1' with type 'AmbiguousClass'[m
 
-At (AmbiguousTypesErrorTest.klass:141)
+At (AmbiguousTypesErrorTest.klass:142)
 
 [39m  1║ [35mpackage [39mdummy
-[39m137║ [35mprojection [39mProjectionWithGoodClass [35mon [39mGoodClass
-[39m138║ [36m{
-[39m141║     [39mgoodParameterizedProperty1[36m: [34m"Header"[36m,
+[39m138║ [35mprojection [39mProjectionWithGoodClass [35mon [39mGoodClass
+[39m139║ [36m{
+[39m142║     [39mgoodParameterizedProperty1[36m: [34m"Header"[36m,
 [39m   ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^
-[39m169║ [36m}
+[39m170║ [36m}
 [m
-[36mLocation:  [mAmbiguousTypesErrorTest.klass:141[m
+[36mLocation:  [mAmbiguousTypesErrorTest.klass:142[m
 [36mFile:      [mAmbiguousTypesErrorTest.klass[m
-[36mLine:      [m141[m
+[36mLine:      [m142[m
 [36mCharacter: [m5
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

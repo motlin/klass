@@ -1,14 +1,14 @@
 package dummy
 
+class DummyClass
+{
+    id: Long key;
+}
+
 association DummyAssociation
 {
     source: DummyClass[2..3];
     target: DummyClass[4..5];
-    
-    relationship this.id == DummyClass.id
-}
 
-class DummyClass
-{
-    id: Long key;
+    relationship this.id == DummyClass.id
 }

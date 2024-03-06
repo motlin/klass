@@ -364,14 +364,6 @@ association AssociationEndHasModifiers
             && this.name == AssociationEndModifier.associationEndName
 }
 
-association AssociationHasCriteria
-{
-    association: Association[0..1];
-    criteria: Criteria[1..1];
-
-    relationship this.criteriaId == Criteria.id
-}
-
 enumeration Operator
 {
     EQUALS("=="),
@@ -436,28 +428,12 @@ class EdgePointCriteria
     memberReferencePathId: Long private;
 }
 
-association OperatorCriteriaHasSourceExpressionValue
+association AssociationHasCriteria
 {
-    operatorCriteriaSourceOf: OperatorCriteria[0..1];
-    sourceExpressionValue: ExpressionValue[1..1];
+    association: Association[0..1];
+    criteria: Criteria[1..1];
 
-    relationship this.sourceExpressionId == ExpressionValue.id
-}
-
-association OperatorCriteriaHasTargetExpressionValue
-{
-    operatorCriteriaTargetOf: OperatorCriteria[0..1];
-    targetExpressionValue: ExpressionValue[1..1];
-
-    relationship this.targetExpressionId == ExpressionValue.id
-}
-
-association MemberReferencePathHasEdgePointCriteria
-{
-    memberReferencePath: MemberReferencePath[1..1];
-    edgePointCriteria: EdgePointCriteria[1..1] owned;
-
-    relationship this.id == EdgePointCriteria.memberReferencePathId
+    relationship this.criteriaId == Criteria.id
 }
 
 class ExpressionValue
@@ -485,12 +461,38 @@ class VariableReference
     parameterId: Long private;
 }
 
-association VariableReferenceHasParameter
+class MemberReferencePath
+    abstract(table-per-class)
+    extends ExpressionValue
 {
-    variableReferences: VariableReference[0..*];
-    parameter: Parameter[1..1];
+    id  : Long key private;
+    className: String private maximumLength(256);
+    propertyClassName: String private maximumLength(256);
+    propertyName: String private maximumLength(256);
+}
 
-    relationship this.parameterId == Parameter.id
+association OperatorCriteriaHasSourceExpressionValue
+{
+    operatorCriteriaSourceOf: OperatorCriteria[0..1];
+    sourceExpressionValue: ExpressionValue[1..1];
+
+    relationship this.sourceExpressionId == ExpressionValue.id
+}
+
+association OperatorCriteriaHasTargetExpressionValue
+{
+    operatorCriteriaTargetOf: OperatorCriteria[0..1];
+    targetExpressionValue: ExpressionValue[1..1];
+
+    relationship this.targetExpressionId == ExpressionValue.id
+}
+
+association MemberReferencePathHasEdgePointCriteria
+{
+    memberReferencePath: MemberReferencePath[1..1];
+    edgePointCriteria: EdgePointCriteria[1..1] owned;
+
+    relationship this.id == EdgePointCriteria.memberReferencePathId
 }
 
 class Parameter
@@ -517,22 +519,20 @@ class PrimitiveParameter
     primitiveType: PrimitiveType maximumLength(256);
 }
 
+association VariableReferenceHasParameter
+{
+    variableReferences: VariableReference[0..*];
+    parameter: Parameter[1..1];
+
+    relationship this.parameterId == Parameter.id
+}
+
 association EnumerationParameterHasEnumeration
 {
     enumerationParameters: EnumerationParameter[0..*];
     enumeration: Enumeration[1..1];
 
     relationship this.enumerationName == Enumeration.name
-}
-
-class MemberReferencePath
-    abstract(table-per-class)
-    extends ExpressionValue
-{
-    id  : Long key private;
-    className: String private maximumLength(256);
-    propertyClassName: String private maximumLength(256);
-    propertyName: String private maximumLength(256);
 }
 
 association MemberReferencePathHasClass
@@ -617,7 +617,7 @@ association ClassHasParameterizedProperties
 {
     owningClass: Klass[1..1];
     parameterizedProperties: ParameterizedProperty[0..*] owned
-        // TODO: Sorting by the same property ascending and descending is an interesting test, move it out of the meta model
+    // TODO: Sorting by the same property ascending and descending is an interesting test, move it out of the meta model
         orderBy: this.ordinal ascending, this.ordinal descending;
 
     relationship this.name == ParameterizedProperty.owningClassName
@@ -627,7 +627,7 @@ enumeration OrderByDirection
 {
     ASCENDING("ascending"),
     DESCENDING("descending"),
- }
+}
 
 class AssociationEndOrderBy
 {
@@ -678,6 +678,12 @@ association ParameterizedPropertyHasOrdering
             && this.name == ParameterizedPropertyOrdering.name
 }
 
+class ParameterizedPropertyParameter implements NamedElement
+{
+    classifierName                : String key private maximumLength(256);
+    parameterizedPropertyName     : String key maximumLength(256);
+}
+
 association ParameterizedPropertyHasParameters
 {
     parameterizedProperty         : ParameterizedProperty[1..1];
@@ -685,12 +691,6 @@ association ParameterizedPropertyHasParameters
 
     relationship this.owningClassName == ParameterizedPropertyParameter.classifierName
             && this.name == ParameterizedPropertyParameter.parameterizedPropertyName
-}
-
-class ParameterizedPropertyParameter implements NamedElement
-{
-    classifierName                : String key private maximumLength(256);
-    parameterizedPropertyName     : String key maximumLength(256);
 }
 
 class ProjectionElement
@@ -847,7 +847,7 @@ association UrlParameterHasParameter
     parameter                     : Parameter[1..1];
 
     relationship this.parameterId == Parameter.id
- }
+}
 
 association ServiceGroupHasUrls
 {
@@ -1437,61 +1437,6 @@ projection AssociationEndProjection on AssociationEnd
     },
 }
 
-projection AssociationEndSummaryProjection on AssociationEnd
-{
-    name                   : "Association end name",
-    multiplicity           : "Association end multiplicity",
-    resultType             :
-    {
-        name: "Association end result class name",
-    },
-    associationEndModifiers:
-    {
-        keyword: "Association end modifier keyword",
-    },
-    orderBys               :
-    {
-        thisMemberReferencePath: MemberReferencePathSummaryProjection,
-        orderByDirection       : "Association end order by direction",
-    },
-}
-
-projection AssociationProjection on Association
-{
-    name                   : "Association name",
-    packageName            : "Association package name",
-    ordinal                : "Association ordinal",
-    associationEnds        : AssociationEndProjection,
-    criteria               : CriteriaProjection,
-}
-
-projection AssociationSummaryProjection on Association
-{
-    name                   : "Association name",
-    packageName            : "Association package name",
-    associationEnds        : AssociationEndSummaryProjection,
-    criteria               : CriteriaSummaryProjection,
-}
-
-projection MemberReferencePathProjection on MemberReferencePath
-{
-    klass           :
-    {
-        name: "MemberReferencePath Class name",
-    },
-    associationEnds :
-    {
-        associationEnd:
-        {
-            name: "MemberReferencePath Association end name",
-        },
-    },
-    dataTypeProperty:
-    {
-        name: "MemberReferencePath Property name",
-    },
-}
-
 projection MemberReferencePathSummaryProjection on MemberReferencePath
 {
     klass           :
@@ -1508,6 +1453,25 @@ projection MemberReferencePathSummaryProjection on MemberReferencePath
     dataTypeProperty:
     {
         name: "MemberReferencePath Property name",
+    },
+}
+
+projection AssociationEndSummaryProjection on AssociationEnd
+{
+    name                   : "Association end name",
+    multiplicity           : "Association end multiplicity",
+    resultType             :
+    {
+        name: "Association end result class name",
+    },
+    associationEndModifiers:
+    {
+        keyword: "Association end modifier keyword",
+    },
+    orderBys               :
+    {
+        thisMemberReferencePath: MemberReferencePathSummaryProjection,
+        orderByDirection       : "Association end order by direction",
     },
 }
 
@@ -1563,6 +1527,25 @@ projection ExpressionValueSummaryProjection on ExpressionValue
     },
 }
 
+projection MemberReferencePathProjection on MemberReferencePath
+{
+    klass           :
+    {
+        name: "MemberReferencePath Class name",
+    },
+    associationEnds :
+    {
+        associationEnd:
+        {
+            name: "MemberReferencePath Association end name",
+        },
+    },
+    dataTypeProperty:
+    {
+        name: "MemberReferencePath Property name",
+    },
+}
+
 projection CriteriaProjection on Criteria
 {
     BinaryCriteria.left                   : CriteriaProjection,
@@ -1581,6 +1564,23 @@ projection CriteriaSummaryProjection on Criteria
     OperatorCriteria.sourceExpressionValue: ExpressionValueSummaryProjection,
     OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,
     EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,
+}
+
+projection AssociationProjection on Association
+{
+    name                   : "Association name",
+    packageName            : "Association package name",
+    ordinal                : "Association ordinal",
+    associationEnds        : AssociationEndProjection,
+    criteria               : CriteriaProjection,
+}
+
+projection AssociationSummaryProjection on Association
+{
+    name                   : "Association name",
+    packageName            : "Association package name",
+    associationEnds        : AssociationEndSummaryProjection,
+    criteria               : CriteriaSummaryProjection,
 }
 
 service Association

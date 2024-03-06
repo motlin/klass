@@ -1237,6 +1237,84 @@
   },
   {
     "@type": "klass.model.meta.domain.Klass",
+    "name": "MemberReferencePath",
+    "packageName": "klass.model.meta.domain",
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "className",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "propertyClassName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "propertyName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "@type": "klass.model.meta.domain.Klass",
     "name": "Parameter",
     "packageName": "klass.model.meta.domain",
     "superClass": null,
@@ -1382,84 +1460,6 @@
         }
       }
     ]
-  },
-  {
-    "@type": "klass.model.meta.domain.Klass",
-    "name": "MemberReferencePath",
-    "packageName": "klass.model.meta.domain",
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "className",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyClassName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
   },
   {
     "@type": "klass.model.meta.domain.Klass",

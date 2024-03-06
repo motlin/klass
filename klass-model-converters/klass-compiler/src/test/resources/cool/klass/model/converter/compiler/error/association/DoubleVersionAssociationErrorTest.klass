@@ -1,13 +1,5 @@
 package dummy
 
-association DoubleVersionAssociation
-{
-    source: ExampleSource[1..1] version owned;
-    target: ExampleTarget[1..1] version owned;
-
-    relationship this.id == ExampleTarget.id
-}
-
 class ExampleSource
     systemTemporal
 {
@@ -20,4 +12,12 @@ class ExampleTarget
 {
     id    : Long key;
     number: Integer version;
+}
+
+association DoubleVersionAssociation
+{
+    source: ExampleSource[1..1] version owned;
+    target: ExampleTarget[1..1] version owned;
+
+    relationship this.id == ExampleTarget.id
 }

@@ -139,6 +139,19 @@ class QuestionVersion
 }
 */
 
+class Answer
+    implements Document
+    systemTemporal
+    versioned
+    audited
+{
+    id                     : Long key id;
+    deleted                : Boolean;
+
+    // TODO: questionId: Long private *final*
+    questionId             : Long private;
+}
+
 // TODO: Error message if versions doesn't point to a version class
 association QuestionHasAnswer
 {
@@ -165,17 +178,10 @@ association QuestionHasVersion
 }
 */
 
-class Answer
-    implements Document
-    systemTemporal
-    versioned
-    audited
+enumeration VoteDirection
 {
-    id                     : Long key id;
-    deleted                : Boolean;
-
-    // TODO: questionId: Long private *final*
-    questionId             : Long private;
+    UP("up"),
+    DOWN("down"),
 }
 
 interface Vote
@@ -204,12 +210,6 @@ class QuestionVote
     questionId             : Long key;
     createdById            : String key createdBy userId final;
     direction              : VoteDirection;
-}
-
-enumeration VoteDirection
-{
-    UP("up"),
-    DOWN("down"),
 }
 
 association QuestionHasVotes

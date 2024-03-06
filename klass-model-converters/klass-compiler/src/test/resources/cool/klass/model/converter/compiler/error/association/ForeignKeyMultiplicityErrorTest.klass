@@ -17,15 +17,8 @@ association OwnedHasOwner
     ownedDummies: DummyOwned[0..*] owned;
 
     relationship this.id == DummyOwned.ownerId
- }
-
-association ForeignKeyMultiplicityOK
-{
-    parent: DummyParent[0..1];
-    children: DummyChild[0..*];
-
-    relationship this.id == DummyChild.parentId
 }
+
 
 class DummyParent
 {
@@ -36,4 +29,12 @@ class DummyChild
 {
     id: Long key;
     parentId: Long private;
+}
+
+association ForeignKeyMultiplicityOK
+{
+    parent: DummyParent[0..1];
+    children: DummyChild[0..*];
+
+    relationship this.id == DummyChild.parentId
 }

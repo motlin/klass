@@ -735,7 +735,7 @@
     "name": "Criteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "table-per-class",
-    "ordinal": 47,
+    "ordinal": 46,
     "superClass": null,
     "superInterfaces": [
       {
@@ -770,7 +770,7 @@
     "name": "AllCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 48,
+    "ordinal": 47,
     "superClass": {
       "name": "Criteria"
     },
@@ -801,7 +801,7 @@
     "name": "BinaryCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "table-per-class",
-    "ordinal": 49,
+    "ordinal": 48,
     "superClass": {
       "name": "Criteria"
     },
@@ -860,7 +860,7 @@
     "name": "AndCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 50,
+    "ordinal": 49,
     "superClass": {
       "name": "BinaryCriteria"
     },
@@ -891,7 +891,7 @@
     "name": "OrCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 51,
+    "ordinal": 50,
     "superClass": {
       "name": "BinaryCriteria"
     },
@@ -922,7 +922,7 @@
     "name": "OperatorCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 52,
+    "ordinal": 51,
     "superClass": {
       "name": "Criteria"
     },
@@ -994,7 +994,7 @@
     "name": "EdgePointCriteria",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 53,
+    "ordinal": 52,
     "superClass": {
       "name": "Criteria"
     },
@@ -1039,7 +1039,7 @@
     "name": "ExpressionValue",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "table-per-class",
-    "ordinal": 57,
+    "ordinal": 54,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -1068,7 +1068,7 @@
     "name": "UserLiteral",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 58,
+    "ordinal": 55,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -1099,7 +1099,7 @@
     "name": "NullLiteral",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 59,
+    "ordinal": 56,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -1130,7 +1130,7 @@
     "name": "VariableReference",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 60,
+    "ordinal": 57,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -1165,6 +1165,85 @@
         ],
         "minLengthValidation": null,
         "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      }
+    ],
+    "enumerationProperties": []
+  },
+  {
+    "name": "MemberReferencePath",
+    "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 58,
+    "superClass": {
+      "name": "ExpressionValue"
+    },
+    "superInterfaces": [],
+    "classifierModifiers": [],
+    "primitiveProperties": [
+      {
+        "name": "id",
+        "primitiveType": "Long",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          },
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "className",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "propertyClassName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
+        "minValidation": null,
+        "maxValidation": null
+      },
+      {
+        "name": "propertyName",
+        "primitiveType": "String",
+        "optional": false,
+        "propertyModifiers": [
+          {
+            "keyword": "private"
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        },
         "minValidation": null,
         "maxValidation": null
       }
@@ -1321,85 +1400,6 @@
         }
       }
     ]
-  },
-  {
-    "name": "MemberReferencePath",
-    "packageName": "klass.model.meta.domain",
-    "inheritanceType": "table-per-class",
-    "ordinal": 66,
-    "superClass": {
-      "name": "ExpressionValue"
-    },
-    "superInterfaces": [],
-    "classifierModifiers": [],
-    "primitiveProperties": [
-      {
-        "name": "id",
-        "primitiveType": "Long",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "key"
-          },
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": null,
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "className",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyClassName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      },
-      {
-        "name": "propertyName",
-        "primitiveType": "String",
-        "optional": false,
-        "propertyModifiers": [
-          {
-            "keyword": "private"
-          }
-        ],
-        "minLengthValidation": null,
-        "maxLengthValidation": {
-          "number": 256
-        },
-        "minValidation": null,
-        "maxValidation": null
-      }
-    ],
-    "enumerationProperties": []
   },
   {
     "name": "MemberReferencePathAssociationEndMapping",
@@ -1745,7 +1745,7 @@
     "name": "ParameterizedPropertyParameter",
     "packageName": "klass.model.meta.domain",
     "inheritanceType": "none",
-    "ordinal": 86,
+    "ordinal": 85,
     "superClass": null,
     "superInterfaces": [
       {
