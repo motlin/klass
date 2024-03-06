@@ -3,6 +3,8 @@ package cool.klass.model.meta.domain.api.property;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 public interface PrimitiveProperty extends DataTypeProperty
 {
@@ -10,6 +12,13 @@ public interface PrimitiveProperty extends DataTypeProperty
     default void visit(@Nonnull PropertyVisitor visitor)
     {
         visitor.visitPrimitiveProperty(this);
+    }
+
+    @Override
+    default void visit(@Nonnull DataTypePropertyVisitor visitor)
+    {
+        PrimitiveTypeVisitor adaptor = new DataTypePropertyVisitorAdaptor(visitor, this);
+        this.getType().visit(adaptor);
     }
 
     @Override
