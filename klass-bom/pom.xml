@@ -86,6 +86,7 @@
                                             cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                             cool.klass:klass-generator-reladomo-plugin,
                                             cool.klass:klass-generator-reladomo-readable-interface-plugin,
+                                            cool.klass:klass-generator-relational-schema-plugin,
                                             cool.klass:klass-generator-service-resources-plugin,
                                             cool.klass:klass-generator-uml-nomnoml-plugin,
                                         </unCheckedPluginList>
@@ -234,6 +235,7 @@
                                                 cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
                                                 cool.klass:klass-generator-reladomo-readable-interface-plugin,
+                                                cool.klass:klass-generator-relational-schema-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
                                                 cool.klass:klass-generator-uml-nomnoml-plugin,
                                             </unCheckedPluginList>

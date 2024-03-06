@@ -1693,6 +1693,7 @@ public class KlassCompilerTest
                 "example.klass",
                 sourceCodeText);
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
+        // TODO: Refactor compilation. Instead of compile() and instanceof on compilationResult, we could instead run compiler phases, then get compiler annotations if any, then get domain model asserting no errors.
         CompilationResult compilationResult = compiler.compile();
         ImmutableList<RootCompilerAnnotation> compilerErrors = compilationResult
                 .compilerAnnotations()
