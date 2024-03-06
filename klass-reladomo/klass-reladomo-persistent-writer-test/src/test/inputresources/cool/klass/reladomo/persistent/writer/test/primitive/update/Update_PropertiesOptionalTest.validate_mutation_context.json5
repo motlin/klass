@@ -1,5 +1,8 @@
 {
-  "propertiesOptionalId": 1,
+  "propertiesOptionalId": 2,
+  "systemFrom": "2000-01-01T00:00:00Z",
+  "systemTo": null,
+  "createdOn": "2000-01-01T00:00:00Z",
   "optionalString": "PropertiesOptional optionalString 1 ☝",
   "optionalInteger": 1,
   "optionalLong": 100000000000,
@@ -9,20 +12,42 @@
   "optionalInstant": "1999-12-31T23:59:00Z",
   "optionalLocalDate": "1999-12-31",
   "optionalDerived": "PropertiesOptional optionalDerived 1 ☝",
-  "system": "2000-01-01T00:00:00Z",
-  "systemFrom": "2000-01-01T00:00:00Z",
-  "systemTo": null,
-  "createdById": "different user",
-  "createdOn": "2000-01-01T00:00:00Z",
-  "lastUpdatedById": "different user",
   "version": {
-    "propertiesOptionalId": 1,
-    "number": 1,
-    "system": "2000-01-01T00:00:00Z",
     "systemFrom": "2000-01-01T00:00:00Z",
     "systemTo": null,
-    "createdById": "different user",
     "createdOn": "2000-01-01T00:00:00Z",
-    "lastUpdatedById": "different user",
+    "number": 1,
+    "createdBy": {
+      "userId": "different user",
+      "systemFrom": "2000-01-01T00:00:00Z",
+      "systemTo": null,
+      "firstName": "different user",
+      "lastName": "different user",
+      "email": "different user"
+    },
+    "lastUpdatedBy": {
+      "userId": "different user",
+      "systemFrom": "2000-01-01T00:00:00Z",
+      "systemTo": null,
+      "firstName": "different user",
+      "lastName": "different user",
+      "email": "different user"
+    }
   },
+  "createdBy": {
+    "userId": "different user",
+    "systemFrom": "2000-01-01T00:00:00Z",
+    "systemTo": null,
+    "firstName": "different user",
+    "lastName": "different user",
+    "email": "different user"
+  },
+  "lastUpdatedBy": {
+    "userId": "different user",
+    "systemFrom": "2000-01-01T00:00:00Z",
+    "systemTo": null,
+    "firstName": "different user",
+    "lastName": "different user",
+    "email": "different user"
+  }
 }

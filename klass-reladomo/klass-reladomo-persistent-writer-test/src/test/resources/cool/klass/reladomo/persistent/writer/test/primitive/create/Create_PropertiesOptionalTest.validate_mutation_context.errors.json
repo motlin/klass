@@ -1,10 +1,6 @@
 [
-  "Error at PropertiesOptional.system. Didn't expect to receive value for private property 'PropertiesOptional.system: TemporalRange?' but value was string: \"2000-01-01T00:00:00Z\".",
-  "Error at PropertiesOptional.createdById. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was string: \"different user\".",
-  "Error at PropertiesOptional.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"different user\".",
-  "Error at PropertiesOptional.createdById. Expected audit property 'createdById' to match current user 'test user 1' but got 'different user'.",
   "Error at PropertiesOptional.createdOn. Expected createdOn property 'createdOn' to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
-  "Error at PropertiesOptional.lastUpdatedById. Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'different user'.",
+  "Error at PropertiesOptional.version.createdOn. Expected createdOn property 'createdOn' to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
   "Error at PropertiesOptional.version.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
   "Error at PropertiesOptional.version.lastUpdatedBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
   "Error at PropertiesOptional.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",

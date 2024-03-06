@@ -1,15 +1,10 @@
 [
-  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was string: \"2000-01-01T00:00:00Z\".",
-  "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was string: \"different user\".",
-  "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was string: \"different user\".",
-  "Error at PropertiesRequired.system. Mismatched value for temporal property 'PropertiesRequired.system: TemporalRange?'. Expected absent value or 'null' but value was '2000-01-01T00:00:00Z'.",
   "Error at PropertiesRequired.systemFrom. Mismatched value for temporal property 'PropertiesRequired.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
-  "Error at PropertiesRequired.createdById. Mismatched value for user id property 'PropertiesRequired.createdById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
   "Error at PropertiesRequired.createdOn. Mismatched value for created on property 'PropertiesRequired.createdOn: Instant'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
-  "Error at PropertiesRequired.lastUpdatedById. Mismatched value for user id property 'PropertiesRequired.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
-  "Error at PropertiesRequired.version.system. Mismatched value for temporal property 'PropertiesRequiredVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '2000-01-01T00:00:00Z'.",
   "Error at PropertiesRequired.version.systemFrom. Mismatched value for temporal property 'PropertiesRequiredVersion.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
-  "Error at PropertiesRequired.version.createdById. Mismatched value for user id property 'PropertiesRequiredVersion.createdById: String'. Expected absent value or 'test user 1' but value was 'different user'.",
   "Error at PropertiesRequired.version.createdOn. Mismatched value for created on property 'PropertiesRequiredVersion.createdOn: Instant'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
-  "Error at PropertiesRequired.version.lastUpdatedById. Mismatched value for user id property 'PropertiesRequiredVersion.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'different user'."
+  "Error at PropertiesRequired.version.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesRequired.version.lastUpdatedBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesRequired.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
+  "Error at PropertiesRequired.lastUpdatedBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'."
 ]
