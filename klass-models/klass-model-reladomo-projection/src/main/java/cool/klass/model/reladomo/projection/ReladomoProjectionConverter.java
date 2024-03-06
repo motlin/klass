@@ -34,10 +34,10 @@ public final class ReladomoProjectionConverter
 
     @Nonnull
     public RootReladomoNode getRootReladomoNode(
-            Klass klass,
+            Classifier classifier,
             Projection projection)
     {
-        var projectionReladomoNode = new RootReladomoNode("root", klass, projection);
+        var projectionReladomoNode = new RootReladomoNode("root", classifier, projection);
         this.projectionChildrenToReladomoTree(projectionReladomoNode, projection);
         this.rootNodesByProjection.put(projection, projectionReladomoNode);
 
@@ -45,7 +45,7 @@ public final class ReladomoProjectionConverter
         {
             RootReladomoNode rootReladomoNode = this.rootNodesByProjection.getIfAbsent(
                     eachProjectionReference.getProjection(),
-                    () -> this.getRootReladomoNode((Klass) eachProjectionReference.getClassifier(), eachProjectionReference.getProjection()));
+                    () -> this.getRootReladomoNode(eachProjectionReference.getClassifier(), eachProjectionReference.getProjection()));
 
             eachProjectionReferenceNode.setProjection(rootReladomoNode);
             this.projectionHoldersByProjectionReference.remove(eachProjectionReference);
