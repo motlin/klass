@@ -101,6 +101,7 @@
                         <goals>
                             <goal>generate-graphql-data-fetchers</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
 

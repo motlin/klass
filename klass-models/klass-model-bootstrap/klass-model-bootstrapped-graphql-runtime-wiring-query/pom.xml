@@ -96,6 +96,7 @@
                         <goals>
                             <goal>generate-graphql-query-runtime-wiring</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
 
