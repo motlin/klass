@@ -1,0 +1,10 @@
+package com.example.helloworld.core
+
+class Person
+    systemTemporal
+{
+    id: Long id key;
+    fullName: String;
+    jobTitle: String;
+}
+
