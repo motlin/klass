@@ -1,12 +1,14 @@
 package cool.klass.dropwizard.bundle.auth.filter;
 
 import java.security.Principal;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
-import javax.ws.rs.container.ContainerResponseFilter;
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
@@ -21,6 +23,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +59,12 @@ public class AuthFilterBundle
         LOGGER.info("Running {} with auth filters {}.", AuthFilterBundle.class.getSimpleName(), authFilterNames);
 
         environment.jersey().register(this.getAuthDynamicFeature(authFilters));
-        environment.jersey().register(this.getClearMDCContainerResponseFilter(authFilterFactories));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new Binder<>(Principal.class));
+
+        environment.getApplicationContext().addFilter(new FilterHolder(this.getClearMDCContainerResponseFilter(
+                authFilterFactories)), "/*", EnumSet.of(
+                DispatcherType.REQUEST));
 
         LOGGER.info("Completing {}.", AuthFilterBundle.class.getSimpleName());
     }
@@ -80,7 +86,7 @@ public class AuthFilterBundle
     }
 
     @Nonnull
-    private ContainerResponseFilter getClearMDCContainerResponseFilter(List<AuthFilterFactory> authFilterFactories)
+    private Filter getClearMDCContainerResponseFilter(List<AuthFilterFactory> authFilterFactories)
     {
         ImmutableList<String> mdcKeys = ListAdapter.adapt(authFilterFactories)
                 .flatCollect(AuthFilterFactory::getMDCKeys)
