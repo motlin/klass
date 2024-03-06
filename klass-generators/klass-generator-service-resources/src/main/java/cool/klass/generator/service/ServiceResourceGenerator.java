@@ -741,7 +741,15 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getOrderBysSourceCode(@Nonnull OrderBy orderBy)
     {
-        ImmutableList<String> orderBySourceCodeClauses = orderBy.getOrderByMemberReferencePaths().collect(this::getOrderBySourceCode);
+        ImmutableList<String> orderBySourceCodeClauses = orderBy
+                .getOrderByMemberReferencePaths()
+                .reject(each -> each.getThisMemberReferencePath().getProperty().isDerived())
+                .collect(this::getOrderBySourceCode);
+
+        if (orderBySourceCodeClauses.isEmpty())
+        {
+            return "";
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < orderBySourceCodeClauses.size(); i++)
