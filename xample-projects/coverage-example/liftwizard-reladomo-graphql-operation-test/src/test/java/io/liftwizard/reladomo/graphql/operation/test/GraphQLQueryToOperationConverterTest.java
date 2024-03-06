@@ -18,7 +18,7 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLError;
-import graphql.Scalars;
+import graphql.scalars.java.JavaPrimitives;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -411,11 +411,11 @@ public class GraphQLQueryToOperationConverterTest
     private RuntimeWiring getRuntimeWiring()
     {
         return RuntimeWiring.newRuntimeWiring()
-                .scalar(new GraphQLTemporalScalar("Instant"))
-                .scalar(new GraphQLTemporalScalar("TemporalInstant"))
-                .scalar(new GraphQLTemporalScalar("TemporalRange"))
-                .scalar(Scalars.GraphQLLong)
-                .scalar(new GraphQLLocalDateScalar())
+                .scalar(GraphQLTemporalScalar.INSTANT_INSTANCE)
+                .scalar(GraphQLTemporalScalar.TEMPORAL_INSTANT_INSTANCE)
+                .scalar(GraphQLTemporalScalar.TEMPORAL_RANGE_INSTANCE)
+                .scalar(JavaPrimitives.GraphQLLong)
+                .scalar(GraphQLLocalDateScalar.INSTANCE)
 
                 .type(
                         "Query",

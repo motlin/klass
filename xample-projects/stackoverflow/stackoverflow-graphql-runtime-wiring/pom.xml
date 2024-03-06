@@ -59,6 +59,11 @@
             <artifactId>reladomo</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
