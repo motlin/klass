@@ -22,6 +22,11 @@ public interface PropertyModifier extends NamedElement
         return this.getName().equals("id");
     }
 
+    default boolean isTo()
+    {
+        return this.getName().equals("to");
+    }
+
     default boolean isAudit()
     {
         return AUDIT_PROPERTY_NAMES.contains(this.getName());
