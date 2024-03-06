@@ -5,7 +5,7 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomogen/src/main/xsd/mithraobject.xsd"
         objectType="transactional">
 
-    <PackageName>cool.klass.reladomo.simulatedsequence</PackageName>
+    <PackageName>cool.klass.reladomo.simseq</PackageName>
     <ClassName>ObjectSequence</ClassName>
     <!--TODO ObjectSequence is a reserved keyword-->
     <DefaultTable>OBJECT_SEQUENCE</DefaultTable>

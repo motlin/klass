@@ -18,6 +18,7 @@
 
     <modules>
         <module>klass-reladomo-simulated-sequence</module>
+        <module>klass-connection-manager-h2</module>
     </modules>
 
 </project>

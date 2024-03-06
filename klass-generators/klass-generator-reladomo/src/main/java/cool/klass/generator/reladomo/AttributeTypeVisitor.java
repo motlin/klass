@@ -5,7 +5,7 @@ import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyTy
 import com.gs.fw.common.mithra.generator.metamodel.SimulatedSequenceType;
 import cool.klass.model.meta.domain.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
-import cool.klass.reladomo.simulatedsequence.ObjectSequenceObjectFactory;
+import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
 
 public class AttributeTypeVisitor implements PrimitiveTypeVisitor
 {

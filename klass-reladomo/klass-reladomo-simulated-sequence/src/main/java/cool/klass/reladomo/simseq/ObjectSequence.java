@@ -1,4 +1,4 @@
-package cool.klass.reladomo.simulatedsequence;
+package cool.klass.reladomo.simseq;
 
 import com.gs.fw.common.mithra.MithraSequence;
 
