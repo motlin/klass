@@ -24,7 +24,7 @@ public class GenerateGraphQLDataFetcherMojo
             defaultValue = "${project.build.directory}/generated-sources/graphql-data-fetchers")
     private File outputDirectory;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Override

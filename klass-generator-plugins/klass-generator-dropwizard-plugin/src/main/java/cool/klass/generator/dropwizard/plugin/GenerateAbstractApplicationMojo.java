@@ -26,10 +26,10 @@ public class GenerateAbstractApplicationMojo
             defaultValue = "${project.build.directory}/generated-sources/abstract-application")
     private File outputDirectory;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
     @Override

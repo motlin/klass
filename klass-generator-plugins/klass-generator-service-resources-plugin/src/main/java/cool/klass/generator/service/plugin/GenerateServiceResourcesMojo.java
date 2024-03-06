@@ -25,10 +25,10 @@ public class GenerateServiceResourcesMojo extends AbstractGenerateMojo
             defaultValue = "${project.build.directory}/generated-sources/service-resources")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Override

@@ -33,7 +33,7 @@ import org.reflections.util.ConfigurationBuilder;
 public abstract class AbstractGenerateMojo
         extends AbstractMojo
 {
-    @Parameter(property = "klassSourcePackages", required = true, readonly = true)
+    @Parameter(property = "klassSourcePackages", required = true)
     protected List<String> klassSourcePackages;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)

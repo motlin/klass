@@ -49,7 +49,7 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
     @Parameter(property = "isTest", required = true, readonly = true, defaultValue = "true")
     private boolean isTest = true;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Parameter(property = "cacheType", required = true, readonly = true, defaultValue = "partial")

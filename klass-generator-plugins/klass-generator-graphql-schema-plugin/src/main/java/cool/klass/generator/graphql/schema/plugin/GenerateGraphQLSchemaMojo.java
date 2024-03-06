@@ -25,10 +25,10 @@ public class GenerateGraphQLSchemaMojo extends AbstractGenerateMojo
             defaultValue = "${project.build.directory}/generated-resources/graphql-schema")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Override

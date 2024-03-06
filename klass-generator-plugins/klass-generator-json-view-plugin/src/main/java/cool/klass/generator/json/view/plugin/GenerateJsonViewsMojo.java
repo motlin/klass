@@ -22,10 +22,10 @@ public class GenerateJsonViewsMojo extends AbstractGenerateMojo
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/json-views")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Override

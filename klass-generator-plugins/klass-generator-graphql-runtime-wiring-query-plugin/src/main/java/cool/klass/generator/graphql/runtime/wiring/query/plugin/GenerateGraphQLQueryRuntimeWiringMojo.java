@@ -25,10 +25,10 @@ public class GenerateGraphQLQueryRuntimeWiringMojo
             defaultValue = "${project.build.directory}/generated-sources/graphql-query-runtime-wiring")
     private File outputDirectory;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
     @Override

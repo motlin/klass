@@ -25,10 +25,10 @@ public class GenerateUmlNomnomlMojo extends AbstractGenerateMojo
             defaultValue = "${project.build.directory}/generated-resources/uml-diagram-nomnoml")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
+    @Parameter(property = "applicationName", required = true)
     private String applicationName;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
     @Override
