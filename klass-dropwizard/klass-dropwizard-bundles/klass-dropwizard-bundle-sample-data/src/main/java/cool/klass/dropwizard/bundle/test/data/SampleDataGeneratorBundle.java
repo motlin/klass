@@ -75,7 +75,6 @@ public class SampleDataGeneratorBundle
                     DomainModelFactoryProvider.class.getCanonicalName(),
                     configuration.getClass().getCanonicalName());
             throw new IllegalStateException(message);
-
         }
 
         DomainModelFactoryProvider domainModelFactoryProvider = (DomainModelFactoryProvider) configuration;
