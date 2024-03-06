@@ -401,8 +401,8 @@ public class ServiceResourceGenerator
         String operation           = this.getOperation(finderName, criteria);
         String comment             = this.getComment(criteria);
         String paddedOperationName = String.format("%-18s", criteriaName + "Operation");
-        return comment +
-                "        Operation " + paddedOperationName + " = " + operation + ";\n";
+        return comment
+                + "        Operation " + paddedOperationName + " = " + operation + ";\n";
     }
 
     @Nonnull

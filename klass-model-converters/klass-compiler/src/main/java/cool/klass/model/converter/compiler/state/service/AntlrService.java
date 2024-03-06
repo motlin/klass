@@ -231,12 +231,14 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             }
 
             // TODO: Do this after changing the versionClass to versionAssociationEnd
+            /*
             if (klass.isOptimisticallyLocked())
             {
             }
             else
             {
             }
+            */
 
             // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
             // Include version associationEnds iff the service is optimistically locked

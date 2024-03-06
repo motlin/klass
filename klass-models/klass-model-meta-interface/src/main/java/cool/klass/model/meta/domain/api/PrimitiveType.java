@@ -16,195 +16,195 @@ import org.eclipse.collections.impl.factory.Lists;
 public enum PrimitiveType implements DataType, DataTypeGetter
 {
     INTEGER("Integer", true)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitInteger();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitInteger();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     LONG("Long", true)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitLong();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitLong();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     DOUBLE("Double", true)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitDouble();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitDouble();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     FLOAT("Float", true)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitFloat();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitFloat();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     BOOLEAN("Boolean", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitBoolean();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitBoolean();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     STRING("String", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitString();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitString();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     INSTANT("Instant", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitInstant();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitInstant();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     LOCAL_DATE("LocalDate", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitLocalDate();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitLocalDate();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     TEMPORAL_INSTANT("TemporalInstant", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitTemporalInstant();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            },
+                visitor.visitTemporalInstant();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    },
     TEMPORAL_RANGE("TemporalRange", false)
+    {
+        @Override
+        public void visit(@Nonnull PrimitiveTypeVisitor visitor)
+        {
+            try
             {
-                @Override
-                public void visit(@Nonnull PrimitiveTypeVisitor visitor)
-                {
-                    try
-                    {
-                        visitor.visitTemporalRange();
-                    }
-                    catch (RuntimeException e)
-                    {
-                        throw e;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
+                visitor.visitTemporalRange();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     public static final ImmutableList<PrimitiveType> PRIMITIVE_TYPES = Lists.immutable.with(
             STRING,

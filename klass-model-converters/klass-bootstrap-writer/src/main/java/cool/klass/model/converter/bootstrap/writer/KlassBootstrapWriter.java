@@ -13,7 +13,6 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
-import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import klass.model.meta.domain.EnumerationPropertyModifier;
 import klass.model.meta.domain.PrimitivePropertyModifier;
 
@@ -153,9 +152,10 @@ public class KlassBootstrapWriter
             this.bootstrapAssociationEnd(targetAssociationEnd, "target");
         }
 
-        for (ServiceGroup serviceGroup: this.domainModel.getServiceGroups())
-        {
-        }
+        // TODO: Services
+        // for (ServiceGroup serviceGroup: this.domainModel.getServiceGroups())
+        // {
+        // }
     }
 
     private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
