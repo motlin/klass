@@ -81,7 +81,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate-graphql-runtime-wiring</goal>
+                            <goal>generate-graphql-type-runtime-wiring-provider</goal>
                             <goal>generate-graphql-runtime-wiring-builder</goal>
                         </goals>
                     </execution>

@@ -17,12 +17,12 @@ import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class GraphQLRuntimeWiringGenerator
+public class GraphQLTypeRuntimeWiringProviderGenerator
 {
     @Nonnull
     private final DomainModel domainModel;
 
-    public GraphQLRuntimeWiringGenerator(@Nonnull DomainModel domainModel)
+    public GraphQLTypeRuntimeWiringProviderGenerator(@Nonnull DomainModel domainModel)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
     }

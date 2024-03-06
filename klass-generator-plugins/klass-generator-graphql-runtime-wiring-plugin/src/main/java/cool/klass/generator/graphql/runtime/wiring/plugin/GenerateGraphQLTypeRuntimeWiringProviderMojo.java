@@ -3,7 +3,7 @@ package cool.klass.generator.graphql.runtime.wiring.plugin;
 import java.io.File;
 import java.nio.file.Path;
 
-import cool.klass.generator.graphql.runtime.wiring.GraphQLRuntimeWiringGenerator;
+import cool.klass.generator.graphql.runtime.wiring.GraphQLTypeRuntimeWiringProviderGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -13,15 +13,16 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 @Mojo(
-        name = "generate-graphql-runtime-wiring",
+        name = "generate-graphql-type-runtime-wiring-provider",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
         threadSafe = true,
         requiresDependencyResolution = ResolutionScope.RUNTIME)
-public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
+public class GenerateGraphQLTypeRuntimeWiringProviderMojo
+        extends AbstractGenerateMojo
 {
     @Parameter(
             property = "outputDirectory",
-            defaultValue = "${project.build.directory}/generated-sources/graphql-runtime-wiring")
+            defaultValue = "${project.build.directory}/generated-sources/graphql-type-runtime-wiring-provider")
     private File outputDirectory;
 
     @Override
@@ -36,7 +37,7 @@ public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            GraphQLRuntimeWiringGenerator runtimeWiringGenerator = new GraphQLRuntimeWiringGenerator(domainModel);
+            GraphQLTypeRuntimeWiringProviderGenerator runtimeWiringGenerator = new GraphQLTypeRuntimeWiringProviderGenerator(domainModel);
             runtimeWiringGenerator.writeTypeRuntimeWiringFiles(outputPath);
         }
         catch (RuntimeException e)
