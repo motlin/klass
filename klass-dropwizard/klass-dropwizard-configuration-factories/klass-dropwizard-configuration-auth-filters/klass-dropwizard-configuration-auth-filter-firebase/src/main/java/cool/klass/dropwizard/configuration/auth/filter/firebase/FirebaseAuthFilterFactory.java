@@ -19,16 +19,16 @@ import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter.Builder;
 @AutoService(AuthFilterFactory.class)
 public class FirebaseAuthFilterFactory implements AuthFilterFactory
 {
-    private @Valid @NotNull String credentialsClasspathLocation;
     private @Valid @NotNull String databaseUrl;
+    private @Valid @NotNull String firebaseConfig;
 
     @Nonnull
     @Override
     public AuthFilter<?, ? extends Principal> createAuthFilter()
     {
         FirebaseAuth firebaseAuthFactory = new FirebaseAuth(
-                this.credentialsClasspathLocation,
-                this.databaseUrl);
+                this.databaseUrl,
+                this.firebaseConfig);
         com.google.firebase.auth.FirebaseAuth firebaseAuth = firebaseAuthFactory.getFirebaseAuth();
 
         Authenticator<String, FirebasePrincipal> authenticator = new FirebaseOAuthAuthenticator(firebaseAuth);
@@ -37,18 +37,6 @@ public class FirebaseAuthFilterFactory implements AuthFilterFactory
                 .setAuthenticator(authenticator)
                 .setPrefix("Bearer")
                 .buildAuthFilter();
-    }
-
-    @JsonProperty
-    public String getCredentialsClasspathLocation()
-    {
-        return this.credentialsClasspathLocation;
-    }
-
-    @JsonProperty
-    public void setCredentialsClasspathLocation(String credentialsClasspathLocation)
-    {
-        this.credentialsClasspathLocation = credentialsClasspathLocation;
     }
 
     @JsonProperty
@@ -61,5 +49,17 @@ public class FirebaseAuthFilterFactory implements AuthFilterFactory
     public void setDatabaseUrl(String databaseUrl)
     {
         this.databaseUrl = databaseUrl;
+    }
+
+    @JsonProperty
+    public String getFirebaseConfig()
+    {
+        return this.firebaseConfig;
+    }
+
+    @JsonProperty
+    public void setFirebaseConfig(String firebaseConfig)
+    {
+        this.firebaseConfig = firebaseConfig;
     }
 }
