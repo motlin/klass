@@ -95,6 +95,12 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
                 .setUrls(urls.castToList());
         Reflections reflections    = new Reflections(configurationBuilder);
         Set<String> klassLocations = reflections.getResources(Pattern.compile(".*\\.klass"));
+        if (klassLocations.isEmpty())
+        {
+            String message = "Could not find any klass locations. Scanned: " + klassSourcePackagesImmutable;
+            throw new MojoExecutionException(message);
+        }
+
         this.getLog().debug("Found klass locations: " + SetAdapter.adapt(klassLocations).makeString());
 
         MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
