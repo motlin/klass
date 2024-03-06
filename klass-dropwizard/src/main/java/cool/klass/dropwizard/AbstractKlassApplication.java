@@ -68,11 +68,11 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     {
         super.initialize(bootstrap);
 
-        Config klassConfig = ConfigFactory.load().getConfig("klass");
+        Config config = ConfigFactory.load();
 
-        this.logConfig(klassConfig);
+        this.logConfig(config.root().withOnlyKey("klass").toConfig());
 
-        this.domainModel = this.loadDomainModel(klassConfig);
+        this.domainModel = this.loadDomainModel(config);
 
         // TODO: Choose data store from configuration
         this.dataStore = new ReladomoDataStore();
@@ -80,15 +80,18 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
         this.initializeDynamicBundles(bootstrap);
     }
 
-    private void logConfig(@Nonnull Config klassConfig)
+    private void logConfig(@Nonnull Config config)
     {
         if (LOGGER.isInfoEnabled())
         {
+            // TODO: Make configurable
             ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
                     .setJson(false)
-                    .setOriginComments(false);
-            String render = klassConfig.root().render(configRenderOptions);
-            LOGGER.info("Klass configuration:\n{}", render);
+                    .setOriginComments(false)
+                    .setComments(true)
+                    .setFormatted(true);
+            String render = config.root().render(configRenderOptions);
+            LOGGER.info("HOCON configuration:\n{}", render);
         }
     }
 
@@ -127,9 +130,9 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
         }
     }
 
-    private DomainModel loadDomainModel(@Nonnull Config klassConfig)
+    private DomainModel loadDomainModel(@Nonnull Config config)
     {
-        List<String>      klassSourcePackages = klassConfig.getStringList("domain.sourcePackages");
+        List<String>      klassSourcePackages = config.getStringList("klass.domain.sourcePackages");
         DomainModelLoader domainModelLoader   = new DomainModelLoader(Lists.immutable.withAll(klassSourcePackages));
         return domainModelLoader.load();
     }
