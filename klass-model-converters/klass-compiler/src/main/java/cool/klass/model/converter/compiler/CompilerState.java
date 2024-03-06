@@ -44,6 +44,33 @@ public class CompilerState
         this.compilerInput = new CompilerInputState(compilationUnits);
     }
 
+    public void runInPlaceCompilerMacro(
+            @Nonnull AntlrElement macroElement,
+            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
+            @Nonnull String sourceCodeText,
+            @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
+            ParserRuleContext inPlaceContext,
+            ParseTreeListener... listeners)
+    {
+        Objects.requireNonNull(macroElement);
+
+        CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
+                this.compilerInput.getCompilationUnits().size(),
+                macroElement,
+                macroExpansionCompilerPhase,
+                sourceCodeText,
+                parserRule);
+
+        ParserRuleContext parserContext = compilationUnit.getParserContext();
+        parserContext.setParent(inPlaceContext);
+        inPlaceContext.addChild(parserContext);
+
+        this.compilerWalk.withInPlaceCompilationUnit(compilationUnit, () ->
+        {
+            this.compilerInput.runInPlaceCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
+        });
+    }
+
     public void runNonRootCompilerMacro(
             @Nonnull AntlrElement macroElement,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,

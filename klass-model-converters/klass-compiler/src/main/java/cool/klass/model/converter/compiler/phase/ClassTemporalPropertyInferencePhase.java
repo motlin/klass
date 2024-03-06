@@ -9,6 +9,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -31,18 +32,18 @@ public class ClassTemporalPropertyInferencePhase
     @Override
     public void exitInterfaceBody(InterfaceBodyContext ctx)
     {
-        this.runCompilerMacro();
+        this.runCompilerMacro(ctx);
         super.exitInterfaceBody(ctx);
     }
 
     @Override
     public void exitClassBody(ClassBodyContext ctx)
     {
-        this.runCompilerMacro();
+        this.runCompilerMacro(ctx);
         super.exitClassBody(ctx);
     }
 
-    private void runCompilerMacro()
+    private void runCompilerMacro(ParserRuleContext inPlaceContext)
     {
         AntlrClassifier                         classifier            = this.compilerState.getCompilerWalk().getClassifier();
         MutableList<AntlrModifier>              declaredModifiers     = classifier.getDeclaredModifiers();
@@ -67,7 +68,7 @@ public class ClassTemporalPropertyInferencePhase
             {
                 sourceCodeText.append("    validTo  : TemporalInstant? valid to;\n");
             }
-            this.runCompilerMacro(sourceCodeText.toString(), validTemporalModifier);
+            this.runCompilerMacro(inPlaceContext, sourceCodeText.toString(), validTemporalModifier);
         }
 
         if (systemTemporalModifiers.size() == 1)
@@ -86,11 +87,14 @@ public class ClassTemporalPropertyInferencePhase
             {
                 sourceCodeText.append("    systemTo  : TemporalInstant? system to;\n");
             }
-            this.runCompilerMacro(sourceCodeText.toString(), systemTemporalModifier);
+            this.runCompilerMacro(inPlaceContext, sourceCodeText.toString(), systemTemporalModifier);
         }
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText, AntlrModifier macroElement)
+    private void runCompilerMacro(
+            ParserRuleContext inPlaceContext,
+            @Nonnull String sourceCodeText,
+            AntlrModifier macroElement)
     {
         if (sourceCodeText.isEmpty())
         {
@@ -98,11 +102,12 @@ public class ClassTemporalPropertyInferencePhase
         }
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
-        this.compilerState.runNonRootCompilerMacro(
+        this.compilerState.runInPlaceCompilerMacro(
                 macroElement,
                 this,
                 sourceCodeText,
                 KlassParser::classBody,
+                inPlaceContext,
                 compilerPhase);
     }
 }

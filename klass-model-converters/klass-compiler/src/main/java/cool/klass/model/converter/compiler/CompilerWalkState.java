@@ -276,6 +276,20 @@ public class CompilerWalkState
         this.packageNameContext     = null;
     }
 
+    public void withInPlaceCompilationUnit(CompilationUnit compilationUnit, Runnable runnable)
+    {
+        CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
+        try
+        {
+            this.currentCompilationUnit = compilationUnit;
+            runnable.run();
+        }
+        finally
+        {
+            this.currentCompilationUnit = oldCompilationUnit;
+        }
+    }
+
     @Nonnull
     public CompilerWalkState withCompilationUnit(CompilationUnit compilationUnit)
     {

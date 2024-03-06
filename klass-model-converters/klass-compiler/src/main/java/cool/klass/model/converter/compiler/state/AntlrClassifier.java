@@ -499,7 +499,8 @@ public abstract class AntlrClassifier
     protected void reportPropertyDeclarationOrder(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         ImmutableList<AntlrDataTypeProperty<?>> dataTypeProperties = this.declaredDataTypeProperties
-                .reject(AntlrElement::hasMacro).toImmutable();
+                .reject(AntlrElement::hasMacro)
+                .toImmutable();
 
         MutableList<AntlrDataTypeProperty<?>> orderedDataTypeProperties = Lists.mutable.empty();
 

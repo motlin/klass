@@ -45,6 +45,17 @@ public class CompilerInputState
         }
     }
 
+    public void runInPlaceCompilerMacro(
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull ImmutableList<ParseTreeListener> listeners)
+    {
+        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+        for (ParseTreeListener listener : listeners)
+        {
+            parseTreeWalker.walk(listener, compilationUnit.getParserContext());
+        }
+    }
+
     public MutableList<CompilationUnit> getCompilationUnits()
     {
         return this.compilationUnits.asUnmodifiable();
