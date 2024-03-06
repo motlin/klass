@@ -31,6 +31,7 @@ public final class AntlrStringLiteralValue extends AntlrLiteralValue
         return new StringLiteralValueBuilder(this.elementContext, this.value);
     }
 
+    @Nonnull
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {

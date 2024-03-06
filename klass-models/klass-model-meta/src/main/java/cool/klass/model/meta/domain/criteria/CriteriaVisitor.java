@@ -9,6 +9,4 @@ public interface CriteriaVisitor
     void visitOr(OrCriteria orCriteria);
 
     void visitOperator(OperatorCriteria operatorCriteria);
-
-    void visitBinary(BinaryCriteria binaryCriteria);
 }

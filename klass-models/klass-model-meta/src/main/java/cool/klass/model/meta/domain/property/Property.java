@@ -33,7 +33,7 @@ public abstract class Property<T extends Type> extends TypedElement<T>
         return this.owningKlass;
     }
 
-    public abstract static class PropertyBuilder<T extends Type, TB extends TypeBuilder<T>> extends TypedElementBuilder<T, TB>
+    public abstract static class PropertyBuilder<T extends Type, TB extends TypeBuilder> extends TypedElementBuilder<T, TB>
     {
         @Nonnull
         protected final KlassBuilder owningKlassBuilder;

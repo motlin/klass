@@ -21,6 +21,12 @@ public final class VariableReference extends ExpressionValue
         this.urlParameter = Objects.requireNonNull(urlParameter);
     }
 
+    @Nonnull
+    public UrlParameter getUrlParameter()
+    {
+        return this.urlParameter;
+    }
+
     @Override
     public void visit(@Nonnull ExpressionValueVisitor visitor)
     {

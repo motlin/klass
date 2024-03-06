@@ -18,6 +18,12 @@ public final class StringLiteralValue extends LiteralValue
         this.value = Objects.requireNonNull(value);
     }
 
+    @Nonnull
+    public String getValue()
+    {
+        return this.value;
+    }
+
     @Override
     public void visit(@Nonnull ExpressionValueVisitor visitor)
     {

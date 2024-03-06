@@ -1,8 +1,5 @@
 package cool.klass.model.converter.compiler;
 
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerError;
@@ -12,10 +9,6 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -24,23 +17,13 @@ import static org.junit.Assert.assertThat;
 
 public class KlassCompilerTest
 {
-    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
-
     private final CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
     private final KlassCompiler       compiler            = new KlassCompiler(this.compilerErrorHolder);
-
-    protected Set<String> getResourceNames(@Nonnull String packageName)
-    {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(DOT_PATTERN.matcher(packageName).replaceAll("/")))
-                .setScanners(new ResourcesScanner()).filterInputsBy(path -> path.startsWith(packageName)));
-
-        return reflections.getResources(Pattern.compile(".*\\.klass"));
-    }
 
     @Test
     public void stackOverflow()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "/*\n"
                 + " * Simplified StackOverflow domain model. One question has many answers.\n"
@@ -323,6 +306,7 @@ public class KlassCompilerTest
                 + "            // page: ???\n"
                 + "        }\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -330,6 +314,7 @@ public class KlassCompilerTest
     @Test
     public void meta()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package klass.meta\n"
                 + "\n"
@@ -648,6 +633,7 @@ public class KlassCompilerTest
                 + "    package: Package[1..1]\n"
                 + "    associations: Association[0..*]\n"
                 + "}\n";
+        //</editor-fold>
 
         String error1 = ""
                 + "File: example.klass Line: 132 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'AssociationEndHasResultTypeClass' must declare a relationship.\n"
@@ -680,6 +666,7 @@ public class KlassCompilerTest
     @Test
     public void doubleOwnedAssociation()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -695,6 +682,7 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    key id: ID\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -702,6 +690,7 @@ public class KlassCompilerTest
     @Test
     public void duplicateNames()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -753,6 +742,7 @@ public class KlassCompilerTest
                 + "            projection  : DuplicateTopLevelItem\n"
                 + "        }\n"
                 + "}";
+        //</editor-fold>
 
         // TODO: sort compiler errors by source file name, line number
         // TODO: Duplicate duplicate errors
@@ -906,6 +896,7 @@ public class KlassCompilerTest
     @Test
     public void invalidNames()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package BADPACKAGE\n"
                 + "\n"
@@ -947,6 +938,7 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    BadPrimitiveProperty: \"Header\",\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -954,6 +946,7 @@ public class KlassCompilerTest
     @Test
     public void unresolvedTypes()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -990,6 +983,7 @@ public class KlassCompilerTest
                 + "            projection  : EmptyProjection\n"
                 + "        }\n"
                 + "}\n";
+        //</editor-fold>
 
         String[] errors = {
                 ""
@@ -1050,6 +1044,7 @@ public class KlassCompilerTest
     @Test
     public void duplicateAssociationEndKeyword()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -1065,6 +1060,7 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    key id: ID\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -1072,6 +1068,7 @@ public class KlassCompilerTest
     @Test
     public void manyOwnsOne()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -1088,6 +1085,7 @@ public class KlassCompilerTest
                 + "\n"
                 + "    relationship this.id == Dummy.parentId\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -1095,6 +1093,7 @@ public class KlassCompilerTest
     @Test
     public void serviceErrors()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = "package dummy\n"
                 + "\n"
@@ -1141,6 +1140,7 @@ public class KlassCompilerTest
                 + "            projection  : DummyProjection\n"
                 + "        }\n"
                 + "}\n";
+        //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
     }
@@ -1149,6 +1149,7 @@ public class KlassCompilerTest
     @Test
     public void errors()
     {
+        //<editor-fold desc="source code">
         //language=Klass
         String sourceCodeText = ""
                 + "package com.errors\n"
@@ -1316,6 +1317,7 @@ public class KlassCompilerTest
                 + "}\n"
                 + "\n"
                 + "// TODO many owns one\n";
+        //</editor-fold>
 
         String error = "";
 

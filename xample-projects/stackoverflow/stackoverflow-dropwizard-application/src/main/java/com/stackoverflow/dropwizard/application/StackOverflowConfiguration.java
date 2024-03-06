@@ -1,4 +1,4 @@
-package com.stackoverflow.dropwizard;
+package com.stackoverflow.dropwizard.application;
 
 import io.dropwizard.Configuration;
 

@@ -35,12 +35,6 @@ public abstract class BinaryCriteria extends Criteria
         return this.right;
     }
 
-    @Override
-    public void visit(@Nonnull CriteriaVisitor visitor)
-    {
-        visitor.visitBinary(this);
-    }
-
     public abstract static class BinaryCriteriaBuilder extends CriteriaBuilder
     {
         @Nonnull

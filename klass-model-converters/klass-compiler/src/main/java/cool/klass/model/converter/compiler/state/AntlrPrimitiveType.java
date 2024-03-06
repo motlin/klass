@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.property.PrimitiveType;
@@ -41,17 +43,20 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
 
     private static final ImmutableMap<PrimitiveType, AntlrPrimitiveType> BY_TYPE = PRIMITIVE_TYPES.groupByUniqueKey(
             AntlrPrimitiveType::getPrimitiveType);
-    private final        PrimitiveType                                   primitiveType;
+
+    private final PrimitiveType        primitiveType;
+    private final PrimitiveTypeBuilder primitiveTypeBuilder;
 
     private AntlrPrimitiveType(PrimitiveType primitiveType)
     {
         super(new ParserRuleContext(), null, true);
         this.primitiveType = primitiveType;
+        this.primitiveTypeBuilder = PrimitiveTypeBuilder.valueOf(this.primitiveType);
     }
 
     public static AntlrPrimitiveType valueOf(PrimitiveType type)
     {
-        return BY_TYPE.get(type);
+        return Objects.requireNonNull(BY_TYPE.get(type));
     }
 
     public PrimitiveType getPrimitiveType()
@@ -62,12 +67,18 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     @Nonnull
     public PrimitiveTypeBuilder build()
     {
-        return new PrimitiveTypeBuilder(new ParserRuleContext(), this.primitiveType);
+        return this.primitiveTypeBuilder;
     }
 
     @Override
     public String toString()
     {
         return this.primitiveType.toString();
+    }
+
+    @Override
+    public PrimitiveTypeBuilder getTypeBuilder()
+    {
+        return Objects.requireNonNull(this.primitiveTypeBuilder);
     }
 }

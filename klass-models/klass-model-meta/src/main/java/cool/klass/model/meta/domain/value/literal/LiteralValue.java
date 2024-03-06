@@ -18,5 +18,9 @@ public abstract class LiteralValue extends ExpressionValue
         {
             super(elementContext);
         }
+
+        @Nonnull
+        @Override
+        public abstract LiteralValue build();
     }
 }

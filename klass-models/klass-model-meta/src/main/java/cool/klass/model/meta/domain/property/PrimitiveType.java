@@ -130,7 +130,7 @@ public abstract class PrimitiveType extends DataType
 
     public static PrimitiveType valueOf(String name)
     {
-        return BY_NAME.get(name);
+        return Objects.requireNonNull(BY_NAME.get(name));
     }
 
     @Nonnull
@@ -157,23 +157,60 @@ public abstract class PrimitiveType extends DataType
         return this == TEMPORAL_INSTANT;
     }
 
-    public static class PrimitiveTypeBuilder extends DataTypeBuilder<PrimitiveType>
+    public static final class PrimitiveTypeBuilder extends DataTypeBuilder
     {
+        public static final PrimitiveTypeBuilder ID               = new PrimitiveTypeBuilder(PrimitiveType.ID);
+        public static final PrimitiveTypeBuilder INTEGER          = new PrimitiveTypeBuilder(PrimitiveType.INTEGER);
+        public static final PrimitiveTypeBuilder LONG             = new PrimitiveTypeBuilder(PrimitiveType.LONG);
+        public static final PrimitiveTypeBuilder DOUBLE           = new PrimitiveTypeBuilder(PrimitiveType.DOUBLE);
+        public static final PrimitiveTypeBuilder FLOAT            = new PrimitiveTypeBuilder(PrimitiveType.FLOAT);
+        public static final PrimitiveTypeBuilder BOOLEAN          = new PrimitiveTypeBuilder(PrimitiveType.BOOLEAN);
+        public static final PrimitiveTypeBuilder STRING           = new PrimitiveTypeBuilder(PrimitiveType.STRING);
+        public static final PrimitiveTypeBuilder INSTANT          = new PrimitiveTypeBuilder(PrimitiveType.INSTANT);
+        public static final PrimitiveTypeBuilder LOCAL_DATE       = new PrimitiveTypeBuilder(PrimitiveType.LOCAL_DATE);
+        public static final PrimitiveTypeBuilder TEMPORAL_INSTANT = new PrimitiveTypeBuilder(PrimitiveType.TEMPORAL_INSTANT);
+        public static final PrimitiveTypeBuilder TEMPORAL_RANGE   = new PrimitiveTypeBuilder(PrimitiveType.TEMPORAL_RANGE);
+
+        public static final ImmutableList<PrimitiveTypeBuilder> PRIMITIVE_TYPE_BUILDERS = Lists.immutable.with(
+                ID,
+                STRING,
+                INTEGER,
+                LONG,
+                DOUBLE,
+                FLOAT,
+                BOOLEAN,
+                INSTANT,
+                LOCAL_DATE,
+                TEMPORAL_INSTANT,
+                TEMPORAL_RANGE);
+
+        private static final ImmutableMap<PrimitiveType, PrimitiveTypeBuilder> BY_TYPE =
+                PRIMITIVE_TYPE_BUILDERS.groupByUniqueKey(PrimitiveTypeBuilder::getPrimitiveType);
+
         @Nonnull
         private final PrimitiveType primitiveType;
 
-        public PrimitiveTypeBuilder(
-                @Nonnull ParserRuleContext elementContext,
-                @Nonnull PrimitiveType primitiveType)
+        private PrimitiveTypeBuilder(@Nonnull PrimitiveType primitiveType)
         {
-            super(elementContext, elementContext, elementContext.getText(), "klass.meta");
+            super(new ParserRuleContext(), new ParserRuleContext(), new ParserRuleContext().getText(), "klass.meta");
             this.primitiveType = Objects.requireNonNull(primitiveType);
+        }
+
+        public static PrimitiveTypeBuilder valueOf(PrimitiveType type)
+        {
+            return BY_TYPE.get(type);
         }
 
         @Nonnull
         public PrimitiveType getPrimitiveType()
         {
-            return this.primitiveType;
+            return Objects.requireNonNull(this.primitiveType);
+        }
+
+        @Override
+        public PrimitiveType getType()
+        {
+            return Objects.requireNonNull(this.primitiveType);
         }
     }
 }

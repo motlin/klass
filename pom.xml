@@ -20,6 +20,7 @@
         <module>klass-generators</module>
         <module>klass-generator-plugins</module>
         <module>klass-reladomo</module>
+        <module>klass-tests</module>
     </modules>
 
     <properties>
@@ -460,6 +461,7 @@
                                     </requireMavenVersion>
                                     <requirePluginVersions>
                                         <unCheckedPluginList>
+                                            cool.klass:klass-generator-dropwizard-plugin,
                                             cool.klass:klass-generator-reladomo-plugin,
                                             cool.klass:klass-generator-service-resources-plugin
                                         </unCheckedPluginList>

@@ -208,11 +208,11 @@ service Question
             criteria    : this.id == id
             projection  : QuestionReadProjection
         }
-    /api/question/in/{id: Long[0..*]}
+    /api/question/in?{ids: Long[0..*]}
         GET
         {
             multiplicity: one
-            criteria    : this.id in id
+            criteria    : this.id in ids
             projection  : QuestionReadProjection
         }
     /api/question/firstTwo
@@ -225,7 +225,8 @@ service Question
     /api/question/{id: Long[1..1]}?{version: Integer[1..1]}
         PUT
         {
-            // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
+            // PUT, PATCH, and DELETE should implicitly get ?{version: Integer[1..1]} due to optimistic locking
+            // TODO Version should be a primitive type, as in {version: Version[1..1]}
             multiplicity: one
             criteria    : this.id == id
 
@@ -237,6 +238,7 @@ service Question
         }
         DELETE
         {
+            // TODO
             // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking
             multiplicity: one
             criteria    : this.id == id

@@ -13,6 +13,6 @@
 
     <artifactId>stackoverflow-domain-model</artifactId>
 
-    <name>StackOverflow Domain Model</name>
+    <name>${klass.applicationName} Domain Model</name>
 
 </project>

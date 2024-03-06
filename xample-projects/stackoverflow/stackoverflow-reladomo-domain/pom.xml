@@ -12,7 +12,7 @@
 
     <artifactId>stackoverflow-reladomo-domain</artifactId>
 
-    <name>StackOverflow Reladomo Domain</name>
+    <name>${klass.applicationName} Reladomo Domain</name>
 
     <dependencies>
 
@@ -51,7 +51,7 @@
                 <artifactId>klass-generator-reladomo-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                    <rootPackageName>cool.klass</rootPackageName>
+                    <rootPackageName>${klass.rootPackageName}</rootPackageName>
                 </configuration>
                 <executions>
                     <execution>
@@ -64,7 +64,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>cool.klass</groupId>
-                        <artifactId>stackoverflow-domain-model</artifactId>
+                        <artifactId>${klass.moduleName}-domain-model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

@@ -15,6 +15,11 @@ public final class IntegerLiteralValue extends LiteralValue
         this.value = value;
     }
 
+    public int getValue()
+    {
+        return this.value;
+    }
+
     @Override
     public void visit(ExpressionValueVisitor visitor)
     {

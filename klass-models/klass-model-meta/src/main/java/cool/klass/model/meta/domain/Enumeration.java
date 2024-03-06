@@ -31,7 +31,7 @@ public final class Enumeration extends DataType
         this.enumerationLiterals = enumerationLiterals;
     }
 
-    public static class EnumerationBuilder extends DataTypeBuilder<Enumeration>
+    public static class EnumerationBuilder extends DataTypeBuilder
     {
         private ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
         private Enumeration                              enumeration;
@@ -63,6 +63,13 @@ public final class Enumeration extends DataType
 
             this.enumeration.setEnumerationLiterals(enumerationLiterals);
             return this.enumeration;
+        }
+
+        @Override
+        @Nonnull
+        public Enumeration getType()
+        {
+            return Objects.requireNonNull(this.enumeration);
         }
 
         @Nonnull

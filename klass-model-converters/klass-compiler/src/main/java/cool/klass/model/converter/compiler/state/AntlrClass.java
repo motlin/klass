@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -154,7 +155,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
     public KlassBuilder getKlassBuilder()
     {
-        return this.klassBuilder;
+        return Objects.requireNonNull(this.klassBuilder);
     }
 
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -224,5 +225,12 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
         return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
+    }
+
+    @Override
+    public KlassBuilder getTypeBuilder()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getTypeBuilder() not implemented yet");
     }
 }

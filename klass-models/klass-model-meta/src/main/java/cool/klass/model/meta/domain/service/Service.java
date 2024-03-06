@@ -56,6 +56,11 @@ public final class Service extends Element
         return this.serviceMultiplicity;
     }
 
+    public Criteria getQueryCriteria()
+    {
+        return this.queryCriteria;
+    }
+
     private void setQueryCriteria(@Nonnull Criteria queryCriteria)
     {
         if (this.queryCriteria != null)
@@ -63,6 +68,11 @@ public final class Service extends Element
             throw new IllegalStateException();
         }
         this.queryCriteria = Objects.requireNonNull(queryCriteria);
+    }
+
+    public Criteria getAuthorizeCriteria()
+    {
+        return this.authorizeCriteria;
     }
 
     private void setAuthorizeCriteria(@Nonnull Criteria authorizeCriteria)
@@ -74,6 +84,11 @@ public final class Service extends Element
         this.authorizeCriteria = Objects.requireNonNull(authorizeCriteria);
     }
 
+    public Criteria getValidateCriteria()
+    {
+        return this.validateCriteria;
+    }
+
     private void setValidateCriteria(@Nonnull Criteria validateCriteria)
     {
         if (this.validateCriteria != null)
@@ -81,6 +96,11 @@ public final class Service extends Element
             throw new IllegalStateException();
         }
         this.validateCriteria = Objects.requireNonNull(validateCriteria);
+    }
+
+    public Criteria getConflictCriteria()
+    {
+        return this.conflictCriteria;
     }
 
     private void setConflictCriteria(@Nonnull Criteria conflictCriteria)

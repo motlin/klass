@@ -18,7 +18,7 @@ public abstract class DataType extends Type
         super(elementContext, nameContext, name, packageName);
     }
 
-    public abstract static class DataTypeBuilder<T extends DataType> extends TypeBuilder<T>
+    public abstract static class DataTypeBuilder extends TypeBuilder
     {
         protected DataTypeBuilder(
                 @Nonnull ParserRuleContext elementContext,

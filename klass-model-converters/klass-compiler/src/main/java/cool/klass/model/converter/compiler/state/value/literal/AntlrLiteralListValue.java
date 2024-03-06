@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.value.literal.LiteralValue.LiteralValueBuild
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class AntlrLiteralListValue extends AntlrExpressionValue
+public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 {
     @Nonnull
     private final ImmutableList<AntlrLiteralValue> literalStates;
@@ -33,6 +33,7 @@ public class AntlrLiteralListValue extends AntlrExpressionValue
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences == literalStates.size())
                 .toList()
+                .distinct()
                 .toImmutable();
     }
 
@@ -40,8 +41,11 @@ public class AntlrLiteralListValue extends AntlrExpressionValue
     @Override
     public LiteralListValueBuilder build()
     {
-        ImmutableList<LiteralValueBuilder> literalValueBuilders = this.literalStates.collect(x -> x.build());
-        return new LiteralListValueBuilder(this.elementContext, literalValueBuilders);
+        ImmutableList<LiteralValueBuilder> literalValueBuilders = this.literalStates.collect(AntlrLiteralValue::build);
+        return new LiteralListValueBuilder(
+                this.elementContext,
+                literalValueBuilders,
+                this.getInferredType().getTypeBuilder());
     }
 
     @Override

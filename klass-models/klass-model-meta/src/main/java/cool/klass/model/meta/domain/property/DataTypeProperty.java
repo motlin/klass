@@ -44,7 +44,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
 
     public abstract boolean isTemporal();
 
-    public abstract static class DataTypePropertyBuilder<T extends DataType, TB extends DataTypeBuilder<T>> extends PropertyBuilder<T, TB>
+    public abstract static class DataTypePropertyBuilder<T extends DataType, TB extends DataTypeBuilder> extends PropertyBuilder<T, TB>
     {
         protected final boolean isKey;
         protected final boolean isOptional;

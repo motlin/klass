@@ -94,7 +94,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
 
     public EnumerationBuilder getEnumerationBuilder()
     {
-        return this.enumerationBuilder;
+        return Objects.requireNonNull(this.enumerationBuilder);
     }
 
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -140,5 +140,11 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     public String toString()
     {
         return String.format("%s.%s", this.packageName, this.name);
+    }
+
+    @Override
+    public EnumerationBuilder getTypeBuilder()
+    {
+        return Objects.requireNonNull(this.enumerationBuilder);
     }
 }

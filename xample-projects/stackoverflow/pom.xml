@@ -4,6 +4,18 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <klass.moduleName>stackoverflow</klass.moduleName>
+        <klass.rootPackageName>com.stackoverflow</klass.rootPackageName>
+        <klass.applicationName>StackOverflow</klass.applicationName>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <dropwizard.version>1.3.1</dropwizard.version>
+        <mainClass>${klass.rootPackageName}.dropwizard.${klass.applicationName}Application</mainClass>
+    </properties>
+
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>xample-projects</artifactId>
@@ -13,12 +25,12 @@
     <artifactId>stackoverflow</artifactId>
     <packaging>pom</packaging>
 
-    <name>StackOverflow (Module Group)</name>
+    <name>${klass.applicationName} (Module Group)</name>
 
     <modules>
-        <module>stackoverflow-domain-model</module>
-        <module>stackoverflow-reladomo-domain</module>
-        <module>stackoverflow-dropwizard-application</module>
-        <module>stackoverflow-services</module>
+        <module>${klass.moduleName}-domain-model</module>
+        <module>${klass.moduleName}-reladomo-domain</module>
+        <module>${klass.moduleName}-services</module>
+        <module>${klass.moduleName}-dropwizard-application</module>
     </modules>
 </project>

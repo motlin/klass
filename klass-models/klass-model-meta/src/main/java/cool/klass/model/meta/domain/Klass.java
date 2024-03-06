@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.property.AssociationEnd;
@@ -43,7 +45,7 @@ public final class Klass extends Type
         this.dataTypeProperties = dataTypeProperties;
     }
 
-    public static final class KlassBuilder extends TypeBuilder<Klass>
+    public static final class KlassBuilder extends TypeBuilder
     {
         private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
         private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
@@ -104,9 +106,15 @@ public final class Klass extends Type
             return this.klass;
         }
 
+        @Override
+        public Klass getType()
+        {
+            return Objects.requireNonNull(this.klass);
+        }
+
         public Klass getKlass()
         {
-            return this.klass;
+            return Objects.requireNonNull(this.klass);
         }
     }
 }

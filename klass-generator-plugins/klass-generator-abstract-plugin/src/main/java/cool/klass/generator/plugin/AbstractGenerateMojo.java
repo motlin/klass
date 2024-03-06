@@ -21,7 +21,7 @@ import org.reflections.util.ConfigurationBuilder;
 public abstract class AbstractGenerateMojo extends AbstractMojo
 {
     @Parameter(property = "rootPackageName", required = true, readonly = true)
-    private String rootPackageName;
+    protected String rootPackageName;
 
     @Nullable
     protected DomainModel getDomainModel() throws MojoExecutionException

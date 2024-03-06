@@ -16,7 +16,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
-public class OperatorCriteria extends AntlrCriteria
+public class OperatorAntlrCriteria extends AntlrCriteria
 {
     @Nonnull
     private final AntlrOperator        operator;
@@ -25,7 +25,7 @@ public class OperatorCriteria extends AntlrCriteria
     @Nonnull
     private final AntlrExpressionValue targetValue;
 
-    public OperatorCriteria(
+    public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
             boolean inferred,

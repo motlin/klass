@@ -1,37 +1,28 @@
-package com.stackoverflow.dropwizard;
+package com.stackoverflow.dropwizard.application;
 
-import javax.annotation.Nonnull;
-import javax.ws.rs.GET;
-
-import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class StackOverflowApplication extends Application<StackOverflowConfiguration>
+public class StackOverflowApplication extends AbstractStackOverflowApplication
 {
     public static void main(String[] args) throws Exception
     {
         new StackOverflowApplication().run(args);
     }
 
-    @Nonnull
-    @Override
-    public String getName()
-    {
-        return "StackOverflow";
-    }
-
     @Override
     public void initialize(Bootstrap<StackOverflowConfiguration> bootstrap)
     {
+        super.initialize(bootstrap);
+
         // TODO: application initialization
     }
 
-    @GET
     @Override
     public void run(
             StackOverflowConfiguration configuration,
             Environment environment)
     {
+        super.run(configuration, environment);
     }
 }

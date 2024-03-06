@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.Type;
+import cool.klass.model.meta.domain.Type.TypeBuilder;
 import cool.klass.model.meta.domain.value.ExpressionValue;
 import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.literal.LiteralValue.LiteralValueBuilder;
@@ -13,14 +15,17 @@ import org.eclipse.collections.api.list.ImmutableList;
 public final class LiteralListValue extends ExpressionValue
 {
     @Nonnull
-    private final ImmutableList<ExpressionValue> expressionValues;
+    private final ImmutableList<LiteralValue> literalValues;
+    private final Type                        type;
 
     private LiteralListValue(
             @Nonnull ParserRuleContext elementContext,
-            @Nonnull ImmutableList<ExpressionValue> expressionValues)
+            @Nonnull ImmutableList<LiteralValue> literalValues,
+            Type type)
     {
         super(elementContext);
-        this.expressionValues = Objects.requireNonNull(expressionValues);
+        this.literalValues = Objects.requireNonNull(literalValues);
+        this.type = Objects.requireNonNull(type);
     }
 
     @Override
@@ -30,30 +35,38 @@ public final class LiteralListValue extends ExpressionValue
     }
 
     @Nonnull
-    public ImmutableList<ExpressionValue> getExpressionValues()
+    public ImmutableList<LiteralValue> getLiteralValues()
     {
-        return this.expressionValues;
+        return this.literalValues;
+    }
+
+    public Type getType()
+    {
+        return this.type;
     }
 
     public static final class LiteralListValueBuilder extends ExpressionValueBuilder
     {
         @Nonnull
         private final ImmutableList<LiteralValueBuilder> literalValueBuilders;
+        private final TypeBuilder                        typeBuilder;
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                @Nonnull ImmutableList<LiteralValueBuilder> literalValueBuilders)
+                @Nonnull ImmutableList<LiteralValueBuilder> literalValueBuilders,
+                TypeBuilder typeBuilder)
         {
             super(elementContext);
             this.literalValueBuilders = Objects.requireNonNull(literalValueBuilders);
+            this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
 
         @Nonnull
         @Override
         public LiteralListValue build()
         {
-            ImmutableList<ExpressionValue> expressionValues = this.literalValueBuilders.collect(ExpressionValueBuilder::build);
-            return new LiteralListValue(this.elementContext, expressionValues);
+            ImmutableList<LiteralValue> literalValues = this.literalValueBuilders.collect(LiteralValueBuilder::build);
+            return new LiteralListValue(this.elementContext, literalValues, this.typeBuilder.getType());
         }
     }
 }

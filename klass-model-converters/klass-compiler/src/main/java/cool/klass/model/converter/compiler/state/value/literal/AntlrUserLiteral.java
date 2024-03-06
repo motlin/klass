@@ -26,6 +26,7 @@ public class AntlrUserLiteral extends AntlrLiteralValue
         return new UserLiteralBuilder(this.elementContext);
     }
 
+    @Nonnull
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {

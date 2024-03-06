@@ -7,14 +7,16 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.criteria.AndAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
-import cool.klass.model.converter.compiler.state.criteria.OperatorCriteria;
+import cool.klass.model.converter.compiler.state.criteria.OperatorAntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.OrAntlrCriteria;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
 import cool.klass.model.converter.compiler.state.service.CriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
+import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
@@ -32,6 +34,7 @@ import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
 public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
@@ -96,7 +99,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
 
     @Nonnull
     @Override
-    public OperatorCriteria visitCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
+    public OperatorAntlrCriteria visitCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
         KlassVisitor<AntlrOperator> operatorVisitor = new OperatorVisitor(this.compilationUnit);
         AntlrOperator               operator        = operatorVisitor.visitOperator(ctx.operator());
@@ -111,7 +114,27 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);
         AntlrExpressionValue targetValue = expressionValueVisitor.visitExpressionValue(ctx.target);
 
-        OperatorCriteria operatorCriteria = new OperatorCriteria(
+        ImmutableList<AntlrType> sourcePossibleTypes = sourceValue.getPossibleTypes();
+        ImmutableList<AntlrType> targetPossibleTypes = targetValue.getPossibleTypes();
+
+        if (sourceValue instanceof AbstractAntlrLiteralValue)
+        {
+            if (targetPossibleTypes.size() != 1)
+            {
+                throw new AssertionError();
+            }
+            ((AbstractAntlrLiteralValue) sourceValue).setInferredType(targetPossibleTypes.getOnly());
+        }
+        if (targetValue instanceof AbstractAntlrLiteralValue)
+        {
+            if (sourcePossibleTypes.size() != 1)
+            {
+                throw new AssertionError();
+            }
+            ((AbstractAntlrLiteralValue) targetValue).setInferredType(sourcePossibleTypes.getOnly());
+        }
+
+        OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
                 this.compilationUnit,
                 false,
@@ -119,8 +142,8 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 operator,
                 sourceValue,
                 targetValue);
-        this.criteriaOwner.setCriteria(operatorCriteria);
-        return operatorCriteria;
+        this.criteriaOwner.setCriteria(operatorAntlrCriteria);
+        return operatorAntlrCriteria;
     }
 
     @Nonnull
