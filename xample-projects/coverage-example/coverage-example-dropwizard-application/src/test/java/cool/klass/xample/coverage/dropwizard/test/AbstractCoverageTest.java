@@ -19,10 +19,11 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
-import io.liftwizard.reladomo.test.rule.ReladomoTestRule;
+import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -35,8 +36,9 @@ public class AbstractCoverageTest
             ResourceHelpers.resourceFilePath("config-test.json"));
 
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
-            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml");
+    public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
+            .build();
 
     @Before
     public void setUpSampleData()

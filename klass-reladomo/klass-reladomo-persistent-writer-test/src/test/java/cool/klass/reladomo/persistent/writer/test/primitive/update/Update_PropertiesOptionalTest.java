@@ -8,22 +8,24 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
 import cool.klass.xample.coverage.meta.constants.CoverageExampleDomainModel;
-import io.liftwizard.reladomo.test.rule.ReladomoTestRule;
+import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 public class Update_PropertiesOptionalTest
         extends AbstractUpdateValidatorTest
         implements PrimitiveValidatorTest
 {
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
+    public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
             .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
             .setTestDataFileNames("test-data/Update_PropertiesOptionalTest.txt")
-            .enableDropCreateTables();
+            .enableDropCreateTables()
+            .build();
 
     private Object persistentInstance;
 

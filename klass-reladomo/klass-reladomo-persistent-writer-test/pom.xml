@@ -76,6 +76,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections-api</artifactId>
             <scope>test</scope>

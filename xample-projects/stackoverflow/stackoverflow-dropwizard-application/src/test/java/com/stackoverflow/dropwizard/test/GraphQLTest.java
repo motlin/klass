@@ -14,13 +14,14 @@ import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import io.liftwizard.reladomo.test.rule.ReladomoTestRule;
+import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.impl.factory.Maps;
 import org.json.JSONException;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
@@ -36,8 +37,9 @@ public class GraphQLTest
             ResourceHelpers.resourceFilePath("config-test.yml"));
 
     @Rule
-    public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule()
-            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
+    public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
+            .setRuntimeConfigurationPath("reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml")
+            .build();
 
     protected Client getClient(String clientName)
     {
