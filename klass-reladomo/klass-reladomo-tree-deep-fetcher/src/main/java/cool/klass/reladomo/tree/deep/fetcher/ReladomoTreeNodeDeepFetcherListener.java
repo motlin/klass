@@ -43,6 +43,18 @@ public class ReladomoTreeNodeDeepFetcherListener
     }
 
     @Override
+    public void assertInvariants()
+    {
+        if (this.stack.size() == this.contextStack.size())
+        {
+            return;
+        }
+
+        String detailMessage = "Expected " + this.stack.size() + " but got " + this.contextStack.size();
+        throw new AssertionError(detailMessage);
+    }
+
+    @Override
     public void enterRoot(RootReladomoTreeNode rootReladomoTreeNode)
     {
         if (this.klass != rootReladomoTreeNode.getOwningClassifier())
