@@ -634,7 +634,7 @@ class ProjectionElement
 class RootProjection
     extends ProjectionElement
 {
-    className                     : String private maximumLength(256);
+    classifierName: String private maximumLength(256);
 }
 
 class NamedProjection
@@ -712,12 +712,12 @@ association ProjectionDataTypePropertyHasDataTypeProperty
             && this.propertyName == DataTypeProperty.name
 }
 
-association RootProjectionHasClass
+association RootProjectionHasClassifier
 {
-    projections                   : RootProjection[0..*];
-    klass                         : Klass[1..1];
+    projections: RootProjection[0..*];
+    classifier : Classifier[1..1];
 
-    relationship this.className == Klass.name
+    relationship this.classifierName == Classifier.name
 }
 
 association ProjectionProjectionReferenceHasProjection
@@ -983,7 +983,7 @@ projection ProjectionElementProjection on ProjectionElement
     ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: ProjectionElementProjection,
-    RootProjection.klass: {
+    RootProjection.classifier: {
         NamedElement.name: "NamedElement name",
     },
     ProjectionWithAssociationEnd.associationEnd: {

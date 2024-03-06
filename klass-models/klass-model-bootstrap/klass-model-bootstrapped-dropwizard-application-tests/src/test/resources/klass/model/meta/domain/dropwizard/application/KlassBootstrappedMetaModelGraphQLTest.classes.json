@@ -1662,7 +1662,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "className",
+            "name": "classifierName",
             "ordinal": 1,
             "optional": false,
             "minLengthValidation": null,

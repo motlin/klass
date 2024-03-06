@@ -1234,14 +1234,14 @@
         "associationEnds": [],
         "dataTypeProperty": {
           "__typename": "PrimitiveProperty",
-          "name": "className"
+          "name": "classifierName"
         }
       },
       {
         "__typename": "TypeMemberReferencePath",
         "id": 104,
         "klass": {
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEnds": [],
         "dataTypeProperty": {

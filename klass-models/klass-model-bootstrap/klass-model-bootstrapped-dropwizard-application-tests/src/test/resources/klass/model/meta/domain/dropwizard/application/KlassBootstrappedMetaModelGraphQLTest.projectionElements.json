@@ -7,7 +7,7 @@
         "ordinal": 117,
         "name": "EnumerationLiteralProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "EnumerationLiteral"
         }
       },
@@ -17,7 +17,7 @@
         "ordinal": 118,
         "name": "EnumerationProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Enumeration"
         }
       },
@@ -27,7 +27,7 @@
         "ordinal": 119,
         "name": "EnumerationSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Enumeration"
         }
       },
@@ -37,7 +37,7 @@
         "ordinal": 120,
         "name": "PackageableElementProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "PackageableElement"
         }
       },
@@ -47,7 +47,7 @@
         "ordinal": 121,
         "name": "ClassifierModifierProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ClassifierModifier"
         }
       },
@@ -57,7 +57,7 @@
         "ordinal": 122,
         "name": "ClassifierInterfaceMappingProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ClassifierInterfaceMapping"
         }
       },
@@ -67,7 +67,7 @@
         "ordinal": 123,
         "name": "ParameterizedPropertyProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ParameterizedProperty"
         }
       },
@@ -77,7 +77,7 @@
         "ordinal": 124,
         "name": "ParameterizedPropertyOrderingProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ParameterizedPropertyOrdering"
         }
       },
@@ -87,7 +87,7 @@
         "ordinal": 125,
         "name": "ProjectionElementProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ProjectionElement"
         }
       },
@@ -97,7 +97,7 @@
         "ordinal": 126,
         "name": "NamedProjectionProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "NamedProjection"
         }
       },
@@ -107,7 +107,7 @@
         "ordinal": 127,
         "name": "ServiceGroupProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ServiceGroup"
         }
       },
@@ -117,7 +117,7 @@
         "ordinal": 128,
         "name": "UrlProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Url"
         }
       },
@@ -127,7 +127,7 @@
         "ordinal": 129,
         "name": "UrlParameterProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "UrlParameter"
         }
       },
@@ -137,7 +137,7 @@
         "ordinal": 130,
         "name": "ServiceProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Service"
         }
       },
@@ -147,7 +147,7 @@
         "ordinal": 131,
         "name": "ServiceOrderByProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ServiceOrderBy"
         }
       },
@@ -157,7 +157,7 @@
         "ordinal": 134,
         "name": "InterfaceProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Interface"
         }
       },
@@ -167,7 +167,7 @@
         "ordinal": 135,
         "name": "InterfaceSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Interface"
         }
       },
@@ -177,7 +177,7 @@
         "ordinal": 137,
         "name": "DataTypePropertyProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "DataTypeProperty"
         }
       },
@@ -187,7 +187,7 @@
         "ordinal": 138,
         "name": "KlassProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Klass"
         }
       },
@@ -197,7 +197,7 @@
         "ordinal": 139,
         "name": "ClassSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Klass"
         }
       },
@@ -207,7 +207,7 @@
         "ordinal": 141,
         "name": "ClassifierProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Classifier"
         }
       },
@@ -217,7 +217,7 @@
         "ordinal": 143,
         "name": "ThisMemberReferencePathProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ThisMemberReferencePath"
         }
       },
@@ -227,7 +227,7 @@
         "ordinal": 144,
         "name": "AssociationEndProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "AssociationEnd"
         }
       },
@@ -237,7 +237,7 @@
         "ordinal": 145,
         "name": "MemberReferencePathAssociationEndMappingProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "MemberReferencePathAssociationEndMapping"
         }
       },
@@ -247,7 +247,7 @@
         "ordinal": 146,
         "name": "MemberReferencePathSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "MemberReferencePath"
         }
       },
@@ -257,7 +257,7 @@
         "ordinal": 147,
         "name": "AssociationEndSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "AssociationEnd"
         }
       },
@@ -267,7 +267,7 @@
         "ordinal": 148,
         "name": "ExpressionValueProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ExpressionValue"
         }
       },
@@ -277,7 +277,7 @@
         "ordinal": 149,
         "name": "ExpressionValueSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ExpressionValue"
         }
       },
@@ -287,7 +287,7 @@
         "ordinal": 150,
         "name": "MemberReferencePathProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "MemberReferencePath"
         }
       },
@@ -297,7 +297,7 @@
         "ordinal": 151,
         "name": "CriteriaProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Criteria"
         }
       },
@@ -307,7 +307,7 @@
         "ordinal": 152,
         "name": "CriteriaSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Criteria"
         }
       },
@@ -317,7 +317,7 @@
         "ordinal": 153,
         "name": "AssociationProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Association"
         }
       },
@@ -327,7 +327,7 @@
         "ordinal": 154,
         "name": "AssociationSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "Association"
         }
       },
@@ -337,7 +337,7 @@
         "ordinal": 157,
         "name": "ServiceGroupSummaryProjection",
         "parent": null,
-        "klass": {
+        "classifier": {
           "name": "ServiceGroup"
         }
       },
@@ -921,12 +921,12 @@
         "__typename": "ProjectionReferenceProperty",
         "id": 83,
         "ordinal": 5,
-        "name": "klass",
+        "name": "classifier",
         "parent": {
           "id": 9
         },
         "associationEnd": {
-          "name": "klass"
+          "name": "classifier"
         }
       },
       {

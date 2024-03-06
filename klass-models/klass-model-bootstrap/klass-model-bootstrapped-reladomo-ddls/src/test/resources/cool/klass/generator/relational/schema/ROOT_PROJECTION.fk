@@ -1,7 +1,7 @@
-alter table ROOT_PROJECTION add constraint ROOT_PROJECTION_FK_KLASS foreign key (
-    class_name
+alter table ROOT_PROJECTION add constraint ROOT_PROJECTION_FK_CLASSIFIER foreign key (
+    classifier_name
 )
-references KLASS(
+references CLASSIFIER(
     name
 );
 

@@ -319,6 +319,22 @@
             }
           }
         ]
+      },
+      {
+        "name": "projections",
+        "ordinal": 1,
+        "direction": "source",
+        "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Classifier"
+        },
+        "resultType": {
+          "packageName": "klass.model.meta.domain",
+          "name": "RootProjection"
+        },
+        "associationEndModifiers": [],
+        "orderBys": []
       }
     ]
   },
@@ -717,22 +733,6 @@
         "resultType": {
           "packageName": "klass.model.meta.domain",
           "name": "ParameterizedProperty"
-        },
-        "associationEndModifiers": [],
-        "orderBys": []
-      },
-      {
-        "name": "projections",
-        "ordinal": 1,
-        "direction": "source",
-        "multiplicity": "0..*",
-        "owningClass": {
-          "packageName": "klass.model.meta.domain",
-          "name": "Klass"
-        },
-        "resultType": {
-          "packageName": "klass.model.meta.domain",
-          "name": "RootProjection"
         },
         "associationEndModifiers": [],
         "orderBys": []
@@ -3463,7 +3463,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "className",
+        "name": "classifierName",
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null,
@@ -3513,7 +3513,7 @@
         "orderBys": []
       },
       {
-        "name": "klass",
+        "name": "classifier",
         "ordinal": 2,
         "direction": "target",
         "multiplicity": "1..1",
@@ -3523,7 +3523,7 @@
         },
         "resultType": {
           "packageName": "klass.model.meta.domain",
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEndModifiers": [],
         "orderBys": []

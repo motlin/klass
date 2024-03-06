@@ -1385,7 +1385,7 @@
         }
       },
       {
-        "name": "RootProjectionHasClass",
+        "name": "RootProjectionHasClassifier",
         "ordinal": 95,
         "packageName": "klass.model.meta.domain",
         "associationEnds": [
@@ -1401,12 +1401,12 @@
             "orderBys": []
           },
           {
-            "name": "klass",
+            "name": "classifier",
             "ordinal": 2,
             "direction": "TARGET",
             "multiplicity": "ONE_TO_ONE",
             "resultType": {
-              "name": "Klass"
+              "name": "Classifier"
             },
             "associationEndModifiers": [],
             "orderBys": []

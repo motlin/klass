@@ -192,6 +192,9 @@
       },
       {
         "name": "dataTypeProperties"
+      },
+      {
+        "name": "projections"
       }
     ],
     "parameterizedProperties": []
@@ -421,9 +424,6 @@
       },
       {
         "name": "parameterizedPropertiesResultTypeOf"
-      },
-      {
-        "name": "projections"
       },
       {
         "name": "serviceGroups"
@@ -2243,7 +2243,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "className",
+        "name": "classifierName",
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null,
@@ -2270,7 +2270,7 @@
         "name": "namedProjection"
       },
       {
-        "name": "klass"
+        "name": "classifier"
       }
     ],
     "parameterizedProperties": []

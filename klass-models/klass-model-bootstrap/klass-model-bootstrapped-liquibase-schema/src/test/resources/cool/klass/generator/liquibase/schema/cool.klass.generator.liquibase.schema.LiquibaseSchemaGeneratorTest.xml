@@ -620,7 +620,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="ROOT_PROJECTION_PK" />
             </column>
 
-            <column name="CLASS_NAME" type="varchar(256)">
+            <column name="CLASSIFIER_NAME" type="varchar(256)">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -1078,12 +1078,12 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-43-ROOT_PROJECTION_FK_KLASS">
+    <changeSet author="Klass" id="initial-foreign-key-43-ROOT_PROJECTION_FK_CLASSIFIER">
         <addForeignKeyConstraint
-                constraintName="ROOT_PROJECTION_FK_KLASS"
+                constraintName="ROOT_PROJECTION_FK_CLASSIFIER"
                 baseTableName="ROOT_PROJECTION"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="KLASS"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
                 referencedColumnNames="NAME"
         />
     </changeSet>
@@ -1402,11 +1402,11 @@
         </createIndex>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-43-ROOT_PROJECTION_IDX_KLASS">
+    <changeSet author="Klass" id="initial-indices-43-ROOT_PROJECTION_IDX_CLASSIFIER">
         <createIndex
-                indexName="ROOT_PROJECTION_IDX_KLASS"
+                indexName="ROOT_PROJECTION_IDX_CLASSIFIER"
                 tableName="ROOT_PROJECTION">
-            <column name="CLASS_NAME" />
+            <column name="CLASSIFIER_NAME" />
         </createIndex>
     </changeSet>
 

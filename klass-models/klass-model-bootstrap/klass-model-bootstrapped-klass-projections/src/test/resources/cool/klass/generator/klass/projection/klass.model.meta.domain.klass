@@ -447,7 +447,7 @@ projection ProjectionElementProjection on ProjectionElement
     parent: {
         id: "ProjectionElement id",
     },
-    RootProjection.klass: {
+    RootProjection.classifier: {
         NamedElement.name: "NamedElement name",
     },
     ProjectionWithAssociationEnd.associationEnd: {
@@ -472,7 +472,7 @@ projection RootProjectionProjection on RootProjection
     parent: {
         id: "ProjectionElement id",
     },
-    klass: {
+    classifier: {
         name: "NamedElement name",
     },
 }

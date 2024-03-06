@@ -54,7 +54,7 @@
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
         "id": 83,
         "ordinal": 5,
-        "name": "klass",
+        "name": "classifier",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
@@ -68,7 +68,7 @@
           }
         ],
         "associationEnd": {
-          "name": "klass"
+          "name": "classifier"
         }
       },
       {
@@ -135,7 +135,7 @@
         }
       }
     ],
-    "klass": {
+    "classifier": {
       "name": "ProjectionElement"
     }
   }

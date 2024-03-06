@@ -441,6 +441,9 @@
           },
           {
             "name": "dataTypeProperties"
+          },
+          {
+            "name": "projections"
           }
         ],
         "parameterizedProperties": []
@@ -663,9 +666,6 @@
           },
           {
             "name": "parameterizedPropertiesResultTypeOf"
-          },
-          {
-            "name": "projections"
           },
           {
             "name": "serviceGroups"
@@ -2431,7 +2431,7 @@
         "dataTypeProperties": [
           {
             "__typename": "PrimitiveProperty",
-            "name": "className",
+            "name": "classifierName",
             "ordinal": 1,
             "optional": false,
             "minLengthValidation": null,
@@ -2457,7 +2457,7 @@
             "name": "namedProjection"
           },
           {
-            "name": "klass"
+            "name": "classifier"
           }
         ],
         "parameterizedProperties": []
@@ -4604,7 +4604,7 @@
       },
       {
         "__typename": "Association",
-        "name": "RootProjectionHasClass",
+        "name": "RootProjectionHasClassifier",
         "ordinal": 95,
         "packageName": "klass.model.meta.domain",
         "associationEnds": [
@@ -4620,12 +4620,12 @@
             "orderBys": []
           },
           {
-            "name": "klass",
+            "name": "classifier",
             "ordinal": 2,
             "direction": "TARGET",
             "multiplicity": "ONE_TO_ONE",
             "resultType": {
-              "name": "Klass"
+              "name": "Classifier"
             },
             "associationEndModifiers": [],
             "orderBys": []

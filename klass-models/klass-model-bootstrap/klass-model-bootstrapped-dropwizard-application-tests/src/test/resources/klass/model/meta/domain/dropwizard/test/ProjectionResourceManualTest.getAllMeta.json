@@ -39,7 +39,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "EnumerationLiteral"
       }
     }
@@ -97,7 +97,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Enumeration"
       }
     }
@@ -163,7 +163,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Enumeration"
       }
     }
@@ -393,7 +393,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "PackageableElement"
       }
     }
@@ -428,7 +428,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ClassifierModifier"
       }
     }
@@ -464,7 +464,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ClassifierInterfaceMapping"
       }
     }
@@ -564,7 +564,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ParameterizedProperty"
       }
     }
@@ -589,7 +589,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ParameterizedPropertyOrdering"
       }
     }
@@ -650,7 +650,7 @@
           "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
           "id": 83,
           "ordinal": 5,
-          "name": "klass",
+          "name": "classifier",
           "children": [
             {
               "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
@@ -664,7 +664,7 @@
             }
           ],
           "associationEnd": {
-            "name": "klass"
+            "name": "classifier"
           }
         },
         {
@@ -731,7 +731,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ProjectionElement"
       }
     }
@@ -789,7 +789,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "NamedProjection"
       }
     }
@@ -868,7 +868,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ServiceGroup"
       }
     }
@@ -919,7 +919,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Url"
       }
     }
@@ -965,7 +965,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "UrlParameter"
       }
     }
@@ -1086,7 +1086,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Service"
       }
     }
@@ -1132,7 +1132,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ServiceOrderBy"
       }
     }
@@ -1263,7 +1263,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Interface"
       }
     }
@@ -1364,7 +1364,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Interface"
       }
     }
@@ -1555,7 +1555,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "DataTypeProperty"
       }
     }
@@ -1813,7 +1813,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Klass"
       }
     }
@@ -1955,7 +1955,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Klass"
       }
     }
@@ -2104,7 +2104,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Classifier"
       }
     }
@@ -2225,7 +2225,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ThisMemberReferencePath"
       }
     }
@@ -2407,7 +2407,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "AssociationEnd"
       }
     }
@@ -2474,7 +2474,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "MemberReferencePathAssociationEndMapping"
       }
     }
@@ -2563,7 +2563,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "MemberReferencePath"
       }
     }
@@ -2674,7 +2674,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "AssociationEnd"
       }
     }
@@ -2825,7 +2825,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ExpressionValue"
       }
     }
@@ -2935,7 +2935,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ExpressionValue"
       }
     }
@@ -3034,7 +3034,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "MemberReferencePath"
       }
     }
@@ -3134,7 +3134,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Criteria"
       }
     }
@@ -3224,7 +3224,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Criteria"
       }
     }
@@ -3295,7 +3295,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Association"
       }
     }
@@ -3356,7 +3356,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "Association"
       }
     }
@@ -3477,7 +3477,7 @@
           }
         }
       ],
-      "klass": {
+      "classifier": {
         "name": "ServiceGroup"
       }
     }

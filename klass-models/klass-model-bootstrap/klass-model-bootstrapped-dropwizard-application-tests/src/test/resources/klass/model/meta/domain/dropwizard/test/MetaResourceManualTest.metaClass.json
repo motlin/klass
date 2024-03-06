@@ -120,6 +120,22 @@
           }
         }
       ]
+    },
+    {
+      "name": "projections",
+      "ordinal": 1,
+      "direction": "source",
+      "multiplicity": "0..*",
+      "owningClass": {
+        "packageName": "klass.model.meta.domain",
+        "name": "Classifier"
+      },
+      "resultType": {
+        "packageName": "klass.model.meta.domain",
+        "name": "RootProjection"
+      },
+      "associationEndModifiers": [],
+      "orderBys": []
     }
   ]
 }

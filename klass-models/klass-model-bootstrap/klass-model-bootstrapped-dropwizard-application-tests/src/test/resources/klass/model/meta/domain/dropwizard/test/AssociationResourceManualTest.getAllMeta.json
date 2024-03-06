@@ -3023,7 +3023,7 @@
   },
   {
     "packageName": "klass.model.meta.domain",
-    "name": "RootProjectionHasClass",
+    "name": "RootProjectionHasClassifier",
     "ordinal": 95,
     "associationEnds": [
       {
@@ -3033,7 +3033,7 @@
         "multiplicity": "0..*",
         "owningClass": {
           "packageName": "klass.model.meta.domain",
-          "name": "Klass"
+          "name": "Classifier"
         },
         "resultType": {
           "packageName": "klass.model.meta.domain",
@@ -3043,7 +3043,7 @@
         "orderBys": []
       },
       {
-        "name": "klass",
+        "name": "classifier",
         "ordinal": 2,
         "direction": "target",
         "multiplicity": "1..1",
@@ -3053,7 +3053,7 @@
         },
         "resultType": {
           "packageName": "klass.model.meta.domain",
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEndModifiers": [],
         "orderBys": []
@@ -3070,13 +3070,13 @@
         },
         "associationEnds": [],
         "dataTypeProperty": {
-          "name": "className"
+          "name": "classifierName"
         }
       },
       "targetExpressionValue": {
         "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
         "klass": {
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEnds": [],
         "dataTypeProperty": {

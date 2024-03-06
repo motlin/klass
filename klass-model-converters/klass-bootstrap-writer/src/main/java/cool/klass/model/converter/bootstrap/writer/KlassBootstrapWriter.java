@@ -725,7 +725,7 @@ public class KlassBootstrapWriter
     {
         var bootstrappedRootProjection = new RootProjection();
         bootstrappedRootProjection.setId(projectionElement.getId());
-        bootstrappedRootProjection.setClassName(projection.getClassifier().getName());
+        bootstrappedRootProjection.setClassifierName(projection.getClassifier().getName());
         return bootstrappedRootProjection;
     }
 

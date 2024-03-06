@@ -3782,7 +3782,7 @@
     "dataTypeProperties": [
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
-        "name": "className",
+        "name": "classifierName",
         "primitiveType": "String",
         "minValidation": null,
         "maxValidation": null,
@@ -4166,7 +4166,7 @@
   },
   {
     "__typename": "klass.model.meta.domain.Association",
-    "name": "RootProjectionHasClass",
+    "name": "RootProjectionHasClassifier",
     "ordinal": 95,
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
@@ -4177,7 +4177,7 @@
         "multiplicity": "0..*",
         "owningClass": {
           "packageName": "klass.model.meta.domain",
-          "name": "Klass"
+          "name": "Classifier"
         },
         "resultType": {
           "packageName": "klass.model.meta.domain",
@@ -4187,7 +4187,7 @@
         "orderBys": []
       },
       {
-        "name": "klass",
+        "name": "classifier",
         "ordinal": 2,
         "direction": "target",
         "multiplicity": "1..1",
@@ -4197,7 +4197,7 @@
         },
         "resultType": {
           "packageName": "klass.model.meta.domain",
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEndModifiers": [],
         "orderBys": []
