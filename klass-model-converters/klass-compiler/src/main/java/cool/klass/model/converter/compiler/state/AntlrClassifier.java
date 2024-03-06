@@ -91,32 +91,29 @@ public abstract class AntlrClassifier
     };
     //</editor-fold>
 
-    protected final MutableList<AntlrAssociationEndSignature>               declaredAssociationEndSignatures       =
-            Lists.mutable.empty();
-    protected final MutableOrderedMap<String, AntlrAssociationEndSignature> declaredAssociationEndSignaturesByName =
+    protected final MutableList<AntlrModifier>                declaredModifiers                = Lists.mutable.empty();
+    protected final MutableList<AntlrProperty>                declaredProperties               = Lists.mutable.empty();
+    // Members are properties where the ordinal comes from declaration order. Association ends are properties, but are not members.
+    protected final MutableList<AntlrProperty>                declaredMembers                  = Lists.mutable.empty();
+    protected final MutableList<AntlrDataTypeProperty<?>>     declaredDataTypeProperties       = Lists.mutable.empty();
+    protected final MutableList<AntlrReferenceProperty<?>>    declaredReferenceProperties      = Lists.mutable.empty();
+    protected final MutableList<AntlrAssociationEndSignature> declaredAssociationEndSignatures = Lists.mutable.empty();
+    protected final MutableList<AntlrInterface>               declaredInterfaces               = Lists.mutable.empty();
+
+    protected final MutableOrderedMap<String, AntlrModifier>                        declaredModifiersByName                =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<ParserRuleContext, AntlrModifier>             declaredModifiersByContext             =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>>             declaredDataTypePropertiesByName       =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<String, AntlrReferenceProperty<?>>            declaredReferencePropertiesByName      =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceProperty<?>> declaredReferencePropertiesByContext   =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<String, AntlrAssociationEndSignature>         declaredAssociationEndSignaturesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> declaredAssociationEndSignaturesByContext =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    protected final MutableList<AntlrReferenceProperty<?>>               declaredReferenceProperties       =
-            Lists.mutable.empty();
-    protected final MutableOrderedMap<String, AntlrReferenceProperty<?>> declaredReferencePropertiesByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceProperty<?>> declaredReferencePropertiesByContext =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-    protected final MutableList<AntlrModifier>            declaredModifiers          = Lists.mutable.empty();
-    protected final MutableList<AntlrProperty>            declaredProperties         = Lists.mutable.empty();
-    protected final MutableList<AntlrDataTypeProperty<?>> declaredDataTypeProperties = Lists.mutable.empty();
-    protected final MutableList<AntlrInterface>           declaredInterfaces         = Lists.mutable.empty();
-
-    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>> declaredDataTypePropertiesByName =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<String, AntlrModifier>            declaredModifiersByName          =
-            OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<ParserRuleContext, AntlrModifier> declaredModifiersByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrClassifier(
@@ -251,6 +248,7 @@ public abstract class AntlrClassifier
     {
         Objects.requireNonNull(antlrDataTypeProperty);
         this.declaredProperties.add(antlrDataTypeProperty);
+        this.declaredMembers.add(antlrDataTypeProperty);
         this.declaredDataTypeProperties.add(antlrDataTypeProperty);
         this.declaredDataTypePropertiesByName.compute(
                 antlrDataTypeProperty.getName(),
@@ -275,6 +273,7 @@ public abstract class AntlrClassifier
     {
         Objects.requireNonNull(associationEndSignature);
         this.declaredProperties.add(associationEndSignature);
+        this.declaredMembers.add(associationEndSignature);
         this.declaredAssociationEndSignatures.add(associationEndSignature);
         this.declaredAssociationEndSignaturesByName.compute(
                 associationEndSignature.getName(),
