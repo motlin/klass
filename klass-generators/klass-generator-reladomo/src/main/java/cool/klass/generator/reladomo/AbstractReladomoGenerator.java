@@ -8,7 +8,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import com.gs.fw.common.mithra.generator.metamodel.CardinalityType;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
 public class AbstractReladomoGenerator
 {
@@ -72,5 +75,42 @@ public class AbstractReladomoGenerator
         {
             throw new RuntimeException(e);
         }
+    }
+
+    protected CardinalityType getCardinality(
+            @Nonnull AssociationEnd associationEnd,
+            @Nonnull AssociationEnd opposite)
+    {
+        Multiplicity multiplicity         = associationEnd.getMultiplicity();
+        Multiplicity oppositeMultiplicity = opposite.getMultiplicity();
+
+        boolean fromOne  = oppositeMultiplicity.isToOne();
+        boolean toOne    = multiplicity.isToOne();
+        boolean fromMany = oppositeMultiplicity.isToMany();
+        boolean toMany   = multiplicity.isToMany();
+
+        if (fromOne && toOne)
+        {
+            return this.getCardinalityType("one-to-one");
+        }
+        if (fromOne && toMany)
+        {
+            return this.getCardinalityType("one-to-many");
+        }
+        if (fromMany && toOne)
+        {
+            return this.getCardinalityType("many-to-one");
+        }
+        if (fromMany && toMany)
+        {
+            return this.getCardinalityType("many-to-many");
+        }
+        throw new AssertionError();
+    }
+
+    protected CardinalityType getCardinalityType(String attributeValue)
+    {
+        CardinalityType cardinalityType = new CardinalityType();
+        return cardinalityType.with(attributeValue, cardinalityType);
     }
 }

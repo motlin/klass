@@ -11,7 +11,6 @@ import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.AsOfAttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.AttributeType;
-import com.gs.fw.common.mithra.generator.metamodel.CardinalityType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraCommonObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
@@ -26,7 +25,6 @@ import cool.klass.generator.reladomo.CriteriaToRelationshipVisitor;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
-import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
@@ -62,9 +60,9 @@ public class ReladomoObjectFileGenerator
     private void writeObjectFile(@Nonnull Path outputPath, @Nonnull Klass klass)
             throws IOException
     {
-        MithraGeneratorMarshaller mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
+        var mithraGeneratorMarshaller = new MithraGeneratorMarshaller();
         mithraGeneratorMarshaller.setIndent(true);
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
         this.convertAndMarshall(klass, mithraGeneratorMarshaller, stringBuilder);
 
@@ -148,7 +146,6 @@ public class ReladomoObjectFileGenerator
                 .reject(DataTypeProperty::isDerived)
                 .collect(this::convertToAttributeType);
 
-        // TODO: Test that private properties are not included in Projections
         // TODO: Add foreign keys
 
         mithraObject.setAsOfAttributes(asOfAttributeTypes.castToList());
@@ -271,37 +268,6 @@ public class ReladomoObjectFileGenerator
         return relationshipType;
     }
 
-    private CardinalityType getCardinality(
-            @Nonnull AssociationEnd associationEnd,
-            @Nonnull AssociationEnd opposite)
-    {
-        Multiplicity multiplicity         = associationEnd.getMultiplicity();
-        Multiplicity oppositeMultiplicity = opposite.getMultiplicity();
-
-        boolean fromOne  = oppositeMultiplicity.isToOne();
-        boolean toOne    = multiplicity.isToOne();
-        boolean fromMany = oppositeMultiplicity.isToMany();
-        boolean toMany   = multiplicity.isToMany();
-
-        if (fromOne && toOne)
-        {
-            return this.getCardinalityType("one-to-one");
-        }
-        if (fromOne && toMany)
-        {
-            return this.getCardinalityType("one-to-many");
-        }
-        if (fromMany && toOne)
-        {
-            return this.getCardinalityType("many-to-one");
-        }
-        if (fromMany && toMany)
-        {
-            return this.getCardinalityType("many-to-many");
-        }
-        throw new AssertionError();
-    }
-
     @Nonnull
     private String getRelationshipString(@Nonnull Criteria criteria, boolean reverse)
     {
@@ -309,12 +275,6 @@ public class ReladomoObjectFileGenerator
         CriteriaVisitor visitor       = new CriteriaToRelationshipVisitor(stringBuilder, reverse);
         criteria.visit(visitor);
         return stringBuilder.toString();
-    }
-
-    private CardinalityType getCardinalityType(String attributeValue)
-    {
-        CardinalityType cardinalityType = new CardinalityType();
-        return cardinalityType.with(attributeValue, cardinalityType);
     }
 
     private String convertOrderBy(@Nonnull OrderBy orderBy)
