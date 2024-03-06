@@ -10,7 +10,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
-import cool.klass.model.converter.compiler.state.property.AntlrClassReferenceProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -448,7 +447,6 @@ public class AntlrClass
         this.reportSuperClassNotFound(compilerAnnotationHolder);
         this.reportExtendsConcrete(compilerAnnotationHolder);
         this.reportMultipleOppositesWithModifier(compilerAnnotationHolder, "version");
-        this.reportOwnedByMultipleTypes(compilerAnnotationHolder);
         this.reportVersionErrors(compilerAnnotationHolder);
         this.reportTransientInheritance(compilerAnnotationHolder);
         this.reportTransientIdProperties(compilerAnnotationHolder);
@@ -471,25 +469,6 @@ public class AntlrClass
         for (AntlrAssociationEnd associationEnd : associationEnds)
         {
             associationEnd.getOpposite().reportDuplicateOppositeWithModifier(compilerAnnotationHolder, this, modifier);
-        }
-    }
-
-    private void reportOwnedByMultipleTypes(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
-    {
-        MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
-                .select(associationEnd -> associationEnd
-                        .getOpposite()
-                        .getModifiers()
-                        .anySatisfy(AntlrModifier::isOwned))
-                .collect(AntlrAssociationEnd::getOpposite);
-        if (associationEnds.collect(AntlrClassReferenceProperty::getType).distinct().size() <= 1)
-        {
-            return;
-        }
-
-        for (AntlrAssociationEnd associationEnd : associationEnds)
-        {
-            associationEnd.reportDuplicateOppositeWithModifier(compilerAnnotationHolder, this, "owned");
         }
     }
 
