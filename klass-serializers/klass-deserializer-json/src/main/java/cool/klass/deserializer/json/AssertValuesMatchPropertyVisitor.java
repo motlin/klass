@@ -26,20 +26,24 @@ public class AssertValuesMatchPropertyVisitor
     @Nonnull
     private final MutableStack<String> contextStack;
     @Nonnull
-    private final MutableList<String>  errors;
+    private final String               severity;
+    @Nonnull
+    private final MutableList<String>  annotations;
 
     public AssertValuesMatchPropertyVisitor(
             @Nonnull JsonNode jsonDataTypeValue,
             Object value,
             @Nonnull String propertyKind,
             @Nonnull MutableStack<String> contextStack,
-            @Nonnull MutableList<String> errors)
+            @Nonnull  String severity,
+            @Nonnull MutableList<String> annotations)
     {
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
         this.value             = value;
         this.propertyKind      = Objects.requireNonNull(propertyKind);
         this.contextStack      = Objects.requireNonNull(contextStack);
-        this.errors            = Objects.requireNonNull(errors);
+        this.severity          = Objects.requireNonNull(severity);
+        this.annotations       = Objects.requireNonNull(annotations);
     }
 
     @Override
@@ -51,7 +55,8 @@ public class AssertValuesMatchPropertyVisitor
                 this.value,
                 this.propertyKind,
                 this.contextStack,
-                this.errors);
+                this.severity,
+                this.annotations);
         primitiveProperty.getType().visit(visitor);
     }
 

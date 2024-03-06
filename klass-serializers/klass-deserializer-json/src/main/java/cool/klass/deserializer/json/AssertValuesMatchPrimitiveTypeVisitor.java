@@ -26,7 +26,9 @@ public class AssertValuesMatchPrimitiveTypeVisitor
     @Nonnull
     private final MutableStack<String> contextStack;
     @Nonnull
-    private final MutableList<String>  errors;
+    private final String               severity;
+    @Nonnull
+    private final MutableList<String>  annotations;
 
     public AssertValuesMatchPrimitiveTypeVisitor(
             @Nonnull PrimitiveProperty primitiveProperty,
@@ -34,14 +36,16 @@ public class AssertValuesMatchPrimitiveTypeVisitor
             Object persistentValue,
             @Nonnull String propertyKind,
             @Nonnull MutableStack<String> contextStack,
-            @Nonnull MutableList<String> errors)
+            String severity,
+            @Nonnull MutableList<String> annotations)
     {
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
         this.persistentValue   = persistentValue;
         this.propertyKind      = Objects.requireNonNull(propertyKind);
         this.contextStack      = Objects.requireNonNull(contextStack);
-        this.errors            = Objects.requireNonNull(errors);
+        this.severity          = Objects.requireNonNull(severity);
+        this.annotations       = Objects.requireNonNull(annotations);
     }
 
     @Override
@@ -207,8 +211,9 @@ public class AssertValuesMatchPrimitiveTypeVisitor
             return;
         }
 
-        String error = String.format(
-                "Error at %s. Mismatched value for %s property '%s.%s: %s%s'. Expected absent value or '%s' but value was '%s'.",
+        String annotation = String.format(
+                "%s at %s. Mismatched value for %s property '%s.%s: %s%s'. Expected absent value or '%s' but value was '%s'.",
+                this.severity,
                 this.getContextString(),
                 this.propertyKind,
                 this.primitiveProperty.getOwningClassifier().getName(),
@@ -217,7 +222,7 @@ public class AssertValuesMatchPrimitiveTypeVisitor
                 this.primitiveProperty.isOptional() ? "?" : "",
                 this.persistentValue,
                 incomingValue);
-        this.errors.add(error);
+        this.annotations.add(annotation);
     }
 
     private String getContextString()
