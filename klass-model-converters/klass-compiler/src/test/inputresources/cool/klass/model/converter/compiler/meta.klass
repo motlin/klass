@@ -232,13 +232,11 @@ class Parameter
 class EnumerationParameter
     extends Parameter
 {
-    id  : Long key private;
     enumerationName: String private maximumLength(256);
 }
 class PrimitiveParameter
     extends Parameter
 {
-    id  : Long key private;
     primitiveType: PrimitiveType maximumLength(256);
 }
 class ExpressionValue
@@ -249,24 +247,20 @@ class ExpressionValue
 class UserLiteral
     extends ExpressionValue
 {
-    id  : Long key private;
 }
 class NullLiteral
     extends ExpressionValue
 {
-    id  : Long key private;
 }
 class VariableReference
     extends ExpressionValue
 {
-    id  : Long key private;
     parameterId: Long private;
 }
 class MemberReferencePath
     abstract(table-per-class)
     extends ExpressionValue
 {
-    id  : Long key private;
     className: String private maximumLength(256);
     propertyClassName: String private maximumLength(256);
     propertyName: String private maximumLength(256);
@@ -285,25 +279,21 @@ class Criteria
 class AllCriteria
     extends Criteria
 {
-    id  : Long key private;
 }
 class BinaryCriteria
     abstract(table-per-class)
     extends Criteria
 {
-    id  : Long key private;
     leftId        : Long private;
     rightId       : Long private;
 }
 class AndCriteria
     extends BinaryCriteria
 {
-    id  : Long key private;
 }
 class OrCriteria
     extends BinaryCriteria
 {
-    id  : Long key private;
 }
 enumeration Operator
 {
@@ -321,7 +311,6 @@ enumeration Operator
 class OperatorCriteria
     extends Criteria
 {
-    id  : Long key private;
     sourceExpressionId: Long private;
     targetExpressionId: Long private;
     operator: Operator maximumLength(256);
@@ -329,7 +318,6 @@ class OperatorCriteria
 class EdgePointCriteria
     extends Criteria
 {
-    id  : Long key private;
     memberReferencePathId: Long private;
 }
 enumeration AssociationEndDirection
@@ -458,12 +446,10 @@ association DataTypePropertyHasMemberReferencePaths
 class ThisMemberReferencePath
     extends MemberReferencePath
 {
-    id  : Long key private;
 }
 class TypeMemberReferencePath
     extends MemberReferencePath
 {
-    id  : Long key private;
 }
 association BinaryCriteriaHasLeft
 {
@@ -563,7 +549,6 @@ class ServiceProjection
     extends ProjectionElement
     implements PackageableElement
 {
-    id  : Long key private;
     // TODO: unique constraint on name
     className                     : String private maximumLength(256);
 }
@@ -572,7 +557,6 @@ class ProjectionWithAssociationEnd
     abstract(table-per-class)
     extends ProjectionElement
 {
-    id  : Long key private;
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
     associationEndClass           : String private maximumLength(256);
@@ -581,14 +565,12 @@ class ProjectionWithAssociationEnd
 class ProjectionReferenceProperty
     extends ProjectionWithAssociationEnd
 {
-    id  : Long key private;
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
 }
 class ProjectionProjectionReference
     extends ProjectionWithAssociationEnd
 {
-    id  : Long key private;
     projectionName                  : String private maximumLength(256);
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
@@ -596,7 +578,6 @@ class ProjectionProjectionReference
 class ProjectionDataTypeProperty
     extends ProjectionElement
 {
-    id  : Long key private;
     // TODO: Overriding a property (to make it required) should not create a new column
     // parentId                      : Long private;
     propertyClassifierName        : String private maximumLength(256);

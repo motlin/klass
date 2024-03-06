@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -134,6 +135,7 @@ public class AntlrPrimitiveProperty
         if (primitiveType.isId())
         {
             this.reportNonKeyIdProperty(compilerAnnotationHolder);
+            this.reportOverriddenIdProperty(compilerAnnotationHolder);
         }
         else
         {
@@ -168,6 +170,52 @@ public class AntlrPrimitiveProperty
                     primitiveType.getPrettyName(),
                     PrimitiveType.ID_PRIMITIVE_TYPES);
             compilerAnnotationHolder.add("ERR_PRP_IDP", message, idModifier);
+        }
+    }
+
+    private void reportOverriddenIdProperty(CompilerAnnotationState compilerAnnotationHolder)
+    {
+        if (!(this.owningClassifierState instanceof AntlrClass owningClass))
+        {
+            return;
+        }
+
+        if (owningClass.getSuperClass().isEmpty())
+        {
+            return;
+        }
+
+        AntlrClass superClass = owningClass.getSuperClass().get();
+        AntlrDataTypeProperty<?> overriddenProperty = superClass.getDataTypePropertyByName(this.getName());
+        if (overriddenProperty == AntlrEnumerationProperty.NOT_FOUND)
+        {
+            return;
+        }
+
+        if (!(overriddenProperty.getOwningClassifierState() instanceof AntlrClass))
+        {
+            return;
+        }
+
+        AntlrClass overriddenPropertyOwningClass = (AntlrClass) overriddenProperty.getOwningClassifierState();
+        String message = "'id' properties may not be overridden. The property '%s' in class '%s' overrides the 'id' property in class '%s'.".formatted(
+                this.getName(),
+                owningClass.getName(),
+                overriddenPropertyOwningClass.getName());
+        ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
+        if (idModifiers.notEmpty())
+        {
+            for (AntlrModifier idModifier : idModifiers)
+            {
+                compilerAnnotationHolder.add("ERR_OVR_IDP", message, idModifier);
+            }
+        }
+        else
+        {
+            if (overriddenProperty.isId())
+            {
+                compilerAnnotationHolder.add("ERR_OVR_IDP", message, this);
+            }
         }
     }
 
