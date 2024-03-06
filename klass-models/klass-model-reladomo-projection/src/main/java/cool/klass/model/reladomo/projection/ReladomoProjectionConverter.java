@@ -1,39 +1,70 @@
 package cool.klass.model.reladomo.projection;
 
+import java.util.LinkedHashMap;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
+import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
 import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
-import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.factory.Stacks;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public final class ReladomoProjectionConverter
 {
     public static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
 
-    private ReladomoProjectionConverter()
+    private final MutableOrderedMap<Projection, RootReladomoNode> rootNodesByProjection = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    // TODO: MutableOrderedMap once it implements toImmutable()
+    private final MutableMap<ProjectionProjectionReference, ProjectionElementReladomoNode> projectionHoldersByProjectionReference = Maps.mutable.empty();
+
+    @Nonnull
+    public RootReladomoNode getRootReladomoNode(
+            Klass klass,
+            Projection projection)
     {
-        throw new AssertionError("Suppress default constructor for noninstantiability");
+        var projectionReladomoNode = new RootReladomoNode("root", klass, projection);
+        this.projectionChildrenToReladomoTree(projectionReladomoNode, projection);
+        this.rootNodesByProjection.put(projection, projectionReladomoNode);
+
+        this.projectionHoldersByProjectionReference.toImmutable().forEachKeyValue((eachProjectionReference, eachProjectionReferenceNode) ->
+        {
+            RootReladomoNode rootReladomoNode = this.rootNodesByProjection.getIfAbsent(
+                    eachProjectionReference.getProjection(),
+                    () -> this.getRootReladomoNode((Klass) eachProjectionReference.getClassifier(), eachProjectionReference.getProjection()));
+
+            eachProjectionReferenceNode.setProjection(rootReladomoNode);
+            this.projectionHoldersByProjectionReference.remove(eachProjectionReference);
+        });
+
+        return projectionReladomoNode;
     }
 
-    public static void projectionChildrenToReladomoTree(
+    public void projectionChildrenToReladomoTree(
             ProjectionElementReladomoNode reladomoNode,
             ProjectionParent projectionParent)
     {
         for (ProjectionChild projectionChild : projectionParent.getChildren())
         {
-            projectionElementToReladomoTree(reladomoNode, projectionChild);
+            this.projectionElementToReladomoTree(reladomoNode, projectionChild);
         }
     }
 
-    private static void projectionElementToReladomoTree(
+    private void projectionElementToReladomoTree(
             ProjectionElementReladomoNode projectionReladomoNode,
             ProjectionChild projectionChild)
     {
@@ -48,21 +79,27 @@ public final class ReladomoProjectionConverter
             return;
         }
 
-        if (!(projectionChild instanceof ProjectionWithReferenceProperty projectionWithReferenceProperty))
-        {
-            return;
-        }
-
-        if (projectionWithReferenceProperty instanceof ProjectionProjectionReference projectionProjectionReference)
+        if (projectionChild instanceof ProjectionProjectionReference projectionProjectionReference)
         {
             var childNode = new ProjectionProjectionReferenceReladomoNode(name, projectionProjectionReference);
             reladomoNode = reladomoNode.computeChild(name, childNode);
+            reladomoNode = getInheritancePath(reladomoNode, projectionProjectionReference.getProjection().getClassifier());
+            this.projectionHoldersByProjectionReference.put(projectionProjectionReference, reladomoNode);
         }
-        else if (projectionWithReferenceProperty instanceof ProjectionReferenceProperty projectionReferenceProperty)
+        else if (projectionChild instanceof ProjectionReferenceProperty projectionReferenceProperty)
         {
             var childNode = new ProjectionReferencePropertyReladomoNode(name, projectionReferenceProperty);
             reladomoNode = reladomoNode.computeChild(name, childNode);
             projectionChildrenToReladomoTree(reladomoNode, projectionReferenceProperty);
+        }
+        else if (projectionChild instanceof ProjectionDataTypeProperty projectionDataTypeProperty)
+        {
+            var childNode = new ProjectionDataTypePropertyReladomoNode(name, projectionDataTypeProperty);
+            reladomoNode = reladomoNode.computeChild(name, childNode);
+        }
+        else
+        {
+            throw new AssertionError("Expected ProjectionProjectionReference or ProjectionReferenceProperty but got " + projectionChild.getClass().getCanonicalName());
         }
     }
 
@@ -71,7 +108,7 @@ public final class ReladomoProjectionConverter
             Classifier end)
     {
         ProjectionElementReladomoNode eachReladomoNode = reladomoNode;
-        Classifier start = reladomoNode.getType();
+        Classifier start = (Classifier) reladomoNode.getType();
 
         if (start.isStrictSubTypeOf(end))
         {

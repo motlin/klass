@@ -299,8 +299,10 @@ public class ServiceResourceGenerator
         ServiceProjectionDispatch           serviceProjectionDispatch = projectionDispatch.get();
         Projection                          projection                = serviceProjectionDispatch.getProjection();
 
-        RootReladomoNode projectionReladomoNode = new RootReladomoNode("root", klass);
-        ReladomoProjectionConverter.projectionChildrenToReladomoTree(projectionReladomoNode, projection);
+        var reladomoProjectionConverter = new ReladomoProjectionConverter();
+        RootReladomoNode projectionReladomoNode = reladomoProjectionConverter.getRootReladomoNode(
+                klass,
+                projection);
         ImmutableList<String> deepFetchStrings = projectionReladomoNode.getDeepFetchStrings();
         String deepFetchSourceCode = deepFetchStrings
                 .collect(each -> "        result.deepFetch(" + each + ");\n")

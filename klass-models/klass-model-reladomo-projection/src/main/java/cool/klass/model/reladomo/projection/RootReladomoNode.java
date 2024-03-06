@@ -4,16 +4,19 @@ import java.util.Objects;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.projection.Projection;
 
 public class RootReladomoNode
         extends AbstractProjectionElementReladomoNode
 {
     private final Klass klass;
+    private final Projection projection;
 
-    public RootReladomoNode(String name, Klass klass)
+    public RootReladomoNode(String name, Klass klass, Projection projection)
     {
         super(name);
         this.klass = Objects.requireNonNull(klass);
+        this.projection = Objects.requireNonNull(projection);
     }
 
     @Override
@@ -23,33 +26,20 @@ public class RootReladomoNode
     }
 
     @Override
-    public Classifier getType()
+    public Klass getType()
     {
         return this.klass;
+    }
+
+    public Projection getProjection()
+    {
+        return this.projection;
     }
 
     @Override
     public String toString()
     {
-        return this.toString(this, "");
-    }
-
-    private String toString(
-            ProjectionElementReladomoNode node,
-            String indent)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(indent);
-        stringBuilder.append(node.getNodeString());
-        stringBuilder.append('\n');
-
-        String childIndent = indent + "  ";
-        for (ProjectionElementReladomoNode child : node.getChildren().values())
-        {
-            stringBuilder.append(this.toString(child, childIndent));
-        }
-
-        return stringBuilder.toString();
+        return this.toString("");
     }
 
     @Override

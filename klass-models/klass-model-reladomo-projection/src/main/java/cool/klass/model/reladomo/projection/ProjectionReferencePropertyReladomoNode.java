@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 
 public class ProjectionReferencePropertyReladomoNode
-        extends AbstractProjectionElementReladomoNode
+        extends ProjectionWithReferencePropertyReladomoNode
 {
     private final ProjectionReferenceProperty projectionReferenceProperty;
 
@@ -26,5 +27,11 @@ public class ProjectionReferencePropertyReladomoNode
     public Classifier getType()
     {
         return this.projectionReferenceProperty.getProperty().getType();
+    }
+
+    @Override
+    public ReferenceProperty getReferenceProperty()
+    {
+        return this.projectionReferenceProperty.getProperty();
     }
 }
