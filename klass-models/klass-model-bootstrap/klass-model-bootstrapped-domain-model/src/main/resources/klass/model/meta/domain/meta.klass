@@ -148,20 +148,6 @@ association ClassifierHasDataTypeTypeProperties
         orderBy: this.ordinal ascending;
 }
 
-association ClassifierHasPrimitiveProperties
-{
-    owningClassifier: Classifier[1..1];
-    primitiveProperties: PrimitiveProperty[0..*] owned
-        orderBy: this.ordinal ascending;
-}
-
-association ClassifierHasEnumerationProperties
-{
-    owningClassifier: Classifier[1..1];
-    enumerationProperties: EnumerationProperty[0..*] owned
-        orderBy: this.ordinal ascending;
-}
-
 interface NumericPropertyValidation
     implements Element
 {
@@ -985,57 +971,7 @@ projection InterfaceProjection on Interface
         keyword: "Interface modifier keyword",
         ordinal: "Interface modifier ordinal",
     },
-    primitiveProperties    :
-    {
-        name               : "Primitive property name",
-        primitiveType      : "Primitive property type",
-        optional           : "Primitive property is optional",
-        ordinal            : "Primitive property ordinal",
-        propertyModifiers  :
-        {
-            keyword: "Primitive property modifier keyword",
-            ordinal: "Primitive property modifier ordinal",
-        },
-        minLengthValidation:
-        {
-            number: "Min length validation number",
-        },
-        maxLengthValidation:
-        {
-            number: "Max length validation number",
-        },
-        minValidation      :
-        {
-            number: "Min validation number",
-        },
-        maxValidation      :
-        {
-            number: "Max validation number",
-        },
-    },
-    enumerationProperties  :
-    {
-        name               : "Enumeration property name",
-        optional           : "Enumeration property is optional",
-        ordinal            : "Enumeration property ordinal",
-        enumeration        :
-        {
-            name    : "Enumeration name",
-        },
-        propertyModifiers  :
-        {
-            keyword: "Enumeration property modifier keyword",
-            ordinal: "Enumeration property modifier ordinal",
-        },
-        minLengthValidation:
-        {
-            number: "Min length validation number",
-        },
-        maxLengthValidation:
-        {
-            number: "Max length validation number",
-        },
-    },
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 projection InterfaceSummaryProjection on Interface
@@ -1053,8 +989,7 @@ projection InterfaceSummaryProjection on Interface
     {
         keyword: "Interface modifier keyword",
     },
-    primitiveProperties    : PrimitivePropertySummaryProjection,
-    enumerationProperties  : EnumerationPropertySummaryProjection,
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 service Interface
@@ -1116,108 +1051,6 @@ projection DataTypePropertyProjection on DataTypeProperty
     },
 }
 
-projection PrimitivePropertyProjection on PrimitiveProperty
-{
-    name               : "Primitive property name",
-    primitiveType      : "Primitive property type",
-    optional           : "Primitive property is optional",
-    ordinal            : "Primitive property ordinal",
-    propertyModifiers  :
-    {
-        keyword: "Primitive property modifier keyword",
-        ordinal: "Primitive property modifier ordinal",
-    },
-    minLengthValidation:
-    {
-        number: "Min length validation number",
-    },
-    maxLengthValidation:
-    {
-        number: "Max length validation number",
-    },
-    minValidation      :
-    {
-        number: "Min validation number",
-    },
-    maxValidation      :
-    {
-        number: "Max validation number",
-    },
-}
-
-projection PrimitivePropertySummaryProjection on PrimitiveProperty
-{
-    name               : "Primitive property name",
-    primitiveType      : "Primitive property type",
-    optional           : "Primitive property is optional",
-    propertyModifiers  :
-    {
-        keyword: "Primitive property modifier keyword",
-    },
-    minLengthValidation:
-    {
-        number: "Min length validation number",
-    },
-    maxLengthValidation:
-    {
-        number: "Max length validation number",
-    },
-    minValidation      :
-    {
-        number: "Min validation number",
-    },
-    maxValidation      :
-    {
-        number: "Max validation number",
-    },
-}
-
-projection EnumerationPropertyProjection on EnumerationProperty
-{
-    name               : "Enumeration property name",
-    optional           : "Enumeration property is optional",
-    ordinal            : "Enumeration property ordinal",
-    enumeration        :
-    {
-        name    : "Enumeration name",
-    },
-    propertyModifiers  :
-    {
-        keyword: "Enumeration property modifier keyword",
-        ordinal: "Enumeration property modifier ordinal",
-    },
-    minLengthValidation:
-    {
-        number: "Min length validation number",
-    },
-    maxLengthValidation:
-    {
-        number: "Max length validation number",
-    },
-}
-
-projection EnumerationPropertySummaryProjection on EnumerationProperty
-{
-    name               : "Enumeration property name",
-    optional           : "Enumeration property is optional",
-    enumeration        :
-    {
-        name    : "Enumeration name",
-    },
-    propertyModifiers  :
-    {
-        keyword: "Enumeration property modifier keyword",
-    },
-    minLengthValidation:
-    {
-        number: "Min length validation number",
-    },
-    maxLengthValidation:
-    {
-        number: "Max length validation number",
-    },
-}
-
 projection ClassProjection on Klass
 {
     name                   : "Class name",
@@ -1259,8 +1092,7 @@ projection ClassProjection on Klass
         keyword: "Classifier modifier keyword",
         ordinal: "Classifier modifier ordinal",
     },
-    primitiveProperties    : PrimitivePropertyProjection,
-    enumerationProperties  : EnumerationPropertyProjection,
+    dataTypeProperties: DataTypePropertyProjection,
     associationEnds        : AssociationEndProjection,
 }
 
@@ -1287,8 +1119,7 @@ projection ClassSummaryProjection on Klass
     {
         keyword: "Classifier modifier keyword",
     },
-    primitiveProperties    : PrimitivePropertySummaryProjection,
-    enumerationProperties  : EnumerationPropertySummaryProjection,
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 service Klass
@@ -1338,8 +1169,7 @@ projection ClassifierSummaryProjection on Classifier
     {
         keyword: "Classifier modifier keyword",
     },
-    primitiveProperties    : PrimitivePropertySummaryProjection,
-    enumerationProperties  : EnumerationPropertySummaryProjection,
+    dataTypeProperties: DataTypePropertyProjection,
 }
 
 service Classifier

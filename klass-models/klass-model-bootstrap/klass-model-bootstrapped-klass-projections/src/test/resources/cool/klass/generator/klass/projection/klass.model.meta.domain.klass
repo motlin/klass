@@ -43,8 +43,6 @@ projection ClassifierProjection on Classifier
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     dataTypeProperties: DataTypePropertyProjection,
-    primitiveProperties: PrimitivePropertyProjection,
-    enumerationProperties: EnumerationPropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
 }
 
@@ -55,8 +53,6 @@ projection InterfaceProjection on Interface
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     dataTypeProperties: DataTypePropertyProjection,
-    primitiveProperties: PrimitivePropertyProjection,
-    enumerationProperties: EnumerationPropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
     subClassifiers: ClassifierInterfaceMappingProjection,
 }
@@ -73,8 +69,6 @@ projection KlassProjection on Klass
     inheritanceType: "Klass inheritanceType",
     superInterfaces: ClassifierInterfaceMappingProjection,
     dataTypeProperties: DataTypePropertyProjection,
-    primitiveProperties: PrimitivePropertyProjection,
-    enumerationProperties: EnumerationPropertyProjection,
     classifierModifiers: ClassifierModifierProjection,
     superClass: KlassProjection,
     associationEnds: AssociationEndProjection,

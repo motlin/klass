@@ -1014,26 +1014,6 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-7-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="PRIMITIVE_PROPERTY"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-7-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="ENUMERATION_PROPERTY"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_ENUMERATION">
         <addForeignKeyConstraint
                 constraintName="ENUMERATION_PROPERTY_FK_ENUMERATION"
