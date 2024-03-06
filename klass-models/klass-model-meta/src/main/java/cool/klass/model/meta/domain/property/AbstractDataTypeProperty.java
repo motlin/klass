@@ -34,7 +34,9 @@ import org.eclipse.collections.impl.factory.Multimaps;
 import org.eclipse.collections.impl.utility.Iterate;
 
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
-public abstract class AbstractDataTypeProperty<T extends DataType> extends AbstractProperty<T> implements DataTypeProperty
+public abstract class AbstractDataTypeProperty<T extends DataType>
+        extends AbstractProperty<T>
+        implements DataTypeProperty
 {
     private final boolean optional;
 
@@ -205,8 +207,10 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
         protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;
         protected final boolean                                isOptional;
 
-        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keyBuildersMatchingThisForeignKey;
-        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeyBuildersMatchingThisKey;
+        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
+                keyBuildersMatchingThisForeignKey;
+        protected ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>>
+                foreignKeyBuildersMatchingThisKey;
 
         private Optional<MinLengthPropertyValidationBuilder> minLengthPropertyValidationBuilder;
         private Optional<MaxLengthPropertyValidationBuilder> maxLengthPropertyValidationBuilder;
@@ -226,7 +230,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
         {
             super(elementContext, macroElement, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
             this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
-            this.isOptional = isOptional;
+            this.isOptional               = isOptional;
         }
 
         public void setKeyBuildersMatchingThisForeignKey(ImmutableListMultimap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keyBuildersMatchingThisForeignKey)
@@ -293,15 +297,19 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
 
         public final void build2()
         {
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = DataTypePropertyBuilder.collectKeyMultiValues(
-                    this.keyBuildersMatchingThisForeignKey,
-                    ElementBuilder::getElement,
-                    dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement());
+            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                    this.keyBuildersMatchingThisForeignKey.<AssociationEnd, DataTypeProperty, MutableListMultimap<AssociationEnd, DataTypeProperty>>collectKeyMultiValues(
+                            ElementBuilder::getElement,
+                            dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement(),
+                            Multimaps.mutable.list.empty())
+                            .toImmutable();
 
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey = DataTypePropertyBuilder.collectKeyMultiValues(
-                    this.foreignKeyBuildersMatchingThisKey,
-                    ElementBuilder::getElement,
-                    dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement());
+            ImmutableListMultimap<AssociationEnd, DataTypeProperty> foreignKeysMatchingThisKey =
+                    this.foreignKeyBuildersMatchingThisKey.<AssociationEnd, DataTypeProperty, MutableListMultimap<AssociationEnd, DataTypeProperty>>collectKeyMultiValues(
+                            ElementBuilder::getElement,
+                            dataTypePropertyBuilder -> dataTypePropertyBuilder.getElement(),
+                            Multimaps.mutable.list.empty())
+                            .toImmutable();
 
             AbstractDataTypeProperty<T> property = this.getElement();
             property.setKeysMatchingThisForeignKey(keysMatchingThisForeignKey);
