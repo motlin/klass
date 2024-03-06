@@ -237,7 +237,7 @@ public final class JsonTypeCheckingValidator
 
                 try
                 {
-                    JsonNode jsonNode = this.jsonNode.get(index);
+                    JsonNode jsonNode = this.jsonNode.path(index);
                     if (jsonNode instanceof ObjectNode)
                     {
                         JsonTypeCheckingValidator.this.validateIncomingData(
