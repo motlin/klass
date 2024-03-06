@@ -15,9 +15,9 @@ public class QuestionVersionList extends QuestionVersionListAbstract
         super(initialSize);
     }
 
-    public QuestionVersionList(Collection c)
+    public QuestionVersionList(Collection collection)
     {
-        super(c);
+        super(collection);
     }
 
     public QuestionVersionList(Operation operation)

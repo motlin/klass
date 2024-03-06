@@ -62,8 +62,8 @@ public class AntlrEnumeration
     {
         // TODO: Move these checks into reportErrors for consistency
         MutableBag<String> duplicateNames = this.getDuplicateLiteralNames();
-        this.checkDuplicateLiteralNames(compilerPhase, duplicateNames);
-        this.checkDuplicatePrettyNames(compilerPhase);
+        this.logDuplicateLiteralNames(compilerPhase, duplicateNames);
+        this.logDuplicatePrettyNames(compilerPhase);
     }
 
     private MutableBag<String> getDuplicateLiteralNames()
@@ -74,7 +74,7 @@ public class AntlrEnumeration
                 .selectByOccurrences(occurrences -> occurrences > 1);
     }
 
-    private void checkDuplicateLiteralNames(
+    private void logDuplicateLiteralNames(
             AbstractCompilerPhase abstractCompilerPhase,
             MutableBag<String> duplicateNames)
     {
@@ -88,7 +88,7 @@ public class AntlrEnumeration
                 });
     }
 
-    private void checkDuplicatePrettyNames(AbstractCompilerPhase compilerPhase)
+    private void logDuplicatePrettyNames(AbstractCompilerPhase compilerPhase)
     {
         MutableBag<String> duplicatePrettyNames = this.enumerationLiteralBuilders
                 .collect(EnumerationLiteralBuilder::getPrettyName)

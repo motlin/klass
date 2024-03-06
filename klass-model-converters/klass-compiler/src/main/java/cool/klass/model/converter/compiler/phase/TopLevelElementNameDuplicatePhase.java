@@ -28,28 +28,28 @@ public class TopLevelElementNameDuplicatePhase extends AbstractCompilerPhase
     @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.checkOccurrences(ctx.identifier());
+        this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.checkOccurrences(ctx.identifier());
+        this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.checkOccurrences(ctx.identifier());
+        this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
     @Override
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.checkOccurrences(ctx.identifier());
+        this.logDuplicateTopLevelNames(ctx.identifier());
     }
 
-    protected void checkOccurrences(IdentifierContext identifier)
+    protected void logDuplicateTopLevelNames(IdentifierContext identifier)
     {
         String topLevelItemName = identifier.getText();
         int occurrences = this.compilerPhase.occurrencesOf(topLevelItemName);

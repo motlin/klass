@@ -15,9 +15,9 @@ public class ObjectSequenceList extends ObjectSequenceListAbstract
         super(initialSize);
     }
 
-    public ObjectSequenceList(Collection c)
+    public ObjectSequenceList(Collection collection)
     {
-        super(c);
+        super(collection);
     }
 
     public ObjectSequenceList(Operation operation)

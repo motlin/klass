@@ -58,12 +58,12 @@ public class KlassCompiler
 
         AntlrDomainModel domainModelState = new AntlrDomainModel(this.compilerErrorHolder);
 
-        EnumerationsPhase phase7 = new EnumerationsPhase(
+        KlassListener phase7 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
 
-        ClassPhase phase8 = new ClassPhase(
+        KlassListener phase8 = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
@@ -71,7 +71,7 @@ public class KlassCompiler
         // TODO: Phase for inference on classes?
         // Like adding temporal and audit properties, and version types and version associations
 
-        AssociationPhase phase9 = new AssociationPhase(
+        KlassListener phase9 = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);

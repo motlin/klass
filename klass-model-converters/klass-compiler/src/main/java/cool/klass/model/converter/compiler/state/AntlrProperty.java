@@ -12,8 +12,7 @@ public abstract class AntlrProperty<C extends ParserRuleContext, T extends Type>
     public static final AntlrProperty<ParserRuleContext, Type> AMBIGUOUS = new AntlrProperty<ParserRuleContext, Type>(
             Element.NO_CONTEXT,
             Element.NO_CONTEXT,
-            "ambiguous property"
-    )
+            "ambiguous property")
     {
         @Override
         public PropertyBuilder<Type, ?> build()

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
+import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
@@ -57,20 +58,22 @@ public final class CompilationUnit
 
     private static String slurp(InputStream inputStream)
     {
-        Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
-        return scanner.hasNext() ? scanner.next() : "";
+        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
+        {
+            return scanner.hasNext() ? scanner.next() : "";
+        }
     }
 
     private static CommonTokenStream getTokenStream(
             CodePointCharStream charStream,
-            ThrowingErrorListener errorListener)
+            ANTLRErrorListener errorListener)
     {
         KlassLexer lexer = new KlassLexer(charStream);
         lexer.addErrorListener(errorListener);
         return new CommonTokenStream(lexer);
     }
 
-    private static KlassParser getParser(ThrowingErrorListener errorListener, CommonTokenStream tokenStream)
+    private static KlassParser getParser(ANTLRErrorListener errorListener, CommonTokenStream tokenStream)
     {
         KlassParser parser = new KlassParser(tokenStream);
         parser.removeErrorListeners();

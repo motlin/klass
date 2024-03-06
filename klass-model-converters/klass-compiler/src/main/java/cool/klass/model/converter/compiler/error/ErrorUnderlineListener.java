@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
+import java.util.regex.Pattern;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -17,6 +19,8 @@ import org.eclipse.collections.api.list.MutableList;
 
 public class ErrorUnderlineListener extends BaseErrorListener
 {
+    private static final Pattern TAB_PATTERN = Pattern.compile("\t");
+
     public ErrorUnderlineListener(CompilationUnit compilationUnit, MutableList<String> contextualStrings)
     {
         super(compilationUnit, contextualStrings);
@@ -107,11 +111,11 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public static String getErrorLineStringUnderlined(Token offendingToken, String errorLine)
     {
         // replace tabs with single space so that charPositionInLine gives us the column to start underlining.
-        String errorLineWithoutTabs = errorLine.replaceAll("\t", " ");
-        String formatString = "%" + errorLineWithoutTabs.length() + "s";
-        StringBuilder underLine = new StringBuilder(String.format(formatString, ""));
-        int start = offendingToken.getStartIndex();
-        int stop = offendingToken.getStopIndex();
+        String        errorLineWithoutTabs = TAB_PATTERN.matcher(errorLine).replaceAll(" ");
+        String        formatString         = "%" + errorLineWithoutTabs.length() + 's';
+        StringBuilder underLine            = new StringBuilder(String.format(formatString, ""));
+        int           start                = offendingToken.getStartIndex();
+        int           stop                 = offendingToken.getStopIndex();
         if (start >= 0 && stop >= 0)
         {
             for (int i = 0; i <= (stop - start); i++)

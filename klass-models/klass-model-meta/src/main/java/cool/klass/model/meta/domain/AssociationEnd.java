@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public final class AssociationEnd extends Property<Klass>
 {
     private final Multiplicity multiplicity;
-    private final boolean      isOwned;
+    private final boolean      owned;
 
     private AssociationEnd(
             ParserRuleContext elementContext,
@@ -16,11 +16,11 @@ public final class AssociationEnd extends Property<Klass>
             Klass type,
             Klass owningKlass,
             Multiplicity multiplicity,
-            boolean isOwned)
+            boolean owned)
     {
         super(elementContext, nameContext, name, type, owningKlass);
         this.multiplicity = multiplicity;
-        this.isOwned = isOwned;
+        this.owned = owned;
     }
 
     public Multiplicity getMultiplicity()
@@ -30,7 +30,7 @@ public final class AssociationEnd extends Property<Klass>
 
     public boolean isOwned()
     {
-        return this.isOwned;
+        return this.owned;
     }
 
     public static class AssociationEndBuilder extends PropertyBuilder<Klass, KlassBuilder>

@@ -2,15 +2,20 @@ package cool.klass.model.converter.compiler.error;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 
 public final class RecognitionExceptionUtil
 {
+    private static final Pattern TAB_PATTERN       = Pattern.compile("\t");
+    private static final Pattern START_END_PATTERN = Pattern.compile("(?m)^|$");
+    private static final Pattern NEWLINE_PATTERN   = Pattern.compile("\r?\n");
+
     private RecognitionExceptionUtil()
     {
         throw new AssertionError("Suppress default constructor for noninstantiability");
@@ -26,7 +31,7 @@ public final class RecognitionExceptionUtil
                 RecognitionExceptionUtil.getRuleStackString(e),
                 RecognitionExceptionUtil.getOffendingTokenString(e),
                 RecognitionExceptionUtil.getOffendingTokenVerboseString(e),
-                RecognitionExceptionUtil.getErrorLineStringUnderlined(e).replaceAll("(?m)^|$", "|"));
+                START_END_PATTERN.matcher(RecognitionExceptionUtil.getErrorLineStringUnderlined(e)).replaceAll("|"));
     }
 
     public static String getRuleStackString(RecognitionException e)
@@ -72,7 +77,7 @@ public final class RecognitionExceptionUtil
     public static String getOffendingTokenVerboseString(RecognitionException e)
     {
         Token offendingToken = e.getOffendingToken();
-        if (e == null || offendingToken == null)
+        if (offendingToken == null)
         {
             return "";
         }
@@ -80,7 +85,7 @@ public final class RecognitionExceptionUtil
         return RecognitionExceptionUtil.getOffendingTokenVerboseString(offendingToken, recognizer);
     }
 
-    protected static String getOffendingTokenVerboseString(Token offendingToken, Recognizer<?, ?> recognizer)
+    private static String getOffendingTokenVerboseString(Token offendingToken, Recognizer<?, ?> recognizer)
     {
         return String.format(
                 "at tokenStream[%d], inputString[%d..%d] = '%s', tokenType<%d> = %s, on line %d, character %d",
@@ -114,21 +119,20 @@ public final class RecognitionExceptionUtil
         {
             return "";
         }
-        CommonTokenStream tokens =
-                (CommonTokenStream) e.getRecognizer().getInputStream();
-        String input = tokens.getTokenSource().getInputStream().toString();
-        String[] lines = input.split(String.format("\r?\n"));
+        TokenStream tokens = (TokenStream) e.getRecognizer().getInputStream();
+        String      input  = tokens.getTokenSource().getInputStream().toString();
+        String[]    lines  = NEWLINE_PATTERN.split(input);
         return lines[offendingToken.getLine() - 1];
     }
 
     public static String getErrorLineStringUnderlined(Token offendingToken, String errorLine)
     {
         // replace tabs with single space so that charPositionInLine gives us the column to start underlining.
-        String errorLineWithoutTabs = errorLine.replaceAll("\t", " ");
-        String formatString = "%" + errorLineWithoutTabs.length() + "s";
-        StringBuilder underLine = new StringBuilder(String.format(formatString, ""));
-        int start = offendingToken.getStartIndex();
-        int stop = offendingToken.getStopIndex();
+        String        errorLineWithoutTabs = TAB_PATTERN.matcher(errorLine).replaceAll(" ");
+        String        formatString         = "%" + errorLineWithoutTabs.length() + 's';
+        StringBuilder underLine            = new StringBuilder(String.format(formatString, ""));
+        int           start                = offendingToken.getStartIndex();
+        int           stop                 = offendingToken.getStopIndex();
         if (start >= 0 && stop >= 0)
         {
             for (int i = 0; i <= (stop - start); i++)

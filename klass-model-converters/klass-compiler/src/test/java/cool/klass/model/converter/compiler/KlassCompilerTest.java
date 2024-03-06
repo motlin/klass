@@ -22,6 +22,8 @@ public class KlassCompilerTest
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(KlassCompilerTest.class);
 
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+
     @Test
     public void compile()
     {
@@ -43,7 +45,7 @@ public class KlassCompilerTest
     protected Set<String> getResourceNames(String packageName)
     {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(packageName.replaceAll("\\.", "/")))
+                .setUrls(ClasspathHelper.forPackage(DOT_PATTERN.matcher(packageName).replaceAll("/")))
                 .setScanners(new ResourcesScanner()).filterInputsBy(path -> path.startsWith(packageName)));
 
         return reflections.getResources(Pattern.compile(".*\\.klass"));

@@ -15,9 +15,9 @@ public class QuestionList extends QuestionListAbstract
         super(initialSize);
     }
 
-    public QuestionList(Collection c)
+    public QuestionList(Collection collection)
     {
-        super(c);
+        super(collection);
     }
 
     public QuestionList(Operation operation)

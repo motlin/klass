@@ -15,9 +15,9 @@ public class AnswerList extends AnswerListAbstract
         super(initialSize);
     }
 
-    public AnswerList(Collection c)
+    public AnswerList(Collection collection)
     {
-        super(c);
+        super(collection);
     }
 
     public AnswerList(Operation operation)
