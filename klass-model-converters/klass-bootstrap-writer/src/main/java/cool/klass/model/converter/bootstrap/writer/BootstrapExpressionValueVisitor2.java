@@ -105,8 +105,11 @@ public class BootstrapExpressionValueVisitor2
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitVariableReference() not implemented yet");
+        var bootstrappedExpressionValue = this.expressionValuesByExpressionValue.get(variableReference);
+
+        var bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
+        bootstrappedVariableReference.setId(bootstrappedExpressionValue.getId());
+        // bootstrappedVariableReference.setParameterId(parameterId);
     }
 
     @Override

@@ -93,6 +93,8 @@ public class BootstrapCriteriaVisitor2
 
         var bootstrappedSourceValue = this.expressionValuesByExpressionValue.get(sourceValue);
         var bootstrappedTargetValue = this.expressionValuesByExpressionValue.get(targetValue);
+        Objects.requireNonNull(bootstrappedSourceValue);
+        Objects.requireNonNull(bootstrappedTargetValue);
 
         var bootstrappedCriteria = this.criteriaByCriteria.get(operatorCriteria);
 

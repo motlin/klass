@@ -36,6 +36,7 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
@@ -218,21 +219,38 @@ public class KlassBootstrapWriter
                 .collect(this::handleEnumerationProperty, new EnumerationPropertyList())
                 .insertAll();
 
-        BootstrapExpressionValueVisitor1 expressionValueVisitor1 = new BootstrapExpressionValueVisitor1();
-        var criteriaVisitor1 = new BootstrapExpressionValueCriteriaVisitor(expressionValueVisitor1);
-        this.domainModel
+        ImmutableList<Criteria> associationCriteria = this.domainModel
                 .getAssociations()
-                .collect(Association::getCriteria)
-                .each(criteria -> criteria.visit(criteriaVisitor1));
-        this.domainModel
+                .collect(Association::getCriteria);
+        ImmutableList<Criteria> serviceCriteria = this.domainModel
+                .getServiceGroups()
+                .flatCollect(ServiceGroup::getUrls)
+                .flatCollect(Url::getServices)
+                .flatCollect(each -> Lists.immutable.with(
+                        each.getQueryCriteria(),
+                        each.getAuthorizeCriteria(),
+                        each.getValidateCriteria(),
+                        each.getConflictCriteria()))
+                .reject(Optional::isEmpty)
+                .collect(Optional::get);
+
+        ImmutableList<Criteria> allCriteria = associationCriteria.newWithAll(serviceCriteria);
+
+        ImmutableList<AssociationEnd> associationEnds = this.domainModel
                 .getAssociations()
-                .flatCollect(Association::getAssociationEnds)
+                .flatCollect(Association::getAssociationEnds);
+        ImmutableList<ThisMemberReferencePath> orderByReferencePaths = associationEnds
                 .collect(AssociationEnd::getOrderBy)
                 .reject(Optional::isEmpty)
                 .collect(Optional::get)
                 .flatCollect(OrderBy::getOrderByMemberReferencePaths)
-                .collect(OrderByMemberReferencePath::getThisMemberReferencePath)
-                .each(expressionValueVisitor1::visitThisMember);
+                .collect(OrderByMemberReferencePath::getThisMemberReferencePath);
+
+        BootstrapExpressionValueVisitor1 expressionValueVisitor1 = new BootstrapExpressionValueVisitor1();
+        var criteriaVisitor1 = new BootstrapExpressionValueCriteriaVisitor(expressionValueVisitor1);
+
+        allCriteria.each(criteria -> criteria.visit(criteriaVisitor1));
+        orderByReferencePaths.each(expressionValueVisitor1::visitThisMember);
 
         expressionValueVisitor1.getBootstrappedExpressionValues().insertAll();
 
@@ -240,37 +258,20 @@ public class KlassBootstrapWriter
         var expressionValueVisitor2           = new BootstrapExpressionValueVisitor2(expressionValuesByExpressionValue);
         var criteriaVisitor2                  = new BootstrapExpressionValueCriteriaVisitor(expressionValueVisitor2);
 
-        this.domainModel
-                .getAssociations()
-                .collect(Association::getCriteria)
-                .each(criteria -> criteria.visit(criteriaVisitor2));
-        this.domainModel
-                .getAssociations()
-                .flatCollect(Association::getAssociationEnds)
-                .collect(AssociationEnd::getOrderBy)
-                .reject(Optional::isEmpty)
-                .collect(Optional::get)
-                .flatCollect(OrderBy::getOrderByMemberReferencePaths)
-                .collect(OrderByMemberReferencePath::getThisMemberReferencePath)
-                .each(expressionValueVisitor2::visitThisMember);
+        allCriteria.each(criteria -> criteria.visit(criteriaVisitor2));
+        orderByReferencePaths.each(expressionValueVisitor2::visitThisMember);
 
         new MemberReferencePathList(expressionValueVisitor2.getBootstrappedMemberReferencePaths()).insertAll();
         new ThisMemberReferencePathList(expressionValueVisitor2.getBootstrappedThisMemberReferencePaths()).insertAll();
         new TypeMemberReferencePathList(expressionValueVisitor2.getBootstrappedTypeMemberReferencePaths()).insertAll();
 
         var criteriaVisitor3 = new BootstrapCriteriaVisitor1();
-        this.domainModel
-                .getAssociations()
-                .collect(Association::getCriteria)
-                .each(criteria -> criteria.visit(criteriaVisitor3));
+        allCriteria.each(criteria -> criteria.visit(criteriaVisitor3));
         criteriaVisitor3.getBootstrappedCriteria().insertAll();
 
         ImmutableMap<Criteria, klass.model.meta.domain.Criteria> criteriaByCriteria = criteriaVisitor3.getCriteriaByCriteria();
         var criteriaVisitor4 = new BootstrapCriteriaVisitor2(criteriaByCriteria, expressionValuesByExpressionValue);
-        this.domainModel
-                .getAssociations()
-                .collect(Association::getCriteria)
-                .each(criteria -> criteria.visit(criteriaVisitor4));
+        allCriteria.each(criteria -> criteria.visit(criteriaVisitor4));
         criteriaVisitor4.getAllCriteria().insertAll();
         criteriaVisitor4.getEdgePointCriteria().insertAll();
         criteriaVisitor4.getOperatorCriteria().insertAll();
@@ -282,14 +283,10 @@ public class KlassBootstrapWriter
                 .getAssociations()
                 .collectWith(this::handleAssociation, criteriaByCriteria, new klass.model.meta.domain.AssociationList())
                 .insertAll();
-        this.domainModel
-                .getAssociations()
-                .flatCollect(Association::getAssociationEnds)
+        associationEnds
                 .collect(this::handleAssociationEnd, new klass.model.meta.domain.AssociationEndList())
                 .insertAll();
-        this.domainModel
-                .getAssociations()
-                .flatCollect(Association::getAssociationEnds)
+        associationEnds
                 .flatCollect(
                         associationEnd -> associationEnd
                                 .getModifiers()
@@ -297,9 +294,7 @@ public class KlassBootstrapWriter
                         new klass.model.meta.domain.AssociationEndModifierList())
                 .insertAll();
 
-        this.domainModel
-                .getAssociations()
-                .flatCollect(Association::getAssociationEnds)
+        associationEnds
                 .flatCollect(
                         associationEnd -> associationEnd
                                 .getOrderBy()
@@ -345,7 +340,53 @@ public class KlassBootstrapWriter
         this.domainModel
                 .getServiceGroups()
                 .flatCollect(ServiceGroup::getUrls)
-                .collect((Url url) -> this.handleUrl(url), new klass.model.meta.domain.UrlList())
+                .collect(this::handleUrl, new klass.model.meta.domain.UrlList())
+                .insertAll();
+
+        MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter = Maps.mutable.empty();
+
+        this.domainModel
+                .getServiceGroups()
+                .flatCollect(ServiceGroup::getUrls)
+                .flatCollect(
+                        url -> url
+                                .getPathParameters()
+                                .collect(
+                                        eachPathParameter ->
+                                                this.handleUrlParameter(
+                                                        url,
+                                                        eachPathParameter,
+                                                        "path",
+                                                        bootstrappedParametersByParameter)),
+                        new klass.model.meta.domain.UrlParameterList())
+                .insertAll();
+
+        this.domainModel
+                .getServiceGroups()
+                .flatCollect(ServiceGroup::getUrls)
+                .flatCollect(
+                        url -> url
+                                .getQueryParameters()
+                                .collect(
+                                        eachPathParameter ->
+                                                this.handleUrlParameter(
+                                                        url,
+                                                        eachPathParameter,
+                                                        "query",
+                                                        bootstrappedParametersByParameter)),
+                        new klass.model.meta.domain.UrlParameterList())
+                .insertAll();
+
+        var expressionValueVisitor3 = new BootstrapExpressionValueVisitor3(expressionValuesByExpressionValue, bootstrappedParametersByParameter.toImmutable());
+        var criteriaVisitor5        = new BootstrapExpressionValueCriteriaVisitor(expressionValueVisitor3);
+
+        serviceCriteria.each(criteria -> criteria.visit(criteriaVisitor5));
+
+        this.domainModel
+                .getServiceGroups()
+                .flatCollect(ServiceGroup::getUrls)
+                .flatCollect(Url::getServices)
+                .collectWith(this::handleService, criteriaByCriteria, new klass.model.meta.domain.ServiceList())
                 .insertAll();
     }
 
@@ -805,29 +846,7 @@ public class KlassBootstrapWriter
         return bootstrappedUrl;
     }
 
-    private void handleUrlChildren(@Nonnull Url url)
-    {
-        ServiceGroup serviceGroup = url.getServiceGroup();
-
-        MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter = Maps.mutable.empty();
-
-        for (Parameter pathParameter : url.getPathParameters())
-        {
-            this.handleUrlParameter(url, pathParameter, "path", bootstrappedParametersByParameter);
-        }
-
-        for (Parameter queryParameter : url.getQueryParameters())
-        {
-            this.handleUrlParameter(url, queryParameter, "query", bootstrappedParametersByParameter);
-        }
-
-        for (Service service : url.getServices())
-        {
-            this.handleService(serviceGroup, url, service, bootstrappedParametersByParameter.toImmutable());
-        }
-    }
-
-    private void handleUrlParameter(
+    private UrlParameter handleUrlParameter(
             Url url,
             @Nonnull Parameter parameter,
             String urlParameterType,
@@ -861,45 +880,42 @@ public class KlassBootstrapWriter
         bootstrappedUrlParameter.setUrlClassName(url.getServiceGroup().getKlass().getName());
         bootstrappedUrlParameter.setUrlString(url.getUrlString());
         bootstrappedUrlParameter.setType(urlParameterType);
-        bootstrappedUrlParameter.insert();
 
         bootstrappedParametersByParameter.put(parameter, bootstrappedParameter);
+
+        return bootstrappedUrlParameter;
     }
 
-    private void handleService(
-            @Nonnull ServiceGroup serviceGroup,
-            @Nonnull Url url,
+    private klass.model.meta.domain.Service handleService(
             @Nonnull Service service,
-            ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+            @Nonnull ImmutableMap<Criteria, klass.model.meta.domain.Criteria> criteriaByCriteria)
     {
-        /*
-        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedQueryCriteria = service.getQueryCriteria()
-                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
-        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedAuthorizeCriteria = service
-                .getAuthorizeCriteria()
-                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
-        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedValidateCriteria = service.getValidateCriteria()
-                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
-        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedConflictCriteria = service.getConflictCriteria()
-                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
+        Url url = service.getUrl();
+        ServiceGroup serviceGroup = url.getServiceGroup();
 
         klass.model.meta.domain.Service bootstrappedService = new klass.model.meta.domain.Service();
         bootstrappedService.setClassName(serviceGroup.getKlass().getName());
         bootstrappedService.setUrlString(url.getUrlString());
         bootstrappedService.setVerb(service.getVerb().name());
         bootstrappedService.setServiceMultiplicity(service.getServiceMultiplicity().getPrettyName());
-        service.getProjectionDispatch()
+        service
+                .getProjectionDispatch()
                 .map(ServiceProjectionDispatch::getProjection)
                 .map(NamedElement::getName)
                 .ifPresent(bootstrappedService::setProjectionName);
-        optionalBootstrappedQueryCriteria.ifPresent(bootstrappedService::setQueryCriteria);
-        optionalBootstrappedAuthorizeCriteria.ifPresent(bootstrappedService::setAuthorizeCriteria);
-        optionalBootstrappedValidateCriteria.ifPresent(bootstrappedService::setValidateCriteria);
-        optionalBootstrappedConflictCriteria.ifPresent(bootstrappedService::setConflictCriteria);
+
+        service.getQueryCriteria().ifPresent(criteria ->
+        {
+            klass.model.meta.domain.Criteria queryCriteria = criteriaByCriteria.get(criteria);
+            Objects.requireNonNull(queryCriteria, "queryCriteria");
+            bootstrappedService.setQueryCriteriaId(queryCriteria.getId());
+        });
+
         // TODO: Bootstrap service orderBy
         Optional<OrderBy> orderBy = service.getOrderBy();
-        bootstrappedService.insert();
-        */
+        // bootstrappedService.insert();
+
+        return bootstrappedService;
     }
 
     @Nonnull

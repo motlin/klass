@@ -1,9 +1,11 @@
 package cool.klass.model.converter.bootstrap.writer;
 
-import java.util.LinkedHashMap;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.parameter.Parameter;
+import cool.klass.model.meta.domain.api.value.ExpressionValue;
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
@@ -15,51 +17,43 @@ import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
-import klass.model.meta.domain.ExpressionValue;
-import klass.model.meta.domain.ExpressionValueList;
 import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
-public class BootstrapExpressionValueVisitor1
+public class BootstrapExpressionValueVisitor3
         implements ExpressionValueVisitor
 {
-    private final MutableMap<cool.klass.model.meta.domain.api.value.ExpressionValue, ExpressionValue> expressionValuesByExpressionValue = MapAdapter.adapt(new LinkedHashMap<>());
+    private final ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> expressionValuesByExpressionValue;
+    private final ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter;
 
-    private final ExpressionValueList bootstrappedExpressionValues = new ExpressionValueList();
-
-    public ImmutableMap<cool.klass.model.meta.domain.api.value.ExpressionValue, ExpressionValue> getExpressionValuesByExpressionValue()
+    public BootstrapExpressionValueVisitor3(
+            ImmutableMap<ExpressionValue, klass.model.meta.domain.ExpressionValue> expressionValuesByExpressionValue,
+            ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
-        return this.expressionValuesByExpressionValue.toImmutable();
-    }
-
-    public ExpressionValueList getBootstrappedExpressionValues()
-    {
-        return this.bootstrappedExpressionValues;
+        this.expressionValuesByExpressionValue = Objects.requireNonNull(expressionValuesByExpressionValue);
+        this.bootstrappedParametersByParameter = bootstrappedParametersByParameter;
     }
 
     @Override
     public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
-        this.expressionValuesByExpressionValue.put(typeMemberExpressionValue, bootstrappedExpressionValue);
     }
 
     @Override
     public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
-        this.expressionValuesByExpressionValue.put(thisMemberExpressionValue, bootstrappedExpressionValue);
     }
 
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        var bootstrappedExpressionValue = new klass.model.meta.domain.ExpressionValue();
-        this.bootstrappedExpressionValues.add(bootstrappedExpressionValue);
-        this.expressionValuesByExpressionValue.put(variableReference, bootstrappedExpressionValue);
+        var bootstrappedExpressionValue = this.expressionValuesByExpressionValue.get(variableReference);
+
+        var bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
+        bootstrappedVariableReference.setId(bootstrappedExpressionValue.getId());
+        bootstrappedVariableReference.insert();
+
+        klass.model.meta.domain.Parameter parameter = this.bootstrappedParametersByParameter.get(variableReference.getParameter());
+        bootstrappedVariableReference.setParameterId(parameter.getId());
     }
 
     @Override
