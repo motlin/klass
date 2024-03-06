@@ -155,6 +155,7 @@ public final class GraphQLFragmentSourceCodeGenerator
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
     {
         return !(referenceProperty instanceof AssociationEnd associationEnd)
-               || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
+               || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd
+               || associationEnd.isToSelf() && associationEnd.getMultiplicity().isToOne();
     }
 }

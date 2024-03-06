@@ -130,6 +130,9 @@ fragment OwnedNaturalOneToManySelfFragment on OwnedNaturalOneToManySelf {
   target {
     ...OwnedNaturalOneToManySelfFragment
   }
+  source {
+    key
+  }
 }
 
 fragment OwnedSyntheticOneToManySourceFragment on OwnedSyntheticOneToManySource {
@@ -163,6 +166,9 @@ fragment OwnedSyntheticOneToManySelfFragment on OwnedSyntheticOneToManySelf {
   value
   target {
     ...OwnedSyntheticOneToManySelfFragment
+  }
+  source {
+    id
   }
 }
 
@@ -211,6 +217,9 @@ fragment SharedNaturalOneToManySelfFragment on SharedNaturalOneToManySelf {
   target {
     key
   }
+  source {
+    key
+  }
 }
 
 fragment SharedSyntheticOneToManySourceFragment on SharedSyntheticOneToManySource {
@@ -243,6 +252,9 @@ fragment SharedSyntheticOneToManySelfFragment on SharedSyntheticOneToManySelf {
   id
   value
   target {
+    id
+  }
+  source {
     id
   }
 }
