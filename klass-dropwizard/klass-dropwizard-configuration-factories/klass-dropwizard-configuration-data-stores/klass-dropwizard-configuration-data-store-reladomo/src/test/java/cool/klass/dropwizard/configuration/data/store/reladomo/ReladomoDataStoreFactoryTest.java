@@ -1,9 +1,10 @@
 package cool.klass.dropwizard.configuration.data.store.reladomo;
 
+import java.util.List;
+
 import javax.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import io.dropwizard.configuration.JsonConfigurationFactory;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
@@ -35,13 +36,14 @@ public class ReladomoDataStoreFactoryTest
     public void isDiscoverable()
     {
         // Make sure the types we specified in META-INF gets picked up
-        DiscoverableSubtypeResolver discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
-        ImmutableList<Class<?>>     discoveredSubtypes          = discoverableSubtypeResolver.getDiscoveredSubtypes();
+        var            discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
+        List<Class<?>> discoveredSubtypes          = discoverableSubtypeResolver.getDiscoveredSubtypes();
         assertThat(discoveredSubtypes, hasItem(ReladomoDataStoreFactory.class));
     }
 
     @Test
-    public void reladomoDataStore() throws Exception
+    public void reladomoDataStore()
+            throws Exception
     {
         DataStoreFactory dataStoreFactory = this.factory.build(
                 new ResourceConfigurationSourceProvider(),

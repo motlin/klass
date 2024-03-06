@@ -1,9 +1,10 @@
 package cool.klass.dropwizard.configuration.domain.model.loader.compiler;
 
+import java.util.List;
+
 import javax.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import io.dropwizard.configuration.JsonConfigurationFactory;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
@@ -35,13 +36,14 @@ public class DomainModelCompilerFactoryTest
     public void isDiscoverable()
     {
         // Make sure the types we specified in META-INF gets picked up
-        DiscoverableSubtypeResolver discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
-        ImmutableList<Class<?>>     discoveredSubtypes          = discoverableSubtypeResolver.getDiscoveredSubtypes();
+        var            discoverableSubtypeResolver = new DiscoverableSubtypeResolver();
+        List<Class<?>> discoveredSubtypes          = discoverableSubtypeResolver.getDiscoveredSubtypes();
         assertThat(discoveredSubtypes, hasItem(DomainModelCompilerFactory.class));
     }
 
     @Test
-    public void domainModelCompiler() throws Exception
+    public void domainModelCompiler()
+            throws Exception
     {
         DomainModelFactory domainModelFactory = this.factory.build(
                 new ResourceConfigurationSourceProvider(),
