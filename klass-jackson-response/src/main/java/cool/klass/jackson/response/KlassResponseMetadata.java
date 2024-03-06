@@ -14,19 +14,23 @@ import cool.klass.model.meta.domain.api.projection.Projection;
 public class KlassResponseMetadata
 {
     @Nonnull
-    private final Projection                        projection;
+    private final Optional<String> criteria;
     @Nonnull
-    private final Multiplicity                      multiplicity;
+    private final Multiplicity     multiplicity;
+    @Nonnull
+    private final Projection       projection;
+
     @Nonnull
     private final Instant                           transactionTimestamp;
     @Nonnull
     private final Optional<KlassResponsePagination> pagination;
     @Nonnull
-    private final Optional<? extends Principal>               principal;
+    private final Optional<? extends Principal>     principal;
 
     public KlassResponseMetadata(
-            @Nonnull Projection projection,
+            @Nonnull Optional<String> criteria,
             @Nonnull Multiplicity multiplicity,
+            @Nonnull Projection projection,
             @Nonnull Instant transactionTimestamp,
             @Nonnull Optional<KlassResponsePagination> pagination,
             @Nonnull Optional<? extends Principal> principal)
@@ -36,13 +40,14 @@ public class KlassResponseMetadata
         this.pagination = Objects.requireNonNull(pagination);
         this.transactionTimestamp = Objects.requireNonNull(transactionTimestamp);
         this.principal = Objects.requireNonNull(principal);
+        this.criteria = Objects.requireNonNull(criteria);
     }
 
     @JsonProperty
     @Nonnull
-    public Projection getProjection()
+    public Optional<String> getCriteria()
     {
-        return this.projection;
+        return this.criteria;
     }
 
     @JsonProperty
@@ -54,9 +59,9 @@ public class KlassResponseMetadata
 
     @JsonProperty
     @Nonnull
-    public Optional<KlassResponsePagination> getPagination()
+    public Projection getProjection()
     {
-        return this.pagination;
+        return this.projection;
     }
 
     @JsonProperty
@@ -64,6 +69,13 @@ public class KlassResponseMetadata
     public Instant getTransactionTimestamp()
     {
         return this.transactionTimestamp;
+    }
+
+    @JsonProperty
+    @Nonnull
+    public Optional<KlassResponsePagination> getPagination()
+    {
+        return this.pagination;
     }
 
     @JsonProperty

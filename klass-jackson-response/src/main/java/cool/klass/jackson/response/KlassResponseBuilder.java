@@ -24,7 +24,9 @@ public class KlassResponseBuilder
     @Nonnull
     private       Optional<KlassResponsePagination> pagination = Optional.empty();
     @Nonnull
-    private       Optional<? extends Principal>               principal  = Optional.empty();
+    private       Optional<? extends Principal>     principal  = Optional.empty();
+    @Nonnull
+    private       Optional<String>                  criteria   = Optional.empty();
 
     public KlassResponseBuilder(
             @Nullable Object data,
@@ -48,36 +50,41 @@ public class KlassResponseBuilder
             throw new IllegalStateException();
         }
 
+        if (this.pagination.isPresent())
+        {
+            throw new IllegalStateException();
+        }
+
         KlassResponsePagination klassResponsePagination = new KlassResponsePagination(
                 pageSize,
                 numberOfPages,
                 pageNumber);
-        return this.setPagination(klassResponsePagination);
-    }
-
-    @Nonnull
-    public KlassResponseBuilder setPagination(KlassResponsePagination klassResponsePagination)
-    {
         this.pagination = Optional.of(klassResponsePagination);
         return this;
     }
 
     public KlassResponseBuilder setPrincipal(@Nonnull Principal principal)
     {
-        return this.setPrincipal(Optional.of(principal));
+        if (this.principal.isPresent())
+        {
+            throw new IllegalStateException();
+        }
+        this.principal = Optional.of(principal);
+        return this;
     }
 
-    public KlassResponseBuilder setPrincipal(@Nonnull Optional<? extends Principal> principal)
+    public KlassResponseBuilder setCriteria(@Nonnull String criteria)
     {
-        this.principal = Objects.requireNonNull(principal);
+        this.criteria = Optional.of(criteria);
         return this;
     }
 
     public KlassResponse build()
     {
         KlassResponseMetadata metadata = new KlassResponseMetadata(
-                this.projection,
+                this.criteria,
                 this.multiplicity,
+                this.projection,
                 this.transactionTimestamp,
                 this.pagination,
                 this.principal);
