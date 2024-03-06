@@ -43,12 +43,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-serialization-jackson-jsonview</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-serialization-jackson-model-data-property</artifactId>
             <version>${project.version}</version>
         </dependency>

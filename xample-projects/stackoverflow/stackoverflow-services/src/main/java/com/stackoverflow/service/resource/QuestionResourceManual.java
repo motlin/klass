@@ -50,7 +50,6 @@ import javax.ws.rs.core.UriInfo;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.finder.Operation;
@@ -59,7 +58,6 @@ import com.gs.fw.common.mithra.util.MithraTimestamp;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
-import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
@@ -115,7 +113,6 @@ public class QuestionResourceManual
     @GET
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method0(
             @PathParam("id") Long id,
             @Nullable @QueryParam("version") Integer version)
@@ -161,7 +158,6 @@ public class QuestionResourceManual
     @PUT
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method1(
             @PathParam("id") Long id,
             @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
@@ -263,7 +259,6 @@ public class QuestionResourceManual
     @DELETE
     @Path("/question/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
@@ -319,7 +314,6 @@ public class QuestionResourceManual
     @GET
     @Path("/question/in")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response getQuestionsById(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         // Question
@@ -354,7 +348,6 @@ public class QuestionResourceManual
     @GET
     @Path("/question/firstTwo")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response getFirstTwoQuestions()
     {
         // Question
@@ -387,7 +380,6 @@ public class QuestionResourceManual
     @GET
     @Path("/question/{id}/version/{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response getQuestionByIdAndVersion(
             @PathParam("id") Long id,
             @PathParam("version") Integer version)
@@ -436,7 +428,6 @@ public class QuestionResourceManual
     @DELETE
     @Path("/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response deleteQuestionById(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
@@ -484,7 +475,6 @@ public class QuestionResourceManual
     @POST
     @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method5(
             @Nonnull ObjectNode incomingInstance,
             @Nonnull @Context UriInfo uriInfo,
@@ -572,7 +562,6 @@ public class QuestionResourceManual
     @GET
     @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method6()
     {
         // Question
@@ -604,7 +593,6 @@ public class QuestionResourceManual
     @GET
     @Path("/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Response method7(@PathParam("userId") String userId)
     {
         // Question
@@ -633,7 +621,6 @@ public class QuestionResourceManual
     @GET
     @Path("/set")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Set<String> setService()
     {
         return Sets.mutable.empty();
@@ -644,7 +631,6 @@ public class QuestionResourceManual
     @GET
     @Path("/map")
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonView(QuestionReadProjection_JsonView.class)
     public Map<String, Set<String>> mapService()
     {
         return Maps.mutable.empty();

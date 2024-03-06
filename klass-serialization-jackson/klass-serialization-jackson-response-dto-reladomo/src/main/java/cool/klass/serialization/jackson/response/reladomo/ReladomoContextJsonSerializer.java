@@ -43,7 +43,6 @@ import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProper
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
-import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import cool.klass.serialization.jackson.model.data.property.SerializeValueToJsonFieldPrimitiveTypeVisitor;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -75,26 +74,12 @@ public class ReladomoContextJsonSerializer
             @Nonnull SerializerProvider serializers) throws IOException
     {
         Class<?> activeViewClass = serializers.getActiveView();
-        Objects.requireNonNull(
-                activeViewClass,
-                () -> String.format(
-                        "Could not find json serializer for %s. Usually this is caused by a missing @JsonView() annotation.",
-                        mithraObject.getClass().getCanonicalName()));
-
-        if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
+        if (activeViewClass != null)
         {
             throw new IllegalStateException(activeViewClass.getCanonicalName());
         }
 
-        KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
-        String        projectionName = klassJsonView.getProjectionName();
-        Projection    projection     = this.domainModel.getProjectionByName(projectionName);
-
-        Projection metadataProjection = this.metadata.getProjection();
-        if (!metadataProjection.equals(projection))
-        {
-            throw new AssertionError("Expected " + metadataProjection + ", got " + projection);
-        }
+        Projection projection = this.metadata.getProjection();
 
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
         // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();
@@ -151,19 +136,6 @@ public class ReladomoContextJsonSerializer
             {
                 throw new AssertionError(projectionElement.getClass().getSimpleName());
             }
-        }
-    }
-
-    @Nonnull
-    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
-    {
-        try
-        {
-            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
-        }
-        catch (ReflectiveOperationException e)
-        {
-            throw new RuntimeException(e);
         }
     }
 

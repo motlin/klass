@@ -28,8 +28,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 
@@ -57,25 +55,13 @@ public class KlassResponseReladomoJsonSerializer
             @Nonnull SerializerProvider serializerProvider) throws IOException
     {
         Class<?> activeViewClass = serializerProvider.getActiveView();
-        Objects.requireNonNull(
-                activeViewClass,
-                "Could not find json serializer for KlassResponse. Usually this is caused by a missing @JsonView() annotation.");
-
-        if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
+        if (activeViewClass != null)
         {
-            throw new IllegalStateException(activeViewClass.getCanonicalName());
+            String detailMessage = "Expected no active view while serializing KlassResponse but got %s".formatted(activeViewClass.getCanonicalName());
+            throw new IllegalStateException(detailMessage);
         }
-
-        KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
-        String     projectionName = klassJsonView.getProjectionName();
-        Projection projection     = this.domainModel.getProjectionByName(projectionName);
 
         KlassResponseMetadata metadata = klassResponse.getMetadata();
-        Projection metadataProjection = metadata.getProjection();
-        if (!metadataProjection.equals(projection))
-        {
-            throw new AssertionError("Expected " + metadataProjection + ", got " + projection);
-        }
 
         jsonGenerator.writeStartObject();
         try
@@ -130,9 +116,10 @@ public class KlassResponseReladomoJsonSerializer
         Object data = klassResponse.getData();
         if (!(data instanceof List<?>))
         {
-            throw new ClassCastException(data.getClass().getCanonicalName()
-                    + " cannot be cast to "
-                    + List.class.getCanonicalName());
+            String detailMessage = "%s cannot be cast to %s".formatted(
+                    data.getClass().getCanonicalName(),
+                    List.class.getCanonicalName());
+            throw new ClassCastException(detailMessage);
         }
 
         List<MithraObject> mithraList = (List<MithraObject>) data;
@@ -163,18 +150,5 @@ public class KlassResponseReladomoJsonSerializer
                 this.domainModel,
                 this.dataStore,
                 metadata);
-    }
-
-    @Nonnull
-    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
-    {
-        try
-        {
-            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
-        }
-        catch (ReflectiveOperationException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }
