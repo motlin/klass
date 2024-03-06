@@ -35,7 +35,7 @@ public interface ReladomoTreeNode
 
     default String getShortString()
     {
-        return '.' + this.getName() + "()";
+        return '.' + this.getName();
     }
 
     default String getNodeString(String indent)

@@ -37,7 +37,7 @@ public class RootReladomoTreeNode
     @Override
     public String getShortString()
     {
-        return this.getType().getName() + "Finder";
+        return this.getType().getName();
     }
 
     @Override
