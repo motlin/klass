@@ -53,6 +53,7 @@ import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
@@ -185,7 +186,7 @@ public class QuestionResourceManual
         }
 
         Instant            transactionInstant = Instant.now(this.clock);
-        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
+        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(klass, persistentInstance, incomingInstance);
     }
@@ -380,7 +381,7 @@ public class QuestionResourceManual
             question.generateAndSetId();
 
             Instant           transactionInstant = Instant.now(this.clock);
-            MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
+            MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
             PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(klass, question, incomingInstance);
             question.insert();

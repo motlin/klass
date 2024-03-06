@@ -203,7 +203,9 @@ public abstract class PersistentSynchronizer
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
     {
-        Object newValue = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(dataTypeProperty, incomingJson);
+        Object newValue = this.mutationContext.getPropertyDataFromUrl().getIfAbsent(
+                dataTypeProperty,
+                () -> JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(dataTypeProperty, incomingJson));
         return this.dataStore.setDataTypeProperty(persistentInstance, dataTypeProperty, newValue);
     }
 
@@ -615,9 +617,11 @@ public abstract class PersistentSynchronizer
 
         if (oppositeForeignKeys.notEmpty())
         {
-            Object result = this.dataStore.getDataTypeProperty(
-                    persistentParentInstance,
-                    oppositeForeignKeys.getOnly());
+            DataTypeProperty oppositeForeignKey = oppositeForeignKeys.getOnly();
+            Object result = this.mutationContext.getPropertyDataFromUrl().getIfAbsent(
+                    oppositeForeignKey,
+                    () -> this.dataStore.getDataTypeProperty(persistentParentInstance, oppositeForeignKey));
+
             return Objects.requireNonNull(result);
         }
 
