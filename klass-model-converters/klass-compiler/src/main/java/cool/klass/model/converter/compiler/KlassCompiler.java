@@ -1,10 +1,12 @@
 package cool.klass.model.converter.compiler;
 
 import java.util.LinkedHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.Stopwatch;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
@@ -47,6 +49,8 @@ import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMapIterable;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KlassCompiler
 {
@@ -80,6 +84,8 @@ public class KlassCompiler
                     OrderByDirectionPhase::new,
                     OrderByDirectionInferencePhase::new);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KlassCompiler.class);
+
     private final CompilerState compilerState;
 
     public KlassCompiler(CompilationUnit compilationUnit)
@@ -94,6 +100,8 @@ public class KlassCompiler
 
     private void executeCompilerPhase(KlassListener compilerPhase)
     {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+
         // Compiler macros may add new compilation units within a compiler phase, so take an immutable copy
         ImmutableList<CompilationUnit> immutableCompilationUnits =
                 this.compilerState.getCompilerInputState().getCompilationUnits().toImmutable();
@@ -105,6 +113,11 @@ public class KlassCompiler
                     compilationUnit,
                     () -> parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext()));
         }
+
+        Stopwatch stopped = stopwatch.stop();
+        long sElapsed = stopped.elapsed(TimeUnit.SECONDS);
+        long msElapsed = stopped.elapsed(TimeUnit.MILLISECONDS);
+        LOGGER.info("Executed compiler phase {} in {}s {}ms.", compilerPhase, sElapsed, msElapsed);
     }
 
     @Nonnull
