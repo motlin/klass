@@ -90,7 +90,7 @@ public class KlassCompiler
 
     public KlassCompiler(ImmutableList<CompilationUnit> compilationUnits)
     {
-        // TODO: Move to application run
+        // TODO: Move ansi stuff to ansi module or to application run
         AnsiConsole.systemInstall();
 
         this.compilerState = new CompilerState(compilationUnits);

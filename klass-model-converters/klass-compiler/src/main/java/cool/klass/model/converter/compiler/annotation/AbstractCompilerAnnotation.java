@@ -61,11 +61,10 @@ public abstract class AbstractCompilerAnnotation
             @Nonnull AnsiTokenColorizer ansiTokenColorizer,
             @Nonnull AnnotationSeverity severity)
     {
-        this.macroCause        = Objects.requireNonNull(macroCause);
-        this.compilationUnit   = Objects.requireNonNull(compilationUnit);
-        this.offendingContexts = Objects.requireNonNull(offendingContexts);
-        this.sourceContexts    = Objects.requireNonNull(sourceContexts).select(IAntlrElement::isContext);
-        // TODO: Make the ColorScheme configurable
+        this.macroCause         = Objects.requireNonNull(macroCause);
+        this.compilationUnit    = Objects.requireNonNull(compilationUnit);
+        this.offendingContexts  = Objects.requireNonNull(offendingContexts);
+        this.sourceContexts     = Objects.requireNonNull(sourceContexts).select(IAntlrElement::isContext);
         this.ansiTokenColorizer = Objects.requireNonNull(ansiTokenColorizer);
         this.severity           = Objects.requireNonNull(severity);
 
