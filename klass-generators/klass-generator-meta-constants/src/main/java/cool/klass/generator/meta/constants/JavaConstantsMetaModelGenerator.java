@@ -34,6 +34,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.apache.commons.text.StringEscapeUtils;
@@ -982,17 +983,17 @@ public class JavaConstantsMetaModelGenerator
     {
         return String.format(
                 "            result.put(%s, %s);\n",
-                each.getOne().getName(),
+                this.getForeignKeySourceCode(each.getOne()),
                 each.getTwo().collect(this::getForeignKeySourceCode).makeString());
     }
 
-    private String getForeignKeySourceCode(DataTypeProperty dataTypeProperty)
+    private String getForeignKeySourceCode(Property property)
     {
         return String.format(
                 "%sDomainModel.%s.%s",
                 this.applicationName,
-                dataTypeProperty.getOwningClassifier().getName(),
-                dataTypeProperty.getName());
+                property.getOwningClassifier().getName(),
+                property.getName());
     }
 
     private String getPropertyModifiersSourceCode(ImmutableList<PropertyModifier> propertyModifiers)
