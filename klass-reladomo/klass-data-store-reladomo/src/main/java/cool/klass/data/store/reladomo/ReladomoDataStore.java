@@ -317,6 +317,17 @@ public class ReladomoDataStore
             return this.getPropertyReflectively(persistentInstance, dataTypeProperty);
         }
 
+        Classifier owningClassifier = dataTypeProperty.getOwningClassifier();
+        if (owningClassifier instanceof Klass && !Objects.equals(
+                owningClassifier.getName(),
+                persistentInstance.getClass().getSimpleName()))
+        {
+            String detailMessage = "Expected %s but got %s".formatted(
+                    owningClassifier.getName(),
+                    persistentInstance.getClass().getSimpleName());
+            throw new AssertionError(detailMessage);
+        }
+
         RelatedFinder<?> finder        = this.getRelatedFinder((MithraObject) persistentInstance);
         String           attributeName = dataTypeProperty.getName();
         Attribute        attribute     = finder.getAttributeByName(attributeName);
