@@ -21,6 +21,7 @@ import com.smoketurner.dropwizard.graphql.GraphQLBundle;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
 import graphql.execution.instrumentation.Instrumentation;
 import graphql.execution.preparsed.PreparsedDocumentProvider;
+import graphql.kickstart.execution.GraphQLObjectMapper;
 import graphql.kickstart.execution.GraphQLQueryInvoker;
 import graphql.kickstart.servlet.GraphQLHttpServlet;
 import graphql.scalars.java.JavaPrimitives;
@@ -102,8 +103,16 @@ public class KlassGraphQLBundle<T extends Configuration & GraphQLFactoryProvider
                         .withInstrumentation(factory.getInstrumentations())
                         .build();
 
-        graphql.kickstart.servlet.GraphQLConfiguration config =
-                graphql.kickstart.servlet.GraphQLConfiguration.with(schema).with(queryInvoker).build();
+        GraphQLObjectMapper graphQLObjectMapper = GraphQLObjectMapper
+                .newBuilder()
+                .withGraphQLErrorHandler(new KlassGraphQLErrorHandler())
+                .build();
+
+        graphql.kickstart.servlet.GraphQLConfiguration config = graphql.kickstart.servlet.GraphQLConfiguration
+                        .with(schema)
+                        .with(queryInvoker)
+                        .with(graphQLObjectMapper)
+                        .build();
 
         GraphQLHttpServlet servlet = new ConfiguredGraphQLHttpServlet(config);
 
