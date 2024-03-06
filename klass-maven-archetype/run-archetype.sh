@@ -1,0 +1,1 @@
+mvn archetype:generate -DarchetypeCatalog=local -DarchetypeGroupId=cool.klass -DarchetypeArtifactId=klass-maven-archetype -DinteractiveMode=false -DgroupId=cool.klass.xample.coverage -DartifactId=coverage-example -Dversion=0.1.0-SNAPSHOT -Dpackage=cool.klass.xample.coverage -Dname=CoverageExample
