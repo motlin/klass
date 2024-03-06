@@ -120,7 +120,7 @@ public class AntlrServiceProjectionDispatch
 
         String message = String.format(
                 "Service group '%s' is declared on line %d and has a forward reference to projection '%s' which is declared later in the source file '%s' on line %d.",
-                this.toString(),
+                this,
                 this.getElementContext().getStart().getLine(),
                 this.projection.getName(),
                 this.getCompilationUnit().get().getSourceName(),

@@ -172,7 +172,7 @@ public class AntlrServiceGroup
 
         String message = String.format(
                 "Service group '%s' is declared on line %d and has a forward reference to class '%s' which is declared later in the source file '%s' on line %d.",
-                this.toString(),
+                this,
                 this.getElementContext().getStart().getLine(),
                 this.klass.getName(),
                 this.getCompilationUnit().get().getSourceName(),
