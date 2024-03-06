@@ -18,6 +18,25 @@
         <plugins>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                    <filesets>
+                        <fileset>
+                            <directory>target</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/*-h2.mv.db</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
@@ -132,6 +151,11 @@
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -159,7 +183,7 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+            <artifactId>liftwizard-bundle-liquibase-migration</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -178,6 +202,18 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-logging-config</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-uncaught-exception-handler</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
@@ -218,12 +254,6 @@
             <artifactId>liftwizard-logging-p6spy</artifactId>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-connection-manager-holder</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <!--endregion-->
 
         <!--region Klass compile dependencies -->
@@ -259,6 +289,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -268,9 +304,22 @@
             <artifactId>klass-dropwizard-command-model-json</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-service-klass-html</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass runtime dependencies -->
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-syntax-css-class</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
@@ -342,6 +391,11 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-migrations</artifactId>
         </dependency>
 
         <dependency>

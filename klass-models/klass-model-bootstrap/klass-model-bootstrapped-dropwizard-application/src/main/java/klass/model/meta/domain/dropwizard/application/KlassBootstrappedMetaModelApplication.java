@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
@@ -36,6 +38,15 @@ public class KlassBootstrappedMetaModelApplication
 
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
+
+        bootstrap.addBundle(new MigrationsBundle<KlassBootstrappedMetaModelConfiguration>()
+        {
+            @Override
+            public DataSourceFactory getDataSourceFactory(KlassBootstrappedMetaModelConfiguration configuration)
+            {
+                return configuration.getNamedDataSourcesFactory().getNamedDataSourceFactoryByName("h2-tcp");
+            }
+        });
     }
 
     @Override

@@ -31,7 +31,7 @@
 
                 <configuration>
                     <mainClass>${mainClass}</mainClass>
-                    <commandlineArgs>generate-json-model --applicationName ${app.name} --rootPackageName ${app.rootPackageName} --outputDirectory ${project.build.directory} ${project.basedir}/../${app.artifactId}-dropwizard-application/config.json5</commandlineArgs>
+                    <commandlineArgs>generate-json-model --applicationName ${app.name} --rootPackageName ${app.rootPackageName} --outputDirectory ${project.build.directory} ${project.basedir}/../${app.artifactId}-dropwizard-application/dropwizard-server.json5</commandlineArgs>
                     <includePluginDependencies>true</includePluginDependencies>
                     <includeProjectDependencies>false</includeProjectDependencies>
                 </configuration>
