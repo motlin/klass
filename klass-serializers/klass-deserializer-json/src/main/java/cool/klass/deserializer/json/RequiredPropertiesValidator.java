@@ -165,6 +165,19 @@ public class RequiredPropertiesValidator
             return;
         }
 
+        if (this.isForeignKeyMatchingKeyOnPath(dataTypeProperty))
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key on path");
+            return;
+        }
+
+        // TODO: Exclude path here
+        if (this.isForeignKeyMatchingRequiredNested(dataTypeProperty))
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key matching key of required nested object");
+            return;
+        }
+
         if (this.isRoot)
         {
             this.handleWarnIfPresent(dataTypeProperty, "root key");
@@ -172,6 +185,27 @@ public class RequiredPropertiesValidator
         }
 
         this.handlePlainProperty(dataTypeProperty);
+    }
+
+    private boolean isForeignKeyMatchingRequiredNested(DataTypeProperty dataTypeProperty)
+    {
+        // TODO: Exclude path here
+        return dataTypeProperty.getKeysMatchingThisForeignKey().keysView().anySatisfy(this::isToOneRequired);
+    }
+
+    private boolean isToOneRequired(AssociationEnd associationEnd)
+    {
+        Multiplicity multiplicity = associationEnd.getMultiplicity();
+        return multiplicity.isToOne() && multiplicity.isRequired();
+    }
+
+    private boolean isForeignKeyMatchingKeyOnPath(DataTypeProperty dataTypeProperty)
+    {
+        Optional<AssociationEnd> opposite = this.pathHere.map(AssociationEnd::getOpposite);
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = dataTypeProperty.getKeysMatchingThisForeignKey();
+        return opposite
+                .map(keysMatchingThisForeignKey::containsKey)
+                .orElse(false);
     }
 
     private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
