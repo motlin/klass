@@ -290,6 +290,8 @@ enumeration AssociationEndDirection
 
 class Association implements PackageableElement
 {
+    criteriaId: Long private;
+
     source(): AssociationEnd[1..1]
     {
         this.name == AssociationEnd.associationName
@@ -354,6 +356,73 @@ association AssociationEndHasModifiers
 
     relationship this.owningClassName == AssociationEndModifier.owningClassName
             && this.name == AssociationEndModifier.associationEndName
+}
+
+association AssociationHasCriteria
+{
+    association: Association[0..1];
+    criteria: Criteria[1..1];
+
+    relationship this.criteriaId == Criteria.id
+}
+
+class Criteria
+    abstract(table-per-class)
+    implements Element
+{
+    // TODO: Criteria can be owned by Services
+    id: Long id key;
+}
+
+class AllCriteria
+    extends Criteria
+{
+}
+
+class BinaryCriteria
+    abstract(table-per-class)
+    extends Criteria
+{
+    leftId        : Long private;
+    rightId       : Long private;
+}
+
+class AndCritiera
+    extends BinaryCriteria
+{
+}
+
+class OrCritiera
+    extends BinaryCriteria
+{
+}
+
+class OperatorCriteria
+    extends Criteria
+{
+    // TODO
+}
+
+class EdgePointCriteria
+    extends Criteria
+{
+    // TODO
+}
+
+association BinaryCriteraHasLeft
+{
+    ownerOfLeftCriteria : BinaryCriteria[0..1];
+    left                : Criteria[1..1];
+
+    relationship this.leftId == Criteria.id
+}
+
+association BinaryCriteraHasRight
+{
+    ownerOfRightCriteria: BinaryCriteria[0..1];
+    right               : Criteria[1..1];
+
+    relationship this.rightId == Criteria.id
 }
 
 class ParameterizedProperty
@@ -972,6 +1041,19 @@ projection AssociationReadProjection on Association
             ordinal : "Association end modifier ordinal",
         },
     },
+/*
+TODO
+    criteria:
+    {
+        id: "Criteria id",
+        BinaryCriteria.left: {
+            id: "Criteria left id",
+        },
+        BinaryCriteria.right: {
+            id: "Criteria right id",
+        },
+    },
+*/
 }
 
 service Association
