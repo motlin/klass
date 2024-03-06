@@ -46,8 +46,7 @@ public class VersionClassInferencePhase
                 new CompilationUnitPhase(this.compilerState),
                 new TopLevelElementsPhase(this.compilerState),
                 new ClassifierPhase(this.compilerState),
-                new PropertyPhase(this.compilerState),
-                new ClassTemporalPropertyInferencePhase(this.compilerState));
+                new PropertyPhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
                 classifierModifierState,
