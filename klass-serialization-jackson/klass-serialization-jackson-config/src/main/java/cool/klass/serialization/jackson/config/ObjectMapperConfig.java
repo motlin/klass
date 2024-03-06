@@ -31,6 +31,10 @@ public final class ObjectMapperConfig
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         }
 
+        // Default behavior in Dropwizard 1.2.x
+        // Necessary in Dropwizard 2.x
+        objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
