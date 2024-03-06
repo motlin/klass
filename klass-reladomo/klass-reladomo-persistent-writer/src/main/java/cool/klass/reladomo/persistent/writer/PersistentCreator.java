@@ -52,15 +52,29 @@ public class PersistentCreator extends PersistentSynchronizer
         createdByProperty.ifPresent(primitiveProperty ->
         {
             Optional<String> optionalUserId = this.mutationContext.getUserId();
-            String           userId         = optionalUserId.orElseThrow(() -> new AssertionError(primitiveProperty));
-            this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, userId);
+            String userId = optionalUserId.orElseThrow(() -> this.expectAuditProperty(primitiveProperty));
+            if (!this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, userId))
+            {
+                throw new AssertionError();
+            }
         });
 
         createdOnProperty.ifPresent(primitiveProperty ->
         {
             Instant transactionTime = this.mutationContext.getTransactionTime();
-            this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, transactionTime);
+            if (!this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, transactionTime))
+            {
+                throw new AssertionError();
+            }
         });
+    }
+
+    private AssertionError expectAuditProperty(PrimitiveProperty primitiveProperty)
+    {
+        String message = String.format(
+                "Mutation context has no userId, but found an audit property: '%s'",
+                primitiveProperty);
+        return new AssertionError(message);
     }
 
     @Override

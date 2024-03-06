@@ -307,7 +307,8 @@ public class ReladomoDataStore
                 return null;
             }
 
-            throw new AssertionError(dataTypeProperty);
+            String message = String.format("Found null for required property: '%s'", dataTypeProperty);
+            throw new IllegalStateException(message);
         }
 
         Object result = attribute.valueOf(persistentInstance);
@@ -474,6 +475,13 @@ public class ReladomoDataStore
 
         if (newValue == null)
         {
+            if (dataTypeProperty.isRequired())
+            {
+                String message = String.format(
+                        "May not set required property to null: '%s'",
+                        dataTypeProperty);
+                throw new IllegalStateException(message);
+            }
             attribute.setValueNull(persistentInstance);
         }
         else if (dataTypeProperty instanceof EnumerationProperty)
