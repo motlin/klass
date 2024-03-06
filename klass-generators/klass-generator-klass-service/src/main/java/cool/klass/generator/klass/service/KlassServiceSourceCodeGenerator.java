@@ -24,6 +24,7 @@ public final class KlassServiceSourceCodeGenerator
         String sourceCode = domainModel
                 .getClasses()
                 .select(c -> c.getPackageName().equals(fullyQualifiedPackage))
+                .reject(Klass::isUniquelyOwned)
                 .collect(KlassServiceSourceCodeGenerator::getSourceCode)
                 .makeString("");
 

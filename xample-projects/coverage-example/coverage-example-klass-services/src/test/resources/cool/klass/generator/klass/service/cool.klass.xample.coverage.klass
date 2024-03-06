@@ -76,24 +76,6 @@ service EveryTypeKeyPropertyResource on EveryTypeKeyProperty
         }
 }
 
-service EveryTypeForeignKeyPropertyResource on EveryTypeForeignKeyProperty
-{
-    /everyTypeForeignKeyProperty/{id: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.id == id;
-            projection  : EveryTypeForeignKeyPropertyProjection;
-        }
-    /everyTypeForeignKeyProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : EveryTypeForeignKeyPropertyProjection;
-        }
-}
-
 service FinalPropertiesResource on FinalProperties
 {
     /finalProperties/{id: Long[1..1]}
@@ -130,24 +112,6 @@ service OwnedNaturalOneToManySourceResource on OwnedNaturalOneToManySource
         }
 }
 
-service OwnedNaturalOneToManyTargetResource on OwnedNaturalOneToManyTarget
-{
-    /ownedNaturalOneToManyTarget/{key: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.key == key;
-            projection  : OwnedNaturalOneToManyTargetProjection;
-        }
-    /ownedNaturalOneToManyTarget
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : OwnedNaturalOneToManyTargetProjection;
-        }
-}
-
 service OwnedNaturalOneToOneSourceResource on OwnedNaturalOneToOneSource
 {
     /ownedNaturalOneToOneSource/{key: String[1..1]}
@@ -163,24 +127,6 @@ service OwnedNaturalOneToOneSourceResource on OwnedNaturalOneToOneSource
             multiplicity: many;
             criteria    : all;
             projection  : OwnedNaturalOneToOneSourceProjection;
-        }
-}
-
-service OwnedNaturalOneToOneTargetResource on OwnedNaturalOneToOneTarget
-{
-    /ownedNaturalOneToOneTarget/{key: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.key == key;
-            projection  : OwnedNaturalOneToOneTargetProjection;
-        }
-    /ownedNaturalOneToOneTarget
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : OwnedNaturalOneToOneTargetProjection;
         }
 }
 
@@ -220,24 +166,6 @@ service OwnedSyntheticOneToManySourceResource on OwnedSyntheticOneToManySource
         }
 }
 
-service OwnedSyntheticOneToManyTargetResource on OwnedSyntheticOneToManyTarget
-{
-    /ownedSyntheticOneToManyTarget/{id: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.id == id;
-            projection  : OwnedSyntheticOneToManyTargetProjection;
-        }
-    /ownedSyntheticOneToManyTarget
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : OwnedSyntheticOneToManyTargetProjection;
-        }
-}
-
 service OwnedSyntheticOneToOneSourceResource on OwnedSyntheticOneToOneSource
 {
     /ownedSyntheticOneToOneSource/{id: Long[1..1]}
@@ -253,24 +181,6 @@ service OwnedSyntheticOneToOneSourceResource on OwnedSyntheticOneToOneSource
             multiplicity: many;
             criteria    : all;
             projection  : OwnedSyntheticOneToOneSourceProjection;
-        }
-}
-
-service OwnedSyntheticOneToOneTargetResource on OwnedSyntheticOneToOneTarget
-{
-    /ownedSyntheticOneToOneTarget/{id: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.id == id;
-            projection  : OwnedSyntheticOneToOneTargetProjection;
-        }
-    /ownedSyntheticOneToOneTarget
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : OwnedSyntheticOneToOneTargetProjection;
         }
 }
 
@@ -523,96 +433,6 @@ service ClassOwningClassWithDerivedPropertyResource on ClassOwningClassWithDeriv
             multiplicity: many;
             criteria    : all;
             projection  : ClassOwningClassWithDerivedPropertyProjection;
-        }
-}
-
-service ClassWithDerivedPropertyResource on ClassWithDerivedProperty
-{
-    /classWithDerivedProperty/{key: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.key == key;
-            projection  : ClassWithDerivedPropertyProjection;
-        }
-    /classWithDerivedProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ClassWithDerivedPropertyProjection;
-        }
-}
-
-service UserVersionResource on UserVersion
-{
-    /userVersion/{userId: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.userId == userId;
-            projection  : UserVersionProjection;
-        }
-    /userVersion
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : UserVersionProjection;
-        }
-}
-
-service PropertiesRequiredVersionResource on PropertiesRequiredVersion
-{
-    /propertiesRequiredVersion/{propertiesRequiredId: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.propertiesRequiredId == propertiesRequiredId;
-            projection  : PropertiesRequiredVersionProjection;
-        }
-    /propertiesRequiredVersion
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : PropertiesRequiredVersionProjection;
-        }
-}
-
-service PropertiesOptionalVersionResource on PropertiesOptionalVersion
-{
-    /propertiesOptionalVersion/{propertiesOptionalId: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.propertiesOptionalId == propertiesOptionalId;
-            projection  : PropertiesOptionalVersionProjection;
-        }
-    /propertiesOptionalVersion
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : PropertiesOptionalVersionProjection;
-        }
-}
-
-service EveryTypeKeyPropertyVersionResource on EveryTypeKeyPropertyVersion
-{
-    /everyTypeKeyPropertyVersion/{keyString: String[1..1]}/{keyInteger: Integer[1..1]}/{keyLong: Long[1..1]}/{keyDouble: Double[1..1]}/{keyFloat: Float[1..1]}/{keyBoolean: Boolean[1..1]}/{keyInstant: Instant[1..1]}/{keyLocalDate: LocalDate[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.keyString == keyString && this.keyInteger == keyInteger && this.keyLong == keyLong && this.keyDouble == keyDouble && this.keyFloat == keyFloat && this.keyBoolean == keyBoolean && this.keyInstant == keyInstant && this.keyLocalDate == keyLocalDate;
-            projection  : EveryTypeKeyPropertyVersionProjection;
-        }
-    /everyTypeKeyPropertyVersion
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : EveryTypeKeyPropertyVersionProjection;
         }
 }
 

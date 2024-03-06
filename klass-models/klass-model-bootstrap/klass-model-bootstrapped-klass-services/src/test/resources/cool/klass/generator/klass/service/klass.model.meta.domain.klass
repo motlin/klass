@@ -40,24 +40,6 @@ service EnumerationResource on Enumeration
         }
 }
 
-service EnumerationLiteralResource on EnumerationLiteral
-{
-    /enumerationLiteral/{enumerationName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.enumerationName == enumerationName && this.name == name;
-            projection  : EnumerationLiteralProjection;
-        }
-    /enumerationLiteral
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : EnumerationLiteralProjection;
-        }
-}
-
 service ClassifierResource on Classifier
 {
     /classifier/{name: String[1..1]}
@@ -94,42 +76,6 @@ service InterfaceResource on Interface
         }
 }
 
-service ClassifierInterfaceMappingResource on ClassifierInterfaceMapping
-{
-    /classifierInterfaceMapping/{classifierName: String[1..1]}/{interfaceName: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.interfaceName == interfaceName;
-            projection  : ClassifierInterfaceMappingProjection;
-        }
-    /classifierInterfaceMapping
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ClassifierInterfaceMappingProjection;
-        }
-}
-
-service ClassifierModifierResource on ClassifierModifier
-{
-    /classifierModifier/{classifierName: String[1..1]}/{keyword: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.keyword == keyword;
-            projection  : ClassifierModifierProjection;
-        }
-    /classifierModifier
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ClassifierModifierProjection;
-        }
-}
-
 service KlassResource on Klass
 {
     /klass/{name: String[1..1]}
@@ -145,60 +91,6 @@ service KlassResource on Klass
             multiplicity: many;
             criteria    : all;
             projection  : KlassProjection;
-        }
-}
-
-service DataTypePropertyResource on DataTypeProperty
-{
-    /dataTypeProperty/{classifierName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.name == name;
-            projection  : DataTypePropertyProjection;
-        }
-    /dataTypeProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : DataTypePropertyProjection;
-        }
-}
-
-service PrimitivePropertyResource on PrimitiveProperty
-{
-    /primitiveProperty/{classifierName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.name == name;
-            projection  : PrimitivePropertyProjection;
-        }
-    /primitiveProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : PrimitivePropertyProjection;
-        }
-}
-
-service EnumerationPropertyResource on EnumerationProperty
-{
-    /enumerationProperty/{classifierName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.classifierName == classifierName && this.name == name;
-            projection  : EnumerationPropertyProjection;
-        }
-    /enumerationProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : EnumerationPropertyProjection;
         }
 }
 
@@ -580,60 +472,6 @@ service AssociationResource on Association
         }
 }
 
-service AssociationEndResource on AssociationEnd
-{
-    /associationEnd/{owningClassName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.owningClassName == owningClassName && this.name == name;
-            projection  : AssociationEndProjection;
-        }
-    /associationEnd
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : AssociationEndProjection;
-        }
-}
-
-service AssociationEndModifierResource on AssociationEndModifier
-{
-    /associationEndModifier/{owningClassName: String[1..1]}/{associationEndName: String[1..1]}/{keyword: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.owningClassName == owningClassName && this.associationEndName == associationEndName && this.keyword == keyword;
-            projection  : AssociationEndModifierProjection;
-        }
-    /associationEndModifier
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : AssociationEndModifierProjection;
-        }
-}
-
-service MemberReferencePathAssociationEndMappingResource on MemberReferencePathAssociationEndMapping
-{
-    /memberReferencePathAssociationEndMapping/{memberReferencePathId: Long[1..1]}/{associationOwningClassName: String[1..1]}/{associationEndName: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.memberReferencePathId == memberReferencePathId && this.associationOwningClassName == associationOwningClassName && this.associationEndName == associationEndName;
-            projection  : MemberReferencePathAssociationEndMappingProjection;
-        }
-    /memberReferencePathAssociationEndMapping
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : MemberReferencePathAssociationEndMappingProjection;
-        }
-}
-
 service ThisMemberReferencePathResource on ThisMemberReferencePath
 {
     /thisMemberReferencePath/{id: Long[1..1]}
@@ -667,60 +505,6 @@ service TypeMemberReferencePathResource on TypeMemberReferencePath
             multiplicity: many;
             criteria    : all;
             projection  : TypeMemberReferencePathProjection;
-        }
-}
-
-service ParameterizedPropertyResource on ParameterizedProperty
-{
-    /parameterizedProperty/{owningClassName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.owningClassName == owningClassName && this.name == name;
-            projection  : ParameterizedPropertyProjection;
-        }
-    /parameterizedProperty
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ParameterizedPropertyProjection;
-        }
-}
-
-service AssociationEndOrderByResource on AssociationEndOrderBy
-{
-    /associationEndOrderBy/{associationEndClassName: String[1..1]}/{associationEndName: String[1..1]}/{thisMemberReferencePathId: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.associationEndClassName == associationEndClassName && this.associationEndName == associationEndName && this.thisMemberReferencePathId == thisMemberReferencePathId;
-            projection  : AssociationEndOrderByProjection;
-        }
-    /associationEndOrderBy
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : AssociationEndOrderByProjection;
-        }
-}
-
-service ParameterizedPropertyOrderingResource on ParameterizedPropertyOrdering
-{
-    /parameterizedPropertyOrdering/{owningClassName: String[1..1]}/{name: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.owningClassName == owningClassName && this.name == name;
-            projection  : ParameterizedPropertyOrderingProjection;
-        }
-    /parameterizedPropertyOrdering
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ParameterizedPropertyOrderingProjection;
         }
 }
 
@@ -883,78 +667,6 @@ service ServiceGroupResource on ServiceGroup
             multiplicity: many;
             criteria    : all;
             projection  : ServiceGroupProjection;
-        }
-}
-
-service UrlResource on Url
-{
-    /url/{className: String[1..1]}/{url: String[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.className == className && this.url == url;
-            projection  : UrlProjection;
-        }
-    /url
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : UrlProjection;
-        }
-}
-
-service UrlParameterResource on UrlParameter
-{
-    /urlParameter/{urlClassName: String[1..1]}/{urlString: String[1..1]}/{parameterId: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.urlClassName == urlClassName && this.urlString == urlString && this.parameterId == parameterId;
-            projection  : UrlParameterProjection;
-        }
-    /urlParameter
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : UrlParameterProjection;
-        }
-}
-
-service ServiceResource on Service
-{
-    /service/{className: String[1..1]}/{urlString: String[1..1]}/{verb: Verb[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.className == className && this.urlString == urlString && this.verb == verb;
-            projection  : ServiceProjection;
-        }
-    /service
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ServiceProjection;
-        }
-}
-
-service ServiceOrderByResource on ServiceOrderBy
-{
-    /serviceOrderBy/{serviceClassName: String[1..1]}/{serviceUrlString: String[1..1]}/{serviceVerb: Verb[1..1]}/{thisMemberReferencePathId: Long[1..1]}
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.serviceClassName == serviceClassName && this.serviceUrlString == serviceUrlString && this.serviceVerb == serviceVerb && this.thisMemberReferencePathId == thisMemberReferencePathId;
-            projection  : ServiceOrderByProjection;
-        }
-    /serviceOrderBy
-        GET
-        {
-            multiplicity: many;
-            criteria    : all;
-            projection  : ServiceOrderByProjection;
         }
 }
 
