@@ -129,7 +129,7 @@ public class GraphQLSchemaQueryGenerator
     {
         String classifierName = classifier.getName();
         String lowerCaseName  = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, classifierName);
-        return "    " + lowerCaseName + "ByOperation(operation: String!, limit: Int): [" + classifierName + "!]!\n";
+        return "    " + lowerCaseName + "ByOperation(operation: String!, orderBy: [OrderByDirection!]! = [], pageNumber: Int = 1, pageSize: Int = 20): [" + classifierName + "!]!\n";
     }
 
     private String getByFinderSourceCode(Classifier classifier)
@@ -138,7 +138,7 @@ public class GraphQLSchemaQueryGenerator
         String lowerCaseName  = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, classifierName);
 
         return MessageFormat.format(
-                "    {0}ByFinder(operation: {1}Finder!, limit: Int): [{1}!]!\n",
+                "    {0}ByFinder(operation: {1}Finder!, orderBy: [OrderByDirection!]! = [], pageNumber: Int = 1, pageSize: Int = 20): [{1}!]!\n",
                 lowerCaseName,
                 classifierName);
     }
