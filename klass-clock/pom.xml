@@ -31,5 +31,9 @@
 
     <modules>
         <module>klass-clock-incrementing</module>
+        <module>klass-dropwizard-configuration-clock</module>
+        <module>klass-dropwizard-configuration-clock-fixed</module>
+        <module>klass-dropwizard-configuration-clock-incrementing</module>
+        <module>klass-dropwizard-configuration-clock-system</module>
     </modules>
 </project>
