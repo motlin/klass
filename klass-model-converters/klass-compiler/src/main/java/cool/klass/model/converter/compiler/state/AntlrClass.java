@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
@@ -446,7 +447,8 @@ public class AntlrClass
         this.reportMissingKeyProperty(compilerAnnotationHolder);
         this.reportSuperClassNotFound(compilerAnnotationHolder);
         this.reportExtendsConcrete(compilerAnnotationHolder);
-        this.reportMultipleOppositesWithModifier(compilerAnnotationHolder, "version");
+        this.reportMultipleOppositesWithModifier(compilerAnnotationHolder, "version", AnnotationSeverity.ERROR);
+        this.reportMultipleOppositesWithModifier(compilerAnnotationHolder, "owned", AnnotationSeverity.WARNING);
         this.reportVersionErrors(compilerAnnotationHolder);
         this.reportTransientInheritance(compilerAnnotationHolder);
         this.reportTransientIdProperties(compilerAnnotationHolder);
@@ -454,7 +456,10 @@ public class AntlrClass
         // TODO: parameterized properties
     }
 
-    private void reportMultipleOppositesWithModifier(@Nonnull CompilerAnnotationState compilerAnnotationHolder, String modifier)
+    private void reportMultipleOppositesWithModifier(
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
+            @Nonnull String modifier,
+            @Nonnull AnnotationSeverity severity)
     {
         MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
                 .select(associationEnd -> associationEnd
@@ -468,7 +473,13 @@ public class AntlrClass
 
         for (AntlrAssociationEnd associationEnd : associationEnds)
         {
-            associationEnd.getOpposite().reportDuplicateOppositeWithModifier(compilerAnnotationHolder, this, modifier);
+            associationEnd
+                    .getOpposite()
+                    .reportDuplicateOppositeWithModifier(
+                            compilerAnnotationHolder,
+                            this,
+                            modifier,
+                            severity);
         }
     }
 

@@ -10,7 +10,6 @@ public class DoubleOwnerAssociationErrorTest
     @Override
     public void smokeTest()
     {
-        // TODO: It should be an error, or maybe just a warning, for two classes to own the same other class
         this.assertNoCompilerErrors();
     }
 }

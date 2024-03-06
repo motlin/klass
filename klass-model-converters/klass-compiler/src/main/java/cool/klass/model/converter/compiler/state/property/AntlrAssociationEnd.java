@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
@@ -230,14 +231,15 @@ public class AntlrAssociationEnd
     public void reportDuplicateOppositeWithModifier(
             @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull AntlrClassifier classifier,
-            String modifier)
+            @Nonnull String modifier,
+            @Nonnull AnnotationSeverity severity)
     {
         AntlrModifier modifierState = this.getModifiers().detectWith(AntlrModifier::is, modifier);
         String message = String.format(
                 "Multiple %s association ends point at '%s'.",
                 modifier,
                 classifier.getName());
-        compilerAnnotationHolder.add("ERR_DUP_END", message, modifierState);
+        compilerAnnotationHolder.add("ERR_DUP_END", message, modifierState, severity);
     }
 
     private void reportPluralName(CompilerAnnotationState compilerAnnotationHolder)
