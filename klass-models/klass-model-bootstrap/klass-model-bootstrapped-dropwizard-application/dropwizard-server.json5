@@ -50,7 +50,7 @@
       "uuid": {
         "type": "system"
       }
-    }
+    },
   },
   "configLogging": {
     "enabled": true
@@ -111,6 +111,16 @@
   }
     ],
     "dropEntireSchemaOnStartupAndShutdown": false,
-    "dryRun": false
+    "dryRun": false,
   },
+  "graphQL": {
+    "enableTracing": false,
+    "queryCache": "maximumSize=10000",
+    "schemaFiles": [
+      "klass/model/meta/domain/graphql/schema/query/KlassBootstrappedMetaModelQuery.graphqls",
+      "klass/model/meta/domain/graphql/schema/KlassBootstrappedMetaModelFinders.graphqls",
+      "klass/model/meta/domain/graphql/schema/KlassBootstrappedMetaModel.graphqls",
+      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
+    ]
+  }
 }
