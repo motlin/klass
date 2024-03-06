@@ -9,11 +9,11 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.MDC;
 
-public class ClearMDCContainerResponseFilter implements ContainerResponseFilter
+public class ClearMDCFilter implements ContainerResponseFilter
 {
     private final ImmutableList<String> mdcKeys;
 
-    public ClearMDCContainerResponseFilter(ImmutableList<String> mdcKeys)
+    public ClearMDCFilter(ImmutableList<String> mdcKeys)
     {
         this.mdcKeys = Objects.requireNonNull(mdcKeys);
     }

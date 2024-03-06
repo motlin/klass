@@ -10,9 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-servlet-filter-mdc</artifactId>
+    <artifactId>klass-servlet-logging-mdc-clear</artifactId>
 
-    <name>Klass Servlet Filter: MDC</name>
+    <name>Klass Servlet Filter: Clear MDC Keys</name>
 
     <dependencies>
 
@@ -24,6 +24,11 @@
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
         </dependency>
 
         <dependency>
@@ -44,11 +49,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
         </dependency>
 
     </dependencies>

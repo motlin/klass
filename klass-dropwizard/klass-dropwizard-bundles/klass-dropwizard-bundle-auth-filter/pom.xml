@@ -30,7 +30,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-servlet-filter-mdc</artifactId>
+            <artifactId>klass-servlet-logging-mdc-clear</artifactId>
             <version>${project.version}</version>
         </dependency>
 
