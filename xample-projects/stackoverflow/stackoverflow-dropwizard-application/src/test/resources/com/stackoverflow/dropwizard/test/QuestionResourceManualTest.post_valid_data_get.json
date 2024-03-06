@@ -1,34 +1,26 @@
 {
-  "_metadata": {
-    "criteria": "Question.id = 2",
-    "multiplicity": "1..1",
-    "projection": "com.stackoverflow.QuestionReadProjection",
-    "transactionTimestamp": "9999-12-02T04:59:00Z"
-  },
-  "_data": {
-    "id": 2,
-    "title": "example title 2",
-    "body": "example body 2",
-    "status": "Open",
-    "deleted": false,
-    "systemFrom": "2001-01-01T23:59:59Z",
-    "systemTo": null,
-    "createdOn": "2001-01-01T23:59:59Z",
-    "answers": [],
-    "tags": [
-      {
-        "tag": {
-          "name": "test tag 1"
-        }
-      },
-      {
-        "tag": {
-          "name": "test tag 3"
-        }
+  "id": 2,
+  "title": "example title 2",
+  "body": "example body 2",
+  "status": "Open",
+  "deleted": false,
+  "systemFrom": "2001-01-01T23:59:59Z",
+  "systemTo": null,
+  "createdOn": "2001-01-01T23:59:59Z",
+  "answers": [],
+  "tags": [
+    {
+      "tag": {
+        "name": "test tag 1"
       }
-    ],
-    "version": {
-      "number": 1
+    },
+    {
+      "tag": {
+        "name": "test tag 3"
+      }
     }
+  ],
+  "version": {
+    "number": 1
   }
 }
