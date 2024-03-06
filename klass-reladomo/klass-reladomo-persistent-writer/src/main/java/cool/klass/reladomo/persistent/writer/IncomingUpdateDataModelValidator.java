@@ -424,14 +424,21 @@ public class IncomingUpdateDataModelValidator
 
                 ImmutableList<Object> keysFromJsonNode        = this.getKeysFromJsonNode(childJsonNode, associationEnd, this.objectNode);
                 Object                childPersistentInstance = persistentChildInstancesByKey.get(keysFromJsonNode);
-                /*
                 if (childPersistentInstance == null)
                 {
-                    // TODO: Implement CreateUpdateDataModelValidator and recurse in create mode
-                    return;
+                    // recurse in create mode
+                    IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
+                            this.dataStore,
+                            associationEnd.getType(),
+                            (ObjectNode) childJsonNode,
+                            this.errors,
+                            this.warnings,
+                            this.contextStack,
+                            Optional.of(associationEnd),
+                            false);
+                    validator.validate();
                 }
-                */
-                if (childPersistentInstance != null && childJsonNode instanceof ObjectNode)
+                else
                 {
                     this.handleAssociationEnd(associationEnd, (ObjectNode) childJsonNode, childPersistentInstance);
                 }
