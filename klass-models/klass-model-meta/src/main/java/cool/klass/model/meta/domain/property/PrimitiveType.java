@@ -17,7 +17,7 @@ import org.eclipse.collections.impl.factory.Lists;
  */
 public abstract class PrimitiveType extends DataType
 {
-    public static final PrimitiveType INTEGER          = new PrimitiveType("Integer", 1)
+    public static final PrimitiveType INTEGER          = new PrimitiveType("Integer", 1, true)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -36,7 +36,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType LONG             = new PrimitiveType("Long", 2)
+    public static final PrimitiveType LONG             = new PrimitiveType("Long", 2, true)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -55,7 +55,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType DOUBLE           = new PrimitiveType("Double", 3)
+    public static final PrimitiveType DOUBLE           = new PrimitiveType("Double", 3, true)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -74,7 +74,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType FLOAT            = new PrimitiveType("Float", 4)
+    public static final PrimitiveType FLOAT            = new PrimitiveType("Float", 4, true)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -93,7 +93,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType BOOLEAN          = new PrimitiveType("Boolean", 5)
+    public static final PrimitiveType BOOLEAN          = new PrimitiveType("Boolean", 5, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -112,7 +112,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType STRING           = new PrimitiveType("String", 6)
+    public static final PrimitiveType STRING           = new PrimitiveType("String", 6, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -131,7 +131,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType INSTANT          = new PrimitiveType("Instant", 7)
+    public static final PrimitiveType INSTANT          = new PrimitiveType("Instant", 7, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -150,7 +150,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType LOCAL_DATE       = new PrimitiveType("LocalDate", 8)
+    public static final PrimitiveType LOCAL_DATE       = new PrimitiveType("LocalDate", 8, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -169,7 +169,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType TEMPORAL_INSTANT = new PrimitiveType("TemporalInstant", 9)
+    public static final PrimitiveType TEMPORAL_INSTANT = new PrimitiveType("TemporalInstant", 9, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -188,7 +188,7 @@ public abstract class PrimitiveType extends DataType
             }
         }
     };
-    public static final PrimitiveType TEMPORAL_RANGE   = new PrimitiveType("TemporalRange", 10)
+    public static final PrimitiveType TEMPORAL_RANGE   = new PrimitiveType("TemporalRange", 10, false)
     {
         @Override
         public void visit(@Nonnull PrimitiveTypeVisitor visitor)
@@ -224,9 +224,12 @@ public abstract class PrimitiveType extends DataType
 
     private static final ImmutableMap<String, PrimitiveType> BY_NAME = PRIMITIVE_TYPES.groupByUniqueKey(NamedElement::getName);
 
-    private PrimitiveType(@Nonnull String name, int ordinal)
+    private final boolean isNumeric;
+
+    private PrimitiveType(@Nonnull String name, int ordinal, boolean isNumeric)
     {
         super(NO_CONTEXT, false, NO_CONTEXT, name, ordinal, META_PACKAGE);
+        this.isNumeric = isNumeric;
     }
 
     public static PrimitiveType valueOf(String name)
@@ -256,6 +259,11 @@ public abstract class PrimitiveType extends DataType
     public boolean isTemporalInstant()
     {
         return this == TEMPORAL_INSTANT;
+    }
+
+    public boolean isNumeric()
+    {
+        return this.isNumeric;
     }
 
     public static final class PrimitiveTypeBuilder extends DataTypeBuilder
