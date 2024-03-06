@@ -36,7 +36,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     {
         if (this.projection == AntlrProjection.NOT_FOUND)
         {
-            String message = "";
+            String message = "TODO";
             compilerErrorHolder.add(
                     this.compilationUnit,
                     message,

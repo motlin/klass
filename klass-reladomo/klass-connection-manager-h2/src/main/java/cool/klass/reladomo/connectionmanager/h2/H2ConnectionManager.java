@@ -10,6 +10,7 @@ import com.gs.fw.common.mithra.databasetype.DatabaseType;
 import com.gs.fw.common.mithra.databasetype.H2DatabaseType;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,11 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
         this.schemaName = h2Config.getString("schemaName");
         this.databaseTimeZone = TimeZone.getTimeZone(timeZoneName);
 
-        LOGGER.info("{}", h2Config);
+        if (LOGGER.isInfoEnabled())
+        {
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults().setJson(false);
+            LOGGER.info("\n{}", h2Config.root().render(configRenderOptions));
+        }
 
         XAConnectionManager xaConnectionManager = new XAConnectionManager();
         xaConnectionManager.setDriverClassName(driverClassName);

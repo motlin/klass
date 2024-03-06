@@ -28,8 +28,7 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
         this.attributeType.setPrimaryKeyGeneratorStrategy(primaryKeyGeneratorStrategyType);
         SimulatedSequenceType simulatedSequence = new SimulatedSequenceType();
         simulatedSequence.setSequenceName(this.primitiveProperty.getOwningKlass().getName());
-        simulatedSequence.setSequenceObjectFactoryName(
-                ObjectSequenceObjectFactory.class.getCanonicalName());
+        simulatedSequence.setSequenceObjectFactoryName(ObjectSequenceObjectFactory.class.getCanonicalName());
         simulatedSequence.setHasSourceAttribute(false);
         simulatedSequence.setBatchSize(10);
         simulatedSequence.setInitialValue(1);

@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StackOverflowDdlExecutor" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="com.stackoverflow.reladomo.ddl.executor.StackOverflowDdlExecutor" />
+    <module name="stackoverflow-reladomo-ddl-executor" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.stackoverflow.reladomo.ddl.executor.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method />
+  </configuration>
+</component>

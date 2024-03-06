@@ -19,6 +19,8 @@
     <modules>
         <module>klass-reladomo-simulated-sequence</module>
         <module>klass-connection-manager-h2</module>
+        <module>klass-reladomo-simulated-sequence-ddls</module>
+        <module>klass-reladomo-ddl-executor</module>
     </modules>
 
 </project>

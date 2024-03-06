@@ -88,6 +88,13 @@
             </dependency>
 
             <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.199</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-runtime</artifactId>
                 <version>4.7.2</version>
@@ -329,6 +336,7 @@
                                     <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence-ddls:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence:jar</ignoredUnusedDeclaredDependency>
                                 </ignoredUnusedDeclaredDependencies>
                             </configuration>

@@ -10,38 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stackoverflow-reladomo-pojos</artifactId>
+    <artifactId>stackoverflow-reladomo-ddls</artifactId>
 
-    <name>${app.name} Reladomo Java POJOs</name>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.goldmansachs.reladomo</groupId>
-            <artifactId>reladomo</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-
-    </dependencies>
+    <name>${app.name} Reladomo Database DDLs</name>
 
     <build>
         <plugins>
@@ -51,22 +22,23 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>add-source</goal>
+                            <goal>add-resource</goal>
                         </goals>
                         <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/reladomo/</source>
-                            </sources>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-db/</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -76,22 +48,20 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <target>
+                            <tasks>
                                 <property name="plugin_classpath" refid="maven.plugin.classpath" />
 
                                 <taskdef
-                                        name="gen-reladomo"
-                                        classpath="plugin_classpath"
-                                        classname="com.gs.fw.common.mithra.generator.MithraGenerator" />
-
-                                <gen-reladomo
+                                        name="gen-ddl"
+                                        classname="com.gs.fw.common.mithra.generator.dbgenerator.MithraDbDefinitionGenerator"
+                                        loaderRef="reladomoGenerator">
+                                    <classpath refid="maven.plugin.classpath" />
+                                </taskdef>
+                                <gen-ddl
                                         xml="${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml"
-                                        generateEcListMethod="true"
-                                        generatedDir="${project.build.directory}/generated-sources/reladomo"
-                                        nonGeneratedDir="${project.build.sourceDirectory}"
-                                        generateConcreteClasses="true"
-                                />
-                            </target>
+                                        generatedDir="${project.build.directory}/generated-db/sql"
+                                        databaseType="postgres" />
+                            </tasks>
                         </configuration>
                     </execution>
                 </executions>
@@ -107,9 +77,17 @@
                         <artifactId>reladomo-gen-util</artifactId>
                         <version>17.0.2</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
 
         </plugins>
     </build>
+
 </project>

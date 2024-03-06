@@ -2,8 +2,8 @@
     <ConnectionManager className="cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager">
 
         <MithraObjectConfiguration className="sample.domain.ObjectSequence" cacheType="none" />
-        <MithraObjectConfiguration className="stackoverflow.Question" cacheType="partial" />
-        <MithraObjectConfiguration className="stackoverflow.Answer" cacheType="partial" />
+        <MithraObjectConfiguration className="com.stackoverflow.Question" cacheType="partial" />
+        <MithraObjectConfiguration className="com.stackoverflow.Answer" cacheType="partial" />
 
     </ConnectionManager>
 </MithraRuntime>

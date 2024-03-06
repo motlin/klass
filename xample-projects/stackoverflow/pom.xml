@@ -5,14 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <klass.moduleName>stackoverflow</klass.moduleName>
-        <klass.rootPackageName>com.stackoverflow</klass.rootPackageName>
-        <klass.applicationName>StackOverflow</klass.applicationName>
+        <klass.version>${project.version}</klass.version>
+
+        <app.artifactId>stackoverflow</app.artifactId>
+        <app.rootPackageName>com.stackoverflow</app.rootPackageName>
+        <app.name>StackOverflow</app.name>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <mainClass>${klass.rootPackageName}.dropwizard.${klass.applicationName}Application</mainClass>
+        <mainClass>${app.rootPackageName}.dropwizard.${app.name}Application</mainClass>
     </properties>
 
     <parent>
@@ -21,16 +23,19 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>com.stackoverflow</groupId>
     <artifactId>stackoverflow</artifactId>
     <packaging>pom</packaging>
 
-    <name>${klass.applicationName} (Module Group)</name>
+    <name>${app.name} (Module Group)</name>
 
     <modules>
-        <module>${klass.moduleName}-domain-model</module>
-        <module>${klass.moduleName}-reladomo-definitions</module>
-        <module>${klass.moduleName}-reladomo-pojos</module>
-        <module>${klass.moduleName}-services</module>
-        <module>${klass.moduleName}-dropwizard-application</module>
+        <module>${app.artifactId}-domain-model</module>
+        <module>${app.artifactId}-reladomo-definitions</module>
+        <module>${app.artifactId}-reladomo-pojos</module>
+        <module>${app.artifactId}-reladomo-ddls</module>
+        <module>${app.artifactId}-reladomo-ddl-executor</module>
+        <module>${app.artifactId}-services</module>
+        <module>${app.artifactId}-dropwizard-application</module>
     </modules>
 </project>

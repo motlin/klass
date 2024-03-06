@@ -23,7 +23,7 @@ public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 
-    @Parameter(property = "outputFilename", required = true, readonly = true, defaultValue = "DomainModelReladomoClassList.xml")
+    @Parameter(property = "outputFilename", required = true, readonly = true, defaultValue = "ReladomoClassList.xml")
     private String outputFilename;
 
     @Override
