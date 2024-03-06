@@ -11,6 +11,7 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 
 public final class SourceCodeImpl
         implements SourceCode
@@ -47,6 +48,30 @@ public final class SourceCodeImpl
     public String getSourceName()
     {
         return this.sourceName;
+    }
+
+    @Nonnull
+    @Override
+    public String getFullPathSourceName()
+    {
+        if (this.macroElement.isEmpty())
+        {
+            String[] split = this.sourceName.split("/");
+            return split[split.length - 1];
+        }
+
+        String fullPathSourceName = this.macroSourceCode
+                .map(SourceCode::getFullPathSourceName)
+                .orElseThrow();
+
+        var   abstractElement = (AbstractElement) this.macroElement.orElseThrow();
+        Token startToken      = abstractElement.getElementContext().getStart();
+
+        return "%s:%d:%d --> %s".formatted(
+                fullPathSourceName,
+                startToken.getLine(),
+                startToken.getCharPositionInLine(),
+                this.sourceName);
     }
 
     @Override

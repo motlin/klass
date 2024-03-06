@@ -13,6 +13,9 @@ public interface SourceCode
     String getSourceName();
 
     @Nonnull
+    String getFullPathSourceName();
+
+    @Nonnull
     String getSourceCodeText();
 
     @Nonnull
