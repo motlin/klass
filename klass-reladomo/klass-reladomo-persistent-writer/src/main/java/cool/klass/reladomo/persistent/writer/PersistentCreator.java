@@ -84,7 +84,11 @@ public class PersistentCreator extends PersistentSynchronizer
             String userId = optionalUserId.orElseThrow(() -> this.expectAuditProperty(primitiveProperty));
             if (!this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, userId))
             {
-                throw new AssertionError();
+                String detailMessage = "Expected to set createdBy property: %s on %s to %s".formatted(
+                        primitiveProperty,
+                        persistentInstance,
+                        userId);
+                throw new AssertionError(detailMessage);
             }
         });
 
