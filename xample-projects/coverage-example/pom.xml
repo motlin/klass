@@ -108,8 +108,8 @@
         <module>${app.artifactId}-graphql-schema</module>
         <module>${app.artifactId}-json-views</module>
         <module>${app.artifactId}-klass-html</module>
-        <module>${app.artifactId}-klass-projections</module>
-        <module>${app.artifactId}-klass-services</module>
+        <!--<module>${app.artifactId}-klass-projections</module>-->
+        <!--<module>${app.artifactId}-klass-services</module>-->
         <module>${app.artifactId}-reladomo-ddls</module>
         <module>${app.artifactId}-reladomo-definitions</module>
         <module>${app.artifactId}-reladomo-merge-hooks</module>
