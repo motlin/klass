@@ -40,7 +40,7 @@ public class AbstractApplicationGenerator
     {
         Path path = outputPath.resolve(this.relativePath);
         path.toFile().mkdirs();
-        Path   javaPath   = path.resolve("Abstract" + this.applicationName + "Application.java");
+        Path javaPath = path.resolve("Abstract" + this.applicationName + "Application.java");
         //language=JAVA
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"

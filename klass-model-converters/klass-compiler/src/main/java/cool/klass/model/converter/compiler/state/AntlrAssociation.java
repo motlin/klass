@@ -233,7 +233,9 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         this.versionClass = Objects.requireNonNull(classState);
     }
 
-    public void reportDuplicateVersionAssociation(@Nonnull CompilerErrorHolder compilerErrorHolder, @Nonnull AntlrClass versionClass)
+    public void reportDuplicateVersionAssociation(
+            @Nonnull CompilerErrorHolder compilerErrorHolder,
+            @Nonnull AntlrClass versionClass)
     {
         String message = String.format(
                 "ERR_MUL_VER_ASSO: Multiple version associations on '%s'.",

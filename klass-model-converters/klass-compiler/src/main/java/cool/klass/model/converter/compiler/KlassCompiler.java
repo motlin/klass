@@ -131,8 +131,8 @@ public class KlassCompiler
                 this.domainModelState);
 
         // TODO: Redo these 4 phases to use domainModelState
-        DeclarationsByNamePhase    phase8 = new DeclarationsByNamePhase();
-        ResolveTypeReferencesPhase phase9 = new ResolveTypeReferencesPhase(phase8);
+        DeclarationsByNamePhase    phase8  = new DeclarationsByNamePhase();
+        ResolveTypeReferencesPhase phase9  = new ResolveTypeReferencesPhase(phase8);
         ResolveTypesPhase          phase10 = new ResolveTypesPhase(phase9);
         KlassListener phase11 = new ResolveTypeErrorsPhase(
                 this.compilerErrorHolder,

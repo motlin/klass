@@ -90,7 +90,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     private MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
 
     private final ImmutableList<AntlrClassModifier> classModifiers;
-    private boolean isUser;
+    private       boolean                           isUser;
 
     private KlassBuilder klassBuilder;
 
@@ -249,7 +249,10 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         if (this.versionedClass != null && this.versionClasses.notEmpty())
         {
             String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
-            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+            compilerErrorHolder.add(
+                    this.compilationUnit,
+                    message,
+                    this.getElementContext().versions().classReference());
         }
 
         // TODO: Warn if class is owned by multiple

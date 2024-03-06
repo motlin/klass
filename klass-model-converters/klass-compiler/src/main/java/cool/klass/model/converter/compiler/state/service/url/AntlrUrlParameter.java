@@ -16,10 +16,12 @@ import org.eclipse.collections.api.list.ImmutableList;
 public abstract class AntlrUrlParameter extends AntlrNamedElement
 {
     @Nonnull
-    protected final AntlrMultiplicity multiplicityState;
+    protected final AntlrMultiplicity                     multiplicityState;
     @Nonnull
-    protected final AntlrUrl          urlState;
-    private final ImmutableList<AntlrParameterModifier> parameterModifiers;
+    protected final AntlrUrl                              urlState;
+
+    // TODO: Factor modifiers into type checking
+    private final   ImmutableList<AntlrParameterModifier> parameterModifiers;
 
     public AntlrUrlParameter(
             @Nonnull ParserRuleContext elementContext,

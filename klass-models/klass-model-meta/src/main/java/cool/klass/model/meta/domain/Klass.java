@@ -15,6 +15,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 public final class Klass extends Type
 {
     private final boolean isUser;
+
     private ImmutableList<DataTypeProperty<?>> dataTypeProperties;
     private ImmutableList<AssociationEnd>      associationEnds;
 
@@ -84,6 +85,7 @@ public final class Klass extends Type
     public static final class KlassBuilder extends TypeBuilder
     {
         private final boolean isUser;
+
         private ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders;
         private ImmutableList<AssociationEndBuilder>         associationEndBuilders;
 

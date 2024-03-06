@@ -37,7 +37,7 @@ public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
         DomainModel domainModel = this.getDomainModel();
 
         Path outputPath = this.outputDirectory.toPath();
-        Path path = outputPath.resolve(this.outputFilename);
+        Path path       = outputPath.resolve(this.outputFilename);
         try
         {
             ReladomoClassListGenerator reladomoClassListGenerator = new ReladomoClassListGenerator(domainModel);

@@ -29,7 +29,7 @@ public class AntlrPrimitiveUrlQueryParameter extends AntlrUrlQueryParameter
             Lists.immutable.empty());
 
     @Nonnull
-    private final AntlrPrimitiveType primitiveTypeState;
+    private final AntlrPrimitiveType                primitiveTypeState;
     private       PrimitiveUrlQueryParameterBuilder primitiveUrlQueryParameterBuilder;
 
     public AntlrPrimitiveUrlQueryParameter(

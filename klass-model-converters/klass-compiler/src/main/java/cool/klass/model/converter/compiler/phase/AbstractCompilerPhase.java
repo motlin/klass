@@ -225,7 +225,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
         }
     }
 
-    private String getContextMessage(Token contextToken)
+    protected String getContextMessage(@Nonnull Token contextToken)
     {
         String sourceName         = contextToken.getInputStream().getSourceName();
         int    line               = contextToken.getLine();

@@ -159,7 +159,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     @Nonnull
     private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty<?> dataTypeProperty)
     {
-        String propertyName   = dataTypeProperty.getName();
+        String propertyName = dataTypeProperty.getName();
         // TODO: Use actual temporal properties
         String fromName       = propertyName + "From";
         String toName         = propertyName + "To";

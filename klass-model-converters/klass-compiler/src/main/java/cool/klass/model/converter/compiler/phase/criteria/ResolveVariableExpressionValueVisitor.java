@@ -144,7 +144,7 @@ public class ResolveVariableExpressionValueVisitor extends KlassBaseVisitor<Antl
 
         MemberReferenceContext memberReferenceContext = ctx.memberReference();
 
-        AntlrClass                       currentClassState     = classState;
+        AntlrClass                       currentClassState    = classState;
         MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
         for (AssociationEndReferenceContext associationEndReferenceContext : ctx.associationEndReference())
         {

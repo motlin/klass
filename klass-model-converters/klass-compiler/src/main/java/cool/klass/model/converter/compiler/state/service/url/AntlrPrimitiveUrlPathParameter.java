@@ -29,7 +29,7 @@ public class AntlrPrimitiveUrlPathParameter extends AntlrUrlPathParameter
             Lists.immutable.empty());
 
     @Nonnull
-    private final AntlrPrimitiveType primitiveTypeState;
+    private final AntlrPrimitiveType               primitiveTypeState;
     private       PrimitiveUrlPathParameterBuilder primitiveUrlPathParameterBuilder;
 
     public AntlrPrimitiveUrlPathParameter(

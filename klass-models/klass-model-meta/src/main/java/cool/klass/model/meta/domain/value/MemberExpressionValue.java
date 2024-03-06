@@ -16,11 +16,11 @@ import org.eclipse.collections.api.list.ImmutableList;
 public abstract class MemberExpressionValue extends ExpressionValue
 {
     @Nonnull
-    private final Klass               klass;
+    private final Klass                         klass;
     @Nonnull
     private final ImmutableList<AssociationEnd> associationEnds;
     @Nonnull
-    private final DataTypeProperty<?> property;
+    private final DataTypeProperty<?>           property;
 
     protected MemberExpressionValue(
             @Nonnull ParserRuleContext elementContext,

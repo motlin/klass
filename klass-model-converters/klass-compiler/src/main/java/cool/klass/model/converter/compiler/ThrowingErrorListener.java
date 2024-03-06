@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 public class ThrowingErrorListener extends BaseErrorListener
 {
-    private final String sourceName;
+    private final String   sourceName;
     private final String[] lines;
 
     public ThrowingErrorListener(String sourceName, String[] lines)
@@ -26,7 +26,7 @@ public class ThrowingErrorListener extends BaseErrorListener
             RecognitionException e)
     {
         String sourceLine = this.lines[line - 1];
-        String error      = String.format(
+        String error = String.format(
                 "%s[%d:%d] %s%n%s",
                 this.sourceName,
                 line,

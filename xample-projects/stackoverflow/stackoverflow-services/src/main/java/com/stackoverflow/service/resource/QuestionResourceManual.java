@@ -53,8 +53,9 @@ public class QuestionResourceManual
     {
         Operation queryOperation     = QuestionFinder.id().eq(id);
         Operation authorizeOperation = QuestionFinder.all();
-        Operation validateOperation  = QuestionFinder.all();
-        Operation conflictOperation  = QuestionFinder.all();
+        // TODO: Validate and conflict may only make sense for mutations.
+        Operation validateOperation = QuestionFinder.all();
+        Operation conflictOperation = QuestionFinder.all();
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // TODO: Deep fetch using projection QuestionReadProjection

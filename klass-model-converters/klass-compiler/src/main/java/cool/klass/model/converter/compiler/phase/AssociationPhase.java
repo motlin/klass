@@ -74,8 +74,8 @@ public class AssociationPhase extends AbstractCompilerPhase
         ClassReferenceContext classReferenceContext = classTypeContext.classReference();
         MultiplicityContext   multiplicityContext   = classTypeContext.multiplicity();
 
-        String            associationEndName = identifier.getText();
-        AntlrClass        antlrClass         = this.domainModelState.getClassByName(classReferenceContext.getText());
+        String     associationEndName = identifier.getText();
+        AntlrClass antlrClass         = this.domainModelState.getClassByName(classReferenceContext.getText());
         AntlrMultiplicity antlrMultiplicity = new AntlrMultiplicity(
                 multiplicityContext,
                 this.currentCompilationUnit,

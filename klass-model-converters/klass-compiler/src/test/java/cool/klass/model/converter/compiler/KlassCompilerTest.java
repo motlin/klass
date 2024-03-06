@@ -1148,7 +1148,7 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: VersionClassInferencePhase compiler macro Line: 3 Char: 51 Error: ERR_VER_CLS: Multiple version classes on 'ExampleClass'.\n"
+                        + "File: VersionClassInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 51 Error: ERR_VER_CLS: Multiple version classes on 'ExampleClass'.\n"
                         + "class ExampleClassVersion systemTemporal versions(ExampleClass)\n"
                         + "                                                  ^^^^^^^^^^^^\n",
                 ""
@@ -1183,11 +1183,11 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: VersionAssociationInferencePhase compiler macro Line: 3 Char: 45 Error: ERR_MUL_VER_ASSO: Multiple version associations on 'ExampleClassVersion'.\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 3 Char: 45 Error: ERR_MUL_VER_ASSO: Multiple version associations on 'ExampleClassVersion'.\n"
                         + "association ExampleClassHasVersion versions(ExampleClassVersion)\n"
                         + "                                            ^^^^^^^^^^^^^^^^^^^\n",
                 ""
-                        + "File: VersionAssociationInferencePhase compiler macro Line: 5 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'exampleClass'.\n"
+                        + "File: VersionAssociationInferencePhase compiler macro (File: example.klass Line: 3 Char: 35) Line: 5 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'exampleClass'.\n"
                         + "association ExampleClassHasVersion versions(ExampleClassVersion)\n"
                         + "{\n"
                         + "    exampleClass: ExampleClass[1..1]\n"

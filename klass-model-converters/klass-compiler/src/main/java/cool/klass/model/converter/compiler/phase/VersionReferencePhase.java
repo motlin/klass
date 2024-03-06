@@ -29,8 +29,8 @@ public class VersionReferencePhase extends AbstractCompilerPhase
     public void enterVersions(@Nonnull VersionsContext ctx)
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
-        String className = classReferenceContext.getText();
-        AntlrClass classState = this.domainModelState.getClassByName(className);
+        String                className             = classReferenceContext.getText();
+        AntlrClass            classState            = this.domainModelState.getClassByName(className);
 
         if (this.classDeclarationContext != null)
         {

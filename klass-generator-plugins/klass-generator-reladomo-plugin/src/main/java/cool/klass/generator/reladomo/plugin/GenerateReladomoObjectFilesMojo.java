@@ -31,9 +31,10 @@ public class GenerateReladomoObjectFilesMojo extends AbstractGenerateMojo
             this.outputDirectory.mkdirs();
         }
 
+        Path        outputPath  = this.outputDirectory.toPath();
         DomainModel domainModel = this.getDomainModel();
+
         ReladomoObjectFileGenerator reladomoObjectFileGenerator = new ReladomoObjectFileGenerator(domainModel);
-        Path outputPath = this.outputDirectory.toPath();
         try
         {
             reladomoObjectFileGenerator.writeObjectFiles(outputPath);

@@ -44,11 +44,13 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         String modifierText = ctx.getText();
         if ("versioned".equals(modifierText))
         {
-            this.addVersionTypes(classState);
+            this.addVersionTypes(ctx, classState);
         }
     }
 
-    private void addVersionTypes(@Nonnull AntlrClass classState)
+    private void addVersionTypes(
+            ClassModifierContext ctx,
+            @Nonnull AntlrClass classState)
     {
         String packageName = classState.getPackageName();
         String className   = classState.getName();
@@ -71,7 +73,14 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 + "    number: Integer\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText(VersionClassInferencePhase.class.getSimpleName() + " compiler macro",
+        String contextMessage = this.getContextMessage(ctx.getStart());
+        String sourceName = String.format(
+                "%s compiler macro (%s)",
+                VersionClassInferencePhase.class.getSimpleName(),
+                contextMessage);
+
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                sourceName,
                 klassSourceCode);
 
         MutableSet<CompilationUnit> compilationUnits = Sets.mutable.with(compilationUnit);

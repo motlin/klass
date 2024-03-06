@@ -17,7 +17,7 @@ import org.eclipse.collections.api.list.MutableList;
 public class AntlrServiceCriteria extends AntlrElement implements CriteriaOwner
 {
     @Nonnull
-    private final String serviceCriteriaKeyword;
+    private final String       serviceCriteriaKeyword;
     @Nonnull
     private final AntlrService serviceState;
 

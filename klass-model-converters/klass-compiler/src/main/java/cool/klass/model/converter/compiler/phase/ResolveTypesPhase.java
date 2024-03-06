@@ -30,18 +30,20 @@ public class ResolveTypesPhase extends KlassBaseListener
             new LinkedHashMap<>());
     private final MutableOrderedMap<ParameterizedPropertyContext, ClassDeclarationContext>     parameterizedPropertyTypes = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<AssociationEndContext, ClassDeclarationContext>                        associationEndTypes        = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<AssociationEndContext, ClassDeclarationContext>            associationEndTypes        = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ClassServiceModifierContext, ProjectionDeclarationContext> classServiceModifiers    = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ClassServiceModifierContext, ProjectionDeclarationContext> classServiceModifiers      = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>     projectionDeclarations   = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ProjectionDeclarationContext, ClassDeclarationContext>     projectionDeclarations     = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>   serviceGroupDeclarations = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<VersionsContext, ClassDeclarationContext>                  versions                 = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<ServiceGroupDeclarationContext, ClassDeclarationContext>   serviceGroupDeclarations   = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
+    private final MutableOrderedMap<VersionsContext, ClassDeclarationContext>                  versions                   = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
 
-    private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext>        serviceProjectDispatches   = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<ServiceProjectionDispatchContext, ProjectionDeclarationContext>        serviceProjectDispatches  = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
-    private final MutableOrderedMap<EnumerationParameterDeclarationContext, EnumerationDeclarationContext> enumerationParameterTypes  = OrderedMapAdapter.adapt(
+    private final MutableOrderedMap<EnumerationParameterDeclarationContext, EnumerationDeclarationContext> enumerationParameterTypes = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
     public ResolveTypesPhase(ResolveTypeReferencesPhase resolveTypeReferencesPhase)
@@ -122,6 +124,7 @@ public class ResolveTypesPhase extends KlassBaseListener
     public void enterVersions(@Nonnull VersionsContext ctx)
     {
         ClassReferenceContext classReferenceContext = ctx.classReference();
+
         ClassDeclarationContext declaration = this.resolveTypeReferencesPhase.getClassByReference(classReferenceContext);
         this.versions.put(ctx, declaration);
     }

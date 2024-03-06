@@ -43,14 +43,14 @@ public final class CompilationUnit
         this.parserContext = Objects.requireNonNull(parserRuleContext);
     }
 
-    public static CompilationUnit createFromClasspathLocation(String classpathLocation)
+    public static CompilationUnit createFromClasspathLocation(@Nonnull String classpathLocation)
     {
         String sourceCodeText = CompilationUnit.slurp(classpathLocation);
         return CompilationUnit.createFromText(classpathLocation, sourceCodeText);
     }
 
     @Nonnull
-    private static String slurp(String classpathLocation)
+    private static String slurp(@Nonnull String classpathLocation)
     {
         InputStream inputStream = KlassCompiler.class.getClassLoader().getResourceAsStream(classpathLocation);
         Objects.requireNonNull(inputStream);
@@ -58,8 +58,8 @@ public final class CompilationUnit
     }
 
     public static CompilationUnit createFromText(
-        String sourceName,
-        @Nonnull String sourceCodeText)
+            @Nonnull String sourceName,
+            @Nonnull String sourceCodeText)
     {
         return createFromText(sourceName, sourceCodeText, KlassParser::compilationUnit);
     }

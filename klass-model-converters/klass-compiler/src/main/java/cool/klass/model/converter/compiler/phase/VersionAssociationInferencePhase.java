@@ -23,7 +23,7 @@ import org.eclipse.collections.impl.map.mutable.MapAdapter;
 
 public class VersionAssociationInferencePhase extends AbstractCompilerPhase
 {
-    private final AntlrDomainModel            domainModelState;
+    private final AntlrDomainModel domainModelState;
     private final MutableSet<CompilationUnit> compilationUnits;
 
     public VersionAssociationInferencePhase(
@@ -45,11 +45,13 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         String modifierText = ctx.getText();
         if ("versioned".equals(modifierText))
         {
-            this.addVersionTypes(classState);
+            this.addVersionTypes(ctx, classState);
         }
     }
 
-    private void addVersionTypes(@Nonnull AntlrClass classState)
+    private void addVersionTypes(
+            @Nonnull ClassModifierContext ctx,
+            @Nonnull AntlrClass classState)
     {
         MutableList<AntlrDataTypeProperty<?>> keyProperties = classState
                 .getDataTypeProperties()
@@ -80,8 +82,14 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
                 + "    relationship " + relationshipKeyClauses + "\n"
                 + "}\n";
 
+        String contextMessage = this.getContextMessage(ctx.getStart());
+        String sourceName     = String.format(
+                "%s compiler macro (%s)",
+                VersionAssociationInferencePhase.class.getSimpleName(),
+                contextMessage);
+
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
-                VersionAssociationInferencePhase.class.getSimpleName() + " compiler macro",
+                sourceName,
                 klassSourceCode);
 
         MutableSet<CompilationUnit> compilationUnits = Sets.mutable.with(compilationUnit);
