@@ -42,7 +42,7 @@ public final class GraphQLFragmentSourceCodeGenerator
                 .makeString("");
 
         ImmutableList<Klass> subClasses = classifier instanceof Klass klass
-                ? klass.getSubClasses()
+                ? klass.getSubClassChain()
                 : Lists.immutable.empty();
 
         String subClassesSourceCode = subClasses

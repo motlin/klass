@@ -187,6 +187,7 @@ public interface Klass
         return superClass.isStrictSubTypeOf(classifier);
     }
 
+    // TODO: Consider changing this to BFS to get them ordered by depth
     default ImmutableList<Klass> getSubClassChain()
     {
         return this.getSubClasses()
