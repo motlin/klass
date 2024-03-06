@@ -173,7 +173,8 @@ public class AssertValuesMatchPrimitiveTypeVisitor
     @Override
     public void visitTemporalRange()
     {
-        this.visitTemporal();
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitTemporalRange() not implemented yet");
     }
 
     private void visitTemporal()
