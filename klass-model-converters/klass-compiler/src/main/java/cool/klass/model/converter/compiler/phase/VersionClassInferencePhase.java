@@ -66,11 +66,14 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
+        AntlrClassModifier auditedModifier = classState.getClassModifierByName("audited");
+        String auditedSourceCode = auditedModifier == AntlrClassModifier.NOT_FOUND ? "" : " audited";
+
         // TODO: If main class is transient, version should also be transient, so copy class modifiers
         //language=Klass
         String sourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"
-                + "class " + classState.getName() + "Version systemTemporal\n"
+                + "class " + classState.getName() + "Version systemTemporal" + auditedSourceCode + "\n"
                 + "{\n"
                 + keyPropertySourceCode
                 + "    number: Integer version;\n"

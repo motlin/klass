@@ -52,6 +52,7 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
         this.runCompilerMacro(ctx, "    createdOn      : Instant createdOn;\n");
         this.runCompilerMacro(ctx, "    lastUpdatedById: String private lastUpdatedBy;\n");
 
+        // TODO: Should be the user class, not the class named User
         this.runCompilerMacro(ctx, ""
                 + "    createdBy(): User[1..1] createdBy\n"
                 + "    {\n"
