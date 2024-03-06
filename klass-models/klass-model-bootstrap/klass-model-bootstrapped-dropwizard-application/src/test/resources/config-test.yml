@@ -11,7 +11,7 @@ server:
       - type: console
 
 logging:
-  level: INFO
+  level: DEBUG
   loggers:
     klass.model.meta.domain: INFO
 #    com.gs.fw.common.mithra.sqllogs: DEBUG
