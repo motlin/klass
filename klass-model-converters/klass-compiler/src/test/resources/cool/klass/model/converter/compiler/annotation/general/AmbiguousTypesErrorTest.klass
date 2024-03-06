@@ -22,7 +22,7 @@ class GoodClass
     ambiguousDataProperty: GoodEnum;
     ambiguousDataProperty: GoodEnum;
     goodProperty: AmbiguousEnumeration;
-    parentKey: String private;
+    parentKey: String? private;
 
     goodParameterizedProperty1(): AmbiguousClass[1..1]
     {
