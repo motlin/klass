@@ -133,7 +133,7 @@ public class PropertyPhase
     {
         super.enterMinLengthValidation(ctx);
 
-        IntegerLiteralContext integerLiteralContext = ctx.integerLiteral();
+        IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMinLengthPropertyValidation minLengthValidationState = new AntlrMinLengthPropertyValidation(
                 ctx,
@@ -148,7 +148,7 @@ public class PropertyPhase
     {
         super.enterMaxLengthValidation(ctx);
 
-        IntegerLiteralContext integerLiteralContext = ctx.integerLiteral();
+        IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   length                = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMaxLengthPropertyValidation maxLengthValidationState = new AntlrMaxLengthPropertyValidation(
                 ctx,
@@ -163,7 +163,7 @@ public class PropertyPhase
     {
         super.enterMinValidation(ctx);
 
-        IntegerLiteralContext integerLiteralContext = ctx.integerLiteral();
+        IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   minimum               = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMinPropertyValidation minValidationState = new AntlrMinPropertyValidation(
                 ctx,
@@ -178,7 +178,7 @@ public class PropertyPhase
     {
         super.enterMaxValidation(ctx);
 
-        IntegerLiteralContext integerLiteralContext = ctx.integerLiteral();
+        IntegerLiteralContext integerLiteralContext = ctx.integerValidationParameter().integerLiteral();
         int                   maximum               = this.getIntegerFromLiteral(integerLiteralContext);
         AntlrMaxPropertyValidation maxValidationState = new AntlrMaxPropertyValidation(
                 ctx,

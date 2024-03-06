@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_VLD_TYP[m [33m════════════════════════════════════════[m
-[31mInvalid validation 'max(10)' for type String.[m
+[31mInvalid validation 'max' for type String.[m
 
 Error at location. (InvalidValidationErrorTest.klass:7)
 [40m[40;37m1║ [40;35mpackage [40;97mdummy

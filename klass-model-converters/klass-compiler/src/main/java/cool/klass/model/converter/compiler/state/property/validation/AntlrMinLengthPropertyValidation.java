@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationKeywordContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMinLengthPropertyValidation extends AbstractAntlrNumericPropertyValidation
@@ -44,5 +46,18 @@ public class AntlrMinLengthPropertyValidation extends AbstractAntlrNumericProper
     public MinLengthPropertyValidationBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.elementBuilder);
+    }
+
+    @Nonnull
+    @Override
+    public MinLengthValidationContext getElementContext()
+    {
+        return (MinLengthValidationContext) super.getElementContext();
+    }
+
+    @Override
+    public MinLengthValidationKeywordContext getKeywordToken()
+    {
+        return this.getElementContext().minLengthValidationKeyword();
     }
 }

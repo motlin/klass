@@ -51,11 +51,13 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
             @Nonnull CompilerErrorState compilerErrorHolder,
             @Nonnull PrimitiveType primitiveType)
     {
-        ParserRuleContext offendingToken = this.getElementContext();
+        ParserRuleContext offendingToken = this.getKeywordToken();
         String message = String.format(
                 "Invalid validation '%s' for type %s.",
                 offendingToken.getText(),
                 primitiveType.getPrettyName());
         compilerErrorHolder.add("ERR_VLD_TYP", message, this, offendingToken);
     }
+
+    public abstract ParserRuleContext getKeywordToken();
 }

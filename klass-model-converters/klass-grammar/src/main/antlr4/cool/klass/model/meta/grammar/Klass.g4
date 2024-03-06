@@ -116,10 +116,18 @@ dataTypePropertyValidation
     | maxValidation
     ;
 
-minLengthValidation: ('minLength' | 'minimumLength') '(' integerLiteral ')';
-maxLengthValidation: ('maxLength' | 'maximumLength') '(' integerLiteral ')';
-minValidation: ('min' | 'minimum') '(' integerLiteral ')';
-maxValidation: ('max' | 'maximum') '(' integerLiteral ')';
+minLengthValidation: minLengthValidationKeyword integerValidationParameter;
+maxLengthValidation: maxLengthValidationKeyword integerValidationParameter;
+minValidation: minValidationKeyword integerValidationParameter;
+maxValidation: maxValidationKeyword integerValidationParameter;
+
+integerValidationParameter : '(' integerLiteral ')' ;
+
+minLengthValidationKeyword : ('minLength' | 'minimumLength') ;
+maxLengthValidationKeyword : ('maxLength' | 'maximumLength') ;
+minValidationKeyword : ('min' | 'minimum') ;
+maxValidationKeyword : ('max' | 'maximum') ;
+
 
 // parameter
 parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration | invalidParameterDeclaration;

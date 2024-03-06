@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_VLD_TYP[m [33m════════════════════════════════════════[m
-[31mInvalid validation 'maxLength(10)' for type Long.[m
+[31mInvalid validation 'maxLength' for type Long.[m
 
 Error at location. (InvalidValidationErrorTest.klass:6)
 [40m[40;37m1║ [40;35mpackage [40;97mdummy

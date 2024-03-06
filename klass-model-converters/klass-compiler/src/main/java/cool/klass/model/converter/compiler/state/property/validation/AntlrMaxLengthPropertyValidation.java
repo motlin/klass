@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationKeywordContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrMaxLengthPropertyValidation extends AbstractAntlrNumericPropertyValidation
@@ -44,5 +46,18 @@ public class AntlrMaxLengthPropertyValidation extends AbstractAntlrNumericProper
     public MaxLengthPropertyValidationBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.elementBuilder);
+    }
+
+    @Nonnull
+    @Override
+    public MaxLengthValidationContext getElementContext()
+    {
+        return (MaxLengthValidationContext) super.getElementContext();
+    }
+
+    @Override
+    public MaxLengthValidationKeywordContext getKeywordToken()
+    {
+        return this.getElementContext().maxLengthValidationKeyword();
     }
 }

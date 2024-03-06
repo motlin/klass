@@ -19,9 +19,13 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
@@ -123,6 +127,30 @@ public class ErrorUnderlineListener
     public void enterMaxValidation(@Nonnull MaxValidationContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterMinLengthValidationKeyword(MinLengthValidationKeywordContext ctx)
+    {
+        this.addUnderlinedRange(ctx);
+    }
+
+    @Override
+    public void enterMaxLengthValidationKeyword(MaxLengthValidationKeywordContext ctx)
+    {
+        this.addUnderlinedRange(ctx);
+    }
+
+    @Override
+    public void enterMinValidationKeyword(MinValidationKeywordContext ctx)
+    {
+        this.addUnderlinedRange(ctx);
+    }
+
+    @Override
+    public void enterMaxValidationKeyword(MaxValidationKeywordContext ctx)
+    {
+        this.addUnderlinedRange(ctx);
     }
 
     @Override

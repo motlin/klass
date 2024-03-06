@@ -53,6 +53,7 @@ import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.IntegerValidationParameterContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
@@ -63,10 +64,14 @@ import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MaxValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinLengthValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
+import cool.klass.model.meta.grammar.KlassParser.MinValidationKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
@@ -1031,6 +1036,76 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitMaxValidation() not implemented yet");
+    }
+
+    @Override
+    public void enterIntegerValidationParameter(IntegerValidationParameterContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterIntegerValidationParameter() not implemented yet");
+    }
+
+    @Override
+    public void exitIntegerValidationParameter(IntegerValidationParameterContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitIntegerValidationParameter() not implemented yet");
+    }
+
+    @Override
+    public void enterMinLengthValidationKeyword(MinLengthValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMinLengthValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void exitMinLengthValidationKeyword(MinLengthValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMinLengthValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void enterMaxLengthValidationKeyword(MaxLengthValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMaxLengthValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void exitMaxLengthValidationKeyword(MaxLengthValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMaxLengthValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void enterMinValidationKeyword(MinValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMinValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void exitMinValidationKeyword(MinValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMinValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void enterMaxValidationKeyword(MaxValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMaxValidationKeyword() not implemented yet");
+    }
+
+    @Override
+    public void exitMaxValidationKeyword(MaxValidationKeywordContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMaxValidationKeyword() not implemented yet");
     }
 
     @Override
