@@ -4,9 +4,8 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.data.store.reladomo.ReladomoDataStore;
+import cool.klass.dropwizard.bundle.test.data.TestDataGeneratorBundle;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
-import com.stackoverflow.dropwizard.command.StackOverflowDemoCommand;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
@@ -30,8 +29,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
             bootstrap.addBundle(bundle);
         }
 
-        // TODO: Move up to generated code
-        bootstrap.addCommand(new StackOverflowDemoCommand(this));
+        bootstrap.addBundle(new TestDataGeneratorBundle(this.domainModel, this.dataStore));
 
         // TODO: application initialization
     }
@@ -43,7 +41,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.run(configuration, environment);
 
-        environment.jersey().register(new QuestionResourceManual(new ReladomoDataStore()));
+        environment.jersey().register(new QuestionResourceManual(this.dataStore));
 
         // TODO: Move up to generated superclass
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel);

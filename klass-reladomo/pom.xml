@@ -25,6 +25,7 @@
         <module>klass-reladomo-test-rule</module>
         <module>klass-reladomo-persistent-writer</module>
         <module>klass-data-store-reladomo</module>
+        <module>klass-reladomo-test-data</module>
     </modules>
 
 </project>

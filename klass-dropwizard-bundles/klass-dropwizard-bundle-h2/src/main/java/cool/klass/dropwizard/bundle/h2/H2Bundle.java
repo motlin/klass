@@ -35,7 +35,6 @@ public class H2Bundle implements Bundle
     {
         Config  config         = ConfigFactory.load();
         Config  h2BundleConfig = config.getConfig("klass.data.h2");
-        boolean runEmbedded    = h2BundleConfig.getBoolean("runEmbedded");
 
         if (LOGGER.isDebugEnabled())
         {
@@ -46,6 +45,7 @@ public class H2Bundle implements Bundle
             LOGGER.debug("H2 Bundle configuration:\n{}", render);
         }
 
+        boolean runEmbedded    = h2BundleConfig.getBoolean("runEmbedded");
         if (runEmbedded)
         {
             Server tcpServer = this.createTcpServer();

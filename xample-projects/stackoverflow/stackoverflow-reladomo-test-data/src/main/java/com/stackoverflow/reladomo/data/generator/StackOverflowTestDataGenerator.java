@@ -7,10 +7,17 @@ import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.stackoverflow.Answer;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionVersion;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // TODO: Code generate this class. Skip transient types.
 public final class StackOverflowTestDataGenerator
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StackOverflowTestDataGenerator.class);
+
     private StackOverflowTestDataGenerator()
     {
         throw new AssertionError("Suppress default constructor for noninstantiability");
@@ -23,6 +30,24 @@ public final class StackOverflowTestDataGenerator
 
     public static void populateData()
     {
+        Config config                  = ConfigFactory.load();
+        Config testDataGeneratorConfig = config.getConfig("klass.data.generator.test");
+
+        if (LOGGER.isInfoEnabled())
+        {
+            ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
+                    .setJson(false)
+                    .setOriginComments(false);
+            String render = testDataGeneratorConfig.root().render(configRenderOptions);
+            LOGGER.info("Test Data Generator Bundle configuration:\n{}", render);
+        }
+
+        boolean enabled = testDataGeneratorConfig.getBoolean("enabled");
+        if (!enabled)
+        {
+            return;
+        }
+
         Question question = MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
             Question question1 = new Question();

@@ -1,5 +1,9 @@
 package cool.klass.reladomo.test.data;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -8,6 +12,9 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoOptionalDataTypePropertyVisitor implements DataTypePropertyVisitor
 {
+    public static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2000, 1, 1, 0, 0);
+    public static final Instant       INSTANT         = LOCAL_DATE_TIME.toInstant(ZoneOffset.UTC);
+
     private Object result;
 
     public Object getResult()
@@ -26,7 +33,10 @@ public class ReladomoOptionalDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitString(PrimitiveProperty primitiveProperty)
     {
-        this.result = primitiveProperty.getName() + " 2 ✌️";
+        this.result = String.format(
+                "%s %s 2 ✌",
+                primitiveProperty.getOwningKlass().getName(),
+                primitiveProperty.getName());
     }
 
     @Override
@@ -38,19 +48,19 @@ public class ReladomoOptionalDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitLong(PrimitiveProperty primitiveProperty)
     {
-        this.result = 2L;
+        this.result = 200_000_000_000L;
     }
 
     @Override
     public void visitDouble(PrimitiveProperty primitiveProperty)
     {
-        this.result = 2.0;
+        this.result = 2.0123456789;
     }
 
     @Override
     public void visitFloat(PrimitiveProperty primitiveProperty)
     {
-        this.result = 2.0f;
+        this.result = 2.01234567f;
     }
 
     @Override
@@ -62,15 +72,13 @@ public class ReladomoOptionalDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitInstant(PrimitiveProperty primitiveProperty)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitInstant() not implemented yet");
+        this.result = INSTANT;
     }
 
     @Override
     public void visitLocalDate(PrimitiveProperty primitiveProperty)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitLocalDate() not implemented yet");
+        this.result = LOCAL_DATE_TIME;
     }
 
     @Override
@@ -83,7 +91,9 @@ public class ReladomoOptionalDataTypePropertyVisitor implements DataTypeProperty
     @Override
     public void visitTemporalRange(PrimitiveProperty primitiveProperty)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitTemporalRange() not implemented yet");
+        if (!primitiveProperty.isSystem())
+        {
+            throw new AssertionError();
+        }
     }
 }

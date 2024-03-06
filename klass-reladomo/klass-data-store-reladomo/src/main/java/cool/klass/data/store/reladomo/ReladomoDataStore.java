@@ -1,5 +1,6 @@
 package cool.klass.data.store.reladomo;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -82,13 +83,36 @@ public class ReladomoDataStore implements DataStore
         return newInstance;
     }
 
-    public Object instantiateNewInstance(Klass klass)
+    @Override
+    public Object instantiate(Klass klass, ImmutableList<Object> keys, Instant validTime)
+    {
+        Object newInstance = this.instantiateNewInstance(klass, validTime);
+        this.setKeys(klass, newInstance, keys);
+        return newInstance;
+    }
+
+    private Object instantiateNewInstance(Klass klass)
     {
         try
         {
-            // TODO: now timestamp
             Class<?> aClass = Class.forName(klass.getFullyQualifiedName());
             return aClass.newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Object instantiateNewInstance(Klass klass, Instant validTime)
+    {
+        try
+        {
+            Class<?> aClass = Class.forName(klass.getFullyQualifiedName());
+            Constructor<?> constructor = aClass.getConstructor(Timestamp.class, Timestamp.class);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(validTime, ZoneOffset.UTC));
+            // TODO: One of these would be infinity, forgot which one
+            return constructor.newInstance(timestamp, timestamp);
         }
         catch (ReflectiveOperationException e)
         {

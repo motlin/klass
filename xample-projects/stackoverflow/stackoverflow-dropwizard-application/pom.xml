@@ -24,7 +24,7 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar demo config.yml</commandlineArgs>
+                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -139,6 +139,12 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-test-data</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -403,7 +409,7 @@
         <profile>
             <id>run-demo</id>
             <activation>
-                    <activeByDefault>true</activeByDefault>
+                <activeByDefault>true</activeByDefault>
 
                 <!--TODO: There seems to be a bug in maven from using the file-missing trigger together with exec-maven-plugin's working directory-->
                 <!--<file>-->
