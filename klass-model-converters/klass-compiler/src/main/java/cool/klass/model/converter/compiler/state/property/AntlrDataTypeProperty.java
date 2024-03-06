@@ -58,6 +58,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return Optional.of(this.owningClassState);
     }
 
+    @Nonnull
+    public ImmutableList<AntlrPropertyModifier> getPropertyModifiers()
+    {
+        return this.propertyModifierStates;
+    }
+
     public boolean isKey()
     {
         return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isKey);
@@ -163,23 +169,21 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     public String getShortString()
     {
-        String result = String.format(
+        return String.format(
                 "%s: %s %s",
                 this.getName(),
                 this.getType().toString(),
                 this.propertyModifierStates.collect(AntlrNamedElement::getName).makeString(" "));
-        return result;
     }
 
     @Override
     public String toString()
     {
-        String result = String.format(
+        return String.format(
                 "%s.%s: %s %s",
                 this.getOwningClassState().getName(),
                 this.getName(),
                 this.getType().toString(),
                 this.propertyModifierStates.collect(AntlrNamedElement::getName).makeString(" "));
-        return result;
     }
 }

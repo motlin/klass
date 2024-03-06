@@ -4,8 +4,9 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -50,41 +51,32 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
         String keyPropertySourceCode = classState
                 .getDataTypeProperties()
                 .select(AntlrDataTypeProperty::isKey)
-                .collect(AntlrElement::getSourceCode)
+                .collect(this::getSourceCode)
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
         //language=Klass
-        return "package " + classState.getPackageName() + "\n"
+        String sourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"
                 + "class " + classState.getName() + "Version systemTemporal\n"
                 + "{\n"
                 + keyPropertySourceCode
                 + "    number: Integer version;\n"
                 + "}\n";
+        return sourceCode;
     }
 
-    /*
-    private void runCompilerPhases(
-            MutableSet<CompilationUnit> compilationUnits,
-            MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext)
+    private String getSourceCode(AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        KlassListener classPhase = new ClassPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelState,
-                this.isInference);
-
-        KlassListener temporalPropertyInferencePhase = new ClassTemporalPropertyInferencePhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelState,
-                this.compilationUnits);
-
-        KlassCompiler.executeCompilerPhase(classPhase, compilationUnits,
-                KlassCompiler.compilerState.getCompilationUnits());
-        KlassCompiler.executeCompilerPhase(temporalPropertyInferencePhase, compilationUnits,
-                KlassCompiler.compilerState.getCompilationUnits());
+        ImmutableList<AntlrPropertyModifier> propertyModifiers = dataTypeProperty.getPropertyModifiers()
+                .reject(AntlrPropertyModifier::isID);
+        String propertyModifierSourceCode = propertyModifiers.isEmpty()
+                ? ""
+                : propertyModifiers.collect(AntlrNamedElement::getName).makeString(" ", " ", "");
+        return String.format(
+                "%s: %s%s;",
+                dataTypeProperty.getName(),
+                dataTypeProperty.getType(),
+                propertyModifierSourceCode);
     }
-    */
 }
