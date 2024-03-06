@@ -18,7 +18,8 @@
     <modules>
         <module>klass-test-constants</module>
         <module>klass-tests</module>
-        <module>klass-file-match-rule</module>
+        <module>klass-junit-rule-match-file</module>
+        <module>klass-junit-rule-match-json</module>
     </modules>
 
 </project>
