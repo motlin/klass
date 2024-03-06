@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class ReladomoJsonViewBundle
-        implements PrioritizedBundle<Object>
+        implements PrioritizedBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoJsonViewBundle.class);
 

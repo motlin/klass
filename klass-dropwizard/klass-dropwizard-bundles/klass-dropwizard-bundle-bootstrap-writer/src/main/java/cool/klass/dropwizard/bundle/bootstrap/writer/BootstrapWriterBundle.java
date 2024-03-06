@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class BootstrapWriterBundle
-        implements PrioritizedBundle<AbstractKlassConfiguration>
+        implements PrioritizedBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapWriterBundle.class);
 
@@ -27,9 +27,12 @@ public class BootstrapWriterBundle
     }
 
     @Override
-    public void runWithMdc(@Nonnull AbstractKlassConfiguration configuration, @Nonnull Environment environment)
+    public void runWithMdc(@Nonnull Object configuration, @Nonnull Environment environment)
     {
-        boolean enabled = configuration.getBootstrapFactory().isEnabled();
+        AbstractKlassConfiguration klassConfiguration = this.safeCastConfiguration(
+                AbstractKlassConfiguration.class,
+                configuration);
+        boolean enabled = klassConfiguration.getBootstrapFactory().isEnabled();
         if (!enabled)
         {
             LOGGER.info("{} disabled.", this.getClass().getSimpleName());
@@ -39,7 +42,7 @@ public class BootstrapWriterBundle
         LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         ObjectMapper objectMapper = environment.getObjectMapper();
-        KlassFactory klassFactory = configuration.getKlassFactory();
+        KlassFactory klassFactory = klassConfiguration.getKlassFactory();
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
 
