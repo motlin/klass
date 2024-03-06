@@ -12,16 +12,16 @@ import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
-import cool.klass.model.converter.compiler.phase.TopLevelElementNameCountPhase;
-import cool.klass.model.converter.compiler.phase.TopLevelElementNameDuplicatePhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
@@ -55,11 +55,6 @@ public class KlassCompiler
                         CompilationUnit::getCompilationUnitContext,
                         MapAdapter.adapt(new IdentityHashMap<>()));
 
-        TopLevelElementNameCountPhase phase1 = new TopLevelElementNameCountPhase();
-        KlassListener phase2 = new TopLevelElementNameDuplicatePhase(
-                compilationUnitsByContext,
-                this.compilerErrorHolder,
-                phase1);
         DeclarationsByNamePhase    phase3 = new DeclarationsByNamePhase();
         ResolveTypeReferencesPhase phase4 = new ResolveTypeReferencesPhase(phase3);
         ResolveTypesPhase          phase5 = new ResolveTypesPhase(phase4);
@@ -93,23 +88,17 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 domainModelState);
 
-        /*
-        DomainModelBuilderPhase domainModelBuilderPhase = new DomainModelBuilderPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelBuilder);
-        */
+        ImmutableList<KlassListener> phases = Lists.immutable.with(
+                phase3,
+                phase4,
+                phase5,
+                phase6,
+                phase7,
+                phase8,
+                phase9,
+                phase10);
 
-        this.executeCompilerPhase(compilationUnits, phase1);
-        this.executeCompilerPhase(compilationUnits, phase2);
-        this.executeCompilerPhase(compilationUnits, phase3);
-        this.executeCompilerPhase(compilationUnits, phase4);
-        this.executeCompilerPhase(compilationUnits, phase5);
-        this.executeCompilerPhase(compilationUnits, phase6);
-        this.executeCompilerPhase(compilationUnits, phase7);
-        this.executeCompilerPhase(compilationUnits, phase8);
-        this.executeCompilerPhase(compilationUnits, phase9);
-        this.executeCompilerPhase(compilationUnits, phase10);
+        phases.forEachWith(this::executeCompilerPhase, compilationUnits);
 
         domainModelState.reportErrors(this.compilerErrorHolder);
 
@@ -122,8 +111,8 @@ public class KlassCompiler
     }
 
     protected void executeCompilerPhase(
-            MutableSet<CompilationUnit> compilationUnits,
-            KlassListener compilerPhase)
+            KlassListener compilerPhase,
+            MutableSet<CompilationUnit> compilationUnits)
     {
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         for (CompilationUnit compilationUnit : compilationUnits)

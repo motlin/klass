@@ -152,80 +152,59 @@ public class KlassCompilerTest
         // TODO: Duplicate duplicate errors
         // TODO: More error codes?
         String error1 = ""
-                + "File: example.klass Line: 3 Char: 13 Error: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "package dummy\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^\n"
-                + "";
-        String error2 = ""
                 + "File: example.klass Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error3 = ""
+        String error2 = ""
                 + "File: example.klass Line: 5 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
                 + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error4 = ""
+        String error3 = ""
                 + "File: example.klass Line: 5 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
                 + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error5 = ""
+        String error4 = ""
                 + "File: example.klass Line: 6 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
                 + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error6 = ""
+        String error5 = ""
                 + "File: example.klass Line: 6 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
                 + "enumeration DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
                 + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error7 = ""
-                + "File: example.klass Line: 9 Char: 7 Error: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "package dummy\n"
-                + "class DuplicateTopLevelItem\n"
-                + "      ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error8 = ""
+        String error6 = ""
                 + "File: example.klass Line: 9 Char: 7 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
                 + "class DuplicateTopLevelItem\n"
                 + "      ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error9 = ""
+        String error7 = ""
                 + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
                 + "class DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    duplicateMember: String\n"
                 + "    ^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error10 = ""
+        String error8 = ""
                 + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
                 + "class DuplicateTopLevelItem\n"
                 + "{\n"
                 + "    duplicateMember: DuplicateTopLevelItem\n"
                 + "    ^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error11 = ""
-                + "File: example.klass Line: 20 Char: 13 Error: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "package dummy\n"
-                + "association DuplicateTopLevelItem\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error12 = ""
+        String error9 = ""
                 + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
                 + "association DuplicateTopLevelItem\n"
                 + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error13 = ""
-                + "File: example.klass Line: 32 Char: 12 Error: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "package dummy\n"
-                + "projection DuplicateTopLevelItem on DuplicateTopLevelItem\n"
-                + "           ^^^^^^^^^^^^^^^^^^^^^\n";
 
         this.assertCompilerErrors(
                 sourceCodeText,
@@ -237,11 +216,7 @@ public class KlassCompilerTest
                 error6,
                 error7,
                 error8,
-                error9,
-                error10,
-                error11,
-                error12,
-                error13);
+                error9);
     }
 
     @Test
