@@ -7,6 +7,7 @@ import cool.klass.model.meta.domain.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
 import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
 
+// TODO: Create a DataTypeVisitor that factors in enumerations too
 public class AttributeTypeVisitor implements PrimitiveTypeVisitor
 {
     private final AttributeType     attributeType;

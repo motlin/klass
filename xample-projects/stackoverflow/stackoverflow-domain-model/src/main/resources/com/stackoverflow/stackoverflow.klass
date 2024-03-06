@@ -16,6 +16,7 @@ user User
     // TODO: String max lengths
     firstName         : String?
     lastName          : String?
+    // TODO: Consider adding primitive types like email address and url
     email             : String?
 }
 
@@ -26,6 +27,11 @@ enumeration Status
     CLOSED("Closed"),
 }
 
+// TODO: Sets of unique properties other than keys
+// TODO: Try to infer whether a query is for a unique item and assert multiplicity one
+// TODO: Check for ownership cycles and give a good error message
+// TODO: Errors for using reserved names like system, systemFrom, systemTo, etc.
+// TODO: Errors for using versioned when not systemTemporal, audited when not systemTemporal, optimisticallyLocked when not versioned
 class Question
     read(QuestionReadProjection)
     create(QuestionWriteProjection)
@@ -58,6 +64,10 @@ class Question
             && Answer.deleted == false
     }
 
+    // TODO: Add keywords for declaring special properties. It may look redundant like:
+    // TODO: system system: TemporalRange, but would allow renames like:
+    // TODO: system known: TemporalRange
+
     // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
     system            : TemporalRange
 
@@ -87,6 +97,7 @@ class Question
 }
 
 // The _Version class is implied by the versioned annotation, and not supposed to actually be declared
+// TODO: If you do declare one, we'd need a special keyword version instead of class
 class QuestionVersion
     systemTemporal
 {
@@ -101,10 +112,12 @@ class QuestionVersion
 
 association QuestionHasAnswer
 {
+    // TODO: *final* question: Question[1..1]
     question: Question[1..1]
     answers: Answer[0..*]
         orderBy: this.id ascending
 
+    // TODO: check that the foreign key (questionId) is required since the to-one relationship end is also required (question: Question[1..1])
     // ordering by primary key ascending is the default
     relationship this.id == Answer.questionId
 }
@@ -130,6 +143,7 @@ class Answer
     key id            : ID
     body              : String
     deleted           : Boolean
+    // TODO: private *final* questionId: Long
     private questionId: Long
 }
 
@@ -156,19 +170,26 @@ enumeration VoteDirection
 projection QuestionReadProjection on Question
 {
     // field names are "includes", field values are column headers when serializing to a tabular format
+    id             : "Question id",
     title          : "Question title",
     body           : "Question body",
     status         : "Question status",
     deleted        : "Question is deleted",
-    systemFrom     : "Question System From",
-    systemTo       : "Question System To",
+    systemFrom     : "Question system From",
+    systemTo       : "Question system To",
     createdById    : "Question created by ID",
-    createdOn      : "Question Created on",
+    createdOn      : "Question created on",
     lastUpdatedById: "Question last updated by ID",
 
     answers        :
     {
+        id  : "Answer id",
         body: "Answer body",
+    },
+
+    version        :
+    {
+        number: "Question version number",
     },
 }
 
@@ -211,6 +232,7 @@ service Question
                 projection  : QuestionReadProjection
             }
     */
+    // TODO: Consider forcing exact type matches. Meaning id's type here would be ID, not Long.
     /api/question/{id: Long[1..1]}
         GET
         {
@@ -234,6 +256,12 @@ service Question
             projection  : QuestionReadProjection
         }
     /api/question/{id: Long[1..1]}?{version: Integer[1..1]}
+        GET
+        {
+            multiplicity: one
+            criteria    : this.id == id
+            projection  : QuestionReadProjection
+        }
         PUT
         {
             // PUT, PATCH, and DELETE should implicitly get ?{version: Integer[1..1]} due to optimistic locking
@@ -245,6 +273,7 @@ service Question
             // Consider 412 Precondition Failed or 417 Expectation Failed instead of 400, and leave bad request for problems like invalid json, or mismatches with the meta model
             conflict    : this.id == QuestionVersion.id
                 && QuestionVersion.number == version
+            // TODO: Allow anonymous/undeclared projections created from all owned association ends
             projection  : QuestionWriteProjection
         }
         DELETE
@@ -277,6 +306,7 @@ service Question
         }
 
     // TODO: Type inference on url parameters
+    // TODO: Consider adding a primitive type UserId
     /api/user/{userId: String[1..1]}/questions
         GET
         {
