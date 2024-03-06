@@ -380,7 +380,22 @@ public class CreateVersionPropertiesValidator
 
     protected void handleAssociationEnd(AssociationEnd associationEnd)
     {
-        this.handleWarnIfPresent(associationEnd);
+        if (this.isBackward(associationEnd))
+        {
+            this.handleWarnIfPresent(associationEnd);
+        }
+        else if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
+        {
+            return;
+        }
+        else if (associationEnd.isOwned())
+        {
+            this.handleOwnedAssociationEnd(associationEnd);
+        }
+        else
+        {
+            this.handleWarnIfPresent(associationEnd);
+        }
     }
 
     public void handleToOne(
