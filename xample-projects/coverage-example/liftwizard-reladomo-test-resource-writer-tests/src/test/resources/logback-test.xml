@@ -12,6 +12,6 @@
     </appender>
 
     <root level="DEBUG">
-        <appender-ref ref="Console" />
+        <appender-ref ref="Buffered" />
     </root>
 </configuration>
