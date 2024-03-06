@@ -28,6 +28,13 @@ public class AntlrPackage
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
     }
 
+    @Nonnull
+    @Override
+    public PackageDeclarationContext getElementContext()
+    {
+        return (PackageDeclarationContext) super.getElementContext();
+    }
+
     @Override
     protected Pattern getNamePattern()
     {

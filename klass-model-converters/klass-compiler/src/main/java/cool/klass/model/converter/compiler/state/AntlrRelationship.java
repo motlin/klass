@@ -28,6 +28,13 @@ public class AntlrRelationship
         this.association = Objects.requireNonNull(association);
     }
 
+    @Nonnull
+    @Override
+    public RelationshipContext getElementContext()
+    {
+        return (RelationshipContext) super.getElementContext();
+    }
+
     public void setCriteria(AntlrCriteria criteria)
     {
         if (this.criteria != null)
