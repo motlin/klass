@@ -6,7 +6,7 @@ At (InvalidIdPropertyTypeErrorTest.klass:30)
 [39m 1║ [35mpackage [39mexample
 [39m28║ [35mclass [39mBooleanId
 [39m29║ [36m{
-[39m30║     [39mbooleanId       [36m: [35mBoolean [33mid [33mkey[36m;
+[39m30║     [39mbooleanId       [36m: [35mBoolean [32mid [32mkey[36m;
 [39m  ║ [31m                              ^^
 [39m31║ [36m}
 [m

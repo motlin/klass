@@ -4,9 +4,9 @@
 At (AuditDataPropertyTypeErrorTest.klass:10)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m 8║ [35muser [39mUser [33msystemTemporal [33mversioned
+[39m 8║ [35muser [39mUser [32msystemTemporal [32mversioned
 [39m 9║ [36m{
-[39m10║     [33mid[36m: [39mDummyEnumeration [33mkey [33muserId [33mmaximumLength[36m([34m256[36m)[36m;
+[39m10║     [32mid[36m: [39mDummyEnumeration [32mkey [32muserId [32mmaximumLength[36m([34m256[36m)[36m;
 [39m  ║ [31m        ^^^^^^^^^^^^^^^^     ^^^^^^
 [39m11║ [36m}
 [m

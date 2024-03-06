@@ -6,7 +6,7 @@ At (MultipleIdPropertiesErrorTest.klass:5)
 [39m1║ [35mpackage [39mexample
 [39m3║ [35mclass [39mExampleClass
 [39m4║ [36m{
-[39m5║     [39mid1[36m: [35mLong [33mid [33mkey[36m;
+[39m5║     [39mid1[36m: [35mLong [32mid [32mkey[36m;
 [39m ║ [31m              ^^
 [39m7║ [36m}
 [m

@@ -9,7 +9,7 @@ At (UnresolvedTypesErrorTest.klass:147)
 [39m143║     [36m/[39munresolved[36m/[36m{[39munresolvedParameterDeclaration[36m: [39mUnresolvedEnumeration[36m[[34m1[36m..[34m1[36m][36m}
 [39m144║         [32mGET
 [39m145║         [36m{
-[39m147║             [35mcriteria    [36m: [32mthis[36m.[39munresolvedEnumerationProperty [33m== [39munresolvedParameter[36m;
+[39m147║             [35mcriteria    [36m: [32mthis[36m.[39munresolvedEnumerationProperty [35m== [39munresolvedParameter[36m;
 [39m   ║ [31m                                                                ^^^^^^^^^^^^^^^^^^^
 [39m149║         [36m}
 [39m157║ [36m}

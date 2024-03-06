@@ -6,7 +6,7 @@ At (InvalidValidationErrorTest.klass:7)
 [39m1║ [35mpackage [39mdummy
 [39m3║ [35mclass [39mDummy
 [39m4║ [36m{
-[39m7║     [39mstring[36m: [35mString [33mmin[36m([34m1[36m) [33mmax[36m([34m10[36m)[36m;
+[39m7║     [39mstring[36m: [35mString [32mmin[36m([34m1[36m) [32mmax[36m([34m10[36m)[36m;
 [39m ║ [31m                          ^^^
 [39m8║ [36m}
 [m

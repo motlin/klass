@@ -4,9 +4,9 @@
 At (DuplicateAuditModifierErrorTest.klass:19)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m 8║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
+[39m 8║ [35mclass [39mDummyClass [32msystemTemporal [32mversioned [32maudited
 [39m 9║ [36m{
-[39m19║     [33mfrom           [36m: [35mTemporalInstant[36m? [33mfrom[36m;
+[39m19║     [32mfrom           [36m: [35mTemporalInstant[36m? [32mfrom[36m;
 [39m  ║ [31m                                      ^^^^
 [39m22║ [36m}
 [m

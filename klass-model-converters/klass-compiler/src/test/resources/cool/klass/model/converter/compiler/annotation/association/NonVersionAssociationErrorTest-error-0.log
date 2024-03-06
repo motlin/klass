@@ -6,7 +6,7 @@ At (NonVersionAssociationErrorTest.klass:17)
 [39m 1║ [35mpackage [39mdummy
 [39m14║ [35massociation [39mNonVersionAssociation
 [39m15║ [36m{
-[39m17║     [39mtarget[36m: [39mExampleVersion[36m[[34m1[36m..[34m1[36m] [33mowned[36m;
+[39m17║     [39mtarget[36m: [39mExampleVersion[36m[[34m1[36m..[34m1[36m] [32mowned[36m;
 [39m  ║ [31m    ^^^^^^  ^^^^^^^^^^^^^^
 [39m20║ [36m}
 [m

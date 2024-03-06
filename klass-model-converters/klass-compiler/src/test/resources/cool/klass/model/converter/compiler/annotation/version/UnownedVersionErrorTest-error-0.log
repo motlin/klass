@@ -6,7 +6,7 @@ At (UnownedVersionErrorTest.klass:17)
 [39m 1║ [35mpackage [39mexample
 [39m14║ [35massociation [39mExampleAssociation
 [39m15║ [36m{
-[39m17║     [39mexampleClassVersion[36m: [39mExampleVersion[36m[[34m0[36m..[34m1[36m] [33mversion[36m;
+[39m17║     [39mexampleClassVersion[36m: [39mExampleVersion[36m[[34m0[36m..[34m1[36m] [32mversion[36m;
 [39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^
 [39m20║ [36m}
 [m

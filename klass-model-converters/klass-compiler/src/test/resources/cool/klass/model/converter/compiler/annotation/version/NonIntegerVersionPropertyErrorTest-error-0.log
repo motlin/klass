@@ -4,9 +4,9 @@
 At (NonIntegerVersionPropertyErrorTest.klass:7)
 
 [39m1║ [35mpackage [39mcom[36m.[39merrors
-[39m3║ [35mclass [39mExampleVersion [33msystemTemporal
+[39m3║ [35mclass [39mExampleVersion [32msystemTemporal
 [39m4║ [36m{
-[39m7║     [39mnumber[36m: [35mString [33mversion[36m;
+[39m7║     [39mnumber[36m: [35mString [32mversion[36m;
 [39m ║ [31m            ^^^^^^ ^^^^^^^
 [39m8║ [36m}
 [m

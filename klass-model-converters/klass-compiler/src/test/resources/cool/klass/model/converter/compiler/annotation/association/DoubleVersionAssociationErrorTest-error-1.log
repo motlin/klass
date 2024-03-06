@@ -6,7 +6,7 @@ At (DoubleVersionAssociationErrorTest.klass:10)
 [39m 1║ [35mpackage [39mdummy
 [39m10║ [35mclass [39mExampleTarget
 [39m  ║ [31m      ^^^^^^^^^^^^^
-[39m11║     [33msystemTemporal
+[39m11║     [32msystemTemporal
 [39m12║ [36m{
 [39m15║ [36m}
 [m

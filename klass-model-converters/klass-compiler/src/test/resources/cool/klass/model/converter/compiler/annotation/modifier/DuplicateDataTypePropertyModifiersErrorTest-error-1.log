@@ -6,7 +6,7 @@ At (DuplicateDataTypePropertyModifiersErrorTest.klass:5)
 [39m1║ [35mpackage [39mdummy
 [39m3║ [35mclass [39mDummy
 [39m4║ [36m{
-[39m5║     [33mid[36m: [35mLong [33mid [33mkey [33mkey[36m;
+[39m5║     [32mid[36m: [35mLong [32mid [32mkey [32mkey[36m;
 [39m ║ [31m                    ^^^
 [39m6║ [36m}
 [m

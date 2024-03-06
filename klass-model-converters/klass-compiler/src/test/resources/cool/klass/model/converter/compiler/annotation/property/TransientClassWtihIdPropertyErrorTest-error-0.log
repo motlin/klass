@@ -6,9 +6,9 @@ At (TransientClassWtihIdPropertyErrorTest.klass:13)
 [39m 1║ [35mpackage [39mexample
 [39m 9║ [35mclass [39mConcreteSubClass
 [39m10║     [35mextends [39mAbstractSuperClass
-[39m11║     [33mtransient
+[39m11║     [32mtransient
 [39m12║ [36m{
-[39m13║     [33mkey[36m: [35mLong [33mkey [33mid[36m;
+[39m13║     [32mkey[36m: [35mLong [32mkey [32mid[36m;
 [39m  ║ [31m                  ^^
 [39m14║ [36m}
 [m

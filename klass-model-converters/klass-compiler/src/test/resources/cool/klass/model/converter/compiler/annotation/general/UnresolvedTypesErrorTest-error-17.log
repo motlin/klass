@@ -6,7 +6,7 @@ At (UnresolvedTypesErrorTest.klass:95)
 [39m 1║ [35mpackage [39mdummy
 [39m90║ [35massociation [39mBadRelationship3
 [39m91║ [36m{
-[39m95║     [35mrelationship [32mthis[36m.[33mkey [33m== [39mUnresolvedClass[36m.[39munresolvedMember
+[39m95║     [35mrelationship [32mthis[36m.[32mkey [35m== [39mUnresolvedClass[36m.[39munresolvedMember
 [39m  ║ [31m                             ^^^^^^^^^^^^^^^
 [39m96║ [36m}
 [m

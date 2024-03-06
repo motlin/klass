@@ -6,7 +6,7 @@ At (ProjectionTypeTest.klass:53)
 [39m 1║ [35mpackage [39mdummy
 [39m49║ [35mprojection [39mProjection2 [35mon [39mParent
 [39m50║ [36m{
-[39m53║     [33mkey[36m: [39mChildProjection[36m,
+[39m53║     [32mkey[36m: [39mChildProjection[36m,
 [39m  ║ [31m    ^^^
 [39m54║ [36m}
 [m

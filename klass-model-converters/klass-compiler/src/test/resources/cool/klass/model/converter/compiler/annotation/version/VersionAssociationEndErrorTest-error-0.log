@@ -6,7 +6,7 @@ At (VersionAssociationEndErrorTest.klass:16)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m13║ [35massociation [39mExampleClassHasVersion
 [39m14║ [36m{
-[39m16║     [39mnotVersion[36m: [39mNotVersion[36m[[34m1[36m..[34m1[36m] [33mowned [33mversion[36m;
+[39m16║     [39mnotVersion[36m: [39mNotVersion[36m[[34m1[36m..[34m1[36m] [32mowned [32mversion[36m;
 [39m  ║ [31m    ^^^^^^^^^^
 [39m19║ [36m}
 [m

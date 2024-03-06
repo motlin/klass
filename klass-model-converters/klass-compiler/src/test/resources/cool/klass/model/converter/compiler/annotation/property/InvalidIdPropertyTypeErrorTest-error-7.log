@@ -6,7 +6,7 @@ At (InvalidIdPropertyTypeErrorTest.klass:60)
 [39m 1║ [35mpackage [39mexample
 [39m58║ [35mclass [39mEnumerationId
 [39m59║ [36m{
-[39m60║     [39menumerationId[36m: [39mExampleEnumeration [33mid [33mkey[36m;
+[39m60║     [39menumerationId[36m: [39mExampleEnumeration [32mid [32mkey[36m;
 [39m  ║ [31m                                      ^^
 [39m61║ [36m}
 [m

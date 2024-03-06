@@ -4,9 +4,9 @@
 At (AuditDataPropertyTypeErrorTest.klass:17)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m13║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
+[39m13║ [35mclass [39mDummyClass [32msystemTemporal [32mversioned [32maudited
 [39m14║ [36m{
-[39m17║     [39msystemFrom     [36m: [39mDummyEnumeration [33msystem [33mfrom[36m;
+[39m17║     [39msystemFrom     [36m: [39mDummyEnumeration [32msystem [32mfrom[36m;
 [39m  ║ [31m                     ^^^^^^^^^^^^^^^^ ^^^^^^ ^^^^
 [39m22║ [36m}
 [m

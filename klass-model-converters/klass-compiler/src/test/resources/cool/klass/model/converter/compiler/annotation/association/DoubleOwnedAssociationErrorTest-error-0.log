@@ -6,9 +6,9 @@ At (DoubleOwnedAssociationErrorTest.klass:10)
 [39m 1║ [35mpackage [39mdummy
 [39m 8║ [35massociation [39mDoubleOwnedAssociation
 [39m 9║ [36m{
-[39m10║     [39msource[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [33mowned[36m;
+[39m10║     [39msource[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [32mowned[36m;
 [39m  ║ [31m                                   ^^^^^
-[39m11║     [39mtarget[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [33mowned[36m;
+[39m11║     [39mtarget[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [32mowned[36m;
 [39m  ║ [31m                                   ^^^^^
 [39m14║ [36m}
 [m

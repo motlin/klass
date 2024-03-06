@@ -6,7 +6,7 @@ At (DuplicateNamesErrorTest.klass:17)
 [39m 1║ [35mpackage [39mdummy
 [39m15║ [35mclass [39mDuplicateTopLevelElement
 [39m16║ [36m{
-[39m17║     [39mduplicateMember[36m: [35mString [33mkey[36m;
+[39m17║     [39mduplicateMember[36m: [35mString [32mkey[36m;
 [39m  ║ [31m    ^^^^^^^^^^^^^^^
 [39m24║ [36m}
 [m

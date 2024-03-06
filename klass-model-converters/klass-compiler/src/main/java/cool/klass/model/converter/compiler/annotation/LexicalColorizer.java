@@ -12,7 +12,6 @@ import static org.fusesource.jansi.Ansi.Color.DEFAULT;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.MAGENTA;
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public final class LexicalColorizer
@@ -50,18 +49,18 @@ public final class LexicalColorizer
             case KlassLexer.MODIFIER_PROPERTY_LAST_UPDATED_BY:
             case KlassLexer.MODIFIER_PROPERTY_DERIVED:
             {
-                return getStringDim(text, YELLOW);
+                return getStringBright(text, GREEN);
             }
             case KlassLexer.MODIFIER_ASSOCIATION_END_OWNED:
             case KlassLexer.MODIFIER_ASSOCIATION_END_FINAL:
             {
-                return getStringBright(text, YELLOW);
+                return getStringBright(text, GREEN);
             }
             case KlassLexer.MODIFIER_VERSION:
             case KlassLexer.MODIFIER_USER_ID:
             case KlassLexer.MODIFIER_ID:
             {
-                return getStringDim(text, YELLOW);
+                return getStringBright(text, GREEN);
             }
             case KlassLexer.VALIDATION_MIN_LENGTH:
             case KlassLexer.VALIDATION_MINIMUM_LENGTH:
@@ -72,7 +71,7 @@ public final class LexicalColorizer
             case KlassLexer.VALIDATION_MAX:
             case KlassLexer.VALIDATION_MAXIMUM:
             {
-                return getStringDim(text, YELLOW);
+                return getStringBright(text, GREEN);
             }
             // Keywords
             case KlassLexer.KEYWORD_PACKAGE:
@@ -153,7 +152,7 @@ public final class LexicalColorizer
             // Operators
             case KlassLexer.OPERATOR_EQ:
             {
-                return getStringBright(text, YELLOW);
+                return getStringDim(text, MAGENTA);
             }
             // Verbs
             case KlassLexer.VERB_GET:

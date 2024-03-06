@@ -6,9 +6,9 @@ At (DoubleVersionAssociationErrorTest.klass:19)
 [39m 1║ [35mpackage [39mdummy
 [39m17║ [35massociation [39mDoubleVersionAssociation
 [39m18║ [36m{
-[39m19║     [39msource[36m: [39mExampleSource[36m[[34m1[36m..[34m1[36m] [33mversion [33mowned[36m;
+[39m19║     [39msource[36m: [39mExampleSource[36m[[34m1[36m..[34m1[36m] [32mversion [32mowned[36m;
 [39m  ║ [31m                                        ^^^^^
-[39m20║     [39mtarget[36m: [39mExampleTarget[36m[[34m1[36m..[34m1[36m] [33mversion [33mowned[36m;
+[39m20║     [39mtarget[36m: [39mExampleTarget[36m[[34m1[36m..[34m1[36m] [32mversion [32mowned[36m;
 [39m  ║ [31m                                        ^^^^^
 [39m23║ [36m}
 [m
