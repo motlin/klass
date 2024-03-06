@@ -42,6 +42,18 @@ public interface IAntlrElement
     @Nonnull
     Optional<IAntlrElement> getSurroundingElement();
 
+    default <T extends IAntlrElement> Optional<T> getSurroundingElement(Class<T> elementClass)
+    {
+        if (elementClass.isInstance(this))
+        {
+            return Optional.of(elementClass.cast(this));
+        }
+
+        return this
+                .getSurroundingElement()
+                .flatMap(surroundingElement -> surroundingElement.getSurroundingElement(elementClass));
+    }
+
     @Nonnull
     default ImmutableList<IAntlrElement> getSurroundingElementsIncludingThis()
     {
