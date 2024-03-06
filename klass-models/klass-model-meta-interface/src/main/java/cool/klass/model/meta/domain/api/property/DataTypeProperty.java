@@ -116,12 +116,4 @@ public interface DataTypeProperty extends Property
     boolean isForeignKey();
 
     boolean isVersion();
-
-    default String toFullString()
-    {
-        return String.format(
-                "%s.%s",
-                this.getOwningClassifier().getName(),
-                this);
-    }
 }
