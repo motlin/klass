@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.gs.fw.common.mithra.MithraDatedTransactionalObject;
+import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.MithraTransactionalObject;
@@ -29,6 +30,7 @@ import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
+import com.gs.fw.finder.TransactionalDomainList;
 import cool.klass.data.store.DataStore;
 import cool.klass.data.store.Transaction;
 import cool.klass.data.store.TransactionalCommand;
@@ -462,6 +464,22 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object getToOne(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
     {
+        if (!associationEnd.getMultiplicity().isToOne())
+        {
+            throw new AssertionError();
+        }
+
+        Object result = this.get(persistentSourceInstance, associationEnd);
+        if (result instanceof List)
+        {
+            List<?> list = (List<?>) result;
+            throw new AssertionError("Expected single object but got " + list.size());
+        }
+        return result;
+    }
+
+    public Object get(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
+    {
         RelatedFinder<?> finder = this.getRelatedFinder(associationEnd.getOwningClassifier());
         AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder
                 .getRelationshipFinderByName(associationEnd.getName());
@@ -473,7 +491,18 @@ public class ReladomoDataStore implements DataStore
     @Override
     public List<Object> getToMany(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
     {
-        return (List<Object>) this.getToOne(persistentSourceInstance, associationEnd);
+        if (!associationEnd.getMultiplicity().isToMany())
+        {
+            throw new AssertionError();
+        }
+
+        Object result = this.get(persistentSourceInstance, associationEnd);
+        if (!(result instanceof List))
+        {
+            throw new AssertionError("Expected list but got " + result.getClass().getCanonicalName());
+        }
+
+        return (List<Object>) result;
     }
 
     @Override
@@ -540,6 +569,38 @@ public class ReladomoDataStore implements DataStore
         {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public void purgeAll(@Nonnull Klass klass)
+    {
+        if (klass.isAbstract())
+        {
+            return;
+        }
+
+        RelatedFinder<?> relatedFinder = this.getRelatedFinder(klass);
+        if (klass.isSystemTemporal())
+        {
+            this.purgeAll(relatedFinder);
+        }
+        else
+        {
+            this.deleteAll(relatedFinder);
+        }
+    }
+
+    private void purgeAll(RelatedFinder<?> relatedFinder)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".purgeAll() not implemented yet");
+    }
+
+    private void deleteAll(@Nonnull RelatedFinder<?> finder)
+    {
+        Operation                  operation               = finder.all();
+        MithraList<?>              mithraList              = finder.findMany(operation);
+        TransactionalDomainList<?> transactionalDomainList = (TransactionalDomainList<?>) mithraList;
+        transactionalDomainList.deleteAll();
     }
 
     @Override
