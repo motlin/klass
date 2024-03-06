@@ -434,7 +434,7 @@ public class GraphQLQueryToOperationConverterTest
     {
         var typeRegistry          = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls");
         var attributeTypeRegistry = this.getRegistry("/io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls");
-        var queryTypeRegistry     = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls");
+        var queryTypeRegistry     = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/query/GraphQLQuerySchema.graphqls");
         var findersTypeRegistry   = this.getRegistry("/cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls");
         typeRegistry.merge(attributeTypeRegistry);
         typeRegistry.merge(queryTypeRegistry);

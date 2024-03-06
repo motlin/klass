@@ -157,8 +157,8 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
-      "com/stackoverflow/graphql/schema/query/StackOverflowQuery.graphqls",
-      "com/stackoverflow/graphql/schema/StackOverflowFinders.graphqls",
+      "com/stackoverflow/graphql/schema/query/GraphQLQuerySchema.graphqls",
+      "com/stackoverflow/graphql/schema/finder/GraphQLFinders.graphqls",
       "com/stackoverflow/graphql/schema/GraphQLSchema.graphqls",
       "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]

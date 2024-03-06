@@ -1,7 +1,6 @@
 package cool.klass.generator.graphql.schema.query.plugin;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import cool.klass.generator.grahql.schema.query.GraphQLSchemaQueryGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -26,33 +25,17 @@ public class GenerateGraphQLSchemaQueryMojo
             defaultValue = "${project.build.directory}/generated-resources/graphql-schema-query")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true)
-    private String applicationName;
-
-    @Parameter(property = "rootPackageName", required = true)
-    private String rootPackageName;
-
     @Override
-    public void execute() throws MojoExecutionException
+    public void execute()
+            throws MojoExecutionException
     {
-        if (!this.outputDirectory.exists())
-        {
-            this.outputDirectory.mkdirs();
-        }
-
         DomainModel domainModel = this.getDomainModel();
 
-        Path outputPath = this.outputDirectory.toPath();
-
-        GraphQLSchemaQueryGenerator generator = new GraphQLSchemaQueryGenerator(
-                domainModel,
-                this.rootPackageName,
-                this.applicationName);
-        generator.writeQueryFile(outputPath);
+        var generator = new GraphQLSchemaQueryGenerator(domainModel);
+        generator.writeFiles(this.outputDirectory.toPath());
 
         Resource resource = new Resource();
         resource.setDirectory(this.outputDirectory.getAbsolutePath());
-        // TODO: Should be based on the output path
         this.mavenProject.addResource(resource);
     }
 }

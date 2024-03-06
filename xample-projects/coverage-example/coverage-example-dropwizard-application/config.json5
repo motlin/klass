@@ -138,7 +138,7 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
-      "cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls",
+      "cool/klass/xample/coverage/graphql/schema/query/GraphQLQuerySchema.graphqls",
       "cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls",
       "cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls",
       "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"

@@ -1,65 +1,72 @@
 package cool.klass.generator.grahql.schema.query;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
 import java.text.MessageFormat;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
+import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.atteo.evo.inflector.English;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 
 public class GraphQLSchemaQueryGenerator
+        extends AbstractPerPackageGenerator
 {
-    @Nonnull
-    private final DomainModel domainModel;
-    @Nonnull
-    private final String      rootPackageName;
-    @Nonnull
-    private final String      applicationName;
-
-    public GraphQLSchemaQueryGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull String applicationName)
+    public GraphQLSchemaQueryGenerator(@Nonnull DomainModel domainModel)
     {
-        this.domainModel     = Objects.requireNonNull(domainModel);
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.applicationName = Objects.requireNonNull(applicationName);
+        super(domainModel);
     }
 
-    public void writeQueryFile(@Nonnull Path outputPath)
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
     {
-        String allSourceCode = this.domainModel
+        return path
+                .resolve("graphql")
+                .resolve("schema")
+                .resolve("query");
+    }
+
+    @Nonnull
+    @Override
+    protected String getFileName()
+    {
+        return "GraphQLQuerySchema.graphqls";
+    }
+
+    @Nonnull
+    @Override
+    protected String getPackageSourceCode(@Nonnull String fullyQualifiedPackage)
+    {
+        ImmutableList<Klass> classes = this.domainModel
                 .getClasses()
+                .select(each -> each.getPackageName().equals(fullyQualifiedPackage));
+
+        String allSourceCode = classes
                 .collect(this::getAllSourceCode)
                 .makeString("");
 
-        String byKeySourceCode = this.domainModel
-                .getClasses()
+        String byKeySourceCode = classes
                 // TODO: Here we're skipping classifiers that have no key properties. This will still allow through Interfaces that do include key properties. Will those work?
                 .reject(each -> each.getKeyProperties().isEmpty())
                 .collect(this::getByKeySourceCode)
                 .makeString("");
 
-        String byOperationSourceCode = this.domainModel
-                .getClasses()
+        String byOperationSourceCode = classes
                 .collect(this::getByOperationSourceCode)
                 .makeString("");
 
-        String byFinderSourceCode = this.domainModel
-                .getClasses()
+        String byFinderSourceCode = classes
                 .collect(this::getByFinderSourceCode)
                 .makeString("");
 
@@ -77,8 +84,7 @@ public class GraphQLSchemaQueryGenerator
                 + "}\n"
                 + "\n";
 
-        Path schemaOutputPath = this.getOutputPath(outputPath);
-        this.printStringToFile(schemaOutputPath, sourceCode);
+        return sourceCode;
     }
 
     private String getAllSourceCode(Classifier classifier)
@@ -171,31 +177,5 @@ public class GraphQLSchemaQueryGenerator
             return "Float";
         }
         return type.toString();
-    }
-
-    @Nonnull
-    private Path getOutputPath(@Nonnull Path outputPath)
-    {
-        String packageRelativePath = this.rootPackageName.replaceAll("\\.", "/");
-        Path outputDirectory = outputPath
-                .resolve(packageRelativePath)
-                .resolve("graphql")
-                .resolve("schema")
-                .resolve("query");
-        outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + "Query.graphqls";
-        return outputDirectory.resolve(fileName);
-    }
-
-    private void printStringToFile(@Nonnull Path path, String contents)
-    {
-        try (PrintStream printStream = new PrintStream(new FileOutputStream(path.toFile())))
-        {
-            printStream.print(contents);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }

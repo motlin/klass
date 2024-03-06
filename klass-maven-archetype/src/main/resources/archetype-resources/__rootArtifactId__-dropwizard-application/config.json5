@@ -157,8 +157,8 @@
     "enableTracing": false,
     "queryCache": "maximumSize=10000",
     "schemaFiles": [
-      "${packageInPathFormat}/graphql/schema/query/${name}Query.graphqls",
-      "${packageInPathFormat}/graphql/schema/${name}Finders.graphqls",
+      "${packageInPathFormat}/graphql/schema/query/GraphQLQuerySchema.graphqls",
+      "${packageInPathFormat}/graphql/schema/finder/GraphQLFinders.graphqls",
       "${packageInPathFormat}/graphql/schema/${name}.graphqls",
       "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
