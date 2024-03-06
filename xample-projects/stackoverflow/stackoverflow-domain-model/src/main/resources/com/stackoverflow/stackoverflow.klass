@@ -68,11 +68,7 @@ class Question
             && Answer.deleted == false
     }
 
-    // TODO: Add keywords for declaring special properties. It may look redundant like:
-    // TODO: system system: TemporalRange, but would allow renames like:
-    // TODO: system known: TemporalRange
-
-    // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
+    // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
     system            : TemporalRange system;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
