@@ -8,19 +8,24 @@ class Parent
 class Child
 {
     key: String key;
-    parentKey: String private;
+    parentKey1: String private;
+    parentKey2: String private;
 }
 
 association ParentHasChild1
 {
     parent: Parent[0..1];
     children: Child[0..*];
+
+    relationship this.key == Child.parentKey1
 }
 
 association ParentHasChild2
 {
     parent2: Parent[0..1];
     children: Child[0..*];
+
+    relationship this.key == Child.parentKey2
 }
 
 projection ParentProject on Parent

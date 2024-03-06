@@ -1,17 +1,17 @@
 ════════════════════════════════════════ [35mERR_DUP_PRP[m ════════════════════════════════════════
 [31mError: Duplicate member: 'Parent.children'.[m
 
-At (ProjectionOnAmbiguousReferencePropertyTest.klass:23)
+At (ProjectionOnAmbiguousReferencePropertyTest.klass:26)
 
 [39m 1║ [35mpackage [39mdummy
-[39m20║ [35massociation [39mParentHasChild2
-[39m21║ [36m{
-[39m23║     [39mchildren[36m: [39mChild[36m[[34m0[36m..[34m*[36m][36m;
+[39m23║ [35massociation [39mParentHasChild2
+[39m24║ [36m{
+[39m26║     [39mchildren[36m: [39mChild[36m[[34m0[36m..[34m*[36m][36m;
 [39m  ║ [31m    ^^^^^^^^
-[39m24║ [36m}
+[39m29║ [36m}
 [m
-[36mLocation:  [mProjectionOnAmbiguousReferencePropertyTest.klass:23[m
+[36mLocation:  [mProjectionOnAmbiguousReferencePropertyTest.klass:26[m
 [36mFile:      [mProjectionOnAmbiguousReferencePropertyTest.klass[m
-[36mLine:      [m23[m
+[36mLine:      [m26[m
 [36mCharacter: [m5
 ═════════════════════════════════════════════════════════════════════════════════════════════
