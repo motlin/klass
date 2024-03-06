@@ -1,0 +1,45 @@
+package com.errors
+
+class DummyClass systemTemporal versioned
+{
+    id: Long id key;
+    createdById: String;
+    lastUpdatedById: String;
+}
+
+user User systemTemporal versioned
+{
+    id: String id key userId;
+}
+
+association CreatedBy
+{
+    dummyClassesCreatedBy: DummyClass[0..*];
+    createdBy: User[1..1] createdBy;
+
+    relationship this.createdById == User.id
+}
+
+association LastUpdatedBy
+{
+    dummyClassesLastUpdatedBy: DummyClass[0..*];
+    lastUpdatedBy: User[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.id
+}
+
+association CreatedByDuplicate
+{
+    dummyClassesCreatedByDuplicate: DummyClass[0..*];
+    createdByDuplicate: User[1..1] createdBy;
+
+    relationship this.createdById == User.id
+}
+
+association LastUpdatedByDuplicate
+{
+    dummyClassesLastUpdatedByDuplicate: DummyClass[0..*];
+    lastUpdatedByDuplicate: User[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.id
+}

@@ -1,10 +1,5 @@
 package com.errors
 
-user User
-{
-    userId: String key userId;
-}
-
 class ExampleClass systemTemporal versioned
 {
     id: Long id key;

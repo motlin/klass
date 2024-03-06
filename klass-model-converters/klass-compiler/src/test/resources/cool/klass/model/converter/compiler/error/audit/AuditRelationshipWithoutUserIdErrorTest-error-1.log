@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_OPR_EQL[m [33m════════════════════════════════════════[m
+[31mIncompatible types: 'String' and 'Long'.[m
+
+Error at location. (AuditRelationshipWithoutUserIdErrorTest.klass:27)
+[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
+[40;37m22║ [40;35massociation [40;97mLastUpdatedBy
+[40;37m23║ [40;36m{
+[40;37m27║     [40;95mrelationship [40;95mthis[40;36m.[40;97mlastUpdatedById [40;93m== [40;97mUser[40;36m.[40;97motherProperty
+[40;37m  ║                  [40;91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[40;37m28║ [40;36m}
+[m
+[36mLocation:  [mAuditRelationshipWithoutUserIdErrorTest.klass:27[m
+[36mFile:      [mAuditRelationshipWithoutUserIdErrorTest.klass[m
+[36mLine:      [m27[m
+[36mCharacter: [m18[m

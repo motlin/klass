@@ -1,12 +1,12 @@
 [33m════════════════════════════════════════[m [35mERR_VER_VER[m [33m════════════════════════════════════════[m
 [31mClass 'ExampleTarget' is a version and has a version.[m
 
-Error at location. (DoubleVersionAssociationErrorTest.klass:16)
+Error at location. (DoubleVersionAssociationErrorTest.klass:17)
 [40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m16║ [40;35mclass [40;97mExampleTarget
+[40;37m17║ [40;35mclass [40;97mExampleTarget
 [40;37m  ║       [40;91m^^^^^^^^^^^^^
 [m
-[36mLocation:  [mDoubleVersionAssociationErrorTest.klass:16[m
+[36mLocation:  [mDoubleVersionAssociationErrorTest.klass:17[m
 [36mFile:      [mDoubleVersionAssociationErrorTest.klass[m
-[36mLine:      [m16[m
+[36mLine:      [m17[m
 [36mCharacter: [m7[m

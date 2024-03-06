@@ -10,6 +10,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
@@ -88,6 +89,18 @@ public class ErrorContextListener
     public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
         this.addTextInclusive("", ctx.getStop(), ctx.getStop());
+    }
+
+    @Override
+    public void enterRelationship(@Nonnull RelationshipContext ctx)
+    {
+        this.addTextInclusive("    ", ctx.getStart(), ctx.getStop());
+    }
+
+    @Override
+    public void exitRelationship(@Nonnull RelationshipContext ctx)
+    {
+        // Deliberately empty
     }
 
     @Override

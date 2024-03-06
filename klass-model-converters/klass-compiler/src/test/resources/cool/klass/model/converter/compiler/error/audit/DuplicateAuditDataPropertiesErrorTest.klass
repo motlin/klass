@@ -1,0 +1,15 @@
+package com.errors
+
+class DummyClass systemTemporal versioned audited
+{
+    id: Long id key;
+    createdById1: String createdBy;
+    lastUpdatedById1: String lastUpdatedBy;
+    createdById2: String createdBy;
+    lastUpdatedById2: String lastUpdatedBy;
+}
+
+user User systemTemporal versioned
+{
+    id: String id key userId;
+}

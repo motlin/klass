@@ -1,0 +1,6 @@
+package com.errors
+
+user User
+{
+    userId: Instant key userId;
+}

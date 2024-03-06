@@ -10,7 +10,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
-import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -39,8 +38,7 @@ public abstract class AntlrCriteria extends AntlrElement
     @Override
     public boolean omitParentFromSurroundingElements()
     {
-        return this.criteriaOwner instanceof AntlrServiceCriteria
-                || this.criteriaOwner instanceof AntlrBinaryCriteria;
+        return true;
     }
 
     @Nonnull

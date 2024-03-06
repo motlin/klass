@@ -1,9 +1,9 @@
-package example
+package dummy
 
-association ExampleAssociation
+association NonVersionAssociation
 {
-    source: ExampleClass[1..1] owned;
-    target: ExampleVersion[1..1] version;
+    source: ExampleClass[1..1];
+    target: ExampleVersion[1..1] owned;
 
     relationship this.id == ExampleVersion.id
 }

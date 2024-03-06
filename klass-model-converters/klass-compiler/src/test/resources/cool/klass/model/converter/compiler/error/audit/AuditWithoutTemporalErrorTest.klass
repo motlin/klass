@@ -1,0 +1,11 @@
+package com.errors
+
+user User
+{
+    userId: String key userId;
+}
+
+class DummyClass versioned audited
+{
+    id: Long id key;
+}

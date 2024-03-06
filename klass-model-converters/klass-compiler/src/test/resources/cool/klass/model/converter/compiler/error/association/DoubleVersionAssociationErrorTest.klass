@@ -11,9 +11,11 @@ association DoubleVersionAssociation
 class ExampleSource
 {
     id: Long key;
+    number: Integer version;
 }
 
 class ExampleTarget
 {
     id: Long key;
+    number: Integer version;
 }

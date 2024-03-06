@@ -1,0 +1,47 @@
+package com.errors
+
+user User systemTemporal versioned
+{
+    id: String id key userId;
+}
+
+class DummyClass systemTemporal versioned audited
+{
+    id             : Long id key;
+    system         : TemporalRange?    system system;
+    systemFrom     : TemporalInstant? system from from;
+    systemTo       : TemporalInstant? system to to;
+    createdById    : String createdBy createdBy userId final private;
+    createdOn      : Instant createdOn createdOn final;
+    lastUpdatedById: String lastUpdatedBy lastUpdatedBy userId private;
+
+    range          : TemporalRange? system valid;
+    from           : TemporalInstant? from;
+    to             : TemporalInstant? to;
+    systemFromTo   : TemporalInstant? system from to;
+    fromFrom       : TemporalInstant? system system from from;
+    by             : Long private createdBy lastUpdatedBy;
+
+}
+
+class DummyClass2 systemTemporal versioned audited
+{
+    id: Long id key;
+    createdById    : String createdBy lastUpdatedBy userId final private;
+}
+
+association CreatedBy
+{
+    dummyClassesCreatedBy: DummyClass[0..*];
+    createdBy: User[1..1] createdBy lastUpdatedBy;
+
+    relationship this.createdById == User.id
+}
+
+association LastUpdatedBy
+{
+    dummyClassesLastUpdatedBy: DummyClass[0..*];
+    lastUpdatedBy: User[1..1] createdBy lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.id
+}

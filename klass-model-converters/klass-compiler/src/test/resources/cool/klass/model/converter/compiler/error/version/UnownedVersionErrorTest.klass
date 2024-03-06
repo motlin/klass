@@ -2,8 +2,8 @@ package example
 
 association ExampleAssociation
 {
-    source: ExampleClass[1..1];
-    target: ExampleVersion[0..1] version;
+    exampleClass: ExampleClass[1..1];
+    exampleClassVersion: ExampleVersion[0..1] version;
 
     relationship this.id == ExampleVersion.id
 }
@@ -16,4 +16,5 @@ class ExampleClass
 class ExampleVersion
 {
     id: Long key;
+    number: Integer version;
 }

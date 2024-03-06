@@ -1,0 +1,29 @@
+package com.errors
+
+class DummyClass systemTemporal versioned
+{
+    id: Long id key;
+    createdById: Long;
+    lastUpdatedById: Long;
+}
+
+class NotUserClass systemTemporal versioned
+{
+    id: Long id key;
+}
+
+association CreatedBy
+{
+    dummyClassesCreatedBy: DummyClass[0..*];
+    createdBy: NotUserClass[1..1] createdBy;
+
+    relationship this.createdById == NotUserClass.id
+}
+
+association LastUpdatedBy
+{
+    dummyClassesLastUpdatedBy: DummyClass[0..*];
+    lastUpdatedBy: NotUserClass[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == NotUserClass.id
+}

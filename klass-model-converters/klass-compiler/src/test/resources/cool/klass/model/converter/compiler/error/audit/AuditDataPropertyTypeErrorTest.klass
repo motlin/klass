@@ -1,0 +1,33 @@
+package com.errors
+
+enumeration DummyEnumeration
+{
+    DUMMY_LITERAL,
+}
+
+user User systemTemporal versioned
+{
+    id: Long id key userId;
+}
+
+class DummyClass systemTemporal versioned audited
+{
+    id             : Long id key;
+    system         : DummyEnumeration system;
+    systemFrom     : DummyEnumeration system from;
+    systemTo       : DummyEnumeration system to;
+    createdById    : DummyEnumeration createdBy;
+    createdOn      : DummyEnumeration createdOn;
+    lastUpdatedById: DummyEnumeration lastUpdatedBy;
+}
+
+class DummyClass2 systemTemporal versioned audited
+{
+    id             : Long id key;
+    system         : Long? system;
+    systemFrom     : Long? system from;
+    systemTo       : Long? system to;
+    createdById    : Long private createdBy;
+    createdOn      : Long createdOn;
+    lastUpdatedById: Long private lastUpdatedBy;
+}
