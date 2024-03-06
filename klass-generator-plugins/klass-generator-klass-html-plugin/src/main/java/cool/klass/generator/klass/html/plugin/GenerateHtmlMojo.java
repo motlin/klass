@@ -2,7 +2,7 @@ package cool.klass.generator.klass.html.plugin;
 
 import java.io.File;
 
-import cool.klass.generator.klass.html.KlassHtmlGenerator;
+import cool.klass.generator.klass.html.KlassSourceCodeHtmlGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
@@ -39,8 +39,8 @@ public class GenerateHtmlMojo
             throw new AssertionError(compilationResult.getClass().getSimpleName());
         }
 
-        ImmutableList<SourceCode> sourceCodes = compilationResult.getSourceCodes();
-        KlassHtmlGenerator        generator   = new KlassHtmlGenerator(sourceCodes);
+        ImmutableList<SourceCode>    sourceCodes = compilationResult.getSourceCodes();
+        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(sourceCodes);
         generator.writeHtmlFiles(this.outputDirectory.toPath());
     }
 }
