@@ -15,6 +15,9 @@ public interface DomainModel
     ImmutableList<Enumeration> getEnumerations();
 
     @Nonnull
+    ImmutableList<Classifier> getClassifiers();
+
+    @Nonnull
     ImmutableList<Interface> getInterfaces();
 
     @Nonnull
@@ -30,6 +33,8 @@ public interface DomainModel
     ImmutableList<ServiceGroup> getServiceGroups();
 
     Enumeration getEnumerationByName(String name);
+
+    Classifier getClassifierByName(String name);
 
     Interface getInterfaceByName(String name);
 

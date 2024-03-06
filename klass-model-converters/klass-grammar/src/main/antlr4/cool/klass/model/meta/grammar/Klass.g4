@@ -54,11 +54,11 @@ relationship: 'relationship' criteriaExpression;
 // projection
 projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classReference projectionBody;
 projectionBody: '{' (projectionMember ',')* '}';
-projectionMember: projectionPrimitiveMember | projectionAssociationEnd | projectionParameterizedProperty;
-// TODO: Call this an *Invocation instead of projection*?
-projectionPrimitiveMember: identifier ':' header;
-projectionAssociationEnd: identifier ':' projectionBody;
-projectionParameterizedProperty: identifier argumentList ':' projectionBody;
+projectionMember: projectionPrimitiveMember | projectionAssociationEnd | projectionParameterizedProperty | projectionProjectionReference;
+projectionPrimitiveMember: (classifierReference '.')? identifier ':' header;
+projectionAssociationEnd: (classifierReference '.')? identifier ':' projectionBody;
+projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference;
+projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBody;
 header: StringLiteral;
 
 // service

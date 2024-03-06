@@ -29,7 +29,7 @@ public class AbstractReladomoGenerator
                 .replaceAll("></SimulatedSequence>", " />")
                 .replaceAll("\"/>", "\" />")
                 .replaceAll(
-                        " (javaType|nullable|columnName|trim|primaryKey|maxLength|primaryKeyGeneratorStrategy|fromIsInclusive|toIsInclusive|infinityDate|futureExpiringRowsExist|isProcessingDate|fromColumnName|toColumnName|defaultIfNotSpecified|reverseRelationshipName|relatedObject|relatedIsDependent|cardinality|orderBy|sequenceName|sequenceObjectFactoryName|hasSourceAttribute|batchSize|initialValue|incrementSize|infinityIsNull|timezoneConversion|finalGetter)=",
+                        " (javaType|readonly|nullable|columnName|trim|primaryKey|maxLength|primaryKeyGeneratorStrategy|fromIsInclusive|toIsInclusive|infinityDate|futureExpiringRowsExist|isProcessingDate|fromColumnName|toColumnName|defaultIfNotSpecified|reverseRelationshipName|relatedObject|relatedIsDependent|cardinality|orderBy|sequenceName|sequenceObjectFactoryName|hasSourceAttribute|batchSize|initialValue|incrementSize|infinityIsNull|timezoneConversion|finalGetter)=",
                         "\n            $1=")
                 .replaceAll(
                         " (initializePrimitivesToNull|objectType|superClassType)=",

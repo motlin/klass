@@ -154,6 +154,7 @@ association EnumerationPropertyHasEnumeration
 }
 
 // TODO: Change the orderBy syntax to orderBy(this.ordinal)
+/*
 association ClassifierHasDataTypeTypeProperties
 {
     owningClassifier              : Classifier[1..1];
@@ -162,20 +163,23 @@ association ClassifierHasDataTypeTypeProperties
 
     relationship this.name == DataTypeProperty.classifierName
 }
+*/
 
+// TODO: Owned
 association ClassifierHasPrimitiveProperties
 {
     owningClassifier: Classifier[1..1];
-    primitiveProperties: PrimitiveProperty[0..*] owned
+    primitiveProperties: PrimitiveProperty[0..*]
         orderBy: this.ordinal;
 
     relationship this.name == PrimitiveProperty.classifierName
 }
 
+// TODO: Owned
 association ClassifierHasEnumerationProperties
 {
     owningClassifier: Classifier[1..1];
-    enumerationProperties: EnumerationProperty[0..*] owned
+    enumerationProperties: EnumerationProperty[0..*]
         orderBy: this.ordinal;
 
     relationship this.name == EnumerationProperty.classifierName
@@ -710,13 +714,21 @@ projection InterfaceReadProjection on Interface
         inferred: "Interface modifier inferred",
         ordinal : "Interface modifier ordinal",
     },
+/*
     dataTypeProperties     :
     {
         name               : "Property name",
         inferred           : "Property inferred",
+        PrimitiveProperty.primitiveType      : "Property primitive type",
         optional           : "Property is optional",
         key                : "Property is key",
+        PrimitiveProperty.id                 : "Property is id",
         ordinal            : "Property ordinal",
+        EnumerationProperty.enumeration        :
+        {
+            name    : "Property Enumeration name",
+            inferred: "Property Enumeration inferred",
+        },
         propertyModifiers  :
         {
             name    : "Property modifier name",
@@ -725,13 +737,22 @@ projection InterfaceReadProjection on Interface
         },
         minLengthValidation:
         {
-            number: "Min length validation number",
+            number: "Property min length validation number",
         },
         maxLengthValidation:
         {
-            number: "Max length validation number",
+            number: "Property max length validation number",
+        },
+        PrimitiveProperty.minValidation      :
+        {
+            number: "Property min validation number",
+        },
+        PrimitiveProperty.maxValidation      :
+        {
+            number: "Property max validation number",
         },
     },
+*/
     primitiveProperties    :
     {
         name               : "Primitive property name",
@@ -871,13 +892,21 @@ projection ClassReadProjection on Klass
         inferred: "Class modifier inferred",
         ordinal : "Class modifier ordinal",
     },
+/*
     dataTypeProperties     :
     {
         name               : "Property name",
         inferred           : "Property inferred",
+        PrimitiveProperty.primitiveType      : "Property primitive type",
         optional           : "Property is optional",
         key                : "Property is key",
+        PrimitiveProperty.id                 : "Property is id",
         ordinal            : "Property ordinal",
+        EnumerationProperty.enumeration        :
+        {
+            name    : "Property Enumeration name",
+            inferred: "Property Enumeration inferred",
+        },
         propertyModifiers  :
         {
             name    : "Property modifier name",
@@ -886,13 +915,22 @@ projection ClassReadProjection on Klass
         },
         minLengthValidation:
         {
-            number: "Min length validation number",
+            number: "Property min length validation number",
         },
         maxLengthValidation:
         {
-            number: "Max length validation number",
+            number: "Property max length validation number",
+        },
+        PrimitiveProperty.minValidation      :
+        {
+            number: "Property min validation number",
+        },
+        PrimitiveProperty.maxValidation      :
+        {
+            number: "Property max validation number",
         },
     },
+*/
     primitiveProperties    :
     {
         name               : "Primitive property name",

@@ -4,18 +4,21 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionAssociationEnd;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionDataTypeProperty;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionParent;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
@@ -36,7 +39,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
         String            className   = ctx.classReference().identifier().getText();
         AntlrClass        klass       = this.compilerState.getDomainModelState().getClassByName(className);
         IdentifierContext nameContext = ctx.identifier();
-        AntlrProjection antlrProjection = new AntlrProjection(
+        AntlrProjection projectionState = new AntlrProjection(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
@@ -45,14 +48,14 @@ public class ProjectionPhase extends AbstractCompilerPhase
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
                 klass,
                 this.compilerState.getCompilerWalkState().getPackageName());
-        this.elementStack.push(antlrProjection);
+        this.elementStack.push(projectionState);
     }
 
     @Override
     public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        AntlrProjection antlrProjection = (AntlrProjection) this.elementStack.pop();
-        this.compilerState.getDomainModelState().exitProjectionDeclaration(antlrProjection);
+        AntlrProjection projectionState = (AntlrProjection) this.elementStack.pop();
+        this.compilerState.getDomainModelState().exitProjectionDeclaration(projectionState);
 
         super.exitProjectionDeclaration(ctx);
     }
@@ -62,30 +65,34 @@ public class ProjectionPhase extends AbstractCompilerPhase
     {
         super.enterProjectionPrimitiveMember(ctx);
 
-        AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
+        AntlrProjectionParent projectionParentState = this.elementStack.peek();
 
         IdentifierContext nameContext      = ctx.identifier();
         String            name             = nameContext.getText();
         HeaderContext     header           = ctx.header();
         String            headerQuotedText = header.StringLiteral().getText();
         // TODO: ❓ Unescaping header text?
-        String            headerText       = headerQuotedText.substring(1, headerQuotedText.length() - 1);
+        String headerText = headerQuotedText.substring(1, headerQuotedText.length() - 1);
 
-        AntlrDataTypeProperty<?> dataTypeProperty = antlrProjectionParent.getKlass().getDataTypePropertyByName(name);
+        ClassifierReferenceContext classifierReferenceContext = ctx.classifierReference();
+        AntlrClassifier classifierState = classifierReferenceContext == null
+                ? projectionParentState.getKlass()
+                : this.compilerState.getDomainModelState().getClassifierByName(classifierReferenceContext.getText());
+        AntlrDataTypeProperty<?> dataTypePropertyState = classifierState.getDataTypePropertyByName(name);
 
-        AntlrProjectionDataTypeProperty antlrProjectionPrimitiveMember = new AntlrProjectionDataTypeProperty(
+        AntlrProjectionDataTypeProperty projectionPrimitiveMemberState = new AntlrProjectionDataTypeProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
                 nameContext,
                 name,
-                antlrProjectionParent.getNumChildren() + 1,
+                projectionParentState.getNumChildren() + 1,
                 header,
                 headerText,
-                antlrProjectionParent,
-                dataTypeProperty);
+                projectionParentState,
+                dataTypePropertyState);
 
-        antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionPrimitiveMember);
+        projectionParentState.enterAntlrProjectionMember(projectionPrimitiveMemberState);
     }
 
     @Override
@@ -93,28 +100,31 @@ public class ProjectionPhase extends AbstractCompilerPhase
     {
         super.enterProjectionAssociationEnd(ctx);
 
-        AntlrProjectionParent antlrProjectionParent = this.elementStack.peek();
+        AntlrProjectionParent projectionParentState = this.elementStack.peek();
 
         IdentifierContext nameContext = ctx.identifier();
         String            name        = nameContext.getText();
 
-        AntlrClass          antlrClass          = antlrProjectionParent.getKlass();
-        AntlrAssociationEnd antlrAssociationEnd = antlrClass.getAssociationEndByName(name);
+        ClassifierReferenceContext classifierReferenceContext = ctx.classifierReference();
+        AntlrClass classState = classifierReferenceContext == null
+                ? projectionParentState.getKlass()
+                : this.compilerState.getDomainModelState().getClassByName(classifierReferenceContext.getText());
+        AntlrAssociationEnd associationEndState = classState.getAssociationEndByName(name);
 
-        AntlrProjectionAssociationEnd antlrProjectionAssociationEnd = new AntlrProjectionAssociationEnd(
+        AntlrProjectionAssociationEnd projectionAssociationEndState = new AntlrProjectionAssociationEnd(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
                 this.compilerState.getCompilerInputState().isInference(),
                 nameContext,
                 name,
-                antlrProjectionParent.getNumChildren() + 1,
-                antlrAssociationEnd.getType(),
-                antlrProjectionParent,
-                antlrAssociationEnd);
+                projectionParentState.getNumChildren() + 1,
+                associationEndState.getType(),
+                projectionParentState,
+                associationEndState);
 
-        antlrProjectionParent.enterAntlrProjectionMember(antlrProjectionAssociationEnd);
+        projectionParentState.enterAntlrProjectionMember(projectionAssociationEndState);
 
-        this.elementStack.push(antlrProjectionAssociationEnd);
+        this.elementStack.push(projectionAssociationEndState);
     }
 
     @Override
@@ -122,6 +132,20 @@ public class ProjectionPhase extends AbstractCompilerPhase
     {
         this.elementStack.pop();
         super.exitProjectionAssociationEnd(ctx);
+    }
+
+    @Override
+    public void enterProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionProjectionReference() not implemented yet");
+    }
+
+    @Override
+    public void exitProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitProjectionProjectionReference() not implemented yet");
     }
 
     @Override

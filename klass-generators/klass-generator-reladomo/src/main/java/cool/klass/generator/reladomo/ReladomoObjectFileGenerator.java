@@ -3,7 +3,6 @@ package cool.klass.generator.reladomo;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -37,10 +36,9 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
-import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
@@ -110,7 +108,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraPureObject.setAsOfAttributes(asOfAttributeTypes.castToList());
         mithraPureObject.setAttributes(attributeTypes.castToList());
 
-        mithraPureObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
+        mithraPureObject.setRelationships(this.convertRelationships(klass));
 
         return mithraPureObject;
     }
@@ -150,7 +148,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraObject.setAsOfAttributes(asOfAttributeTypes.castToList());
         mithraObject.setAttributes(attributeTypes.castToList());
 
-        mithraObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
+        mithraObject.setRelationships(this.convertRelationships(klass));
 
         return mithraObject;
     }
@@ -168,22 +166,13 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
             return klass.getDataTypeProperties();
         }
 
-        ImmutableList<DataTypeProperty> keyProperties              = klass.getKeyProperties();
-        ImmutableList<DataTypeProperty> declaredDataTypeProperties = klass.getDeclaredDataTypeProperties();
+        ImmutableList<DataTypeProperty> superClassProperties = klass.getSuperClass().get().getDataTypeProperties();
+        ImmutableList<DataTypeProperty> dataTypeProperties   = klass.getDataTypeProperties();
 
-        ImmutableList<DataTypeProperty> orderByProperties = klass.getAssociationEnds()
-                .collect(AssociationEnd::getOpposite)
-                .collect(ReferenceProperty::getOrderBy)
-                .select(Optional::isPresent)
-                .collect(Optional::get)
-                .flatCollect(OrderBy::getOrderByMemberReferencePaths)
-                .collect(OrderByMemberReferencePath::getThisMemberReferencePath)
-                .collect(MemberReferencePath::getProperty);
-
-        return keyProperties
-                .newWithAll(declaredDataTypeProperties)
-                .newWithAll(orderByProperties)
-                .distinct();
+        ImmutableList<String> superClassPropertyNames = superClassProperties.collect(NamedElement::getName);
+        ImmutableList<DataTypeProperty> uniqueDataTypeProperties = dataTypeProperties
+                .reject(dtp -> superClassPropertyNames.contains(dtp.getName()));
+        return uniqueDataTypeProperties;
     }
 
     private void convertCommonObject(Klass klass, @Nonnull MithraCommonObjectType mithraCommonObject)
@@ -205,9 +194,16 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         });
     }
 
-    private List<RelationshipType> convertRelationships(ImmutableList<AssociationEnd> associationEnds)
+    private List<RelationshipType> convertRelationships(Klass klass)
     {
-        return associationEnds
+        ImmutableList<String> superClassAssociationEndNames = klass.getSuperClass()
+                .map(Klass::getAssociationEnds)
+                .orElseGet(Lists.immutable::empty)
+                .collect(NamedElement::getName);
+
+        return klass
+                .getAssociationEnds()
+                .reject(associationEnd -> superClassAssociationEndNames.contains(associationEnd.getName()))
                 .select(associationEnd ->
                         associationEnd == associationEnd.getOwningAssociation().getTargetAssociationEnd())
                 .collect(this::convertRelationship)
@@ -385,6 +381,11 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         attributeType.setColumnName(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName));
         attributeType.setPrimaryKey(dataTypeProperty.isKey());
         attributeType.setNullable(dataTypeProperty.isOptional());
+        attributeType.setFinalGetter(true);
+        if (dataTypeProperty.isKey() || dataTypeProperty.isFinal())
+        {
+            attributeType.setReadonly(true);
+        }
 
         this.handleType(attributeType, dataTypeProperty);
     }

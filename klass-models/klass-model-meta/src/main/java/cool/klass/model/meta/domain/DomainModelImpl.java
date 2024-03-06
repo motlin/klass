@@ -4,12 +4,14 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Interface;
@@ -30,6 +32,8 @@ public final class DomainModelImpl implements DomainModel
     @Nonnull
     private final ImmutableList<Enumeration>        enumerations;
     @Nonnull
+    private final ImmutableList<Classifier>         classifiers;
+    @Nonnull
     private final ImmutableList<Interface>          interfaces;
     @Nonnull
     private final ImmutableList<Klass>              classes;
@@ -46,10 +50,12 @@ public final class DomainModelImpl implements DomainModel
     private final ImmutableMap<String, Association> associationsByName;
     private final ImmutableMap<String, Projection>  projectionsByName;
     private final ImmutableMap<Klass, ServiceGroup> serviceGroupsByKlass;
+    private final ImmutableMap<String, Classifier>  classifiersByName;
 
     private DomainModelImpl(
             @Nonnull ImmutableList<PackageableElement> topLevelElements,
             @Nonnull ImmutableList<Enumeration> enumerations,
+            @Nonnull ImmutableList<Classifier> classifiers,
             @Nonnull ImmutableList<Interface> interfaces,
             @Nonnull ImmutableList<Klass> classes,
             @Nonnull ImmutableList<Association> associations,
@@ -58,6 +64,7 @@ public final class DomainModelImpl implements DomainModel
     {
         this.topLevelElements = Objects.requireNonNull(topLevelElements);
         this.enumerations = Objects.requireNonNull(enumerations);
+        this.classifiers = Objects.requireNonNull(classifiers);
         this.interfaces = Objects.requireNonNull(interfaces);
         this.classes = Objects.requireNonNull(classes);
         this.associations = Objects.requireNonNull(associations);
@@ -65,6 +72,7 @@ public final class DomainModelImpl implements DomainModel
         this.serviceGroups = Objects.requireNonNull(serviceGroups);
 
         this.enumerationsByName = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.classifiersByName = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
         this.interfacesByName = this.interfaces.groupByUniqueKey(NamedElement::getName).toImmutable();
         this.classesByName = this.classes.groupByUniqueKey(NamedElement::getName).toImmutable();
         this.associationsByName = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
@@ -84,6 +92,12 @@ public final class DomainModelImpl implements DomainModel
     public ImmutableList<Enumeration> getEnumerations()
     {
         return this.enumerations;
+    }
+
+    @Nonnull
+    public ImmutableList<Classifier> getClassifiers()
+    {
+        return this.classifiers;
     }
 
     @Nonnull
@@ -127,6 +141,12 @@ public final class DomainModelImpl implements DomainModel
     }
 
     @Override
+    public Classifier getClassifierByName(String name)
+    {
+        return this.classifiersByName.get(name);
+    }
+
+    @Override
     public Interface getInterfaceByName(String name)
     {
         return this.interfacesByName.get(name);
@@ -157,6 +177,8 @@ public final class DomainModelImpl implements DomainModel
         @Nonnull
         private final ImmutableList<EnumerationBuilder>     enumerationBuilders;
         @Nonnull
+        private final ImmutableList<ClassifierBuilder<?>>   classifierBuilders;
+        @Nonnull
         private final ImmutableList<InterfaceBuilder>       interfaceBuilders;
         @Nonnull
         private final ImmutableList<KlassBuilder>           classBuilders;
@@ -170,6 +192,7 @@ public final class DomainModelImpl implements DomainModel
         public DomainModelBuilder(
                 @Nonnull ImmutableList<TopLevelElementBuilder> topLevelElementBuilders,
                 @Nonnull ImmutableList<EnumerationBuilder> enumerationBuilders,
+                @Nonnull ImmutableList<ClassifierBuilder<?>> classifierBuilders,
                 @Nonnull ImmutableList<InterfaceBuilder> interfaceBuilders,
                 @Nonnull ImmutableList<KlassBuilder> classBuilders,
                 @Nonnull ImmutableList<AssociationBuilder> associationBuilders,
@@ -178,6 +201,7 @@ public final class DomainModelImpl implements DomainModel
         {
             this.topLevelElementBuilders = Objects.requireNonNull(topLevelElementBuilders);
             this.enumerationBuilders = Objects.requireNonNull(enumerationBuilders);
+            this.classifierBuilders = Objects.requireNonNull(classifierBuilders);
             this.interfaceBuilders = Objects.requireNonNull(interfaceBuilders);
             this.classBuilders = Objects.requireNonNull(classBuilders);
             this.associationBuilders = Objects.requireNonNull(associationBuilders);
@@ -190,6 +214,7 @@ public final class DomainModelImpl implements DomainModel
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.<Enumeration>collect(EnumerationBuilder::build).toImmutable();
             ImmutableList<Interface>   interfaces   = this.interfaceBuilders.<Interface>collect(InterfaceBuilder::build).toImmutable();
             ImmutableList<Klass>       classes      = this.classBuilders.<Klass>collect(KlassBuilder::build).toImmutable();
+            ImmutableList<Classifier>  classifiers  = this.classifierBuilders.collect(ClassifierBuilder::getElement);
             ImmutableList<Association> associations = this.associationBuilders.<Association>collect(AssociationBuilder::build).toImmutable();
             this.interfaceBuilders.each(InterfaceBuilder::build2);
             this.classBuilders.each(KlassBuilder::build2);
@@ -203,6 +228,7 @@ public final class DomainModelImpl implements DomainModel
             return new DomainModelImpl(
                     topLevelElements,
                     enumerations,
+                    classifiers,
                     interfaces,
                     classes,
                     associations,

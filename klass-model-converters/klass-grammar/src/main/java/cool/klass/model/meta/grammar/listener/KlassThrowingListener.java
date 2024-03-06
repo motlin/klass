@@ -88,6 +88,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
@@ -541,6 +542,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitProjectionAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void enterProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionProjectionReference() not implemented yet");
+    }
+
+    @Override
+    public void exitProjectionProjectionReference(ProjectionProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitProjectionProjectionReference() not implemented yet");
     }
 
     @Override

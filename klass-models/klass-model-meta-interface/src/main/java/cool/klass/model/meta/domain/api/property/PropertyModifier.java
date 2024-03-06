@@ -42,6 +42,11 @@ public interface PropertyModifier extends NamedElement
         return this.getName().equals("to");
     }
 
+    default boolean isFinal()
+    {
+        return this.getName().equals("final");
+    }
+
     default boolean isAudit()
     {
         return AUDIT_PROPERTY_NAMES.contains(this.getName());
