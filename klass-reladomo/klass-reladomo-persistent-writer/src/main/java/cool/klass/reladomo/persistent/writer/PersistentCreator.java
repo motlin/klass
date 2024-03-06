@@ -147,8 +147,7 @@ public class PersistentCreator extends PersistentSynchronizer
     {
         DataTypeProperty versionKeyProperty = keyProperty
                 .getForeignKeysMatchingThisKey()
-                .get(associationEnd.getOpposite())
-                .getOnly();
+                .get(associationEnd.getOpposite());
 
         if (versionKeyProperty.getOwningClassifier() == associationEnd.getType())
         {

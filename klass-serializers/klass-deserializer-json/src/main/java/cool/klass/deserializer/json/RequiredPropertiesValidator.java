@@ -17,7 +17,6 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
-import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 
 public class RequiredPropertiesValidator
@@ -840,19 +839,16 @@ public class RequiredPropertiesValidator
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getOrDefault(
-                opposite,
-                Lists.immutable.empty());
+        DataTypeProperty oppositeForeignKey = keysMatchingThisForeignKey.get(opposite);
 
-        if (oppositeForeignKeys.notEmpty())
+        if (oppositeForeignKey != null)
         {
-            DataTypeProperty oppositeForeignKey     = oppositeForeignKeys.getOnly();
-            String           oppositeForeignKeyName = oppositeForeignKey.getName();
-            Object           result                 = parentJsonNode.path(oppositeForeignKeyName);
+            String oppositeForeignKeyName = oppositeForeignKey.getName();
+            Object result                 = parentJsonNode.path(oppositeForeignKeyName);
             return Objects.requireNonNull(result);
         }
 
@@ -863,11 +859,11 @@ public class RequiredPropertiesValidator
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
+            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             JsonNode childNode = jsonNode.path(pair.getOne().getName());
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                    pair.getTwo().getOnly(),
+                    pair.getTwo(),
                     (ObjectNode) childNode);
             return Objects.requireNonNull(result);
         }

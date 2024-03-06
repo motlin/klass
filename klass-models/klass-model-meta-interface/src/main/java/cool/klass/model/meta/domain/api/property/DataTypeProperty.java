@@ -35,10 +35,9 @@ public interface DataTypeProperty
 
     Optional<MaxPropertyValidation> getMaxPropertyValidation();
 
-    // TODO: Should this be a Map, rather than multimap?
-    OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getKeysMatchingThisForeignKey();
+    OrderedMap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey();
 
-    OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> getForeignKeysMatchingThisKey();
+    OrderedMap<AssociationEnd, DataTypeProperty> getForeignKeysMatchingThisKey();
 
     default boolean isKey()
     {
@@ -133,10 +132,9 @@ public interface DataTypeProperty
 
     default boolean isForeignKeyWithOpposite()
     {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey = this.getKeysMatchingThisForeignKey();
+        OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = this.getKeysMatchingThisForeignKey();
         ImmutableList<DataTypeProperty> dataTypeProperties = keysMatchingThisForeignKey
                 .valuesView()
-                .flatCollect(x -> x)
                 .toList()
                 .toImmutable();
         return dataTypeProperties

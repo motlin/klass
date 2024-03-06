@@ -552,21 +552,19 @@ public class IncomingUpdateDataModelValidator
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, DataTypeProperty> keyMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
-
-        if (oppositeForeignKeys.notEmpty())
+        if (keyMatchingThisForeignKey.containsKey(opposite))
         {
             return false;
         }
 
-        if (keysMatchingThisForeignKey.notEmpty())
+        if (keyMatchingThisForeignKey.notEmpty())
         {
-            if (keysMatchingThisForeignKey.size() != 1)
+            if (keyMatchingThisForeignKey.size() != 1)
             {
                 throw new AssertionError();
             }
@@ -600,18 +598,18 @@ public class IncomingUpdateDataModelValidator
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
-        OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
+        OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
                 keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
-        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.getIfAbsentValue(opposite, Lists.immutable.empty());
+        DataTypeProperty oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
 
-        if (oppositeForeignKeys.notEmpty())
+        if (oppositeForeignKeys != null)
         {
             Object result = this.dataStore.getDataTypeProperty(
                     this.persistentInstance,
-                    oppositeForeignKeys.getOnly());
+                    oppositeForeignKeys);
             return Objects.requireNonNull(result);
         }
 
@@ -622,7 +620,7 @@ public class IncomingUpdateDataModelValidator
                 throw new AssertionError();
             }
 
-            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
+            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuesView().getOnly();
 
             AssociationEnd foreignKeyAssociation     = pair.getOne();
             String         foreignKeyAssociationName = foreignKeyAssociation.getName();
@@ -630,7 +628,7 @@ public class IncomingUpdateDataModelValidator
             if (childNode instanceof ObjectNode)
             {
                 Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
-                        pair.getTwo().getOnly(),
+                        pair.getTwo(),
                         (ObjectNode) childNode);
                 return Objects.requireNonNull(result);
             }

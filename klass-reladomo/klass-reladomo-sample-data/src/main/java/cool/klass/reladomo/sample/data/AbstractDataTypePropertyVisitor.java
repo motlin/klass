@@ -57,11 +57,11 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
         }
         if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
         {
-            Pair<AssociationEnd, ImmutableList<DataTypeProperty>> pair =
+            Pair<AssociationEnd, DataTypeProperty> pair =
                     primitiveProperty.getKeysMatchingThisForeignKey().keyValuesView().getOnly();
 
             AssociationEnd   associationEnd = pair.getOne();
-            DataTypeProperty keyProperty    = pair.getTwo().getOnly();
+            DataTypeProperty keyProperty    = pair.getTwo();
             this.result = String.format(
                     "%s %s %d %s",
                     associationEnd.getType().getName(),

@@ -375,17 +375,17 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public void build2()
     {
-        MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> keysMatchingThisForeignKey =
+        MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
                 this.keyBuildersMatchingThisForeignKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
-                        dataTypeProperties.<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::getElementBuilder).toImmutable()));
+                        dataTypeProperties.getOnly().getElementBuilder()));
 
         this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
 
-        MutableOrderedMap<AssociationEndBuilder, ImmutableList<DataTypePropertyBuilder<?, ?, ?>>> foreignKeysMatchingThisKey =
+        MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
                 this.foreignKeyBuildersMatchingThisKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
-                        dataTypeProperties.<DataTypePropertyBuilder<?, ?, ?>>collect(AntlrDataTypeProperty::getElementBuilder).toImmutable()));
+                        dataTypeProperties.getOnly().getElementBuilder()));
 
         this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
     }

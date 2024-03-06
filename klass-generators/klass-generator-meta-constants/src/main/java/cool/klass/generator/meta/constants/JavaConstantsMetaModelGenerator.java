@@ -983,12 +983,12 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("");
     }
 
-    private String getForeignKeySourceCode(@Nonnull Pair<AssociationEnd, ImmutableList<DataTypeProperty>> each)
+    private String getForeignKeySourceCode(@Nonnull Pair<AssociationEnd, DataTypeProperty> each)
     {
         return String.format(
                 "            result.put(%s, Lists.immutable.with(%s));\n",
                 this.getForeignKeySourceCode(each.getOne()),
-                each.getTwo().collect(this::getForeignKeySourceCode).makeString());
+                this.getForeignKeySourceCode(each.getTwo()));
     }
 
     private String getForeignKeySourceCode(@Nonnull Property property)

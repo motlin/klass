@@ -48,7 +48,6 @@ import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
-import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -597,20 +596,17 @@ public class ReladomoDataStore
                 .getDataTypeProperties();
         for (DataTypeProperty targetDataTypeProperty : targetDataTypeProperties)
         {
-            OrderedMap<AssociationEnd, ImmutableList<DataTypeProperty>> keysMatchingThisForeignKey =
+            OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
                     targetDataTypeProperty.getKeysMatchingThisForeignKey();
 
-            ImmutableList<DataTypeProperty> keysInRelatedObject = keysMatchingThisForeignKey.getIfAbsentValue(associationEnd,
-                    Lists.immutable.empty());
-            if (keysInRelatedObject.isEmpty())
+            DataTypeProperty keyInRelatedObject = keysMatchingThisForeignKey.getIfAbsentValue(associationEnd,
+                    null);
+            if (keyInRelatedObject == null)
             {
                 continue;
             }
 
             DataTypeProperty foreignKey = targetDataTypeProperty;
-
-            // TODO: If this assertion holds, then the data structure ought to be a map, not multimap
-            DataTypeProperty keyInRelatedObject = keysInRelatedObject.getOnly();
 
             Object keyValue = this.getDataTypeProperty(persistentTargetInstance, keyInRelatedObject);
 
