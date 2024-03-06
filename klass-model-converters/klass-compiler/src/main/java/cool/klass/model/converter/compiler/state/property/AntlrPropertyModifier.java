@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
-import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrPropertyModifier extends AntlrNamedElement

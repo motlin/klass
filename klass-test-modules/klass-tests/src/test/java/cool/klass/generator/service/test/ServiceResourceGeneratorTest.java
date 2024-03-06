@@ -7,8 +7,8 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.test.constants.KlassTestConstants;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -37,9 +37,14 @@ public class ServiceResourceGeneratorTest
 
         Instant now = Instant.parse("2019-12-31T23:59:59.999Z");
 
-        ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(domainModel, now);
-        ServiceGroup             serviceGroup             = domainModel.getServiceGroups().getOnly();
-        String                   serviceGroupSourceCode   = serviceResourceGenerator.getServiceGroupSourceCode(serviceGroup);
+        ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(
+                domainModel,
+                "StackOverflow",
+                "com.stackoverflow",
+                now);
+
+        ServiceGroup serviceGroup           = domainModel.getServiceGroups().getOnly();
+        String       serviceGroupSourceCode = serviceResourceGenerator.getServiceGroupSourceCode(serviceGroup);
 
         //<editor-fold desc="expected java code">
         //language=JAVA
@@ -55,12 +60,13 @@ public class ServiceResourceGeneratorTest
                 + "import javax.ws.rs.core.Response.Status;\n"
                 + "\n"
                 + "import com.stackoverflow.*;\n"
+                + "import com.stackoverflow.meta.constants.StackOverflowDomainModel;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
                 + "import org.eclipse.collections.api.list.MutableList;\n"
                 + "import com.gs.fw.common.mithra.MithraObject;\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
-                + "import cool.klass.model.meta.domain.DomainModel;\n"
-                + "import cool.klass.model.meta.domain.projection.Projection;\n"
+                + "import cool.klass.model.meta.domain.api.*;\n"
+                + "import cool.klass.model.meta.domain.api.projection.*;\n"
                 + "import cool.klass.serializer.json.ReladomoJsonTree;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.*;\n"
                 + "import org.eclipse.collections.impl.set.mutable.SetAdapter;\n"
@@ -111,8 +117,8 @@ public class ServiceResourceGeneratorTest
                 + "        }\n"
                 + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                 + "\n"
-                + "        Projection projection = this.domainModel.getProjectionByName(\"QuestionReadProjection\");\n"
-                + "        return new ReladomoJsonTree(mithraObject, projection.getChildren());\n"
+                + "        Projection projection = StackOverflowDomainModel.QuestionReadProjection;\n"
+                + "        return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());\n"
                 + "    }\n"
                 + "\n"
                 + "    @Timed\n"
@@ -145,8 +151,8 @@ public class ServiceResourceGeneratorTest
                 + "        }\n"
                 + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                 + "\n"
-                + "        Projection projection = this.domainModel.getProjectionByName(\"QuestionWriteProjection\");\n"
-                + "        return new ReladomoJsonTree(mithraObject, projection.getChildren());\n"
+                + "        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;\n"
+                + "        return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());\n"
                 + "    }\n"
                 + "\n"
                 + "    @Timed\n"
@@ -188,8 +194,8 @@ public class ServiceResourceGeneratorTest
                 + "        }\n"
                 + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                 + "\n"
-                + "        Projection projection = this.domainModel.getProjectionByName(\"QuestionWriteProjection\");\n"
-                + "        return new ReladomoJsonTree(mithraObject, projection.getChildren());\n"
+                + "        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;\n"
+                + "        return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());\n"
                 + "    }\n"
                 + "\n"
                 + "    @Timed\n"
@@ -209,7 +215,7 @@ public class ServiceResourceGeneratorTest
                 + "        result.deepFetch(QuestionFinder.answers());\n"
                 + "        result.deepFetch(QuestionFinder.version());\n"
                 + "\n"
-                + "        return this.applyProjection(result.asEcList(), \"QuestionReadProjection\");\n"
+                + "        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);\n"
                 + "    }\n"
                 + "\n"
                 + "    @Timed\n"
@@ -229,7 +235,7 @@ public class ServiceResourceGeneratorTest
                 + "        result.deepFetch(QuestionFinder.answers());\n"
                 + "        result.deepFetch(QuestionFinder.version());\n"
                 + "\n"
-                + "        return this.applyProjection(result.asEcList(), \"QuestionReadProjection\");\n"
+                + "        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);\n"
                 + "    }\n"
                 + "\n"
                 + "\n"
@@ -250,7 +256,7 @@ public class ServiceResourceGeneratorTest
                 + "        result.deepFetch(QuestionFinder.answers());\n"
                 + "        result.deepFetch(QuestionFinder.version());\n"
                 + "\n"
-                + "        return this.applyProjection(result.asEcList(), \"QuestionReadProjection\");\n"
+                + "        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);\n"
                 + "    }\n"
                 + "\n"
                 + "    @Timed\n"
@@ -268,14 +274,13 @@ public class ServiceResourceGeneratorTest
                 + "        QuestionList result = QuestionFinder.findMany(queryOperation);\n"
                 + "        // Deep fetch using projection QuestionWriteProjection\n"
                 + "\n"
-                + "        return this.applyProjection(result.asEcList(), \"QuestionWriteProjection\");\n"
+                + "        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionWriteProjection);\n"
                 + "    }\n"
                 + "\n"
                 + "    private List<ReladomoJsonTree> applyProjection(\n"
                 + "            MutableList<? extends MithraObject> mithraObjects,\n"
-                + "            String projectionName)\n"
+                + "            Projection projection)\n"
                 + "    {\n"
-                + "        Projection projection = this.domainModel.getProjectionByName(projectionName);\n"
                 + "        return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
                 + "                mithraObject,\n"
                 + "                projection.getChildren()));\n"

@@ -4,15 +4,15 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.criteria.AllCriteria;
-import cool.klass.model.meta.domain.criteria.AndCriteria;
-import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
-import cool.klass.model.meta.domain.criteria.EdgePointCriteria;
-import cool.klass.model.meta.domain.criteria.OperatorCriteria;
-import cool.klass.model.meta.domain.criteria.OrCriteria;
-import cool.klass.model.meta.domain.operator.Operator;
-import cool.klass.model.meta.domain.value.ExpressionValue;
-import cool.klass.model.meta.domain.value.MemberReferencePath;
+import cool.klass.model.meta.domain.api.criteria.AllCriteria;
+import cool.klass.model.meta.domain.api.criteria.AndCriteria;
+import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
+import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
+import cool.klass.model.meta.domain.api.criteria.OrCriteria;
+import cool.klass.model.meta.domain.api.operator.Operator;
+import cool.klass.model.meta.domain.api.value.ExpressionValue;
+import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 
 public class OperationCriteriaVisitor implements CriteriaVisitor
 {

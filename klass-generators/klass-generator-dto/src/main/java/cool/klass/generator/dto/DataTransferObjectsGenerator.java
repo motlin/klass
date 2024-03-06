@@ -11,18 +11,18 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CaseFormat;
-import cool.klass.model.meta.domain.DataType;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.EnumerationLiteral;
-import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.PackageableElement;
-import cool.klass.model.meta.domain.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.DataTypeProperty;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.property.PropertyModifier;
-import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
+import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PropertyModifier;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class DataTransferObjectsGenerator
@@ -107,7 +107,7 @@ public class DataTransferObjectsGenerator
     {
         String packageName = klass.getPackageName() + ".dto";
 
-        ImmutableList<DataTypeProperty<?>> dataTypeProperties = klass.getDataTypeProperties();
+        ImmutableList<DataTypeProperty> dataTypeProperties = klass.getDataTypeProperties();
         String dataFieldsSourceCode = dataTypeProperties.collect(this::getDataField).makeString("")
                 + (dataTypeProperties.isEmpty() ? "" : "\n");
 
@@ -155,7 +155,7 @@ public class DataTransferObjectsGenerator
         return line1 + line2;
     }
 
-    private String getDataGetterSetter(DataTypeProperty<?> dataTypeProperty)
+    private String getDataGetterSetter(DataTypeProperty dataTypeProperty)
     {
         String type          = this.getType(dataTypeProperty.getType());
         String name          = dataTypeProperty.getName();
@@ -213,7 +213,7 @@ public class DataTransferObjectsGenerator
         return "List<" + toOneType + ">";
     }
 
-    private String getDataField(DataTypeProperty<?> dataTypeProperty)
+    private String getDataField(DataTypeProperty dataTypeProperty)
     {
         String   annotation = getAnnotation(dataTypeProperty);
         String   type       = this.getType(dataTypeProperty.getType());
@@ -221,7 +221,7 @@ public class DataTransferObjectsGenerator
     }
 
     @Nonnull
-    private String getAnnotation(DataTypeProperty<?> dataTypeProperty)
+    private String getAnnotation(DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty.isTemporal())
         {

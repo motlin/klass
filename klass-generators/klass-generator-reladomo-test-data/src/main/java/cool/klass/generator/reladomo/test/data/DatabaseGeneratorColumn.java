@@ -1,6 +1,6 @@
 package cool.klass.generator.reladomo.test.data;
 
-import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 

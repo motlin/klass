@@ -7,9 +7,10 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.test.constants.KlassTestConstants;
+import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class DataTransferObjectGeneratorTest
 
         DataTransferObjectsGenerator dataTransferObjectsGenerator = new DataTransferObjectsGenerator(domainModel, now);
 
-        Klass  klass           = domainModel.getKlassByName("Question");
+        Klass  klass           = StackOverflowDomainModel.Question;
         String klassSourceCode = dataTransferObjectsGenerator.getClassSourceCode(klass);
 
         //<editor-fold desc="expected java code">

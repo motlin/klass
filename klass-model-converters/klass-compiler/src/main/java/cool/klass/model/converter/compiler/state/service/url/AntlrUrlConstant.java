@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
-import cool.klass.model.meta.domain.service.url.UrlConstant.UrlConstantBuilder;
-import cool.klass.model.meta.domain.service.url.UrlPathSegment.UrlPathSegmentBuilder;
+import cool.klass.model.meta.domain.service.url.AbstractUrlPathSegment.UrlPathSegmentBuilder;
+import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathSegment

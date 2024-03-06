@@ -5,8 +5,8 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.meta.domain.order.OrderByDirection;
-import cool.klass.model.meta.domain.order.OrderByDirectionDeclaration.OrderByDirectionDeclarationBuilder;
+import cool.klass.model.meta.domain.api.order.OrderByDirection;
+import cool.klass.model.meta.domain.order.OrderByDirectionDeclarationImpl.OrderByDirectionDeclarationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 

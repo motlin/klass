@@ -2,15 +2,15 @@ package cool.klass.model.meta.domain.api.projection;
 
 public interface ProjectionListener
 {
-    void enterProjection(IProjection projection);
+    void enterProjection(Projection projection);
 
-    void exitProjection(IProjection projection);
+    void exitProjection(Projection projection);
 
     void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd);
 
     void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd);
 
-    void enterProjectionDataTypeProperty(IProjectionDataTypeProperty projectionDataTypeProperty);
+    void enterProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty);
 
-    void exitProjectionDataTypeProperty(IProjectionDataTypeProperty projectionDataTypeProperty);
+    void exitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty);
 }

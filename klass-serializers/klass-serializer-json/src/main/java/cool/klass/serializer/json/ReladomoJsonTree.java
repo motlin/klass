@@ -18,16 +18,16 @@ import com.gs.fw.common.mithra.attribute.Attribute;
 import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
-import cool.klass.model.meta.domain.DataType;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd;
-import cool.klass.model.meta.domain.projection.ProjectionDataTypeProperty;
-import cool.klass.model.meta.domain.projection.ProjectionElement;
-import cool.klass.model.meta.domain.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.DataTypeProperty;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
+import cool.klass.model.meta.domain.api.projection.ProjectionElement;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,9 +103,9 @@ public class ReladomoJsonTree implements JsonSerializable
             @Nonnull RelatedFinder finder,
             ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
-        DataTypeProperty<?> property     = projectionPrimitiveMember.getProperty();
-        String              propertyName = property.getName();
-        DataType            dataType     = property.getType();
+        DataTypeProperty property     = projectionPrimitiveMember.getProperty();
+        String                      propertyName = property.getName();
+        DataType                    dataType     = property.getType();
 
         Object dataTypeValue = ReladomoJsonTree.getDataTypeValue(mithraObject, finder, property);
         if (dataTypeValue == null)
@@ -131,9 +131,9 @@ public class ReladomoJsonTree implements JsonSerializable
             RelatedFinder finder,
             ProjectionAssociationEnd projectionAssociationEnd) throws IOException
     {
-        ImmutableList<ProjectionElement> children = projectionAssociationEnd.getChildren();
-        AssociationEnd                 associationEnd            = projectionAssociationEnd.getAssociationEnd();
-        Multiplicity                   multiplicity              = associationEnd.getMultiplicity();
+        ImmutableList<ProjectionElement> children       = projectionAssociationEnd.getChildren();
+        AssociationEnd                   associationEnd = projectionAssociationEnd.getAssociationEnd();
+        Multiplicity                     multiplicity   = associationEnd.getMultiplicity();
 
         String associationEndName = associationEnd.getName();
 
@@ -188,7 +188,7 @@ public class ReladomoJsonTree implements JsonSerializable
     public static Object getDataTypeValue(
             MithraObject mithraObject,
             RelatedFinder finder,
-            DataTypeProperty<?> dataTypeProperty)
+            DataTypeProperty dataTypeProperty)
     {
         Attribute attribute = finder.getAttributeByName(dataTypeProperty.getName());
 

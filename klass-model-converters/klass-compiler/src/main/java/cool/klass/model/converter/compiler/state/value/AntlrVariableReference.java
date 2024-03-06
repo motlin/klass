@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.service.url.AntlrEnumerationUrlPathParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlPathParameter;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
-import cool.klass.model.meta.domain.value.VariableReference.VariableReferenceBuilder;
+import cool.klass.model.meta.domain.value.VariableReferenceImpl.VariableReferenceBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;

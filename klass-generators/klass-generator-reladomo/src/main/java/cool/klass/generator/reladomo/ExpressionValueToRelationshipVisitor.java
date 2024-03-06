@@ -1,15 +1,13 @@
 package cool.klass.generator.reladomo;
 
-import javax.annotation.Nonnull;
-
-import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
-import cool.klass.model.meta.domain.value.ThisMemberReferencePath;
-import cool.klass.model.meta.domain.value.TypeMemberReferencePath;
-import cool.klass.model.meta.domain.value.VariableReference;
-import cool.klass.model.meta.domain.value.literal.IntegerLiteralValue;
-import cool.klass.model.meta.domain.value.literal.LiteralListValue;
-import cool.klass.model.meta.domain.value.literal.StringLiteralValue;
-import cool.klass.model.meta.domain.value.literal.UserLiteral;
+import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
+import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
+import cool.klass.model.meta.domain.api.value.VariableReference;
+import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
+import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
 public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisitor
 {
@@ -21,7 +19,7 @@ public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisi
     }
 
     @Override
-    public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
+    public void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue)
     {
         this.stringBuilder.append(typeMemberExpressionValue.getKlass().getName());
         this.stringBuilder.append('.');
@@ -29,7 +27,7 @@ public class ExpressionValueToRelationshipVisitor implements ExpressionValueVisi
     }
 
     @Override
-    public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
+    public void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue)
     {
         this.stringBuilder.append("this.");
         this.stringBuilder.append(thisMemberExpressionValue.getProperty().getName());

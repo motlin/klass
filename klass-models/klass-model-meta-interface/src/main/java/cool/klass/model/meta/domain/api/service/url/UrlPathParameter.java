@@ -1,5 +1,5 @@
 package cool.klass.model.meta.domain.api.service.url;
 
-public interface UrlPathParameter extends IUrlParameter, UrlPathSegment
+public interface UrlPathParameter extends UrlParameter, UrlPathSegment
 {
 }

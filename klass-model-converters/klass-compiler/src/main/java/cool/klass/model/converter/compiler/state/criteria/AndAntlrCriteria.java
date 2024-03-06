@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.meta.domain.criteria.AndCriteria.AndCriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

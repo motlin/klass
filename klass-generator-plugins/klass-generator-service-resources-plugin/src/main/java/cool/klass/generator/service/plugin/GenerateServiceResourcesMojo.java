@@ -7,7 +7,7 @@ import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.service.ServiceResourceGenerator;
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -21,6 +21,12 @@ public class GenerateServiceResourcesMojo extends AbstractGenerateMojo
             property = "outputDirectory",
             defaultValue = "${project.build.directory}/generated-sources/service-resources")
     private File outputDirectory;
+
+    @Parameter(property = "applicationName", required = true, readonly = true)
+    private String applicationName;
+
+    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    private String rootPackageName;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
@@ -37,7 +43,11 @@ public class GenerateServiceResourcesMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(domainModel, Instant.now());
+            ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(
+                    domainModel,
+                    this.applicationName,
+                    this.rootPackageName,
+                    Instant.now());
             serviceResourceGenerator.writeServiceResourceFiles(outputPath);
         }
         catch (IOException e)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
@@ -11,19 +12,25 @@
 
     <artifactId>klass-model-bootstrapped-services</artifactId>
 
-    <name>Klass Bootstrapped Meta Model Service Resources</name>
+    <name>${app.name} Meta Model Service Resources</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
+            <artifactId>klass-model-bootstrapped-constants</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -73,6 +80,8 @@
                 <artifactId>klass-generator-service-resources-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
+                    <rootPackageName>${app.rootPackageName}</rootPackageName>
+                    <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
                         <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                     </klassSourcePackages>
@@ -85,11 +94,13 @@
                     </execution>
                 </executions>
                 <dependencies>
+
                     <dependency>
                         <groupId>cool.klass</groupId>
                         <artifactId>klass-model-bootstrapped-meta</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+
                 </dependencies>
             </plugin>
 

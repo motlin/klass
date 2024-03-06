@@ -13,10 +13,10 @@ import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProper
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
-import cool.klass.model.meta.domain.ClassModifier.ClassModifierBuilder;
-import cool.klass.model.meta.domain.Klass.KlassBuilder;
-import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
+import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -27,7 +27,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrClass extends AntlrPackageableElement implements AntlrType
+public class AntlrClass extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
@@ -233,16 +233,17 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
         if (this.versionClasses.notEmpty())
         {
-            this.klassBuilder.setVersionClassBuilder(this.versionClasses.getOnly().getKlassBuilder());
+            this.klassBuilder.setVersionClassBuilder(this.versionClasses.getOnly().getElementBuilder());
         }
 
         if (this.versionedClass != null)
         {
-            this.klassBuilder.setVersionedClassBuilder(this.versionedClass.getKlassBuilder());
+            this.klassBuilder.setVersionedClassBuilder(this.versionedClass.getElementBuilder());
         }
     }
 
-    public KlassBuilder getKlassBuilder()
+    @Override
+    public KlassBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.klassBuilder);
     }

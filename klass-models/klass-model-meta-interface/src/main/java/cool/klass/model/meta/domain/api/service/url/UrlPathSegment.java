@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.api.service.url;
 
-public interface UrlPathSegment
+import cool.klass.model.meta.domain.api.NamedElement;
+
+public interface UrlPathSegment extends NamedElement
 {
 }

@@ -10,9 +10,9 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.meta.domain.Association.AssociationBuilder;
-import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
-import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
+import cool.klass.model.meta.domain.criteria.AbstractCriteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -23,7 +23,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociation extends AntlrPackageableElement implements AntlrCriteriaOwner
+public class AntlrAssociation extends AntlrPackageableElement implements AntlrCriteriaOwner, AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
@@ -155,7 +155,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
         return this.associationBuilder;
     }
 
-    public AssociationBuilder getAssociationBuilder()
+    @Override
+    public AssociationBuilder getElementBuilder()
     {
         return this.associationBuilder;
     }

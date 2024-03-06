@@ -12,8 +12,8 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
-import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.value.ThisMemberReferencePath.ThisMemberReferencePathBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
@@ -44,7 +44,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberExpressionValue
         return new ThisMemberReferencePathBuilder(
                 this.elementContext,
                 this.inferred,
-                this.classState.getKlassBuilder(),
+                this.classState.getElementBuilder(),
                 associationEndBuilders,
                 this.dataTypePropertyState.getPropertyBuilder());
     }

@@ -2,11 +2,11 @@ package cool.klass.model.meta.domain.api.operator;
 
 public interface OperatorVisitor
 {
-    void visitEquality(IEqualityOperator equalityOperator);
+    void visitEquality(EqualityOperator equalityOperator);
 
-    void visitInequality(IInequalityOperator inequalityOperator);
+    void visitInequality(InequalityOperator inequalityOperator);
 
-    void visitIn(IInOperator inOperator);
+    void visitIn(InOperator inOperator);
 
-    void visitString(IStringOperator stringOperator);
+    void visitString(StringOperator stringOperator);
 }

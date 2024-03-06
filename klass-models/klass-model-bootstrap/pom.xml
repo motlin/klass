@@ -15,8 +15,14 @@
 
     <name>Klass Bootstrapped Meta Model (Module Group)</name>
 
+    <properties>
+        <app.rootPackageName>klass.model.meta.domain</app.rootPackageName>
+        <app.name>KlassBootstrap</app.name>
+    </properties>
+
     <modules>
         <module>klass-model-bootstrapped-meta</module>
+        <module>klass-model-bootstrapped-constants</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>
         <module>klass-model-bootstrapped-services</module>

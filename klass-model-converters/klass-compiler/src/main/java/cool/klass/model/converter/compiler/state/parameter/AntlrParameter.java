@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.meta.domain.parameter.Parameter.ParameterBuilder;
+import cool.klass.model.meta.domain.parameter.AbstractParameter.ParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 

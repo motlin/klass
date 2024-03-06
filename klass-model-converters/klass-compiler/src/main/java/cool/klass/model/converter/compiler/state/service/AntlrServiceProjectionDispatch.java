@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
-import cool.klass.model.meta.domain.service.ServiceProjectionDispatch.ServiceProjectionDispatchBuilder;
+import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -72,6 +72,6 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     @Nonnull
     public ServiceProjectionDispatchBuilder build()
     {
-        return new ServiceProjectionDispatchBuilder(this.elementContext, this.inferred, this.projection.getProjectionBuilder());
+        return new ServiceProjectionDispatchBuilder(this.elementContext, this.inferred, this.projection.getElementBuilder());
     }
 }

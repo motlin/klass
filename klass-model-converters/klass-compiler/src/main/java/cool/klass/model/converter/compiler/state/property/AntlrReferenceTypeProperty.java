@@ -10,10 +10,10 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
-import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.KlassImpl;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AntlrReferenceTypeProperty extends AntlrProperty<Klass> implements AntlrOrderByOwner
+public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl> implements AntlrOrderByOwner
 {
     @Nonnull
     protected final AntlrClass             type;

@@ -5,15 +5,16 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
+import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjection extends AntlrProjectionParent
+public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
@@ -69,7 +70,7 @@ public class AntlrProjection extends AntlrProjectionParent
                 this.name,
                 this.ordinal,
                 this.packageName,
-                this.klass.getKlassBuilder());
+                this.klass.getElementBuilder());
 
         ImmutableList<ProjectionElementBuilder> children = this.children
                 .collect(AntlrProjectionElement::build)
@@ -79,7 +80,8 @@ public class AntlrProjection extends AntlrProjectionParent
         return this.projectionBuilder;
     }
 
-    public ProjectionBuilder getProjectionBuilder()
+    @Override
+    public ProjectionBuilder getElementBuilder()
     {
         return this.projectionBuilder;
     }

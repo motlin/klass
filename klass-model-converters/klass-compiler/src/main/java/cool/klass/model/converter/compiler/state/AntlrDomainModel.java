@@ -7,12 +7,13 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
-import cool.klass.model.meta.domain.Association.AssociationBuilder;
-import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
-import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
-import cool.klass.model.meta.domain.Klass.KlassBuilder;
-import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
-import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
+import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
+import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
+import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
+import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.TopLevelElement.TopLevelElementBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
+import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -26,6 +27,7 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
+    private final MutableList<AntlrTopLevelElement>  topLevelElementStates  = Lists.mutable.empty();
     private final MutableList<AntlrEnumeration>  enumerationStates  = Lists.mutable.empty();
     private final MutableList<AntlrClass>        classStates        = Lists.mutable.empty();
     private final MutableList<AntlrAssociation>  associationStates  = Lists.mutable.empty();
@@ -52,15 +54,12 @@ public class AntlrDomainModel
 
     public int getNumTopLevelElements()
     {
-        return this.enumerationStates.size()
-                + this.classStates.size()
-                + this.associationStates.size()
-                + this.projectionStates.size()
-                + this.serviceGroupStates.size();
+        return this.topLevelElementStates.size();
     }
 
     public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
     {
+        this.topLevelElementStates.add(enumerationState);
         this.enumerationStates.add(enumerationState);
         this.enumerationsByName.compute(
                 enumerationState.getName(),
@@ -79,6 +78,7 @@ public class AntlrDomainModel
 
     public void exitClassDeclaration(@Nonnull AntlrClass classState)
     {
+        this.topLevelElementStates.add(classState);
         this.classStates.add(classState);
         this.classesByName.compute(
                 classState.getName(),
@@ -95,6 +95,7 @@ public class AntlrDomainModel
 
     public void exitAssociationDeclaration(@Nonnull AntlrAssociation associationState)
     {
+        this.topLevelElementStates.add(associationState);
         this.associationStates.add(associationState);
         this.associationsByName.compute(
                 associationState.getName(),
@@ -113,6 +114,7 @@ public class AntlrDomainModel
 
     public void exitProjectionDeclaration(@Nonnull AntlrProjection projectionState)
     {
+        this.topLevelElementStates.add(projectionState);
         this.projectionStates.add(projectionState);
         this.projectionsByName.compute(
                 projectionState.getName(),
@@ -123,6 +125,7 @@ public class AntlrDomainModel
 
     public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroupState)
     {
+        this.topLevelElementStates.add(serviceGroupState);
         this.serviceGroupStates.add(serviceGroupState);
         this.serviceGroupsByClass.compute(
                 serviceGroupState.getKlass(),
@@ -260,12 +263,17 @@ public class AntlrDomainModel
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
         this.classStates.each(AntlrClass::build2);
+
         ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
         this.classStates.each(AntlrClass::build3);
+
         ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
         ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
 
+        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementStates.collect(AntlrTopLevelElement::getElementBuilder).toImmutable();
+
         return new DomainModelBuilder(
+                topLevelElementBuilders,
                 enumerationBuilders,
                 classBuilders,
                 associationBuilders,

@@ -18,9 +18,9 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.parameter.AntlrPrimitiveParameter;
 import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
-import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
-import cool.klass.model.meta.domain.property.ParameterizedProperty.ParameterizedPropertyBuilder;
+import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
+import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -35,7 +35,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
             new ParameterizedPropertyContext(null, -1),
             null,
             true,
-            Element.NO_CONTEXT,
+            AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
             AntlrClass.AMBIGUOUS,
@@ -45,7 +45,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
             new ParameterizedPropertyContext(null, -1),
             null,
             true,
-            Element.NO_CONTEXT,
+            AbstractElement.NO_CONTEXT,
             "not found association end",
             -1,
             AntlrClass.AMBIGUOUS,
@@ -110,8 +110,8 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.type.getKlassBuilder(),
-                this.owningClassState.getKlassBuilder(),
+                this.type.getElementBuilder(),
+                this.owningClassState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity());
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);

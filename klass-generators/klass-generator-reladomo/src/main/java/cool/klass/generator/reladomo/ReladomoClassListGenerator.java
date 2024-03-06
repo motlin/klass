@@ -9,9 +9,9 @@ import com.gs.fw.common.mithra.generator.metamodel.Mithra;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObjectResourceType;
 import com.gs.fw.common.mithra.generator.metamodel.MithraPureObjectResourceType;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.NamedElement;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.NamedElement;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoClassListGenerator extends AbstractReladomoGenerator

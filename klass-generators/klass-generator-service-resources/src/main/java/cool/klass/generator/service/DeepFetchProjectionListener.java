@@ -1,7 +1,7 @@
 package cool.klass.generator.service;
 
-import cool.klass.model.meta.domain.projection.BaseProjectionListener;
-import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.BaseProjectionListener;
+import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;

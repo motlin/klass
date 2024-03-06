@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
-import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
+import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
+import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
@@ -18,7 +18,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrEnumeration extends AntlrPackageableElement implements AntlrType
+public class AntlrEnumeration extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
@@ -102,7 +102,8 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         return (EnumerationDeclarationContext) super.getElementContext();
     }
 
-    public EnumerationBuilder getEnumerationBuilder()
+    @Override
+    public EnumerationBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.enumerationBuilder);
     }

@@ -2,9 +2,9 @@ package cool.klass.model.meta.domain.api.projection;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.property.IAssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
-public interface ProjectionAssociationEnd extends IProjectionParent
+public interface ProjectionAssociationEnd extends ProjectionParent
 {
     @Override
     default void enter(ProjectionListener listener)
@@ -19,5 +19,5 @@ public interface ProjectionAssociationEnd extends IProjectionParent
     }
 
     @Nonnull
-    IAssociationEnd getAssociationEnd();
+    AssociationEnd getAssociationEnd();
 }

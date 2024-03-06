@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
-import cool.klass.model.meta.domain.service.url.UrlPathParameter.UrlPathParameterBuilder;
+import cool.klass.model.meta.domain.service.url.AbstractUrlPathParameter.UrlPathParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 

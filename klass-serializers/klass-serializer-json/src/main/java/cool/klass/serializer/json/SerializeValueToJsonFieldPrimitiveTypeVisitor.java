@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 public class SerializeValueToJsonFieldPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {

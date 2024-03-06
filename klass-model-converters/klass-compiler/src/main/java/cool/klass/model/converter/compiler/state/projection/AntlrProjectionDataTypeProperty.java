@@ -11,8 +11,8 @@ import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
-import cool.klass.model.meta.domain.projection.ProjectionDataTypeProperty.ProjectionDataTypePropertyBuilder;
-import cool.klass.model.meta.domain.projection.ProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
+import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 

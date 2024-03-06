@@ -4,13 +4,13 @@ import javax.annotation.Nonnull;
 
 public interface CriteriaVisitor
 {
-    void visitAll(@Nonnull IAllCriteria allCriteria);
+    void visitAll(@Nonnull AllCriteria allCriteria);
 
-    void visitAnd(@Nonnull IAndCriteria andCriteria);
+    void visitAnd(@Nonnull AndCriteria andCriteria);
 
-    void visitOr(@Nonnull IOrCriteria orCriteria);
+    void visitOr(@Nonnull OrCriteria orCriteria);
 
-    void visitOperator(@Nonnull IOperatorCriteria operatorCriteria);
+    void visitOperator(@Nonnull OperatorCriteria operatorCriteria);
 
-    void visitEdgePoint(@Nonnull IEdgePointCriteria edgePointCriteria);
+    void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria);
 }

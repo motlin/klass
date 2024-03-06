@@ -9,8 +9,8 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
-import cool.klass.model.meta.domain.order.OrderByMemberReferencePath.OrderByMemberReferencePathBuilder;
+import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
+import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -70,7 +70,7 @@ public class AntlrOrderBy extends AntlrElement
         this.orderByBuilder = new OrderByBuilder(
                 this.elementContext,
                 this.inferred,
-                this.thisContext.getKlassBuilder());
+                this.thisContext.getElementBuilder());
 
         ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders =
                 this.orderByMemberReferencePathStates

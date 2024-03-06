@@ -2,11 +2,11 @@ package cool.klass.model.meta.domain.api.criteria;
 
 import javax.annotation.Nonnull;
 
-public interface BinaryCriteria extends ICriteria
+public interface BinaryCriteria extends Criteria
 {
     @Nonnull
-    ICriteria getLeft();
+    Criteria getLeft();
 
     @Nonnull
-    ICriteria getRight();
+    Criteria getRight();
 }

@@ -17,7 +17,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -29,6 +29,16 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
 
     </dependencies>

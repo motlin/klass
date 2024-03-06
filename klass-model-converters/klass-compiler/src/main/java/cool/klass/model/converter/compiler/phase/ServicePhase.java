@@ -29,9 +29,9 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrPrimitiveUrlQu
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.service.ServiceMultiplicity;
-import cool.klass.model.meta.domain.service.Verb;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
+import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;

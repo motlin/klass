@@ -3,7 +3,7 @@ package cool.klass.generator.reladomo.test.data;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class DatabaseGeneratorGrid

@@ -12,12 +12,12 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
-import cool.klass.model.meta.domain.service.Service.ServiceBuilder;
-import cool.klass.model.meta.domain.service.Verb;
-import cool.klass.model.meta.domain.service.url.Url.UrlBuilder;
-import cool.klass.model.meta.domain.service.url.UrlParameter.UrlParameterBuilder;
-import cool.klass.model.meta.domain.service.url.UrlPathSegment.UrlPathSegmentBuilder;
-import cool.klass.model.meta.domain.service.url.UrlQueryParameter.UrlQueryParameterBuilder;
+import cool.klass.model.meta.domain.api.service.Verb;
+import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
+import cool.klass.model.meta.domain.service.url.AbstractUrlParameter.UrlParameterBuilder;
+import cool.klass.model.meta.domain.service.url.AbstractUrlPathSegment.UrlPathSegmentBuilder;
+import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
+import cool.klass.model.meta.domain.service.url.UrlQueryParameterImpl.UrlQueryParameterBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -246,7 +246,7 @@ public class AntlrUrl extends AntlrElement
         this.urlBuilder = new UrlBuilder(
                 this.elementContext,
                 this.inferred,
-                this.serviceGroup.getServiceGroupBuilder());
+                this.serviceGroup.getElementBuilder());
 
         ImmutableList<UrlPathSegmentBuilder> pathSegments = this.urlPathSegments
                 .collect(AntlrUrlPathSegment::build)

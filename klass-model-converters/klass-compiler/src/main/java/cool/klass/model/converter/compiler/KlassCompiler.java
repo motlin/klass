@@ -23,8 +23,8 @@ import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhas
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionReferencePhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
+import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.grammar.KlassListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;

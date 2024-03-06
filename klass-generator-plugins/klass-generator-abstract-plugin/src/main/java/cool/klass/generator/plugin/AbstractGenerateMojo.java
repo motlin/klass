@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;

@@ -7,7 +7,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
-import cool.klass.model.meta.domain.value.ExpressionValue.ExpressionValueBuilder;
+import cool.klass.model.meta.domain.value.AbstractExpressionValue.ExpressionValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;

@@ -1,23 +1,23 @@
 package cool.klass.model.meta.domain.api.value;
 
-import cool.klass.model.meta.domain.api.value.literal.IIntegerLiteralValue;
-import cool.klass.model.meta.domain.api.value.literal.ILiteralListValue;
-import cool.klass.model.meta.domain.api.value.literal.IStringLiteralValue;
-import cool.klass.model.meta.domain.api.value.literal.IUserLiteral;
+import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
+import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
 public interface ExpressionValueVisitor
 {
-    void visitTypeMember(ITypeMemberReferencePath typeMemberExpressionValue);
+    void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue);
 
-    void visitThisMember(IThisMemberReferencePath thisMemberExpressionValue);
+    void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue);
 
-    void visitVariableReference(IVariableReference variableReference);
+    void visitVariableReference(VariableReference variableReference);
 
-    void visitIntegerLiteral(IIntegerLiteralValue integerLiteralValue);
+    void visitIntegerLiteral(IntegerLiteralValue integerLiteralValue);
 
-    void visitStringLiteral(IStringLiteralValue stringLiteralValue);
+    void visitStringLiteral(StringLiteralValue stringLiteralValue);
 
-    void visitLiteralList(ILiteralListValue literalListValue);
+    void visitLiteralList(LiteralListValue literalListValue);
 
-    void visitUserLiteral(IUserLiteral userLiteral);
+    void visitUserLiteral(UserLiteral userLiteral);
 }

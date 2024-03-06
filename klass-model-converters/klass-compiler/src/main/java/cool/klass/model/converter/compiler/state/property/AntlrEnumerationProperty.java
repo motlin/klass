@@ -7,14 +7,14 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.property.EnumerationProperty.EnumerationPropertyBuilder;
-import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
+import cool.klass.model.meta.domain.EnumerationImpl;
+import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
+public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationImpl>
 {
     @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
@@ -91,8 +91,8 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.enumerationState.getEnumerationBuilder(),
-                this.owningClassState.getKlassBuilder(),
+                this.enumerationState.getElementBuilder(),
+                this.owningClassState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isKey(),
                 this.isOptional);

@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.meta.domain.service.url.EnumerationUrlQueryParameter.EnumerationUrlQueryParameterBuilder;
+import cool.klass.model.meta.domain.service.url.EnumerationUrlQueryParameterImpl.EnumerationUrlQueryParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -97,6 +97,6 @@ public class AntlrEnumerationUrlQueryParameter extends AntlrUrlQueryParameter
                 this.ordinal,
                 this.multiplicityState.getMultiplicity(),
                 this.urlState.getUrlBuilder(),
-                this.enumerationState.getEnumerationBuilder());
+                this.enumerationState.getElementBuilder());
     }
 }

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.meta.domain.Multiplicity;
+import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import org.antlr.v4.runtime.ParserRuleContext;

@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
-import cool.klass.model.meta.domain.criteria.OperatorCriteria.OperatorCriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.OperatorCriteriaImpl.OperatorCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

@@ -1,8 +1,10 @@
 package cool.klass.model.meta.domain.api.property;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.PrimitiveType;
 
-public interface PrimitiveProperty extends IDataTypeProperty<PrimitiveType>
+public interface PrimitiveProperty extends DataTypeProperty
 {
     @Override
     default boolean isTemporalRange()
@@ -23,4 +25,8 @@ public interface PrimitiveProperty extends IDataTypeProperty<PrimitiveType>
     }
 
     boolean isID();
+
+    @Override
+    @Nonnull
+    PrimitiveType getType();
 }

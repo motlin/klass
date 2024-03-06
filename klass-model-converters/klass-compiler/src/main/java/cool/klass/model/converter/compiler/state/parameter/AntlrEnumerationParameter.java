@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.meta.domain.parameter.EnumerationParameter.EnumerationParameterBuilder;
+import cool.klass.model.meta.domain.parameter.EnumerationParameterImpl.EnumerationParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -94,7 +94,7 @@ public class AntlrEnumerationParameter extends AntlrParameter
                 this.name,
                 this.ordinal,
                 this.multiplicityState.getMultiplicity(),
-                this.enumerationState.getEnumerationBuilder());
+                this.enumerationState.getElementBuilder());
         return this.enumerationParameterBuilder;
     }
 }

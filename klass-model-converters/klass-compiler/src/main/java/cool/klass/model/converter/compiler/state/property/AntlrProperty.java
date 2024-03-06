@@ -6,8 +6,8 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.meta.domain.Type;
-import cool.klass.model.meta.domain.property.Property.PropertyBuilder;
+import cool.klass.model.meta.domain.api.Type;
+import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement

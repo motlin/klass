@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
-import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrAssociationEndModifier extends AntlrNamedElement

@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
-import cool.klass.model.meta.domain.value.TypeMemberReferencePath.TypeMemberReferencePathBuilder;
+import cool.klass.model.meta.domain.value.TypeMemberReferencePathImpl.TypeMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -41,7 +41,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberExpressionValue
         return new TypeMemberReferencePathBuilder(
                 this.elementContext,
                 this.inferred,
-                this.classState.getKlassBuilder(),
+                this.classState.getElementBuilder(),
                 this.associationEndStates.collect(AntlrAssociationEnd::getAssociationEndBuilder),
                 this.dataTypePropertyState.getPropertyBuilder());
     }

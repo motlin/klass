@@ -1,19 +1,19 @@
 package cool.klass.model.converter.bootstrap.writer;
 
 import com.gs.fw.common.mithra.MithraManagerProvider;
-import cool.klass.model.meta.domain.Association;
-import cool.klass.model.meta.domain.ClassModifier;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.EnumerationLiteral;
-import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.AssociationEndModifier;
-import cool.klass.model.meta.domain.property.DataTypeProperty;
-import cool.klass.model.meta.domain.property.EnumerationProperty;
-import cool.klass.model.meta.domain.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.property.PropertyModifier;
-import cool.klass.model.meta.domain.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.ClassModifier;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.EnumerationLiteral;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.EnumerationProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.PropertyModifier;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import klass.model.meta.domain.EnumerationPropertyModifier;
 import klass.model.meta.domain.PrimitivePropertyModifier;
 
@@ -37,7 +37,7 @@ public class KlassBootstrapWriter
 
     private void bootstrapMetaModelInTransaction()
     {
-        for (Enumeration enumeration : this.domainModel.getEnumerations())
+        for (Enumeration enumeration: this.domainModel.getEnumerations())
         {
             klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
             bootstrappedEnumeration.setName(enumeration.getName());
@@ -46,7 +46,7 @@ public class KlassBootstrapWriter
             bootstrappedEnumeration.setPackageName(enumeration.getPackageName());
             bootstrappedEnumeration.insert();
 
-            for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
+            for (EnumerationLiteral enumerationLiteral: enumeration.getEnumerationLiterals())
             {
                 klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
                 bootstrappedEnumerationLiteral.setName(enumerationLiteral.getName());
@@ -58,7 +58,7 @@ public class KlassBootstrapWriter
             }
         }
 
-        for (Klass klass : this.domainModel.getKlasses())
+        for (Klass klass: this.domainModel.getKlasses())
         {
             klass.model.meta.domain.Class bootstrappedClass = new klass.model.meta.domain.Class();
             bootstrappedClass.setName(klass.getName());
@@ -67,7 +67,7 @@ public class KlassBootstrapWriter
             bootstrappedClass.setPackageName(klass.getPackageName());
             bootstrappedClass.insert();
 
-            for (ClassModifier classModifier : klass.getClassModifiers())
+            for (ClassModifier classModifier: klass.getClassModifiers())
             {
                 klass.model.meta.domain.ClassModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassModifier();
                 bootstrappedClassModifier.setClassName(klass.getName());
@@ -77,7 +77,7 @@ public class KlassBootstrapWriter
                 bootstrappedClassModifier.insert();
             }
 
-            for (DataTypeProperty<?> dataTypeProperty : klass.getDataTypeProperties())
+            for (DataTypeProperty dataTypeProperty: klass.getDataTypeProperties())
             {
                 if (dataTypeProperty instanceof PrimitiveProperty)
                 {
@@ -94,7 +94,7 @@ public class KlassBootstrapWriter
                     bootstrappedPrimitiveProperty.setOptional(primitiveProperty.isOptional());
                     bootstrappedPrimitiveProperty.insert();
 
-                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+                    for (PropertyModifier propertyModifier: dataTypeProperty.getPropertyModifiers())
                     {
                         PrimitivePropertyModifier primitivePropertyModifier = new PrimitivePropertyModifier();
                         primitivePropertyModifier.setClassName(klass.getName());
@@ -119,7 +119,7 @@ public class KlassBootstrapWriter
                     bootstrappedEnumerationProperty.setOptional(enumerationProperty.isOptional());
                     bootstrappedEnumerationProperty.insert();
 
-                    for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
+                    for (PropertyModifier propertyModifier: dataTypeProperty.getPropertyModifiers())
                     {
                         EnumerationPropertyModifier enumerationPropertyModifier = new EnumerationPropertyModifier();
                         enumerationPropertyModifier.setClassName(klass.getName());
@@ -137,7 +137,7 @@ public class KlassBootstrapWriter
             }
         }
 
-        for (Association association : this.domainModel.getAssociations())
+        for (Association association: this.domainModel.getAssociations())
         {
             klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
             bootstrappedAssociation.setName(association.getName());
@@ -153,7 +153,7 @@ public class KlassBootstrapWriter
             this.bootstrapAssociationEnd(targetAssociationEnd, "target");
         }
 
-        for (ServiceGroup serviceGroup : this.domainModel.getServiceGroups())
+        for (ServiceGroup serviceGroup: this.domainModel.getServiceGroups())
         {
         }
     }
@@ -171,7 +171,7 @@ public class KlassBootstrapWriter
         bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
         bootstrappedAssociationEnd.insert();
 
-        for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
+        for (AssociationEndModifier associationEndModifier: associationEnd.getAssociationEndModifiers())
         {
             klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningKlass().getName());

@@ -10,8 +10,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
 
 public class AbstractApplicationGenerator
 {
@@ -47,6 +47,8 @@ public class AbstractApplicationGenerator
         Path path = outputPath.resolve(this.relativePath);
         path.toFile().mkdirs();
         Path javaPath = path.resolve("Abstract" + this.applicationName + "Application.java");
+
+        // @formatter:off
         //language=JAVA
         String sourceCode = ""
                 + "package " + this.packageName + ";\n"
@@ -59,7 +61,7 @@ public class AbstractApplicationGenerator
                 + "import cool.klass.dropwizard.bundle.httplogging.HttpLoggingBundle;\n"
                 + "import cool.klass.dropwizard.bundle.objectmapper.ObjectMapperBundle;\n"
                 + "import cool.klass.dropwizard.bundle.reladomo.ReladomoBundle;\n"
-                + "import cool.klass.model.meta.domain.DomainModel;\n"
+                + "import cool.klass.model.meta.domain.api.DomainModel;\n"
                 + "import cool.klass.model.meta.loader.DomainModelLoader;\n"
                 + "import " + this.packageName + "." + this.applicationName + "Configuration;\n"
                 + "import " + this.rootPackageName + ".dropwizard.command.*;\n"
@@ -70,7 +72,6 @@ public class AbstractApplicationGenerator
                 + "import io.dropwizard.Application;\n"
                 + "import io.dropwizard.setup.Bootstrap;\n"
                 + "import io.dropwizard.setup.Environment;\n"
-                // TODO: Iterate through the klassSourcePackages, append .service.resource.* and import
                 + "import klass.model.meta.domain.service.resource.*;\n"
                 + "import org.eclipse.collections.impl.factory.Lists;\n"
                 + "import org.slf4j.Logger;\n"
@@ -136,6 +137,8 @@ public class AbstractApplicationGenerator
                 + "        return domainModelLoader.load();\n"
                 + "    }\n"
                 + "}\n";
+        // @formatter:on
+
         this.printStringToFile(javaPath, sourceCode);
     }
 

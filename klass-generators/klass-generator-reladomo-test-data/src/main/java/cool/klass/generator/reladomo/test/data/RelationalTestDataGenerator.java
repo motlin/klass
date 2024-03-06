@@ -3,8 +3,8 @@ package cool.klass.generator.reladomo.test.data;
 import java.util.function.Function;
 
 import com.gs.fw.common.mithra.util.dbextractor.MithraTestDataRowFormatter;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
 
 public class RelationalTestDataGenerator
 {

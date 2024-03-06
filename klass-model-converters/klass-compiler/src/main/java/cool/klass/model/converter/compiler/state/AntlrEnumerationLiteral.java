@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
+import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -68,7 +68,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.name,
                 this.ordinal,
                 this.prettyName,
-                this.owningEnumeration.getEnumerationBuilder());
+                this.owningEnumeration.getElementBuilder());
         return this.enumerationLiteralBuilder;
     }
 

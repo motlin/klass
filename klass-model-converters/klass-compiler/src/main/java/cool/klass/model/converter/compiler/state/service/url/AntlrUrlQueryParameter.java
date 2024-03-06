@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
-import cool.klass.model.meta.domain.service.url.UrlQueryParameter.UrlQueryParameterBuilder;
+import cool.klass.model.meta.domain.service.url.UrlQueryParameterImpl.UrlQueryParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 

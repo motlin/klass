@@ -11,10 +11,10 @@ import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
-import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.order.OrderBy.OrderByBuilder;
-import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.property.AssociationEndModifier.AssociationEndModifierBuilder;
+import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -26,7 +26,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             new AssociationEndContext(null, -1),
             null,
             true,
-            Element.NO_CONTEXT,
+            AbstractElement.NO_CONTEXT,
             "ambiguous association end",
             -1,
             AntlrAssociation.AMBIGUOUS,
@@ -37,7 +37,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
             new AssociationEndContext(null, -1),
             null,
             true,
-            Element.NO_CONTEXT,
+            AbstractElement.NO_CONTEXT,
             "not found association end",
             -1,
             AntlrAssociation.AMBIGUOUS,
@@ -95,9 +95,9 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.type.getKlassBuilder(),
-                this.owningClassState.getKlassBuilder(),
-                this.owningAssociationState.getAssociationBuilder(),
+                this.type.getElementBuilder(),
+                this.owningClassState.getElementBuilder(),
+                this.owningAssociationState.getElementBuilder(),
                 this.multiplicityState.getMultiplicity(),
                 associationEndModifierBuilders,
                 this.isOwned());

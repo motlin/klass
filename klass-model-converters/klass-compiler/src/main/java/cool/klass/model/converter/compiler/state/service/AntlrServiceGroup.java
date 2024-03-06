@@ -9,9 +9,10 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
+import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
-import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
-import cool.klass.model.meta.domain.service.url.Url.UrlBuilder;
+import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
+import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -24,7 +25,7 @@ import org.eclipse.collections.impl.block.factory.HashingStrategies;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrServiceGroup extends AntlrPackageableElement
+public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
@@ -178,7 +179,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement
                 this.name,
                 this.ordinal,
                 this.packageName,
-                this.klass.getKlassBuilder());
+                this.klass.getElementBuilder());
 
         ImmutableList<UrlBuilder> urlBuilders = this.urlStates
                 .collect(AntlrUrl::build)
@@ -188,7 +189,8 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         return this.serviceGroupBuilder;
     }
 
-    public ServiceGroupBuilder getServiceGroupBuilder()
+    @Override
+    public ServiceGroupBuilder getElementBuilder()
     {
         return this.serviceGroupBuilder;
     }

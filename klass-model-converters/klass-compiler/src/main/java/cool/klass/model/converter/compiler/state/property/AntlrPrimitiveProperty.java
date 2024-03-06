@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
-import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.property.PrimitiveProperty.PrimitivePropertyBuilder;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
+import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.property.PrimitivePropertyImpl.PrimitivePropertyBuilder;
+import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -23,7 +23,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             new PrimitivePropertyContext(null, -1),
             null,
             true,
-            Element.NO_CONTEXT,
+            AbstractElement.NO_CONTEXT,
             "ambiguous primitive property name",
             -1,
             AntlrClass.AMBIGUOUS,
@@ -91,7 +91,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.name,
                 this.ordinal,
                 this.antlrPrimitiveType.getPrimitiveType(),
-                this.owningClassState.getKlassBuilder(),
+                this.owningClassState.getElementBuilder(),
                 propertyModifierBuilders,
                 this.isKey(),
                 this.isOptional,

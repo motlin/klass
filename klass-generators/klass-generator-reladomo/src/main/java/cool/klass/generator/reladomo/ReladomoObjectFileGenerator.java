@@ -19,19 +19,19 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraPureObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.criteria.Criteria;
-import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
-import cool.klass.model.meta.domain.order.OrderBy;
-import cool.klass.model.meta.domain.order.OrderByDirection;
-import cool.klass.model.meta.domain.order.OrderByMemberReferencePath;
-import cool.klass.model.meta.domain.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.DataTypeProperty;
-import cool.klass.model.meta.domain.property.EnumerationProperty;
-import cool.klass.model.meta.domain.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.api.order.OrderBy;
+import cool.klass.model.meta.domain.api.order.OrderByDirection;
+import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.EnumerationProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: ⬆ Generate default order-bys (or infer default order-bys) and gererate order-bys on association ends.
@@ -251,7 +251,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty<?> dataTypeProperty)
+    private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty dataTypeProperty)
     {
         AsOfAttributeType asOfAttributeType = new AsOfAttributeType();
         this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
@@ -259,7 +259,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     private void convertToAsOfAttributeType(
-            DataTypeProperty<?> dataTypeProperty,
+            DataTypeProperty dataTypeProperty,
             AsOfAttributePureType asOfAttributeType)
     {
         String propertyName = dataTypeProperty.getName();
@@ -300,7 +300,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty<?> dataTypeProperty)
+    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty dataTypeProperty)
     {
         AsOfAttributePureType asOfAttributeType = new AsOfAttributePureType();
         this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
@@ -308,14 +308,14 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AttributeType convertToAttributeType(DataTypeProperty<?> dataTypeProperty)
+    private AttributeType convertToAttributeType(DataTypeProperty dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
         this.convertToAttributeType(dataTypeProperty, attributeType);
         return attributeType;
     }
 
-    private void convertToAttributeType(DataTypeProperty<?> dataTypeProperty, AttributePureType attributeType)
+    private void convertToAttributeType(DataTypeProperty dataTypeProperty, AttributePureType attributeType)
     {
         String propertyName = dataTypeProperty.getName();
         attributeType.setName(propertyName);
@@ -326,7 +326,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         this.handleType(attributeType, dataTypeProperty);
     }
 
-    private void handleType(@Nonnull AttributePureType attributeType, DataTypeProperty<?> dataTypeProperty)
+    private void handleType(@Nonnull AttributePureType attributeType, DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty instanceof EnumerationProperty)
         {
@@ -343,7 +343,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AttributePureType convertToAttributePureType(DataTypeProperty<?> dataTypeProperty)
+    private AttributePureType convertToAttributePureType(DataTypeProperty dataTypeProperty)
     {
         AttributePureType attributeType = new AttributePureType();
         this.convertToAttributeType(dataTypeProperty, attributeType);

@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.meta.domain.service.Verb;
+import cool.klass.model.meta.domain.api.service.Verb;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrVerb extends AntlrElement

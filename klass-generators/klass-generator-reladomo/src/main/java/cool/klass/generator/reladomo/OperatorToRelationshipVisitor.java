@@ -1,13 +1,11 @@
 package cool.klass.generator.reladomo;
 
-import javax.annotation.Nonnull;
-
-import cool.klass.model.meta.domain.operator.EqualityOperator;
-import cool.klass.model.meta.domain.operator.InOperator;
-import cool.klass.model.meta.domain.operator.InequalityOperator;
-import cool.klass.model.meta.domain.operator.Operator;
-import cool.klass.model.meta.domain.operator.OperatorVisitor;
-import cool.klass.model.meta.domain.operator.StringOperator;
+import cool.klass.model.meta.domain.api.operator.EqualityOperator;
+import cool.klass.model.meta.domain.api.operator.InOperator;
+import cool.klass.model.meta.domain.api.operator.InequalityOperator;
+import cool.klass.model.meta.domain.api.operator.Operator;
+import cool.klass.model.meta.domain.api.operator.OperatorVisitor;
+import cool.klass.model.meta.domain.api.operator.StringOperator;
 
 public class OperatorToRelationshipVisitor implements OperatorVisitor
 {
@@ -25,19 +23,19 @@ public class OperatorToRelationshipVisitor implements OperatorVisitor
     }
 
     @Override
-    public void visitInequality(@Nonnull InequalityOperator inequalityOperator)
+    public void visitInequality(InequalityOperator inequalityOperator)
     {
         this.appendOperatorText(inequalityOperator);
     }
 
     @Override
-    public void visitIn(@Nonnull InOperator inOperator)
+    public void visitIn(InOperator inOperator)
     {
         this.appendOperatorText(inOperator);
     }
 
     @Override
-    public void visitString(@Nonnull StringOperator stringOperator)
+    public void visitString(StringOperator stringOperator)
     {
         this.appendOperatorText(stringOperator);
     }

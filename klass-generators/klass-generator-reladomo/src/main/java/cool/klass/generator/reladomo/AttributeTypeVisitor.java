@@ -3,8 +3,8 @@ package cool.klass.generator.reladomo;
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyType;
 import com.gs.fw.common.mithra.generator.metamodel.SimulatedSequenceType;
-import cool.klass.model.meta.domain.property.PrimitiveProperty;
-import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import cool.klass.reladomo.simseq.ObjectSequenceObjectFactory;
 
 // TODO: Create a DataTypeVisitor that factors in enumerations too

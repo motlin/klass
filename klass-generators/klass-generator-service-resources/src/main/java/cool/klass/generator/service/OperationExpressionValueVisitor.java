@@ -2,26 +2,24 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-
-import cool.klass.model.meta.domain.DataType;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.NamedElement;
-import cool.klass.model.meta.domain.Type;
-import cool.klass.model.meta.domain.property.AssociationEnd;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.service.url.UrlParameter;
-import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
-import cool.klass.model.meta.domain.value.ThisMemberReferencePath;
-import cool.klass.model.meta.domain.value.TypeMemberReferencePath;
-import cool.klass.model.meta.domain.value.VariableReference;
-import cool.klass.model.meta.domain.value.literal.IntegerLiteralValue;
-import cool.klass.model.meta.domain.value.literal.LiteralListValue;
-import cool.klass.model.meta.domain.value.literal.LiteralValue;
-import cool.klass.model.meta.domain.value.literal.StringLiteralValue;
-import cool.klass.model.meta.domain.value.literal.UserLiteral;
-import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
+import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.Type;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.service.url.UrlParameter;
+import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
+import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
+import cool.klass.model.meta.domain.api.value.VariableReference;
+import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
+import cool.klass.model.meta.domain.api.value.literal.LiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
+import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class OperationExpressionValueVisitor implements ExpressionValueVisitor
@@ -36,7 +34,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
+    public void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = typeMemberExpressionValue.getAssociationEnds();
 
@@ -56,7 +54,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
+    public void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = thisMemberExpressionValue.getAssociationEnds();
 
@@ -76,7 +74,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitVariableReference(@Nonnull VariableReference variableReference)
+    public void visitVariableReference(VariableReference variableReference)
     {
         UrlParameter urlParameter = variableReference.getUrlParameter();
         DataType     dataType     = urlParameter.getType();
@@ -98,13 +96,13 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitIntegerLiteral(@Nonnull IntegerLiteralValue integerLiteralValue)
+    public void visitIntegerLiteral(IntegerLiteralValue integerLiteralValue)
     {
         this.stringBuilder.append(integerLiteralValue.getValue());
     }
 
     @Override
-    public void visitStringLiteral(@Nonnull StringLiteralValue stringLiteralValue)
+    public void visitStringLiteral(StringLiteralValue stringLiteralValue)
     {
         this.stringBuilder.append('"');
         this.stringBuilder.append(stringLiteralValue.getValue());
@@ -112,10 +110,10 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitLiteralList(@Nonnull LiteralListValue literalListValue)
+    public void visitLiteralList(LiteralListValue literalListValue)
     {
         Type type = literalListValue.getType();
-        this.stringBuilder.append(getType(type));
+        this.stringBuilder.append(this.getType(type));
         this.stringBuilder.append("Sets.immutable.with(");
         this.stringBuilder.append(literalListValue.getLiteralValues().collect(this::getLiteralString).makeString());
         this.stringBuilder.append(")");

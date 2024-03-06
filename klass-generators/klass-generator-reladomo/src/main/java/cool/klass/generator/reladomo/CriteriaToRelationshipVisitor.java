@@ -2,12 +2,12 @@ package cool.klass.generator.reladomo;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.criteria.AllCriteria;
-import cool.klass.model.meta.domain.criteria.AndCriteria;
-import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
-import cool.klass.model.meta.domain.criteria.EdgePointCriteria;
-import cool.klass.model.meta.domain.criteria.OperatorCriteria;
-import cool.klass.model.meta.domain.criteria.OrCriteria;
+import cool.klass.model.meta.domain.api.criteria.AllCriteria;
+import cool.klass.model.meta.domain.api.criteria.AndCriteria;
+import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
+import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
+import cool.klass.model.meta.domain.api.criteria.OrCriteria;
 
 public class CriteriaToRelationshipVisitor implements CriteriaVisitor
 {
@@ -16,6 +16,12 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
     public CriteriaToRelationshipVisitor(StringBuilder stringBuilder)
     {
         this.stringBuilder = stringBuilder;
+    }
+
+    @Override
+    public void visitAll(@Nonnull AllCriteria allCriteria)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".visitAll() not implemented yet");
     }
 
     @Override
@@ -40,12 +46,6 @@ public class CriteriaToRelationshipVisitor implements CriteriaVisitor
         operatorCriteria.getSourceValue().visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
         operatorCriteria.getOperator().visit(new OperatorToRelationshipVisitor(this.stringBuilder));
         operatorCriteria.getTargetValue().visit(new ExpressionValueToRelationshipVisitor(this.stringBuilder));
-    }
-
-    @Override
-    public void visitAll(@Nonnull AllCriteria allCriteria)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".visitAll() not implemented yet");
     }
 
     @Override

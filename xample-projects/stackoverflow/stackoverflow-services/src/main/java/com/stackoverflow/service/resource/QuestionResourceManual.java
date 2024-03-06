@@ -30,8 +30,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.list.merge.TopLevelMergeOptions;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.projection.Projection;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.serializer.json.ReladomoJsonTree;
 import com.stackoverflow.Answer;
 import com.stackoverflow.Question;
@@ -39,6 +39,7 @@ import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.dto.QuestionDTO;
+import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
@@ -86,7 +87,7 @@ public class QuestionResourceManual
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionReadProjection");
+        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
         return new ReladomoJsonTree(mithraObject, projection.getChildren());
     }
 
@@ -142,7 +143,7 @@ public class QuestionResourceManual
         // }
         // question.setAnswers(answers);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionReadProjection");
+        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
 
         // TODO: Version number stuff
         TopLevelMergeOptions<Question> mergeOptions = new TopLevelMergeOptions<>(QuestionFinder.getFinderInstance());
@@ -201,7 +202,7 @@ public class QuestionResourceManual
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionWriteProjection");
+        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
         return new ReladomoJsonTree(mithraObject, projection.getChildren());
     }
 
@@ -223,7 +224,7 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        return this.applyProjection(result.asEcList(), "QuestionReadProjection");
+        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
     }
 
     @Nonnull
@@ -244,7 +245,7 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        return this.applyProjection(result.asEcList(), "QuestionReadProjection");
+        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
     }
 
     @Nonnull
@@ -278,7 +279,7 @@ public class QuestionResourceManual
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionReadProjection");
+        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
         return new ReladomoJsonTree(mithraObject, projection.getChildren());
     }
 
@@ -312,7 +313,7 @@ public class QuestionResourceManual
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionWriteProjection");
+        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
         return new ReladomoJsonTree(mithraObject, projection.getChildren());
     }
 
@@ -341,7 +342,7 @@ public class QuestionResourceManual
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = this.domainModel.getProjectionByName("QuestionWriteProjection");
+        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
         return new ReladomoJsonTree(mithraObject, projection.getChildren());
     }
 
@@ -362,7 +363,7 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        return this.applyProjection(result.asEcList(), "QuestionReadProjection");
+        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
     }
 
     @Timed
@@ -380,14 +381,13 @@ public class QuestionResourceManual
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionWriteProjection
 
-        return this.applyProjection(result.asEcList(), "QuestionWriteProjection");
+        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionWriteProjection);
     }
 
     private List<ReladomoJsonTree> applyProjection(
             MutableList<? extends MithraObject> mithraObjects,
-            String projectionName)
+            Projection projection)
     {
-        Projection projection = this.domainModel.getProjectionByName(projectionName);
         return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(
                 mithraObject,
                 projection.getChildren()));

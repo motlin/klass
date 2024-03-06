@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.ClassModifier.ClassModifierBuilder;
+import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrClassModifier extends AntlrNamedElement

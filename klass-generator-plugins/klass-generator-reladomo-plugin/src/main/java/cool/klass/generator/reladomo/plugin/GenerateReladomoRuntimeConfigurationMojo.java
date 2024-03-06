@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.reladomo.ReladomoRuntimeConfigurationGenerator;
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;

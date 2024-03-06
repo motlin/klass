@@ -7,7 +7,7 @@ import java.time.Instant;
 
 import cool.klass.generator.meta.constants.JavaConstantsMetaModelGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -19,6 +19,12 @@ public class GenerateJavaConstantsMetaModelMojo extends AbstractGenerateMojo
 {
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/meta-model-constants")
     private File outputDirectory;
+
+    @Parameter(property = "applicationName", required = true, readonly = true)
+    private String applicationName;
+
+    @Parameter(property = "rootPackageName", required = true, readonly = true)
+    private String rootPackageName;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
@@ -37,6 +43,8 @@ public class GenerateJavaConstantsMetaModelMojo extends AbstractGenerateMojo
         {
             JavaConstantsMetaModelGenerator javaConstantsMetaModelGenerator = new JavaConstantsMetaModelGenerator(
                     domainModel,
+                    this.applicationName,
+                    this.rootPackageName,
                     Instant.now());
             javaConstantsMetaModelGenerator.writeJavaConstantsMetaModelFiles(outputPath);
         }

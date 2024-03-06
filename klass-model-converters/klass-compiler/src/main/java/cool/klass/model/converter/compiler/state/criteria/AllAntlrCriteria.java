@@ -6,7 +6,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
-import cool.klass.model.meta.domain.criteria.AllCriteria.AllCriteriaBuilder;
+import cool.klass.model.meta.domain.criteria.AllCriteriaImpl.AllCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

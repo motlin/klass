@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
-import cool.klass.model.meta.domain.parameter.PrimitiveParameter.PrimitiveParameterBuilder;
+import cool.klass.model.meta.domain.parameter.PrimitiveParameterImpl.PrimitiveParameterBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;

@@ -3,12 +3,12 @@ package cool.klass.model.meta.domain.api.projection;
 public class BaseProjectionListener implements ProjectionListener
 {
     @Override
-    public void enterProjection(IProjection projection)
+    public void enterProjection(Projection projection)
     {
     }
 
     @Override
-    public void exitProjection(IProjection projection)
+    public void exitProjection(Projection projection)
     {
     }
 
@@ -23,12 +23,12 @@ public class BaseProjectionListener implements ProjectionListener
     }
 
     @Override
-    public void enterProjectionDataTypeProperty(IProjectionDataTypeProperty projectionDataTypeProperty)
+    public void enterProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
     {
     }
 
     @Override
-    public void exitProjectionDataTypeProperty(IProjectionDataTypeProperty projectionDataTypeProperty)
+    public void exitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
     {
     }
 }

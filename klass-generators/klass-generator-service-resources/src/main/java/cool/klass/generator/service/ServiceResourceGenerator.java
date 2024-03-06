@@ -12,26 +12,26 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.DataType;
-import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.criteria.Criteria;
-import cool.klass.model.meta.domain.projection.Projection;
-import cool.klass.model.meta.domain.projection.ProjectionWalker;
-import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.service.Service;
-import cool.klass.model.meta.domain.service.ServiceGroup;
-import cool.klass.model.meta.domain.service.ServiceMultiplicity;
-import cool.klass.model.meta.domain.service.ServiceProjectionDispatch;
-import cool.klass.model.meta.domain.service.Verb;
-import cool.klass.model.meta.domain.service.url.Url;
-import cool.klass.model.meta.domain.service.url.UrlParameter;
-import cool.klass.model.meta.domain.service.url.UrlPathParameter;
-import cool.klass.model.meta.domain.service.url.UrlPathSegment;
-import cool.klass.model.meta.domain.service.url.UrlQueryParameter;
-import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
+import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Multiplicity;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.criteria.Criteria;
+import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.projection.ProjectionWalker;
+import cool.klass.model.meta.domain.api.service.Service;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
+import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
+import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
+import cool.klass.model.meta.domain.api.service.Verb;
+import cool.klass.model.meta.domain.api.service.url.Url;
+import cool.klass.model.meta.domain.api.service.url.UrlParameter;
+import cool.klass.model.meta.domain.api.service.url.UrlPathParameter;
+import cool.klass.model.meta.domain.api.service.url.UrlPathSegment;
+import cool.klass.model.meta.domain.api.service.url.UrlQueryParameter;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ServiceResourceGenerator
@@ -39,11 +39,21 @@ public class ServiceResourceGenerator
     @Nonnull
     private final DomainModel domainModel;
     @Nonnull
+    private final String      applicationName;
+    @Nonnull
+    private final String      rootPackageName;
+    @Nonnull
     private final Instant     now;
 
-    public ServiceResourceGenerator(@Nonnull DomainModel domainModel, @Nonnull Instant now)
+    public ServiceResourceGenerator(
+            @Nonnull DomainModel domainModel,
+            @Nonnull String applicationName,
+            @Nonnull String rootPackageName,
+            @Nonnull Instant now)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
+        this.applicationName = Objects.requireNonNull(applicationName);
+        this.rootPackageName = Objects.requireNonNull(rootPackageName);
         this.now = Objects.requireNonNull(now);
     }
 
@@ -91,6 +101,7 @@ public class ServiceResourceGenerator
                 .collectWithIndex(this::getServiceSourceCode)
                 .makeString("\n");
 
+        // @formatter:off
         //language=JAVA
         String sourceCode = ""
                 + "package " + packageName + ";\n"
@@ -104,12 +115,13 @@ public class ServiceResourceGenerator
                 + "import javax.ws.rs.core.Response.Status;\n"
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
+                + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
                 + "import org.eclipse.collections.api.list.MutableList;\n"
                 + "import com.gs.fw.common.mithra.MithraObject;\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
-                + "import cool.klass.model.meta.domain.DomainModel;\n"
-                + "import cool.klass.model.meta.domain.projection.Projection;\n"
+                + "import cool.klass.model.meta.domain.api.*;\n"
+                + "import cool.klass.model.meta.domain.api.projection.*;\n"
                 + "import cool.klass.serializer.json.ReladomoJsonTree;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.*;\n"
                 + "import org.eclipse.collections.impl.set.mutable.SetAdapter;\n"
@@ -136,15 +148,15 @@ public class ServiceResourceGenerator
                 + "\n"
                 + "    private List<ReladomoJsonTree> applyProjection(\n"
                 + "            MutableList<? extends MithraObject> mithraObjects,\n"
-                + "            String projectionName)\n"
+                + "            Projection projection)\n"
                 + "    {\n"
-                + "        Projection projection = this.domainModel.getProjectionByName(projectionName);\n"
                 + "        return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
                 + "                mithraObject,\n"
                 + "                projection.getChildren()));\n"
                 + "    }\n"
                 + "}\n";
         return sourceCode;
+        // @formatter:on
     }
 
     @Nonnull
@@ -216,6 +228,7 @@ public class ServiceResourceGenerator
                 klassName);
 
         Projection                  projection                  = projectionDispatch.getProjection();
+
         // TODO: Fix deep fetching redundant stuff
         DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
         ProjectionWalker.walk(projection, deepFetchProjectionListener);
@@ -273,6 +286,7 @@ public class ServiceResourceGenerator
 
         if (uniqueResult)
         {
+            // @formatter:off
             return ""
                     + "        if (result.isEmpty())\n"
                     + "        {\n"
@@ -280,14 +294,14 @@ public class ServiceResourceGenerator
                     + "        }\n"
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"
-                    + "        Projection projection = this.domainModel.getProjectionByName(\""
-                    + projectionName
-                    + "\");\n"
+                    + "        Projection projection = " + this.applicationName + "DomainModel." + projectionName + ";\n"
                     + "        return new ReladomoJsonTree(mithraObject, projection.getChildren());\n";
+
+            // @formatter:on
         }
 
         //language=JAVA
-        return "        return this.applyProjection(result.asEcList(), \"" + projectionName + "\");\n";
+        return "        return this.applyProjection(result.asEcList(), " + this.applicationName + "DomainModel." + projectionName + ");\n";
     }
 
     @Nonnull
@@ -365,12 +379,15 @@ public class ServiceResourceGenerator
 
     private String checkPredicate(String criteriaName, String flagName, String exceptionName)
     {
+        // @formatter:off
         return ""
                 + "        boolean " + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
                 + "        if (!" + flagName + ")\n"
                 + "        {\n"
                 + "            throw new " + exceptionName + ";\n"
                 + "        }\n";
+
+        // @formatter:on
     }
 
     @Nonnull
@@ -397,8 +414,8 @@ public class ServiceResourceGenerator
 
         DataType parameterType = urlParameter.getType();
         String typeString = urlParameter.getMultiplicity().isToMany()
-                ? "Set<" + getType(parameterType) + ">"
-                : getType(parameterType);
+                ? "Set<" + this.getType(parameterType) + ">"
+                : this.getType(parameterType);
 
         return String.format(
                 "%s%s@%s(\"%s\") %s %s",

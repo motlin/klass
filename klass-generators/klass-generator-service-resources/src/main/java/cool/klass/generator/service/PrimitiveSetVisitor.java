@@ -2,7 +2,7 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
-import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 public class PrimitiveSetVisitor implements PrimitiveTypeVisitor
 {

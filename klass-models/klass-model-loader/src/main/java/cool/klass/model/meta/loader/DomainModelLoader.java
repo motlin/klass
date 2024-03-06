@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;

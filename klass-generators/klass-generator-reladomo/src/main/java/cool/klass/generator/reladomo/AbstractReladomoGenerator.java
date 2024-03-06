@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.api.DomainModel;
 
 public class AbstractReladomoGenerator
 {

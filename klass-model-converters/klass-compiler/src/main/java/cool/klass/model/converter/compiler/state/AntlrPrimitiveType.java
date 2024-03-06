@@ -4,8 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.Type.TypeGetter;
-import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
@@ -68,7 +67,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     }
 
     @Override
-    public TypeGetter getTypeGetter()
+    public PrimitiveType getTypeGetter()
     {
         return this.primitiveType;
     }
