@@ -1,6 +1,0 @@
-projection OwnedNaturalOneToManySourceProjection on OwnedNaturalOneToManySource
-{
-    key: "OwnedNaturalOneToManySource key",
-    value: "OwnedNaturalOneToManySource value",
-    targets: OwnedNaturalOneToManyTargetProjection,
-}

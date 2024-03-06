@@ -1,5 +1,0 @@
-projection SharedNaturalOneToOneTargetProjection on SharedNaturalOneToOneTarget
-{
-    key: "SharedNaturalOneToOneTarget key",
-    value: "SharedNaturalOneToOneTarget value",
-}

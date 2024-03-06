@@ -1,6 +1,0 @@
-projection OwnedSyntheticOneToOneSourceProjection on OwnedSyntheticOneToOneSource
-{
-    id: "OwnedSyntheticOneToOneSource id",
-    value: "OwnedSyntheticOneToOneSource value",
-    target: OwnedSyntheticOneToOneTargetProjection,
-}

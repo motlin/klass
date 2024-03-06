@@ -1,6 +1,0 @@
-projection OwnedSyntheticOneToManySelfProjection on OwnedSyntheticOneToManySelf
-{
-    id: "OwnedSyntheticOneToManySelf id",
-    value: "OwnedSyntheticOneToManySelf value",
-    target: OwnedSyntheticOneToManySelfProjection,
-}

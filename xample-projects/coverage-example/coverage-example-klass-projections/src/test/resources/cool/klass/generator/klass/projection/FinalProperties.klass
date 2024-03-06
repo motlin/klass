@@ -1,5 +1,0 @@
-projection FinalPropertiesProjection on FinalProperties
-{
-    id: "FinalProperties id",
-    data: "FinalProperties data",
-}

@@ -1,6 +1,0 @@
-projection OwnedNaturalOneToManySelfProjection on OwnedNaturalOneToManySelf
-{
-    key: "OwnedNaturalOneToManySelf key",
-    value: "OwnedNaturalOneToManySelf value",
-    target: OwnedNaturalOneToManySelfProjection,
-}

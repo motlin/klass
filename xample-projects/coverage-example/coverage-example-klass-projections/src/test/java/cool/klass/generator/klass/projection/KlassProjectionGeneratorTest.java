@@ -1,6 +1,6 @@
 package cool.klass.generator.klass.projection;
 
-import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.compiler.DomainModelCompilerLoader;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
@@ -27,11 +27,16 @@ public class KlassProjectionGeneratorTest
         var domainModelCompilerLoader = new DomainModelCompilerLoader(klassSourcePackages);
 
         DomainModelWithSourceCode domainModel = domainModelCompilerLoader.load();
-
-        for (Classifier classifier : domainModel.getClassifiers())
+        ImmutableList<String>     packageNames = domainModel
+                .getClassifiers()
+                .asLazy()
+                .collect(PackageableElement::getPackageName)
+                .distinct()
+                .toImmutableList();
+        for (String packageName : packageNames)
         {
-            String sourceCode                = KlassProjectionGenerator.getSourceCode(classifier);
-            String resourceClassPathLocation = classifier.getName() + ".klass";
+            String sourceCode                = KlassProjectionGenerator.getPackageSourceCode(domainModel, packageName);
+            String resourceClassPathLocation = packageName + ".klass";
 
             this.fileMatchRule.assertFileContents(
                     resourceClassPathLocation,

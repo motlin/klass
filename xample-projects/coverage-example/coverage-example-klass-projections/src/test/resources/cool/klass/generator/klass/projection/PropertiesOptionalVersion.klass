@@ -1,9 +1,0 @@
-projection PropertiesOptionalVersionProjection on PropertiesOptionalVersion
-{
-    number: "PropertiesOptionalVersion number",
-    systemFrom: "PropertiesOptionalVersion systemFrom",
-    systemTo: "PropertiesOptionalVersion systemTo",
-    createdOn: "PropertiesOptionalVersion createdOn",
-    createdBy: UserProjection,
-    lastUpdatedBy: UserProjection,
-}

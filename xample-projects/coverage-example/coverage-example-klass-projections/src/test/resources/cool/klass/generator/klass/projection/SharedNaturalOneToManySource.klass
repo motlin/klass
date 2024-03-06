@@ -1,6 +1,0 @@
-projection SharedNaturalOneToManySourceProjection on SharedNaturalOneToManySource
-{
-    key: "SharedNaturalOneToManySource key",
-    value: "SharedNaturalOneToManySource value",
-    targets: SharedNaturalOneToManyTargetProjection,
-}

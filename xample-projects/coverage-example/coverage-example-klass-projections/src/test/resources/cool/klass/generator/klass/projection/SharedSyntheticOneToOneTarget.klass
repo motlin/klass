@@ -1,5 +1,0 @@
-projection SharedSyntheticOneToOneTargetProjection on SharedSyntheticOneToOneTarget
-{
-    id: "SharedSyntheticOneToOneTarget id",
-    value: "SharedSyntheticOneToOneTarget value",
-}
