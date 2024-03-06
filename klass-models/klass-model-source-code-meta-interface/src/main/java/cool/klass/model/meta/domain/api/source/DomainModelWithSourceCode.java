@@ -17,5 +17,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 public interface DomainModelWithSourceCode
         extends DomainModel
 {
+    @Override
+    TopLevelElementWithSourceCode getTopLevelElementByName(String topLevelElementName);
+
     ImmutableList<SourceCode> getSourceCodes();
 }

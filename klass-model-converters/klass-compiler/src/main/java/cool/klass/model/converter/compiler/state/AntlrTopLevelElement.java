@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
+import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.tuple.Pair;
@@ -35,7 +35,7 @@ public interface AntlrTopLevelElement
     }
 
     @Nonnull
-    TopLevelElementBuilderWithSourceCode getElementBuilder();
+    TopLevelElementBuilder getElementBuilder();
 
     @Override
     @Nonnull

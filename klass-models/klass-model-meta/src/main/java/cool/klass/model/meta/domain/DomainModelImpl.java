@@ -16,13 +16,13 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.TopLevelElement;
+import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
@@ -36,33 +36,34 @@ public final class DomainModelImpl
     private final ImmutableList<SourceCode> sourceCodes;
 
     @Nonnull
-    private final ImmutableList<TopLevelElementWithSourceCode> topLevelElements;
+    private final ImmutableList<TopLevelElement> topLevelElements;
     @Nonnull
-    private final ImmutableList<Enumeration>                   enumerations;
+    private final ImmutableList<Enumeration>     enumerations;
     @Nonnull
-    private final ImmutableList<Classifier>                    classifiers;
+    private final ImmutableList<Classifier>      classifiers;
     @Nonnull
-    private final ImmutableList<Interface>                     interfaces;
+    private final ImmutableList<Interface>       interfaces;
     @Nonnull
-    private final ImmutableList<Klass>                         classes;
+    private final ImmutableList<Klass>           classes;
     @Nonnull
-    private final ImmutableList<Association>                   associations;
+    private final ImmutableList<Association>     associations;
     @Nonnull
-    private final ImmutableList<Projection>                    projections;
+    private final ImmutableList<Projection>      projections;
     @Nonnull
-    private final ImmutableList<ServiceGroup>                  serviceGroups;
+    private final ImmutableList<ServiceGroup>    serviceGroups;
 
-    private final ImmutableMap<String, Enumeration> enumerationsByName;
-    private final ImmutableMap<String, Interface>   interfacesByName;
-    private final ImmutableMap<String, Klass>       classesByName;
-    private final ImmutableMap<String, Association> associationsByName;
-    private final ImmutableMap<String, Projection>  projectionsByName;
-    private final ImmutableMap<Klass, ServiceGroup> serviceGroupsByKlass;
-    private final ImmutableMap<String, Classifier>  classifiersByName;
+    private final ImmutableMap<String, TopLevelElement> topLevelElementsByName;
+    private final ImmutableMap<String, Enumeration>     enumerationsByName;
+    private final ImmutableMap<String, Interface>       interfacesByName;
+    private final ImmutableMap<String, Klass>           classesByName;
+    private final ImmutableMap<String, Association>     associationsByName;
+    private final ImmutableMap<String, Projection>      projectionsByName;
+    private final ImmutableMap<Klass, ServiceGroup>     serviceGroupsByKlass;
+    private final ImmutableMap<String, Classifier>      classifiersByName;
 
     private DomainModelImpl(
             @Nonnull ImmutableList<SourceCode> sourceCodes,
-            @Nonnull ImmutableList<TopLevelElementWithSourceCode> topLevelElements,
+            @Nonnull ImmutableList<TopLevelElement> topLevelElements,
             @Nonnull ImmutableList<Enumeration> enumerations,
             @Nonnull ImmutableList<Classifier> classifiers,
             @Nonnull ImmutableList<Interface> interfaces,
@@ -81,13 +82,16 @@ public final class DomainModelImpl
         this.projections      = Objects.requireNonNull(projections);
         this.serviceGroups    = Objects.requireNonNull(serviceGroups);
 
-        this.enumerationsByName   = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.classifiersByName    = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.interfacesByName     = this.interfaces.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.classesByName        = this.classes.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.associationsByName   = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.projectionsByName    = this.projections.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.serviceGroupsByKlass = this.serviceGroups.groupByUniqueKey(ServiceGroup::getKlass).toImmutable();
+        this.topLevelElementsByName = this.topLevelElements
+                .reject(ServiceGroup.class::isInstance)
+                .groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.enumerationsByName     = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.classifiersByName      = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.interfacesByName       = this.interfaces.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.classesByName          = this.classes.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.associationsByName     = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.projectionsByName      = this.projections.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.serviceGroupsByKlass   = this.serviceGroups.groupByUniqueKey(ServiceGroup::getKlass).toImmutable();
     }
 
     @Override
@@ -153,6 +157,12 @@ public final class DomainModelImpl
     }
 
     @Override
+    public TopLevelElementWithSourceCode getTopLevelElementByName(String name)
+    {
+        return (TopLevelElementWithSourceCode) this.topLevelElementsByName.get(name);
+    }
+
+    @Override
     public Enumeration getEnumerationByName(String name)
     {
         return this.enumerationsByName.get(name);
@@ -191,27 +201,27 @@ public final class DomainModelImpl
     public static final class DomainModelBuilder
     {
         @Nonnull
-        private final ImmutableList<SourceCodeBuilder>                    sourceCodeBuilders;
+        private final ImmutableList<SourceCodeBuilder>      sourceCodeBuilders;
         @Nonnull
-        private final ImmutableList<TopLevelElementBuilderWithSourceCode> topLevelElementBuilders;
+        private final ImmutableList<TopLevelElementBuilder> topLevelElementBuilders;
         @Nonnull
-        private final ImmutableList<EnumerationBuilder>                   enumerationBuilders;
+        private final ImmutableList<EnumerationBuilder>     enumerationBuilders;
         @Nonnull
-        private final ImmutableList<ClassifierBuilder<?>>                 classifierBuilders;
+        private final ImmutableList<ClassifierBuilder<?>>   classifierBuilders;
         @Nonnull
-        private final ImmutableList<InterfaceBuilder>                     interfaceBuilders;
+        private final ImmutableList<InterfaceBuilder>       interfaceBuilders;
         @Nonnull
-        private final ImmutableList<KlassBuilder>                         classBuilders;
+        private final ImmutableList<KlassBuilder>           classBuilders;
         @Nonnull
-        private final ImmutableList<AssociationBuilder>                   associationBuilders;
+        private final ImmutableList<AssociationBuilder>     associationBuilders;
         @Nonnull
-        private final ImmutableList<ProjectionBuilder>                    projectionBuilders;
+        private final ImmutableList<ProjectionBuilder>      projectionBuilders;
         @Nonnull
-        private final ImmutableList<ServiceGroupBuilder>                  serviceGroupBuilders;
+        private final ImmutableList<ServiceGroupBuilder>    serviceGroupBuilders;
 
         public DomainModelBuilder(
                 @Nonnull ImmutableList<SourceCodeBuilder> sourceCodeBuilders,
-                @Nonnull ImmutableList<TopLevelElementBuilderWithSourceCode> topLevelElementBuilders,
+                @Nonnull ImmutableList<TopLevelElementBuilder> topLevelElementBuilders,
                 @Nonnull ImmutableList<EnumerationBuilder> enumerationBuilders,
                 @Nonnull ImmutableList<ClassifierBuilder<?>> classifierBuilders,
                 @Nonnull ImmutableList<InterfaceBuilder> interfaceBuilders,
@@ -246,7 +256,7 @@ public final class DomainModelImpl
             ImmutableList<Projection> projections = this.projectionBuilders.<Projection>collect(ProjectionBuilder::build).toImmutable();
             this.projectionBuilders.each(AbstractProjectionParentBuilder::build2);
             ImmutableList<ServiceGroup>                  serviceGroups    = this.serviceGroupBuilders.<ServiceGroup>collect(ServiceGroupBuilder::build).toImmutable();
-            ImmutableList<TopLevelElementWithSourceCode> topLevelElements = this.topLevelElementBuilders.collect(TopLevelElementBuilderWithSourceCode::getElement);
+            ImmutableList<TopLevelElement> topLevelElements = this.topLevelElementBuilders.collect(TopLevelElementBuilder::getElement);
 
             return new DomainModelImpl(
                     sourceCodes,

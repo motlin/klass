@@ -16,8 +16,8 @@ import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -522,7 +522,7 @@ public class AntlrDomainModel
                 .collect(AntlrServiceGroup::build)
                 .toImmutable();
 
-        ImmutableList<TopLevelElementBuilderWithSourceCode> topLevelElementBuilders = this.topLevelElementsByContext
+        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementsByContext
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
                 .collect(AntlrTopLevelElement::getElementBuilder)
                 .toImmutable();

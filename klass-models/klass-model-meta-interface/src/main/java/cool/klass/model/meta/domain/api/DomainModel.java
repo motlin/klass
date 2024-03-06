@@ -32,6 +32,8 @@ public interface DomainModel
     @Nonnull
     ImmutableList<ServiceGroup> getServiceGroups();
 
+    TopLevelElement getTopLevelElementByName(String topLevelElementName);
+
     Enumeration getEnumerationByName(String name);
 
     Classifier getClassifierByName(String name);
