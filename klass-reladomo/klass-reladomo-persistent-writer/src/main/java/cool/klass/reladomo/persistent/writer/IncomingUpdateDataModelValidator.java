@@ -18,8 +18,10 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.PropertyVisitor;
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -36,7 +38,12 @@ public class IncomingUpdateDataModelValidator
     @Nonnull
     protected final DataStore                dataStore;
     @Nonnull
+    protected final Klass                    userKlass;
+    @Nonnull
     protected final Klass                    klass;
+    @Nonnull
+    protected final MutationContext          mutationContext;
+    @Nonnull
     protected final Object                   persistentInstance;
     @Nonnull
     protected final ObjectNode               objectNode;
@@ -53,7 +60,9 @@ public class IncomingUpdateDataModelValidator
 
     public IncomingUpdateDataModelValidator(
             @Nonnull DataStore dataStore,
+            @Nonnull Klass userKlass,
             @Nonnull Klass klass,
+            @Nonnull MutationContext mutationContext,
             @Nonnull Object persistentInstance,
             @Nonnull ObjectNode objectNode,
             @Nonnull MutableList<String> errors,
@@ -64,7 +73,9 @@ public class IncomingUpdateDataModelValidator
             boolean isInProjection)
     {
         this.dataStore          = Objects.requireNonNull(dataStore);
+        this.userKlass          = Objects.requireNonNull(userKlass);
         this.klass              = Objects.requireNonNull(klass);
+        this.mutationContext    = Objects.requireNonNull(mutationContext);
         this.persistentInstance = Objects.requireNonNull(persistentInstance);
         this.objectNode         = Objects.requireNonNull(objectNode);
         this.errors             = Objects.requireNonNull(errors);
@@ -77,7 +88,9 @@ public class IncomingUpdateDataModelValidator
 
     public static void validate(
             @Nonnull DataStore dataStore,
+            @Nonnull Klass userKlass,
             @Nonnull Klass klass,
+            @Nonnull MutationContext mutationContext,
             @Nonnull Object persistentInstance,
             @Nonnull ObjectNode objectNode,
             @Nonnull MutableList<String> errors,
@@ -85,7 +98,9 @@ public class IncomingUpdateDataModelValidator
     {
         IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
                 dataStore,
+                userKlass,
                 klass,
+                mutationContext,
                 persistentInstance,
                 objectNode,
                 errors,
@@ -134,9 +149,14 @@ public class IncomingUpdateDataModelValidator
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
             return;
         }
-        if (dataTypeProperty.isAudit())
+        if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
-            this.checkPropertyMatchesIfPresent(dataTypeProperty, "audit");
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "user id");
+            return;
+        }
+        if (dataTypeProperty.isCreatedOn())
+        {
+            this.checkPropertyMatchesIfPresent(dataTypeProperty, "created on");
             return;
         }
         if (dataTypeProperty.isVersion())
@@ -214,6 +234,11 @@ public class IncomingUpdateDataModelValidator
             this.handleVersionAssociationEnd(associationEnd);
             return;
         }
+        if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
+        {
+            this.handleAuditByAssociationEnd(associationEnd);
+            return;
+        }
 
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
@@ -241,17 +266,73 @@ public class IncomingUpdateDataModelValidator
     {
         IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
                 this.dataStore,
+                this.userKlass,
                 associationEnd.getType(),
+                this.mutationContext,
                 persistentInstance,
                 objectNode,
                 this.errors,
                 this.warnings,
-                this.contextStack,
                 // Yeah?
+                this.contextStack,
                 Optional.of(associationEnd),
                 false,
                 this.isInProjection && associationEnd.isOwned());
         validator.validate();
+    }
+
+    private void handleAuditByAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            return;
+        }
+
+        String associationEndName = associationEnd.getName();
+        this.contextStack.push(associationEndName);
+
+        Optional<String> userId = this.mutationContext.getUserId();
+        if (userId.isEmpty())
+        {
+            return;
+        }
+
+        DataTypeProperty userIdProperty = this.userKlass.getKeyProperties().getOnly();
+        ImmutableMap<DataTypeProperty, Object> userKeys = Maps.immutable.with(
+                userIdProperty,
+                userId.get());
+        Object userPersistentInstance = this.dataStore.findByKey(this.userKlass, userKeys);
+
+        if (userPersistentInstance == null)
+        {
+            String error = String.format(
+                    "Error at %s. Couldn't find user with key %s.",
+                    this.getContextString(),
+                    userKeys);
+            this.errors.add(error);
+            return;
+        }
+
+        try
+        {
+            // TODO: Support a IncomingLastUpdatedByDataModelValidator which allows the current user to be substituted in for lastUpdatedBy.
+            IncomingCreatedByDataModelValidator validator = new IncomingCreatedByDataModelValidator(
+                    this.dataStore,
+                    this.userKlass,
+                    associationEnd.getType(),
+                    this.mutationContext, userPersistentInstance,
+                    (ObjectNode) jsonNode,
+                    this.errors,
+                    this.warnings,
+                    this.contextStack,
+                    Optional.of(associationEnd));
+            validator.validate();
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
     }
 
     private void handleVersionAssociationEnd(@Nonnull AssociationEnd associationEnd)
@@ -429,7 +510,8 @@ public class IncomingUpdateDataModelValidator
                     // recurse in create mode
                     IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                             this.dataStore,
-                            associationEnd.getType(),
+                            this.userKlass,
+                            associationEnd.getType(), this.mutationContext,
                             (ObjectNode) childJsonNode,
                             this.errors,
                             this.warnings,

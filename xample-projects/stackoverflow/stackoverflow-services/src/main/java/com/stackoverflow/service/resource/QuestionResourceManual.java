@@ -196,9 +196,17 @@ public class QuestionResourceManual
         }
         Object persistentInstance = result.get(0);
 
+        String             userPrincipalName  = principal.getName();
+        Optional<String>   userId             = Optional.of(userPrincipalName);
+        Instant            transactionInstant = Instant.now(this.clock);
+        MutationContext    mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
+
+        Klass userKlass = this.domainModel.getUserClass().get();
         IncomingUpdateDataModelValidator.validate(
                 this.dataStore,
+                userKlass,
                 klass,
+                mutationContext,
                 persistentInstance,
                 incomingInstance,
                 errors,
@@ -212,10 +220,6 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
-        String             userPrincipalName  = principal.getName();
-        Optional<String>   userId             = Optional.of(userPrincipalName);
-        Instant            transactionInstant = Instant.now(this.clock);
-        MutationContext    mutationContext    = new MutationContext(userId, transactionInstant, Maps.immutable.empty());
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(klass, persistentInstance, incomingInstance);
 
@@ -474,9 +478,21 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
+        String            userPrincipalName  = principal.getName();
+        Optional<String>  userId             = Optional.of(userPrincipalName);
+
+        Instant  now  = this.clock.instant();
+        MutationContext   mutationContext    = new MutationContext(
+                userId,
+                now,
+                Maps.immutable.empty());
+
+        Klass userKlass = this.domainModel.getUserClass().get();
         IncomingCreateDataModelValidator.validate(
                 this.dataStore,
+                userKlass,
                 klass,
+                mutationContext,
                 incomingInstance,
                 errors,
                 warnings);
@@ -494,21 +510,12 @@ public class QuestionResourceManual
             warnings.clear();
         }
 
-        String            userPrincipalName  = principal.getName();
-        Optional<String>  userId             = Optional.of(userPrincipalName);
-
         Question persistentInstance = MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            Instant  now  = this.clock.instant();
             tx.setProcessingStartTime(now.toEpochMilli());
 
             Question question = new Question();
             question.generateAndSetId();
-
-            MutationContext   mutationContext    = new MutationContext(
-                    userId,
-                    now,
-                    Maps.immutable.empty());
 
             PersistentCreator creator = new PersistentCreator(mutationContext, this.dataStore);
             creator.synchronize(klass, question, incomingInstance);

@@ -172,7 +172,7 @@ public class ReladomoJsonViewSerializer
             return;
         }
 
-        throw new AssertionError();
+        throw new AssertionError("Unhandled data type: " + dataType.getClass().getCanonicalName());
     }
 
     public void handleProjectionWithReferenceProperty(

@@ -145,9 +145,14 @@ public class QuestionResource
         }
         Object persistentInstance = result.get(0);
 
+        Instant            transactionInstant = Instant.now(this.clock);
+        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
+        Klass              userKlass          = this.domainModel.getUserClass().get();
         IncomingUpdateDataModelValidator.validate(
                 this.dataStore,
+                userKlass,
                 klass,
+                mutationContext,
                 persistentInstance,
                 incomingInstance,
                 errors,
@@ -169,8 +174,6 @@ public class QuestionResource
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
-        Instant            transactionInstant = Instant.now(this.clock);
-        MutationContext    mutationContext    = new MutationContext(Optional.empty(), transactionInstant, Maps.immutable.empty());
         PersistentReplacer replacer           = new PersistentReplacer(mutationContext, this.dataStore);
         replacer.synchronize(klass, persistentInstance, incomingInstance);
     }

@@ -11,5 +11,7 @@
   "Incoming 'PropertiesRequired' has property 'systemFrom: TemporalInstant? system from' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Incoming 'PropertiesRequired' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Incoming 'PropertiesRequired' has property 'createdOn: Instant createdOn final' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
-  "Error at PropertiesRequired.version. Expected json object but value was string: \"PropertiesRequired requiredString 1 ☝\"."
+  "Error at PropertiesRequired.version. Expected json object but value was string: \"PropertiesRequired requiredString 1 ☝\".",
+  "Expected audit property 'createdById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'.",
+  "Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'."
 ]

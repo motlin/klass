@@ -338,13 +338,9 @@ public class RequiredPropertiesValidator
         {
             this.handleVersionAssociationEnd(associationEnd);
         }
-        else if (associationEnd.isCreatedBy())
+        else if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
         {
-            this.handleCreatedByAssociationEnd(associationEnd);
-        }
-        else if (associationEnd.isLastUpdatedBy())
-        {
-            this.handleLastUpdatedByAssociationEnd(associationEnd);
+            return;
         }
         else if (associationEnd.isOwned())
         {
@@ -747,19 +743,6 @@ public class RequiredPropertiesValidator
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".handleVersionAssociationEnd() not implemented yet");
         }
-    }
-
-    protected void handleCreatedByAssociationEnd(@Nonnull AssociationEnd associationEnd)
-    {
-        if (this.operationMode == OperationMode.CREATE)
-        {
-            this.handleWarnIfPresent(associationEnd, "createdBy");
-        }
-    }
-
-    protected void handleLastUpdatedByAssociationEnd(@Nonnull AssociationEnd associationEnd)
-    {
-        this.handleWarnIfPresent(associationEnd, "lastUpdatedBy");
     }
 
     protected void handlePlainAssociationEnd(

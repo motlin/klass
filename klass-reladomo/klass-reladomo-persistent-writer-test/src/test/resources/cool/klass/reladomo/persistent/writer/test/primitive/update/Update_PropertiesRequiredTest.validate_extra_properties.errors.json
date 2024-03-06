@@ -1,4 +1,8 @@
 [
   "Error at PropertiesRequired.system. Mismatched value for temporal property 'PropertiesRequired.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-  "Error at PropertiesRequired.version.system. Mismatched value for temporal property 'PropertiesRequiredVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'."
+  "Error at PropertiesRequired.version.system. Mismatched value for temporal property 'PropertiesRequiredVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesRequired.version.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesRequired.version.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesRequired.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesRequired.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'."
 ]

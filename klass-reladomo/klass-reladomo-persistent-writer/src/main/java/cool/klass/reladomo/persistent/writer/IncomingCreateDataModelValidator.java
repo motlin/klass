@@ -1,5 +1,7 @@
 package cool.klass.reladomo.persistent.writer;
 
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -15,8 +17,10 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
@@ -33,7 +37,11 @@ public class IncomingCreateDataModelValidator
     @Nonnull
     protected final DataStore                dataStore;
     @Nonnull
+    protected final Klass                    userKlass;
+    @Nonnull
     protected final Klass                    klass;
+    @Nonnull
+    protected final MutationContext          mutationContext;
     @Nonnull
     protected final ObjectNode               objectNode;
     @Nonnull
@@ -48,7 +56,9 @@ public class IncomingCreateDataModelValidator
 
     public IncomingCreateDataModelValidator(
             @Nonnull DataStore dataStore,
+            @Nonnull Klass userKlass,
             @Nonnull Klass klass,
+            @Nonnull MutationContext mutationContext,
             @Nonnull ObjectNode objectNode,
             @Nonnull MutableList<String> errors,
             @Nonnull MutableList<String> warnings,
@@ -56,26 +66,32 @@ public class IncomingCreateDataModelValidator
             @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
-        this.dataStore    = Objects.requireNonNull(dataStore);
-        this.klass        = Objects.requireNonNull(klass);
-        this.objectNode   = Objects.requireNonNull(objectNode);
-        this.errors       = Objects.requireNonNull(errors);
-        this.warnings     = Objects.requireNonNull(warnings);
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.pathHere     = Objects.requireNonNull(pathHere);
-        this.isRoot       = isRoot;
+        this.dataStore       = Objects.requireNonNull(dataStore);
+        this.userKlass       = Objects.requireNonNull(userKlass);
+        this.klass           = Objects.requireNonNull(klass);
+        this.mutationContext = Objects.requireNonNull(mutationContext);
+        this.objectNode      = Objects.requireNonNull(objectNode);
+        this.errors          = Objects.requireNonNull(errors);
+        this.warnings        = Objects.requireNonNull(warnings);
+        this.contextStack    = Objects.requireNonNull(contextStack);
+        this.pathHere        = Objects.requireNonNull(pathHere);
+        this.isRoot          = isRoot;
     }
 
     public static void validate(
             @Nonnull DataStore dataStore,
+            @Nonnull Klass userKlass,
             @Nonnull Klass klass,
+            @Nonnull MutationContext mutationContext,
             @Nonnull ObjectNode objectNode,
             @Nonnull MutableList<String> errors,
             @Nonnull MutableList<String> warnings)
     {
         IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                 dataStore,
+                userKlass,
                 klass,
+                mutationContext,
                 objectNode,
                 errors,
                 warnings,
@@ -127,85 +143,110 @@ public class IncomingCreateDataModelValidator
             // TODO: inside the projection, only check for matching, and only in update mode
             // this.handleKeyProperty(dataTypeProperty);
         }
+        else if (dataTypeProperty.isTemporal())
+        {
+            // this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
+        }
+        else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
+        {
+            this.handleAuditProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isCreatedOn())
+        {
+            this.handleCreatedOnProperty(dataTypeProperty);
+        }
         else if (!dataTypeProperty.isDerived()
-                && !dataTypeProperty.isTemporal()
-                && !dataTypeProperty.isAudit()
                 && dataTypeProperty.isForeignKey())
         {
             // throw new AssertionError(dataTypeProperty);
         }
         else if (dataTypeProperty.isVersion())
         {
-            throw new AssertionError();
+            throw new AssertionError(dataTypeProperty);
         }
     }
 
-    private void handlePlainProperty(@Nonnull DataTypeProperty property)
+    private void handleAuditProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        if (!property.isRequired())
-        {
-            return;
-        }
+        this.contextStack.push(dataTypeProperty.getName());
 
-        JsonNode jsonNode = this.objectNode.path(property.getName());
-        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        try
         {
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
-                    this.getContextString(),
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType(),
-                    property.isOptional() ? "?" : "",
-                    jsonNode.getNodeType().toString().toLowerCase());
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode() || !jsonDataTypeValue.isTextual())
+            {
+                return;
+            }
+
+            Optional<String> maybeUserId = this.mutationContext.getUserId();
+            if (maybeUserId.isEmpty())
+            {
+                return;
+            }
+
+            if (maybeUserId.get().equals(jsonDataTypeValue.asText()))
+            {
+                return;
+            }
+
+            String error = "Expected audit property '%s' to match current user '%s' but got '%s'."
+                    .formatted(
+                            dataTypeProperty.getName(),
+                            maybeUserId.get(),
+                            jsonDataTypeValue.asText());
             this.errors.add(error);
         }
-    }
-
-    private void checkPresentPropertiesMatch(@Nonnull ImmutableList<DataTypeProperty> properties)
-    {
-        for (DataTypeProperty dataTypeProperty : properties)
+        finally
         {
-            this.contextStack.push(dataTypeProperty.getName());
-
-            try
-            {
-                JsonNode jsonNode = this.objectNode.path(dataTypeProperty.getName());
-                if (!jsonNode.isMissingNode() && !jsonNode.isNull())
-                {
-                    if (dataTypeProperty.isTemporal())
-                    {
-                        String error = String.format(
-                                "Error at %s. Incoming data for creation operation should not include values for temporal properties but temporal property '%s' had value %s.",
-                                this.getContextString(),
-                                dataTypeProperty,
-                                jsonNode.getNodeType().toString().toLowerCase());
-                        // TODO: Add this as a warning instead of an error, to support a strict mode
-                        this.errors.add(error);
-                    }
-                }
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
+            this.contextStack.pop();
         }
     }
 
-    private void checkRequiredPropertiesPresent(@Nonnull ImmutableList<DataTypeProperty> plainProperties)
+    private void handleCreatedOnProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        for (DataTypeProperty property : plainProperties)
-        {
-            this.contextStack.push(property.getName());
+        this.contextStack.push(dataTypeProperty.getName());
 
-            try
+        try
+        {
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode() || !jsonDataTypeValue.isTextual())
             {
-                this.handlePlainProperty(property);
+                return;
             }
-            finally
+
+            Optional<Instant> parsed = getInstant(jsonDataTypeValue);
+            if (parsed.isEmpty())
             {
-                this.contextStack.pop();
+                return;
             }
+
+            if (this.mutationContext.getTransactionTime().equals(parsed.get()))
+            {
+                return;
+            }
+
+            String error = "Expected createdOn property '%s' to match current transaction time '%s' but got '%s'."
+                    .formatted(
+                            dataTypeProperty.getName(),
+                            this.mutationContext.getTransactionTime(),
+                            jsonDataTypeValue.asText());
+            this.errors.add(error);
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    private static Optional<Instant> getInstant(JsonNode jsonDataTypeValue)
+    {
+        try
+        {
+            return Optional.of(Instant.parse(jsonDataTypeValue.asText()));
+        }
+        catch (DateTimeParseException e)
+        {
+            return Optional.empty();
         }
     }
 
@@ -238,6 +279,11 @@ public class IncomingCreateDataModelValidator
         {
             return;
         }
+        if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
+        {
+            this.handleAuditByAssociationEnd(associationEnd);
+            return;
+        }
 
         if (associationEnd.isOwned())
         {
@@ -246,6 +292,61 @@ public class IncomingCreateDataModelValidator
         else
         {
             this.handleOutsideProjectionReferenceProperty(associationEnd);
+        }
+    }
+
+    private void handleAuditByAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            return;
+        }
+
+        String associationEndName = associationEnd.getName();
+        this.contextStack.push(associationEndName);
+
+        Optional<String> userId = this.mutationContext.getUserId();
+        if (userId.isEmpty())
+        {
+            throw new AssertionError("Expected user ID to be present in mutation context.");
+        }
+
+        DataTypeProperty userIdProperty = this.userKlass.getKeyProperties().getOnly();
+        ImmutableMap<DataTypeProperty, Object> userKeys = Maps.immutable.with(
+                userIdProperty,
+                userId.get());
+        Object userPersistentInstance = this.dataStore.findByKey(this.userKlass, userKeys);
+
+        if (userPersistentInstance == null)
+        {
+            String error = String.format(
+                    "Error at %s. Couldn't find user with key %s.",
+                    this.getContextString(),
+                    userKeys);
+            this.errors.add(error);
+            return;
+        }
+
+        try
+        {
+            // TODO: Support a IncomingLastUpdatedByDataModelValidator which allows the current user to be substituted in for lastUpdatedBy.
+            IncomingCreatedByDataModelValidator validator = new IncomingCreatedByDataModelValidator(
+                    this.dataStore,
+                    this.userKlass,
+                    associationEnd.getType(),
+                    this.mutationContext,
+                    userPersistentInstance,
+                    (ObjectNode) jsonNode,
+                    this.errors,
+                    this.warnings,
+                    this.contextStack,
+                    Optional.of(associationEnd));
+            validator.validate();
+        }
+        finally
+        {
+            this.contextStack.pop();
         }
     }
 
@@ -411,7 +512,9 @@ public class IncomingCreateDataModelValidator
             ObjectNode childObjectNode = (ObjectNode) childJsonNode;
             IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                     this.dataStore,
+                    this.userKlass,
                     associationEnd.getType(),
+                    this.mutationContext,
                     childObjectNode,
                     this.errors,
                     this.warnings,
@@ -469,7 +572,9 @@ public class IncomingCreateDataModelValidator
                 ObjectNode childObjectNode = (ObjectNode) childJsonNode;
                 IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                         this.dataStore,
+                        this.userKlass,
                         associationEnd.getType(),
+                        this.mutationContext,
                         childObjectNode,
                         this.errors,
                         this.warnings,

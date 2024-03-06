@@ -21,7 +21,7 @@ public class Update_FinalPropertiesTest
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
             .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
-            .setTestDataFileNames("test-data/Update_FinalPropertiesTest.txt")
+            .setTestDataFileNames("test-data/User.txt", "test-data/Update_FinalPropertiesTest.txt")
             .build();
 
     private Object persistentInstance;

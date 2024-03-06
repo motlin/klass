@@ -12,6 +12,6 @@
   "Incoming 'PropertiesOptional' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Incoming 'PropertiesOptional' has property 'createdOn: Instant createdOn final' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
   "Error at PropertiesOptional.version. Expected json object but value was string: \"PropertiesOptional requiredString 1 ☝\".",
-  "Error at PropertiesOptional.createdById. Mismatched value for audit property 'PropertiesOptional.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.",
-  "Error at PropertiesOptional.lastUpdatedById. Mismatched value for audit property 'PropertiesOptional.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'."
+  "Error at PropertiesOptional.createdById. Mismatched value for user id property 'PropertiesOptional.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'.",
+  "Error at PropertiesOptional.lastUpdatedById. Mismatched value for user id property 'PropertiesOptional.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesOptional optionalString 1 ☝'."
 ]
