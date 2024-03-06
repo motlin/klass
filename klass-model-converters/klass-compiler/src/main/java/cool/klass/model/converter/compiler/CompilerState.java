@@ -24,6 +24,7 @@ import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
@@ -171,147 +172,147 @@ public class CompilerState
 
     public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
-        this.compilerWalkState.enterPackageDeclaration(ctx);
+        this.compilerWalkState.asListener().enterPackageDeclaration(ctx);
     }
 
     public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
     {
-        this.compilerWalkState.enterTopLevelDeclaration(ctx);
+        this.compilerWalkState.asListener().enterTopLevelDeclaration(ctx);
     }
 
-    public void exitTopLevelDeclaration()
+    public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
     {
-        this.compilerWalkState.exitTopLevelDeclaration();
+        this.compilerWalkState.asListener().exitTopLevelDeclaration(ctx);
     }
 
     public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
     {
-        this.compilerWalkState.enterInterfaceDeclaration(ctx);
+        this.compilerWalkState.asListener().enterInterfaceDeclaration(ctx);
     }
 
-    public void exitInterfaceDeclaration()
+    public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
     {
-        this.compilerWalkState.exitInterfaceDeclaration();
+        this.compilerWalkState.asListener().exitInterfaceDeclaration(ctx);
     }
 
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.compilerWalkState.enterClassDeclaration(ctx);
+        this.compilerWalkState.asListener().enterClassDeclaration(ctx);
     }
 
-    public void exitClassDeclaration()
+    public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.compilerWalkState.exitClassDeclaration();
+        this.compilerWalkState.asListener().exitClassDeclaration(ctx);
     }
 
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.compilerWalkState.enterEnumerationDeclaration(ctx);
+        this.compilerWalkState.asListener().enterEnumerationDeclaration(ctx);
     }
 
-    public void exitEnumerationDeclaration()
+    public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.compilerWalkState.exitEnumerationDeclaration();
+        this.compilerWalkState.asListener().exitEnumerationDeclaration(ctx);
     }
 
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.compilerWalkState.enterAssociationDeclaration(ctx);
+        this.compilerWalkState.asListener().enterAssociationDeclaration(ctx);
     }
 
-    public void exitAssociationDeclaration()
+    public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.compilerWalkState.exitAssociationDeclaration();
+        this.compilerWalkState.asListener().exitAssociationDeclaration(ctx);
     }
 
     public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
     {
-        this.compilerWalkState.enterAssociationEnd(ctx);
+        this.compilerWalkState.asListener().enterAssociationEnd(ctx);
     }
 
-    public void exitAssociationEnd()
+    public void exitAssociationEnd(AssociationEndContext ctx)
     {
-        this.compilerWalkState.exitAssociationEnd();
+        this.compilerWalkState.asListener().exitAssociationEnd(ctx);
     }
 
     public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
     {
-        this.compilerWalkState.enterAssociationEndSignature(ctx);
+        this.compilerWalkState.asListener().enterAssociationEndSignature(ctx);
     }
 
-    public void exitAssociationEndSignature()
+    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
     {
-        this.compilerWalkState.exitAssociationEndSignature();
+        this.compilerWalkState.asListener().exitAssociationEndSignature(ctx);
     }
 
-    public void enterRelationship()
+    public void enterRelationship(RelationshipContext ctx)
     {
-        this.compilerWalkState.enterRelationship();
+        this.compilerWalkState.asListener().enterRelationship(ctx);
     }
 
-    public void exitRelationship()
+    public void exitRelationship(RelationshipContext ctx)
     {
-        this.compilerWalkState.exitRelationship();
+        this.compilerWalkState.asListener().exitRelationship(ctx);
     }
 
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.compilerWalkState.enterProjectionDeclaration(ctx);
+        this.compilerWalkState.asListener().enterProjectionDeclaration(ctx);
     }
 
-    public void exitProjectionDeclaration()
+    public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.compilerWalkState.exitProjectionDeclaration();
+        this.compilerWalkState.asListener().exitProjectionDeclaration(ctx);
     }
 
     public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.compilerWalkState.enterServiceGroupDeclaration(ctx);
+        this.compilerWalkState.asListener().enterServiceGroupDeclaration(ctx);
     }
 
-    public void exitServiceGroupDeclaration()
+    public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.compilerWalkState.exitServiceGroupDeclaration();
+        this.compilerWalkState.asListener().exitServiceGroupDeclaration(ctx);
     }
 
     public void enterUrlDeclaration(UrlDeclarationContext ctx)
     {
-        this.compilerWalkState.enterUrlDeclaration(ctx);
+        this.compilerWalkState.asListener().enterUrlDeclaration(ctx);
     }
 
-    public void exitUrlDeclaration()
+    public void exitUrlDeclaration(UrlDeclarationContext ctx)
     {
-        this.compilerWalkState.exitUrlDeclaration();
+        this.compilerWalkState.asListener().exitUrlDeclaration(ctx);
     }
 
     public void enterServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        this.compilerWalkState.enterServiceDeclaration(ctx);
+        this.compilerWalkState.asListener().enterServiceDeclaration(ctx);
     }
 
-    public void exitServiceDeclaration()
+    public void exitServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        this.compilerWalkState.exitServiceDeclaration();
+        this.compilerWalkState.asListener().exitServiceDeclaration(ctx);
     }
 
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
-        this.compilerWalkState.enterParameterizedProperty(ctx);
+        this.compilerWalkState.asListener().enterParameterizedProperty(ctx);
     }
 
-    public void exitParameterizedProperty()
+    public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
     {
-        this.compilerWalkState.exitParameterizedProperty();
+        this.compilerWalkState.asListener().exitParameterizedProperty(ctx);
     }
 
     public void enterClassModifier(ClassModifierContext ctx)
     {
-        this.compilerWalkState.enterClassModifier(ctx);
+        this.compilerWalkState.asListener().enterClassModifier(ctx);
     }
 
-    public void exitClassModifier()
+    public void exitClassModifier(ClassModifierContext ctx)
     {
-        this.compilerWalkState.exitClassModifier();
+        this.compilerWalkState.asListener().exitClassModifier(ctx);
     }
 
     public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)

@@ -21,6 +21,8 @@ import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProp
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
+import cool.klass.model.meta.grammar.KlassBaseListener;
+import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
@@ -32,6 +34,7 @@ import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
@@ -99,12 +102,6 @@ public class CompilerWalkState
     public PackageNameContext getPackageNameContext()
     {
         return this.packageNameContext;
-    }
-
-    public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
-    {
-        this.packageNameContext = packageContext.packageName();
-        this.packageName        = this.packageNameContext.getText();
     }
 
     @Nullable
@@ -206,182 +203,6 @@ public class CompilerWalkState
         this.packageNameContext     = null;
     }
 
-    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.topLevelDeclarationState);
-        this.topLevelDeclarationState = this.domainModelState.getTopLevelElementByContext(ctx);
-    }
-
-    public void exitTopLevelDeclaration()
-    {
-        this.topLevelDeclarationState = null;
-    }
-
-    public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.enumerationState);
-        this.enumerationState = this.domainModelState.getEnumerationByContext(ctx);
-    }
-
-    public void exitEnumerationDeclaration()
-    {
-        this.enumerationState = null;
-    }
-
-    public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.classifierState);
-        CompilerWalkState.assertNull(this.interfaceState);
-        CompilerWalkState.assertNull(this.thisReference);
-
-        AntlrInterface interfaceByContext = this.domainModelState.getInterfaceByContext(ctx);
-
-        this.classifierState = interfaceByContext;
-        this.interfaceState  = interfaceByContext;
-        this.thisReference   = interfaceByContext;
-    }
-
-    public void exitInterfaceDeclaration()
-    {
-        this.classifierState = null;
-        this.interfaceState  = null;
-        this.thisReference   = null;
-    }
-
-    public void enterClassDeclaration(ClassDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.classifierState);
-        CompilerWalkState.assertNull(this.classState);
-        CompilerWalkState.assertNull(this.thisReference);
-
-        AntlrClass classByContext = this.domainModelState.getClassByContext(ctx);
-
-        this.classifierState = classByContext;
-        this.classState      = classByContext;
-        this.thisReference   = classByContext;
-    }
-
-    public void exitClassDeclaration()
-    {
-        this.classifierState = null;
-        this.classState      = null;
-        this.thisReference   = null;
-    }
-
-    public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.associationState);
-        this.associationState = this.domainModelState.getAssociationByContext(ctx);
-    }
-
-    public void exitAssociationDeclaration()
-    {
-        this.associationState = null;
-    }
-
-    public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
-    {
-        CompilerWalkState.assertNull(this.associationEndState);
-        CompilerWalkState.assertNull(this.thisReference);
-        CompilerWalkState.assertNull(this.orderByOwnerState);
-
-        if (this.associationState == null)
-        {
-            return;
-        }
-
-        this.associationEndState = this.associationState.getAssociationEndByContext(ctx);
-        if (this.associationEndState == null)
-        {
-            return;
-        }
-        this.orderByOwnerState = this.associationEndState;
-        this.thisReference     = this.associationEndState.getType();
-    }
-
-    public void exitAssociationEnd()
-    {
-        this.associationEndState = null;
-        this.thisReference       = null;
-        this.orderByOwnerState   = null;
-    }
-
-    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
-    {
-        CompilerWalkState.assertNull(this.associationEndSignatureState);
-        CompilerWalkState.assertNull(this.orderByOwnerState);
-
-        if (this.classifierState == null)
-        {
-            return;
-        }
-
-        this.associationEndSignatureState = this.classifierState.getAssociationEndSignatureByContext(ctx);
-        if (this.associationEndSignatureState == null)
-        {
-            return;
-        }
-        this.orderByOwnerState = this.associationEndSignatureState;
-    }
-
-    public void exitAssociationEndSignature()
-    {
-        this.associationEndSignatureState = null;
-        this.orderByOwnerState            = null;
-    }
-
-    public void enterRelationship()
-    {
-        CompilerWalkState.assertNull(this.thisReference);
-
-        if (this.associationState == null)
-        {
-            return;
-        }
-
-        this.thisReference = this.associationState.getAssociationEndStates()
-                .getFirstOptional()
-                .map(AntlrAssociationEnd::getType)
-                .orElse(AntlrClass.NOT_FOUND);
-    }
-
-    public void exitRelationship()
-    {
-        this.thisReference = null;
-    }
-
-    public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.projectionState);
-
-        AntlrProjection projectionState = this.domainModelState.getProjectionByContext(ctx);
-        this.projectionState = projectionState;
-    }
-
-    public void exitProjectionDeclaration()
-    {
-        this.projectionState = null;
-    }
-
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
-    {
-        CompilerWalkState.assertNull(this.parameterizedPropertyState);
-        CompilerWalkState.assertNull(this.orderByOwnerState);
-
-        if (this.classState == null)
-        {
-            return;
-        }
-        this.parameterizedPropertyState = this.classState.getParameterizedPropertyByContext(ctx);
-        this.orderByOwnerState          = this.parameterizedPropertyState;
-    }
-
-    public void exitParameterizedProperty()
-    {
-        this.parameterizedPropertyState = null;
-        this.orderByOwnerState          = null;
-    }
-
     public void defineInterface(AntlrInterface interfaceState)
     {
         this.classifierState = interfaceState;
@@ -394,80 +215,6 @@ public class CompilerWalkState
         this.classifierState = classState;
         this.classState      = classState;
         this.domainModelState.defineClass(this.classState);
-    }
-
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.serviceGroupState);
-        CompilerWalkState.assertNull(this.thisReference);
-
-        this.serviceGroupState = this.domainModelState.getServiceGroupByContext(ctx);
-        if (this.serviceGroupState == null)
-        {
-            return;
-        }
-        this.thisReference = this.serviceGroupState.getKlass();
-    }
-
-    public void exitServiceGroupDeclaration()
-    {
-        this.serviceGroupState = null;
-        this.thisReference     = null;
-    }
-
-    public void enterUrlDeclaration(UrlDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.urlState);
-        if (this.serviceGroupState == null)
-        {
-            return;
-        }
-        this.urlState = this.serviceGroupState.getUrlByContext(ctx);
-    }
-
-    public void exitUrlDeclaration()
-    {
-        this.urlState = null;
-    }
-
-    public void enterServiceDeclaration(ServiceDeclarationContext ctx)
-    {
-        CompilerWalkState.assertNull(this.serviceState);
-        CompilerWalkState.assertNull(this.orderByOwnerState);
-
-        if (this.urlState == null)
-        {
-            return;
-        }
-        this.serviceState = this.urlState.getServiceByContext(ctx);
-        if (this.serviceState == null)
-        {
-            return;
-        }
-        this.orderByOwnerState = this.serviceState;
-    }
-
-    public void exitServiceDeclaration()
-    {
-        this.serviceState      = null;
-        this.orderByOwnerState = null;
-    }
-
-    public void enterClassModifier(ClassModifierContext ctx)
-    {
-        CompilerWalkState.assertNull(this.classModifierState);
-
-        if (this.classifierState == null)
-        {
-            return;
-        }
-
-        this.classModifierState = this.classifierState.getClassModifierByContext(ctx);
-    }
-
-    public void exitClassModifier()
-    {
-        this.classModifierState = null;
     }
 
     private static void assertNull(@Nullable Object object)
@@ -564,6 +311,304 @@ public class CompilerWalkState
         if (this.orderByOwnerState != null)
         {
             throw new AssertionError();
+        }
+    }
+
+    public KlassListener asListener()
+    {
+        return new ListenerView();
+    }
+
+    public class ListenerView extends KlassBaseListener
+    {
+        @Override
+        public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
+        {
+            CompilerWalkState.this.packageNameContext = packageContext.packageName();
+            CompilerWalkState.this.packageName        = CompilerWalkState.this.packageNameContext.getText();
+        }
+
+        @Override
+        public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.topLevelDeclarationState);
+            CompilerWalkState.this.topLevelDeclarationState =
+                    CompilerWalkState.this.domainModelState.getTopLevelElementByContext(ctx);
+        }
+
+        @Override
+        public void exitTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
+        {
+            CompilerWalkState.this.topLevelDeclarationState = null;
+        }
+
+        @Override
+        public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.enumerationState);
+            CompilerWalkState.this.enumerationState = CompilerWalkState.this.domainModelState.getEnumerationByContext(ctx);
+        }
+
+        @Override
+        public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
+        {
+            CompilerWalkState.this.enumerationState = null;
+        }
+
+        @Override
+        public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.classifierState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.interfaceState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+
+            AntlrInterface interfaceByContext = CompilerWalkState.this.domainModelState.getInterfaceByContext(ctx);
+
+            CompilerWalkState.this.classifierState = interfaceByContext;
+            CompilerWalkState.this.interfaceState  = interfaceByContext;
+            CompilerWalkState.this.thisReference   = interfaceByContext;
+        }
+
+        @Override
+        public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
+        {
+            CompilerWalkState.this.classifierState = null;
+            CompilerWalkState.this.interfaceState  = null;
+            CompilerWalkState.this.thisReference   = null;
+        }
+
+        @Override
+        public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.classifierState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.classState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+
+            AntlrClass classByContext = CompilerWalkState.this.domainModelState.getClassByContext(ctx);
+
+            CompilerWalkState.this.classifierState = classByContext;
+            CompilerWalkState.this.classState      = classByContext;
+            CompilerWalkState.this.thisReference   = classByContext;
+        }
+
+        @Override
+        public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
+        {
+            CompilerWalkState.this.classifierState = null;
+            CompilerWalkState.this.classState      = null;
+            CompilerWalkState.this.thisReference   = null;
+        }
+
+        @Override
+        public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.associationState);
+            CompilerWalkState.this.associationState = CompilerWalkState.this.domainModelState.getAssociationByContext(ctx);
+        }
+
+        @Override
+        public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
+        {
+            CompilerWalkState.this.associationState = null;
+        }
+
+        @Override
+        public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.associationEndState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
+
+            if (CompilerWalkState.this.associationState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.associationEndState =
+                    CompilerWalkState.this.associationState.getAssociationEndByContext(ctx);
+            if (CompilerWalkState.this.associationEndState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.orderByOwnerState = CompilerWalkState.this.associationEndState;
+            CompilerWalkState.this.thisReference     = CompilerWalkState.this.associationEndState.getType();
+        }
+
+        @Override
+        public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
+        {
+            CompilerWalkState.this.associationEndState = null;
+            CompilerWalkState.this.thisReference       = null;
+            CompilerWalkState.this.orderByOwnerState   = null;
+        }
+
+        @Override
+        public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.associationEndSignatureState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
+
+            if (CompilerWalkState.this.classifierState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.associationEndSignatureState =
+                    CompilerWalkState.this.classifierState.getAssociationEndSignatureByContext(ctx);
+            if (CompilerWalkState.this.associationEndSignatureState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.orderByOwnerState = CompilerWalkState.this.associationEndSignatureState;
+        }
+
+        @Override
+        public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
+        {
+            CompilerWalkState.this.associationEndSignatureState = null;
+            CompilerWalkState.this.orderByOwnerState            = null;
+        }
+
+        @Override
+        public void enterRelationship(@Nonnull RelationshipContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+
+            if (CompilerWalkState.this.associationState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.thisReference = CompilerWalkState.this.associationState.getAssociationEndStates()
+                    .getFirstOptional()
+                    .map(AntlrAssociationEnd::getType)
+                    .orElse(AntlrClass.NOT_FOUND);
+        }
+
+        @Override
+        public void exitRelationship(@Nonnull RelationshipContext ctx)
+        {
+            CompilerWalkState.this.thisReference = null;
+        }
+
+        @Override
+        public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.projectionState);
+
+            CompilerWalkState.this.projectionState =
+                    CompilerWalkState.this.domainModelState.getProjectionByContext(ctx);
+        }
+
+        @Override
+        public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
+        {
+            CompilerWalkState.this.projectionState = null;
+        }
+
+        @Override
+        public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameterizedPropertyState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
+
+            if (CompilerWalkState.this.classState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.parameterizedPropertyState =
+                    CompilerWalkState.this.classState.getParameterizedPropertyByContext(ctx);
+            CompilerWalkState.this.orderByOwnerState          = CompilerWalkState.this.parameterizedPropertyState;
+        }
+
+        @Override
+        public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
+        {
+            CompilerWalkState.this.parameterizedPropertyState = null;
+            CompilerWalkState.this.orderByOwnerState          = null;
+        }
+
+        @Override
+        public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.serviceGroupState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+
+            CompilerWalkState.this.serviceGroupState = CompilerWalkState.this.domainModelState.getServiceGroupByContext(ctx);
+            if (CompilerWalkState.this.serviceGroupState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.thisReference = CompilerWalkState.this.serviceGroupState.getKlass();
+        }
+
+        @Override
+        public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
+        {
+            CompilerWalkState.this.serviceGroupState = null;
+            CompilerWalkState.this.thisReference     = null;
+        }
+
+        @Override
+        public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.urlState);
+            if (CompilerWalkState.this.serviceGroupState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.urlState = CompilerWalkState.this.serviceGroupState.getUrlByContext(ctx);
+        }
+
+        @Override
+        public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
+        {
+            CompilerWalkState.this.urlState = null;
+        }
+
+        @Override
+        public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.serviceState);
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwnerState);
+
+            if (CompilerWalkState.this.urlState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.serviceState = CompilerWalkState.this.urlState.getServiceByContext(ctx);
+            if (CompilerWalkState.this.serviceState == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.orderByOwnerState = CompilerWalkState.this.serviceState;
+        }
+
+        @Override
+        public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
+        {
+            CompilerWalkState.this.serviceState      = null;
+            CompilerWalkState.this.orderByOwnerState = null;
+        }
+
+        @Override
+        public void enterClassModifier(@Nonnull ClassModifierContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.classModifierState);
+
+            if (CompilerWalkState.this.classifierState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.classModifierState =
+                    CompilerWalkState.this.classifierState.getClassModifierByContext(ctx);
+        }
+
+        @Override
+        public void exitClassModifier(@Nonnull ClassModifierContext ctx)
+        {
+            CompilerWalkState.this.classModifierState = null;
         }
     }
 }
