@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrElement;
+import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.SourceCodeImpl.SourceCodeBuilderImpl;
-import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -48,7 +48,7 @@ public final class CompilationUnit
     @Nonnull
     private final ParserRuleContext                 parserContext;
 
-    private SourceCodeBuilder sourceCodeBuilder;
+    private SourceCodeBuilderImpl sourceCodeBuilder;
 
     private CompilationUnit(
             int ordinal,
@@ -250,11 +250,11 @@ public final class CompilationUnit
         return this.charStream.getSourceName();
     }
 
-    public SourceCodeBuilder build()
+    public SourceCodeBuilderImpl build()
     {
         if (this.sourceCodeBuilder == null)
         {
-            Optional<SourceCodeBuilder> macroSourceCodeBuilder = this.macroElement
+            Optional<SourceCodeBuilderImpl> macroSourceCodeBuilder = this.macroElement
                     .flatMap(AntlrElement::getCompilationUnit)
                     .map(CompilationUnit::build);
 
@@ -263,7 +263,13 @@ public final class CompilationUnit
         return this.sourceCodeBuilder;
     }
 
-    private SourceCodeBuilder getSourceCodeBuilder(Optional<SourceCodeBuilder> macroSourceCodeBuilder)
+    public void build2()
+    {
+        Optional<ElementBuilder<?>> macroElementBuilder = this.macroElement.map(AntlrElement::getElementBuilder);
+        this.sourceCodeBuilder.setMacroElement(macroElementBuilder);
+    }
+
+    private SourceCodeBuilderImpl getSourceCodeBuilder(Optional<SourceCodeBuilderImpl> macroSourceCodeBuilder)
     {
         return new SourceCodeBuilderImpl(
                 this.sourceName,

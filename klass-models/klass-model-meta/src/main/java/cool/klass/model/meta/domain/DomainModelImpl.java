@@ -14,6 +14,7 @@ import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.SourceCodeImpl.SourceCodeBuilderImpl;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -27,7 +28,6 @@ import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
-import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -285,7 +285,7 @@ public final class DomainModelImpl
     public static final class DomainModelBuilder
     {
         @Nonnull
-        private final ImmutableList<SourceCodeBuilder>      sourceCodeBuilders;
+        private final ImmutableList<SourceCodeBuilderImpl>  sourceCodeBuilders;
         @Nonnull
         private final ImmutableList<TopLevelElementBuilder> topLevelElementBuilders;
         @Nonnull
@@ -304,7 +304,7 @@ public final class DomainModelImpl
         private final ImmutableList<ServiceGroupBuilder>    serviceGroupBuilders;
 
         public DomainModelBuilder(
-                @Nonnull ImmutableList<SourceCodeBuilder> sourceCodeBuilders,
+                @Nonnull ImmutableList<SourceCodeBuilderImpl> sourceCodeBuilders,
                 @Nonnull ImmutableList<TopLevelElementBuilder> topLevelElementBuilders,
                 @Nonnull ImmutableList<EnumerationBuilder> enumerationBuilders,
                 @Nonnull ImmutableList<ClassifierBuilder<?>> classifierBuilders,
@@ -328,7 +328,7 @@ public final class DomainModelImpl
         @Nonnull
         public DomainModelImpl build()
         {
-            ImmutableList<SourceCode>  sourceCodes  = this.sourceCodeBuilders.collect(SourceCodeBuilder::build).toImmutable();
+            ImmutableList<SourceCode>  sourceCodes  = this.sourceCodeBuilders.<SourceCode>collect(SourceCodeBuilderImpl::build).toImmutable();
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.<Enumeration>collect(EnumerationBuilder::build).toImmutable();
             ImmutableList<Interface>   interfaces   = this.interfaceBuilders.<Interface>collect(InterfaceBuilder::build).toImmutable();
             ImmutableList<Klass>       classes      = this.classBuilders.<Klass>collect(KlassBuilder::build).toImmutable();
@@ -347,6 +347,8 @@ public final class DomainModelImpl
 
             DomainModelDeclarations domainModelDeclarations = this.getDomainModelDeclarations(topLevelElements);
             DomainModelReferences domainModelReferences = this.getDomainModelReferences(topLevelElements);
+
+            this.sourceCodeBuilders.forEach(SourceCodeBuilderImpl::build2);
 
             return new DomainModelImpl(
                     sourceCodes,
