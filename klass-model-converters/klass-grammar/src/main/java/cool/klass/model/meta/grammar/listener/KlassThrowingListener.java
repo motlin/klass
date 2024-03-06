@@ -127,7 +127,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-// Deliberately not abstract, since I want it to implement every method of KlassListener.
+// Deliberately not abstract
+// Implements every method of KlassListener by throwing
 public class KlassThrowingListener implements KlassListener
 {
     @Override
