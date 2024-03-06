@@ -1,21 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_VAR_REF[m [33m════════════════════════════════════════[m
-[31mError: Cannot find parameter 'unresolvedParameter'.[m
+[33m════════════════════════════════════════[m [35mERR_MEM_TYP[m [33m════════════════════════════════════════[m
+[31mError: Cannot find class 'UnresolvedClass'.[m
 
-At (UnresolvedTypesErrorTest.klass:41)
+At (UnresolvedTypesErrorTest.klass:76)
 
 [39m 1║ [35mpackage [39mdummy
-[39m35║ [35mservice [39mClassWithUnresolved
-[39m36║ [36m{
-[39m37║     [36m/[39munresolved[36m/[36m{[39munresolvedParameterDeclaration[36m: [39mUnresolvedEnumeration[36m[[34m1[36m..[34m1[36m][36m}
-[39m38║         [32mGET
-[39m39║         [36m{
-[39m41║             [35mcriteria    [36m: [32mthis[36m.[39munresolvedEnumerationProperty [33m== [39munresolvedParameter[36m;
-[39m  ║ [31m                                                                ^^^^^^^^^^^^^^^^^^^
-[39m43║         [36m}
-[39m51║ [36m}
+[39m71║ [35massociation [39mBadRelationship3
+[39m72║ [36m{
+[39m76║     [35mrelationship [32mthis[36m.[33mkey [33m== [39mUnresolvedClass[36m.[39munresolvedMember
+[39m  ║ [31m                             ^^^^^^^^^^^^^^^
+[39m77║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:41[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:76[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m41[m
-[36mCharacter: [m65
+[36mLine:      [m76[m
+[36mCharacter: [m30
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

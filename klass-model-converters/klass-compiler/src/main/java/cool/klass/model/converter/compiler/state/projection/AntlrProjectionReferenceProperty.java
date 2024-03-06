@@ -11,6 +11,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
@@ -19,7 +20,6 @@ import cool.klass.model.meta.domain.projection.ProjectionReferencePropertyImpl.P
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import org.antlr.v4.runtime.Token;
-import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.tuple.Tuples;
@@ -131,26 +131,36 @@ public class AntlrProjectionReferenceProperty
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-
-        for (AntlrProjectionElement projectionMember : this.children)
-        {
-            if (duplicateMemberNames.contains(projectionMember.getName()))
-            {
-                projectionMember.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            projectionMember.reportErrors(compilerErrorHolder);
-        }
+        super.reportErrors(compilerErrorHolder);
 
         if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND)
         {
             return;
         }
 
-        if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
+        if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND
+                || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
-            String message = String.format("Not found: '%s'.", this.getName());
-            compilerErrorHolder.add("ERR_PAE_NFD", message, this);
+            String message = String.format("Not found: '%s'.", this);
+            compilerErrorHolder.add("ERR_PRP_NFD", message, this);
+        }
+        else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
+                || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
+        {
+            String message = String.format("Ambiguous: '%s'.", this);
+            compilerErrorHolder.add("ERR_PRP_AMB", message, this);
+        }
+        else if (this.referenceProperty == AntlrAssociationEndSignature.NOT_FOUND
+                || this.referenceProperty == AntlrAssociationEndSignature.AMBIGUOUS)
+        {
+            throw new AssertionError(this.referenceProperty);
+        }
+        else
+        {
+            for (AntlrProjectionChild child : this.children)
+            {
+                child.reportErrors(compilerErrorHolder);
+            }
         }
     }
 

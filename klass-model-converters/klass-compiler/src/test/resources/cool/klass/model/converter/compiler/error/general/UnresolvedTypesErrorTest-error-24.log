@@ -1,0 +1,21 @@
+[33m════════════════════════════════════════[m [35mERR_VAR_REF[m [33m════════════════════════════════════════[m
+[31mError: Cannot find parameter 'unresolvedParameter'.[m
+
+At (UnresolvedTypesErrorTest.klass:128)
+
+[39m  1║ [35mpackage [39mdummy
+[39m122║ [35mservice [39mClassWithUnresolved
+[39m123║ [36m{
+[39m124║     [36m/[39munresolved[36m/[36m{[39munresolvedParameterDeclaration[36m: [39mUnresolvedEnumeration[36m[[34m1[36m..[34m1[36m][36m}
+[39m125║         [32mGET
+[39m126║         [36m{
+[39m128║             [35mcriteria    [36m: [32mthis[36m.[39munresolvedEnumerationProperty [33m== [39munresolvedParameter[36m;
+[39m   ║ [31m                                                                ^^^^^^^^^^^^^^^^^^^
+[39m130║         [36m}
+[39m138║ [36m}
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:128[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m128[m
+[36mCharacter: [m65
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

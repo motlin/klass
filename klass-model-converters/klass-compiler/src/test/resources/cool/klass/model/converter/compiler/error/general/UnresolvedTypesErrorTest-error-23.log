@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_ENM_PAR[m [33m════════════════════════════════════════[m
+[31mError: Cannot find enumeration 'UnresolvedEnumeration'.[m
+
+At (UnresolvedTypesErrorTest.klass:124)
+
+[39m  1║ [35mpackage [39mdummy
+[39m122║ [35mservice [39mClassWithUnresolved
+[39m123║ [36m{
+[39m124║     [36m/[39munresolved[36m/[36m{[39munresolvedParameterDeclaration[36m: [39mUnresolvedEnumeration[36m[[34m1[36m..[34m1[36m][36m}
+[39m   ║ [31m                                                 ^^^^^^^^^^^^^^^^^^^^^
+[39m138║ [36m}
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:124[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m124[m
+[36mCharacter: [m50
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

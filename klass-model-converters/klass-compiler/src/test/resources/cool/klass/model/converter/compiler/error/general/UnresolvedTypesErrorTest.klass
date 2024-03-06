@@ -25,11 +25,98 @@ association AssociationWithUnresolved
 
 projection EmptyProjection on ClassWithUnresolved
 {
-    unresolvedProjectionMember: "Header",
 }
 
 projection ProjectionWithUnresolvedClass on UnresolvedClass
 {
+    unresolvedProjectionMember: "Header",
+    unresolvedProjectionAssociationEnd: {
+        unresolvedProjectionMemberEmbedded: "Header",
+    },
+    unresolvedProjectionMember3: UnresolvedProjection,
+}
+
+class Parent
+{
+    key: String key;
+
+    unresolvedParameterizedProperty(): Child[1..1]
+    {
+        this.unresolvedMember == Child.unresolvedMember
+    }
+}
+
+class Child
+{
+    key: String key;
+    parentKey: String private;
+}
+
+association ParentHasChild
+{
+    parent: Parent[0..1];
+    children: Child[0..*];
+
+    relationship this.key == Child.parentKey
+}
+
+association BadRelationship2
+{
+    parent2: Parent[0..1];
+    children2: Child[0..*];
+
+    relationship this.unresolvedMember == Child.unresolvedMember
+}
+
+association BadRelationship3
+{
+    parent3: Parent[0..1];
+    children3: Child[0..*];
+
+    relationship this.key == UnresolvedClass.unresolvedMember
+}
+
+association ParentDoesNotHaveUnresolvedClass
+{
+    parent: Parent[1..1];
+    unresolvedClasses: UnresolvedClass[0..*];
+
+    relationship this.key == UnresolvedClass.parentKey
+}
+
+projection ParentProjection on Parent
+{
+    unresolvedProjectionMember: "Header",
+    // Not found association end
+    unresolvedProjectionAssociationEnd: {
+        unresolvedProjectionMemberEmbedded: "Header",
+    },
+    unresolvedProjectionMember3: UnresolvedProjection,
+    // Valid association end
+    children:
+    {
+        unresolvedProjectionMember: "Header",
+        unresolvedProjectionAssociationEnd:
+        {
+            unresolvedProjectionMemberEmbedded: "Header",
+        },
+        unresolvedProjectionReference: UnresolvedProjection,
+    },
+    // Found association with not found type
+    unresolvedClasses:
+    {
+        unresolvedProjectionMember: "Header",
+        unresolvedProjectionAssociationEnd:
+        {
+            unresolvedProjectionMemberEmbedded: "Header",
+        },
+        unresolvedProjectionReference: UnresolvedProjection,
+    },
+}
+
+projection ParentProjection2 on Parent
+{
+    children: ChildProjection,
 }
 
 service ClassWithUnresolved
@@ -41,7 +128,7 @@ service ClassWithUnresolved
             criteria    : this.unresolvedEnumerationProperty == unresolvedParameter;
             projection  : UnresolvedProjection;
         }
-    /fake1/
+    /fake1
         GET
         {
             multiplicity: one;
@@ -52,7 +139,7 @@ service ClassWithUnresolved
 
 service UnresolvedClass
 {
-    /fake/
+    /fake
         GET
         {
             multiplicity: one;

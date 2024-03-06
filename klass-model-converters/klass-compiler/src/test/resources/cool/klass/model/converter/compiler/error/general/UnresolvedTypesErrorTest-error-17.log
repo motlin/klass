@@ -1,0 +1,17 @@
+[33m════════════════════════════════════════[m [35mERR_PPR_NFD[m [33m════════════════════════════════════════[m
+[31mError: Not found: 'unresolvedProjectionMember3'.[m
+
+At (UnresolvedTypesErrorTest.klass:94)
+
+[39m  1║ [35mpackage [39mdummy
+[39m 87║ [35mprojection [39mParentProjection [35mon [39mParent
+[39m 88║ [36m{
+[39m 94║     [39munresolvedProjectionMember3[36m: [39mUnresolvedProjection[36m,
+[39m   ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m115║ [36m}
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:94[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m94[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

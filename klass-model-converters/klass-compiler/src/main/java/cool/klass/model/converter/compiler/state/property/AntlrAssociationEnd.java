@@ -33,7 +33,21 @@ public class AntlrAssociationEnd
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            AntlrAssociation.AMBIGUOUS);
+            AntlrAssociation.AMBIGUOUS)
+    {
+        @Nonnull
+        @Override
+        public AntlrClass getType()
+        {
+            return AntlrClass.AMBIGUOUS;
+        }
+
+        @Override
+        public String toString()
+        {
+            return AntlrAssociationEnd.class.getSimpleName() + ".AMBIGUOUS";
+        }
+    };
 
     @Nullable
     public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
@@ -41,8 +55,21 @@ public class AntlrAssociationEnd
             Optional.empty(),
             -1,
             new IdentifierContext(null, -1),
-            // TODO: Not found here, instead of ambiguous
-            AntlrAssociation.AMBIGUOUS);
+            AntlrAssociation.NOT_FOUND)
+    {
+        @Nonnull
+        @Override
+        public AntlrClass getType()
+        {
+            return AntlrClass.NOT_FOUND;
+        }
+
+        @Override
+        public String toString()
+        {
+            return AntlrAssociationEnd.class.getSimpleName() + ".NOT_FOUND";
+        }
+    };
 
     @Nonnull
     private final AntlrAssociation owningAssociationState;

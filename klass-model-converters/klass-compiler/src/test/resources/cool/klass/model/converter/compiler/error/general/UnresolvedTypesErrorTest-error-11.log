@@ -1,16 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
-[31mError: Cannot find classifier 'UnresolvedClass'[m
+[33m════════════════════════════════════════[m [35mERR_THS_MEM[m [33m════════════════════════════════════════[m
+[31mError: Cannot find member 'Parent.unresolvedMember'.[m
 
-At (UnresolvedTypesErrorTest.klass:31)
+At (UnresolvedTypesErrorTest.klass:68)
 
 [39m 1║ [35mpackage [39mdummy
-[39m31║ [35mprojection [39mProjectionWithUnresolvedClass [35mon [39mUnresolvedClass
-[39m  ║ [31m                                            ^^^^^^^^^^^^^^^
-[39m32║ [36m{
-[39m33║ [36m}
+[39m63║ [35massociation [39mBadRelationship2
+[39m64║ [36m{
+[39m68║     [35mrelationship [32mthis[36m.[39munresolvedMember [33m== [39mChild[36m.[39munresolvedMember
+[39m  ║ [31m                      ^^^^^^^^^^^^^^^^
+[39m69║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:31[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:68[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m31[m
-[36mCharacter: [m45
+[36mLine:      [m68[m
+[36mCharacter: [m23
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

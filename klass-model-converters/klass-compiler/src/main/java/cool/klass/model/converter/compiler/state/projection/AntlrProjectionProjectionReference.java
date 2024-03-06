@@ -114,29 +114,33 @@ public class AntlrProjectionProjectionReference
             return;
         }
 
-        if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
+        if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND)
         {
-            String message = String.format("Not found: '%s'.", this.getName());
-            compilerErrorHolder.add("ERR_PAE_NFD", message, this);
+            String message = String.format("Not found: '%s'.", this);
+            compilerErrorHolder.add("ERR_PPR_NFD", message, this);
         }
-
-        if (this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS
-                || this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS)
+        else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS)
         {
-            String message = String.format("Not found: '%s'.", this.getName());
-            compilerErrorHolder.add("ERR_PAE_AMB", message, this);
+            String message = String.format("Ambiguous: '%s'.", this);
+            compilerErrorHolder.add("ERR_PPR_AMB", message, this);
         }
-
-        if (this.classifier != this.referencedProjectionState.getClassifier()
-                && !this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
+        else if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
         {
-            String message = String.format(
-                    "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
-                    this.getName(),
-                    this.classifier.getName(),
-                    this.referencedProjectionState.getName(),
-                    this.referencedProjectionState.getClassifier().getName());
-            compilerErrorHolder.add("ERR_PRR_KLS", message, this);
+            throw new AssertionError(this.referenceProperty);
+        }
+        else
+        {
+            if (this.classifier != this.referencedProjectionState.getClassifier()
+                    && !this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
+            {
+                String message = String.format(
+                        "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
+                        this.getName(),
+                        this.classifier.getName(),
+                        this.referencedProjectionState.getName(),
+                        this.referencedProjectionState.getClassifier().getName());
+                compilerErrorHolder.add("ERR_PRR_KLS", message, this);
+            }
         }
     }
 

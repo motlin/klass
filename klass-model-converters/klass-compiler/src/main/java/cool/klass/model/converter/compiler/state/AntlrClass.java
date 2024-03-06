@@ -211,7 +211,7 @@ public class AntlrClass
         return this.interfaceStates
                 .asLazy()
                 .collectWith(AntlrInterface::getReferencePropertyByName, name)
-                .detect(Objects::nonNull);
+                .detectIfNone(Objects::nonNull, () -> AntlrReferenceProperty.NOT_FOUND);
     }
 
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)

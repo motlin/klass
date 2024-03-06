@@ -8,17 +8,17 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
+import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.Token;
-import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.tuple.Tuples;
@@ -116,29 +116,31 @@ public class AntlrProjection
         return this.projectionBuilder;
     }
 
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.classifier == AntlrClassifier.NOT_FOUND)
+        super.reportErrors(compilerErrorHolder);
+
+        // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
+        if (this.classifier == AntlrClassifier.NOT_FOUND
+                || this.classifier == AntlrClass.NOT_FOUND
+                || this.classifier == AntlrInterface.NOT_FOUND)
         {
-            ClassifierReferenceContext offendingContext = this.getElementContext().classifierReference();
-            String                     message          = String.format(
-                    "Cannot find classifier '%s'",
-                    offendingContext.getText());
-            compilerErrorHolder.add("ERR_PRJ_TYP", message, this, offendingContext);
+            String message = "Projection type not found " + this.getElementContext().classifierReference().getText();
+            compilerErrorHolder.add("ERR_PRJ_NFD", message, this, this.getElementContext().classifierReference());
         }
-
-        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
-
-        for (AntlrProjectionElement projectionMember : this.children)
+        else if (this.classifier == AntlrClassifier.AMBIGUOUS
+                || this.classifier == AntlrClass.AMBIGUOUS
+                || this.classifier == AntlrInterface.AMBIGUOUS)
         {
-            if (duplicateMemberNames.contains(projectionMember.getName()))
+            String message = "Projection type ambiguous " + this.getElementContext().classifierReference().getText();
+            compilerErrorHolder.add("ERR_PRJ_AMB", message, this, this.getElementContext().classifierReference());
+        }
+        else
+        {
+            for (AntlrProjectionChild child : this.children)
             {
-                projectionMember.reportDuplicateMemberName(compilerErrorHolder);
-            }
-            // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
-            if (this.classifier != AntlrClassifier.NOT_FOUND && this.classifier != AntlrClassifier.AMBIGUOUS)
-            {
-                projectionMember.reportErrors(compilerErrorHolder);
+                child.reportErrors(compilerErrorHolder);
             }
         }
     }

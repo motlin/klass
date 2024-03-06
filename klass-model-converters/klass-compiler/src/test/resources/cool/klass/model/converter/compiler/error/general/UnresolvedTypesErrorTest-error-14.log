@@ -1,21 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_SER_PRJ[m [33m════════════════════════════════════════[m
-[31mError: Cannot find projection 'UnresolvedProjection'[m
+[33m════════════════════════════════════════[m [35mERR_PRP_TYP[m [33m════════════════════════════════════════[m
+[31mError: Cannot find class 'UnresolvedClass'.[m
 
-At (UnresolvedTypesErrorTest.klass:42)
+At (UnresolvedTypesErrorTest.klass:82)
 
 [39m 1║ [35mpackage [39mdummy
-[39m35║ [35mservice [39mClassWithUnresolved
-[39m36║ [36m{
-[39m37║     [36m/[39munresolved[36m/[36m{[39munresolvedParameterDeclaration[36m: [39mUnresolvedEnumeration[36m[[34m1[36m..[34m1[36m][36m}
-[39m38║         [32mGET
-[39m39║         [36m{
-[39m42║             [35mprojection  [36m: [39mUnresolvedProjection[36m;
-[39m  ║ [31m                          ^^^^^^^^^^^^^^^^^^^^
-[39m43║         [36m}
-[39m51║ [36m}
+[39m79║ [35massociation [39mParentDoesNotHaveUnresolvedClass
+[39m80║ [36m{
+[39m82║     [39munresolvedClasses[36m: [39mUnresolvedClass[36m[[34m0[36m..[34m*[36m][36m;
+[39m  ║ [31m                       ^^^^^^^^^^^^^^^
+[39m85║ [36m}
 [m
-[36mLocation:  [mUnresolvedTypesErrorTest.klass:42[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:82[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
-[36mLine:      [m42[m
-[36mCharacter: [m27
+[36mLine:      [m82[m
+[36mCharacter: [m24
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

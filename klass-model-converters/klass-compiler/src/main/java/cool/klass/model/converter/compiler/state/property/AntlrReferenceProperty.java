@@ -39,6 +39,12 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         }
 
         @Override
+        public String toString()
+        {
+            return AntlrReferenceProperty.class.getSimpleName() + ".AMBIGUOUS";
+        }
+
+        @Override
         public AntlrMultiplicity getMultiplicity()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -94,17 +100,23 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     {
         @Nonnull
         @Override
-        public Optional<IAntlrElement> getSurroundingElement()
+        public AntlrClassifier getType()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getSurroundingElement() not implemented yet");
+            return AntlrClassifier.NOT_FOUND;
+        }
+
+        @Override
+        public String toString()
+        {
+            return AntlrReferenceProperty.class.getSimpleName() + ".NOT_FOUND";
         }
 
         @Nonnull
         @Override
-        public AntlrClassifier getType()
+        public Optional<IAntlrElement> getSurroundingElement()
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getSurroundingElement() not implemented yet");
         }
 
         @Override

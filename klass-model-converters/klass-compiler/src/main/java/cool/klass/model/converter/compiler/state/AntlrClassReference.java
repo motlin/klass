@@ -4,13 +4,29 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 
 public class AntlrClassReference
         extends AntlrElement
 {
+    @Nullable
+    public static final AntlrClassReference NOT_FOUND = new AntlrClassReference(
+            new ClassReferenceContext(null, -1),
+            Optional.empty(),
+            AntlrAssociationEnd.NOT_FOUND,
+            AntlrClass.NOT_FOUND);
+
+    @Nullable
+    public static final AntlrClassReference AMBIGUOUS = new AntlrClassReference(
+            new ClassReferenceContext(null, -1),
+            Optional.empty(),
+            AntlrAssociationEnd.AMBIGUOUS,
+            AntlrClass.AMBIGUOUS);
+
     @Nonnull
     private final AntlrClassReferenceOwner classReferenceOwnerState;
     @Nonnull

@@ -1,0 +1,22 @@
+[33m════════════════════════════════════════[m [35mERR_PRP_NFD[m [33m════════════════════════════════════════[m
+[31mError: Not found: 'unresolvedProjectionAssociationEnd'.[m
+
+At (UnresolvedTypesErrorTest.klass:99)
+
+[39m  1║ [35mpackage [39mdummy
+[39m 87║ [35mprojection [39mParentProjection [35mon [39mParent
+[39m 88║ [36m{
+[39m 96║     [39mchildren[36m:
+[39m 97║     [36m{
+[39m 99║         [39munresolvedProjectionAssociationEnd[36m:
+[39m   ║ [31m        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m100║         [36m{
+[39m102║         [36m}[36m,
+[39m104║     [36m}[36m,
+[39m115║ [36m}
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:99[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m99[m
+[36mCharacter: [m9
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -43,6 +43,22 @@ public class AntlrAssociation
         }
     };
 
+    @Nonnull
+    public static final AntlrAssociation NOT_FOUND = new AntlrAssociation(
+            new AssociationDeclarationContext(null, -1),
+            Optional.empty(),
+            -1,
+            new IdentifierContext(null, -1),
+            AntlrCompilationUnit.NOT_FOUND)
+    {
+        @Override
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".enterAssociationEnd() not implemented yet");
+        }
+    };
+
     private final MutableList<AntlrAssociationEnd>                              associationEndStates     =
             Lists.mutable.empty();
     private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext =

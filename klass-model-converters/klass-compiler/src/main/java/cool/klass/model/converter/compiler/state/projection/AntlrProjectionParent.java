@@ -7,10 +7,9 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
-import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -41,13 +40,6 @@ public abstract class AntlrProjectionParent
     {
         super(elementContext, compilationUnit, ordinal, nameContext);
         this.classifier = Objects.requireNonNull(classifier);
-        if (classifier == AntlrClass.NOT_FOUND
-                || classifier == AntlrClass.AMBIGUOUS
-                || classifier == AntlrInterface.NOT_FOUND
-                || classifier == AntlrInterface.AMBIGUOUS)
-        {
-            throw new AssertionError(classifier);
-        }
     }
 
     @Override
@@ -87,5 +79,18 @@ public abstract class AntlrProjectionParent
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
+    }
+
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
+
+        for (AntlrProjectionElement projectionMember : this.children)
+        {
+            if (duplicateMemberNames.contains(projectionMember.getName()))
+            {
+                projectionMember.reportDuplicateMemberName(compilerErrorHolder);
+            }
+        }
     }
 }

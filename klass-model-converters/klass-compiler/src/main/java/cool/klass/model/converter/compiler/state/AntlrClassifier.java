@@ -55,6 +55,12 @@ public abstract class AntlrClassifier
         {
             return AntlrDataTypeProperty.AMBIGUOUS;
         }
+
+        @Override
+        public String toString()
+        {
+            return AntlrClassifier.class + ".AMBIGUOUS";
+        }
     };
 
     @Nonnull
@@ -75,6 +81,12 @@ public abstract class AntlrClassifier
         public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
         {
             return AntlrDataTypeProperty.NOT_FOUND;
+        }
+
+        @Override
+        public String toString()
+        {
+            return AntlrClassifier.class + ".NOT_FOUND";
         }
     };
 
