@@ -99,7 +99,7 @@ public class GraphQLElementToSchemaSourceVisitor
                 .collect(NamedElement::getName);
         String implementsSourceCode = superClassNames.isEmpty()
                 ? ""
-                : " implements " + superClassNames.makeString();
+                : " implements " + superClassNames.makeString(" & ");
 
         String fieldsSourceCode = klass
                 .getProperties()
