@@ -42,7 +42,7 @@ public class GenerateHtmlMojo
 
         DomainModelWithSourceCode    domainModel = ((DomainModelCompilationResult) compilationResult).getDomainModel();
         ImmutableList<SourceCode>    sourceCodes = compilationResult.getSourceCodes();
-        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(domainModel, sourceCodes);
+        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(domainModel);
         generator.writeHtmlFiles(this.outputDirectory.toPath());
     }
 }

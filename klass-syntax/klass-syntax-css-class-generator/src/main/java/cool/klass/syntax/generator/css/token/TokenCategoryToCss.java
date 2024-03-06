@@ -14,6 +14,7 @@ public final class TokenCategoryToCss
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
+    // TODO: turn this into a plugin and run it inside klass-syntax-css-class
     public static void main(String[] args)
     {
         for (TokenCategory tokenCategory : TokenCategory.values())

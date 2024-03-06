@@ -1,6 +1,6 @@
 .klass-theme-dark {
-    --klass-color-foreground: White;
-    --klass-color-background: Black;
+    --color-foreground: White;
+    --color-background: Black;
 
     --klass-color-comment: Gray;
     --klass-color-keyword: Purple;
@@ -22,4 +22,8 @@
 
     /* Silver */
     --klass-color-semicolon: #cccccc;
+
+    --klass-color-declaration: #344134;
+    --klass-color-reference: #344134;
+    --klass-color-highlight: #32593D;
 }

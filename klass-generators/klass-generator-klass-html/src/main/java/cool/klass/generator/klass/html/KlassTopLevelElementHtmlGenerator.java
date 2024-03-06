@@ -1,10 +1,5 @@
 package cool.klass.generator.klass.html;
 
-import java.util.Optional;
-
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Converter;
-import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -12,21 +7,17 @@ import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public final class KlassTopLevelElementHtmlGenerator
 {
-    public static final Converter<String, String> CONVERTER =
-            CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_HYPHEN);
-
     private KlassTopLevelElementHtmlGenerator()
     {
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static String writeHtml(TopLevelElementWithSourceCode topLevelElement, DomainModelWithSourceCode domainModel)
+    public static String writeHtml(DomainModelWithSourceCode domainModel, TopLevelElementWithSourceCode topLevelElement)
     {
         SourceCode        sourceCode      = topLevelElement.getSourceCodeObject();
         AbstractElement   abstractElement = (AbstractElement) topLevelElement;
@@ -39,13 +30,18 @@ public final class KlassTopLevelElementHtmlGenerator
         boolean             containsStart = tokens.contains(start);
         boolean             containsStop  = tokens.contains(stop);
 
+        String body = tokens
+                .reject(token -> token.getType() == Token.EOF)
+                .collectWith(KlassSourceCodeHtmlGenerator::getSourceCode, domainModel)
+                .makeString("");
+
         //language=HTML
         return ""
                 + "<html>\n"
                 + "<head>\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"./klass-theme-light.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"./klass-theme-dark.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"./klass-syntax.css\">\n"
+                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-light.css\">\n"
+                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-dark.css\">\n"
+                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-syntax.css\">\n"
                 + "    <style>\n"
                 + "        :root {\n"
                 + "            font-family: \"Lucida Console\", Courier, monospace;\n"
@@ -53,36 +49,11 @@ public final class KlassTopLevelElementHtmlGenerator
                 + "        }\n"
                 + "    </style>\n"
                 + "</head>\n"
-                + "<body class=\"klass-theme-light\">"
+                + "<body class=\"klass-theme-dark\">"
                 + "<pre>\n"
-                + tokens
-                .reject(token -> token.getType() == Token.EOF)
-                .collect(token -> getSourceCode(token, domainModel)).makeString("")
+                + body
                 + "</pre>\n"
                 + "</body>\n"
                 + "</html>\n";
-    }
-
-    private static String getSourceCode(Token token, DomainModelWithSourceCode domainModel)
-    {
-        Optional<TokenCategory> maybeTokenCategory = domainModel.getTokenCategory(token);
-        return maybeTokenCategory.map(tokenCategory -> KlassTopLevelElementHtmlGenerator.getSourceCode(
-                        token,
-                        tokenCategory))
-                .orElseGet(() -> KlassTopLevelElementHtmlGenerator.getSourceCodeWithoutCategory(token));
-    }
-
-    private static String getSourceCode(Token token, TokenCategory tokenCategory)
-    {
-        String escapedText = StringEscapeUtils.escapeHtml4(token.getText());
-        //language=HTML
-        return "<span class='klass-" + CONVERTER.convert(tokenCategory.name()) + "'>" + escapedText + "</span>";
-    }
-
-    private static String getSourceCodeWithoutCategory(Token token)
-    {
-        String escapedText = StringEscapeUtils.escapeHtml4(token.getText());
-        //language=HTML
-        return "<span>" + escapedText + "</span>";
     }
 }

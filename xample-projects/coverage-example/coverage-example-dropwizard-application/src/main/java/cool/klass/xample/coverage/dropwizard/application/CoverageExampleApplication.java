@@ -5,7 +5,9 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
+import cool.klass.service.klass.html.KlassHtmlResource;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
 import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
 import cool.klass.xample.coverage.graphql.runtime.wiring.CoverageExampleRuntimeWiringBuilder;
@@ -64,12 +66,18 @@ public class CoverageExampleApplication
             @Nonnull Environment environment) throws Exception
     {
         ObjectMapper objectMapper = environment.getObjectMapper();
-        DomainModel  domainModel  = configuration
+        DomainModel domainModel = configuration
                 .getKlassFactory()
                 .getDomainModelFactory()
                 .createDomainModel(objectMapper);
 
         environment.jersey().register(new JsonViewDynamicFeature(domainModel));
+
+        // TODO: Move up to generated abstract class?
+        if (domainModel instanceof DomainModelWithSourceCode)
+        {
+            environment.jersey().register(new KlassHtmlResource((DomainModelWithSourceCode) domainModel));
+        }
 
         super.run(configuration, environment);
     }
