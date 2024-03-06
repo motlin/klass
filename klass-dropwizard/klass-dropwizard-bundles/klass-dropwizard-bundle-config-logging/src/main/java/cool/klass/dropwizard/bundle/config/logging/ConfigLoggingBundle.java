@@ -10,6 +10,7 @@ import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.EnabledFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,5 +55,10 @@ public class ConfigLoggingBundle implements PrioritizedBundle<AbstractKlassConfi
     {
         String configurationString = objectMapper.writeValueAsString(configuration);
         LOGGER.info("Inferred Dropwizard configuration:\n{}", configurationString);
+
+        String environmentString = MapAdapter.adapt(System.getenv())
+                .keyValuesView()
+                .makeString("\n");
+        LOGGER.info("Environment:\n{}", environmentString);
     }
 }
