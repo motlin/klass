@@ -198,6 +198,28 @@
         </module>
 
         <module
+                id="${rootArtifactId}-klass-projections"
+                dir="__rootArtifactId__-klass-projections"
+                name="${rootArtifactId}-klass-projections">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-klass-services"
+                dir="__rootArtifactId__-klass-services"
+                name="${rootArtifactId}-klass-services">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
                 id="${rootArtifactId}-meta-model-constants"
                 dir="__rootArtifactId__-meta-model-constants"
                 name="${rootArtifactId}-meta-model-constants">
