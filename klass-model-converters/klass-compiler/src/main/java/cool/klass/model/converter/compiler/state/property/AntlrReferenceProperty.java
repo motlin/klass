@@ -1,28 +1,31 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 
 public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         extends AntlrProperty
-        implements AntlrOrderByOwner
+        implements AntlrOrderByOwner, AntlrMultiplicityOwner
 {
-    @Nullable
+    //<editor-fold desc="AMBIGUOUS">
     public static final AntlrReferenceProperty AMBIGUOUS = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
@@ -82,8 +85,9 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                     + ".getSurroundingElement() not implemented yet");
         }
     };
+    //</editor-fold>
 
-    @Nullable
+    //<editor-fold desc="NOT_FOUND">
     public static final AntlrReferenceProperty NOT_FOUND = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
@@ -143,9 +147,12 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                     + ".getTypeIdentifier() not implemented yet");
         }
     };
+    //</editor-fold>
 
     @Nonnull
     protected Optional<AntlrOrderBy> orderByState = Optional.empty();
+
+    protected AntlrMultiplicity multiplicityState;
 
     protected AntlrReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -161,15 +168,70 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
     @Nonnull
     public abstract Type getType();
 
-    public abstract AntlrMultiplicity getMultiplicity();
-
     @Nonnull
     @Override
     public abstract ReferencePropertyBuilder<?, ?, ?> build();
 
+    public AntlrMultiplicity getMultiplicity()
+    {
+        return this.multiplicityState;
+    }
+
+    public boolean isToOne()
+    {
+        return this.multiplicityState != null && this.multiplicityState.isToOne();
+    }
+
+    public boolean isToMany()
+    {
+        return this.multiplicityState != null && this.multiplicityState.isToMany();
+    }
+
+    public boolean isToOneOptional()
+    {
+        return this.multiplicityState != null && this.multiplicityState.getMultiplicity() == Multiplicity.ZERO_TO_ONE;
+    }
+
+    public boolean isToOneRequired()
+    {
+        return this.multiplicityState != null && this.multiplicityState.getMultiplicity() == Multiplicity.ONE_TO_ONE;
+    }
+
+    protected void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        if (this.multiplicityState.getMultiplicity() == null)
+        {
+            String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
+                    .collect(Multiplicity::getPrettyName)
+                    .collect(each -> '[' + each + ']')
+                    .makeString();
+
+            String message = String.format(
+                    "Reference property '%s: %s[%s..%s]' has invalid multiplicity. Expected one of %s.",
+                    this.getName(),
+                    this.getOwningClassifierState().getName(),
+                    this.multiplicityState.getLowerBoundText(),
+                    this.multiplicityState.getUpperBoundText(),
+                    multiplicityChoices);
+
+            compilerErrorHolder.add("ERR_ASO_MUL", message, this.multiplicityState);
+        }
+    }
+
     @Nonnull
     @Override
     public abstract ReferencePropertyBuilder<?, ?, ?> getElementBuilder();
+
+    @Override
+    public void enterMultiplicity(@Nonnull AntlrMultiplicity multiplicityState)
+    {
+        if (this.multiplicityState != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.multiplicityState = Objects.requireNonNull(multiplicityState);
+    }
 
     @Override
     public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)

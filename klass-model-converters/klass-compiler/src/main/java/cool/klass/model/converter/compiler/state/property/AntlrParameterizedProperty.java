@@ -9,8 +9,6 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassType;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
@@ -26,8 +24,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrParameterizedProperty
-        extends AntlrReferenceProperty<AntlrClass>
-        implements AntlrParameterOwner, AntlrClassTypeOwner
+        extends AntlrClassReferenceProperty
+        implements AntlrParameterOwner
 {
     @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
@@ -56,8 +54,6 @@ public class AntlrParameterizedProperty
     @Nullable
     private ParameterizedPropertyBuilder parameterizedPropertyBuilder;
     private AntlrCriteria                criteriaState;
-
-    private AntlrClassType classTypeState;
 
     public AntlrParameterizedProperty(
             @Nonnull ParameterizedPropertyContext elementContext,
@@ -90,12 +86,6 @@ public class AntlrParameterizedProperty
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.owningClassState);
-    }
-
-    @Override
-    public AntlrMultiplicity getMultiplicity()
-    {
-        return this.classTypeState.getMultiplicity();
     }
 
     @Override
@@ -154,7 +144,7 @@ public class AntlrParameterizedProperty
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
-                this.getMultiplicity().getMultiplicity());
+                this.multiplicityState.getMultiplicity());
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.parameterizedPropertyBuilder.setOrderByBuilder(orderByBuilder);
@@ -185,7 +175,7 @@ public class AntlrParameterizedProperty
     @Override
     protected IdentifierContext getTypeIdentifier()
     {
-        return this.getElementContext().classType().classReference().identifier();
+        return this.getElementContext().classReference().identifier();
     }
 
     @Nonnull
@@ -208,23 +198,5 @@ public class AntlrParameterizedProperty
         super.reportAuditErrors(compilerErrorHolder);
 
         // TODO: if (!this.classTypeState.getType().isUser() && !this.isAudit())
-    }
-
-    @Nonnull
-    @Override
-    public AntlrClass getType()
-    {
-        return this.classTypeState.getType();
-    }
-
-    @Override
-    public void enterClassType(@Nonnull AntlrClassType classTypeState)
-    {
-        if (this.classTypeState != null)
-        {
-            throw new AssertionError();
-        }
-
-        this.classTypeState = Objects.requireNonNull(classTypeState);
     }
 }

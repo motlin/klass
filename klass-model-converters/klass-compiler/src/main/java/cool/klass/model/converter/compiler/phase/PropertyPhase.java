@@ -8,14 +8,15 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrClassifierType;
+import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
+import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
-import cool.klass.model.converter.compiler.state.property.AntlrClassifierTypeOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypePropertyModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -28,7 +29,6 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
@@ -39,17 +39,17 @@ import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 
-public class PropertyPhase extends AbstractCompilerPhase
+public class PropertyPhase
+        extends AbstractCompilerPhase
 {
     @Nullable
-    private AntlrDataTypeProperty<?>     dataTypePropertyState;
+    private AntlrDataTypeProperty<?>      dataTypePropertyState;
     @Nullable
-    private AntlrAssociationEndSignature associationEndSignatureState;
+    private AntlrAssociationEndSignature  associationEndSignatureState;
     @Nullable
-    private AntlrClassifierType          classifierTypeState;
-
+    private AntlrClassifierReferenceOwner classifierReferenceOwnerState;
     @Nullable
-    private AntlrClassifierTypeOwner classifierTypeOwnerState;
+    private AntlrMultiplicityOwner        multiplicityOwnerState;
 
     public PropertyPhase(@Nonnull CompilerState compilerState)
     {
@@ -214,26 +214,29 @@ public class PropertyPhase extends AbstractCompilerPhase
     {
         super.enterAssociationEndSignature(ctx);
 
-        String associationEndSignatureName = ctx.identifier().getText();
-
         if (this.associationEndSignatureState != null)
         {
             throw new IllegalStateException();
         }
-        if (this.classifierTypeOwnerState != null)
+        if (this.classifierReferenceOwnerState != null)
+        {
+            throw new IllegalStateException();
+        }
+        if (this.multiplicityOwnerState != null)
         {
             throw new IllegalStateException();
         }
 
-        this.associationEndSignatureState = new AntlrAssociationEndSignature(
+        String associationEndSignatureName = ctx.identifier().getText();
+        this.associationEndSignatureState  = new AntlrAssociationEndSignature(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 ctx.identifier(),
                 associationEndSignatureName,
                 this.getClassifierState().getNumMembers() + 1,
                 this.getClassifierState());
-        this.classifierTypeOwnerState     = this.associationEndSignatureState;
-
+        this.classifierReferenceOwnerState = this.associationEndSignatureState;
+        this.multiplicityOwnerState        = this.associationEndSignatureState;
         this.getClassifierState().enterAssociationEndSignature(this.associationEndSignatureState);
     }
 
@@ -241,9 +244,9 @@ public class PropertyPhase extends AbstractCompilerPhase
     public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
         Objects.requireNonNull(this.associationEndSignatureState);
-        this.associationEndSignatureState = null;
-        this.classifierTypeOwnerState     = null;
-
+        this.associationEndSignatureState  = null;
+        this.classifierReferenceOwnerState = null;
+        this.multiplicityOwnerState        = null;
         super.exitAssociationEndSignature(ctx);
     }
 
@@ -274,41 +277,11 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterClassifierType(@Nonnull ClassifierTypeContext ctx)
-    {
-        super.enterClassifierType(ctx);
-
-        if (this.classifierTypeState != null)
-        {
-            throw new AssertionError();
-        }
-
-        if (this.classifierTypeOwnerState == null)
-        {
-            return;
-        }
-
-        this.classifierTypeState = new AntlrClassifierType(
-                ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.classifierTypeOwnerState);
-        this.classifierTypeOwnerState.enterClassifierType(this.classifierTypeState);
-    }
-
-    @Override
-    public void exitClassifierType(@Nonnull ClassifierTypeContext ctx)
-    {
-        this.classifierTypeState = null;
-
-        super.exitClassifierType(ctx);
-    }
-
-    @Override
     public void enterClassifierReference(@Nonnull ClassifierReferenceContext ctx)
     {
         super.enterClassifierReference(ctx);
 
-        if (this.classifierTypeState == null)
+        if (this.classifierReferenceOwnerState == null)
         {
             return;
         }
@@ -316,8 +289,13 @@ public class PropertyPhase extends AbstractCompilerPhase
         String           classifierName   = ctx.identifier().getText();
         AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
         AntlrClassifier  classifierState  = domainModelState.getClassifierByName(classifierName);
+        AntlrClassifierReference classifierReferenceState = new AntlrClassifierReference(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                this.classifierReferenceOwnerState,
+                classifierState);
 
-        this.classifierTypeState.enterClassifierReference(classifierState);
+        this.classifierReferenceOwnerState.enterClassifierReference(classifierReferenceState);
     }
 
     @Override
@@ -325,7 +303,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     {
         super.enterMultiplicity(ctx);
 
-        if (this.classifierTypeState == null)
+        if (this.multiplicityOwnerState == null)
         {
             return;
         }
@@ -333,8 +311,8 @@ public class PropertyPhase extends AbstractCompilerPhase
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.classifierTypeState);
+                this.multiplicityOwnerState);
 
-        this.classifierTypeState.enterMultiplicity(multiplicityState);
+        this.associationEndSignatureState.enterMultiplicity(multiplicityState);
     }
 }

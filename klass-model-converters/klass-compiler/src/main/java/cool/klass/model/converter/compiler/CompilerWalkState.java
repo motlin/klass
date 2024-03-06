@@ -22,8 +22,6 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
-import cool.klass.model.converter.compiler.state.property.AntlrClassTypeOwner;
-import cool.klass.model.converter.compiler.state.property.AntlrClassifierTypeOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
@@ -105,10 +103,6 @@ public class CompilerWalkState
 
     @Nullable
     private AntlrParameterOwner      parameterOwnerState;
-    @Nullable
-    private AntlrClassifierTypeOwner classifierTypeOwnerState;
-    @Nullable
-    private AntlrClassTypeOwner      classTypeOwnerState;
     @Nullable
     private AntlrModifierOwner       modifierOwnerState;
 
@@ -219,19 +213,7 @@ public class CompilerWalkState
         return this.parameterOwnerState;
     }
 
-    @Nullable
-    public AntlrClassifierTypeOwner getClassifierTypeOwnerState()
-    {
-        return this.classifierTypeOwnerState;
-    }
-
-    @Nullable
-    public AntlrClassTypeOwner getClassTypeOwnerState()
-    {
-        return this.classTypeOwnerState;
-    }
-
-    @Nullable
+    @Nonnull
     public CompilationUnit getCurrentCompilationUnit()
     {
         return Objects.requireNonNull(this.currentCompilationUnit);
@@ -284,8 +266,6 @@ public class CompilerWalkState
         compilerWalkState.orderByOwnerState               = this.orderByOwnerState;
         compilerWalkState.classifierModifierState         = this.classifierModifierState;
         compilerWalkState.parameterOwnerState             = this.parameterOwnerState;
-        compilerWalkState.classifierTypeOwnerState        = this.classifierTypeOwnerState;
-        compilerWalkState.classTypeOwnerState             = this.classTypeOwnerState;
         return compilerWalkState;
     }
 
@@ -368,14 +348,6 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.parameterOwnerState != null)
-        {
-            throw new AssertionError();
-        }
-        if (this.classifierTypeOwnerState != null)
-        {
-            throw new AssertionError();
-        }
-        if (this.classTypeOwnerState != null)
         {
             throw new AssertionError();
         }
@@ -472,14 +444,6 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.parameterOwnerState != other.parameterOwnerState)
-        {
-            throw new AssertionError();
-        }
-        if (this.classifierTypeOwnerState != other.classifierTypeOwnerState)
-        {
-            throw new AssertionError();
-        }
-        if (this.classTypeOwnerState != other.classTypeOwnerState)
         {
             throw new AssertionError();
         }

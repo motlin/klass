@@ -8,11 +8,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassType;
-import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicityOwner;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -20,14 +16,10 @@ import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifier;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
-import cool.klass.model.converter.compiler.state.property.AntlrClassTypeOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
@@ -36,24 +28,19 @@ import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class ParameterizedPropertyPhase extends AbstractCompilerPhase
+public class ParameterizedPropertyPhase
+        extends ReferencePropertyPhase
 {
     @Nullable
     private AntlrParameterizedProperty parameterizedPropertyState;
     @Nullable
     private AntlrParameter             parameterState;
-    @Nullable
-    private AntlrClassType             classTypeState;
 
     // TODO: Make better use of these Owner interfaces in shared compiler phases
     @Nullable
-    private IAntlrElement          criteriaOwnerState;
+    private IAntlrElement       criteriaOwnerState;
     @Nullable
-    private AntlrParameterOwner    parameterOwnerState;
-    @Nullable
-    private AntlrClassTypeOwner    classTypeOwnerState;
-    @Nullable
-    private AntlrMultiplicityOwner multiplicityOwnerState;
+    private AntlrParameterOwner parameterOwnerState;
 
     public ParameterizedPropertyPhase(@Nonnull CompilerState compilerState)
     {
@@ -77,7 +64,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         {
             throw new IllegalStateException();
         }
-        if (this.classTypeOwnerState != null)
+        if (this.classReferenceOwnerState != null)
         {
             throw new IllegalStateException();
         }
@@ -100,9 +87,13 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 
         thisReference.enterParameterizedProperty(this.parameterizedPropertyState);
 
-        this.parameterOwnerState = this.parameterizedPropertyState;
-        this.criteriaOwnerState  = this.parameterizedPropertyState;
-        this.classTypeOwnerState = this.parameterizedPropertyState;
+        this.parameterOwnerState      = this.parameterizedPropertyState;
+        this.criteriaOwnerState       = this.parameterizedPropertyState;
+        this.classReferenceOwnerState = this.parameterizedPropertyState;
+        this.multiplicityOwnerState   = this.parameterizedPropertyState;
+
+        this.handleClassReference(ctx.classReference());
+        this.handleMultiplicity(ctx.multiplicity());
     }
 
     @Override
@@ -111,7 +102,8 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         this.parameterizedPropertyState = null;
         this.parameterOwnerState        = null;
         this.criteriaOwnerState         = null;
-        this.classTypeOwnerState        = null;
+        this.classReferenceOwnerState   = null;
+        this.multiplicityOwnerState     = null;
 
         super.exitParameterizedProperty(ctx);
     }
@@ -239,80 +231,5 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
                 (IAntlrElement) this.parameterOwnerState);
         this.multiplicityOwnerState = this.parameterState;
         this.parameterOwnerState.enterParameterDeclaration(this.parameterState);
-    }
-
-    @Nullable
-    protected AntlrClassTypeOwner getAntlrClassTypeOwner()
-    {
-        return this.parameterizedPropertyState;
-    }
-
-    @Override
-    public void enterClassType(@Nonnull ClassTypeContext ctx)
-    {
-        super.enterClassType(ctx);
-
-        if (this.classTypeState != null)
-        {
-            throw new IllegalStateException();
-        }
-        if (this.multiplicityOwnerState != null)
-        {
-            throw new IllegalStateException();
-        }
-
-        if (this.getAntlrClassTypeOwner() == null)
-        {
-            return;
-        }
-
-        this.classTypeState         = new AntlrClassType(
-                ctx,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.getAntlrClassTypeOwner());
-        this.multiplicityOwnerState = this.classTypeState;
-        this.getAntlrClassTypeOwner().enterClassType(this.classTypeState);
-    }
-
-    @Override
-    public void exitClassType(@Nonnull ClassTypeContext ctx)
-    {
-        this.classTypeState         = null;
-        this.multiplicityOwnerState = null;
-
-        super.exitClassType(ctx);
-    }
-
-    @Override
-    public void enterClassReference(@Nonnull ClassReferenceContext ctx)
-    {
-        super.enterClassReference(ctx);
-
-        if (this.classTypeState == null)
-        {
-            return;
-        }
-
-        String           className        = ctx.identifier().getText();
-        AntlrDomainModel domainModelState = this.compilerState.getDomainModelState();
-        AntlrClass       classState       = domainModelState.getClassByName(className);
-
-        this.classTypeState.enterClassReference(classState);
-    }
-
-    @Override
-    public void enterMultiplicity(@Nonnull MultiplicityContext ctx)
-    {
-        super.enterMultiplicity(ctx);
-
-        if (this.multiplicityOwnerState != null)
-        {
-            AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                    ctx,
-                    Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                    this.multiplicityOwnerState);
-
-            this.multiplicityOwnerState.enterMultiplicity(multiplicityState);
-        }
     }
 }

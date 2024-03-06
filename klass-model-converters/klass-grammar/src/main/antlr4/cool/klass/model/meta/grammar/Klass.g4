@@ -55,9 +55,9 @@ enumerationPrettyName: StringLiteral;
 associationDeclaration: 'association' identifier associationBody;
 associationBody: '{' associationEnd? associationEnd? relationship? '}';
 associationEnd
-    : identifier ':' classType associationEndModifier* orderByDeclaration? ';'
-    | identifier ':' classType associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
-associationEndSignature: identifier ':' classifierType associationEndModifier* ';';
+    : identifier ':' classReference multiplicity associationEndModifier* orderByDeclaration? ';'
+    | identifier ':' classReference multiplicity associationEndModifier* orderByDeclaration? {notifyErrorListeners("Missing semi-colon after association end declaration.");};
+associationEndSignature: identifier ':' classifierReference multiplicity associationEndModifier* ';';
 relationship: 'relationship' criteriaExpression;
 
 // projection
@@ -105,8 +105,8 @@ primitiveProperty: identifier ':' primitiveType optionalMarker? dataTypeProperty
     | identifier ':' primitiveType optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
 enumerationProperty: identifier ':' enumerationReference optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* ';'
     | identifier ':' enumerationReference optionalMarker? dataTypePropertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
-parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
-parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierType parameterizedPropertyModifier* ';';
+parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classReference multiplicity parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
+parameterizedPropertySignature: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classifierReference multiplicity parameterizedPropertyModifier* ';';
 optionalMarker: '?';
 
 dataTypePropertyValidation
@@ -191,10 +191,6 @@ equalityOperator: '==' | '!=';
 inequalityOperator: '<' | '>' | '<=' | '>=';
 inOperator: 'in';
 stringOperator: 'contains' | 'startsWith' | 'endsWith';
-
-// Type references
-classType: classReference multiplicity;
-classifierType: classifierReference multiplicity;
 
 // references
 interfaceReference: identifier;

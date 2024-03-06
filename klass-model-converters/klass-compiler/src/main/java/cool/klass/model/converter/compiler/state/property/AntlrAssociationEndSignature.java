@@ -9,12 +9,11 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
-import cool.klass.model.converter.compiler.state.AntlrClassifierType;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
+import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
-import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
@@ -23,11 +22,10 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 
 public class AntlrAssociationEndSignature
         extends AntlrReferenceProperty<AntlrClassifier>
-        implements AntlrClassifierTypeOwner
+        implements AntlrClassifierReferenceOwner
 {
     @Nullable
     public static final AntlrAssociationEndSignature AMBIGUOUS = new AntlrAssociationEndSignature(
@@ -53,7 +51,7 @@ public class AntlrAssociationEndSignature
 
     private AssociationEndSignatureBuilder associationEndSignatureBuilder;
 
-    private AntlrClassifierType classifierTypeState;
+    private AntlrClassifierReference classifierReferenceState;
 
     public AntlrAssociationEndSignature(
             @Nonnull AssociationEndSignatureContext elementContext,
@@ -72,12 +70,6 @@ public class AntlrAssociationEndSignature
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.owningClassifierState);
-    }
-
-    @Override
-    public AntlrMultiplicity getMultiplicity()
-    {
-        return this.classifierTypeState.getMultiplicity();
     }
 
     @Nonnull
@@ -99,7 +91,7 @@ public class AntlrAssociationEndSignature
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),
-                this.getMultiplicity().getMultiplicity(),
+                this.multiplicityState.getMultiplicity(),
                 this.isOwned());
 
         ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders = this.getModifiers()
@@ -136,27 +128,6 @@ public class AntlrAssociationEndSignature
         this.reportInvalidMultiplicity(compilerErrorHolder);
     }
 
-    private void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        if (this.getMultiplicity().getMultiplicity() == null)
-        {
-            String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
-                    .collect(Multiplicity::getPrettyName)
-                    .collect(each -> '[' + each + ']')
-                    .makeString();
-
-            String message = String.format(
-                    "Association end signature '%s: %s[%s..%s]' has invalid multiplicity. Expected one of %s.",
-                    this.getName(),
-                    this.getOwningClassifierState().getName(),
-                    this.getMultiplicity().getLowerBoundText(),
-                    this.getMultiplicity().getUpperBoundText(),
-                    multiplicityChoices);
-
-            compilerErrorHolder.add("ERR_AES_MUL", message, this.getMultiplicity());
-        }
-    }
-
     @Nonnull
     @Override
     public AntlrClassifier getOwningClassifierState()
@@ -174,7 +145,7 @@ public class AntlrAssociationEndSignature
     @Override
     protected IdentifierContext getTypeIdentifier()
     {
-        return this.getElementContext().classifierType().classifierReference().identifier();
+        return this.getElementContext().classifierReference().identifier();
     }
 
     @Nonnull
@@ -195,17 +166,16 @@ public class AntlrAssociationEndSignature
     @Override
     public AntlrClassifier getType()
     {
-        return this.classifierTypeState.getType();
+        return this.classifierReferenceState.getClassifierState();
     }
 
     @Override
-    public void enterClassifierType(@Nonnull AntlrClassifierType classifierTypeState)
+    public void enterClassifierReference(@Nonnull AntlrClassifierReference classifierReferenceState)
     {
-        if (this.classifierTypeState != null)
+        if (this.classifierReferenceState != null)
         {
             throw new AssertionError();
         }
-
-        this.classifierTypeState = Objects.requireNonNull(classifierTypeState);
+        this.classifierReferenceState = Objects.requireNonNull(classifierReferenceState);
     }
 }

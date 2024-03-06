@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_ASO_MUL[m [33m════════════════════════════════════════[m
-[31mAssociation end 'source: DummyClass[2..3]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].[m
+[31mReference property 'source: DummyClass[2..3]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].[m
 
 Error at location. (InvalidMultiplicityErrorTest.klass:5)
 [40m[40;37m1║ [40;35mpackage [40;97mdummy

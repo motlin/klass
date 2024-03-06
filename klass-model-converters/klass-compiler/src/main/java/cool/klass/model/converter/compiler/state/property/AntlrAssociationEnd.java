@@ -11,12 +11,9 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrClassType;
-import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.meta.domain.AbstractElement;
-import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
@@ -26,12 +23,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociationEnd
-        extends AntlrReferenceProperty<AntlrClass>
-        implements AntlrClassTypeOwner
+        extends AntlrClassReferenceProperty
 {
     @Nullable
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
@@ -63,8 +58,6 @@ public class AntlrAssociationEnd
     private final MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>> foreignKeys =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private AntlrClassType classTypeState;
-
     public AntlrAssociationEnd(
             @Nonnull AssociationEndContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
@@ -82,12 +75,6 @@ public class AntlrAssociationEnd
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.owningAssociationState);
-    }
-
-    @Override
-    public AntlrMultiplicity getMultiplicity()
-    {
-        return this.classTypeState.getMultiplicity();
     }
 
     @Nonnull
@@ -110,7 +97,7 @@ public class AntlrAssociationEnd
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),
                 this.owningAssociationState.getElementBuilder(),
-                this.getMultiplicity().getMultiplicity(),
+                this.multiplicityState.getMultiplicity(),
                 this.isOwned());
 
         ImmutableList<AssociationEndModifierBuilder> associationEndModifierBuilders = this.getModifiers()
@@ -138,34 +125,10 @@ public class AntlrAssociationEnd
     {
         super.reportErrors(compilerErrorHolder);
 
-        if (this.orderByState != null)
-        {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
-        }
+        this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
 
         this.reportInvalidMultiplicity(compilerErrorHolder);
         this.reportVersionEndUnowned(compilerErrorHolder);
-    }
-
-    private void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        if (this.getMultiplicity().getMultiplicity() == null)
-        {
-            String multiplicityChoices = ArrayAdapter.adapt(Multiplicity.values())
-                    .collect(Multiplicity::getPrettyName)
-                    .collect(each -> '[' + each + ']')
-                    .makeString();
-
-            String message = String.format(
-                    "Association end '%s: %s[%s..%s]' has invalid multiplicity. Expected one of %s.",
-                    this.getName(),
-                    this.getOwningClassifierState().getName(),
-                    this.getMultiplicity().getLowerBoundText(),
-                    this.getMultiplicity().getUpperBoundText(),
-                    multiplicityChoices);
-
-            compilerErrorHolder.add("ERR_ASO_MUL", message, this.getMultiplicity());
-        }
     }
 
     private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -243,12 +206,6 @@ public class AntlrAssociationEnd
         compilerErrorHolder.add("ERR_VER_END", message, this);
     }
 
-    @Override
-    protected IdentifierContext getTypeIdentifier()
-    {
-        return this.getElementContext().classType().classReference().identifier();
-    }
-
     @Nonnull
     @Override
     public AssociationEndContext getElementContext()
@@ -261,18 +218,6 @@ public class AntlrAssociationEnd
     {
         parserRuleContexts.add(this.getElementContext());
         this.owningAssociationState.getParserRuleContexts(parserRuleContexts);
-    }
-
-    public boolean isToOne()
-    {
-        AntlrMultiplicity multiplicity = this.getMultiplicity();
-        return multiplicity != null && multiplicity.isToOne();
-    }
-
-    public boolean isToMany()
-    {
-        AntlrMultiplicity multiplicity = this.getMultiplicity();
-        return multiplicity != null && multiplicity.isToMany();
     }
 
     public void addForeignKeyPropertyMatchingProperty(
@@ -291,33 +236,9 @@ public class AntlrAssociationEnd
                 || this.isToOneOptional() && this.opposite.isToOneRequired();
     }
 
-    public boolean isToOneOptional()
-    {
-        AntlrMultiplicity multiplicity = this.getMultiplicity();
-        return multiplicity != null && multiplicity.getMultiplicity() == Multiplicity.ZERO_TO_ONE;
-    }
-
-    public boolean isToOneRequired()
-    {
-        AntlrMultiplicity multiplicity = this.getMultiplicity();
-        return multiplicity != null && multiplicity.getMultiplicity() == Multiplicity.ONE_TO_ONE;
-    }
-
-    @Nonnull
     @Override
-    public AntlrClass getType()
+    protected IdentifierContext getTypeIdentifier()
     {
-        return this.classTypeState.getType();
-    }
-
-    @Override
-    public void enterClassType(@Nonnull AntlrClassType classTypeState)
-    {
-        if (this.classTypeState != null)
-        {
-            throw new AssertionError();
-        }
-
-        this.classTypeState = Objects.requireNonNull(classTypeState);
+        return this.getElementContext().classReference().identifier();
     }
 }
