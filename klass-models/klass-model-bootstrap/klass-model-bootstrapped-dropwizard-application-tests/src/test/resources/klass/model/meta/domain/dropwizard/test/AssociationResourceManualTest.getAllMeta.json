@@ -2,11 +2,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "EnumerationHasLiterals",
+    "ordinal": 6,
     "associationEnds": [
       {
         "name": "enumeration",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "EnumerationLiteral"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Enumeration"
         },
         "associationEndModifiers": [],
@@ -14,33 +22,48 @@
       },
       {
         "name": "enumerationLiterals",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Enumeration"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "EnumerationLiteral"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 157,
               "klass": {
-                "name": "EnumerationLiteral"
+                "name": "EnumerationLiteral",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "NamedElement"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 1,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -67,11 +90,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassifierHasClassifierInterfaceMapping",
+    "ordinal": 10,
     "associationEnds": [
       {
         "name": "subClassifier",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ClassifierInterfaceMapping"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Classifier"
         },
         "associationEndModifiers": [],
@@ -79,13 +110,21 @@
       },
       {
         "name": "superInterfaces",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Classifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ClassifierInterfaceMapping"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -93,6 +132,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 2,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -119,11 +159,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassifierInterfaceMappingHasInterface",
+    "ordinal": 11,
     "associationEnds": [
       {
         "name": "subClassifiers",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Interface"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ClassifierInterfaceMapping"
         },
         "associationEndModifiers": [],
@@ -131,8 +179,15 @@
       },
       {
         "name": "superInterface",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ClassifierInterfaceMapping"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Interface"
         },
         "associationEndModifiers": [],
@@ -141,6 +196,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 3,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -167,11 +223,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassifierHasModifiers",
+    "ordinal": 13,
     "associationEnds": [
       {
         "name": "owningClassifier",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ClassifierModifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Classifier"
         },
         "associationEndModifiers": [],
@@ -179,33 +243,48 @@
       },
       {
         "name": "classifierModifiers",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Classifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ClassifierModifier"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 158,
               "klass": {
-                "name": "ClassifierModifier"
+                "name": "ClassifierModifier",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "ClassifierModifier"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 4,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -232,11 +311,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassHasSuperClass",
+    "ordinal": 15,
     "associationEnds": [
       {
         "name": "subClasses",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -244,8 +331,15 @@
       },
       {
         "name": "superClass",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -254,6 +348,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 5,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -280,11 +375,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "EnumerationPropertyHasEnumeration",
+    "ordinal": 21,
     "associationEnds": [
       {
         "name": "enumerationProperties",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Enumeration"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "EnumerationProperty"
         },
         "associationEndModifiers": [],
@@ -292,8 +395,15 @@
       },
       {
         "name": "enumeration",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "EnumerationProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Enumeration"
         },
         "associationEndModifiers": [],
@@ -302,6 +412,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 6,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -328,11 +439,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassifierHasDataTypeTypeProperties",
+    "ordinal": 22,
     "associationEnds": [
       {
         "name": "owningClassifier",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Classifier"
         },
         "associationEndModifiers": [],
@@ -340,33 +459,48 @@
       },
       {
         "name": "dataTypeProperties",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Classifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 159,
               "klass": {
-                "name": "DataTypeProperty"
+                "name": "DataTypeProperty",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "NamedElement"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 7,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -393,11 +527,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "DataTypePropertyHasMinLengthPropertyValidation",
+    "ordinal": 28,
     "associationEnds": [
       {
         "name": "dataTypeProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MinLengthPropertyValidation"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -405,13 +547,21 @@
       },
       {
         "name": "minLengthValidation",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MinLengthPropertyValidation"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -419,8 +569,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 8,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 9,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -445,6 +597,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 10,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -472,11 +625,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "DataTypePropertyHasMaxLengthPropertyValidation",
+    "ordinal": 29,
     "associationEnds": [
       {
         "name": "dataTypeProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MaxLengthPropertyValidation"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -484,13 +645,21 @@
       },
       {
         "name": "maxLengthValidation",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MaxLengthPropertyValidation"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -498,8 +667,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 11,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 12,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -524,6 +695,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 13,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -551,11 +723,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "PrimitivePropertyHasMinPropertyValidation",
+    "ordinal": 30,
     "associationEnds": [
       {
         "name": "primitiveProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MinPropertyValidation"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "PrimitiveProperty"
         },
         "associationEndModifiers": [],
@@ -563,13 +743,21 @@
       },
       {
         "name": "minValidation",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "PrimitiveProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MinPropertyValidation"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -577,8 +765,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 14,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 15,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -603,6 +793,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 16,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -630,11 +821,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "PrimitivePropertyHasMaxPropertyValidation",
+    "ordinal": 31,
     "associationEnds": [
       {
         "name": "primitiveProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MaxPropertyValidation"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "PrimitiveProperty"
         },
         "associationEndModifiers": [],
@@ -642,13 +841,21 @@
       },
       {
         "name": "maxValidation",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "PrimitiveProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MaxPropertyValidation"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -656,8 +863,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 17,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 18,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -682,6 +891,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 19,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -709,11 +919,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "DataTypePropertyHasModifiers",
+    "ordinal": 33,
     "associationEnds": [
       {
         "name": "dataTypeProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "PropertyModifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -721,31 +939,46 @@
       },
       {
         "name": "propertyModifiers",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "PropertyModifier"
         },
         "associationEndModifiers": [],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 160,
               "klass": {
-                "name": "PropertyModifier"
+                "name": "PropertyModifier",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "PropertyModifier"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 20,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 21,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -770,6 +1003,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 22,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -797,11 +1031,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "VariableReferenceHasParameter",
+    "ordinal": 42,
     "associationEnds": [
       {
         "name": "variableReferences",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Parameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "VariableReference"
         },
         "associationEndModifiers": [],
@@ -809,8 +1051,15 @@
       },
       {
         "name": "parameter",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "VariableReference"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Parameter"
         },
         "associationEndModifiers": [],
@@ -819,6 +1068,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 23,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -845,11 +1095,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationHasEnds",
+    "ordinal": 54,
     "associationEnds": [
       {
         "name": "owningAssociation",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Association"
         },
         "associationEndModifiers": [],
@@ -857,33 +1115,48 @@
       },
       {
         "name": "associationEnds",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Association"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 161,
               "klass": {
-                "name": "AssociationEnd"
+                "name": "AssociationEnd",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "AssociationEnd"
+                },
                 "name": "direction"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 24,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -910,11 +1183,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassHasAssociationEnds",
+    "ordinal": 55,
     "associationEnds": [
       {
         "name": "owningClass",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -922,8 +1203,15 @@
       },
       {
         "name": "associationEnds",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -932,6 +1220,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 25,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -958,11 +1247,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationEndHasResultType",
+    "ordinal": 56,
     "associationEnds": [
       {
         "name": "associationEndsResultTypeOf",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -970,8 +1267,15 @@
       },
       {
         "name": "resultType",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -980,6 +1284,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 26,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1006,11 +1311,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationEndHasModifiers",
+    "ordinal": 58,
     "associationEnds": [
       {
         "name": "associationEnd",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEndModifier"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -1018,35 +1331,51 @@
       },
       {
         "name": "associationEndModifiers",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEndModifier"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 162,
               "klass": {
-                "name": "AssociationEndModifier"
+                "name": "AssociationEndModifier",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "AssociationEndModifier"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 27,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 28,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1071,6 +1400,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 29,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1098,11 +1428,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationHasCriteria",
+    "ordinal": 59,
     "associationEnds": [
       {
         "name": "association",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Association"
         },
         "associationEndModifiers": [],
@@ -1110,8 +1448,15 @@
       },
       {
         "name": "criteria",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Association"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [],
@@ -1120,6 +1465,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 30,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1146,11 +1492,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "OperatorCriteriaHasSourceExpressionValue",
+    "ordinal": 60,
     "associationEnds": [
       {
         "name": "operatorCriteriaSourceOf",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ExpressionValue"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "OperatorCriteria"
         },
         "associationEndModifiers": [],
@@ -1158,13 +1512,21 @@
       },
       {
         "name": "sourceExpressionValue",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "OperatorCriteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ExpressionValue"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -1172,6 +1534,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 31,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1198,11 +1561,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "OperatorCriteriaHasTargetExpressionValue",
+    "ordinal": 61,
     "associationEnds": [
       {
         "name": "operatorCriteriaTargetOf",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ExpressionValue"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "OperatorCriteria"
         },
         "associationEndModifiers": [],
@@ -1210,13 +1581,21 @@
       },
       {
         "name": "targetExpressionValue",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "OperatorCriteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ExpressionValue"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -1224,6 +1603,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 32,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1250,11 +1630,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "EdgePointCriteriaHasMemberReferencePath",
+    "ordinal": 62,
     "associationEnds": [
       {
         "name": "edgePointCriteria",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "EdgePointCriteria"
         },
         "associationEndModifiers": [],
@@ -1262,8 +1650,15 @@
       },
       {
         "name": "memberReferencePath",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "EdgePointCriteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -1272,6 +1667,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 33,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1298,11 +1694,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "EnumerationParameterHasEnumeration",
+    "ordinal": 63,
     "associationEnds": [
       {
         "name": "enumerationParameters",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Enumeration"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "EnumerationParameter"
         },
         "associationEndModifiers": [],
@@ -1310,8 +1714,15 @@
       },
       {
         "name": "enumeration",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "EnumerationParameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Enumeration"
         },
         "associationEndModifiers": [],
@@ -1320,6 +1731,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 34,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1346,11 +1758,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "MemberReferencePathHasClass",
+    "ordinal": 64,
     "associationEnds": [
       {
         "name": "memberReferencePaths",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -1358,8 +1778,15 @@
       },
       {
         "name": "klass",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -1368,6 +1795,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 35,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1394,11 +1822,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "MemberReferencePathHasMemberReferencePathAssociationEndMapping",
+    "ordinal": 66,
     "associationEnds": [
       {
         "name": "memberReferencePath",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePathAssociationEndMapping"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -1406,13 +1842,21 @@
       },
       {
         "name": "associationEnds",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePathAssociationEndMapping"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -1420,6 +1864,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 36,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1446,11 +1891,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "MemberReferencePathAssociationEndMappingHasAssociationEnd",
+    "ordinal": 67,
     "associationEnds": [
       {
         "name": "memberReferencePaths",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePathAssociationEndMapping"
         },
         "associationEndModifiers": [],
@@ -1458,8 +1911,15 @@
       },
       {
         "name": "associationEnd",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePathAssociationEndMapping"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -1468,8 +1928,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 37,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 38,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1494,6 +1956,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 39,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1521,11 +1984,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "DataTypePropertyHasMemberReferencePaths",
+    "ordinal": 68,
     "associationEnds": [
       {
         "name": "memberReferencePaths",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "MemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -1533,8 +2004,15 @@
       },
       {
         "name": "dataTypeProperty",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "MemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -1543,8 +2021,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 40,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 41,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1569,6 +2049,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 42,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1596,11 +2077,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "BinaryCriteriaHasLeft",
+    "ordinal": 71,
     "associationEnds": [
       {
         "name": "ownerOfLeftCriteria",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "BinaryCriteria"
         },
         "associationEndModifiers": [],
@@ -1608,8 +2097,15 @@
       },
       {
         "name": "left",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "BinaryCriteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [],
@@ -1618,6 +2114,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 43,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1644,11 +2141,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "BinaryCriteriaHasRight",
+    "ordinal": 72,
     "associationEnds": [
       {
         "name": "ownerOfRightCriteria",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "BinaryCriteria"
         },
         "associationEndModifiers": [],
@@ -1656,8 +2161,15 @@
       },
       {
         "name": "right",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "BinaryCriteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [],
@@ -1666,6 +2178,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 44,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1692,11 +2205,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ClassHasParameterizedProperties",
+    "ordinal": 74,
     "associationEnds": [
       {
         "name": "owningClass",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -1704,33 +2225,48 @@
       },
       {
         "name": "parameterizedProperties",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedProperty"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": [
           {
+            "orderByDirection": "ascending",
             "thisMemberReferencePath": {
+              "id": 163,
               "klass": {
-                "name": "ParameterizedProperty"
+                "name": "ParameterizedProperty",
+                "packageName": "klass.model.meta.domain"
               },
               "associationEnds": [],
               "dataTypeProperty": {
+                "owningClassifier": {
+                  "packageName": "klass.model.meta.domain",
+                  "name": "NamedElement"
+                },
                 "name": "ordinal"
               }
-            },
-            "orderByDirection": "ascending"
+            }
           }
         ]
       }
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 45,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1757,11 +2293,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationEndHasOrderBy",
+    "ordinal": 77,
     "associationEnds": [
       {
         "name": "associationEnd",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEndOrderBy"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -1769,13 +2313,21 @@
       },
       {
         "name": "orderBys",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEndOrderBy"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -1783,8 +2335,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 46,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 47,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1809,6 +2363,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 48,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1836,11 +2391,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "AssociationEndOrderByHasMemberReferencePath",
+    "ordinal": 78,
     "associationEnds": [
       {
         "name": "associationEndOrderBy",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ThisMemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEndOrderBy"
         },
         "associationEndModifiers": [],
@@ -1848,8 +2411,15 @@
       },
       {
         "name": "thisMemberReferencePath",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEndOrderBy"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ThisMemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -1858,6 +2428,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 49,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1884,11 +2455,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ParameterizedPropertyHasResultType",
+    "ordinal": 79,
     "associationEnds": [
       {
         "name": "parameterizedPropertiesResultTypeOf",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedProperty"
         },
         "associationEndModifiers": [],
@@ -1896,8 +2475,15 @@
       },
       {
         "name": "resultType",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -1906,6 +2492,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 50,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1932,11 +2519,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ParameterizedPropertyHasOrdering",
+    "ordinal": 81,
     "associationEnds": [
       {
         "name": "parameterizedProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedPropertyOrdering"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedProperty"
         },
         "associationEndModifiers": [],
@@ -1944,13 +2539,21 @@
       },
       {
         "name": "parameterizedPropertyOrderings",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedPropertyOrdering"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -1958,8 +2561,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 51,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 52,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -1984,6 +2589,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 53,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2011,11 +2617,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ParameterizedPropertyHasParameters",
+    "ordinal": 83,
     "associationEnds": [
       {
         "name": "parameterizedProperty",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedPropertyParameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedProperty"
         },
         "associationEndModifiers": [],
@@ -2023,8 +2637,15 @@
       },
       {
         "name": "parameters",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ParameterizedProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ParameterizedPropertyParameter"
         },
         "associationEndModifiers": [],
@@ -2033,8 +2654,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 54,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 55,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2059,6 +2682,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 56,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2086,11 +2710,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "NamedProjectionHasRootProjection",
+    "ordinal": 87,
     "associationEnds": [
       {
         "name": "namedProjection",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "RootProjection"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "NamedProjection"
         },
         "associationEndModifiers": [],
@@ -2098,8 +2730,15 @@
       },
       {
         "name": "rootProjection",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "NamedProjection"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "RootProjection"
         },
         "associationEndModifiers": [],
@@ -2108,6 +2747,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 57,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2134,11 +2774,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ProjectionElementHasChildren",
+    "ordinal": 92,
     "associationEnds": [
       {
         "name": "parent",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ProjectionElement"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ProjectionElement"
         },
         "associationEndModifiers": [],
@@ -2146,8 +2794,15 @@
       },
       {
         "name": "children",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ProjectionElement"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ProjectionElement"
         },
         "associationEndModifiers": [],
@@ -2156,6 +2811,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 58,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2182,11 +2838,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ProjectionWithAssociationEndHasAssociationEnd",
+    "ordinal": 93,
     "associationEnds": [
       {
         "name": "projectionsWithAssociationEnd",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "AssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ProjectionWithAssociationEnd"
         },
         "associationEndModifiers": [],
@@ -2194,8 +2858,15 @@
       },
       {
         "name": "associationEnd",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ProjectionWithAssociationEnd"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "AssociationEnd"
         },
         "associationEndModifiers": [],
@@ -2204,8 +2875,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 59,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 60,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2230,6 +2903,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 61,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2257,11 +2931,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ProjectionDataTypePropertyHasDataTypeProperty",
+    "ordinal": 94,
     "associationEnds": [
       {
         "name": "projectionDataTypeProperties",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "DataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ProjectionDataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -2269,8 +2951,15 @@
       },
       {
         "name": "dataTypeProperty",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ProjectionDataTypeProperty"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "DataTypeProperty"
         },
         "associationEndModifiers": [],
@@ -2279,8 +2968,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 62,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 63,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2305,6 +2996,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 64,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2332,11 +3024,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "RootProjectionHasClass",
+    "ordinal": 95,
     "associationEnds": [
       {
         "name": "projections",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "RootProjection"
         },
         "associationEndModifiers": [],
@@ -2344,8 +3044,15 @@
       },
       {
         "name": "klass",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "RootProjection"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -2354,6 +3061,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 65,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2380,11 +3088,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ProjectionProjectionReferenceHasProjection",
+    "ordinal": 96,
     "associationEnds": [
       {
         "name": "projectionProjectionReferences",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "NamedProjection"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ProjectionProjectionReference"
         },
         "associationEndModifiers": [],
@@ -2392,8 +3108,15 @@
       },
       {
         "name": "projection",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ProjectionProjectionReference"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "NamedProjection"
         },
         "associationEndModifiers": [],
@@ -2402,6 +3125,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 66,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2428,11 +3152,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceGroupHasClass",
+    "ordinal": 98,
     "associationEnds": [
       {
         "name": "serviceGroups",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Klass"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ServiceGroup"
         },
         "associationEndModifiers": [],
@@ -2440,8 +3172,15 @@
       },
       {
         "name": "owningClass",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ServiceGroup"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Klass"
         },
         "associationEndModifiers": [],
@@ -2450,6 +3189,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 67,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2476,11 +3216,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "UrlHasUrlParameters",
+    "ordinal": 102,
     "associationEnds": [
       {
         "name": "url",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "UrlParameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Url"
         },
         "associationEndModifiers": [],
@@ -2488,13 +3236,21 @@
       },
       {
         "name": "parameters",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Url"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "UrlParameter"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2502,8 +3258,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 68,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 69,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2528,6 +3286,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 70,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2555,11 +3314,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "UrlParameterHasParameter",
+    "ordinal": 103,
     "associationEnds": [
       {
         "name": "urlParameter",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Parameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "UrlParameter"
         },
         "associationEndModifiers": [],
@@ -2567,8 +3334,15 @@
       },
       {
         "name": "parameter",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "UrlParameter"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Parameter"
         },
         "associationEndModifiers": [],
@@ -2577,6 +3351,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 71,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2603,11 +3378,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceGroupHasUrls",
+    "ordinal": 104,
     "associationEnds": [
       {
         "name": "serviceGroup",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Url"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ServiceGroup"
         },
         "associationEndModifiers": [],
@@ -2615,13 +3398,21 @@
       },
       {
         "name": "urls",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ServiceGroup"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Url"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2629,6 +3420,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 72,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2655,11 +3447,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "UrlHasServices",
+    "ordinal": 108,
     "associationEnds": [
       {
         "name": "url",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Url"
         },
         "associationEndModifiers": [],
@@ -2667,13 +3467,21 @@
       },
       {
         "name": "services",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Url"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2681,8 +3489,10 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 73,
       "left": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 74,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2707,6 +3517,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 75,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2734,11 +3545,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasProjection",
+    "ordinal": 109,
     "associationEnds": [
       {
         "name": "services",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "NamedProjection"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -2746,8 +3565,15 @@
       },
       {
         "name": "projection",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "NamedProjection"
         },
         "associationEndModifiers": [],
@@ -2756,6 +3582,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 76,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2782,11 +3609,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasQueryCriteria",
+    "ordinal": 110,
     "associationEnds": [
       {
         "name": "queryService",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -2794,13 +3629,21 @@
       },
       {
         "name": "queryCriteria",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2808,6 +3651,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 77,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2834,11 +3678,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasAuthorizeCriteria",
+    "ordinal": 111,
     "associationEnds": [
       {
         "name": "authorizeService",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -2846,13 +3698,21 @@
       },
       {
         "name": "authorizeCriteria",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2860,6 +3720,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 78,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2886,11 +3747,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasValidateCriteria",
+    "ordinal": 112,
     "associationEnds": [
       {
         "name": "validateService",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -2898,13 +3767,21 @@
       },
       {
         "name": "validateCriteria",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2912,6 +3789,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 79,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2938,11 +3816,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasConflictCriteria",
+    "ordinal": 113,
     "associationEnds": [
       {
         "name": "conflictService",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Criteria"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -2950,13 +3836,21 @@
       },
       {
         "name": "conflictCriteria",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Criteria"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -2964,6 +3858,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 80,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -2990,11 +3885,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceHasOrderBy",
+    "ordinal": 115,
     "associationEnds": [
       {
         "name": "service",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ServiceOrderBy"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "Service"
         },
         "associationEndModifiers": [],
@@ -3002,13 +3905,21 @@
       },
       {
         "name": "orderBys",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "0..*",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "Service"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ServiceOrderBy"
         },
         "associationEndModifiers": [
           {
-            "keyword": "owned"
+            "keyword": "owned",
+            "ordinal": 1
           }
         ],
         "orderBys": []
@@ -3016,10 +3927,13 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.AndCriteria",
+      "id": 81,
       "left": {
         "__typename": "klass.model.meta.domain.AndCriteria",
+        "id": 82,
         "left": {
           "__typename": "klass.model.meta.domain.OperatorCriteria",
+          "id": 83,
           "operator": "==",
           "sourceExpressionValue": {
             "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -3044,6 +3958,7 @@
         },
         "right": {
           "__typename": "klass.model.meta.domain.OperatorCriteria",
+          "id": 84,
           "operator": "==",
           "sourceExpressionValue": {
             "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -3069,6 +3984,7 @@
       },
       "right": {
         "__typename": "klass.model.meta.domain.OperatorCriteria",
+        "id": 85,
         "operator": "==",
         "sourceExpressionValue": {
           "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
@@ -3096,11 +4012,19 @@
   {
     "packageName": "klass.model.meta.domain",
     "name": "ServiceOrderByHasMemberReferencePath",
+    "ordinal": 116,
     "associationEnds": [
       {
         "name": "serviceOrderBy",
+        "ordinal": 1,
+        "direction": "source",
         "multiplicity": "0..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ThisMemberReferencePath"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ServiceOrderBy"
         },
         "associationEndModifiers": [],
@@ -3108,8 +4032,15 @@
       },
       {
         "name": "thisMemberReferencePath",
+        "ordinal": 2,
+        "direction": "target",
         "multiplicity": "1..1",
+        "owningClass": {
+          "packageName": "klass.model.meta.domain",
+          "name": "ServiceOrderBy"
+        },
         "resultType": {
+          "packageName": "klass.model.meta.domain",
           "name": "ThisMemberReferencePath"
         },
         "associationEndModifiers": [],
@@ -3118,6 +4049,7 @@
     ],
     "criteria": {
       "__typename": "klass.model.meta.domain.OperatorCriteria",
+      "id": 86,
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",

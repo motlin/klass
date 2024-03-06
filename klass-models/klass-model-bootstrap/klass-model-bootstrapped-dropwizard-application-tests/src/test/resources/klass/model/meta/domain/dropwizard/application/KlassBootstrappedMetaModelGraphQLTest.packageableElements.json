@@ -3216,7 +3216,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 167
+                  "id": 157
                 }
               }
             ]
@@ -3335,7 +3335,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 168
+                  "id": 158
                 }
               }
             ]
@@ -3449,7 +3449,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 169
+                  "id": 159
                 }
               }
             ]
@@ -3646,7 +3646,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 170
+                  "id": 160
                 }
               }
             ]
@@ -3726,7 +3726,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 171
+                  "id": 161
                 }
               }
             ]
@@ -3840,7 +3840,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 172
+                  "id": 162
                 }
               }
             ]
@@ -4275,7 +4275,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 173
+                  "id": 163
                 }
               }
             ]
@@ -5282,7 +5282,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassProjection",
+        "name": "KlassProjection",
         "ordinal": 138,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5300,7 +5300,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassifierSummaryProjection",
+        "name": "ClassifierProjection",
         "ordinal": 141,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5599,10 +5599,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "InterfaceSummaryProjection"
+                  "name": "InterfaceProjection"
                 },
                 "queryCriteria": {
-                  "id": 94
+                  "id": 93
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5612,7 +5612,7 @@
             ]
           },
           {
-            "url": "/meta/interface/{interfaceName}",
+            "url": "/meta/interface/{name}",
             "parameters": [
               {
                 "type": "PATH",
@@ -5620,7 +5620,7 @@
                   "__typename": "PrimitiveParameter",
                   "id": 4,
                   "ordinal": 3,
-                  "name": "interfaceName",
+                  "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
                 }
@@ -5635,38 +5635,6 @@
                 },
                 "queryCriteria": {
                   "id": 92
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/interface/{interfaceName}/summary",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 5,
-                  "ordinal": 3,
-                  "name": "interfaceName",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "InterfaceSummaryProjection"
-                },
-                "queryCriteria": {
-                  "id": 93
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5694,39 +5662,7 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "ClassSummaryProjection"
-                },
-                "queryCriteria": {
-                  "id": 97
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/class/{className}",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 6,
-                  "ordinal": 3,
-                  "name": "className",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "ClassProjection"
+                  "name": "KlassProjection"
                 },
                 "queryCriteria": {
                   "id": 95
@@ -5739,15 +5675,15 @@
             ]
           },
           {
-            "url": "/meta/class/{className}/summary",
+            "url": "/meta/class/{name}",
             "parameters": [
               {
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 7,
+                  "id": 5,
                   "ordinal": 3,
-                  "name": "className",
+                  "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
                 }
@@ -5758,10 +5694,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "ONE",
                 "projection": {
-                  "name": "ClassSummaryProjection"
+                  "name": "KlassProjection"
                 },
                 "queryCriteria": {
-                  "id": 96
+                  "id": 94
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5789,10 +5725,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "ClassifierSummaryProjection"
+                  "name": "ClassifierProjection"
                 },
                 "queryCriteria": {
-                  "id": 99
+                  "id": 97
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5802,15 +5738,15 @@
             ]
           },
           {
-            "url": "/meta/classifier/{classifierName}",
+            "url": "/meta/classifier/{name}",
             "parameters": [
               {
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 8,
+                  "id": 6,
                   "ordinal": 3,
-                  "name": "classifierName",
+                  "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
                 }
@@ -5821,10 +5757,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "ONE",
                 "projection": {
-                  "name": "ClassifierSummaryProjection"
+                  "name": "ClassifierProjection"
                 },
                 "queryCriteria": {
-                  "id": 98
+                  "id": 96
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5852,10 +5788,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "AssociationSummaryProjection"
+                  "name": "AssociationProjection"
                 },
                 "queryCriteria": {
-                  "id": 102
+                  "id": 99
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5865,15 +5801,15 @@
             ]
           },
           {
-            "url": "/meta/association/{associationName}",
+            "url": "/meta/association/{name}",
             "parameters": [
               {
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 9,
+                  "id": 7,
                   "ordinal": 3,
-                  "name": "associationName",
+                  "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
                 }
@@ -5887,39 +5823,7 @@
                   "name": "AssociationProjection"
                 },
                 "queryCriteria": {
-                  "id": 100
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/association/{associationName}/summary",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 10,
-                  "ordinal": 3,
-                  "name": "associationName",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "AssociationSummaryProjection"
-                },
-                "queryCriteria": {
-                  "id": 101
+                  "id": 98
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5950,7 +5854,7 @@
                   "name": "NamedProjectionProjection"
                 },
                 "queryCriteria": {
-                  "id": 105
+                  "id": 101
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5960,15 +5864,15 @@
             ]
           },
           {
-            "url": "/meta/projection/{projectionName}",
+            "url": "/meta/projection/{name}",
             "parameters": [
               {
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 11,
+                  "id": 8,
                   "ordinal": 3,
-                  "name": "projectionName",
+                  "name": "name",
                   "multiplicity": "ONE_TO_ONE",
                   "primitiveType": "STRING"
                 }
@@ -5982,39 +5886,7 @@
                   "name": "NamedProjectionProjection"
                 },
                 "queryCriteria": {
-                  "id": 103
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/projection/{projectionName}/summary",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 12,
-                  "ordinal": 3,
-                  "name": "projectionName",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "NamedProjectionProjection"
-                },
-                "queryCriteria": {
-                  "id": 104
+                  "id": 100
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -6042,10 +5914,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "ServiceGroupSummaryProjection"
+                  "name": "ServiceGroupProjection"
                 },
                 "queryCriteria": {
-                  "id": 108
+                  "id": 103
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -6061,7 +5933,7 @@
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 13,
+                  "id": 9,
                   "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
@@ -6077,39 +5949,7 @@
                   "name": "ServiceGroupProjection"
                 },
                 "queryCriteria": {
-                  "id": 106
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/serviceGroup/{name}/summary",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 14,
-                  "ordinal": 3,
-                  "name": "name",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "ServiceGroupSummaryProjection"
-                },
-                "queryCriteria": {
-                  "id": 107
+                  "id": 102
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,

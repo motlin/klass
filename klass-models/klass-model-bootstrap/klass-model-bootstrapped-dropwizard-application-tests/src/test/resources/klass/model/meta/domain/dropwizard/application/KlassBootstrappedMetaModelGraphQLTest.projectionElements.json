@@ -185,7 +185,7 @@
         "__typename": "RootProjection",
         "id": 19,
         "ordinal": 138,
-        "name": "ClassProjection",
+        "name": "KlassProjection",
         "parent": null,
         "klass": {
           "name": "Klass"
@@ -205,7 +205,7 @@
         "__typename": "RootProjection",
         "id": 21,
         "ordinal": 141,
-        "name": "ClassifierSummaryProjection",
+        "name": "ClassifierProjection",
         "parent": null,
         "klass": {
           "name": "Classifier"
@@ -2217,6 +2217,18 @@
         "__typename": "ProjectionDataTypeProperty",
         "id": 191,
         "ordinal": 2,
+        "name": "ordinal",
+        "parent": {
+          "id": 21
+        },
+        "dataTypeProperty": {
+          "name": "ordinal"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 192,
+        "ordinal": 3,
         "name": "packageName",
         "parent": {
           "id": 21
@@ -2226,32 +2238,8 @@
         }
       },
       {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 192,
-        "ordinal": 3,
-        "name": "superClass",
-        "parent": {
-          "id": 21
-        },
-        "associationEnd": {
-          "name": "superClass"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
+        "__typename": "ProjectionProjectionReference",
         "id": 193,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 192
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 194,
         "ordinal": 4,
         "name": "superInterfaces",
         "parent": {
@@ -2262,32 +2250,8 @@
         }
       },
       {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 195,
-        "ordinal": 1,
-        "name": "superInterface",
-        "parent": {
-          "id": 194
-        },
-        "associationEnd": {
-          "name": "superInterface"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 196,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 195
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 197,
+        "__typename": "ProjectionProjectionReference",
+        "id": 194,
         "ordinal": 5,
         "name": "classifierModifiers",
         "parent": {
@@ -2298,20 +2262,8 @@
         }
       },
       {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 198,
-        "ordinal": 1,
-        "name": "keyword",
-        "parent": {
-          "id": 197
-        },
-        "dataTypeProperty": {
-          "name": "keyword"
-        }
-      },
-      {
         "__typename": "ProjectionProjectionReference",
-        "id": 199,
+        "id": 195,
         "ordinal": 6,
         "name": "dataTypeProperties",
         "parent": {
@@ -2323,7 +2275,79 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
+        "id": 196,
+        "ordinal": 7,
+        "name": "abstractClass",
+        "parent": {
+          "id": 21
+        },
+        "dataTypeProperty": {
+          "name": "abstractClass"
+        }
+      },
+      {
+        "__typename": "ProjectionReferenceProperty",
+        "id": 197,
+        "ordinal": 8,
+        "name": "superClass",
+        "parent": {
+          "id": 21
+        },
+        "associationEnd": {
+          "name": "superClass"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 198,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 197
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionReferenceProperty",
+        "id": 199,
+        "ordinal": 9,
+        "name": "associationEnds",
+        "parent": {
+          "id": 21
+        },
+        "associationEnd": {
+          "name": "associationEnds"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
         "id": 200,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 199
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionProjectionReference",
+        "id": 201,
+        "ordinal": 10,
+        "name": "parameterizedProperties",
+        "parent": {
+          "id": 21
+        },
+        "associationEnd": {
+          "name": "parameterizedProperties"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 202,
         "ordinal": 1,
         "name": "id",
         "parent": {
@@ -2335,7 +2359,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 201,
+        "id": 203,
         "ordinal": 2,
         "name": "klass",
         "parent": {
@@ -2347,11 +2371,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 202,
+        "id": 204,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 201
+          "id": 203
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2359,11 +2383,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 203,
+        "id": 205,
         "ordinal": 2,
         "name": "packageName",
         "parent": {
-          "id": 201
+          "id": 203
         },
         "dataTypeProperty": {
           "name": "packageName"
@@ -2371,7 +2395,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 204,
+        "id": 206,
         "ordinal": 3,
         "name": "associationEnds",
         "parent": {
@@ -2383,7 +2407,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 205,
+        "id": 207,
         "ordinal": 4,
         "name": "dataTypeProperty",
         "parent": {
@@ -2395,11 +2419,11 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 206,
+        "id": 208,
         "ordinal": 1,
         "name": "owningClassifier",
         "parent": {
-          "id": 205
+          "id": 207
         },
         "associationEnd": {
           "name": "owningClassifier"
@@ -2407,11 +2431,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 207,
+        "id": 209,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
-          "id": 206
+          "id": 208
         },
         "dataTypeProperty": {
           "name": "packageName"
@@ -2419,31 +2443,31 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 208,
-        "ordinal": 2,
-        "name": "name",
-        "parent": {
-          "id": 206
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 209,
-        "ordinal": 2,
-        "name": "name",
-        "parent": {
-          "id": 205
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
         "id": 210,
+        "ordinal": 2,
+        "name": "name",
+        "parent": {
+          "id": 208
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 211,
+        "ordinal": 2,
+        "name": "name",
+        "parent": {
+          "id": 207
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 212,
         "ordinal": 1,
         "name": "name",
         "parent": {
@@ -2455,7 +2479,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 211,
+        "id": 213,
         "ordinal": 2,
         "name": "ordinal",
         "parent": {
@@ -2467,7 +2491,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 212,
+        "id": 214,
         "ordinal": 3,
         "name": "direction",
         "parent": {
@@ -2479,7 +2503,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 213,
+        "id": 215,
         "ordinal": 4,
         "name": "multiplicity",
         "parent": {
@@ -2491,7 +2515,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 214,
+        "id": 216,
         "ordinal": 5,
         "name": "owningClass",
         "parent": {
@@ -2503,11 +2527,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 215,
+        "id": 217,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
-          "id": 214
+          "id": 216
         },
         "dataTypeProperty": {
           "name": "packageName"
@@ -2515,11 +2539,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 216,
+        "id": 218,
         "ordinal": 2,
         "name": "name",
         "parent": {
-          "id": 214
+          "id": 216
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2527,7 +2551,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 217,
+        "id": 219,
         "ordinal": 6,
         "name": "resultType",
         "parent": {
@@ -2539,11 +2563,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 218,
+        "id": 220,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
-          "id": 217
+          "id": 219
         },
         "dataTypeProperty": {
           "name": "packageName"
@@ -2551,11 +2575,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 219,
+        "id": 221,
         "ordinal": 2,
         "name": "name",
         "parent": {
-          "id": 217
+          "id": 219
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2563,7 +2587,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 220,
+        "id": 222,
         "ordinal": 7,
         "name": "associationEndModifiers",
         "parent": {
@@ -2575,11 +2599,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 221,
+        "id": 223,
         "ordinal": 1,
         "name": "keyword",
         "parent": {
-          "id": 220
+          "id": 222
         },
         "dataTypeProperty": {
           "name": "keyword"
@@ -2587,11 +2611,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 222,
+        "id": 224,
         "ordinal": 2,
         "name": "ordinal",
         "parent": {
-          "id": 220
+          "id": 222
         },
         "dataTypeProperty": {
           "name": "ordinal"
@@ -2599,7 +2623,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 223,
+        "id": 225,
         "ordinal": 8,
         "name": "orderBys",
         "parent": {
@@ -2611,11 +2635,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 224,
+        "id": 226,
         "ordinal": 1,
         "name": "orderByDirection",
         "parent": {
-          "id": 223
+          "id": 225
         },
         "dataTypeProperty": {
           "name": "orderByDirection"
@@ -2623,11 +2647,11 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 225,
+        "id": 227,
         "ordinal": 2,
         "name": "thisMemberReferencePath",
         "parent": {
-          "id": 223
+          "id": 225
         },
         "associationEnd": {
           "name": "thisMemberReferencePath"
@@ -2635,7 +2659,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 226,
+        "id": 228,
         "ordinal": 1,
         "name": "associationEnd",
         "parent": {
@@ -2647,11 +2671,11 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 227,
+        "id": 229,
         "ordinal": 1,
         "name": "owningClass",
         "parent": {
-          "id": 226
+          "id": 228
         },
         "associationEnd": {
           "name": "owningClass"
@@ -2659,11 +2683,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 228,
+        "id": 230,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
-          "id": 227
+          "id": 229
         },
         "dataTypeProperty": {
           "name": "packageName"
@@ -2671,11 +2695,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 229,
+        "id": 231,
         "ordinal": 2,
         "name": "name",
         "parent": {
-          "id": 227
+          "id": 229
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2683,11 +2707,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 230,
+        "id": 232,
         "ordinal": 2,
         "name": "name",
         "parent": {
-          "id": 226
+          "id": 228
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2695,7 +2719,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 231,
+        "id": 233,
         "ordinal": 1,
         "name": "klass",
         "parent": {
@@ -2707,11 +2731,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 232,
+        "id": 234,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 231
+          "id": 233
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2719,7 +2743,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 233,
+        "id": 235,
         "ordinal": 2,
         "name": "associationEnds",
         "parent": {
@@ -2731,38 +2755,14 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 234,
+        "id": 236,
         "ordinal": 1,
         "name": "associationEnd",
         "parent": {
-          "id": 233
+          "id": 235
         },
         "associationEnd": {
           "name": "associationEnd"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 235,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 234
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 236,
-        "ordinal": 3,
-        "name": "dataTypeProperty",
-        "parent": {
-          "id": 25
-        },
-        "associationEnd": {
-          "name": "dataTypeProperty"
         }
       },
       {
@@ -2778,8 +2778,32 @@
         }
       },
       {
-        "__typename": "ProjectionDataTypeProperty",
+        "__typename": "ProjectionReferenceProperty",
         "id": 238,
+        "ordinal": 3,
+        "name": "dataTypeProperty",
+        "parent": {
+          "id": 25
+        },
+        "associationEnd": {
+          "name": "dataTypeProperty"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 239,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 238
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 240,
         "ordinal": 1,
         "name": "name",
         "parent": {
@@ -2791,7 +2815,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 239,
+        "id": 241,
         "ordinal": 2,
         "name": "multiplicity",
         "parent": {
@@ -2803,7 +2827,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 240,
+        "id": 242,
         "ordinal": 3,
         "name": "resultType",
         "parent": {
@@ -2815,11 +2839,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 241,
+        "id": 243,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 240
+          "id": 242
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2827,7 +2851,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 242,
+        "id": 244,
         "ordinal": 4,
         "name": "associationEndModifiers",
         "parent": {
@@ -2839,11 +2863,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 243,
+        "id": 245,
         "ordinal": 1,
         "name": "keyword",
         "parent": {
-          "id": 242
+          "id": 244
         },
         "dataTypeProperty": {
           "name": "keyword"
@@ -2851,7 +2875,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 244,
+        "id": 246,
         "ordinal": 5,
         "name": "orderBys",
         "parent": {
@@ -2863,11 +2887,11 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 245,
+        "id": 247,
         "ordinal": 1,
         "name": "thisMemberReferencePath",
         "parent": {
-          "id": 244
+          "id": 246
         },
         "associationEnd": {
           "name": "thisMemberReferencePath"
@@ -2875,11 +2899,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 246,
+        "id": 248,
         "ordinal": 2,
         "name": "orderByDirection",
         "parent": {
-          "id": 244
+          "id": 246
         },
         "dataTypeProperty": {
           "name": "orderByDirection"
@@ -2887,7 +2911,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 247,
+        "id": 249,
         "ordinal": 1,
         "name": "klass",
         "parent": {
@@ -2899,11 +2923,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 248,
+        "id": 250,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 247
+          "id": 249
         },
         "dataTypeProperty": {
           "name": "name"
@@ -2911,7 +2935,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 249,
+        "id": 251,
         "ordinal": 2,
         "name": "associationEnds",
         "parent": {
@@ -2923,38 +2947,14 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 250,
+        "id": 252,
         "ordinal": 1,
         "name": "associationEnd",
         "parent": {
-          "id": 249
+          "id": 251
         },
         "associationEnd": {
           "name": "associationEnd"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 251,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 250
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 252,
-        "ordinal": 3,
-        "name": "dataTypeProperty",
-        "parent": {
-          "id": 27
-        },
-        "associationEnd": {
-          "name": "dataTypeProperty"
         }
       },
       {
@@ -2972,13 +2972,13 @@
       {
         "__typename": "ProjectionReferenceProperty",
         "id": 254,
-        "ordinal": 4,
-        "name": "parameter",
+        "ordinal": 3,
+        "name": "dataTypeProperty",
         "parent": {
           "id": 27
         },
         "associationEnd": {
-          "name": "parameter"
+          "name": "dataTypeProperty"
         }
       },
       {
@@ -2996,13 +2996,13 @@
       {
         "__typename": "ProjectionReferenceProperty",
         "id": 256,
-        "ordinal": 2,
-        "name": "enumeration",
+        "ordinal": 4,
+        "name": "parameter",
         "parent": {
-          "id": 254
+          "id": 27
         },
         "associationEnd": {
-          "name": "enumeration"
+          "name": "parameter"
         }
       },
       {
@@ -3018,12 +3018,36 @@
         }
       },
       {
-        "__typename": "ProjectionDataTypeProperty",
+        "__typename": "ProjectionReferenceProperty",
         "id": 258,
+        "ordinal": 2,
+        "name": "enumeration",
+        "parent": {
+          "id": 256
+        },
+        "associationEnd": {
+          "name": "enumeration"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 259,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 258
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 260,
         "ordinal": 3,
         "name": "primitiveType",
         "parent": {
-          "id": 254
+          "id": 256
         },
         "dataTypeProperty": {
           "name": "primitiveType"
@@ -3031,11 +3055,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 259,
+        "id": 261,
         "ordinal": 4,
         "name": "multiplicity",
         "parent": {
-          "id": 254
+          "id": 256
         },
         "dataTypeProperty": {
           "name": "multiplicity"
@@ -3043,7 +3067,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 260,
+        "id": 262,
         "ordinal": 1,
         "name": "klass",
         "parent": {
@@ -3055,11 +3079,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 261,
+        "id": 263,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 260
+          "id": 262
         },
         "dataTypeProperty": {
           "name": "name"
@@ -3067,7 +3091,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 262,
+        "id": 264,
         "ordinal": 2,
         "name": "associationEnds",
         "parent": {
@@ -3079,38 +3103,14 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 263,
+        "id": 265,
         "ordinal": 1,
         "name": "associationEnd",
         "parent": {
-          "id": 262
+          "id": 264
         },
         "associationEnd": {
           "name": "associationEnd"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 264,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 263
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 265,
-        "ordinal": 3,
-        "name": "dataTypeProperty",
-        "parent": {
-          "id": 28
-        },
-        "associationEnd": {
-          "name": "dataTypeProperty"
         }
       },
       {
@@ -3128,13 +3128,13 @@
       {
         "__typename": "ProjectionReferenceProperty",
         "id": 267,
-        "ordinal": 4,
-        "name": "parameter",
+        "ordinal": 3,
+        "name": "dataTypeProperty",
         "parent": {
           "id": 28
         },
         "associationEnd": {
-          "name": "parameter"
+          "name": "dataTypeProperty"
         }
       },
       {
@@ -3150,8 +3150,32 @@
         }
       },
       {
-        "__typename": "ProjectionDataTypeProperty",
+        "__typename": "ProjectionReferenceProperty",
         "id": 269,
+        "ordinal": 4,
+        "name": "parameter",
+        "parent": {
+          "id": 28
+        },
+        "associationEnd": {
+          "name": "parameter"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 270,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 269
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 271,
         "ordinal": 1,
         "name": "id",
         "parent": {
@@ -3163,7 +3187,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 270,
+        "id": 272,
         "ordinal": 2,
         "name": "klass",
         "parent": {
@@ -3175,11 +3199,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 271,
+        "id": 273,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 270
+          "id": 272
         },
         "dataTypeProperty": {
           "name": "name"
@@ -3187,7 +3211,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 272,
+        "id": 274,
         "ordinal": 3,
         "name": "associationEnds",
         "parent": {
@@ -3199,38 +3223,14 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 273,
+        "id": 275,
         "ordinal": 1,
         "name": "associationEnd",
         "parent": {
-          "id": 272
+          "id": 274
         },
         "associationEnd": {
           "name": "associationEnd"
-        }
-      },
-      {
-        "__typename": "ProjectionDataTypeProperty",
-        "id": 274,
-        "ordinal": 1,
-        "name": "name",
-        "parent": {
-          "id": 273
-        },
-        "dataTypeProperty": {
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "ProjectionReferenceProperty",
-        "id": 275,
-        "ordinal": 4,
-        "name": "dataTypeProperty",
-        "parent": {
-          "id": 29
-        },
-        "associationEnd": {
-          "name": "dataTypeProperty"
         }
       },
       {
@@ -3246,8 +3246,32 @@
         }
       },
       {
-        "__typename": "ProjectionDataTypeProperty",
+        "__typename": "ProjectionReferenceProperty",
         "id": 277,
+        "ordinal": 4,
+        "name": "dataTypeProperty",
+        "parent": {
+          "id": 29
+        },
+        "associationEnd": {
+          "name": "dataTypeProperty"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 278,
+        "ordinal": 1,
+        "name": "name",
+        "parent": {
+          "id": 277
+        },
+        "dataTypeProperty": {
+          "name": "name"
+        }
+      },
+      {
+        "__typename": "ProjectionDataTypeProperty",
+        "id": 279,
         "ordinal": 1,
         "name": "id",
         "parent": {
@@ -3259,7 +3283,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 278,
+        "id": 280,
         "ordinal": 2,
         "name": "left",
         "parent": {
@@ -3271,7 +3295,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 279,
+        "id": 281,
         "ordinal": 3,
         "name": "right",
         "parent": {
@@ -3283,7 +3307,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 280,
+        "id": 282,
         "ordinal": 4,
         "name": "operator",
         "parent": {
@@ -3295,7 +3319,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 281,
+        "id": 283,
         "ordinal": 5,
         "name": "sourceExpressionValue",
         "parent": {
@@ -3307,7 +3331,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 282,
+        "id": 284,
         "ordinal": 6,
         "name": "targetExpressionValue",
         "parent": {
@@ -3319,7 +3343,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 283,
+        "id": 285,
         "ordinal": 7,
         "name": "memberReferencePath",
         "parent": {
@@ -3331,7 +3355,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 284,
+        "id": 286,
         "ordinal": 1,
         "name": "left",
         "parent": {
@@ -3343,7 +3367,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 285,
+        "id": 287,
         "ordinal": 2,
         "name": "right",
         "parent": {
@@ -3355,7 +3379,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 286,
+        "id": 288,
         "ordinal": 3,
         "name": "operator",
         "parent": {
@@ -3367,7 +3391,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 287,
+        "id": 289,
         "ordinal": 4,
         "name": "sourceExpressionValue",
         "parent": {
@@ -3379,7 +3403,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 288,
+        "id": 290,
         "ordinal": 5,
         "name": "targetExpressionValue",
         "parent": {
@@ -3391,7 +3415,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 289,
+        "id": 291,
         "ordinal": 6,
         "name": "memberReferencePath",
         "parent": {
@@ -3403,7 +3427,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 290,
+        "id": 292,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
@@ -3415,7 +3439,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 291,
+        "id": 293,
         "ordinal": 2,
         "name": "name",
         "parent": {
@@ -3427,7 +3451,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 292,
+        "id": 294,
         "ordinal": 3,
         "name": "ordinal",
         "parent": {
@@ -3439,7 +3463,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 293,
+        "id": 295,
         "ordinal": 4,
         "name": "associationEnds",
         "parent": {
@@ -3451,7 +3475,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 294,
+        "id": 296,
         "ordinal": 5,
         "name": "criteria",
         "parent": {
@@ -3463,7 +3487,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 295,
+        "id": 297,
         "ordinal": 1,
         "name": "packageName",
         "parent": {
@@ -3475,7 +3499,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 296,
+        "id": 298,
         "ordinal": 2,
         "name": "name",
         "parent": {
@@ -3487,7 +3511,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 297,
+        "id": 299,
         "ordinal": 3,
         "name": "associationEnds",
         "parent": {
@@ -3499,7 +3523,7 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 298,
+        "id": 300,
         "ordinal": 4,
         "name": "criteria",
         "parent": {
@@ -3511,7 +3535,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 299,
+        "id": 301,
         "ordinal": 1,
         "name": "name",
         "parent": {
@@ -3523,7 +3547,7 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 300,
+        "id": 302,
         "ordinal": 2,
         "name": "packageName",
         "parent": {
@@ -3535,7 +3559,7 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 301,
+        "id": 303,
         "ordinal": 3,
         "name": "urls",
         "parent": {
@@ -3547,11 +3571,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 302,
+        "id": 304,
         "ordinal": 1,
         "name": "url",
         "parent": {
-          "id": 301
+          "id": 303
         },
         "dataTypeProperty": {
           "name": "url"
@@ -3559,11 +3583,11 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 303,
+        "id": 305,
         "ordinal": 2,
         "name": "services",
         "parent": {
-          "id": 301
+          "id": 303
         },
         "associationEnd": {
           "name": "services"
@@ -3571,11 +3595,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 304,
+        "id": 306,
         "ordinal": 1,
         "name": "verb",
         "parent": {
-          "id": 303
+          "id": 305
         },
         "dataTypeProperty": {
           "name": "verb"
@@ -3583,11 +3607,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 305,
+        "id": 307,
         "ordinal": 2,
         "name": "serviceMultiplicity",
         "parent": {
-          "id": 303
+          "id": 305
         },
         "dataTypeProperty": {
           "name": "serviceMultiplicity"
@@ -3595,11 +3619,11 @@
       },
       {
         "__typename": "ProjectionReferenceProperty",
-        "id": 306,
+        "id": 308,
         "ordinal": 3,
         "name": "projection",
         "parent": {
-          "id": 303
+          "id": 305
         },
         "associationEnd": {
           "name": "projection"
@@ -3607,11 +3631,11 @@
       },
       {
         "__typename": "ProjectionDataTypeProperty",
-        "id": 307,
+        "id": 309,
         "ordinal": 1,
         "name": "name",
         "parent": {
-          "id": 306
+          "id": 308
         },
         "dataTypeProperty": {
           "name": "name"
@@ -3619,11 +3643,11 @@
       },
       {
         "__typename": "ProjectionProjectionReference",
-        "id": 308,
+        "id": 310,
         "ordinal": 4,
         "name": "queryCriteria",
         "parent": {
-          "id": 303
+          "id": 305
         },
         "associationEnd": {
           "name": "queryCriteria"

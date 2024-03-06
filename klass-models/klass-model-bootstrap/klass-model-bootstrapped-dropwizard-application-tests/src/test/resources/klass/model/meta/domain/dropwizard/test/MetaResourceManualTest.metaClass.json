@@ -64,7 +64,7 @@
         {
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
-            "id": 168,
+            "id": 158,
             "klass": {
               "name": "ClassifierModifier",
               "packageName": "klass.model.meta.domain"
@@ -104,7 +104,7 @@
         {
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
-            "id": 169,
+            "id": 159,
             "klass": {
               "name": "DataTypeProperty",
               "packageName": "klass.model.meta.domain"

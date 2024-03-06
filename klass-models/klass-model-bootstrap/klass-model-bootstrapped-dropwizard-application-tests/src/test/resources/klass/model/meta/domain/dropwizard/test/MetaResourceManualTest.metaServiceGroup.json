@@ -14,11 +14,11 @@
           "verb": "GET",
           "serviceMultiplicity": "many",
           "projection": {
-            "name": "ServiceGroupSummaryProjection"
+            "name": "ServiceGroupProjection"
           },
           "queryCriteria": {
             "__typename": "klass.model.meta.domain.AllCriteria",
-            "id": 108
+            "id": 103
           },
           "authorizeCriteria": null,
           "validateCriteria": null,
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "parameter": {
-            "id": 13
+            "id": 9
           }
         }
       ],
@@ -46,55 +46,7 @@
           },
           "queryCriteria": {
             "__typename": "klass.model.meta.domain.OperatorCriteria",
-            "id": 106,
-            "operator": "==",
-            "sourceExpressionValue": {
-              "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
-              "klass": {
-                "name": "ServiceGroup"
-              },
-              "associationEnds": [],
-              "dataTypeProperty": {
-                "name": "name"
-              }
-            },
-            "targetExpressionValue": {
-              "__typename": "klass.model.meta.domain.VariableReference",
-              "parameter": {
-                "__typename": "klass.model.meta.domain.PrimitiveParameter",
-                "name": "name",
-                "primitiveType": "String",
-                "multiplicity": "1..1"
-              }
-            }
-          },
-          "authorizeCriteria": null,
-          "validateCriteria": null,
-          "conflictCriteria": null,
-          "orderBys": []
-        }
-      ]
-    },
-    {
-      "url": "/meta/serviceGroup/{name}/summary",
-      "parameters": [
-        {
-          "type": "path",
-          "parameter": {
-            "id": 14
-          }
-        }
-      ],
-      "services": [
-        {
-          "verb": "GET",
-          "serviceMultiplicity": "one",
-          "projection": {
-            "name": "ServiceGroupSummaryProjection"
-          },
-          "queryCriteria": {
-            "__typename": "klass.model.meta.domain.OperatorCriteria",
-            "id": 107,
+            "id": 102,
             "operator": "==",
             "sourceExpressionValue": {
               "__typename": "klass.model.meta.domain.ThisMemberReferencePath",

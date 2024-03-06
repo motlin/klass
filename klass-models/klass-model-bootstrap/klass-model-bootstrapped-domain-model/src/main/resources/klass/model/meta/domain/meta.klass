@@ -1140,26 +1140,19 @@ projection InterfaceSummaryProjection on Interface
 
 service InterfaceResource on Interface
 {
-    /meta/interface/{interfaceName: String[1..1]}
+    /meta/interface/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == interfaceName;
+            criteria    : this.name == name;
             projection  : InterfaceProjection;
-        }
-    /meta/interface/{interfaceName: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == interfaceName;
-            projection  : InterfaceSummaryProjection;
         }
     /meta/interface
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : InterfaceSummaryProjection;
+            projection  : InterfaceProjection;
             orderBy     : this.ordinal ascending;
         }
 }
@@ -1197,7 +1190,7 @@ projection DataTypePropertyProjection on DataTypeProperty
     },
 }
 
-projection ClassProjection on Klass
+projection KlassProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
@@ -1270,69 +1263,56 @@ projection ClassSummaryProjection on Klass
 
 service KlassResource on Klass
 {
-    /meta/class/{className: String[1..1]}
+    /meta/class/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == className;
-            projection  : ClassProjection;
-        }
-    /meta/class/{className: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == className;
-            projection  : ClassSummaryProjection;
+            criteria    : this.name == name;
+            projection  : KlassProjection;
         }
     /meta/class
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ClassSummaryProjection;
+            projection  : KlassProjection;
             orderBy     : this.ordinal ascending;
         }
 }
 
-projection ClassifierSummaryProjection on Classifier
+projection ClassifierProjection on Classifier
 {
-    name                   : "Classifier name",
-    packageName            : "Classifier package name",
-    Klass.superClass             :
-    {
-        name           : "Super Class name",
-    },
-
-    // TODO: flat many-to-many, or parameterized property
-    superInterfaces        :
-    {
-        superInterface:
-        {
-            name           : "Super interface name",
-        },
-    },
-    classifierModifiers    :
-    {
-        keyword: "Classifier modifier keyword",
-    },
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    superInterfaces: ClassifierInterfaceMappingProjection,
+    classifierModifiers: ClassifierModifierProjection,
     dataTypeProperties: DataTypePropertyProjection,
+    Klass.abstractClass: "Klass abstractClass",
+    Klass.superClass: {
+        NamedElement.name: "NamedElement name",
+    },
+    Klass.associationEnds: {
+        NamedElement.name: "NamedElement name",
+    },
+    Klass.parameterizedProperties: ParameterizedPropertyProjection,
 }
 
 service ClassifierResource on Classifier
 {
-    /meta/classifier/{classifierName: String[1..1]}
+    /meta/classifier/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == classifierName;
-            projection  : ClassifierSummaryProjection;
+            criteria    : this.name == name;
+            projection  : ClassifierProjection;
         }
     /meta/classifier
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ClassifierSummaryProjection;
+            projection  : ClassifierProjection;
             orderBy     : this.ordinal ascending;
         }
 }
@@ -1548,44 +1528,30 @@ projection AssociationSummaryProjection on Association
 
 service AssociationResource on Association
 {
-    /meta/association/{associationName: String[1..1]}
+    /meta/association/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == associationName;
+            criteria    : this.name == name;
             projection  : AssociationProjection;
-        }
-    /meta/association/{associationName: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == associationName;
-            projection  : AssociationSummaryProjection;
         }
     /meta/association
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : AssociationSummaryProjection;
+            projection  : AssociationProjection;
             orderBy     : this.ordinal ascending;
         }
 }
 
 service NamedProjectionResource on NamedProjection
 {
-    /meta/projection/{projectionName: String[1..1]}
+    /meta/projection/{name: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == projectionName;
-            projection  : NamedProjectionProjection;
-        }
-    /meta/projection/{projectionName: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == projectionName;
+            criteria    : this.name == name;
             projection  : NamedProjectionProjection;
         }
     /meta/projection
@@ -1627,19 +1593,12 @@ service ServiceGroupResource on ServiceGroup
             criteria    : this.name == name;
             projection  : ServiceGroupProjection;
         }
-    /meta/serviceGroup/{name: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == name;
-            projection  : ServiceGroupSummaryProjection;
-        }
     /meta/serviceGroup
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ServiceGroupSummaryProjection;
+            projection  : ServiceGroupProjection;
             orderBy     : this.ordinal ascending;
         }
 }

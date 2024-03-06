@@ -1741,7 +1741,7 @@
         "__typename": "ThisMemberReferencePath",
         "id": 147,
         "klass": {
-          "name": "Interface"
+          "name": "Klass"
         },
         "associationEnds": [],
         "dataTypeProperty": {
@@ -1761,7 +1761,7 @@
         "__typename": "ThisMemberReferencePath",
         "id": 149,
         "klass": {
-          "name": "Klass"
+          "name": "Classifier"
         },
         "associationEnds": [],
         "dataTypeProperty": {
@@ -1781,7 +1781,7 @@
         "__typename": "ThisMemberReferencePath",
         "id": 151,
         "klass": {
-          "name": "Klass"
+          "name": "Association"
         },
         "associationEnds": [],
         "dataTypeProperty": {
@@ -1801,7 +1801,7 @@
         "__typename": "ThisMemberReferencePath",
         "id": 153,
         "klass": {
-          "name": "Classifier"
+          "name": "NamedProjection"
         },
         "associationEnds": [],
         "dataTypeProperty": {
@@ -1821,7 +1821,7 @@
         "__typename": "ThisMemberReferencePath",
         "id": 155,
         "klass": {
-          "name": "Association"
+          "name": "ServiceGroup"
         },
         "associationEnds": [],
         "dataTypeProperty": {
@@ -1841,106 +1841,6 @@
         "__typename": "ThisMemberReferencePath",
         "id": 157,
         "klass": {
-          "name": "Association"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "__typename": "PrimitiveProperty",
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "VariableReference",
-        "id": 158,
-        "parameter": {
-          "__typename": "PrimitiveParameter",
-          "id": 10
-        }
-      },
-      {
-        "__typename": "ThisMemberReferencePath",
-        "id": 159,
-        "klass": {
-          "name": "NamedProjection"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "__typename": "PrimitiveProperty",
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "VariableReference",
-        "id": 160,
-        "parameter": {
-          "__typename": "PrimitiveParameter",
-          "id": 11
-        }
-      },
-      {
-        "__typename": "ThisMemberReferencePath",
-        "id": 161,
-        "klass": {
-          "name": "NamedProjection"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "__typename": "PrimitiveProperty",
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "VariableReference",
-        "id": 162,
-        "parameter": {
-          "__typename": "PrimitiveParameter",
-          "id": 12
-        }
-      },
-      {
-        "__typename": "ThisMemberReferencePath",
-        "id": 163,
-        "klass": {
-          "name": "ServiceGroup"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "__typename": "PrimitiveProperty",
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "VariableReference",
-        "id": 164,
-        "parameter": {
-          "__typename": "PrimitiveParameter",
-          "id": 13
-        }
-      },
-      {
-        "__typename": "ThisMemberReferencePath",
-        "id": 165,
-        "klass": {
-          "name": "ServiceGroup"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "__typename": "PrimitiveProperty",
-          "name": "name"
-        }
-      },
-      {
-        "__typename": "VariableReference",
-        "id": 166,
-        "parameter": {
-          "__typename": "PrimitiveParameter",
-          "id": 14
-        }
-      },
-      {
-        "__typename": "ThisMemberReferencePath",
-        "id": 167,
-        "klass": {
           "name": "EnumerationLiteral"
         },
         "associationEnds": [],
@@ -1951,7 +1851,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 168,
+        "id": 158,
         "klass": {
           "name": "ClassifierModifier"
         },
@@ -1963,7 +1863,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 169,
+        "id": 159,
         "klass": {
           "name": "DataTypeProperty"
         },
@@ -1975,7 +1875,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 170,
+        "id": 160,
         "klass": {
           "name": "PropertyModifier"
         },
@@ -1987,7 +1887,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 171,
+        "id": 161,
         "klass": {
           "name": "AssociationEnd"
         },
@@ -1999,7 +1899,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 172,
+        "id": 162,
         "klass": {
           "name": "AssociationEndModifier"
         },
@@ -2011,7 +1911,7 @@
       },
       {
         "__typename": "ThisMemberReferencePath",
-        "id": 173,
+        "id": 163,
         "klass": {
           "name": "ParameterizedProperty"
         },

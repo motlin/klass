@@ -2,6 +2,7 @@
   {
     "name": "Element",
     "packageName": "klass.model.meta.domain",
+    "ordinal": 1,
     "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": []
@@ -9,10 +10,12 @@
   {
     "name": "NamedElement",
     "packageName": "klass.model.meta.domain",
+    "ordinal": 2,
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "Element"
+          "name": "Element",
+          "packageName": "klass.model.meta.domain"
         }
       }
     ],
@@ -54,10 +57,12 @@
   {
     "name": "NumericPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "ordinal": 23,
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "Element"
+          "name": "Element",
+          "packageName": "klass.model.meta.domain"
         }
       }
     ],
