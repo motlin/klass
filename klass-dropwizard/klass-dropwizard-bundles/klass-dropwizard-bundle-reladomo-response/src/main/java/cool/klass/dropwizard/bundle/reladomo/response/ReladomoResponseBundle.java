@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
-import cool.klass.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
+import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.reladomo.KlassResponseReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
@@ -15,9 +15,8 @@ import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO: Break up ReladomoFactoryProvider
 @AutoService(PrioritizedBundle.class)
-public class ReladomoResponseBundle implements PrioritizedBundle<ReladomoFactoryProvider>
+public class ReladomoResponseBundle implements PrioritizedBundle<DataStoreFactoryProvider>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoResponseBundle.class);
 
@@ -33,7 +32,7 @@ public class ReladomoResponseBundle implements PrioritizedBundle<ReladomoFactory
     }
 
     @Override
-    public void run(@Nonnull ReladomoFactoryProvider configuration, @Nonnull Environment environment)
+    public void run(@Nonnull DataStoreFactoryProvider configuration, @Nonnull Environment environment)
     {
         LOGGER.info("Running {}.", ReladomoResponseBundle.class.getSimpleName());
 

@@ -31,12 +31,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-reladomo</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store</artifactId>
             <version>${project.version}</version>
         </dependency>
