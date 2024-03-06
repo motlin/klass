@@ -32,14 +32,14 @@ public class JsonConfigurationFactoryFactory<T> implements ConfigurationFactoryF
         ObjectMapper strictObjectMapper = objectMapper.copy();
         strictObjectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-        objectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        strictObjectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
 
-        objectMapper.configure(Feature.ALLOW_COMMENTS, true);
-        objectMapper.configure(Feature.ALLOW_YAML_COMMENTS, true);
-        objectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-        objectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
+        strictObjectMapper.configure(Feature.ALLOW_COMMENTS, true);
+        strictObjectMapper.configure(Feature.ALLOW_YAML_COMMENTS, true);
+        strictObjectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        strictObjectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
 
-        objectMapper.setDateFormat(new StdDateFormat());
+        strictObjectMapper.setDateFormat(new StdDateFormat());
 
         return strictObjectMapper;
     }
