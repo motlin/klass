@@ -1,5 +1,7 @@
 package cool.klass.generator.relational.schema;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
@@ -55,7 +57,7 @@ public final class IdxGenerator
                 .concatenate(toProperties)
                 .toImmutableList();
 
-        if (allKeyProperties.toImmutableSet().isSubsetOf(getAllKeyProperties(klass).toImmutableSet()))
+        if (isPrefixList(allKeyProperties, getAllKeyProperties(klass)))
         {
             return "";
         }
@@ -69,6 +71,26 @@ public final class IdxGenerator
                 constraintName,
                 tableName,
                 foreignKeyColumnNames);
+    }
+
+    private static boolean isPrefixList(
+            ImmutableList<DataTypeProperty> list1,
+            ImmutableList<DataTypeProperty> list2)
+    {
+        if (list1.size() > list2.size())
+        {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++)
+        {
+            if (!Objects.equals(list1.get(i), list2.get(i)))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Nonnull
