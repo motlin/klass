@@ -727,8 +727,6 @@ association RootProjectionHasClassifier
 {
     projections: RootProjection[0..*];
     classifier : Classifier[1..1];
-
-    relationship this.classifierName == Classifier.name
 }
 
 association ProjectionProjectionReferenceHasProjection
