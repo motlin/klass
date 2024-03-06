@@ -57,11 +57,6 @@
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-generator-reladomo-code-plugin</artifactId>
                 <version>${liftwizard.version}</version>
-                <configuration>
-                    <definitionsXmlFile>
-                        ${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml
-                    </definitionsXmlFile>
-                </configuration>
                 <executions>
                     <execution>
                         <id>generate-reladomo-pojos</id>

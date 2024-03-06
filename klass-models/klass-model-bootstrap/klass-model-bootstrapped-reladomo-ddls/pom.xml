@@ -21,11 +21,6 @@
                 <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-generator-reladomo-database-plugin</artifactId>
                 <version>${liftwizard.version}</version>
-                <configuration>
-                    <definitionsXmlFile>
-                        ${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml
-                    </definitionsXmlFile>
-                </configuration>
                 <executions>
                     <execution>
                         <id>generate-reladomo-database</id>
@@ -39,7 +34,6 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-reladomo-definitions</artifactId>
                         <version>${project.version}</version>
-                        <scope>runtime</scope>
                     </dependency>
                 </dependencies>
             </plugin>
