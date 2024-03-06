@@ -1,15 +1,14 @@
 package cool.klass.dropwizard.bundle.test.data;
 
 import java.time.Instant;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
 import com.typesafe.config.Config;
@@ -24,22 +23,14 @@ import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
 public class SampleDataGeneratorBundle
-        implements DataBundle
+        implements PrioritizedBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleDataGeneratorBundle.class);
-
-    private DomainModel domainModel;
 
     @Override
     public int getPriority()
     {
         return -1;
-    }
-
-    @Override
-    public void initialize(DomainModel domainModel)
-    {
-        this.domainModel = Objects.requireNonNull(domainModel);
     }
 
     @Override
@@ -74,13 +65,12 @@ public class SampleDataGeneratorBundle
         ImmutableList<String> skippedPackages = Lists.immutable.withAll(sampleDataGeneratorConfig.getStringList(
                 "skippedPackages"));
 
-        DataStore dataStore = configuration
-                .getKlassFactory()
-                .getDataStoreFactory()
-                .getDataStore();
+        KlassFactory klassFactory = configuration.getKlassFactory();
+        DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
-                this.domainModel,
+                domainModel,
                 dataStore,
                 systemTime,
                 skippedPackages);

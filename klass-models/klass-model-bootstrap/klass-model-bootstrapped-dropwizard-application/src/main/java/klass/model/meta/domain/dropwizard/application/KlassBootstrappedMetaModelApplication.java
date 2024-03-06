@@ -22,7 +22,7 @@ public class KlassBootstrappedMetaModelApplication extends AbstractKlassBootstra
 
     @Override
     public void run(
-            KlassBootstrappedMetaModelConfiguration configuration,
+            @Nonnull KlassBootstrappedMetaModelConfiguration configuration,
             @Nonnull Environment environment) throws Exception
     {
         super.run(configuration, environment);

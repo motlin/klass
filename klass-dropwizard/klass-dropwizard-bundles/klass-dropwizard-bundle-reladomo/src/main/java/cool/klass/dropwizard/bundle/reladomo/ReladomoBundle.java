@@ -1,15 +1,13 @@
 package cool.klass.dropwizard.bundle.reladomo;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
+import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.configuration.ReladomoConfig;
 import cool.klass.serializer.json.ReladomoJsonSerializer;
@@ -17,20 +15,12 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 @AutoService(PrioritizedBundle.class)
-public class ReladomoBundle implements DataBundle
+public class ReladomoBundle implements PrioritizedBundle
 {
-    private DomainModel domainModel;
-
     @Override
     public int getPriority()
     {
         return -3;
-    }
-
-    @Override
-    public void initialize(DomainModel domainModel)
-    {
-        this.domainModel = Objects.requireNonNull(domainModel);
     }
 
     @Override
@@ -41,14 +31,12 @@ public class ReladomoBundle implements DataBundle
     @Override
     public void run(@Nonnull AbstractKlassConfiguration configuration, @Nonnull Environment environment)
     {
-        DataStore dataStore = configuration
-                .getKlassFactory()
-                .getDataStoreFactory()
-                .getDataStore();
+        KlassFactory klassFactory = configuration.getKlassFactory();
+        DataStore dataStore = klassFactory.getDataStoreFactory().getDataStore();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
 
-        ReladomoConfig.configure(
-                environment.getObjectMapper(),
-                new ReladomoJsonSerializer(this.domainModel, dataStore));
+        ReladomoJsonSerializer reladomoJsonSerializer = new ReladomoJsonSerializer(domainModel, dataStore);
+        ReladomoConfig.configure(environment.getObjectMapper(), reladomoJsonSerializer);
 
         environment.metrics().gauge(
                 "Reladomo database retrieve count",

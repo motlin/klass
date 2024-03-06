@@ -1,11 +1,11 @@
 package cool.klass.model.meta.loader;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -29,14 +29,15 @@ public class DomainModelLoader
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(DomainModelLoader.class);
 
+    @Nonnull
     private final ImmutableList<String> klassSourcePackages;
 
-    public DomainModelLoader(ImmutableList<String> klassSourcePackages)
+    public DomainModelLoader(@Nonnull ImmutableList<String> klassSourcePackages)
     {
-        this.klassSourcePackages = klassSourcePackages;
+        this.klassSourcePackages = Objects.requireNonNull(klassSourcePackages);
     }
 
-    @Nullable
+    @Nonnull
     public DomainModel load()
     {
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
@@ -50,7 +51,7 @@ public class DomainModelLoader
     }
 
     @Nonnull
-    private MutableList<CompilationUnit> getCompilationUnits(ImmutableList<String> klassSourcePackages)
+    private MutableList<CompilationUnit> getCompilationUnits(@Nonnull ImmutableList<String> klassSourcePackages)
     {
         ImmutableList<URL> urls = klassSourcePackages.flatCollect(ClasspathHelper::forPackage);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
@@ -70,7 +71,8 @@ public class DomainModelLoader
         return compilationUnits;
     }
 
-    private DomainModel handleResult(CompilationResult compilationResult)
+    @Nonnull
+    private DomainModel handleResult(@Nonnull CompilationResult compilationResult)
     {
         if (compilationResult instanceof ErrorsCompilationResult)
         {
@@ -85,7 +87,8 @@ public class DomainModelLoader
         throw new AssertionError(compilationResult.getClass().getSimpleName());
     }
 
-    private DomainModel handleFailure(ErrorsCompilationResult compilationResult)
+    @Nonnull
+    private DomainModel handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
     {
         ImmutableList<RootCompilerError> compilerErrors = compilationResult.getCompilerErrors();
         for (RootCompilerError compilerError : compilerErrors)
@@ -95,7 +98,8 @@ public class DomainModelLoader
         throw new RuntimeException("There were compiler errors.");
     }
 
-    private DomainModel handleSuccess(DomainModelCompilationResult compilationResult)
+    @Nonnull
+    private DomainModel handleSuccess(@Nonnull DomainModelCompilationResult compilationResult)
     {
         return compilationResult.getDomainModel();
     }

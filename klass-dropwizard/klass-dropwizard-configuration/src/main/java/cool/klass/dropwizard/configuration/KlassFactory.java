@@ -6,11 +6,13 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.clock.ClockFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
+import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 
 public class KlassFactory
 {
-    private @NotNull @Valid ClockFactory     clockFactory;
-    private @NotNull @Valid DataStoreFactory dataStoreFactory;
+    private @NotNull @Valid ClockFactory       clockFactory;
+    private @NotNull @Valid DomainModelFactory domainModelFactory;
+    private @NotNull @Valid DataStoreFactory   dataStoreFactory;
 
     public ClockFactory getClockFactory()
     {
@@ -21,6 +23,17 @@ public class KlassFactory
     public void setClockFactory(ClockFactory clockFactory)
     {
         this.clockFactory = clockFactory;
+    }
+
+    public DomainModelFactory getDomainModelFactory()
+    {
+        return this.domainModelFactory;
+    }
+
+    @JsonProperty("domainModel")
+    public void setDomainModelFactory(DomainModelFactory domainModelFactory)
+    {
+        this.domainModelFactory = domainModelFactory;
     }
 
     public DataStoreFactory getDataStoreFactory()

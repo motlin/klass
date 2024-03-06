@@ -12,7 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>klass-dropwizard-bundle-prioritized-api</module>
-        <module>klass-dropwizard-bundle-data-api</module>
         <module>klass-dropwizard-bundle-object-mapper</module>
         <module>klass-dropwizard-bundle-cors</module>
         <module>klass-dropwizard-bundle-http-logging</module>
