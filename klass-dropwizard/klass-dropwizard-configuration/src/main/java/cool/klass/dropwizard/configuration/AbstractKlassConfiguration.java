@@ -161,6 +161,10 @@ public class AbstractKlassConfiguration
         this.jerseyHttpLoggingFactory = jerseyHttpLoggingFactory;
     }
 
+    // TODO: Error messages contain the word factory because of the field name
+    // config-test.json5 has the following errors:
+    //   * h2Factory.tcpPort may not be null
+    //   * h2Factory.webPort may not be null
     @Override
     @JsonProperty("h2")
     public H2Factory getH2Factory()
