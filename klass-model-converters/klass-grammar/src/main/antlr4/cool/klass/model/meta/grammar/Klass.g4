@@ -80,7 +80,7 @@ primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier
     | identifier ':' primitiveType optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
 enumerationProperty: identifier ':' enumerationReference optionalMarker? propertyModifier* ';'
     | identifier ':' enumerationReference optionalMarker? propertyModifier* {notifyErrorListeners("Missing semi-colon after enumeration property declaration.");};
-parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType orderByDeclaration? '{' criteriaExpression '}';
+parameterizedProperty: identifier '(' (parameterDeclaration (',' parameterDeclaration)*)? ')' ':' classType parameterizedPropertyModifier* orderByDeclaration? '{' criteriaExpression '}';
 optionalMarker: '?';
 
 // parameter
@@ -106,9 +106,10 @@ primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient';
-propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo';
+propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy';
+associationEndModifier: 'owned' | 'final';
+parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
 parameterModifier: 'version' | 'userId' | 'id';
-associationEndModifier: 'owned';
 
 versions: 'versions' '(' classReference ')';
 

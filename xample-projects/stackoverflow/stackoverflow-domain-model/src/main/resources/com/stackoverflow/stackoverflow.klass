@@ -72,28 +72,28 @@ class Question
     // TODO: system known: TemporalRange
 
     // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system            : TemporalRange;
+    system            : TemporalRange system;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom        : TemporalInstant;
-    systemTo          : TemporalInstant;
+    systemFrom        : TemporalInstant system from;
+    systemTo          : TemporalInstant system to;
 
     // TODO: private properties must not be used in projections
 
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById       : String private;
+    createdById       : String private createdBy;
 
     // createdOn, or createdDate?
-    createdOn         : Instant;
-    lastUpdatedById   : String private;
+    createdOn         : Instant createdOn;
+    lastUpdatedById   : String private lastUpdatedBy;
 
-    createdBy(): User[1..1]
+    createdBy(): User[1..1] createdBy
     {
         this.createdById == User.userId
     }
 
-    lastUpdatedBy(): User[1..1]
+    lastUpdatedBy(): User[1..1] lastUpdatedBy
     {
         this.lastUpdatedById == User.userId
     }
@@ -123,7 +123,7 @@ class QuestionVersion
 association QuestionHasAnswer
 {
     // TODO: *final* question: Question[1..1]
-    question: Question[1..1];
+    question: Question[1..1] final;
     answers: Answer[0..*]
         orderBy: this.id ascending;
 
@@ -169,7 +169,7 @@ class QuestionVote
     audited
 {
     questionId                    : Long key;
-    createdById                   : String key;
+    createdById                   : String key createdBy;
     direction                     : VoteDirection;
 }
 

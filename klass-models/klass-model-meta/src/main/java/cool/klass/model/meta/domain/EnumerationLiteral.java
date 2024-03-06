@@ -1,12 +1,16 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationLiteral extends TypedElement<Enumeration>
 {
+    @Nullable
     private final String prettyName;
 
     private EnumerationLiteral(
@@ -16,12 +20,13 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
             @Nonnull String name,
             int ordinal,
             @Nonnull Enumeration enumeration,
-            String prettyName)
+            @Nullable String prettyName)
     {
         super(elementContext, inferred, nameContext, name, ordinal, enumeration);
         this.prettyName = prettyName;
     }
 
+    @Nullable
     public String getPrettyName()
     {
         return this.prettyName;
@@ -29,7 +34,9 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
 
     public static class EnumerationLiteralBuilder extends NamedElementBuilder
     {
+        @Nullable
         private final String             prettyName;
+        @Nonnull
         private final EnumerationBuilder enumerationBuilder;
 
         private EnumerationLiteral enumerationLiteral;
@@ -40,12 +47,12 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                String prettyName,
-                EnumerationBuilder enumerationBuilder)
+                @Nullable String prettyName,
+                @Nonnull EnumerationBuilder enumerationBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal);
             this.prettyName = prettyName;
-            this.enumerationBuilder = enumerationBuilder;
+            this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 
         public EnumerationLiteral build()
