@@ -209,6 +209,7 @@
                                                 cool.klass:klass-generator-klass-html-plugin,
                                                 cool.klass:klass-generator-klass-projection-plugin,
                                                 cool.klass:klass-generator-klass-service-plugin,
+                                                cool.klass:klass-generator-liquibase-schema-plugin,
                                                 cool.klass:klass-generator-meta-constants-plugin,
                                                 cool.klass:klass-generator-react-prop-type-plugin,
                                                 cool.klass:klass-generator-reladomo-merge-hooks-plugin,

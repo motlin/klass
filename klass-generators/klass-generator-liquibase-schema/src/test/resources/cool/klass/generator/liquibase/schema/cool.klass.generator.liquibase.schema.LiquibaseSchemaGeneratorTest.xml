@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet author="Klass" id="initial-table-1-CLASS_WITH_DERIVED_PROPERTY">
+        <createTable tableName="CLASS_WITH_DERIVED_PROPERTY">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CLASS_WITH_DERIVED_PROPERTY_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

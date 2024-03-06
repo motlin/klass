@@ -1,0 +1,1042 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet author="Klass" id="initial-table-1-USER">
+        <createTable tableName="USER">
+            <column name="USER_ID" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="USER_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="USER_PK" />
+            </column>
+
+            <column name="FIRST_NAME" type="varchar(255)" />
+
+            <column name="LAST_NAME" type="varchar(255)" />
+
+            <column name="EMAIL" type="varchar(255)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-2-PROPERTIES_REQUIRED">
+        <createTable tableName="PROPERTIES_REQUIRED">
+            <column name="PROPERTIES_REQUIRED_ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_STRING" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_INTEGER" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_LONG" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_DOUBLE" type="float8">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_FLOAT" type="float4">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_BOOLEAN" type="boolean">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_INSTANT" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="REQUIRED_LOCAL_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_IDX_CREATED_BY"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-3-PROPERTIES_OPTIONAL">
+        <createTable tableName="PROPERTIES_OPTIONAL">
+            <column name="PROPERTIES_OPTIONAL_ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="OPTIONAL_STRING" type="varchar(255)" />
+
+            <column name="OPTIONAL_INTEGER" type="int" />
+
+            <column name="OPTIONAL_LONG" type="bigint" />
+
+            <column name="OPTIONAL_DOUBLE" type="float8" />
+
+            <column name="OPTIONAL_FLOAT" type="float4" />
+
+            <column name="OPTIONAL_BOOLEAN" type="boolean" />
+
+            <column name="OPTIONAL_INSTANT" type="timestamp" />
+
+            <column name="OPTIONAL_LOCAL_DATE" type="date" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_IDX_CREATED_BY"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-4-EVERY_TYPE_KEY_PROPERTY">
+        <createTable tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="KEY_STRING" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_INTEGER" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_LONG" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_DOUBLE" type="float8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_FLOAT" type="float4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_BOOLEAN" type="boolean">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_INSTANT" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-5-EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+        <createTable tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="FOREIGN_KEY_STRING" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_INTEGER" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_LONG" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_DOUBLE" type="float8">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_FLOAT" type="float4">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_BOOLEAN" type="boolean">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_INSTANT" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="FOREIGN_KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_PK" />
+            </column>
+
+            <column name="DATA" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-5-EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY">
+        <createIndex
+                indexName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY"
+                tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+            <column name="FOREIGN_KEY_STRING" />
+            <column name="FOREIGN_KEY_INTEGER" />
+            <column name="FOREIGN_KEY_LONG" />
+            <column name="FOREIGN_KEY_DOUBLE" />
+            <column name="FOREIGN_KEY_FLOAT" />
+            <column name="FOREIGN_KEY_BOOLEAN" />
+            <column name="FOREIGN_KEY_INSTANT" />
+            <column name="FOREIGN_KEY_LOCAL_DATE" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-6-FINAL_PROPERTIES">
+        <createTable tableName="FINAL_PROPERTIES">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FINAL_PROPERTIES_PK" />
+            </column>
+
+            <column name="DATA" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-7-OWNED_NATURAL_ONE_TO_MANY_SOURCE">
+        <createTable tableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-8-OWNED_NATURAL_ONE_TO_MANY_TARGET">
+        <createTable tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="OWNED_NATURAL_ONE_TO_MANY_TARGET"
+                baseColumnNames="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-9-OWNED_NATURAL_ONE_TO_ONE_SOURCE">
+        <createTable tableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-10-OWNED_NATURAL_ONE_TO_ONE_TARGET">
+        <createTable tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_ONE_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="OWNED_NATURAL_ONE_TO_ONE_TARGET"
+                baseColumnNames="OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="OWNED_NATURAL_ONE_TO_ONE_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-11-OWNED_NATURAL_ONE_TO_MANY_SELF">
+        <createTable tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_SELF_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)" />
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-11-OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-11-OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="OWNED_NATURAL_ONE_TO_MANY_SELF"
+                baseColumnNames="OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="OWNED_NATURAL_ONE_TO_MANY_SELF"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-12-OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+        <createTable tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+        <createTable tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-14-OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+        <createTable tableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+        <createTable tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET"
+                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+        <createTable tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint" />
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-17-SHARED_NATURAL_MANY_TO_ONE_TARGET">
+        <createTable tableName="SHARED_NATURAL_MANY_TO_ONE_TARGET">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_MANY_TO_ONE_TARGET_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+        <createTable tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_PK" />
+            </column>
+
+            <column name="TARGET_KEY" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET">
+        <createIndex
+                indexName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET"
+                tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+            <column name="TARGET_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET">
+        <addForeignKeyConstraint
+                constraintName="TARGET_KEY"
+                baseTableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE"
+                baseColumnNames="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET"
+                referencedTableName="KEY"
+                referencedColumnNames="SHARED_NATURAL_MANY_TO_ONE_TARGET"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-19-SHARED_NATURAL_ONE_TO_MANY_SOURCE">
+        <createTable tableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-20-SHARED_NATURAL_ONE_TO_MANY_TARGET">
+        <createTable tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="SHARED_NATURAL_ONE_TO_MANY_TARGET"
+                baseColumnNames="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-21-SHARED_NATURAL_ONE_TO_ONE_SOURCE">
+        <createTable tableName="SHARED_NATURAL_ONE_TO_ONE_SOURCE">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-22-SHARED_NATURAL_ONE_TO_ONE_TARGET">
+        <createTable tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_ONE_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="SHARED_NATURAL_ONE_TO_ONE_TARGET"
+                baseColumnNames="SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="SHARED_NATURAL_ONE_TO_ONE_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-23-SHARED_NATURAL_ONE_TO_MANY_SELF">
+        <createTable tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="KEY" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_SELF_PK" />
+            </column>
+
+            <column name="SOURCE_KEY" type="varchar(255)" />
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-23-SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-23-SHARED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_KEY"
+                baseTableName="SHARED_NATURAL_ONE_TO_MANY_SELF"
+                baseColumnNames="SHARED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
+                referencedTableName="KEY"
+                referencedColumnNames="SHARED_NATURAL_ONE_TO_MANY_SELF"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-24-SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+        <createTable tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+        <createTable tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-26-SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+        <createTable tableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+        <createTable tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET"
+                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+        <createTable tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_PK" />
+            </column>
+
+            <column name="SOURCE_ID" type="bigint" />
+
+            <column name="VALUE" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SOURCE_ID"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
+                referencedTableName="ID"
+                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-29-PROPERTIES_REQUIRED_VERSION">
+        <createTable tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="PROPERTIES_REQUIRED_ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_VERSION_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_VERSION_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="NUMBER" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-29-PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-29-PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-30-PROPERTIES_OPTIONAL_VERSION">
+        <createTable tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="PROPERTIES_OPTIONAL_ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_VERSION_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_VERSION_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="NUMBER" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-30-PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-30-PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-table-31-EVERY_TYPE_KEY_PROPERTY_VERSION">
+        <createTable tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="KEY_STRING" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_INTEGER" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_LONG" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_DOUBLE" type="float8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_FLOAT" type="float4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_BOOLEAN" type="boolean">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_INSTANT" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="SYSTEM_FROM" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SYSTEM_TO" type="timestamp">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+
+            <column name="CREATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_ON" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_UPDATED_BY_ID" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="NUMBER" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-31-EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_CREATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_CREATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-31-EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_LAST_UPDATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

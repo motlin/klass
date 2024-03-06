@@ -62,6 +62,7 @@
         <module>klass-model-bootstrapped-klass-projections</module>
         <!--<module>klass-model-bootstrapped-meta-model-json</module>-->
         <module>klass-model-bootstrapped-domain-model</module>
+        <module>klass-model-bootstrapped-liquibase</module>
         <module>klass-model-bootstrapped-reladomo-ddls</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>
