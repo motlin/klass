@@ -1,16 +1,16 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/light.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/light.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" type="text/css" href="/static/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" type="text/css" href="/static/css/slider.css">
     <link rel="stylesheet" type="text/css" href="/static/css/klass-syntax.css">
-    <style>
-        :root {
-            font-family: "Lucida Console", Courier, monospace;
-            font-size: 16;
-        }
-    </style>
+    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
 </head>
-<body class="klass"><pre>
+<body class="klass">
+<aside>
+  <dark-mode-toggle class="slider" legend="Dark Mode" appearance="toggle"></dark-mode-toggle>
+</aside>
+<pre>
 <span class='klass-package-keyword'>package</span> <span class='klass-package-name'>cool</span><span class='klass-dot'>.</span><span class='klass-package-name'>klass</span><span class='klass-dot'>.</span><span class='klass-package-name'>xample</span><span class='klass-dot'>.</span><span class='klass-package-name'>coverage</span>
 
 <span class='klass-line-comment'>// 'user' is just a special class that represents logged in users</span>
@@ -433,17 +433,17 @@
     <span class='klass-keyword-relationship'>relationship</span> <span class='klass-literal-this'>this</span><span class='klass-dot'>.</span><span class='klass-property-reference'><a href="/api/meta/code/element/OwnedSyntheticOneToManySelf/id#OwnedSyntheticOneToManySelf.id">id</a></span> <span class='klass-operator-eq'>==</span> <span class='klass-class-reference'><a href="/api/meta/code/element/OwnedSyntheticOneToManySelf#OwnedSyntheticOneToManySelf">OwnedSyntheticOneToManySelf</a></span><span class='klass-dot'>.</span><span class='klass-property-reference'><a href="/api/meta/code/element/OwnedSyntheticOneToManySelf/sourceId#OwnedSyntheticOneToManySelf.sourceId">sourceId</a></span>
 <span class='klass-curly-right'>}</span>
 
+<span class='klass-keyword-class'>class</span> <span class='klass-class-name'><a id="SharedNaturalManyToOneTarget" href="/api/meta/code/element/SharedNaturalManyToOneTarget#SharedNaturalManyToOneTarget">SharedNaturalManyToOneTarget</a></span>
+<span class='klass-curly-left'>{</span>
+    <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneTarget.key" href="/api/meta/code/element/SharedNaturalManyToOneTarget/key#SharedNaturalManyToOneTarget.key">key</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span> <span class='klass-data-type-property-modifier'>key</span><span class='klass-semicolon'>;</span>
+    <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneTarget.value" href="/api/meta/code/element/SharedNaturalManyToOneTarget/value#SharedNaturalManyToOneTarget.value">value</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span><span class='klass-semicolon'>;</span>
+<span class='klass-curly-right'>}</span>
+
 <span class='klass-keyword-class'>class</span> <span class='klass-class-name'><a id="SharedNaturalManyToOneSource" href="/api/meta/code/element/SharedNaturalManyToOneSource#SharedNaturalManyToOneSource">SharedNaturalManyToOneSource</a></span>
 <span class='klass-curly-left'>{</span>
     <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneSource.key" href="/api/meta/code/element/SharedNaturalManyToOneSource/key#SharedNaturalManyToOneSource.key">key</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span> <span class='klass-data-type-property-modifier'>key</span><span class='klass-semicolon'>;</span>
     <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneSource.targetKey" href="/api/meta/code/element/SharedNaturalManyToOneSource/targetKey#SharedNaturalManyToOneSource.targetKey">targetKey</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span> <span class='klass-data-type-property-modifier'>private</span><span class='klass-semicolon'>;</span>
     <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneSource.value" href="/api/meta/code/element/SharedNaturalManyToOneSource/value#SharedNaturalManyToOneSource.value">value</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span><span class='klass-semicolon'>;</span>
-<span class='klass-curly-right'>}</span>
-
-<span class='klass-keyword-class'>class</span> <span class='klass-class-name'><a id="SharedNaturalManyToOneTarget" href="/api/meta/code/element/SharedNaturalManyToOneTarget#SharedNaturalManyToOneTarget">SharedNaturalManyToOneTarget</a></span>
-<span class='klass-curly-left'>{</span>
-    <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneTarget.key" href="/api/meta/code/element/SharedNaturalManyToOneTarget/key#SharedNaturalManyToOneTarget.key">key</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span> <span class='klass-data-type-property-modifier'>key</span><span class='klass-semicolon'>;</span>
-    <span class='klass-primitive-property-name'><a id="SharedNaturalManyToOneTarget.value" href="/api/meta/code/element/SharedNaturalManyToOneTarget/value#SharedNaturalManyToOneTarget.value">value</a></span><span class='klass-colon'>:</span> <span class='klass-primitive-type'>String</span><span class='klass-semicolon'>;</span>
 <span class='klass-curly-right'>}</span>
 
 <span class='klass-line-comment'>// TODO: Add ManyToOneOptional [0..*]--&gt;[0..1]</span>
