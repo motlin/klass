@@ -25,7 +25,7 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGenerator
 {
-    // "cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager"
+    // "com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager"
     // "com.gs.fw.common.mithra.test.ConnectionManagerForTests"
     @Nonnull
     private final String    connectionManagerFullyQualifiedName;

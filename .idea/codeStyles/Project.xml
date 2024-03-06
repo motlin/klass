@@ -19,6 +19,9 @@
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACKET" value="0" />
     </HoconCodeStyleSettings>
+    <JSON>
+      <option name="KEEP_TRAILING_COMMA" value="true" />
+    </JSON>
     <JavaCodeStyleSettings>
       <option name="VISIBILITY" value="EscalateVisible" />
       <option name="REPLACE_INSTANCEOF_AND_CAST" value="true" />

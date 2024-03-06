@@ -24,13 +24,7 @@
 
         <dependency>
             <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-prioritized-api</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-task-reladomo-clear-cache</artifactId>
+            <artifactId>liftwizard-application</artifactId>
             <version>0.1.0</version>
         </dependency>
 
@@ -145,11 +139,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
         <dependency>

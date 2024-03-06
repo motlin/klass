@@ -9,8 +9,8 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import cool.klass.reladomo.test.rule.ReladomoTestFile;
-import cool.klass.reladomo.test.rule.ReladomoTestRule;
+import com.liftwizard.reladomo.test.rule.ReladomoTestFile;
+import com.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
 import io.dropwizard.client.JerseyClientBuilder;

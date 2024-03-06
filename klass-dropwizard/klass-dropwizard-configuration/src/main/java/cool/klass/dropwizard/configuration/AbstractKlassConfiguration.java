@@ -30,9 +30,12 @@ import com.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactory
 import com.liftwizard.dropwizard.configuration.object.mapper.ObjectMapperFactoryProvider;
 import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
 import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
+import com.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
+import com.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
 import io.dropwizard.Configuration;
 
-public class AbstractKlassConfiguration extends Configuration
+public class AbstractKlassConfiguration
+        extends Configuration
         implements JerseyHttpLoggingFactoryProvider,
         H2FactoryProvider,
         CorsFactoryProvider,
@@ -43,7 +46,8 @@ public class AbstractKlassConfiguration extends Configuration
         SampleDataFactoryProvider,
         ConfigLoggingFactoryProvider,
         DataStoreFactoryProvider,
-        DomainModelFactoryProvider
+        DomainModelFactoryProvider,
+        UUIDSupplierFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
@@ -68,6 +72,13 @@ public class AbstractKlassConfiguration extends Configuration
     public DomainModelFactory getDomainModelFactory()
     {
         return this.getKlassFactory().getDomainModelFactory();
+    }
+
+    @JsonIgnore
+    @Override
+    public UUIDSupplierFactory getUuidSupplierFactory()
+    {
+        return this.getDataStoreFactory().getUuidFactory();
     }
 
     @JsonProperty("klass")

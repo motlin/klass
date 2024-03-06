@@ -12,9 +12,9 @@ import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
-import cool.klass.reladomo.test.rule.ReladomoTestRule;
 import cool.klass.xample.coverage.dropwizard.application.CoverageExampleApplication;
 import cool.klass.xample.coverage.dropwizard.application.CoverageExampleConfiguration;
+import com.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
@@ -33,7 +33,7 @@ public class AbstractCoverageTest
     @ClassRule
     public static final DropwizardAppRule<CoverageExampleConfiguration> RULE = new DropwizardAppRule<>(
             CoverageExampleApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.yml"));
+            ResourceHelpers.resourceFilePath("config-test.json5"));
 
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(

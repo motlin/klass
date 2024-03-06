@@ -95,7 +95,7 @@ public class GraphQLRuntimeWiringGenerator
                 + "\n"
                 + "import " + this.rootPackageName + ".*;\n"
                 + "import cool.klass.graphql.type.runtime.wiring.provider.GraphQLTypeRuntimeWiringProvider;\n"
-                + "import cool.klass.reladomo.graphql.data.fetcher.*;\n"
+                + "import com.liftwizard.reladomo.graphql.data.fetcher.*;\n"
                 + "import graphql.schema.PropertyDataFetcher;\n"
                 + "import graphql.schema.idl.TypeRuntimeWiring.Builder;\n"
                 + "\n"

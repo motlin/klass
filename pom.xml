@@ -236,9 +236,10 @@
 
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0-r1585899</version>
+                    <version>3.0.0-M1</version>
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <pushChanges>false</pushChanges>
                     </configuration>
                 </plugin>
 
@@ -402,6 +403,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
         </plugins>

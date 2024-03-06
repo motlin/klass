@@ -29,7 +29,7 @@ public class AbstractResourceTest
     @ClassRule
     public static final DropwizardAppRule<KlassBootstrappedMetaModelConfiguration> RULE = new DropwizardAppRule<>(
             KlassBootstrappedMetaModelApplication.class,
-            ResourceHelpers.resourceFilePath("config-test.yml"));
+            ResourceHelpers.resourceFilePath("config-test.json5"));
 
     @Rule
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(this.getRuntimeConfigFilename());

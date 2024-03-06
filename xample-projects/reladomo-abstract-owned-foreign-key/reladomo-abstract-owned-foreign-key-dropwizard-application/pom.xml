@@ -67,7 +67,7 @@
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
                             <connectionManagerFullyQualifiedName>
-                                cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager
+                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
                             </connectionManagerFullyQualifiedName>
                             <isTest>false</isTest>
                         </configuration>
@@ -84,7 +84,7 @@
                             </outputDirectory>
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
                             <connectionManagerFullyQualifiedName>
-                                cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager
+                                com.liftwizard.reladomo.connectionmanager.h2.H2ConnectionManager
                             </connectionManagerFullyQualifiedName>
                             <isTest>false</isTest>
                             <cacheType>full</cacheType>
