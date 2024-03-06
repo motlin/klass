@@ -122,7 +122,7 @@ public class KlassBootstrapWriter
 
     private void handleDataTypeProperties(Classifier classifier)
     {
-        for (DataTypeProperty dataTypeProperty : classifier.getDataTypeProperties())
+        for (DataTypeProperty dataTypeProperty : classifier.getDeclaredDataTypeProperties())
         {
             if (dataTypeProperty instanceof PrimitiveProperty)
             {

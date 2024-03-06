@@ -752,7 +752,7 @@ association UrlHasServices
             && this.url == Service.urlString
 }
 
-projection EnumerationReadProjection on Enumeration
+projection EnumerationProjection on Enumeration
 {
     name                   : "Enumeration name",
     inferred               : "Enumeration inferred",
@@ -762,12 +762,23 @@ projection EnumerationReadProjection on Enumeration
     sourceCodeWithInference: "Enumeration sourceCodeWithInference",
     enumerationLiterals    :
     {
-        prettyName             : "Enumeration literal pretty name",
         name                   : "Enumeration literal name",
+        prettyName             : "Enumeration literal pretty name",
         inferred               : "Enumeration literal inferred",
         ordinal                : "Enumeration literal ordinal",
         sourceCode             : "Enumeration literal sourceCode",
         sourceCodeWithInference: "Enumeration literal sourceCodeWithInference",
+    },
+}
+
+projection EnumerationSummaryProjection on Enumeration
+{
+    name               : "Enumeration name",
+    packageName        : "Enumeration package name",
+    enumerationLiterals:
+    {
+        name      : "Enumeration literal name",
+        prettyName: "Enumeration literal pretty name",
     },
 }
 
@@ -778,19 +789,26 @@ service Enumeration
         {
             multiplicity: one;
             criteria    : this.name == enumerationName;
-            projection  : EnumerationReadProjection;
+            projection  : EnumerationProjection;
+        }
+    /api/meta/enumeration/{enumerationName: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == enumerationName;
+            projection  : EnumerationSummaryProjection;
         }
     /api/meta/enumeration
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : EnumerationReadProjection;
+            projection  : EnumerationProjection;
             orderBy     : this.ordinal;
         }
 }
 
-projection InterfaceReadProjection on Interface
+projection InterfaceProjection on Interface
 {
     name                   : "Interface name",
     inferred               : "Interface inferred",
@@ -822,45 +840,6 @@ projection InterfaceReadProjection on Interface
         inferred: "Interface modifier inferred",
         ordinal : "Interface modifier ordinal",
     },
-/*
-    dataTypeProperties     :
-    {
-        name               : "Property name",
-        inferred           : "Property inferred",
-        PrimitiveProperty.primitiveType      : "Property primitive type",
-        optional           : "Property is optional",
-        key                : "Property is key",
-        PrimitiveProperty.id                 : "Property is id",
-        ordinal            : "Property ordinal",
-        EnumerationProperty.enumeration        :
-        {
-            name    : "Property Enumeration name",
-            inferred: "Property Enumeration inferred",
-        },
-        propertyModifiers  :
-        {
-            name    : "Property modifier name",
-            inferred: "Property modifier inferred",
-            ordinal : "Property modifier ordinal",
-        },
-        minLengthValidation:
-        {
-            number: "Property min length validation number",
-        },
-        maxLengthValidation:
-        {
-            number: "Property max length validation number",
-        },
-        PrimitiveProperty.minValidation      :
-        {
-            number: "Property min validation number",
-        },
-        PrimitiveProperty.maxValidation      :
-        {
-            number: "Property max validation number",
-        },
-    },
-*/
     primitiveProperties    :
     {
         name               : "Primitive property name",
@@ -922,6 +901,25 @@ projection InterfaceReadProjection on Interface
     },
 }
 
+projection InterfaceSummaryProjection on Interface
+{
+    name                   : "Interface name",
+    packageName            : "Interface package name",
+    superInterfaces        :
+    {
+        superInterface:
+        {
+            name           : "Super interface name",
+        },
+    },
+    classifierModifiers    :
+    {
+        name    : "Interface modifier name",
+    },
+    primitiveProperties    : PrimitivePropertySummaryProjection,
+    enumerationProperties  : EnumerationPropertySummaryProjection,
+}
+
 service Interface
 {
     /api/meta/interface/{interfaceName: String[1..1]}
@@ -929,14 +927,21 @@ service Interface
         {
             multiplicity: one;
             criteria    : this.name == interfaceName;
-            projection  : InterfaceReadProjection;
+            projection  : InterfaceProjection;
+        }
+    /api/meta/interface/{interfaceName: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == interfaceName;
+            projection  : InterfaceSummaryProjection;
         }
     /api/meta/interface
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : InterfaceReadProjection;
+            projection  : InterfaceProjection;
             orderBy     : this.ordinal;
         }
 }
@@ -1012,6 +1017,35 @@ projection PrimitivePropertyProjection on PrimitiveProperty
     },
 }
 
+projection PrimitivePropertySummaryProjection on PrimitiveProperty
+{
+    name               : "Primitive property name",
+    primitiveType      : "Primitive property type",
+    optional           : "Primitive property is optional",
+    key                : "Primitive property is key",
+    id                 : "Primitive property is id",
+    propertyModifiers  :
+    {
+        name    : "Primitive property modifier name",
+    },
+    minLengthValidation:
+    {
+        number: "Min length validation number",
+    },
+    maxLengthValidation:
+    {
+        number: "Max length validation number",
+    },
+    minValidation      :
+    {
+        number: "Min validation number",
+    },
+    maxValidation      :
+    {
+        number: "Max validation number",
+    },
+}
+
 projection EnumerationPropertyProjection on EnumerationProperty
 {
     name               : "Enumeration property name",
@@ -1040,7 +1074,30 @@ projection EnumerationPropertyProjection on EnumerationProperty
     },
 }
 
-projection ClassReadProjection on Klass
+projection EnumerationPropertySummaryProjection on EnumerationProperty
+{
+    name               : "Enumeration property name",
+    optional           : "Enumeration property is optional",
+    key                : "Enumeration property is key",
+    enumeration        :
+    {
+        name    : "Enumeration name",
+    },
+    propertyModifiers  :
+    {
+        name    : "Enumeration property modifier name",
+    },
+    minLengthValidation:
+    {
+        number: "Min length validation number",
+    },
+    maxLengthValidation:
+    {
+        number: "Max length validation number",
+    },
+}
+
+projection ClassProjection on Klass
 {
     name                   : "Class name",
     inferred               : "Class inferred",
@@ -1104,6 +1161,31 @@ projection ClassReadProjection on Klass
     associationEnds        : AssociationEndProjection,
 }
 
+projection ClassSummaryProjection on Klass
+{
+    name                   : "Class name",
+    packageName            : "Class package name",
+    superClass             :
+    {
+        name           : "Super Class name",
+    },
+
+    // TODO: flat many-to-many, or parameterized property
+    superInterfaces        :
+    {
+        superInterface:
+        {
+            name           : "Super interface name",
+        },
+    },
+    classifierModifiers    :
+    {
+        name    : "Class modifier name",
+    },
+    primitiveProperties    : PrimitivePropertySummaryProjection,
+    enumerationProperties  : EnumerationPropertySummaryProjection,
+}
+
 service Klass
 {
     /api/meta/class/{className: String[1..1]}
@@ -1111,14 +1193,21 @@ service Klass
         {
             multiplicity: one;
             criteria    : this.name == className;
-            projection  : ClassReadProjection;
+            projection  : ClassProjection;
+        }
+    /api/meta/class/{className: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == className;
+            projection  : ClassSummaryProjection;
         }
     /api/meta/class
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : ClassReadProjection;
+            projection  : ClassProjection;
             orderBy     : this.ordinal;
         }
 }
@@ -1154,7 +1243,21 @@ projection AssociationEndProjection on AssociationEnd
     },
 }
 
-projection AssociationReadProjection on Association
+projection AssociationEndSummaryProjection on AssociationEnd
+{
+    name                   : "Association end name",
+    multiplicity           : "Association end multiplicity",
+    resultType             :
+    {
+        name       : "Association end result class name",
+    },
+    associationEndModifiers:
+    {
+        name    : "Association end modifier name",
+    },
+}
+
+projection AssociationProjection on Association
 {
     name                   : "Association name",
     inferred               : "Association inferred",
@@ -1166,39 +1269,52 @@ projection AssociationReadProjection on Association
     criteria               : CriteriaProjection,
 }
 
+projection AssociationSummaryProjection on Association
+{
+    name                   : "Association name",
+    packageName            : "Association package name",
+    associationEnds        : AssociationEndSummaryProjection,
+    criteria               : CriteriaSummaryProjection,
+}
+
 projection MemberReferencePathProjection on MemberReferencePath
 {
     klass           :
     {
         name       : "MemberReferencePath Class name",
-        packageName: "MemberReferencePath Class package name",
     },
     associationEnds :
     {
         associationEnd:
         {
-            owningClass :
-            {
-                name       : "MemberReferencePath Association end owning class name",
-                packageName: "MemberReferencePath Association end owning class package name",
-            },
             name        : "MemberReferencePath Association end name",
-            resultType             :
-            {
-                name       : "Association end result class name",
-                packageName: "Association end result class package name",
-            },
-            multiplicity           : "Association end multiplicity",
         },
     },
     dataTypeProperty:
     {
         name                           : "MemberReferencePath Property name",
-        PrimitiveProperty.primitiveType: "MemberReferencePath Property primitive type",
+    },
+}
+
+projection MemberReferencePathSummaryProjection on MemberReferencePath
+{
+    klass           :
+    {
+        name       : "MemberReferencePath Class name",
+    },
+    associationEnds :
+    {
+        associationEnd:
+        {
+            name        : "MemberReferencePath Association end name",
+        },
+    },
+    dataTypeProperty:
+    {
+        name                           : "MemberReferencePath Property name",
         EnumerationProperty.enumeration:
         {
             name    : "MemberReferencePath Property Enumeration name",
-            inferred: "MemberReferencePath Property Enumeration inferred",
         },
     },
 }
@@ -1208,24 +1324,12 @@ projection ExpressionValueProjection on ExpressionValue
     MemberReferencePath.klass           :
     {
         name       : "MemberReferencePath Class name",
-        packageName: "MemberReferencePath Class package name",
     },
     MemberReferencePath.associationEnds :
     {
         associationEnd:
         {
-            owningClass :
-            {
-                name       : "MemberReferencePath Association end owning class name",
-                packageName: "MemberReferencePath Association end owning class package name",
-            },
             name        : "MemberReferencePath Association end name",
-            resultType             :
-            {
-                name       : "Association end result class name",
-                packageName: "Association end result class package name",
-            },
-            multiplicity           : "Association end multiplicity",
         },
     },
     MemberReferencePath.dataTypeProperty:
@@ -1235,19 +1339,52 @@ projection ExpressionValueProjection on ExpressionValue
         EnumerationProperty.enumeration:
         {
             name    : "MemberReferencePath Property Enumeration name",
-            inferred: "MemberReferencePath Property Enumeration inferred",
+        },
+    },
+}
+
+projection ExpressionValueSummaryProjection on ExpressionValue
+{
+    MemberReferencePath.klass           :
+    {
+        name       : "MemberReferencePath Class name",
+    },
+    MemberReferencePath.associationEnds :
+    {
+        associationEnd:
+        {
+            name        : "MemberReferencePath Association end name",
+        },
+    },
+    MemberReferencePath.dataTypeProperty:
+    {
+        name                           : "MemberReferencePath Property name",
+        PrimitiveProperty.primitiveType: "MemberReferencePath Property primitive type",
+        EnumerationProperty.enumeration:
+        {
+            name    : "MemberReferencePath Property Enumeration name",
         },
     },
 }
 
 projection CriteriaProjection on Criteria
 {
-    BinaryCriteria.left : CriteriaProjection,
-    BinaryCriteria.right: CriteriaProjection,
-    OperatorCriteria.operator: "Criteria operator",
+    BinaryCriteria.left                   : CriteriaProjection,
+    BinaryCriteria.right                  : CriteriaProjection,
+    OperatorCriteria.operator             : "Criteria operator",
     OperatorCriteria.sourceExpressionValue: ExpressionValueProjection,
     OperatorCriteria.targetExpressionValue: ExpressionValueProjection,
-    EdgePointCriteria.memberReferencePath: MemberReferencePathProjection,
+    EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,
+}
+
+projection CriteriaSummaryProjection on Criteria
+{
+    BinaryCriteria.left                   : CriteriaSummaryProjection,
+    BinaryCriteria.right                  : CriteriaSummaryProjection,
+    OperatorCriteria.operator             : "Criteria operator",
+    OperatorCriteria.sourceExpressionValue: ExpressionValueSummaryProjection,
+    OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,
+    EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,
 }
 
 service Association
@@ -1257,13 +1394,20 @@ service Association
         {
             multiplicity: one;
             criteria    : this.name == associationName;
-            projection  : AssociationReadProjection;
+            projection  : AssociationProjection;
+        }
+    /api/meta/association/{associationName: String[1..1]}/summary
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.name == associationName;
+            projection  : AssociationSummaryProjection;
         }
     /api/meta/association
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : AssociationReadProjection;
+            projection  : AssociationProjection;
         }
 }
