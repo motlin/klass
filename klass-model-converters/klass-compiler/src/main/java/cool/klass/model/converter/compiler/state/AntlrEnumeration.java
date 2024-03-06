@@ -25,7 +25,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     public static final AntlrEnumeration AMBIGUOUS = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous enumeration",
             -1,
@@ -36,7 +36,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
             new EnumerationDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration",
             -1,
@@ -52,14 +52,14 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     public AntlrEnumeration(
             @Nonnull EnumerationDeclarationContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public int getNumLiterals()
@@ -86,7 +86,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
 
         this.enumerationBuilder = new EnumerationBuilder(
                 this.getElementContext(),
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.getElementContext().identifier(),
                 this.name,
                 this.ordinal,

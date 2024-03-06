@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -29,7 +30,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
 
     private KlassImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -38,8 +39,8 @@ public final class KlassImpl extends AbstractClassifier implements Klass
             boolean isUser,
             boolean isTransient)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
-        this.inheritanceType = inheritanceType;
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
+        this.inheritanceType = Objects.requireNonNull(inheritanceType);
         this.isUser = isUser;
         this.isTransient = isTransient;
     }
@@ -138,7 +139,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
 
         public KlassBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -147,7 +148,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
                 boolean isUser,
                 boolean isTransient)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
             this.inheritanceType = inheritanceType;
             this.isUser = isUser;
             this.isTransient = isTransient;
@@ -186,7 +187,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         {
             return new KlassImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

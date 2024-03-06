@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.CompilerError;
+import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -74,10 +74,10 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         KlassCompiler klassCompiler = new KlassCompiler(compilerState);
         DomainModel   domainModel   = klassCompiler.compile();
 
-        ImmutableList<CompilerError> compilerErrors = compilerState.getCompilerErrors();
+        ImmutableList<RootCompilerError> compilerErrors = compilerState.getCompilerErrors();
         if (compilerErrors.notEmpty())
         {
-            for (CompilerError compilerError : compilerErrors)
+            for (RootCompilerError compilerError : compilerErrors)
             {
                 this.getLog().warn(compilerError.toString());
             }

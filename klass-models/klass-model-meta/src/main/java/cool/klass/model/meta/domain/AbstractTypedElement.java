@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.TypedElement;
@@ -16,13 +18,13 @@ public abstract class AbstractTypedElement<T extends Type> extends AbstractNamed
 
     protected AbstractTypedElement(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull T type)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -40,13 +42,13 @@ public abstract class AbstractTypedElement<T extends Type> extends AbstractNamed
 
         protected TypedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
     }

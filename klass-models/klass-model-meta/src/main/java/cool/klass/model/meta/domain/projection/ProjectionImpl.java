@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -21,14 +22,14 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
 
     private ProjectionImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull KlassImpl klass)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
         this.klass = Objects.requireNonNull(klass);
     }
@@ -62,14 +63,14 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
 
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.packageName = Objects.requireNonNull(packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
@@ -80,7 +81,7 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         {
             return new ProjectionImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

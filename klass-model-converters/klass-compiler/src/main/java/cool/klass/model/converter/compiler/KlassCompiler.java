@@ -29,6 +29,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Lists;
+import org.fusesource.jansi.AnsiConsole;
 
 public class KlassCompiler
 {
@@ -58,6 +59,9 @@ public class KlassCompiler
 
     public KlassCompiler(CompilerState compilerState)
     {
+        // TODO: Move to application run
+        AnsiConsole.systemInstall();
+
         this.compilerState = compilerState;
     }
 

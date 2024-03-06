@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
@@ -27,14 +28,14 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
     protected AntlrReferenceTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass type,
             AntlrMultiplicity multiplicityState)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.type = Objects.requireNonNull(type);
         this.multiplicityState = multiplicityState;
     }
@@ -70,9 +71,9 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
 
         ClassReferenceContext offendingToken = this.getClassType().classReference();
         String message = String.format(
-                "ERR_PRP_TYP: Cannot find class '%s'.",
+                "Cannot find class '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_PRP_TYP", message, this, offendingToken);
     }
 
     protected abstract ClassTypeContext getClassType();

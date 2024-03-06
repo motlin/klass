@@ -40,7 +40,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         return new AntlrIntegerLiteralValue(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 value,
                 this.expressionValueOwner);
     }
@@ -78,7 +78,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         return new AntlrStringLiteralValue(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 text,
                 this.expressionValueOwner);
     }
@@ -89,7 +89,7 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
         return new AntlrNullLiteral(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.expressionValueOwner);
     }
 }

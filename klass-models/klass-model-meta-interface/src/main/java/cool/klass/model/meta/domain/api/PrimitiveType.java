@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.api;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -15,7 +16,7 @@ import org.eclipse.collections.impl.factory.Lists;
 /**
  * Predefined native types.
  */
-public enum PrimitiveType implements DataType, DataTypeGetter
+public enum PrimitiveType implements Element, DataType, DataTypeGetter
 {
     INTEGER("Integer", true, Integer.class)
     {
@@ -285,5 +286,19 @@ public enum PrimitiveType implements DataType, DataTypeGetter
     public PrimitiveType getType()
     {
         return this;
+    }
+
+    @Override
+    public Optional<Element> getMacroElement()
+    {
+        return Optional.empty();
+    }
+
+    @Nonnull
+    @Override
+    public String getSourceCode()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getSourceCode() not implemented yet");
     }
 }

@@ -1,12 +1,14 @@
 package cool.klass.model.meta.domain.parameter;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -20,14 +22,14 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
 
     private ParameterImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull Multiplicity multiplicity,
             @Nonnull DataType dataType)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.dataType = Objects.requireNonNull(dataType);
     }
@@ -62,14 +64,14 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
 
         public ParameterBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull DataTypeGetter dataType,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.dataTypeGetter = Objects.requireNonNull(dataType);
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
@@ -80,7 +82,7 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
         {
             return new ParameterImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

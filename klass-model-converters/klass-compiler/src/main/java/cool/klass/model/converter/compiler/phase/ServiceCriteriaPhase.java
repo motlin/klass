@@ -29,7 +29,7 @@ public class ServiceCriteriaPhase extends AbstractCompilerPhase
         AntlrServiceCriteria serviceCriteriaState = new AntlrServiceCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 serviceCriteriaKeyword,
                 this.compilerState.getCompilerWalkState().getServiceState());
 

@@ -1,9 +1,12 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
@@ -16,7 +19,7 @@ public final class PrimitivePropertyImpl
 {
     private PrimitivePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -26,7 +29,7 @@ public final class PrimitivePropertyImpl
     {
         super(
                 elementContext,
-                inferred,
+                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -39,7 +42,7 @@ public final class PrimitivePropertyImpl
     {
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -50,7 +53,7 @@ public final class PrimitivePropertyImpl
         {
             super(
                     elementContext,
-                    inferred,
+                    macroElement,
                     nameContext,
                     name,
                     ordinal,
@@ -66,7 +69,7 @@ public final class PrimitivePropertyImpl
         {
             return new PrimitivePropertyImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

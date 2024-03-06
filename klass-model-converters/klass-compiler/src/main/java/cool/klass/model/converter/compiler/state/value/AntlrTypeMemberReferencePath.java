@@ -2,12 +2,14 @@ package cool.klass.model.converter.compiler.state.value;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -29,7 +31,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     public AntlrTypeMemberReferencePath(
             @Nonnull TypeMemberReferencePathContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrClass classState,
             ImmutableList<AntlrAssociationEnd> associationEndStates,
             @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
@@ -38,7 +40,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
         super(
                 elementContext,
                 compilationUnit,
-                inferred,
+                macroElement,
                 classState,
                 associationEndStates,
                 dataTypePropertyState,
@@ -55,7 +57,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
         }
         this.elementBuilder = new TypeMemberReferencePathBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.classState.getElementBuilder(),
                 this.associationEndStates.collect(AntlrAssociationEnd::getElementBuilder),
                 this.dataTypePropertyState.getElementBuilder());
@@ -78,10 +80,10 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
 
             // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
             String message = String.format(
-                    "ERR_MEM_TYP: Cannot find class '%s'.",
+                    "Cannot find class '%s'.",
                     offendingToken.getText());
 
-            compilerErrorHolder.add(message, this, offendingToken);
+            compilerErrorHolder.add("ERR_MEM_TYP", message, this, offendingToken);
             return;
         }
 
@@ -98,10 +100,10 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
         {
             IdentifierContext identifier = this.getElementContext().memberReference().identifier();
             String message = String.format(
-                    "ERR_TYP_MEM: Cannot find member '%s.%s'.",
+                    "Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add(message, this, identifier);
+            compilerErrorHolder.add("ERR_TYP_MEM", message, this, identifier);
         }
     }
 

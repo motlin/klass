@@ -38,7 +38,7 @@ public class OrderByPhase extends AbstractCompilerPhase
         this.orderByState = Optional.of(new AntlrOrderBy(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.compilerState.getCompilerWalkState().getThisReference(),
                 this.compilerState.getCompilerWalkState().getOrderByOwnerState()));
         AntlrOrderByOwner orderByOwnerState = this.compilerState.getCompilerWalkState().getOrderByOwnerState();
@@ -69,13 +69,13 @@ public class OrderByPhase extends AbstractCompilerPhase
     {
         AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(
                 orderByMemberReferencePathContext);
-        AntlrOrderByDirection        orderByDirection        = this.getAntlrOrderByDirection(
+        AntlrOrderByDirection orderByDirection = this.getAntlrOrderByDirection(
                 orderByMemberReferencePathContext);
 
         return new AntlrOrderByMemberReferencePath(
                 orderByMemberReferencePathContext,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.orderByState.get(),
                 this.orderByState.get().getNumProperties(),
                 thisMemberReferencePath,
@@ -101,6 +101,6 @@ public class OrderByPhase extends AbstractCompilerPhase
         return new AntlrOrderByDirection(
                 orderByMemberReferencePathContext.orderByDirection(),
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference());
+                this.compilerState.getCompilerInputState().getMacroElement());
     }
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.PrimitiveTypeBuilder;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -46,7 +47,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
 
     private AntlrPrimitiveType(PrimitiveType primitiveType)
     {
-        super(new ParserRuleContext(), null, true);
+        super(new ParserRuleContext(), null, Optional.empty());
         this.primitiveType = primitiveType;
     }
 
@@ -89,9 +90,12 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
 
     @Nonnull
     @Override
-    public PrimitiveType getElementBuilder()
+    public PrimitiveTypeBuilder getElementBuilder()
     {
-        return this.primitiveType;
+        return new PrimitiveTypeBuilder(
+                this.getElementContext(),
+                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.primitiveType);
     }
 
     @Override

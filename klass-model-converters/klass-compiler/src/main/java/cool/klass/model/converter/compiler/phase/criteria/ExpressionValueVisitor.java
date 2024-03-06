@@ -69,7 +69,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         AntlrLiteralListValue literalListValue = new AntlrLiteralListValue(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.expressionValueOwner);
 
         ImmutableList<AbstractAntlrLiteralValue> literalStates = ListAdapter.adapt(ctx.literal())
@@ -102,7 +102,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
                 return new AntlrUserLiteral(
                         ctx,
                         this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                        this.compilerState.getCompilerInputState().isInference(),
+                        this.compilerState.getCompilerInputState().getMacroElement(),
                         this.expressionValueOwner);
             default:
                 throw new AssertionError(keyword);
@@ -118,7 +118,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         return new AntlrVariableReference(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 variableName,
                 this.expressionValueOwner);
     }
@@ -146,7 +146,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         return new AntlrThisMemberReferencePath(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 (AntlrClass) this.thisReference,
                 associationEndStates.toImmutable(),
                 dataTypePropertyState,
@@ -180,7 +180,7 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
         return new AntlrTypeMemberReferencePath(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 classState,
                 associationEndStates.toImmutable(),
                 dataTypePropertyState,

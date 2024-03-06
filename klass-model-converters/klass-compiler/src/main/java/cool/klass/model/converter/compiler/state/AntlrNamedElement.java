@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -86,12 +87,12 @@ public abstract class AntlrNamedElement extends AntlrElement
     protected AntlrNamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.name = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
         this.ordinal = ordinal;
@@ -117,10 +118,10 @@ public abstract class AntlrNamedElement extends AntlrElement
         if (!this.getNamePattern().matcher(this.name).matches())
         {
             String message = String.format(
-                    "ERR_NME_PAT: Name must match pattern %s but was '%s'.",
+                    "Name must match pattern %s but was '%s'.",
                     this.getNamePattern(),
                     this.name);
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_NME_PAT", message, this);
         }
     }
 
@@ -131,14 +132,14 @@ public abstract class AntlrNamedElement extends AntlrElement
     {
         if (JAVA_KEYWORDS.contains(this.name))
         {
-            String message = String.format("ERR_NME_KEY: '%s' is a reserved Java keyword.", this.name);
-            compilerErrorHolder.add(message, this);
+            String message = String.format("'%s' is a reserved Java keyword.", this.name);
+            compilerErrorHolder.add("ERR_NME_KEY", message, this);
         }
 
         if (JAVA_LITERALS.contains(this.name))
         {
-            String message = String.format("ERR_NME_LIT: '%s' is a reserved Java literal.", this.name);
-            compilerErrorHolder.add(message, this);
+            String message = String.format("'%s' is a reserved Java literal.", this.name);
+            compilerErrorHolder.add("ERR_NME_LIT", message, this);
         }
     }
 }

@@ -61,7 +61,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference());
+                this.compilerState.getCompilerInputState().getMacroElement());
 
         // TODO: Parameterized Property modifiers
         /*
@@ -74,7 +74,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         this.parameterizedPropertyState = new AntlrParameterizedProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.identifier(),
                 parameterizedPropertyName,
                 thisReference.getNumMembers() + 1,
@@ -189,7 +189,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx,
                 ctx.getText(),
                 ordinal);
@@ -204,12 +204,12 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference());
+                this.compilerState.getCompilerInputState().getMacroElement());
 
         AntlrParameter parameterState = new AntlrParameter(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 identifierContext,
                 identifierContext.getText(),
                 this.parameterOwnerState.getNumParameters() + 1,

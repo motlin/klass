@@ -26,8 +26,8 @@ public interface AntlrTopLevelElement extends IAntlrElement
 
     default void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.getName());
-        compilerErrorHolder.add(message, this);
+        String message = String.format("Duplicate top level item name: '%s'.", this.getName());
+        compilerErrorHolder.add("ERR_DUP_TOP", message, this);
     }
 
     @Nonnull

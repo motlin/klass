@@ -57,7 +57,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         EdgePointAntlrCriteria edgePointAntlrCriteria = new EdgePointAntlrCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(
@@ -75,7 +75,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         AntlrAndCriteria andCriteriaState = new AntlrAndCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(
@@ -114,7 +114,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         return new AllAntlrCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.criteriaOwner);
     }
 
@@ -128,7 +128,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         OperatorAntlrCriteria operatorAntlrCriteria = new OperatorAntlrCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.criteriaOwner,
                 operator);
 
@@ -153,7 +153,7 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
         AntlrOrCriteria orCriteriaState = new AntlrOrCriteria(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.criteriaOwner);
 
         KlassVisitor<AntlrCriteria> criteriaVisitor = new CriteriaVisitor(

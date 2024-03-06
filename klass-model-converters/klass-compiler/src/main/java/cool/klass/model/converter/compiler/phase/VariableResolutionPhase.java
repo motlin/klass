@@ -22,7 +22,7 @@ public class VariableResolutionPhase extends AbstractCompilerPhase
     {
         super.enterUrlDeclaration(ctx);
 
-        AntlrUrl                           urlState               = this.compilerState.getCompilerWalkState().getUrlState();
+        AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
 
         OrderedMap<String, AntlrParameter> formalParametersByName = urlState.getFormalParametersByName();
         for (AntlrService serviceState : urlState.getServiceStates())

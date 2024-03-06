@@ -39,7 +39,7 @@ public class AntlrUrl extends AntlrElement
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             AntlrServiceGroup.AMBIGUOUS);
 
     private static final Object SENTINEL = new Object();
@@ -63,10 +63,10 @@ public class AntlrUrl extends AntlrElement
     public AntlrUrl(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrServiceGroup serviceGroup)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
@@ -187,10 +187,10 @@ public class AntlrUrl extends AntlrElement
         if (this.serviceStates.isEmpty())
         {
             String message = String.format(
-                    "ERR_URL_EMP: Service url should declare at least one verb: '%s'.",
+                    "Service url should declare at least one verb: '%s'.",
                     this.getElementContext().url().getText());
 
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_URL_EMP", message, this);
         }
     }
 
@@ -244,7 +244,7 @@ public class AntlrUrl extends AntlrElement
 
         this.elementBuilder = new UrlBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.serviceGroup.getElementBuilder());
 
         ImmutableList<ElementBuilder<?>> pathSegments = this.urlPathSegments

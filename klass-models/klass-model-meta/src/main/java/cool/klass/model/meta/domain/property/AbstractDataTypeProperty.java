@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -53,7 +54,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
 
     protected AbstractDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -61,7 +62,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             @Nonnull AbstractClassifier owningClassifier,
             boolean isOptional)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, dataType, owningClassifier);
+        super(elementContext, macroElement, nameContext, name, ordinal, dataType, owningClassifier);
         this.optional = isOptional;
     }
 
@@ -214,7 +215,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
 
         protected DataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -223,7 +224,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isOptional)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
+            super(elementContext, macroElement, nameContext, name, ordinal, typeBuilder, owningClassifierBuilder);
             this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
             this.isOptional = isOptional;
         }

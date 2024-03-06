@@ -28,11 +28,11 @@ public class AntlrServiceCriteria extends AntlrElement
     public AntlrServiceCriteria(
             @Nonnull ServiceCriteriaDeclarationContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull String serviceCriteriaKeyword,
             AntlrService serviceState)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.serviceCriteriaKeyword = Objects.requireNonNull(serviceCriteriaKeyword);
         this.serviceState = Objects.requireNonNull(serviceState);
     }
@@ -64,8 +64,8 @@ public class AntlrServiceCriteria extends AntlrElement
     public void reportDuplicateKeyword(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: Test coverage of duplicate service criteria
-        String message = String.format("ERR_DUP_CRI: Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
-        compilerErrorHolder.add(message, this.antlrCriteria, this.getElementContext());
+        String message = String.format("Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
+        compilerErrorHolder.add("ERR_DUP_CRI", message, this.antlrCriteria, this.getElementContext());
     }
 
     @Nonnull
@@ -100,6 +100,7 @@ public class AntlrServiceCriteria extends AntlrElement
                     this.serviceState.getVerbState().getVerb(),
                     allowedCriteriaTypes);
             compilerErrorHolder.add(
+                    "ERR_VRB_CRT",
                     error,
                     this,
                     this.getElementContext().serviceCriteriaKeyword());

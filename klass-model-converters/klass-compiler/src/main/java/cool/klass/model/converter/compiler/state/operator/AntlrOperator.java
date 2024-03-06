@@ -23,10 +23,10 @@ public abstract class AntlrOperator extends AntlrElement
     protected AntlrOperator(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             String operatorText)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.operatorText = operatorText;
     }
 

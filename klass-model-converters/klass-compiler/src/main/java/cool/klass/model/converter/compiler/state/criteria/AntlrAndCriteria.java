@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
@@ -18,10 +20,10 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     public AntlrAndCriteria(
             @Nonnull CriteriaExpressionAndContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, inferred, criteriaOwner);
+        super(elementContext, compilationUnit, macroElement, criteriaOwner);
     }
 
     @Nonnull
@@ -41,7 +43,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
         }
         this.elementBuilder = new AndCriteriaBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.left.build(),
                 this.right.build());
         return this.elementBuilder;

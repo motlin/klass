@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
@@ -27,7 +28,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
 
     private ParameterizedPropertyImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -35,7 +36,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
             @Nonnull KlassImpl owningKlass,
             @Nonnull Multiplicity multiplicity)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, type, owningKlass);
+        super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlass);
         this.multiplicity = Objects.requireNonNull(multiplicity);
     }
 
@@ -75,7 +76,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
 
         public ParameterizedPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -83,7 +84,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, type, owningKlassBuilder);
+            super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlassBuilder);
             this.multiplicity = Objects.requireNonNull(multiplicity);
         }
 
@@ -98,7 +99,7 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         {
             ParameterizedPropertyImpl parameterizedProperty = new ParameterizedPropertyImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

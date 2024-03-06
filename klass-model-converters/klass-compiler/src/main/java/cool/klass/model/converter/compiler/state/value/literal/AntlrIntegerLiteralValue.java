@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.value.literal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -16,17 +18,17 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrIntegerLiteralValue extends AbstractAntlrLiteralValue
 {
-    private final int                        value;
+    private final int value;
     private       IntegerLiteralValueBuilder elementBuilder;
 
     public AntlrIntegerLiteralValue(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             int value,
             IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred, expressionValueOwner);
+        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
         this.value = value;
     }
 
@@ -43,7 +45,10 @@ public final class AntlrIntegerLiteralValue extends AbstractAntlrLiteralValue
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new IntegerLiteralValueBuilder(this.elementContext, this.inferred, this.value);
+        this.elementBuilder = new IntegerLiteralValueBuilder(
+                this.elementContext,
+                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.value);
         return this.elementBuilder;
     }
 

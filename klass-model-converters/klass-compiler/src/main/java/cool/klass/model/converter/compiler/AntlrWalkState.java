@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
@@ -36,6 +37,8 @@ public class AntlrWalkState
     private UrlDeclarationContext          urlDeclarationContext;
     @Nullable
     private ServiceDeclarationContext      serviceDeclarationContext;
+    @Nullable
+    private ClassModifierContext           classModifierContext;
 
     @Nullable
     public PackageNameContext getPackageContext()
@@ -55,7 +58,7 @@ public class AntlrWalkState
 
     public void enterInterfaceDeclaration(InterfaceDeclarationContext ctx)
     {
-        assertNull(this.interfaceDeclarationContext);
+        AntlrWalkState.assertNull(this.interfaceDeclarationContext);
         this.interfaceDeclarationContext = ctx;
     }
 
@@ -66,7 +69,7 @@ public class AntlrWalkState
 
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        assertNull(this.classDeclarationContext);
+        AntlrWalkState.assertNull(this.classDeclarationContext);
         this.classDeclarationContext = ctx;
     }
 
@@ -77,7 +80,7 @@ public class AntlrWalkState
 
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        assertNull(this.enumerationDeclarationContext);
+        AntlrWalkState.assertNull(this.enumerationDeclarationContext);
         this.enumerationDeclarationContext = ctx;
     }
 
@@ -88,7 +91,7 @@ public class AntlrWalkState
 
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        assertNull(this.associationDeclarationContext);
+        AntlrWalkState.assertNull(this.associationDeclarationContext);
         this.associationDeclarationContext = ctx;
     }
 
@@ -99,7 +102,7 @@ public class AntlrWalkState
 
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        assertNull(this.projectionDeclarationContext);
+        AntlrWalkState.assertNull(this.projectionDeclarationContext);
         this.projectionDeclarationContext = ctx;
     }
 
@@ -140,13 +143,24 @@ public class AntlrWalkState
 
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
-        assertNull(this.parameterizedPropertyContext);
+        AntlrWalkState.assertNull(this.parameterizedPropertyContext);
         this.parameterizedPropertyContext = ctx;
     }
 
     public void exitParameterizedProperty()
     {
         this.parameterizedPropertyContext = null;
+    }
+
+    public void enterClassModifier(ClassModifierContext ctx)
+    {
+        AntlrWalkState.assertNull(this.classModifierContext);
+        this.classModifierContext = ctx;
+    }
+
+    public void exitClassModifier()
+    {
+        this.classModifierContext = null;
     }
 
     private static void assertNull(Object object)
@@ -170,7 +184,7 @@ public class AntlrWalkState
         antlrWalkState.projectionDeclarationContext = this.projectionDeclarationContext;
         antlrWalkState.urlDeclarationContext = this.urlDeclarationContext;
         antlrWalkState.serviceDeclarationContext = this.serviceDeclarationContext;
-
+        antlrWalkState.classModifierContext = this.classModifierContext;
         return antlrWalkState;
     }
 
@@ -209,6 +223,10 @@ public class AntlrWalkState
             throw new AssertionError();
         }
         if (this.serviceDeclarationContext != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.classModifierContext != null)
         {
             throw new AssertionError();
         }

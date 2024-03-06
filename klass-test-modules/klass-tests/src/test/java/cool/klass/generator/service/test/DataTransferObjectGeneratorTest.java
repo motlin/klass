@@ -6,7 +6,7 @@ import cool.klass.generator.dto.DataTransferObjectsGenerator;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.CompilerError;
+import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.test.constants.KlassTestConstants;
@@ -30,7 +30,7 @@ public class DataTransferObjectGeneratorTest
         CompilerState         compilerState  = new CompilerState(compilationUnit);
         KlassCompiler         klassCompiler  = new KlassCompiler(compilerState);
         DomainModel           domainModel    = klassCompiler.compile();
-        ImmutableList<String> compilerErrors = compilerState.getCompilerErrors().collect(CompilerError::toString);
+        ImmutableList<String> compilerErrors = compilerState.getCompilerErrors().collect(RootCompilerError::toString);
         assertThat(compilerErrors, is(Lists.immutable.empty()));
         assertThat(domainModel, notNullValue());
 

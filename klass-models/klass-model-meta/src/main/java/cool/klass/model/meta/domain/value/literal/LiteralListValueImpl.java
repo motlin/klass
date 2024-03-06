@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain.value.literal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.api.Type.TypeGetter;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
@@ -19,10 +21,10 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
 
     private LiteralListValueImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             Type type)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -55,10 +57,10 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 TypeGetter typeBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
 
@@ -77,7 +79,7 @@ public final class LiteralListValueImpl extends AbstractLiteralValue implements 
         {
             return new LiteralListValueImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.typeBuilder.getType());
         }
 

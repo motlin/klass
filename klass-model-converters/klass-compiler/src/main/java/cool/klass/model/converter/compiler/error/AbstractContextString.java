@@ -1,0 +1,57 @@
+package cool.klass.model.converter.compiler.error;
+
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
+
+import static org.fusesource.jansi.Ansi.Color.BLACK;
+import static org.fusesource.jansi.Ansi.Color.WHITE;
+import static org.fusesource.jansi.Ansi.ansi;
+
+public abstract class AbstractContextString
+{
+    protected final int    line;
+    protected final String string;
+
+    public AbstractContextString(int line, String string)
+    {
+        this.line = line;
+        this.string = Objects.requireNonNull(string);
+    }
+
+    protected static String padLeft(String string, int width)
+    {
+        return String.format("%" + width + "s║", string);
+    }
+
+    public int getLine()
+    {
+        return this.line;
+    }
+
+    public String getString()
+    {
+        return this.string;
+    }
+
+    public String toString(int lineNumberWidth)
+    {
+        MutableList<String> strings = ArrayAdapter.adapt(this.string.split("\n"));
+        return strings
+                .collectWithIndex((string, index) -> this.toString(string, index, lineNumberWidth))
+                .makeString("\n");
+    }
+
+    protected String toString(String string, int offset, int lineNumberWidth)
+    {
+        String lineNumberString       = this.getLineNumberString(this.line + offset);
+        String paddedLineNumberString = AbstractContextString.padLeft(lineNumberString, lineNumberWidth);
+        return ansi().bg(BLACK).fg(WHITE).a(paddedLineNumberString).a(" ").a(string).toString();
+    }
+
+    @Nonnull
+    protected abstract String getLineNumberString(int line);
+}

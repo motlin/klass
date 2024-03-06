@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.projection.ProjectionImpl;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -17,10 +19,10 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
 
     private ServiceProjectionDispatchImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ProjectionImpl projection)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.projection = Objects.requireNonNull(projection);
     }
 
@@ -38,10 +40,10 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
 
         public ServiceProjectionDispatchBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ProjectionBuilder projectionBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.projectionBuilder = Objects.requireNonNull(projectionBuilder);
         }
 
@@ -51,7 +53,7 @@ public final class ServiceProjectionDispatchImpl extends AbstractElement impleme
         {
             return new ServiceProjectionDispatchImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.projectionBuilder.getElement());
         }
     }

@@ -19,24 +19,24 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrOrderByMemberReferencePath extends AntlrElement
 {
     @Nonnull
-    private final AntlrOrderBy                 orderByState;
-    private final int                          ordinal;
+    private final AntlrOrderBy                      orderByState;
+    private final int                               ordinal;
     @Nonnull
-    private final AntlrThisMemberReferencePath thisMemberReferencePathState;
+    private final AntlrThisMemberReferencePath      thisMemberReferencePathState;
     @Nonnull
-    private final AntlrOrderByDirection        orderByDirectionState;
-    private OrderByMemberReferencePathBuilder elementBuilder;
+    private final AntlrOrderByDirection             orderByDirectionState;
+    private       OrderByMemberReferencePathBuilder elementBuilder;
 
     public AntlrOrderByMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrOrderBy orderByState,
             int ordinal,
             AntlrThisMemberReferencePath thisMemberReferencePathState,
             AntlrOrderByDirection orderByDirectionState)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.orderByState = Objects.requireNonNull(orderByState);
         this.ordinal = ordinal;
         this.thisMemberReferencePathState = Objects.requireNonNull(thisMemberReferencePathState);
@@ -80,7 +80,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.orderByState.getElementBuilder(),
                 this.ordinal,
                 thisMemberReferencePathBuilder,

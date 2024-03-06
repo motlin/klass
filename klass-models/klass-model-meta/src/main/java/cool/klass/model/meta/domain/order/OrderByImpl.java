@@ -1,12 +1,14 @@
 package cool.klass.model.meta.domain.order;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
@@ -22,10 +24,10 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
 
     private OrderByImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull AbstractClassifier thisContext)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.thisContext = Objects.requireNonNull(thisContext);
     }
 
@@ -49,10 +51,10 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
 
         public OrderByBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ClassifierBuilder<?> thisContextBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.thisContextBuilder = Objects.requireNonNull(thisContextBuilder);
         }
 
@@ -67,7 +69,7 @@ public final class OrderByImpl extends AbstractElement implements OrderBy
         {
             return new OrderByImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.thisContextBuilder.getElement());
         }
 

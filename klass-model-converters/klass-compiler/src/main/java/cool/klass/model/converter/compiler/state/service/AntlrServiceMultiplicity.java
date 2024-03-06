@@ -17,7 +17,7 @@ public class AntlrServiceMultiplicity extends AntlrElement
     public static final AntlrServiceMultiplicity AMBIGUOUS = new AntlrServiceMultiplicity(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             ServiceMultiplicity.ONE);
 
     @Nonnull
@@ -26,10 +26,10 @@ public class AntlrServiceMultiplicity extends AntlrElement
     public AntlrServiceMultiplicity(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
     }
 

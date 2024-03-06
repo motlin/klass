@@ -17,18 +17,19 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrOrderByDirection extends AntlrElement
 {
     @Nonnull
-    private final OrderByDirection orderByDirection;
+    private final OrderByDirection                   orderByDirection;
     private       OrderByDirectionDeclarationBuilder elementBuilder;
 
     public AntlrOrderByDirection(
             @Nullable OrderByDirectionContext orderByDirectionContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred)
+            Optional<AntlrElement> macroElement)
     {
         super(
                 orderByDirectionContext == null ? new ParserRuleContext() : orderByDirectionContext,
                 compilationUnit,
-                inferred || orderByDirectionContext == null);
+                // TODO: When "ascending" is inferred because it's absent, that should be a macro
+                macroElement);
         this.orderByDirection = this.getOrderByDirection(orderByDirectionContext);
     }
 
@@ -78,7 +79,7 @@ public class AntlrOrderByDirection extends AntlrElement
         }
         this.elementBuilder = new OrderByDirectionDeclarationBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.orderByDirection);
         return this.elementBuilder;
     }

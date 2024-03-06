@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -16,14 +17,14 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
 
     private EnumerationLiteralImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull Optional<String> prettyName)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, enumeration);
+        super(elementContext, macroElement, nameContext, name, ordinal, enumeration);
         this.prettyName = prettyName;
     }
 
@@ -43,14 +44,14 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
 
         public EnumerationLiteralBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull Optional<String> prettyName,
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.prettyName = prettyName;
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
@@ -61,7 +62,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
         {
             return new EnumerationLiteralImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

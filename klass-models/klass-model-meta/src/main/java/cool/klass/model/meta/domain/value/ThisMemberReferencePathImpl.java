@@ -1,9 +1,12 @@
 package cool.klass.model.meta.domain.value;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
@@ -16,24 +19,24 @@ public final class ThisMemberReferencePathImpl extends AbstractMemberReferencePa
 {
     private ThisMemberReferencePathImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull KlassImpl klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, inferred, klass, associationEnds, property);
+        super(elementContext, macroElement, klass, associationEnds, property);
     }
 
     public static final class ThisMemberReferencePathBuilder extends AbstractMemberReferencePathBuilder<ThisMemberReferencePathImpl>
     {
         public ThisMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, inferred, klassBuilder, associationEndBuilders, propertyBuilder);
+            super(elementContext, macroElement, klassBuilder, associationEndBuilders, propertyBuilder);
         }
 
         @Override
@@ -42,7 +45,7 @@ public final class ThisMemberReferencePathImpl extends AbstractMemberReferencePa
         {
             return new ThisMemberReferencePathImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.klassBuilder.getElement(),
                     this.associationEndBuilders.collect(AssociationEndBuilder::getElement),
                     this.propertyBuilder.getElement());

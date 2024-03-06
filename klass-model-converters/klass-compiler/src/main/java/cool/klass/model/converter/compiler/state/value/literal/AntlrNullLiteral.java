@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.value.literal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -21,10 +23,10 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
     public AntlrNullLiteral(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred, expressionValueOwner);
+        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
     }
 
     @Override
@@ -40,7 +42,9 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new NullLiteralBuilder(this.elementContext, this.inferred);
+        this.elementBuilder = new NullLiteralBuilder(
+                this.elementContext,
+                this.macroElement.map(AntlrElement::getElementBuilder));
         return this.elementBuilder;
     }
 

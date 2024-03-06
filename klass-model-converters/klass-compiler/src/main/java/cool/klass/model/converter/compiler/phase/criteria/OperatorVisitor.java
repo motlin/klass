@@ -40,7 +40,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
         return new AntlrEqualityOperator(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.getText());
     }
 
@@ -51,7 +51,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
         return new AntlrInequalityOperator(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.getText());
     }
 
@@ -62,7 +62,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
         return new AntlrInOperator(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.getText());
     }
 
@@ -73,7 +73,7 @@ public class OperatorVisitor extends KlassBaseVisitor<AntlrOperator>
         return new AntlrStringOperator(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.getText());
     }
 }

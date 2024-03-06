@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
@@ -29,14 +30,14 @@ public final class ProjectionProjectionReferenceImpl
 
     private ProjectionProjectionReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull ProjectionParent parent,
             @Nonnull AssociationEndImpl associationEnd)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.parent = Objects.requireNonNull(parent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -82,14 +83,14 @@ public final class ProjectionProjectionReferenceImpl
 
         public ProjectionProjectionReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.parentBuilder = Objects.requireNonNull(parentBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
@@ -110,7 +111,7 @@ public final class ProjectionProjectionReferenceImpl
         {
             return new ProjectionProjectionReferenceImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

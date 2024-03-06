@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.operator;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.Operator;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -15,10 +17,10 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
 
     protected AbstractOperator(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull String operatorText)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.operatorText = Objects.requireNonNull(operatorText);
     }
 
@@ -37,10 +39,10 @@ public abstract class AbstractOperator extends AbstractElement implements Operat
 
         protected AbstractOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String operatorText)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.operatorText = Objects.requireNonNull(operatorText);
         }
     }

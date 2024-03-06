@@ -257,7 +257,7 @@
 
         <module name="AvoidStaticImport">
             <property name="excludes"
-                    value="org.junit.Assert.*,org.junit.Assume.*,org.hamcrest.CoreMatchers.*,org.hamcrest.Matchers.*,org.eclipse.collections.impl.test.Verify.*" />
+                    value="org.junit.Assert.*,org.junit.Assume.*,org.hamcrest.CoreMatchers.*,org.hamcrest.Matchers.*,org.eclipse.collections.impl.test.Verify.*,org.fusesource.jansi.Ansi.Color.*,org.fusesource.jansi.Ansi.*" />
         </module>
 
         <module name="MissingDeprecated" />

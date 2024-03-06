@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.BinaryCriteria;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -16,11 +18,11 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
 
     protected AbstractBinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull AbstractCriteria left,
             @Nonnull AbstractCriteria right)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.left = Objects.requireNonNull(left);
         this.right = Objects.requireNonNull(right);
     }
@@ -49,11 +51,11 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
 
         protected AbstractBinaryCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractCriteriaBuilder<?> left,
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.left = Objects.requireNonNull(left);
             this.right = Objects.requireNonNull(right);
         }

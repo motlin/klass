@@ -22,10 +22,10 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
     protected AbstractAntlrPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             AntlrDataTypeProperty<?> owningPropertyState)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.owningPropertyState = Objects.requireNonNull(owningPropertyState);
     }
 
@@ -51,9 +51,9 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
     {
         ParserRuleContext offendingToken = this.getElementContext();
         String message = String.format(
-                "ERR_VLD_TYP: Invalid validation '%s' for type %s.",
+                "Invalid validation '%s' for type %s.",
                 offendingToken.getText(),
                 primitiveType.getPrettyName());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_VLD_TYP", message, this, offendingToken);
     }
 }

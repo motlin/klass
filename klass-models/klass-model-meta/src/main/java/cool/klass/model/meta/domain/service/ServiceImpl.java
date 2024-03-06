@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.Criteria;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.service.Service;
@@ -41,12 +42,12 @@ public final class ServiceImpl extends AbstractElement implements Service
 
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull UrlImpl url,
             @Nonnull Verb verb,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.url = Objects.requireNonNull(url);
         this.verb = Objects.requireNonNull(verb);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -224,12 +225,12 @@ public final class ServiceImpl extends AbstractElement implements Service
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull Verb verb,
                 @Nonnull ServiceMultiplicity serviceMultiplicity)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.urlBuilder = Objects.requireNonNull(urlBuilder);
             this.verb = Objects.requireNonNull(verb);
             this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
@@ -300,7 +301,7 @@ public final class ServiceImpl extends AbstractElement implements Service
         {
             ServiceImpl service = new ServiceImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.urlBuilder.getElement(),
                     this.verb,
                     this.serviceMultiplicity);

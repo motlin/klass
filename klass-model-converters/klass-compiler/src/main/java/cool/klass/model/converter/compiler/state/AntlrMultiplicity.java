@@ -22,15 +22,15 @@ public class AntlrMultiplicity extends AntlrElement
     public AntlrMultiplicity(
             @Nonnull MultiplicityContext context,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred)
+            Optional<AntlrElement> macroElement)
     {
-        super(context, compilationUnit, inferred);
+        super(context, compilationUnit, macroElement);
         this.multiplicity = this.getMultiplicity(context);
     }
 
     private AntlrMultiplicity()
     {
-        super(new ParserRuleContext(), null, true);
+        super(new ParserRuleContext(), null, Optional.empty());
         this.multiplicity = Multiplicity.ONE_TO_ONE;
     }
 

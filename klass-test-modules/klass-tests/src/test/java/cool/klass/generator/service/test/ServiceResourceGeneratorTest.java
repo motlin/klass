@@ -6,7 +6,7 @@ import cool.klass.generator.service.ServiceResourceGenerator;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.CompilerError;
+import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.test.constants.KlassTestConstants;
@@ -29,7 +29,7 @@ public class ServiceResourceGeneratorTest
         CompilerState         compilerState  = new CompilerState(compilationUnit);
         KlassCompiler         klassCompiler  = new KlassCompiler(compilerState);
         DomainModel           domainModel    = klassCompiler.compile();
-        ImmutableList<String> compilerErrors = compilerState.getCompilerErrors().collect(CompilerError::toString);
+        ImmutableList<String> compilerErrors = compilerState.getCompilerErrors().collect(RootCompilerError::toString);
         assertThat(compilerErrors, is(Lists.immutable.empty()));
         assertThat(domainModel, notNullValue());
 

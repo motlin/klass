@@ -1,8 +1,11 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -13,13 +16,13 @@ public final class AssociationEndModifierImpl extends AbstractNamedElement imple
 
     private AssociationEndModifierImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             AssociationEndImpl associationEnd)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.associationEnd = associationEnd;
     }
 
@@ -35,13 +38,13 @@ public final class AssociationEndModifierImpl extends AbstractNamedElement imple
 
         public AssociationEndModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.associationEndBuilder = associationEndBuilder;
         }
 
@@ -51,7 +54,7 @@ public final class AssociationEndModifierImpl extends AbstractNamedElement imple
         {
             return new AssociationEndModifierImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

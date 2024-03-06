@@ -1,7 +1,9 @@
 package cool.klass.model.converter.compiler;
 
 import java.util.IdentityHashMap;
+import java.util.Optional;
 
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -15,7 +17,7 @@ public class CompilerInputState
     private final MutableSet<CompilationUnit>                    compilationUnits;
     private final MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext;
 
-    private boolean isInference;
+    private Optional<AntlrElement> macroElement = Optional.empty();
 
     public CompilerInputState(MutableSet<CompilationUnit> compilationUnits)
     {
@@ -31,27 +33,28 @@ public class CompilerInputState
         this.compilationUnitsByContext.put(compilationUnit.getParserContext(), compilationUnit);
     }
 
-    private void withInference(Runnable runnable)
+    private void withInference(AntlrElement macroElement, Runnable runnable)
     {
-        boolean oldIsInference = this.isInference;
+        Optional<AntlrElement> oldMacroElement = this.macroElement;
 
         try
         {
-            this.isInference = true;
+            this.macroElement = Optional.of(macroElement);
             runnable.run();
         }
         finally
         {
-            this.isInference = oldIsInference;
+            this.macroElement = oldMacroElement;
         }
     }
 
     public void runCompilerMacro(
+            AntlrElement macroElement,
             CompilationUnit compilationUnit,
             ImmutableList<ParseTreeListener> listeners)
     {
         this.addCompilationUnit(compilationUnit);
-        this.withInference(() ->
+        this.withInference(macroElement, () ->
         {
             ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
             for (ParseTreeListener listener : listeners)
@@ -66,9 +69,9 @@ public class CompilerInputState
         return this.compilationUnits.asUnmodifiable();
     }
 
-    public boolean isInference()
+    public Optional<AntlrElement> getMacroElement()
     {
-        return this.isInference;
+        return this.macroElement;
     }
 
     public CompilationUnit getCompilationUnitByContext(ParserRuleContext ctx)

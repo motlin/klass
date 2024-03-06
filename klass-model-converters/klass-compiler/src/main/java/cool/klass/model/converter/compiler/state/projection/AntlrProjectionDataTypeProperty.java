@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -8,6 +9,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -24,7 +26,7 @@ public class AntlrProjectionDataTypeProperty
     public static final AntlrProjectionDataTypeProperty AMBIGUOUS = new AntlrProjectionDataTypeProperty(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(), "ambiguous projection member",
             -1,
             new HeaderContext(null, -1),
@@ -33,11 +35,11 @@ public class AntlrProjectionDataTypeProperty
             AntlrPrimitiveProperty.AMBIGUOUS);
 
     @Nonnull
-    private final HeaderContext headerContext;
+    private final HeaderContext            headerContext;
     @Nonnull
-    private final String headerText;
+    private final String                   headerText;
     @Nonnull
-    private final AntlrProjectionParent antlrProjectionParent;
+    private final AntlrProjectionParent    antlrProjectionParent;
     @Nonnull
     private final AntlrDataTypeProperty<?> dataTypeProperty;
 
@@ -46,7 +48,7 @@ public class AntlrProjectionDataTypeProperty
     public AntlrProjectionDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -55,7 +57,7 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText = Objects.requireNonNull(headerText);
         this.headerContext = Objects.requireNonNull(headerContext);
@@ -78,7 +80,7 @@ public class AntlrProjectionDataTypeProperty
         }
         this.projectionDataTypePropertyBuilder = new ProjectionDataTypePropertyBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -111,8 +113,8 @@ public class AntlrProjectionDataTypeProperty
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.getName());
-        compilerErrorHolder.add(message, this);
+        String message = String.format("Duplicate member: '%s'.", this.getName());
+        compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
@@ -121,15 +123,15 @@ public class AntlrProjectionDataTypeProperty
         if (this.dataTypeProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
             String message = String.format(
-                    "ERR_PRJ_DTP: Cannot find member '%s.%s'.",
+                    "Cannot find member '%s.%s'.",
                     this.antlrProjectionParent.getKlass().getName(),
                     this.name);
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
         }
 
         if (this.headerText.trim().isEmpty())
         {
-            compilerErrorHolder.add("Empty header string.", this, this.headerContext);
+            compilerErrorHolder.add("ERR_PRJ_HDR", "Empty header string.", this, this.headerContext);
         }
     }
 

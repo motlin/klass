@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.order;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.order.OrderByDirection;
 import cool.klass.model.meta.domain.api.order.OrderByDirectionDeclaration;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,10 +18,10 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
 
     private OrderByDirectionDeclarationImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull OrderByDirection orderByDirection)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.orderByDirection = Objects.requireNonNull(orderByDirection);
     }
 
@@ -37,10 +39,10 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
 
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull OrderByDirection orderByDirection)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.orderByDirection = Objects.requireNonNull(orderByDirection);
         }
 
@@ -50,7 +52,7 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
         {
             return new OrderByDirectionDeclarationImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.orderByDirection);
         }
     }

@@ -1,12 +1,14 @@
 package cool.klass.model.converter.compiler.state.value;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -29,11 +31,11 @@ public class AntlrVariableReference extends AntlrExpressionValue
     public AntlrVariableReference(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull String variableName,
             IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred, expressionValueOwner);
+        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
         this.variableName = Objects.requireNonNull(variableName);
     }
 
@@ -47,7 +49,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         }
         this.elementBuilder = new VariableReferenceBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.antlrParameter.getElementBuilder());
         return this.elementBuilder;
     }
@@ -64,8 +66,8 @@ public class AntlrVariableReference extends AntlrExpressionValue
     {
         if (this.antlrParameter == AntlrParameter.NOT_FOUND)
         {
-            String message = String.format("ERR_VAR_REF: Cannot find parameter '%s'.", this.elementContext.getText());
-            compilerErrorHolder.add(message, this);
+            String message = String.format("Cannot find parameter '%s'.", this.elementContext.getText());
+            compilerErrorHolder.add("ERR_VAR_REF", message, this);
             return;
         }
         if (this.antlrParameter == AntlrParameter.AMBIGUOUS)

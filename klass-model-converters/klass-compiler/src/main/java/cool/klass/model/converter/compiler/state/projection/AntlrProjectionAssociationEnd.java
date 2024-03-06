@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -8,6 +9,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
@@ -25,7 +27,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public static final AntlrProjectionAssociationEnd AMBIGUOUS = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous projection",
             -1,
@@ -37,7 +39,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public static final AntlrProjectionAssociationEnd NOT_FOUND = new AntlrProjectionAssociationEnd(
             new ProjectionAssociationEndContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found projection",
             -1,
@@ -56,7 +58,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     public AntlrProjectionAssociationEnd(
             @Nonnull ProjectionAssociationEndContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -64,7 +66,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrAssociationEnd associationEnd)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -80,7 +82,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
         this.projectionAssociationEndBuilder = new ProjectionAssociationEndBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -118,8 +120,8 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
-        compilerErrorHolder.add(message, this);
+        String message = String.format("Duplicate member: '%s'.", this.name);
+        compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
@@ -132,8 +134,8 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
 
         if (this.associationEnd == AntlrAssociationEnd.NOT_FOUND)
         {
-            String message = String.format("ERR_PAE_NFD: Not found: '%s'.", this.name);
-            compilerErrorHolder.add(message, this);
+            String message = String.format("Not found: '%s'.", this.name);
+            compilerErrorHolder.add("ERR_PAE_NFD", message, this);
         }
 
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();

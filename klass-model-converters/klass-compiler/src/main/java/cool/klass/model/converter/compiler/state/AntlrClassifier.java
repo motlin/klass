@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
@@ -11,6 +12,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -28,22 +30,24 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
     protected final MutableList<AntlrInterface>           interfaceStates        = Lists.mutable.empty();
 
-    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName =
+    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>>         dataTypePropertiesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<String, AntlrClassModifier>       classModifiersByName     =
+    protected final MutableOrderedMap<String, AntlrClassModifier>               classModifiersByName     =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<ClassModifierContext, AntlrClassModifier> classModifiersByContext  =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrClassifier(
             ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             ParserRuleContext nameContext,
             String name,
             int ordinal,
             ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
     }
 
     protected ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties(MutableList<AntlrClassifier> visited)
@@ -83,10 +87,10 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
         visited.add(this);
 
-        MutableSet<String> propertyNames = this.classModifierStates.collect(AntlrNamedElement::getName).toSet();
+        MutableSet<String> modifierNames = this.classModifierStates.collect(AntlrNamedElement::getName).toSet();
 
         ImmutableList<AntlrClassModifier> inheritedModifiers = this.getInheritedModifiers(visited)
-                .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
+                .reject(inheritedProperty -> modifierNames.contains(inheritedProperty.getName()));
 
         return this.classModifierStates.toImmutable().newWithAll(inheritedModifiers);
     }
@@ -129,6 +133,24 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 (name, builder) -> builder == null
                         ? classModifierState
                         : AntlrClassModifier.AMBIGUOUS);
+
+        AntlrClassModifier duplicate = this.classModifiersByContext.put(
+                classModifierState.getElementContext(),
+                classModifierState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public AntlrClassModifier getClassModifierByContext(ClassModifierContext classModifierContext)
+    {
+        return this.classModifiersByContext.get(classModifierContext);
+    }
+
+    public int getNumClassModifiers()
+    {
+        return this.classModifierStates.size();
     }
 
     public void enterImplementsDeclaration(AntlrInterface interfaceState)
@@ -181,13 +203,13 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         if (numIdProperties > 1)
         {
             String message = String.format(
-                    "ERR_MNY_IDS: Class '%s' may only have one id property. Found: %s.",
+                    "Class '%s' may only have one id property. Found: %s.",
                     this.name,
                     this.dataTypePropertyStates
                             .select(AntlrDataTypeProperty::isID)
                             .collect(AntlrDataTypeProperty::getShortString)
                             .makeString());
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_MNY_IDS", message, this);
         }
     }
 
@@ -198,7 +220,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         if (numIdProperties > 0 && numKeyProperties != numIdProperties)
         {
             String message = String.format(
-                    "ERR_KEY_IDS: Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
+                    "Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
                     this.name,
                     this.dataTypePropertyStates
                             .select(AntlrDataTypeProperty::isID)
@@ -209,7 +231,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                             .reject(AntlrDataTypeProperty::isID)
                             .collect(AntlrDataTypeProperty::getShortString)
                             .makeString());
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_KEY_IDS", message, this);
         }
     }
 
@@ -222,9 +244,9 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             {
                 InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
                 String message = String.format(
-                        "ERR_IMP_INT: Cannot find interface '%s'.",
+                        "Cannot find interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_IMP_INT", message, this, offendingToken);
             }
         }
     }
@@ -245,18 +267,18 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             {
                 InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
                 String message = String.format(
-                        "ERR_DUP_INT: Duplicate interface '%s'.",
+                        "Duplicate interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_DUP_INT", message, this, offendingToken);
             }
 
             if (this.isInterfaceRedundant(i, interfaceState))
             {
                 InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
                 String message = String.format(
-                        "ERR_RED_INT: Redundant interface '%s'.",
+                        "Redundant interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_RED_INT", message, this, offendingToken);
             }
 
             visitedInterfaceStates.add(interfaceState);
@@ -296,11 +318,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     protected abstract ImmutableList<String> getDeclaredMemberNames();
 
-    public int getNumClassModifiers()
-    {
-        return this.classModifierStates.size();
-    }
-
     @Nonnull
     @Override
     public abstract ClassifierBuilder<?> getTypeGetter();
@@ -319,5 +336,21 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         }
 
         return AntlrEnumerationProperty.NOT_FOUND;
+    }
+
+    public abstract AntlrClassModifier getClassModifierByName(String name);
+
+    protected AntlrClassModifier getInterfaceClassModifierByName(String name)
+    {
+        for (AntlrInterface interfaceState : this.interfaceStates)
+        {
+            AntlrClassModifier interfaceModifier = interfaceState.getClassModifierByName(name);
+            if (interfaceModifier != AntlrClassModifier.NOT_FOUND)
+            {
+                return interfaceModifier;
+            }
+        }
+
+        return AntlrClassModifier.NOT_FOUND;
     }
 }

@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
@@ -22,14 +24,14 @@ public final class AssociationImpl extends AbstractPackageableElement implements
 
     private AssociationImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             AbstractCriteria criteria)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         this.criteria = criteria;
     }
 
@@ -77,14 +79,14 @@ public final class AssociationImpl extends AbstractPackageableElement implements
 
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull AbstractCriteriaBuilder<?> criteriaBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
             this.criteriaBuilder = Objects.requireNonNull(criteriaBuilder);
         }
 
@@ -99,7 +101,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         {
             return new AssociationImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

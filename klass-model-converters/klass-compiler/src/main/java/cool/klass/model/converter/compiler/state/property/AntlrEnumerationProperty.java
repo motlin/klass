@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.property.EnumerationPropertyImpl.EnumerationPropertyBuilder;
@@ -24,7 +26,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration property",
             -1,
@@ -42,7 +44,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
     public AntlrEnumerationProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -54,7 +56,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         super(
                 elementContext,
                 compilationUnit,
-                inferred,
+                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -105,7 +107,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
 
         this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -138,9 +140,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
 
         EnumerationReferenceContext offendingToken = this.getElementContext().enumerationReference();
         String message = String.format(
-                "ERR_ENM_PRP: Cannot find enumeration '%s'.",
+                "Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_ENM_PRP", message, this, offendingToken);
     }
 
     @Nonnull

@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.projection;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -7,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -22,7 +24,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous projection",
             -1,
@@ -33,7 +35,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     public static final AntlrProjection NOT_FOUND = new AntlrProjection(
             new ProjectionDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found projection",
             -1,
@@ -47,14 +49,14 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
     public AntlrProjection(
             @Nonnull ProjectionDeclarationContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass klass,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, klass);
         this.packageName = packageName;
     }
 
@@ -73,7 +75,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
 
         this.projectionBuilder = new ProjectionBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -105,7 +107,8 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
         if (this.klass == AntlrClass.NOT_FOUND)
         {
             compilerErrorHolder.add(
-                    String.format("ERR_PRJ_TYP: Cannot find class '%s'", this.getElementContext().classReference().getText()),
+                    "ERR_PRJ_TYP",
+                    String.format("Cannot find class '%s'", this.getElementContext().classReference().getText()),
                     this,
                     this.getElementContext().classReference());
         }

@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
@@ -15,7 +16,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.eclipse.collections.api.block.function.Function;
 
@@ -23,6 +23,8 @@ public final class CompilationUnit
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
+    @Nonnull
+    private final String            sourceName;
     @Nonnull
     private final String[]          lines;
     @Nonnull
@@ -33,11 +35,13 @@ public final class CompilationUnit
     private final ParserRuleContext parserContext;
 
     private CompilationUnit(
+            @Nonnull String sourceName,
             @Nonnull String[] lines,
             @Nonnull CharStream charStream,
             @Nonnull TokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
+        this.sourceName = Objects.requireNonNull(sourceName);
         this.lines = Objects.requireNonNull(lines);
         this.charStream = Objects.requireNonNull(charStream);
         this.tokenStream = Objects.requireNonNull(tokenStream);
@@ -79,14 +83,24 @@ public final class CompilationUnit
         String[]            lines             = NEWLINE_PATTERN.split(sourceCodeText);
         ANTLRErrorListener  errorListener     = new ThrowingErrorListener(sourceName, lines);
         CodePointCharStream charStream        = CharStreams.fromString(sourceCodeText, sourceName);
-        CommonTokenStream   tokenStream       = CompilationUnit.getTokenStream(charStream, errorListener);
+        KlassLexer          lexer             = getKlassLexer(errorListener, charStream);
+        CommonTokenStream   tokenStream       = new CommonTokenStream(lexer);
         KlassParser         parser            = CompilationUnit.getParser(errorListener, tokenStream);
         ParserRuleContext   parserRuleContext = parserRule.apply(parser);
         return new CompilationUnit(
+                sourceName,
                 lines,
                 charStream,
                 tokenStream,
                 parserRuleContext);
+    }
+
+    @Nonnull
+    protected static KlassLexer getKlassLexer(ANTLRErrorListener errorListener, CodePointCharStream charStream)
+    {
+        KlassLexer lexer = new KlassLexer(charStream);
+        lexer.addErrorListener(errorListener);
+        return lexer;
     }
 
     @Nonnull
@@ -96,15 +110,6 @@ public final class CompilationUnit
         {
             return scanner.hasNext() ? scanner.next() : "";
         }
-    }
-
-    private static CommonTokenStream getTokenStream(
-            CodePointCharStream charStream,
-            @Nonnull ANTLRErrorListener errorListener)
-    {
-        KlassLexer lexer = new KlassLexer(charStream);
-        lexer.addErrorListener(errorListener);
-        return new CommonTokenStream(lexer);
     }
 
     @Nonnull
@@ -118,38 +123,12 @@ public final class CompilationUnit
 
     @Nonnull
     public static CompilationUnit getMacroCompilationUnit(
-            @Nonnull ParserRuleContext parserContext,
-            @Nonnull Class<?> macroContextClass,
+            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
-        String sourceName = getMacroSourceName(parserContext, macroContextClass);
+        String sourceName = macroExpansionCompilerPhase.getName() + " macro";
         return createFromText(sourceName, sourceCodeText, parserRule);
-    }
-
-    private static String getMacroSourceName(
-            @Nonnull ParserRuleContext parserContext,
-            @Nonnull Class<?> macroContextClass)
-    {
-        Token  contextToken   = parserContext.getStart();
-        String contextMessage = getContextMessage(contextToken);
-        return String.format(
-                "%s compiler macro (%s)",
-                macroContextClass.getSimpleName(),
-                contextMessage);
-    }
-
-    public static String getContextMessage(@Nonnull Token contextToken)
-    {
-        String sourceName         = contextToken.getInputStream().getSourceName();
-        int    line               = contextToken.getLine();
-        int    charPositionInLine = contextToken.getCharPositionInLine();
-
-        return String.format(
-                "File: %s Line: %d Char: %d",
-                sourceName,
-                line,
-                charPositionInLine + 1);
     }
 
     @Nonnull
@@ -158,9 +137,32 @@ public final class CompilationUnit
         return this.parserContext;
     }
 
+    @Nonnull
+    public String getSourceName()
+    {
+        return this.sourceName;
+    }
+
     @Override
     public String toString()
     {
         return this.charStream.getSourceName();
+    }
+
+    @Nonnull
+    public CharStream getCharStream()
+    {
+        return this.charStream;
+    }
+
+    @Nonnull
+    public TokenStream getTokenStream()
+    {
+        return this.tokenStream;
+    }
+
+    public String getLine(int index)
+    {
+        return this.lines[index];
     }
 }

@@ -8,6 +8,7 @@ import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -26,6 +27,11 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     protected AbstractCompilerPhase(CompilerState compilerState)
     {
         this.compilerState = compilerState;
+    }
+
+    public String getName()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getName() not implemented yet");
     }
 
     @Override
@@ -225,5 +231,21 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     {
         this.compilerState.exitParameterizedProperty();
         super.exitParameterizedProperty(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterClassModifier(ClassModifierContext ctx)
+    {
+        super.enterClassModifier(ctx);
+        this.compilerState.enterClassModifier(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitClassModifier(ClassModifierContext ctx)
+    {
+        this.compilerState.exitClassModifier();
+        super.exitClassModifier(ctx);
     }
 }

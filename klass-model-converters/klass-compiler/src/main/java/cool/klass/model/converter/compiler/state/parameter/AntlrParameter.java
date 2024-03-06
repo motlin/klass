@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
@@ -29,7 +30,7 @@ public final class AntlrParameter extends AntlrNamedElement
     public static final AntlrParameter AMBIGUOUS = new AntlrParameter(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous enumeration url parameter",
             -1,
@@ -40,7 +41,7 @@ public final class AntlrParameter extends AntlrNamedElement
     public static final AntlrParameter NOT_FOUND = new AntlrParameter(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found enumeration url parameter",
             -1,
@@ -64,7 +65,7 @@ public final class AntlrParameter extends AntlrNamedElement
     public AntlrParameter(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -72,7 +73,7 @@ public final class AntlrParameter extends AntlrNamedElement
             @Nonnull AntlrMultiplicity multiplicityState,
             @Nonnull IAntlrElement parameterOwner)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.typeState = Objects.requireNonNull(typeState);
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
@@ -122,15 +123,15 @@ public final class AntlrParameter extends AntlrNamedElement
 
         EnumerationReferenceContext offendingToken = ((EnumerationParameterDeclarationContext) this.getElementContext()).enumerationReference();
         String message = String.format(
-                "ERR_ENM_PAR: Cannot find enumeration '%s'.",
+                "Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_ENM_PAR", message, this, offendingToken);
     }
 
     public void reportDuplicateParameterName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_PAR: Duplicate parameter: '%s'.", this.getName());
-        compilerErrorHolder.add(message, this);
+        String message = String.format("Duplicate parameter: '%s'.", this.getName());
+        compilerErrorHolder.add("ERR_DUP_PAR", message, this);
     }
 
     @Nonnull
@@ -148,7 +149,7 @@ public final class AntlrParameter extends AntlrNamedElement
         }
         this.elementBuilder = new ParameterBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,

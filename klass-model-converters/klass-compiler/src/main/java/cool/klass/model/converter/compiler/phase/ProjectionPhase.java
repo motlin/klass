@@ -76,7 +76,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
         AntlrProjectionDataTypeProperty projectionPrimitiveMemberState = new AntlrProjectionDataTypeProperty(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
@@ -107,7 +107,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
         AntlrProjectionAssociationEnd projectionAssociationEndState = new AntlrProjectionAssociationEnd(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
@@ -150,7 +150,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
         AntlrProjectionProjectionReference projectionProjectionReferenceState = new AntlrProjectionProjectionReference(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,

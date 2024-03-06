@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.operator.AbstractOperator;
 import cool.klass.model.meta.domain.operator.AbstractOperator.AbstractOperatorBuilder;
@@ -22,12 +24,12 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
 
     private OperatorCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull AbstractOperator operator,
             @Nonnull AbstractExpressionValue sourceValue,
             @Nonnull AbstractExpressionValue targetValue)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.operator = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
@@ -65,12 +67,12 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
 
         public OperatorCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull AbstractOperatorBuilder<?> operator,
                 @Nonnull AbstractExpressionValueBuilder<?> sourceValue,
                 @Nonnull AbstractExpressionValueBuilder<?> targetValue)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.operator = Objects.requireNonNull(operator);
             this.sourceValue = Objects.requireNonNull(sourceValue);
             this.targetValue = Objects.requireNonNull(targetValue);
@@ -82,7 +84,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
         {
             return new OperatorCriteriaImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.operator.build(),
                     this.sourceValue.build(),
                     this.targetValue.build());

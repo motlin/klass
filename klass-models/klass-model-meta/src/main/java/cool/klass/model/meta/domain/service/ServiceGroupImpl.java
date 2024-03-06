@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import cool.klass.model.meta.domain.AbstractPackageableElement;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.TopLevelElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
@@ -23,14 +25,14 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
 
     private ServiceGroupImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull KlassImpl klass)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -66,14 +68,14 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
 
         public ServiceGroupBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
@@ -88,7 +90,7 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
         {
             return new ServiceGroupImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

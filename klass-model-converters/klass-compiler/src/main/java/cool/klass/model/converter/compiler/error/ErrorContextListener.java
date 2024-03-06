@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.error;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -12,20 +13,20 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
-import cool.klass.model.meta.grammar.listener.KlassThrowingListener;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.Interval;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ErrorContextListener extends KlassThrowingListener
+public class ErrorContextListener extends AbstractErrorListener
 {
-    private final MutableList<String> contextualStrings;
-
     private int numProjectionAssociationEnds;
 
-    public ErrorContextListener(MutableList<String> contextualStrings)
+    public ErrorContextListener(
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull MutableList<AbstractContextString> contextualStrings)
     {
-        this.contextualStrings = contextualStrings;
+        super(compilationUnit, contextualStrings);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitInterfaceDeclaration(InterfaceDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -85,7 +86,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -130,7 +131,7 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        this.contextualStrings.add("}");
+        this.addTextInclusive("", ctx.getStop(), ctx.getStop());
     }
 
     @Override
@@ -154,18 +155,25 @@ public class ErrorContextListener extends KlassThrowingListener
     @Override
     public void exitServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        this.contextualStrings.add("        }");
+        this.addTextInclusive("        ", ctx.getStop(), ctx.getStop());
     }
 
     private void addTextInclusive(String indent, @Nonnull Token start, @Nonnull Token stop)
     {
-        String text = this.getTextInclusive(start, stop);
-        this.contextualStrings.add(indent + text);
+        String text   = this.getTextInclusive(start, stop);
+        String string = indent + text;
+        this.contextualStrings.add(new ContextString(start.getLine(), string));
     }
 
     private String getTextInclusive(@Nonnull Token startToken, @Nonnull Token stopToken)
     {
-        Interval interval = new Interval(startToken.getStartIndex(), stopToken.getStopIndex());
-        return startToken.getInputStream().getText(interval);
+        CommonTokenStream tokenStream = (CommonTokenStream) this.compilationUnit.getTokenStream();
+        MutableList<Token> tokens = ListAdapter.adapt(tokenStream.get(
+                startToken.getTokenIndex(),
+                stopToken.getTokenIndex()));
+
+        return tokens
+                .collect(AbstractErrorListener::colorize)
+                .makeString("");
     }
 }

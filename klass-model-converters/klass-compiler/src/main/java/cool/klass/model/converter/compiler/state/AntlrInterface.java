@@ -29,7 +29,7 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous interface",
             -1,
@@ -48,7 +48,7 @@ public class AntlrInterface extends AntlrClassifier
     public static final AntlrInterface NOT_FOUND = new AntlrInterface(
             new ClassDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found interface",
             -1,
@@ -82,14 +82,14 @@ public class AntlrInterface extends AntlrClassifier
     public AntlrInterface(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class AntlrInterface extends AntlrClassifier
 
         this.interfaceBuilder = new InterfaceBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -157,8 +157,8 @@ public class AntlrInterface extends AntlrClassifier
 
         if (RELADOMO_TYPES.contains(this.getName()))
         {
-            String message = String.format("ERR_REL_NME: '%s' is a Reladomo type.", this.getName());
-            compilerErrorHolder.add(message, this);
+            String message = String.format("'%s' is a Reladomo type.", this.getName());
+            compilerErrorHolder.add("ERR_REL_NME", message, this);
         }
 
         this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
@@ -218,9 +218,9 @@ public class AntlrInterface extends AntlrClassifier
 
         ParserRuleContext offendingToken = transientModifier.get().getElementContext();
         String message = String.format(
-                "ERR_INT_TRN: '%s' keyword not applicable to interfaces.",
+                "'%s' keyword not applicable to interfaces.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_INT_TRN", message, this, offendingToken);
     }
 
     @Override
@@ -233,9 +233,9 @@ public class AntlrInterface extends AntlrClassifier
             {
                 InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
                 String message = String.format(
-                        "ERR_IMP_SLF: Circular inheritance '%s'.",
+                        "Circular inheritance '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_IMP_SLF", message, this, offendingToken);
             }
         }
     }
@@ -261,7 +261,7 @@ public class AntlrInterface extends AntlrClassifier
     @Override
     protected InterfaceReferenceContext getOffendingInterfaceReference(int index)
     {
-        return this.getElementContext().implementsDeclaration().interfaceReference().get(index);
+        return this.getElementContext().interfaceHeader().implementsDeclaration().interfaceReference().get(index);
     }
 
     @Override
@@ -311,5 +311,16 @@ public class AntlrInterface extends AntlrClassifier
         }
 
         return this.getInterfaceDataTypePropertyByName(name);
+    }
+
+    @Override
+    public AntlrClassModifier getClassModifierByName(String name)
+    {
+        if (this.classModifiersByName.containsKey(name))
+        {
+            return this.classModifiersByName.get(name);
+        }
+
+        return this.getInterfaceClassModifierByName(name);
     }
 }

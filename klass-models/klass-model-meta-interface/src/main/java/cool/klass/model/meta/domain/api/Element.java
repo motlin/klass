@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 public interface Element
 {
-    boolean isInferred();
+    Optional<Element> getMacroElement();
 
     @Nonnull
     String getSourceCode();

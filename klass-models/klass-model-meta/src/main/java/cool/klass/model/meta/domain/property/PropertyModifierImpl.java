@@ -1,8 +1,11 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -10,24 +13,24 @@ public final class PropertyModifierImpl extends AbstractNamedElement implements 
 {
     private PropertyModifierImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
     }
 
     public static final class PropertyModifierBuilder extends NamedElementBuilder<PropertyModifierImpl>
     {
         public PropertyModifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
         }
 
         @Override
@@ -36,7 +39,7 @@ public final class PropertyModifierImpl extends AbstractNamedElement implements 
         {
             return new PropertyModifierImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal);

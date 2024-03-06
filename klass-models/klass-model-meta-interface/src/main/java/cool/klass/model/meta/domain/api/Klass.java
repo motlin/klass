@@ -129,7 +129,7 @@ public interface Klass extends Classifier
     default String getSourceCodeWithInference()
     {
         String sourceCode = this.getSourceCode();
-        if (this.isInferred())
+        if (this.getMacroElement().isPresent())
         {
             return sourceCode;
         }

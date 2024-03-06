@@ -4,7 +4,10 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -12,6 +15,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
@@ -25,23 +29,28 @@ import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
 import cool.klass.model.meta.grammar.KlassParser.VariableReferenceContext;
-import cool.klass.model.meta.grammar.listener.KlassThrowingListener;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ErrorUnderlineListener extends KlassThrowingListener
+import static org.fusesource.jansi.Ansi.Color.BLACK;
+import static org.fusesource.jansi.Ansi.Color.RED;
+import static org.fusesource.jansi.Ansi.ansi;
+
+public class ErrorUnderlineListener extends AbstractErrorListener
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
-    private final MutableList<String> contextualStrings;
-
-    public ErrorUnderlineListener(MutableList<String> contextualStrings)
+    public ErrorUnderlineListener(
+            @Nonnull CompilationUnit compilationUnit,
+            @Nonnull MutableList<AbstractContextString> contextualStrings)
     {
-        this.contextualStrings = contextualStrings;
+        super(compilationUnit, contextualStrings);
     }
 
     @Override
@@ -123,6 +132,30 @@ public class ErrorUnderlineListener extends KlassThrowingListener
     }
 
     @Override
+    public void enterClassModifier(ClassModifierContext ctx)
+    {
+        InterfaceHeaderContext interfaceDeclarationHeaderContext = this.getParentOfType(
+                ctx,
+                InterfaceHeaderContext.class);
+        if (interfaceDeclarationHeaderContext != null)
+        {
+            this.addUnderlinedToken(interfaceDeclarationHeaderContext, Lists.immutable.with(ctx.getStart()));
+            return;
+        }
+
+        ClassHeaderContext classDeclarationHeaderContext = this.getParentOfType(
+                ctx,
+                ClassHeaderContext.class);
+        if (classDeclarationHeaderContext != null)
+        {
+            this.addUnderlinedToken(classDeclarationHeaderContext, Lists.immutable.with(ctx.getStart()));
+            return;
+        }
+
+        throw new AssertionError();
+    }
+
+    @Override
     public void enterCriteriaOperator(@Nonnull CriteriaOperatorContext ctx)
     {
         this.addUnderlinedRange(ctx);
@@ -197,13 +230,45 @@ public class ErrorUnderlineListener extends KlassThrowingListener
 
     private void addUnderlinedContext(@Nonnull Token startToken, @Nonnull Token stopToken, int startLine)
     {
-        String   sourceCodeText        = startToken.getInputStream().toString();
-        String[] lines                 = NEWLINE_PATTERN.split(sourceCodeText);
-        String   errorLine             = lines[startLine - 1];
-        String   errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(startToken, stopToken);
+        if (startToken.getLine() != startLine)
+        {
+            throw new AssertionError();
+        }
 
-        this.contextualStrings.add(errorLine);
-        this.contextualStrings.add(errorStringUnderlined);
+        if (stopToken.getLine() != startLine)
+        {
+            throw new AssertionError();
+        }
+
+        CommonTokenStream tokenStream     = (CommonTokenStream) this.compilationUnit.getTokenStream();
+        int               startTokenIndex = startToken.getTokenIndex();
+        int               stopTokenIndex  = stopToken.getTokenIndex();
+
+        int beginTokenIndex = startTokenIndex;
+        while (beginTokenIndex > 0 && tokenStream.get(beginTokenIndex - 1).getLine() == startLine)
+        {
+            beginTokenIndex -= 1;
+        }
+
+        int endTokenIndex = stopTokenIndex;
+        while (endTokenIndex + 1 < tokenStream.size() && tokenStream.get(endTokenIndex + 1).getLine() == startLine)
+        {
+            endTokenIndex += 1;
+        }
+
+        MutableList<Token> tokens = ListAdapter.adapt(tokenStream.get(
+                beginTokenIndex,
+                endTokenIndex));
+
+        String errorLine = tokens
+                .collect(AbstractErrorListener::colorize)
+                .makeString("");
+
+        String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(startToken, stopToken);
+
+        this.contextualStrings.add(new ContextString(startLine, errorLine));
+        // TODO: Something about this
+        this.contextualStrings.add(new UnderlineContextString(startLine, errorStringUnderlined));
     }
 
     @Nonnull
@@ -213,16 +278,21 @@ public class ErrorUnderlineListener extends KlassThrowingListener
         int stop               = stopToken.getStopIndex();
         int charPositionInLine = startToken.getCharPositionInLine();
 
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder whitespaceBuffer = new StringBuilder();
         for (int i = 0; i < charPositionInLine; i++)
         {
-            stringBuilder.append(' ');
+            whitespaceBuffer.append(' ');
         }
+
+        StringBuilder caretBuffer = new StringBuilder();
         for (int i = start; i <= stop; i++)
         {
-            stringBuilder.append('^');
+            caretBuffer.append('^');
         }
-        return stringBuilder.toString();
+
+        return ansi()
+                .a(whitespaceBuffer.toString())
+                .bg(BLACK).fgBright(RED).a(caretBuffer.toString()).toString();
     }
 
     private void addUnderlinedToken(@Nonnull ParserRuleContext ctx, @Nonnull ImmutableList<Token> offendingTokens)
@@ -233,8 +303,6 @@ public class ErrorUnderlineListener extends KlassThrowingListener
         Token    stopToken      = ctx.getStop();
         int      startLine      = startToken.getLine();
         int      stopLine       = stopToken.getLine();
-        String   sourceCodeText = startToken.getInputStream().toString();
-        String[] lines          = NEWLINE_PATTERN.split(sourceCodeText);
 
         for (int lineNumber = startLine; lineNumber <= stopLine; lineNumber++)
         {
@@ -245,7 +313,11 @@ public class ErrorUnderlineListener extends KlassThrowingListener
             }
             else
             {
-                this.contextualStrings.add(lines[lineNumber - 1]);
+                // TODO: Move the decrement inside getLine?
+                int           adjustedLineNumber = lineNumber - 1;
+                String        sourceCodeLine     = this.compilationUnit.getLine(adjustedLineNumber);
+                ContextString contextString      = new ContextString(lineNumber, sourceCodeLine);
+                this.contextualStrings.add(contextString);
             }
         }
     }

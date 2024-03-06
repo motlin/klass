@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.AssociationImpl;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.order.OrderBy;
@@ -35,7 +36,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
 
     private AssociationEndImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -45,7 +46,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
             @Nonnull Multiplicity multiplicity,
             boolean owned)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, type, owningKlass);
+        super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
         this.multiplicity = Objects.requireNonNull(multiplicity);
         this.owned = owned;
@@ -117,7 +118,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
 
         public AssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -127,7 +128,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
                 @Nonnull Multiplicity multiplicity,
                 boolean isOwned)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, type, owningKlassBuilder);
+            super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
             this.multiplicity = Objects.requireNonNull(multiplicity);
             this.isOwned = isOwned;
@@ -149,7 +150,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         {
             return new AssociationEndImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

@@ -28,11 +28,11 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     public AntlrServiceProjectionDispatch(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrService serviceState,
             @Nonnull AntlrProjection projection)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.serviceState = Objects.requireNonNull(serviceState);
         this.projection = Objects.requireNonNull(projection);
     }
@@ -63,7 +63,8 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
             ProjectionReferenceContext reference = this.getElementContext().projectionReference();
 
             compilerErrorHolder.add(
-                    String.format("ERR_SER_PRJ: Cannot find projection '%s'", reference.getText()),
+                    "ERR_SER_PRJ",
+                    String.format("Cannot find projection '%s'", reference.getText()),
                     this,
                     reference);
             return;
@@ -78,11 +79,11 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         if (serviceGroupKlass != projectionKlass && !serviceGroupKlass.isSubTypeOf(projectionKlass))
         {
             String error = String.format(
-                    "ERR_SRV_PRJ: Expected projection referencing '%s' but projection '%s' references '%s'.",
+                    "Expected projection referencing '%s' but projection '%s' references '%s'.",
                     serviceGroupKlass.getName(),
                     this.projection.getName(),
                     projectionKlass.getName());
-            compilerErrorHolder.add(error, this, this.getElementContext().projectionReference());
+            compilerErrorHolder.add("ERR_SRV_PRJ", error, this, this.getElementContext().projectionReference());
         }
     }
 
@@ -102,7 +103,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         }
         this.elementBuilder = new ServiceProjectionDispatchBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.projection.getElementBuilder());
         return this.elementBuilder;
     }

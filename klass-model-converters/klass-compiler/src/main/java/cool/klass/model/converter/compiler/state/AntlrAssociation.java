@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.state;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -28,7 +29,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous association",
             -1,
@@ -54,14 +55,14 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
     public AntlrAssociation(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
@@ -138,7 +139,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -166,17 +167,17 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         if (numAssociationEnds != 2)
         {
             String message = String.format(
-                    "ERR_ASO_END: Association '%s' should have 2 ends. Found %d",
+                    "Association '%s' should have 2 ends. Found %d",
                     this.name,
                     numAssociationEnds);
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_ASO_END", message, this);
             return;
         }
 
         if (this.getSourceEnd().isOwned() && this.getTargetEnd().isOwned())
         {
             String message = String.format(
-                    "ERR_ASO_OWN: Both associations are owned in association '%s'. At most one end may be owned.",
+                    "Both associations are owned in association '%s'. At most one end may be owned.",
                     this.name);
             AntlrAssociationEndModifier sourceOwnedModifier = this.getSourceEnd()
                     .getAssociationEndModifiers()
@@ -186,6 +187,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                     .detect(AntlrAssociationEndModifier::isOwned);
 
             compilerErrorHolder.add(
+                    "ERR_ASO_OWN",
                     message,
                     this,
                     Lists.immutable.with(
@@ -195,24 +197,24 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         else if (this.getSourceEnd().isToMany() && this.getTargetEnd().isToOne() && this.getTargetEnd().isOwned())
         {
             String message = String.format(
-                    "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
-                    this.getSourceEnd().getOwningClassifierState().getName(),
-                    this.getSourceEnd().getName());
+                    "Association end '%s.%s' is owned, but is on the to-one end of a many-to-one association.",
+                    this.getTargetEnd().getOwningClassifierState().getName(),
+                    this.getTargetEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getTargetEnd()
                     .getAssociationEndModifiers()
                     .detect(AntlrAssociationEndModifier::isOwned);
-            compilerErrorHolder.add(message, ownedModifier);
+            compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }
         else if (this.getSourceEnd().isToOne() && this.getTargetEnd().isToMany() && this.getSourceEnd().isOwned())
         {
             String message = String.format(
-                    "ERR_OWN_ONE: Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
-                    this.getTargetEnd().getOwningClassifierState().getName(),
-                    this.getTargetEnd().getName());
+                    "Association end '%s.%s' is owned, but is on the to-one end of a one-to-many association.",
+                    this.getSourceEnd().getOwningClassifierState().getName(),
+                    this.getSourceEnd().getName());
             AntlrAssociationEndModifier ownedModifier = this.getSourceEnd()
                     .getAssociationEndModifiers()
                     .detect(AntlrAssociationEndModifier::isOwned);
-            compilerErrorHolder.add(message, ownedModifier);
+            compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
         }
         else if (this.getSourceEnd().isToOne()
                 && this.getTargetEnd().isToOne()
@@ -221,9 +223,10 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                 && !this.getTargetEnd().isOwned())
         {
             String message = String.format(
-                    "ERR_ASO_SYM: Association '%s' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.",
+                    "Association '%s' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.",
                     this.getName());
             compilerErrorHolder.add(
+                    "ERR_ASO_SYM",
                     message,
                     this,
                     Lists.immutable.with(
@@ -244,9 +247,9 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         {
             // TODO: Editor error matching this one
             String message = String.format(
-                    "ERR_REL_INF: Relationship inference not yet supported. '%s' must declare a relationship.",
+                    "Relationship inference not yet supported. '%s' must declare a relationship.",
                     this.getName());
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_REL_INF", message, this);
         }
         else
         {

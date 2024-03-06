@@ -9,41 +9,57 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class AntlrClassModifier extends AntlrModifier
 {
+    public static final AntlrClassModifier NOT_FOUND = new AntlrClassModifier(
+            new ParserRuleContext(),
+            null,
+            Optional.empty(),
+            new ParserRuleContext(),
+            "not found class modifier",
+            -1,
+            AntlrClass.NOT_FOUND);
+
     public static final AntlrClassModifier AMBIGUOUS = new AntlrClassModifier(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous class modifier",
             -1,
             AntlrClass.AMBIGUOUS);
 
-    private final AntlrClassifier owningClassifierState;
-    private ClassModifierBuilder  elementBuilder;
+    private final AntlrClassifier      owningClassifierState;
+    private       ClassModifierBuilder elementBuilder;
 
     public AntlrClassModifier(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             AntlrClassifier owningClassifierState)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.owningClassifierState = owningClassifierState;
+    }
+
+    @Nonnull
+    @Override
+    public ClassModifierContext getElementContext()
+    {
+        return (ClassModifierContext) super.getElementContext();
     }
 
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getSurroundingContext() not implemented yet");
+        return Optional.ofNullable(this.owningClassifierState);
     }
 
     public boolean isTransient()
@@ -66,7 +82,7 @@ public class AntlrClassModifier extends AntlrModifier
         }
         this.elementBuilder = new ClassModifierBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,

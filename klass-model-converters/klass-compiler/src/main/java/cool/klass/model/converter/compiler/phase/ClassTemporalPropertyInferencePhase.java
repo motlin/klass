@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
@@ -22,6 +23,12 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     public ClassTemporalPropertyInferencePhase(CompilerState compilerState)
     {
         super(compilerState);
+    }
+
+    @Override
+    public String getName()
+    {
+        return "Temporal modifier";
     }
 
     @Override
@@ -55,20 +62,26 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
                 .anySatisfy(predicate);
     }
 
-    private void addTemporalProperties(@Nonnull ClassModifierContext ctx, @Nonnull String prefix)
+    private void addTemporalProperties(
+            @Nonnull ClassModifierContext ctx,
+            @Nonnull String prefix)
     {
         this.runCompilerMacro(ctx, prefix + "    : TemporalRange   " + prefix + ";");
         this.runCompilerMacro(ctx, prefix + "From: TemporalInstant " + prefix + " from;");
         this.runCompilerMacro(ctx, prefix + "To  : TemporalInstant " + prefix + " to;");
     }
 
-    private void runCompilerMacro(@Nonnull ParserRuleContext ctx, String sourceCodeText)
+    private void runCompilerMacro(
+            @Nonnull ParserRuleContext ctx,
+            String sourceCodeText)
     {
-        ParseTreeListener compilerPhase = new ClassifierPhase(this.compilerState);
+        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
+        ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
+                classModifierState,
                 ctx,
-                ClassTemporalPropertyInferencePhase.class,
+                this,
                 sourceCodeText,
                 KlassParser::classMember,
                 compilerPhase);

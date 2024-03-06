@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -19,14 +20,14 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.packageContext = Objects.requireNonNull(packageContext);
         this.packageName = Objects.requireNonNull(packageName);
     }
@@ -44,10 +45,10 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
         if (!PACKAGE_NAME_PATTERN.matcher(this.packageName).matches())
         {
             String message = String.format(
-                    "ERR_PKG_PAT: Package name must match pattern %s but was '%s'.",
+                    "Package name must match pattern %s but was '%s'.",
                     PACKAGE_NAME_PATTERN,
                     this.packageName);
-            compilerErrorHolder.add(message, this.packageContext);
+            compilerErrorHolder.add(this.getCompilationUnit(), "ERR_PKG_PAT", message, this.packageContext);
         }
     }
 

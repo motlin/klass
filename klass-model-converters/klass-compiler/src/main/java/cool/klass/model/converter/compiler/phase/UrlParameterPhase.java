@@ -56,7 +56,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         AntlrUrlConstant antlrUrlConstant = new AntlrUrlConstant(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 urlState.getNumPathSegments() + 1);
@@ -123,7 +123,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 multiplicityContext,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference());
+                this.compilerState.getCompilerInputState().getMacroElement());
 
         AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
         int ordinal = this.inQueryParameterList
@@ -133,7 +133,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         this.parameterState = new AntlrParameter(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 identifier,
                 identifier.getText(),
                 ordinal,
@@ -159,7 +159,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx,
                 ctx.getText(),
                 ordinal);

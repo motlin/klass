@@ -21,7 +21,7 @@ import org.eclipse.collections.impl.factory.Lists;
 public class AntlrOrderBy extends AntlrElement
 {
     @Nonnull
-    private final AntlrClassifier        thisContext;
+    private final AntlrClassifier   thisContext;
     @Nonnull
     private final AntlrOrderByOwner orderByOwnerState;
 
@@ -32,11 +32,11 @@ public class AntlrOrderBy extends AntlrElement
     public AntlrOrderBy(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrClassifier thisContext,
             @Nonnull AntlrOrderByOwner orderByOwnerState)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.thisContext = Objects.requireNonNull(thisContext);
         this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
     }
@@ -80,7 +80,7 @@ public class AntlrOrderBy extends AntlrElement
         }
         this.elementBuilder = new OrderByBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.thisContext.getElementBuilder());
 
         ImmutableList<OrderByMemberReferencePathBuilder> orderByMemberReferencePathBuilders =

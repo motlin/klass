@@ -33,7 +33,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         this.associationState = new AntlrAssociation(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 identifier,
                 identifier.getText(),
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -55,19 +55,19 @@ public class AssociationPhase extends AbstractCompilerPhase
     {
         super.enterAssociationEnd(ctx);
 
-        ClassTypeContext classTypeContext   = ctx.classType();
-        String           className          = classTypeContext.classReference().getText();
-        AntlrClass       classState = this.compilerState.getDomainModelState().getClassByName(className);
+        ClassTypeContext classTypeContext = ctx.classType();
+        String           className        = classTypeContext.classReference().getText();
+        AntlrClass       classState       = this.compilerState.getDomainModelState().getClassByName(className);
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
                 classTypeContext.multiplicity(),
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference());
+                this.compilerState.getCompilerInputState().getMacroElement());
 
         String associationEndName = ctx.identifier().getText();
         this.associationEndState = new AntlrAssociationEnd(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx.identifier(),
                 associationEndName,
                 this.associationState.getNumAssociationEnds() + 1,
@@ -85,7 +85,7 @@ public class AssociationPhase extends AbstractCompilerPhase
         AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 ctx,
                 ctx.getText(),
                 this.associationEndState.getNumModifiers() + 1,

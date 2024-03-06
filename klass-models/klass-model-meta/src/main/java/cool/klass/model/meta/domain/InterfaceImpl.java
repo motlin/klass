@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -11,26 +13,26 @@ public final class InterfaceImpl extends AbstractClassifier implements Interface
 {
     private InterfaceImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            @Nonnull Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
     }
 
     public static final class InterfaceBuilder extends ClassifierBuilder<InterfaceImpl>
     {
         public InterfaceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         }
 
         @Override
@@ -39,7 +41,7 @@ public final class InterfaceImpl extends AbstractClassifier implements Interface
         {
             return new InterfaceImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

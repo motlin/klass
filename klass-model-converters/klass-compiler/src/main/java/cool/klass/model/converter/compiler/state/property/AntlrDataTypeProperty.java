@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
@@ -54,7 +55,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -62,7 +63,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             @Nonnull ImmutableList<AntlrPropertyModifier> modifierStates,
             boolean isOptional)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
         this.isOptional = isOptional;
         this.modifierStates = Objects.requireNonNull(modifierStates);
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
@@ -225,9 +226,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             {
                 ParserRuleContext offendingToken = modifierState.getElementContext();
                 String message = String.format(
-                        "ERR_DUP_MOD: Duplicate modifier '%s'.",
+                        "Duplicate modifier '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_DUP_MOD", message, this, offendingToken);
             }
         }
     }
@@ -250,9 +251,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             {
                 ParserRuleContext offendingToken = minLengthValidationState.getElementContext();
                 String message = String.format(
-                        "ERR_DUP_VAL: Duplicate validation '%s'.",
+                        "Duplicate validation '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add(message, this, offendingToken);
+                compilerErrorHolder.add("ERR_DUP_VAL", message, this, offendingToken);
             }
         }
     }

@@ -1,7 +1,10 @@
 package cool.klass.model.meta.domain.property.validation;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -13,11 +16,11 @@ public class MinPropertyValidationImpl
 {
     public MinPropertyValidationImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
-        super(elementContext, inferred, owningProperty, number);
+        super(elementContext, macroElement, owningProperty, number);
     }
 
     public static class MinPropertyValidationBuilder
@@ -25,11 +28,11 @@ public class MinPropertyValidationImpl
     {
         public MinPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
                 int number)
         {
-            super(elementContext, inferred, owningPropertyBuilder, number);
+            super(elementContext, macroElement, owningPropertyBuilder, number);
         }
 
         @Nonnull
@@ -38,7 +41,7 @@ public class MinPropertyValidationImpl
         {
             return new MinPropertyValidationImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.owningPropertyBuilder.getElement(),
                     this.number);
         }

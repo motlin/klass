@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -23,14 +25,14 @@ public abstract class AbstractClassifier
     private ImmutableList<Interface>        interfaces;
 
     protected AbstractClassifier(
-            ParserRuleContext elementContext,
-            boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
     }
 
     @Nonnull
@@ -90,13 +92,13 @@ public abstract class AbstractClassifier
         protected ImmutableList<InterfaceBuilder>                 interfaceBuilders;
 
         protected ClassifierBuilder(
-                ParserRuleContext elementContext,
-                boolean inferred,
-                ParserRuleContext nameContext,
-                String name,
-                int ordinal, String packageName)
+                @Nonnull ParserRuleContext elementContext,
+                Optional<ElementBuilder<?>> macroElement,
+                @Nonnull ParserRuleContext nameContext,
+                @Nonnull String name,
+                int ordinal, @Nonnull String packageName)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         }
 
         public void setDataTypePropertyBuilders(@Nonnull ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders)

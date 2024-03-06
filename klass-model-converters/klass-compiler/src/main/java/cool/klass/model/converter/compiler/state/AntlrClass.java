@@ -40,7 +40,7 @@ public class AntlrClass extends AntlrClassifier
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous class",
             -1,
@@ -74,7 +74,7 @@ public class AntlrClass extends AntlrClassifier
     public static final AntlrClass NOT_FOUND = new AntlrClass(
             new ClassDeclarationContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "not found class",
             -1,
@@ -126,7 +126,7 @@ public class AntlrClass extends AntlrClassifier
     public AntlrClass(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -134,7 +134,7 @@ public class AntlrClass extends AntlrClassifier
             String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
         this.isUser = isUser;
     }
 
@@ -255,7 +255,7 @@ public class AntlrClass extends AntlrClassifier
 
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,
@@ -321,8 +321,8 @@ public class AntlrClass extends AntlrClassifier
 
         if (RELADOMO_TYPES.contains(this.getName()))
         {
-            String message = String.format("ERR_REL_NME: '%s' is a Reladomo type.", this.getName());
-            compilerErrorHolder.add(message, this);
+            String message = String.format("'%s' is a Reladomo type.", this.getName());
+            compilerErrorHolder.add("ERR_REL_NME", message, this);
         }
 
         this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
@@ -397,8 +397,8 @@ public class AntlrClass extends AntlrClassifier
 
         if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
         {
-            String message = String.format("ERR_VER_VER: Class '%s' is a version and has a version.", this.name);
-            compilerErrorHolder.add(message, this);
+            String message = String.format("Class '%s' is a version and has a version.", this.name);
+            compilerErrorHolder.add("ERR_VER_VER", message, this);
         }
     }
 
@@ -407,8 +407,8 @@ public class AntlrClass extends AntlrClassifier
         boolean hasKeyProperty = this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
         if (!hasKeyProperty && this.inheritanceTypeRequiresKeyProperties() && !this.superClassShouldHaveKey())
         {
-            String message = String.format("ERR_CLS_KEY: Class '%s' must have at least one key property.", this.name);
-            compilerErrorHolder.add(message, this);
+            String message = String.format("Class '%s' must have at least one key property.", this.name);
+            compilerErrorHolder.add("ERR_CLS_KEY", message, this);
         }
     }
 
@@ -426,11 +426,11 @@ public class AntlrClass extends AntlrClassifier
     {
         if (this.superClassState.equals(Optional.of(AntlrClass.NOT_FOUND)))
         {
-            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
             String message = String.format(
-                    "ERR_EXT_CLS: Cannot find class '%s'.",
+                    "Cannot find class '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add(message, this, offendingToken);
+            compilerErrorHolder.add("ERR_EXT_CLS", message, this, offendingToken);
         }
     }
 
@@ -444,11 +444,11 @@ public class AntlrClass extends AntlrClassifier
 
         if (!this.superClassState.get().isAbstract())
         {
-            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
             String message = String.format(
-                    "ERR_EXT_CCT: Superclass must be abstract '%s'.",
+                    "Superclass must be abstract '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add(message, this, offendingToken);
+            compilerErrorHolder.add("ERR_EXT_CCT", message, this, offendingToken);
         }
     }
 
@@ -461,11 +461,11 @@ public class AntlrClass extends AntlrClassifier
             return;
         }
 
-        ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+        ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
         String message = String.format(
-                "ERR_EXT_TNS: Must be transient to inherit from transient superclass '%s'.",
+                "Must be transient to inherit from transient superclass '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_EXT_TNS", message, this, offendingToken);
     }
 
     private void reportTransientIdProperties(CompilerErrorState compilerErrorHolder)
@@ -476,11 +476,11 @@ public class AntlrClass extends AntlrClassifier
             return;
         }
 
-        IdentifierContext offendingToken = this.getElementContext().identifier();
+        IdentifierContext offendingToken = this.getElementContext().classHeader().identifier();
         String message = String.format(
-                "ERR_TNS_IDP: Transient class '%s' may not have id properties.",
+                "Transient class '%s' may not have id properties.",
                 offendingToken.getText());
-        compilerErrorHolder.add(message, this, offendingToken);
+        compilerErrorHolder.add("ERR_TNS_IDP", message, this, offendingToken);
     }
 
     @Override
@@ -492,11 +492,11 @@ public class AntlrClass extends AntlrClassifier
         }
         if (this.superClassState.get().extendsClass(this, Sets.mutable.empty()))
         {
-            ClassReferenceContext offendingToken = this.getElementContext().extendsDeclaration().classReference();
+            ClassReferenceContext offendingToken = this.getElementContext().classHeader().extendsDeclaration().classReference();
             String message = String.format(
-                    "ERR_EXT_SLF: Circular inheritance '%s'.",
+                    "Circular inheritance '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add(message, this, offendingToken);
+            compilerErrorHolder.add("ERR_EXT_SLF", message, this, offendingToken);
         }
     }
 
@@ -531,7 +531,7 @@ public class AntlrClass extends AntlrClassifier
     @Override
     protected InterfaceReferenceContext getOffendingInterfaceReference(int index)
     {
-        return this.getElementContext().implementsDeclaration().interfaceReference().get(index);
+        return this.getElementContext().classHeader().implementsDeclaration().interfaceReference().get(index);
     }
 
     @Override
@@ -595,6 +595,26 @@ public class AntlrClass extends AntlrClassifier
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
     {
         return this.associationEndStates.asUnmodifiable();
+    }
+
+    @Override
+    public AntlrClassModifier getClassModifierByName(String name)
+    {
+        if (this.classModifiersByName.containsKey(name))
+        {
+            return this.classModifiersByName.get(name);
+        }
+
+        if (this.superClassState.isPresent())
+        {
+            AntlrClassModifier superClassProperty = this.superClassState.get().getClassModifierByName(name);
+            if (superClassProperty != AntlrClassModifier.NOT_FOUND)
+            {
+                return superClassProperty;
+            }
+        }
+
+        return this.getInterfaceClassModifierByName(name);
     }
 
     @Nonnull

@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.value.literal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
@@ -17,15 +19,15 @@ import org.eclipse.collections.api.list.ImmutableList;
 public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
 {
     private ImmutableList<AbstractAntlrLiteralValue> literalStates;
-    private LiteralListValueBuilder          elementBuilder;
+    private LiteralListValueBuilder                  elementBuilder;
 
     public AntlrLiteralListValue(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             IAntlrElement expressionValueOwner)
     {
-        super(elementContext, compilationUnit, inferred, expressionValueOwner);
+        super(elementContext, compilationUnit, macroElement, expressionValueOwner);
     }
 
     public void setLiteralStates(ImmutableList<AbstractAntlrLiteralValue> literalStates)
@@ -47,7 +49,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         }
         this.elementBuilder = new LiteralListValueBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.getInferredType().getTypeGetter());
 
         ImmutableList<AbstractLiteralValueBuilder<?>> literalValueBuilders = this.literalStates
@@ -72,7 +74,11 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
         {
             // TODO: Cover this with a test
 
-            compilerErrorHolder.add("Literal list with heterogeneous values.", this, this.elementContext);
+            compilerErrorHolder.add(
+                    "ERR_LIT_LST",
+                    "Literal list with heterogeneous values.",
+                    this,
+                    this.elementContext);
         }
     }
 

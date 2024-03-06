@@ -1,12 +1,14 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
@@ -26,10 +28,10 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     public EdgePointAntlrCriteria(
             @Nonnull CriteriaEdgePointContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, inferred, criteriaOwner);
+        super(elementContext, compilationUnit, macroElement, criteriaOwner);
     }
 
     @Nonnull
@@ -64,7 +66,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
         }
         this.elementBuilder = new EdgePointCriteriaBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.memberExpressionValue.build());
         return this.elementBuilder;
     }

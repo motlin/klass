@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.meta.domain.criteria.AbstractBinaryCriteria.AbstractBinaryCriteriaBuilder;
@@ -20,10 +22,10 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     protected AntlrBinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, inferred, criteriaOwner);
+        super(elementContext, compilationUnit, macroElement, criteriaOwner);
     }
 
     @Nonnull

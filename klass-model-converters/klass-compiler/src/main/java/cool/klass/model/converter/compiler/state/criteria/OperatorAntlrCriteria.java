@@ -1,12 +1,14 @@
 package cool.klass.model.converter.compiler.state.criteria;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.operator.AntlrOperator;
@@ -29,19 +31,19 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     private final AntlrOperator operator;
 
     @Nullable
-    private AntlrExpressionValue sourceValue;
+    private AntlrExpressionValue    sourceValue;
     @Nullable
-    private AntlrExpressionValue targetValue;
+    private AntlrExpressionValue    targetValue;
     private OperatorCriteriaBuilder elementBuilder;
 
     public OperatorAntlrCriteria(
             @Nonnull CriteriaOperatorContext elementContext,
             @Nonnull CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull IAntlrElement criteriaOwner,
             @Nonnull AntlrOperator operator)
     {
-        super(elementContext, compilationUnit, inferred, criteriaOwner);
+        super(elementContext, compilationUnit, macroElement, criteriaOwner);
         this.operator = Objects.requireNonNull(operator);
     }
 
@@ -93,7 +95,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         // TODO: Refactor to build the parent before the children
         this.elementBuilder = new OperatorCriteriaBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.operator.build(),
                 this.sourceValue.build(),
                 this.targetValue.build());

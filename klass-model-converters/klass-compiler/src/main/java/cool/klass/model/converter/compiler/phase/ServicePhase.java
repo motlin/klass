@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -49,7 +51,7 @@ public class ServicePhase extends AbstractCompilerPhase
         this.serviceGroupState = new AntlrServiceGroup(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 classNameContext,
                 className,
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,
@@ -73,7 +75,7 @@ public class ServicePhase extends AbstractCompilerPhase
         this.urlState = new AntlrUrl(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.serviceGroupState);
         this.serviceGroupState.enterUrlDeclaration(this.urlState);
     }
@@ -93,7 +95,7 @@ public class ServicePhase extends AbstractCompilerPhase
         AntlrVerb antlrVerb = new AntlrVerb(
                 verb,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 Verb.valueOf(verb.getText()));
         AntlrServiceMultiplicity serviceMultiplicity =
                 this.getServiceMultiplicity(ctx.serviceDeclarationBody().serviceMultiplicityDeclaration());
@@ -101,7 +103,7 @@ public class ServicePhase extends AbstractCompilerPhase
         this.serviceState = new AntlrService(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.urlState,
                 antlrVerb,
                 serviceMultiplicity);
@@ -114,7 +116,7 @@ public class ServicePhase extends AbstractCompilerPhase
             return new AntlrServiceMultiplicity(
                     new ParserRuleContext(),
                     this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                    true,
+                    Optional.empty(),
                     ServiceMultiplicity.ONE);
         }
 
@@ -123,7 +125,7 @@ public class ServicePhase extends AbstractCompilerPhase
         return new AntlrServiceMultiplicity(
                 serviceMultiplicityContext,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.getServiceMultiplicity(serviceMultiplicityContext));
     }
 
@@ -166,7 +168,7 @@ public class ServicePhase extends AbstractCompilerPhase
         AntlrServiceProjectionDispatch projectionDispatch = new AntlrServiceProjectionDispatch(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 this.serviceState,
                 projection);
 

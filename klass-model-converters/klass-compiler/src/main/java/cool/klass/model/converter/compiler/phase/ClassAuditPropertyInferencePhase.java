@@ -3,6 +3,7 @@ package cool.klass.model.converter.compiler.phase;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
@@ -14,6 +15,12 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
     public ClassAuditPropertyInferencePhase(CompilerState compilerState)
     {
         super(compilerState);
+    }
+
+    @Override
+    public String getName()
+    {
+        return "Audit modifier";
     }
 
     @Override
@@ -60,11 +67,13 @@ public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
 
     private void runCompilerMacro(@Nonnull ParserRuleContext ctx, String sourceCodeText)
     {
-        ParseTreeListener compilerPhase = new ClassifierPhase(this.compilerState);
+        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
+        ParseTreeListener  compilerPhase      = new ClassifierPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
+                classModifierState,
                 ctx,
-                ClassAuditPropertyInferencePhase.class,
+                this,
                 sourceCodeText,
                 KlassParser::classMember,
                 compilerPhase);

@@ -1,5 +1,11 @@
 grammar Klass;
 
+@lexer::members {
+    public static final int WHITESPACE_CHANNEL = 1000;
+    public static final int COMMENTS_CHANNEL = 2000;
+    public static final int LINE_COMMENTS_CHANNEL = 3000;
+}
+
 compilationUnit: packageDeclaration topLevelDeclaration* EOF;
 urlParameterDeclarationEOF: urlParameterDeclaration EOF;
 
@@ -21,11 +27,13 @@ topLevelDeclaration
 
 // TODO: Consider splitting separate interfaceModifiers from classModifiers
 // interface
-interfaceDeclaration: 'interface' identifier implementsDeclaration? classModifier* interfaceBody;
+interfaceDeclaration: interfaceHeader interfaceBody;
+interfaceHeader : 'interface' identifier implementsDeclaration? classModifier* ;
 interfaceBody: '{' interfaceMember* '}';
 
 // class
-classDeclaration: classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classModifier* classBody;
+classDeclaration: classHeader classBody;
+classHeader : classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classModifier* ;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
@@ -231,7 +239,120 @@ floatingPointLiteral: FloatingPointLiteral;
 booleanLiteral: BooleanLiteral;
 characterLiteral: CharacterLiteral;
 stringLiteral: StringLiteral;
-nullLiteral: NullLiteral;
+nullLiteral: LITERAL_NULL;
+
+// Lexer rules
+KEYWORD_PACKAGE      : 'package';
+KEYWORD_ENUMERATION  : 'enumeration';
+KEYWORD_INTERFACE    : 'interface';
+KEYWORD_CLASS        : 'class';
+KEYWORD_ASSOCIATION  : 'association';
+KEYWORD_PROJECTION   : 'projection';
+KEYWORD_SERVICE      : 'service';
+KEYWORD_USER         : 'user';
+KEYWORD_NATIVE       : 'native';
+KEYWORD_RELATIONSHIP : 'relationship';
+KEYWORD_MULTIPLICITY : 'multiplicity';
+KEYWORD_ORDER_BY     : 'orderBy';
+KEYWORD_CRITERIA     : 'criteria';
+KEYWORD_ON           : 'on';
+KEYWORD_ABSTRACT     : 'abstract';
+KEYWORD_EXTENDS      : 'extends';
+KEYWORD_IMPLEMENTS   : 'implements';
+
+KEYWORD_TABLE_PER_SUBCLASS       : 'table-per-subclass';
+KEYWORD_TABLE_FOR_ALL_SUBCLASSES : 'table-for-all-subclasses';
+KEYWORD_TABLE_PER_CLASS          : 'table-per-class';
+
+
+// Primitive types
+PRIMITIVE_TYPE_BOOLEAN          : 'Boolean';
+PRIMITIVE_TYPE_INTEGER          : 'Integer';
+PRIMITIVE_TYPE_LONG             : 'Long';
+PRIMITIVE_TYPE_DOUBLE           : 'Double';
+PRIMITIVE_TYPE_FLOAT            : 'Float';
+PRIMITIVE_TYPE_STRING           : 'String';
+PRIMITIVE_TYPE_INSTANT          : 'Instant';
+PRIMITIVE_TYPE_LOCAL_DATE       : 'LocalDate';
+PRIMITIVE_TYPE_TEMPORAL_INSTANT : 'TemporalInstant';
+PRIMITIVE_TYPE_TEMPORAL_RANGE   : 'TemporalRange';
+
+// classModifiers
+MODIFIER_CLASS_SYSTEM_TEMPORAL       : 'systemTemporal';
+MODIFIER_CLASS_VALID_TEMPORAL        : 'validTemporal';
+MODIFIER_CLASS_BITEMPORAL            : 'bitemporal';
+MODIFIER_CLASS_VERSIONED             : 'versioned';
+MODIFIER_CLASS_AUDITED               : 'audited';
+MODIFIER_CLASS_OPTIMISTICALLY_LOCKED : 'optimisticallyLocked';
+MODIFIER_CLASS_TRANSIENT             : 'transient';
+
+// propertyModifiers
+MODIFIER_PROPERTY_KEY             : 'key';
+MODIFIER_PROPERTY_PRIVATE         : 'private';
+MODIFIER_PROPERTY_VALID           : 'valid';
+MODIFIER_PROPERTY_SYSTEM          : 'system';
+MODIFIER_PROPERTY_FROM            : 'from';
+MODIFIER_PROPERTY_TO              : 'to';
+MODIFIER_PROPERTY_CREATED_BY      : 'createdBy';
+MODIFIER_PROPERTY_CREATED_ON      : 'createdOn';
+MODIFIER_PROPERTY_LAST_UPDATED_BY : 'lastUpdatedBy';
+
+// associationEndModifiers
+MODIFIER_ASSOCIATION_END_OWNED   : 'owned';
+MODIFIER_ASSOCIATION_END_FINAL   : 'final';
+
+// other modifiers (property AND parameter shared)
+MODIFIER_VERSION : 'version';
+MODIFIER_USER_ID : 'userId';
+MODIFIER_ID      : 'id';
+
+// validation modifiers
+VALIDATION_MIN_LENGTH     : 'minLength';
+VALIDATION_MINIMUM_LENGTH : 'minimumLength';
+VALIDATION_MAX_LENGTH     : 'maxLength';
+VALIDATION_MAXIMUM_LENGTH : 'maximumLength';
+VALIDATION_MIN            : 'min';
+VALIDATION_MINIMUM        : 'minimum';
+VALIDATION_MAX            : 'max';
+VALIDATION_MAXIMUM        : 'maximum';
+
+// Punctuation
+PUNCTUATION_LPAREN : '(';
+PUNCTUATION_RPAREN : ')';
+PUNCTUATION_LBRACE : '{';
+PUNCTUATION_RBRACE : '}';
+PUNCTUATION_LBRACK : '[';
+PUNCTUATION_RBRACK : ']';
+PUNCTUATION_SEMI   : ';';
+PUNCTUATION_COLON  : ':';
+PUNCTUATION_COMMA  : ',';
+PUNCTUATION_DOT    : '.';
+PUNCTUATION_DOTDOT : '..';
+PUNCTUATION_SLASH  : '/';
+PUNCTUATION_ASTERISK  : '*';
+
+// Verbs
+VERB_GET    : 'GET';
+VERB_POST   : 'POST';
+VERB_PUT    : 'PUT';
+VERB_PATCH  : 'PATCH';
+VERB_DELETE : 'DELETE';
+
+// Literals
+LITERAL_NULL  : 'null';
+LITERAL_THIS  : 'this';
+
+// Operators
+OPERATOR_EQ          : '==';
+OPERATOR_NE          : '!=';
+OPERATOR_LT          : '<';
+OPERATOR_GT          : '>';
+OPERATOR_LE          : '<=';
+OPERATOR_GE          : '>=';
+OPERATOR_IN          : 'in';
+OPERATOR_CONTAINS    : 'contains';
+OPERATOR_STARTS_WITH : 'startsWith';
+OPERATOR_ENDS_WITH   : 'endsWith';
 
 // §3.10.1 Integer Literals
 
@@ -447,9 +568,12 @@ BinaryExponentIndicator
 // §3.10.3 Boolean Literals
 
 BooleanLiteral
-	:	'true'
-	|	'false'
+	:	LITERAL_TRUE
+	|	LITERAL_FALSE
 	;
+
+LITERAL_TRUE  : 'true';
+LITERAL_FALSE : 'false';
 
 // §3.10.4 Character Literals
 
@@ -501,24 +625,6 @@ UnicodeEscape
     :   '\\' 'u'+  HexDigit HexDigit HexDigit HexDigit
     ;
 
-// §3.10.7 The Null Literal
-
-NullLiteral
-	:	'null'
-	;
-
-// §3.11 Separators
-
-LPAREN: '(';
-RPAREN: ')';
-LBRACE: '{';
-RBRACE: '}';
-LBRACK: '[';
-RBRACK: ']';
-SEMI: ';';
-COMMA: ',';
-DOT: '.';
-
 // §3.8 Identifiers (must appear after all keywords in the grammar)
 
 Identifier
@@ -551,13 +657,7 @@ JavaLetterOrDigit
 // Whitespace and comments
 //
 
-WS  :  [ \t\r\n\u000C]+ -> skip
-    ;
-
-COMMENT
-    :   '/*' .*? '*/' -> skip
-    ;
-
-LINE_COMMENT
-    :   '//' ~[\r\n]* -> skip
-    ;
+WHITESPACE  : [ \t\u000C]+  -> channel(1000);
+NEWLINE     : [\r\n]        -> channel(1000);
+COMMENT     : '/*' .*? '*/' -> channel(2000);
+LINE_COMMENT: '//' ~[\r\n]* -> channel(3000);

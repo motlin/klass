@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.projection;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,12 +18,12 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
 
     protected AbstractProjectionParent(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
     }
 
     @Override
@@ -43,12 +45,12 @@ public abstract class AbstractProjectionParent extends AbstractNamedElement impl
 
         protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
         }
 
         public void setChildBuilders(@Nonnull ImmutableList<ProjectionChildBuilder> projectionChildrenBuilders)

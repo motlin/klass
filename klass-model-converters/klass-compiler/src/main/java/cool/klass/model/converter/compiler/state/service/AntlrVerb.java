@@ -15,7 +15,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrVerb extends AntlrElement
 {
     @Nonnull
-    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(new ParserRuleContext(), null, true, Verb.GET);
+    public static final AntlrVerb AMBIGUOUS = new AntlrVerb(new ParserRuleContext(), null, Optional.empty(), Verb.GET);
 
     @Nonnull
     private final Verb verb;
@@ -23,10 +23,10 @@ public class AntlrVerb extends AntlrElement
     public AntlrVerb(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull Verb verb)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.verb = Objects.requireNonNull(verb);
     }
 

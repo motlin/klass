@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
@@ -28,7 +29,7 @@ public final class ProjectionDataTypePropertyImpl
 
     private ProjectionDataTypePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -37,7 +38,7 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull ProjectionParent parent,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText = Objects.requireNonNull(headerText);
         this.parent = Objects.requireNonNull(parent);
@@ -78,7 +79,7 @@ public final class ProjectionDataTypePropertyImpl
 
         public ProjectionDataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -87,7 +88,7 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.headerContext = Objects.requireNonNull(headerContext);
             this.headerText = Objects.requireNonNull(headerText);
             this.parentBuilder = Objects.requireNonNull(parentBuilder);
@@ -100,7 +101,7 @@ public final class ProjectionDataTypePropertyImpl
         {
             return new ProjectionDataTypePropertyImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

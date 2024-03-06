@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -24,7 +26,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
             null,
-            true,
+            Optional.empty(),
             AbstractElement.NO_CONTEXT,
             "ambiguous primitive property name",
             -1,
@@ -41,7 +43,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     public AntlrPrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -53,7 +55,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         super(
                 elementContext,
                 compilationUnit,
-                inferred,
+                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -102,7 +104,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 
         this.elementBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,

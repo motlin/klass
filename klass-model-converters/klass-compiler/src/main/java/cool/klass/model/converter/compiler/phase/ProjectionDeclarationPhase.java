@@ -28,7 +28,7 @@ public class ProjectionDeclarationPhase extends AbstractCompilerPhase
         this.projectionState = new AntlrProjection(
                 ctx,
                 this.compilerState.getCompilerWalkState().getCurrentCompilationUnit(),
-                this.compilerState.getCompilerInputState().isInference(),
+                this.compilerState.getCompilerInputState().getMacroElement(),
                 nameContext,
                 nameContext.getText(),
                 this.compilerState.getDomainModelState().getNumTopLevelElements() + 1,

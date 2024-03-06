@@ -16,6 +16,9 @@ public interface IAntlrElement
     ParserRuleContext getElementContext();
 
     @Nonnull
+    Optional<AntlrElement> getMacroElement();
+
+    @Nonnull
     ImmutableList<ParserRuleContext> getParserRuleContexts();
 
     void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts);

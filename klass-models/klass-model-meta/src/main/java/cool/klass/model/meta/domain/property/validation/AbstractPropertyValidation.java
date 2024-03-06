@@ -1,10 +1,12 @@
 package cool.klass.model.meta.domain.property.validation;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.validation.PropertyValidation;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -18,10 +20,10 @@ public abstract class AbstractPropertyValidation
 
     protected AbstractPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             AbstractDataTypeProperty<?> owningProperty)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.owningProperty = Objects.requireNonNull(owningProperty);
     }
 
@@ -32,10 +34,10 @@ public abstract class AbstractPropertyValidation
 
         protected PropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.owningPropertyBuilder = Objects.requireNonNull(owningPropertyBuilder);
         }
     }

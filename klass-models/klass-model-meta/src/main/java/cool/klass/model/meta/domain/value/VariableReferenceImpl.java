@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain.value;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.value.VariableReference;
 import cool.klass.model.meta.domain.parameter.ParameterImpl;
 import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
@@ -16,10 +18,10 @@ public final class VariableReferenceImpl extends AbstractExpressionValue impleme
 
     private VariableReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParameterImpl parameter)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.parameter = Objects.requireNonNull(parameter);
     }
 
@@ -37,10 +39,10 @@ public final class VariableReferenceImpl extends AbstractExpressionValue impleme
 
         public VariableReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParameterBuilder parameterBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.parameterBuilder = Objects.requireNonNull(parameterBuilder);
         }
 
@@ -50,7 +52,7 @@ public final class VariableReferenceImpl extends AbstractExpressionValue impleme
         {
             return new VariableReferenceImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.parameterBuilder.getElement());
         }
     }

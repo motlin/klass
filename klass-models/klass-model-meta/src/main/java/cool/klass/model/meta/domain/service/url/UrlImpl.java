@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain.service.url;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -26,9 +27,9 @@ public final class UrlImpl extends AbstractElement implements Url
     private       ImmutableList<Parameter> pathParameters;
     private       ImmutableList<Service>   services;
 
-    private UrlImpl(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull ServiceGroupImpl serviceGroup)
+    private UrlImpl(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement, @Nonnull ServiceGroupImpl serviceGroup)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
@@ -127,10 +128,10 @@ public final class UrlImpl extends AbstractElement implements Url
 
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ServiceGroupBuilder serviceGroupBuilder)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.serviceGroupBuilder = Objects.requireNonNull(serviceGroupBuilder);
         }
 
@@ -163,7 +164,10 @@ public final class UrlImpl extends AbstractElement implements Url
         @Nonnull
         protected UrlImpl buildUnsafe()
         {
-            return new UrlImpl(this.elementContext, this.inferred, this.serviceGroupBuilder.getElement());
+            return new UrlImpl(
+                    this.elementContext,
+                    this.macroElement.map(ElementBuilder::getElement),
+                    this.serviceGroupBuilder.getElement());
         }
 
         @Override

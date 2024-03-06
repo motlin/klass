@@ -1,11 +1,13 @@
 package cool.klass.model.converter.compiler.state.operator;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.EqualityOperatorImpl.EqualityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
@@ -19,10 +21,10 @@ public class AntlrEqualityOperator extends AntlrOperator
     public AntlrEqualityOperator(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             String operatorText)
     {
-        super(elementContext, compilationUnit, inferred, operatorText);
+        super(elementContext, compilationUnit, macroElement, operatorText);
     }
 
     @Nonnull
@@ -33,7 +35,10 @@ public class AntlrEqualityOperator extends AntlrOperator
         {
             throw new IllegalStateException();
         }
-        this.elementBuilder = new EqualityOperatorBuilder(this.elementContext, this.inferred, this.operatorText);
+        this.elementBuilder = new EqualityOperatorBuilder(
+                this.elementContext,
+                this.macroElement.map(AntlrElement::getElementBuilder),
+                this.operatorText);
         return this.elementBuilder;
     }
 
@@ -73,6 +78,6 @@ public class AntlrEqualityOperator extends AntlrOperator
                 targetTypes.getFirst());
         // Cast is a deliberate assertion
         CriteriaOperatorContext criteriaOperatorContext = (CriteriaOperatorContext) this.elementContext.getParent().getParent();
-        compilerErrorHolder.add(message, this, criteriaOperatorContext);
+        compilerErrorHolder.add("ERR_OPR_EQL", message, this, criteriaOperatorContext);
     }
 }

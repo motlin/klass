@@ -447,7 +447,8 @@ public class KlassBootstrapWriter
             @Nonnull NumericPropertyValidation validation)
     {
         // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
-        boostrappedValidation.setInferred(validation.isInferred());
+        // TODO: Consider changing inferred: boolean to macroElement: Element
+        boostrappedValidation.setInferred(validation.getMacroElement().isPresent());
         boostrappedValidation.setSourceCode(validation.getSourceCode());
         boostrappedValidation.setSourceCodeWithInference(validation.getSourceCodeWithInference());
         boostrappedValidation.setClassifierName(classifier.getName());
@@ -538,7 +539,7 @@ public class KlassBootstrapWriter
 
     public static void handleElement(@Nonnull ElementAbstract bootstrappedElement, @Nonnull Element element)
     {
-        bootstrappedElement.setInferred(element.isInferred());
+        bootstrappedElement.setInferred(element.getMacroElement().isPresent());
         bootstrappedElement.setSourceCode(element.getSourceCode());
         bootstrappedElement.setSourceCodeWithInference(element.getSourceCodeWithInference());
     }

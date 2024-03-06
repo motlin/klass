@@ -65,7 +65,8 @@ public class RelationshipPhase extends AbstractCompilerPhase
 
         if (possibleJoinCriteria)
         {
-            boolean foreignKeysOnThis = this.compilerState.getCompilerWalkState().getThisReference() == typeWithForeignKeys;
+            boolean foreignKeysOnThis = this.compilerState.getCompilerWalkState().getThisReference()
+                    == typeWithForeignKeys;
             criteriaState.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
         }
     }

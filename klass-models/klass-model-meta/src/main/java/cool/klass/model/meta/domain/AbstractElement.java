@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -13,19 +14,19 @@ public abstract class AbstractElement implements Element
     public static final ParserRuleContext NO_CONTEXT = new ParserRuleContext();
 
     @Nonnull
-    private final ParserRuleContext elementContext;
-    private final boolean           inferred;
+    private final ParserRuleContext         elementContext;
+    private final Optional<Element> macroElement;
 
-    protected AbstractElement(@Nonnull ParserRuleContext elementContext, boolean inferred)
+    protected AbstractElement(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
-        this.inferred = inferred;
+        this.macroElement = macroElement;
     }
 
     @Override
-    public boolean isInferred()
+    public Optional<Element> getMacroElement()
     {
-        return this.inferred;
+        return this.macroElement;
     }
 
     @Nonnull
@@ -48,18 +49,18 @@ public abstract class AbstractElement implements Element
     {
     }
 
-    public abstract static class ElementBuilder<BuiltElement extends AbstractElement>
+    public abstract static class ElementBuilder<BuiltElement extends Element>
             implements IElementBuilder
     {
         @Nonnull
-        protected final ParserRuleContext elementContext;
-        protected final boolean           inferred;
-        protected       BuiltElement      element;
+        protected final ParserRuleContext           elementContext;
+        protected final Optional<ElementBuilder<?>> macroElement;
+        protected       BuiltElement                element;
 
-        protected ElementBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred)
+        protected ElementBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
-            this.inferred = inferred;
+            this.macroElement = macroElement;
         }
 
         @Nonnull

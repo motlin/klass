@@ -2,12 +2,14 @@ package cool.klass.model.converter.compiler.state.service;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
@@ -32,7 +34,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
     public static final AntlrServiceGroup AMBIGUOUS = new AntlrServiceGroup(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             new ParserRuleContext(),
             "ambiguous service group",
             -1,
@@ -52,7 +54,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
     public AntlrServiceGroup(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -60,7 +62,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             String packageName,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal, packageContext, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -122,7 +124,8 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
 
         ClassReferenceContext reference = this.getElementContext().classReference();
         compilerErrorHolder.add(
-                String.format("ERR_SRG_TYP: Cannot find class '%s'", reference.getText()),
+                "ERR_SRG_TYP",
+                String.format("Cannot find class '%s'", reference.getText()),
                 this,
                 reference);
     }
@@ -145,20 +148,20 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         if (this.urlStates.isEmpty())
         {
             String message = String.format(
-                    "ERR_SER_EMP: Service group should declare at least one url: '%s'.",
+                    "Service group should declare at least one url: '%s'.",
                     this.getElementContext().classReference().getText());
 
-            compilerErrorHolder.add(message, this);
+            compilerErrorHolder.add("ERR_SER_EMP", message, this);
         }
     }
 
     public void reportDuplicateServiceGroupClass(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
-                "ERR_DUP_SVC: Multiple service groups for class: '%s.%s'.",
+                "Multiple service groups for class: '%s.%s'.",
                 this.klass.getPackageName(),
                 this.klass.getName());
-        compilerErrorHolder.add(message, this);
+        compilerErrorHolder.add("ERR_DUP_SVC", message, this);
     }
 
     public ServiceGroupBuilder build()
@@ -170,7 +173,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
 
         this.serviceGroupBuilder = new ServiceGroupBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.nameContext,
                 this.name,
                 this.ordinal,

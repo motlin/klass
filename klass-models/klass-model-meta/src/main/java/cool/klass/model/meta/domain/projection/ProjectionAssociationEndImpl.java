@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.property.AssociationEndImpl;
@@ -22,14 +23,14 @@ public final class ProjectionAssociationEndImpl
 
     private ProjectionAssociationEndImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull ProjectionParent parent,
             @Nonnull AssociationEndImpl associationEnd)
     {
-        super(elementContext, inferred, nameContext, name, ordinal);
+        super(elementContext, macroElement, nameContext, name, ordinal);
         this.parent = Objects.requireNonNull(parent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
@@ -59,14 +60,14 @@ public final class ProjectionAssociationEndImpl
 
         public ProjectionAssociationEndBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
-            super(elementContext, inferred, nameContext, name, ordinal);
+            super(elementContext, macroElement, nameContext, name, ordinal);
             this.parentBuilder = Objects.requireNonNull(parentBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
@@ -77,7 +78,7 @@ public final class ProjectionAssociationEndImpl
         {
             return new ProjectionAssociationEndImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

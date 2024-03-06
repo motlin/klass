@@ -2,12 +2,14 @@ package cool.klass.model.converter.compiler.state.value;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -29,7 +31,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
     public AntlrThisMemberReferencePath(
             @Nonnull ThisMemberReferencePathContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrClass classState,
             ImmutableList<AntlrAssociationEnd> associationEndStates,
             @Nonnull AntlrDataTypeProperty<?> dataTypePropertyState,
@@ -38,7 +40,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
         super(
                 elementContext,
                 compilationUnit,
-                inferred,
+                macroElement,
                 classState,
                 associationEndStates,
                 dataTypePropertyState,
@@ -58,7 +60,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
 
         this.elementBuilder = new ThisMemberReferencePathBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 this.classState.getElementBuilder(),
                 associationEndBuilders,
                 this.dataTypePropertyState.getElementBuilder());
@@ -88,10 +90,10 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
         {
             IdentifierContext identifier = this.getElementContext().memberReference().identifier();
             String message = String.format(
-                    "ERR_THS_MEM: Cannot find member '%s.%s'.",
+                    "Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add(message, this, identifier);
+            compilerErrorHolder.add("ERR_THS_MEM", message, this, identifier);
         }
     }
 

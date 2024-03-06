@@ -1,7 +1,10 @@
 package cool.klass.model.meta.domain.value.literal;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -9,9 +12,12 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
 {
     private final int value;
 
-    private IntegerLiteralValueImpl(@Nonnull ParserRuleContext elementContext, boolean inferred, int value)
+    private IntegerLiteralValueImpl(
+            @Nonnull ParserRuleContext elementContext,
+            Optional<Element> macroElement,
+            int value)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.value = value;
     }
 
@@ -25,9 +31,9 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
     {
         private final int value;
 
-        public IntegerLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, boolean inferred, int value)
+        public IntegerLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement, int value)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.value = value;
         }
 
@@ -35,7 +41,10 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
         @Nonnull
         protected IntegerLiteralValueImpl buildUnsafe()
         {
-            return new IntegerLiteralValueImpl(this.elementContext, this.inferred, this.value);
+            return new IntegerLiteralValueImpl(
+                    this.elementContext,
+                    this.macroElement.map(ElementBuilder::getElement),
+                    this.value);
         }
     }
 }

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
@@ -21,6 +22,12 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
     }
 
     @Override
+    public String getName()
+    {
+        return "Version class";
+    }
+
+    @Override
     public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         super.enterClassModifier(ctx);
@@ -32,14 +39,17 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
 
         String klassSourceCode = this.getSourceCode();
 
+        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
+
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new ClassifierPhase(this.compilerState),
                 new ClassTemporalPropertyInferencePhase(this.compilerState),
                 new ClassAuditPropertyInferencePhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
+                classModifierState,
                 ctx,
-                VersionClassInferencePhase.class,
+                this,
                 klassSourceCode,
                 KlassParser::compilationUnit,
                 compilerPhases);

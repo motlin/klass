@@ -1,11 +1,14 @@
 package cool.klass.model.meta.domain.property;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -15,7 +18,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
 {
     private EnumerationPropertyImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -25,7 +28,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
     {
         super(
                 elementContext,
-                inferred,
+                macroElement,
                 nameContext,
                 name,
                 ordinal,
@@ -56,7 +59,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
     {
         public EnumerationPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -67,7 +70,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         {
             super(
                     elementContext,
-                    inferred,
+                    macroElement,
                     nameContext,
                     name,
                     ordinal,
@@ -83,7 +86,7 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         {
             return new EnumerationPropertyImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

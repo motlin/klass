@@ -44,7 +44,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     public static final AntlrService AMBIGUOUS = new AntlrService(
             new ParserRuleContext(),
             null,
-            true,
+            Optional.empty(),
             AntlrUrl.AMBIGUOUS,
             AntlrVerb.AMBIGUOUS,
             AntlrServiceMultiplicity.AMBIGUOUS);
@@ -71,18 +71,18 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState;
     @Nonnull
-    private Optional<AntlrOrderBy>         orderByState = Optional.empty();
-    private ServiceBuilder                 elementBuilder;
+    private Optional<AntlrOrderBy>                   orderByState = Optional.empty();
+    private ServiceBuilder                           elementBuilder;
 
     public AntlrService(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull AntlrUrl urlState,
             @Nonnull AntlrVerb verbState,
             @Nonnull AntlrServiceMultiplicity serviceMultiplicityState)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.urlState = Objects.requireNonNull(urlState);
         this.verbState = Objects.requireNonNull(verbState);
         this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
@@ -125,9 +125,9 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     public void reportDuplicateVerb(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("ERR_DUP_VRB: Duplicate verb: '%s'.", this.verbState.getVerb());
+        String message = String.format("Duplicate verb: '%s'.", this.verbState.getVerb());
 
-        compilerErrorHolder.add(message, this, this.verbState.getElementContext());
+        compilerErrorHolder.add("ERR_DUP_VRB", message, this, this.verbState.getElementContext());
     }
 
     public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
@@ -238,7 +238,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         ServiceMultiplicity serviceMultiplicity = this.serviceMultiplicityState.getServiceMultiplicity();
         this.elementBuilder = new ServiceBuilder(
                 this.elementContext,
-                this.inferred,
+                this.macroElement.map(AntlrElement::getElementBuilder),
                 urlBuilder,
                 verb,
                 serviceMultiplicity);

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
@@ -19,6 +20,7 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
@@ -64,9 +66,10 @@ public class CompilerWalkState
     private AntlrService               serviceState;
 
     @Nullable
-    private AntlrClassifier   thisReference;
+    private AntlrClassifier    thisReference;
     @Nullable
-    private AntlrOrderByOwner orderByOwnerState;
+    private AntlrOrderByOwner  orderByOwnerState;
+    private AntlrClassModifier classModifierState;
 
     public CompilerWalkState(AntlrDomainModel domainModelState)
     {
@@ -104,6 +107,12 @@ public class CompilerWalkState
     }
 
     @Nullable
+    public AntlrServiceGroup getServiceGroupState()
+    {
+        return this.serviceGroupState;
+    }
+
+    @Nullable
     public AntlrUrl getUrlState()
     {
         return this.urlState;
@@ -131,6 +140,12 @@ public class CompilerWalkState
     public AntlrClassifier getThisReference()
     {
         return this.thisReference;
+    }
+
+    @Nullable
+    public AntlrClassModifier getClassModifierState()
+    {
+        return this.classModifierState;
     }
 
     public void withCompilationUnit(CompilationUnit compilationUnit, Runnable runnable)
@@ -283,7 +298,7 @@ public class CompilerWalkState
 
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
-        assertNull(this.projectionState);
+        CompilerWalkState.assertNull(this.projectionState);
 
         AntlrProjection projectionState = this.domainModelState.getProjectionByContext(ctx);
         this.projectionState = projectionState;
@@ -382,6 +397,23 @@ public class CompilerWalkState
     {
         this.serviceState = null;
         this.orderByOwnerState = null;
+    }
+
+    public void enterClassModifier(ClassModifierContext ctx)
+    {
+        CompilerWalkState.assertNull(this.classModifierState);
+
+        if (this.classifierState == null)
+        {
+            return;
+        }
+
+        this.classModifierState = this.classifierState.getClassModifierByContext(ctx);
+    }
+
+    public void exitClassModifier()
+    {
+        this.classModifierState = null;
     }
 
     private static void assertNull(Object object)

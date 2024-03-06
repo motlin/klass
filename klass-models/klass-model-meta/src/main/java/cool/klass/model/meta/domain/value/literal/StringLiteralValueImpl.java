@@ -1,9 +1,11 @@
 package cool.klass.model.meta.domain.value.literal;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -12,9 +14,9 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
     @Nonnull
     private final String value;
 
-    private StringLiteralValueImpl(@Nonnull ParserRuleContext elementContext, boolean inferred, @Nonnull String value)
+    private StringLiteralValueImpl(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement, @Nonnull String value)
     {
-        super(elementContext, inferred);
+        super(elementContext, macroElement);
         this.value = Objects.requireNonNull(value);
     }
 
@@ -32,10 +34,10 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
 
         public StringLiteralValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull String value)
         {
-            super(elementContext, inferred);
+            super(elementContext, macroElement);
             this.value = Objects.requireNonNull(value);
         }
 
@@ -43,7 +45,10 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
         @Nonnull
         protected StringLiteralValueImpl buildUnsafe()
         {
-            return new StringLiteralValueImpl(this.elementContext, this.inferred, this.value);
+            return new StringLiteralValueImpl(
+                    this.elementContext,
+                    this.macroElement.map(ElementBuilder::getElement),
+                    this.value);
         }
     }
 }

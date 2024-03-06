@@ -25,10 +25,10 @@ public abstract class AntlrCriteria extends AntlrElement
     protected AntlrCriteria(
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull IAntlrElement criteriaOwner)
     {
-        super(elementContext, compilationUnit, inferred);
+        super(elementContext, compilationUnit, macroElement);
         this.criteriaOwner = Objects.requireNonNull(criteriaOwner);
     }
 

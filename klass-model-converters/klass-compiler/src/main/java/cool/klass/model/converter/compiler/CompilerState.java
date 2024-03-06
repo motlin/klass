@@ -4,15 +4,18 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
@@ -54,15 +57,15 @@ public class CompilerState
     }
 
     public void runNonRootCompilerMacro(
+            @Nonnull AntlrElement macroElement,
             @Nonnull ParserRuleContext parserContext,
-            @Nonnull Class<?> macroContextClass,
+            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
             ParseTreeListener... listeners)
     {
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
-                parserContext,
-                macroContextClass,
+                macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule);
 
@@ -73,42 +76,47 @@ public class CompilerState
 
         this.compilerWalkState.withCompilationUnit(compilationUnit, () ->
         {
-            this.compilerInputState.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
+            this.compilerInputState.runCompilerMacro(macroElement, compilationUnit, Lists.immutable.with(listeners));
         });
     }
 
     public void runRootCompilerMacro(
+            @Nonnull AntlrElement elementState,
             @Nonnull ParserRuleContext parserContext,
-            @Nonnull Class<?> macroContextClass,
+            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
             ParseTreeListener... listeners)
     {
         this.runRootCompilerMacro(
+                elementState,
                 parserContext,
-                macroContextClass,
+                macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule,
                 Lists.immutable.with(listeners));
     }
 
     public void runRootCompilerMacro(
+            @Nonnull AntlrElement elementState,
             @Nonnull ParserRuleContext parserContext,
-            @Nonnull Class<?> macroContextClass,
+            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
             ImmutableList<ParseTreeListener> listeners)
     {
         CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
-                parserContext,
-                macroContextClass,
+                macroExpansionCompilerPhase,
                 sourceCodeText,
                 parserRule);
 
-        this.runRootCompilerMacro(listeners, compilationUnit);
+        this.runRootCompilerMacro(elementState, listeners, compilationUnit);
     }
 
-    public void runRootCompilerMacro(ImmutableList<ParseTreeListener> listeners, CompilationUnit compilationUnit)
+    public void runRootCompilerMacro(
+            @Nonnull AntlrElement elementState,
+            ImmutableList<ParseTreeListener> listeners,
+            CompilationUnit compilationUnit)
     {
         CompilerWalkState oldCompilerWalkState = this.compilerWalkState;
         AntlrWalkState    oldAntlrWalkState    = this.antlrWalkState;
@@ -117,7 +125,7 @@ public class CompilerState
             this.compilerWalkState = new CompilerWalkState(this.domainModelState);
             this.antlrWalkState = new AntlrWalkState();
 
-            this.compilerInputState.runCompilerMacro(compilationUnit, listeners);
+            this.compilerInputState.runCompilerMacro(elementState, compilationUnit, listeners);
         }
         finally
         {
@@ -307,7 +315,19 @@ public class CompilerState
         this.compilerWalkState.exitParameterizedProperty();
     }
 
-    public ImmutableList<CompilerError> getCompilerErrors()
+    public void enterClassModifier(ClassModifierContext ctx)
+    {
+        this.antlrWalkState.enterClassModifier(ctx);
+        this.compilerWalkState.enterClassModifier(ctx);
+    }
+
+    public void exitClassModifier()
+    {
+        this.antlrWalkState.exitClassModifier();
+        this.compilerWalkState.exitClassModifier();
+    }
+
+    public ImmutableList<RootCompilerError> getCompilerErrors()
     {
         return this.compilerErrorHolder.getCompilerErrors();
     }

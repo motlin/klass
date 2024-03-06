@@ -1,7 +1,10 @@
 package cool.klass.model.meta.domain.property.validation;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -15,11 +18,11 @@ public abstract class AbstractNumericPropertyValidation
 
     protected AbstractNumericPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
-        super(elementContext, inferred, owningProperty);
+        super(elementContext, macroElement, owningProperty);
         this.number = number;
     }
 
@@ -36,11 +39,11 @@ public abstract class AbstractNumericPropertyValidation
 
         protected NumericPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 DataTypePropertyBuilder<?, ?, ?> propertyBuilder,
                 int number)
         {
-            super(elementContext, inferred, propertyBuilder);
+            super(elementContext, macroElement, propertyBuilder);
             this.number = number;
         }
     }

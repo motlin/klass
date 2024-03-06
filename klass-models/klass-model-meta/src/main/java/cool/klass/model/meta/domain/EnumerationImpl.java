@@ -1,8 +1,11 @@
 package cool.klass.model.meta.domain;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -14,13 +17,13 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
 
     private EnumerationImpl(
             @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
+            Optional<Element> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, nameContext, name, ordinal, packageName);
     }
 
     @Override
@@ -42,13 +45,13 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
 
         public EnumerationBuilder(
                 @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
+                Optional<ElementBuilder<?>> macroElement,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         }
 
         public void setEnumerationLiteralBuilders(ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
@@ -62,7 +65,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
         {
             return new EnumerationImpl(
                     this.elementContext,
-                    this.inferred,
+                    this.macroElement.map(ElementBuilder::getElement),
                     this.nameContext,
                     this.name,
                     this.ordinal,

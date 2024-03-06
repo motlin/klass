@@ -14,6 +14,7 @@ import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.CharacterLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
@@ -52,6 +53,7 @@ import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
@@ -209,6 +211,20 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterInterfaceHeader(InterfaceHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceHeader() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceHeader(InterfaceHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceHeader() not implemented yet");
+    }
+
+    @Override
     public void enterInterfaceBody(InterfaceBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -332,6 +348,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitServiceCategoryModifier() not implemented yet");
+    }
+
+    @Override
+    public void enterClassHeader(ClassHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassHeader() not implemented yet");
+    }
+
+    @Override
+    public void exitClassHeader(ClassHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassHeader() not implemented yet");
     }
 
     @Override

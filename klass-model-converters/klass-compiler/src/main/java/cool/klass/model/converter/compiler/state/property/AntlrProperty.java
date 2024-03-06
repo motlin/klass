@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.property;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
@@ -8,6 +9,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.api.Type;
@@ -19,12 +21,12 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     protected AntlrProperty(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
-            boolean inferred,
+            Optional<AntlrElement> macroElement,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, macroElement, nameContext, name, ordinal);
     }
 
     @Override
@@ -48,11 +50,11 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     public final void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
-                "ERR_DUP_PRP: Duplicate member: '%s.%s'.",
+                "Duplicate member: '%s.%s'.",
                 this.getOwningClassifierState().getName(),
                 this.name);
 
-        compilerErrorHolder.add(message, this);
+        compilerErrorHolder.add("ERR_DUP_PRP", message, this);
     }
 
     @Nonnull

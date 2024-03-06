@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -20,6 +21,12 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
     }
 
     @Override
+    public String getName()
+    {
+        return "Version association";
+    }
+
+    @Override
     public void enterClassModifier(@Nonnull ClassModifierContext ctx)
     {
         super.enterClassModifier(ctx);
@@ -29,7 +36,8 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = this.compilerState.getCompilerWalkState().getClassState()
+        AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
+        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = classState
                 .getDataTypeProperties()
                 .select(AntlrDataTypeProperty::isKey);
 
@@ -38,12 +46,14 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
             return;
         }
 
-        String            klassSourceCode = this.getSourceCode(keyProperties);
-        ParseTreeListener compilerPhase   = new AssociationPhase(this.compilerState);
+        AntlrClassModifier classModifierState = this.compilerState.getCompilerWalkState().getClassModifierState();
+        String             klassSourceCode    = this.getSourceCode(keyProperties);
+        ParseTreeListener  compilerPhase      = new AssociationPhase(this.compilerState);
 
         this.compilerState.runRootCompilerMacro(
+                classModifierState,
                 ctx,
-                VersionAssociationInferencePhase.class,
+                this,
                 klassSourceCode,
                 KlassParser::compilationUnit,
                 compilerPhase);
