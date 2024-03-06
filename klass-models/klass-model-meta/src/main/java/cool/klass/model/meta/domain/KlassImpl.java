@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -16,6 +17,7 @@ import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 
@@ -26,6 +28,8 @@ public final class KlassImpl
     private final InheritanceType inheritanceType;
     private final boolean isUser;
     private final boolean isTransient;
+
+    private ImmutableList<AssociationEnd>        declaredAssociationEnds;
 
     private ImmutableList<AssociationEnd>        associationEnds;
     private ImmutableMap<String, AssociationEnd> associationEndsByName;
@@ -59,12 +63,6 @@ public final class KlassImpl
     public ClassDeclarationContext getElementContext()
     {
         return (ClassDeclarationContext) super.getElementContext();
-    }
-
-    @Override
-    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()
-    {
-        return Objects.requireNonNull(this.associationEnds);
     }
 
     @Override
@@ -115,6 +113,21 @@ public final class KlassImpl
         return this.inheritanceType != InheritanceType.NONE;
     }
 
+    @Override
+    public ImmutableList<AssociationEnd> getDeclaredAssociationEnds()
+    {
+        return Objects.requireNonNull(this.declaredAssociationEnds);
+    }
+
+    private void setDeclaredAssociationEnds(ImmutableList<AssociationEnd> declaredAssociationEnds)
+    {
+        if (this.declaredAssociationEnds != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.declaredAssociationEnds       = Objects.requireNonNull(declaredAssociationEnds);
+    }
+
     private void setAssociationEnds(ImmutableList<AssociationEnd> associationEnds)
     {
         if (this.associationEnds != null)
@@ -126,9 +139,15 @@ public final class KlassImpl
     }
 
     @Override
-    public Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName)
+    public ImmutableList<AssociationEnd> getAssociationEnds()
     {
-        return Optional.ofNullable(this.associationEndsByName.get(associationEndName));
+        return Objects.requireNonNull(this.associationEnds);
+    }
+
+    @Override
+    public AssociationEnd getAssociationEndByName(String name)
+    {
+        return this.associationEndsByName.get(name);
     }
 
     @Override
@@ -264,17 +283,27 @@ public final class KlassImpl
         {
             super.build2();
 
-            ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
+            ImmutableList<AssociationEnd> declaredAssociationEnds = this.associationEndBuilders
                     .<AssociationEnd>collect(AssociationEndBuilder::getElement)
                     .toImmutable();
-            this.element.setAssociationEnds(associationEnds);
+            this.element.setDeclaredAssociationEnds(declaredAssociationEnds);
 
             this.element.setVersionProperty(this.versionPropertyBuilder.map(AssociationEndBuilder::getElement));
             this.element.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
-            Optional<Klass> u = this.superClassBuilder.map(ElementBuilder::getElement);
-            this.element.setSuperClass(u);
+            Optional<Klass> maybeSuperClass = this.superClassBuilder.map(ElementBuilder::getElement);
+            this.element.setSuperClass(maybeSuperClass);
             ImmutableList<Klass> subClasses = this.subClassBuilders.collect(ElementBuilder::getElement);
             this.element.setSubClasses(subClasses);
+
+            ImmutableList<AssociationEnd> associationEnds = maybeSuperClass
+                    .map(Klass::getAssociationEnds)
+                    .orElseGet(Lists.immutable::empty)
+                    .newWithAll(declaredAssociationEnds)
+                    .toReversed()
+                    .distinctBy(NamedElement::getName)
+                    .toReversed();
+
+            this.element.setAssociationEnds(associationEnds);
         }
 
         @Override

@@ -81,22 +81,11 @@ public interface Klass
                 .detect(Objects::nonNull);
     }
 
-    default AssociationEnd getAssociationEndByName(String name)
-    {
-        AssociationEnd declaredAssociationEndByName = this.getDeclaredAssociationEndByName(name)
-                .orElse(null);
-        if (declaredAssociationEndByName != null)
-        {
-            return declaredAssociationEndByName;
-        }
+    ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
 
-        AssociationEnd superClassAssociationEnd = this
-                .getSuperClass()
-                .map(superClass -> superClass.getAssociationEndByName(name))
-                .orElse(null);
+    ImmutableList<AssociationEnd> getAssociationEnds();
 
-        return superClassAssociationEnd;
-    }
+    AssociationEnd getAssociationEndByName(String name);
 
     // TODO: Replace with an implementation that preserves order
     @Nonnull
@@ -114,23 +103,6 @@ public interface Klass
         return Lists.immutable.<Property>empty()
                 .newWithAll(this.getDeclaredDataTypeProperties())
                 .newWithAll(this.getDeclaredAssociationEnds());
-    }
-
-    ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
-
-    Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName);
-
-    default ImmutableList<AssociationEnd> getAssociationEnds()
-    {
-        ImmutableList<AssociationEnd> inheritedAssociationEnds = this.getSuperClass()
-                .map(Klass::getAssociationEnds)
-                .orElseGet(Lists.immutable::empty);
-
-        return inheritedAssociationEnds
-                .newWithAll(this.getDeclaredAssociationEnds())
-                .toReversed()
-                .distinctBy(NamedElement::getName)
-                .toReversed();
     }
 
     @Nonnull
