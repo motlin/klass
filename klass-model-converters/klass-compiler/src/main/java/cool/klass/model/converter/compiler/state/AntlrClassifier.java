@@ -9,7 +9,6 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -26,7 +25,6 @@ import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
@@ -347,29 +345,6 @@ public abstract class AntlrClassifier
     {
         return this.declaredInterfaces.contains(iface)
                 || this.declaredInterfaces.anySatisfyWith(AntlrClassifier::implementsInterface, iface);
-    }
-
-    @Nonnull
-    public MutableOrderedMap<AntlrAssociationEnd, MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>>> getForeignKeys()
-    {
-        MutableOrderedMap<AntlrAssociationEnd, MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>>> foreignKeyConstraints =
-                OrderedMapAdapter.adapt(new LinkedHashMap<>());
-
-        for (AntlrDataTypeProperty<?> foreignKey : this.getAllDataTypeProperties())
-        {
-            OrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> keysMatchingThisForeignKey = foreignKey.getKeysMatchingThisForeignKey();
-
-            keysMatchingThisForeignKey.forEachKeyValue((associationEnd, keys) ->
-            {
-                MutableOrderedMap<AntlrDataTypeProperty<?>, AntlrDataTypeProperty<?>> dataTypeProperties = foreignKeyConstraints.computeIfAbsent(
-                        associationEnd,
-                        ignored -> OrderedMapAdapter.adapt(new LinkedHashMap<>()));
-
-                dataTypeProperties.put(foreignKey, keys.getOnly());
-            });
-        }
-
-        return foreignKeyConstraints;
     }
 
     //<editor-fold desc="Report Compiler Errors">
