@@ -91,6 +91,19 @@ public class AntlrProjection
     }
 
     @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
+    }
+
+    @Nonnull
+    @Override
+    public ProjectionDeclarationContext getElementContext()
+    {
+        return (ProjectionDeclarationContext) super.getElementContext();
+    }
+
+    @Override
     protected Pattern getNamePattern()
     {
         return TYPE_NAME_PATTERN;
@@ -132,6 +145,7 @@ public class AntlrProjection
         return this.projectionBuilder;
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -180,17 +194,5 @@ public class AntlrProjection
                     this.getElementContext().classifierReference());
         }
     }
-
-    @Nonnull
-    @Override
-    public ProjectionDeclarationContext getElementContext()
-    {
-        return (ProjectionDeclarationContext) super.getElementContext();
-    }
-
-    @Override
-    public Pair<Token, Token> getContextBefore()
-    {
-        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
-    }
+    //</editor-fold>
 }

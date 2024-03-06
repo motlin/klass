@@ -133,18 +133,19 @@ public class AntlrEnumerationProperty
     }
 
     @Override
+    public String getTypeName()
+    {
+        return this.getElementContext().enumerationReference().getText();
+    }
+
+    //<editor-fold desc="Report Compiler Errors">
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportErrors(compilerErrorHolder);
 
         this.reportTypeNotFound(compilerErrorHolder);
         this.reportForwardReference(compilerErrorHolder);
-    }
-
-    @Override
-    public String getTypeName()
-    {
-        return this.getElementContext().enumerationReference().getText();
     }
 
     private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -192,6 +193,7 @@ public class AntlrEnumerationProperty
             compilerErrorHolder.add("ERR_ENM_IDP", message, this, idModifier.getElementContext());
         }
     }
+    //</editor-fold>
 
     @Nonnull
     @Override

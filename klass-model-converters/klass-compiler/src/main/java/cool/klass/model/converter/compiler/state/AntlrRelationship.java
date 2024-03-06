@@ -79,6 +79,7 @@ public class AntlrRelationship
         return this.getEntireContext();
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     public void reportErrors(CompilerErrorState compilerErrorHolder)
     {
         AntlrAssociationEnd sourceEnd = this.association.getSourceEnd();
@@ -128,6 +129,7 @@ public class AntlrRelationship
                     criteriaExpressionContext);
         }
     }
+    //</editor-fold>
 
     // relationship this.otherTypeKey == OtherType.key
     private static String getSourceInferredRelationshipText(AntlrAssociationEnd associationEnd)

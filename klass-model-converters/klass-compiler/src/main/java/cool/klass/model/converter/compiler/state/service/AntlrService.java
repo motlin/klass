@@ -155,6 +155,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         this.serviceProjectionDispatchState = Optional.of(projectionDispatch);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateKeywords(compilerErrorHolder);
@@ -230,6 +231,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 projectionDispatch,
                 elementContext);
     }
+    //</editor-fold>
 
     @Nonnull
     public AntlrVerb getVerbState()

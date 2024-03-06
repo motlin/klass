@@ -123,6 +123,7 @@ public class AntlrProjectionReferenceProperty
         return this.antlrProjectionParent;
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -208,6 +209,7 @@ public class AntlrProjectionReferenceProperty
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }
+    //</editor-fold>
 
     @Nonnull
     @Override

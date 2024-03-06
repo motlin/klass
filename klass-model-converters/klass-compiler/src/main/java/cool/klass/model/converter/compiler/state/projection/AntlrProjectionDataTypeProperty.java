@@ -111,6 +111,18 @@ public class AntlrProjectionDataTypeProperty
         return Objects.requireNonNull(this.projectionDataTypePropertyBuilder);
     }
 
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
+    }
+
     @Nonnull
     @Override
     public AntlrProjectionParent getParent()
@@ -118,13 +130,7 @@ public class AntlrProjectionDataTypeProperty
         return this.antlrProjectionParent;
     }
 
-    @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        String message = String.format("Duplicate member: '%s'.", this.getName());
-        compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
-    }
-
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -147,7 +153,10 @@ public class AntlrProjectionDataTypeProperty
             AntlrReferenceProperty<?> referenceProperty = parentClassifier.getReferencePropertyByName(this.getName());
             if (referenceProperty == AntlrReferenceProperty.NOT_FOUND)
             {
-                String message = String.format("Cannot find member '%s.%s'.", parentClassifier.getName(), this.getName());
+                String message = String.format(
+                        "Cannot find member '%s.%s'.",
+                        parentClassifier.getName(),
+                        this.getName());
                 compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
             }
             else
@@ -160,8 +169,8 @@ public class AntlrProjectionDataTypeProperty
             }
         }
 
-        reportPrivateProperty(compilerErrorHolder);
-        reportForwardReference(compilerErrorHolder);
+        this.reportPrivateProperty(compilerErrorHolder);
+        this.reportForwardReference(compilerErrorHolder);
     }
 
     private void reportPrivateProperty(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -187,7 +196,7 @@ public class AntlrProjectionDataTypeProperty
                 "Projection property '%s' is declared on line %d and has a forward reference to property '%s' which is declared later in the source file '%s' on line %d.",
                 this.getName(),
                 this.getElementContext().getStart().getLine(),
-                this.dataTypeProperty.toString(),
+                this.dataTypeProperty,
                 this.getCompilationUnit().get().getSourceName(),
                 this.dataTypeProperty.getElementContext().getStart().getLine());
         compilerErrorHolder.add(
@@ -198,10 +207,18 @@ public class AntlrProjectionDataTypeProperty
     }
 
     @Override
+    public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        String message = String.format("Duplicate member: '%s'.", this.getName());
+        compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
+    }
+
+    @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }
+    //</editor-fold>
 
     @Nonnull
     @Override
@@ -209,17 +226,5 @@ public class AntlrProjectionDataTypeProperty
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getNamePattern() not implemented yet");
-    }
-
-    @Override
-    public boolean isContext()
-    {
-        return true;
-    }
-
-    @Override
-    public Pair<Token, Token> getContextBefore()
-    {
-        return this.getEntireContext();
     }
 }

@@ -347,6 +347,7 @@ public abstract class AntlrClassifier
                 || this.interfaceStates.anySatisfyWith(AntlrClassifier::implementsInterface, interfaceState);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -501,6 +502,33 @@ public abstract class AntlrClassifier
                 + ".reportCircularInheritance() not implemented yet");
     }
 
+    @OverridingMethodsMustInvokeSuper
+    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
+        this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+    }
+
+    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        for (int i = 0; i < this.interfaceStates.size(); i++)
+        {
+            AntlrInterface interfaceState = this.interfaceStates.get(i);
+            if (this.isForwardReference(interfaceState))
+            {
+                String message = String.format(
+                        "Class '%s' is declared on line %d and has a forward reference to implemented interface '%s' which is declared later in the source file '%s' on line %d.",
+                        this.getName(),
+                        this.getElementContext().getStart().getLine(),
+                        interfaceState.getName(),
+                        this.getCompilationUnit().get().getSourceName(),
+                        interfaceState.getElementContext().getStart().getLine());
+                compilerErrorHolder.add("ERR_FWD_REF", message, this, this.getOffendingInterfaceReference(i));
+            }
+        }
+    }
+    //</editor-fold>
+
     protected boolean isInterfaceRedundant(int index, @Nonnull AntlrInterface interfaceState)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -526,32 +554,6 @@ public abstract class AntlrClassifier
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getDuplicateMemberNames() not implemented yet");
-    }
-
-    @OverridingMethodsMustInvokeSuper
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
-        this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
-    }
-
-    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
-    {
-        for (int i = 0; i < this.interfaceStates.size(); i++)
-        {
-            AntlrInterface interfaceState = this.interfaceStates.get(i);
-            if (this.isForwardReference(interfaceState))
-            {
-                String message = String.format(
-                        "Class '%s' is declared on line %d and has a forward reference to implemented interface '%s' which is declared later in the source file '%s' on line %d.",
-                        this.getName(),
-                        this.getElementContext().getStart().getLine(),
-                        interfaceState.getName(),
-                        this.getCompilationUnit().get().getSourceName(),
-                        interfaceState.getElementContext().getStart().getLine());
-                compilerErrorHolder.add("ERR_FWD_REF", message, this, this.getOffendingInterfaceReference(i));
-            }
-        }
     }
 
     protected AntlrDataTypeProperty<?> getInterfaceDataTypePropertyByName(String name)

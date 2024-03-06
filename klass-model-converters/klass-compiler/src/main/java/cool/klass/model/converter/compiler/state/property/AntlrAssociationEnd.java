@@ -134,6 +134,7 @@ public class AntlrAssociationEnd
         return this.associationEndBuilder;
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -313,6 +314,7 @@ public class AntlrAssociationEnd
                 this,
                 this.getElementContext().classReference());
     }
+    //</editor-fold>
 
     @Nonnull
     @Override

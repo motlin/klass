@@ -95,6 +95,7 @@ public class AntlrServiceGroup
         return (ServiceGroupDeclarationContext) super.getElementContext();
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportNoUrls(compilerErrorHolder);
@@ -184,6 +185,13 @@ public class AntlrServiceGroup
                 this.getElementContext().classReference());
     }
 
+    @Override
+    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        // Deliberately empty
+    }
+    //</editor-fold>
+
     public ServiceGroupBuilder build()
     {
         if (this.serviceGroupBuilder != null)
@@ -219,11 +227,5 @@ public class AntlrServiceGroup
     public ServiceGroupBuilder getElementBuilder()
     {
         return this.serviceGroupBuilder;
-    }
-
-    @Override
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
-    {
-        // Deliberately empty
     }
 }

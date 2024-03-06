@@ -111,6 +111,13 @@ public class AntlrPrimitiveProperty
     }
 
     @Override
+    public String getTypeName()
+    {
+        return this.getElementContext().primitiveType().getText();
+    }
+
+    //<editor-fold desc="Report Compiler Errors">
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportErrors(compilerErrorHolder);
@@ -118,12 +125,6 @@ public class AntlrPrimitiveProperty
         this.reportInvalidTemporalMultiplicity(compilerErrorHolder);
         this.reportInvalidStringValidations(compilerErrorHolder);
         this.reportInvalidNumericValidations(compilerErrorHolder);
-    }
-
-    @Override
-    public String getTypeName()
-    {
-        return this.getElementContext().primitiveType().getText();
     }
 
     @Override
@@ -212,4 +213,5 @@ public class AntlrPrimitiveProperty
         this.minValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
         this.maxValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
     }
+    //</editor-fold>
 }

@@ -168,6 +168,7 @@ public class AntlrInterface extends AntlrClassifier
         this.interfaceBuilder.setInterfaceBuilders(interfaceBuilders);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -265,6 +266,7 @@ public class AntlrInterface extends AntlrClassifier
             this.reportForwardReference(compilerErrorHolder);
         }
     }
+    //</editor-fold>
 
     private boolean extendsInterface(
             AntlrInterface interfaceState,

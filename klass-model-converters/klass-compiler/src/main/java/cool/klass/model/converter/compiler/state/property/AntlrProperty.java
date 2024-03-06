@@ -122,6 +122,7 @@ public abstract class AntlrProperty
         return result == null ? Lists.immutable.empty() : result.toImmutable();
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -244,6 +245,7 @@ public abstract class AntlrProperty
                 this,
                 modifierStates.collect(AntlrElement::getElementContext));
     }
+    //</editor-fold>
 
     @Override
     protected Pattern getNamePattern()

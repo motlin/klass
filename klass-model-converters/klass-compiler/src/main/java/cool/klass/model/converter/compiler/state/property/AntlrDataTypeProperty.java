@@ -389,6 +389,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.getElementBuilder().setForeignKeyBuildersMatchingThisKey(foreignKeysMatchingThisKey.asUnmodifiable());
     }
 
+    @Nonnull
+    @Override
+    public AntlrClassifier getOwningClassifierState()
+    {
+        return this.owningClassifierState;
+    }
+
+    //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -742,13 +750,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    @Nonnull
-    @Override
-    public AntlrClassifier getOwningClassifierState()
-    {
-        return this.owningClassifierState;
-    }
-
     public void reportIdPropertyWithKeyProperties(CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
@@ -780,6 +781,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 this.getOwningClassifierState().getName());
         compilerErrorHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
     }
+    //</editor-fold>
 
     @Override
     public String toString()

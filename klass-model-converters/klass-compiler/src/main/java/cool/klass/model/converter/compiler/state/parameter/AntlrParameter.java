@@ -115,6 +115,7 @@ public final class AntlrParameter
         this.modifiers.add(modifierState);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportNameErrors(compilerErrorHolder);
@@ -141,6 +142,7 @@ public final class AntlrParameter
         String message = String.format("Duplicate parameter: '%s'.", this.getName());
         compilerErrorHolder.add("ERR_DUP_PAR", message, this);
     }
+    //</editor-fold>
 
     @Nonnull
     public AntlrType getType()

@@ -149,6 +149,7 @@ public class AntlrUrl extends AntlrElement
         }
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateParameterErrors(compilerErrorHolder);
@@ -197,6 +198,7 @@ public class AntlrUrl extends AntlrElement
             compilerErrorHolder.add("ERR_URL_EMP", message, this);
         }
     }
+    //</editor-fold>
 
     @Nonnull
     @Override

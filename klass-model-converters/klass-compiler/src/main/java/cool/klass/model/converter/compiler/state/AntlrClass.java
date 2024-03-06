@@ -406,6 +406,7 @@ public class AntlrClass
         this.klassBuilder.setSuperClassBuilder(superClassBuilder);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -508,28 +509,6 @@ public class AntlrClass
         }
     }
 
-    private boolean hasIDProperty()
-    {
-        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isId);
-    }
-
-    private boolean hasKeyProperty()
-    {
-        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
-    }
-
-    private boolean superClassShouldHaveKey()
-    {
-        return this.superClassState
-                .map(AntlrClass::getInheritanceType)
-                .equals(Optional.of(InheritanceType.TABLE_PER_CLASS));
-    }
-
-    private boolean inheritanceTypeRequiresKeyProperties()
-    {
-        return this.inheritanceType == InheritanceType.NONE || this.inheritanceType == InheritanceType.TABLE_PER_CLASS;
-    }
-
     public void reportDuplicateUserClass(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
@@ -630,6 +609,56 @@ public class AntlrClass
         }
     }
 
+    @Override
+    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        super.reportForwardReference(compilerErrorHolder);
+        if (this.superClassState.isEmpty())
+        {
+            return;
+        }
+
+        AntlrClass klassState = this.superClassState.get();
+        if (this.isForwardReference(klassState))
+        {
+            String message = String.format(
+                    "Class '%s' is declared on line %d and has a forward reference to super class '%s' which is declared later in the source file '%s' on line %d.",
+                    this.getName(),
+                    this.getElementContext().getStart().getLine(),
+                    klassState.getName(),
+                    this.getCompilationUnit().get().getSourceName(),
+                    klassState.getElementContext().getStart().getLine());
+            compilerErrorHolder.add(
+                    "ERR_FWD_REF",
+                    message,
+                    this,
+                    this.getElementContext().classHeader().extendsDeclaration().classReference());
+        }
+    }
+    //</editor-fold>
+
+    private boolean hasIDProperty()
+    {
+        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isId);
+    }
+
+    private boolean hasKeyProperty()
+    {
+        return this.getDataTypeProperties().anySatisfy(AntlrDataTypeProperty::isKey);
+    }
+
+    private boolean superClassShouldHaveKey()
+    {
+        return this.superClassState
+                .map(AntlrClass::getInheritanceType)
+                .equals(Optional.of(InheritanceType.TABLE_PER_CLASS));
+    }
+
+    private boolean inheritanceTypeRequiresKeyProperties()
+    {
+        return this.inheritanceType == InheritanceType.NONE || this.inheritanceType == InheritanceType.TABLE_PER_CLASS;
+    }
+
     private boolean hasCircularInheritance()
     {
         return this.superClassState.isPresent()
@@ -677,33 +706,6 @@ public class AntlrClass
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
-    }
-
-    @Override
-    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
-    {
-        super.reportForwardReference(compilerErrorHolder);
-        if (this.superClassState.isEmpty())
-        {
-            return;
-        }
-
-        AntlrClass klassState = this.superClassState.get();
-        if (this.isForwardReference(klassState))
-        {
-            String message = String.format(
-                    "Class '%s' is declared on line %d and has a forward reference to super class '%s' which is declared later in the source file '%s' on line %d.",
-                    this.getName(),
-                    this.getElementContext().getStart().getLine(),
-                    klassState.getName(),
-                    this.getCompilationUnit().get().getSourceName(),
-                    klassState.getElementContext().getStart().getLine());
-            compilerErrorHolder.add(
-                    "ERR_FWD_REF",
-                    message,
-                    this,
-                    this.getElementContext().classHeader().extendsDeclaration().classReference());
-        }
     }
 
     private ImmutableList<String> getDeclaredMemberNames()

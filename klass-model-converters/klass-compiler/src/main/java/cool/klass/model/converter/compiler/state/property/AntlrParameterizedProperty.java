@@ -145,6 +145,20 @@ public class AntlrParameterizedProperty
     }
 
     @Override
+    protected IdentifierContext getTypeIdentifier()
+    {
+        return this.getElementContext().classReference().identifier();
+    }
+
+    @Nonnull
+    @Override
+    public AntlrClass getOwningClassifierState()
+    {
+        return Objects.requireNonNull(this.owningClassState);
+    }
+
+    //<editor-fold desc="Report Compiler Errors">
+    @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportErrors(compilerErrorHolder);
@@ -158,22 +172,10 @@ public class AntlrParameterizedProperty
     }
 
     @Override
-    protected IdentifierContext getTypeIdentifier()
-    {
-        return this.getElementContext().classReference().identifier();
-    }
-
-    @Nonnull
-    @Override
-    public AntlrClass getOwningClassifierState()
-    {
-        return Objects.requireNonNull(this.owningClassState);
-    }
-
-    @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         super.reportNameErrors(compilerErrorHolder);
         this.parameterHolder.reportNameErrors(compilerErrorHolder);
     }
+    //</editor-fold>
 }

@@ -28,7 +28,7 @@ public interface AntlrProjectionElement extends IAntlrElement
     @Nonnull
     String getName();
 
-    void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder);
-
     void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder);
+
+    void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder);
 }

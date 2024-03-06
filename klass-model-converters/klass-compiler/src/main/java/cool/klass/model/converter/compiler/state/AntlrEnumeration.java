@@ -131,6 +131,7 @@ public class AntlrEnumeration
         return Objects.requireNonNull(this.enumerationBuilder);
     }
 
+    //<editor-fold desc="Report Compiler Errors">
     @Override
     public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
@@ -143,6 +144,7 @@ public class AntlrEnumeration
         this.logDuplicateLiteralNames(compilerErrorHolder);
         this.logDuplicatePrettyNames(compilerErrorHolder);
     }
+    //</editor-fold>
 
     public void logDuplicateLiteralNames(CompilerErrorState compilerErrorHolder)
     {
