@@ -25,13 +25,14 @@ public interface Klass
     @Override
     default ImmutableList<Modifier> getInheritedModifiers()
     {
-        ImmutableList<Modifier> superClassProperties = this.getSuperClass()
+        ImmutableList<Modifier> superClassModifiers = this.getSuperClass()
                 .map(Classifier::getModifiers)
                 .orElseGet(Lists.immutable::empty);
 
         ImmutableList<Modifier> interfaceModifiers = Classifier.super.getInheritedModifiers();
 
-        return superClassProperties.newWithAll(interfaceModifiers).distinctBy(Modifier::getKeyword);
+        ImmutableList<Modifier> allModifiers = superClassModifiers.newWithAll(interfaceModifiers);
+        return allModifiers.distinctBy(Modifier::getKeyword);
     }
 
     @Override
