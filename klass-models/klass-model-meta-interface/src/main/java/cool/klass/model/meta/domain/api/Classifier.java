@@ -10,7 +10,8 @@ import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.MutableSet;
 
-public interface Classifier extends Type, PackageableElement, ModifierOwner
+public interface Classifier
+        extends Type, PackageableElement, ModifierOwner
 {
     @Nonnull
     ImmutableList<Interface> getInterfaces();
@@ -68,19 +69,24 @@ public interface Classifier extends Type, PackageableElement, ModifierOwner
     @Nonnull
     ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties();
 
-    default boolean isBitemporal()
+    default boolean isTemporal()
     {
-        return this.isValidTemporal() && this.isSystemTemporal();
+        return this.isSystemTemporal() || this.isValidTemporal();
     }
 
-    default boolean isValidTemporal()
+    default boolean isBitemporal()
     {
-        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isValidTemporal);
+        return this.isSystemTemporal() && this.isValidTemporal();
     }
 
     default boolean isSystemTemporal()
     {
         return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isSystemTemporal);
+    }
+
+    default boolean isValidTemporal()
+    {
+        return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isValidTemporal);
     }
 
     @Nonnull
