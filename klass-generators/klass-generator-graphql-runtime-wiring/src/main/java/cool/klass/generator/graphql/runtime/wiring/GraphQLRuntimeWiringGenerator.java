@@ -77,6 +77,7 @@ public class GraphQLRuntimeWiringGenerator
     {
         String dataFetchersSourceCode = klass
                 .getProperties()
+                .reject(this::isAbstractReferenceProperty)
                 .collectWith(this::getDataFetcherSourceCode, klass)
                 .makeString("");
 
@@ -85,7 +86,7 @@ public class GraphQLRuntimeWiringGenerator
                 .selectInstancesOf(ReferenceProperty.class)
                 .collect(ReferenceProperty::getType);
 
-        ImmutableList<Classifier>  importTypes = Lists.immutable.<Classifier>with(klass).newWithAll(associatedTypes);
+        ImmutableList<Classifier> importTypes = Lists.immutable.<Classifier>with(klass).newWithAll(associatedTypes);
         ImmutableList<String> imports = importTypes
                 .collect(PackageableElement::getPackageName)
                 .toSortedSet()
@@ -122,6 +123,11 @@ public class GraphQLRuntimeWiringGenerator
         // @formatter:on
 
         return sourceCode;
+    }
+
+    private boolean isAbstractReferenceProperty(Property property)
+    {
+        return property instanceof ReferenceProperty && ((ReferenceProperty) property).getType().isAbstract();
     }
 
     private String getImport(String packageName)
