@@ -90,13 +90,13 @@ public class ServiceResourceGenerator
                 + "import javax.ws.rs.*;\n"
                 + "import javax.ws.rs.core.*;\n"
                 + "\n"
+                + "import com.codahale.metrics.annotation.*;\n"
                 + "import com.gs.fw.common.mithra.MithraObject;\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
                 + "import cool.klass.model.meta.domain.DomainModel;\n"
                 + "import cool.klass.model.meta.domain.projection.Projection;\n"
                 + "import cool.klass.serializer.json.ReladomoJsonTree;\n"
                 + "import " + klass.getPackageName() + ".*;\n"
-                + "import org.eclipse.collections.api.set.primitive.*;\n"
                 + "import org.eclipse.collections.impl.factory.primitive.*;\n"
                 + "import org.eclipse.collections.impl.set.mutable.SetAdapter;\n"
                 + "import org.eclipse.collections.impl.utility.Iterate;\n"
@@ -114,7 +114,6 @@ public class ServiceResourceGenerator
                 + "        this.domainModel = domainModel;\n"
                 + "    }\n"
                 + "\n"
-                + "    "
                 + serviceMethodsSourceCode
                 + "}\n";
         return sourceCode;
@@ -177,7 +176,10 @@ public class ServiceResourceGenerator
         String conflictOperationSourceCode  = this.getOperation(service.getConflictCriteria(), finderName);
 
         //language=JAVA
-        String sourceCode = "    @" + verb.name() + "\n"
+        String sourceCode = ""
+                + "    @Timed\n"
+                + "    @ExceptionMetered\n"
+                + "    @" + verb.name() + "\n"
                 + "    @Path(\"" + urlPathString + queryParametersString + "\")\n"
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
                 + "    public " + returnType + " method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
@@ -226,12 +228,12 @@ public class ServiceResourceGenerator
                     + "        }\n"
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"
-                    + "        Projection projection = domainModel.getProjectionByName(\"" + projectionName + "\");\n"
+                    + "        Projection projection = this.domainModel.getProjectionByName(\"" + projectionName + "\");\n"
                     + "        return new ReladomoJsonTree(mithraObject, projection.getProjectionMembers());\n";
         }
 
         return ""
-                + "        Projection projection = domainModel.getProjectionByName(\"" + projectionName + "\");\n"
+                + "        Projection projection = this.domainModel.getProjectionByName(\"" + projectionName + "\");\n"
                 + "        return result.asEcList().<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(\n"
                 + "                mithraObject,\n"
                 + "                projection.getProjectionMembers()));\n";
