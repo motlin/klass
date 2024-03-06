@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>xample-projects</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
+
+    <modelVersion>4.0.0</modelVersion>
 
     <properties>
         <klass.version>0.1.0-SNAPSHOT</klass.version>
@@ -28,8 +30,11 @@
     </properties>
 
     <groupId>cool.klass.xample.coverage</groupId>
+
     <artifactId>coverage-example</artifactId>
+
     <version>0.1.0-SNAPSHOT</version>
+
     <packaging>pom</packaging>
 
     <name>${app.name} (Module Group)</name>
@@ -93,15 +98,27 @@
 
     <modules>
         <module>coverage-example-domain-model</module>
-        <module>coverage-example-reladomo-definitions</module>
-        <module>coverage-example-reladomo-pojos</module>
-        <module>coverage-example-reladomo-ddls</module>
-        <module>coverage-example-services</module>
-        <module>coverage-example-dtos</module>
         <module>coverage-example-dropwizard-application</module>
-        <module>coverage-example-meta-model-constants</module>
+        <module>coverage-example-dtos</module>
+        <module>coverage-example-graphql-data-fetchers</module>
+        <module>coverage-example-graphql-fragment</module>
+        <module>coverage-example-graphql-runtime-wiring-query</module>
+        <module>coverage-example-graphql-runtime-wiring</module>
+        <module>coverage-example-graphql-schema</module>
         <module>coverage-example-json-views</module>
+        <module>coverage-example-klass-html</module>
+        <module>coverage-example-klass-projections</module>
+        <module>coverage-example-klass-services</module>
+        <module>coverage-example-meta-model-constants</module>
+        <module>coverage-example-reladomo-ddls</module>
+        <module>coverage-example-reladomo-definitions</module>
+        <module>coverage-example-reladomo-merge-hooks</module>
+        <module>coverage-example-reladomo-pojos</module>
+        <module>coverage-example-reladomo-readable-interfaces</module>
+        <module>coverage-example-services</module>
+        <module>coverage-example-uml-nomnoml</module>
         <module>klass-generator-klass-html-test</module>
         <module>liftwizard-reladomo-test-resource-writer-tests</module>
     </modules>
+
 </project>

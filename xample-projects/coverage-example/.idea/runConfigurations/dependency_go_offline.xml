@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="klass [clean,install,checkstyle:check]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
+  <configuration default="false" name="dependency:go-offline" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,22 +10,19 @@
           </option>
           <option name="goals">
             <list>
-              <option value="clean" />
-              <option value="install" />
-              <option value="checkstyle:check" />
-              <option value="--activate-profiles" />
-              <option value="!shade,!run-demo" />
+              <option value="-DexcludeGroupIds=cool.klass.xample.coverage" />
+              <option value="dependency:go-offline" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />
           <option name="profilesMap">
             <map />
           </option>
-          <option name="resolveToWorkspace" value="true" />
+          <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method />
+    <method v="2" />
   </configuration>
 </component>

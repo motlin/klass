@@ -21,7 +21,13 @@
             <artifactId>validation-api</artifactId>
         </dependency>
 
+        <!--Uncomment these dependencies to enable validations for required properties-->
         <!--
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>

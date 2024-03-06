@@ -26,26 +26,14 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-meta-model-constants</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-json-views</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-deserializer-json</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-persistent-writer</artifactId>
-            <version>${klass.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-meta-model-constants</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -65,8 +53,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jersey</artifactId>
         </dependency>
 
         <dependency>
@@ -80,6 +68,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
@@ -89,10 +82,17 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
 
+        <!--Uncomment these dependencies to enable write services-->
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-deserializer-json</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
 
         <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-jersey</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-persistent-writer</artifactId>
+            <version>${klass.version}</version>
         </dependency>
 
         <dependency>

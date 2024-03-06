@@ -31,6 +31,7 @@
                 </configuration>
 
                 <executions>
+
                     <execution>
                         <id>generate-json-views</id>
                         <goals>

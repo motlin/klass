@@ -2,13 +2,13 @@
   <configuration default="false" name="Whole project" type="JUnit" factoryName="JUnit" singleton="true" nameIsGenerated="true">
     <extension name="coverage" track_test_folders="true">
       <pattern>
-        <option name="PATTERN" value="cool.klass.*" />
+        <option name="PATTERN" value="cool.klass.xample.coverage.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
-    <option name="PACKAGE_NAME" value="cool.klass" />
+    <option name="PACKAGE_NAME" value="cool.klass.xample.coverage" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="package" />
