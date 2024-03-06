@@ -4,7 +4,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
 
-public interface IntegerLiteralValue extends LiteralValue
+public interface IntegerLiteralValue
+        extends LiteralValue
 {
     int getValue();
 

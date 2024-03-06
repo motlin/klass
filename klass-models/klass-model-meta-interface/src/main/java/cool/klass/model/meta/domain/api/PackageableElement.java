@@ -2,7 +2,8 @@ package cool.klass.model.meta.domain.api;
 
 import javax.annotation.Nonnull;
 
-public interface PackageableElement extends NamedElement
+public interface PackageableElement
+        extends NamedElement
 {
     @Nonnull
     String getPackageName();

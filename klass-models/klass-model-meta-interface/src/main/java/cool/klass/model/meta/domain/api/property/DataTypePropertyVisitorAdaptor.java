@@ -3,7 +3,8 @@ package cool.klass.model.meta.domain.api.property;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
-public class DataTypePropertyVisitorAdaptor implements PrimitiveTypeVisitor
+public class DataTypePropertyVisitorAdaptor
+        implements PrimitiveTypeVisitor
 {
     private final DataTypePropertyVisitor visitor;
     private final PrimitiveProperty       primitiveProperty;

@@ -7,7 +7,8 @@ import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
-public interface PrimitiveProperty extends DataTypeProperty
+public interface PrimitiveProperty
+        extends DataTypeProperty
 {
     @Override
     default void visit(@Nonnull PropertyVisitor visitor)

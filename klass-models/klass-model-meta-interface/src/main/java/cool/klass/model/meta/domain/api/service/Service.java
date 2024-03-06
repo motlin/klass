@@ -9,7 +9,8 @@ import cool.klass.model.meta.domain.api.criteria.Criteria;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.service.url.Url;
 
-public interface Service extends Element
+public interface Service
+        extends Element
 {
     @Nonnull
     Url getUrl();

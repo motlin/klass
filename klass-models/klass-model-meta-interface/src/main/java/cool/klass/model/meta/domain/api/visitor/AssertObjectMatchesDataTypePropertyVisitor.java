@@ -6,7 +6,8 @@ import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 
-public class AssertObjectMatchesDataTypePropertyVisitor implements DataTypePropertyVisitor
+public class AssertObjectMatchesDataTypePropertyVisitor
+        implements DataTypePropertyVisitor
 {
     private final Object object;
 

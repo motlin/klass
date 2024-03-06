@@ -4,7 +4,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 
-public interface EdgePointCriteria extends Criteria
+public interface EdgePointCriteria
+        extends Criteria
 {
     @Nonnull
     MemberReferencePath getMemberExpressionValue();

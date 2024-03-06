@@ -14,7 +14,8 @@ import cool.klass.model.meta.domain.api.visitor.DataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public interface DataTypeProperty extends Property
+public interface DataTypeProperty
+        extends Property
 {
     void visit(@Nonnull DataTypePropertyVisitor visitor);
 

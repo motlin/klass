@@ -16,7 +16,7 @@ public final class ProjectionWalker
             @Nonnull ProjectionElement projectionElement,
             @Nonnull ProjectionListener listener)
     {
-        recursiveWalk(projectionElement, listener, Sets.mutable.empty());
+        ProjectionWalker.recursiveWalk(projectionElement, listener, Sets.mutable.empty());
     }
 
     private static void recursiveWalk(
@@ -30,7 +30,7 @@ public final class ProjectionWalker
             boolean notYetVisited = visited.add(eachChild);
             if (notYetVisited)
             {
-                recursiveWalk(eachChild, listener, visited);
+                ProjectionWalker.recursiveWalk(eachChild, listener, visited);
             }
         });
         projectionElement.exit(listener);

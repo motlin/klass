@@ -4,7 +4,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 
-public interface VariableReference extends ExpressionValue
+public interface VariableReference
+        extends ExpressionValue
 {
     @Nonnull
     Parameter getParameter();

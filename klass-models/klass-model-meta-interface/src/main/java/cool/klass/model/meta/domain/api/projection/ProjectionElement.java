@@ -5,7 +5,8 @@ import java.util.Optional;
 import cool.klass.model.meta.domain.api.NamedElement;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public interface ProjectionElement extends NamedElement
+public interface ProjectionElement
+        extends NamedElement
 {
     Optional<ProjectionParent> getParent();
 

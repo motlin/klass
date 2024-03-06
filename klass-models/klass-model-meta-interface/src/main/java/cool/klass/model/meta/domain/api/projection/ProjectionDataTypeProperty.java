@@ -6,7 +6,8 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public interface ProjectionDataTypeProperty extends ProjectionChild
+public interface ProjectionDataTypeProperty
+        extends ProjectionChild
 {
     @Override
     default ImmutableList<? extends ProjectionChild> getChildren()

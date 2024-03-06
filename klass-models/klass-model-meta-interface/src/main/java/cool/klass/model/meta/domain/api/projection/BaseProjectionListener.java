@@ -1,6 +1,7 @@
 package cool.klass.model.meta.domain.api.projection;
 
-public class BaseProjectionListener implements ProjectionListener
+public class BaseProjectionListener
+        implements ProjectionListener
 {
     @Override
     public void enterProjection(Projection projection)
