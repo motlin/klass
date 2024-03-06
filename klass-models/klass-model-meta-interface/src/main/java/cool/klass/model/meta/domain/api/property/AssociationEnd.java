@@ -19,7 +19,22 @@ public interface AssociationEnd extends ReferenceProperty
     boolean isOwned();
 
     @Nonnull
-    AssociationEnd getOpposite();
+    default AssociationEnd getOpposite()
+    {
+        Association association = this.getOwningAssociation();
+
+        if (this == association.getSourceAssociationEnd())
+        {
+            return association.getTargetAssociationEnd();
+        }
+
+        if (this == association.getTargetAssociationEnd())
+        {
+            return association.getSourceAssociationEnd();
+        }
+
+        throw new AssertionError();
+    }
 
     @Nonnull
     Association getOwningAssociation();

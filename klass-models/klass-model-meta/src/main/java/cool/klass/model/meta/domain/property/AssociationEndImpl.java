@@ -82,23 +82,6 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         return this.owned;
     }
 
-    @Nonnull
-    @Override
-    public AssociationEnd getOpposite()
-    {
-        AssociationEnd sourceAssociationEnd = this.owningAssociation.getSourceAssociationEnd();
-        AssociationEnd targetAssociationEnd = this.owningAssociation.getTargetAssociationEnd();
-        if (this == sourceAssociationEnd)
-        {
-            return targetAssociationEnd;
-        }
-        if (this == targetAssociationEnd)
-        {
-            return sourceAssociationEnd;
-        }
-        throw new AssertionError();
-    }
-
     @Override
     @Nonnull
     public AssociationImpl getOwningAssociation()
