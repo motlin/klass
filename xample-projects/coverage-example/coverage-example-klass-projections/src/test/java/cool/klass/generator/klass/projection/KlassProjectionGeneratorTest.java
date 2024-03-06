@@ -24,7 +24,10 @@ public class KlassProjectionGeneratorTest
     {
         ImmutableList<String> klassSourcePackages = Lists.immutable.with("cool.klass.xample.coverage");
 
-        var domainModelCompilerLoader = new DomainModelCompilerLoader(klassSourcePackages);
+        var domainModelCompilerLoader = new DomainModelCompilerLoader(
+                klassSourcePackages,
+                Thread.currentThread().getContextClassLoader(),
+                DomainModelCompilerLoader::logCompilerError);
 
         DomainModelWithSourceCode domainModel = domainModelCompilerLoader.load();
         ImmutableList<String>     packageNames = domainModel

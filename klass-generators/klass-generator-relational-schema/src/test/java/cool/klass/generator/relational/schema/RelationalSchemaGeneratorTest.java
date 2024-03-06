@@ -31,7 +31,10 @@ public class RelationalSchemaGeneratorTest
     {
         ImmutableList<String> klassSourcePackages = Lists.immutable.with("cool.klass.generator.relational.schema");
 
-        var domainModelCompilerLoader = new DomainModelCompilerLoader(klassSourcePackages);
+        var domainModelCompilerLoader = new DomainModelCompilerLoader(
+                klassSourcePackages,
+                Thread.currentThread().getContextClassLoader(),
+                DomainModelCompilerLoader::logCompilerError);
 
         DomainModelWithSourceCode domainModel = domainModelCompilerLoader.load();
 
