@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import cool.klass.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
+import cool.klass.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
 import cool.klass.dropwizard.configuration.cors.CorsFactory;
 import cool.klass.dropwizard.configuration.cors.CorsFactoryProvider;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
@@ -37,7 +38,8 @@ public class AbstractKlassConfiguration extends Configuration
         AuthFilterFactoryProvider,
         ObjectMapperFactoryProvider,
         ReladomoFactoryProvider,
-        SampleDataFactoryProvider
+        SampleDataFactoryProvider,
+        ConfigLoggingFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();
