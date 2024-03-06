@@ -63,7 +63,6 @@ public class GraphQLQueryToOperationConverterTest
                 + "    optionalBoolean\n"
                 + "    optionalInstant\n"
                 + "    optionalLocalDate\n"
-                + "    optionalDerived\n"
                 + "    system\n"
                 + "    systemFrom\n"
                 + "    systemTo\n"
