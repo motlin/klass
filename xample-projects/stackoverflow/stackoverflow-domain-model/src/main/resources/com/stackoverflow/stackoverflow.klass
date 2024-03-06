@@ -289,10 +289,9 @@ service Question
     */
     // TODO: Service syntax. Parameter must be a message type or projection type.
     /*
-    service getById(id: Long[1..1]): QuestionReadProjection[1]
+    read getById(id: Long[1..1]): QuestionReadProjection[1]
     {
         resource: QuestionResource
-        verb    : GET
         url     : /api/question/{id: Long[1..1]}
         criteria: this.id == id
     }
