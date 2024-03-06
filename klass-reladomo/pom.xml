@@ -38,6 +38,7 @@
         <module>klass-reladomo-persistent-writer</module>
         <module>klass-reladomo-primitive-visitor</module>
         <module>klass-reladomo-sample-data</module>
+        <module>klass-reladomo-tree-deep-fetcher</module>
     </modules>
 
 </project>
