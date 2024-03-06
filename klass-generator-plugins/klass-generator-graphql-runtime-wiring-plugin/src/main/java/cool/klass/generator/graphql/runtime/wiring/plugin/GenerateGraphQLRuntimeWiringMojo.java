@@ -24,9 +24,6 @@ public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
             defaultValue = "${project.build.directory}/generated-sources/graphql-runtime-wiring")
     private File outputDirectory;
 
-    @Parameter(property = "rootPackageName", required = true, readonly = true)
-    private String rootPackageName;
-
     @Override
     public void execute() throws MojoExecutionException
     {
@@ -39,9 +36,7 @@ public class GenerateGraphQLRuntimeWiringMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            GraphQLRuntimeWiringGenerator runtimeWiringGenerator = new GraphQLRuntimeWiringGenerator(
-                    domainModel,
-                    this.rootPackageName);
+            GraphQLRuntimeWiringGenerator runtimeWiringGenerator = new GraphQLRuntimeWiringGenerator(domainModel);
             runtimeWiringGenerator.writeTypeRuntimeWiringFiles(outputPath);
         }
         catch (RuntimeException e)
