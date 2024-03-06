@@ -169,18 +169,17 @@
             <property name="message" value="Line has trailing spaces." />
         </module>
 
-        <!--TODO RegexpSinglelineJava-->
-        <!--<module name="RegexpSinglelineJava">-->
-        <!--<property name="ignoreComments" value="true" />-->
+        <module name="RegexpSinglelineJava">
+            <property name="ignoreComments" value="true" />
 
-        <!--<property-->
-        <!--name="format"-->
-        <!--value="System\.out\.println" />-->
+            <property
+                    name="format"
+                    value="System\.out\.println" />
 
-        <!--<property-->
-        <!--name="message"-->
-        <!--value="System.out.println." />-->
-        <!--</module>-->
+            <property
+                    name="message"
+                    value="System.out.println." />
+        </module>
 
         <module name="RegexpSinglelineJava">
             <property name="ignoreComments" value="true" />
