@@ -45,6 +45,7 @@ public interface Classifier
 
     ImmutableList<Property> getDeclaredProperties();
 
+    // TODO: Optimize Classifier.getKeyProperties()
     default ImmutableList<DataTypeProperty> getKeyProperties()
     {
         return this.getDataTypeProperties().select(DataTypeProperty::isKey);
