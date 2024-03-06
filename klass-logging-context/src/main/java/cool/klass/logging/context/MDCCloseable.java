@@ -2,14 +2,13 @@ package cool.klass.logging.context;
 
 import java.io.Closeable;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
-import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.slf4j.MDC;
 
 public class MDCCloseable implements Closeable
 {
-    private final MutableSet<String> keys = SetAdapter.adapt(new LinkedHashSet<>());
+    private final Set<String> keys = new LinkedHashSet<>();
 
     public void put(String key, String value)
     {
