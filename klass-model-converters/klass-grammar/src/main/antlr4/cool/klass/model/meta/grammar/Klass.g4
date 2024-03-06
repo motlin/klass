@@ -12,9 +12,9 @@ urlParameterDeclarationEOF: urlParameterDeclaration EOF;
 packageDeclaration: 'package' packageName;
 
 packageName
-	:	identifier
-	|	packageName '.' identifier
-	;
+    :    identifier
+    |    packageName '.' identifier
+    ;
 
 topLevelDeclaration
     : interfaceDeclaration
@@ -234,14 +234,14 @@ keywordValidAsIdentifier
     ;
 
 literal
-	:	integerLiteral
-	|	floatingPointLiteral
-	|	booleanLiteral
-	// TODO: Character Reladomo types and character literals?
-	|	characterLiteral
-	|	stringLiteral
-	|	nullLiteral
-	;
+    :    integerLiteral
+    |    floatingPointLiteral
+    |    booleanLiteral
+    // TODO: Character Reladomo types and character literals?
+    |    characterLiteral
+    |    stringLiteral
+    |    nullLiteral
+    ;
 
 integerLiteral       : IntegerLiteral;
 floatingPointLiteral : FloatingPointLiteral;
@@ -371,220 +371,220 @@ OPERATOR_ENDS_WITH   : 'endsWith';
 // §3.10.1 Integer Literals
 
 IntegerLiteral
-	:	DecimalIntegerLiteral
-	|	HexIntegerLiteral
-	|	OctalIntegerLiteral
-	|	BinaryIntegerLiteral
-	;
+    :    DecimalIntegerLiteral
+    |    HexIntegerLiteral
+    |    OctalIntegerLiteral
+    |    BinaryIntegerLiteral
+    ;
 
 fragment
 DecimalIntegerLiteral
-	:	DecimalNumeral IntegerTypeSuffix?
-	;
+    :    DecimalNumeral IntegerTypeSuffix?
+    ;
 
 fragment
 HexIntegerLiteral
-	:	HexNumeral IntegerTypeSuffix?
-	;
+    :    HexNumeral IntegerTypeSuffix?
+    ;
 
 fragment
 OctalIntegerLiteral
-	:	OctalNumeral IntegerTypeSuffix?
-	;
+    :    OctalNumeral IntegerTypeSuffix?
+    ;
 
 fragment
 BinaryIntegerLiteral
-	:	BinaryNumeral IntegerTypeSuffix?
-	;
+    :    BinaryNumeral IntegerTypeSuffix?
+    ;
 
 fragment
 IntegerTypeSuffix
-	:	[lL]
-	;
+    :    [lL]
+    ;
 
 fragment
 DecimalNumeral
-	:	'0'
-	|	NonZeroDigit (Digits? | Underscores Digits)
-	;
+    :    '0'
+    |    NonZeroDigit (Digits? | Underscores Digits)
+    ;
 
 fragment
 Digits
-	:	Digit (DigitsAndUnderscores? Digit)?
-	;
+    :    Digit (DigitsAndUnderscores? Digit)?
+    ;
 
 fragment
 Digit
-	:	'0'
-	|	NonZeroDigit
-	;
+    :    '0'
+    |    NonZeroDigit
+    ;
 
 fragment
 NonZeroDigit
-	:	[1-9]
-	;
+    :    [1-9]
+    ;
 
 fragment
 DigitsAndUnderscores
-	:	DigitOrUnderscore+
-	;
+    :    DigitOrUnderscore+
+    ;
 
 fragment
 DigitOrUnderscore
-	:	Digit
-	|	'_'
-	;
+    :    Digit
+    |    '_'
+    ;
 
 fragment
 Underscores
-	:	'_'+
-	;
+    :    '_'+
+    ;
 
 fragment
 HexNumeral
-	:	'0' [xX] HexDigits
-	;
+    :    '0' [xX] HexDigits
+    ;
 
 fragment
 HexDigits
-	:	HexDigit (HexDigitsAndUnderscores? HexDigit)?
-	;
+    :    HexDigit (HexDigitsAndUnderscores? HexDigit)?
+    ;
 
 fragment
 HexDigit
-	:	[0-9a-fA-F]
-	;
+    :    [0-9a-fA-F]
+    ;
 
 fragment
 HexDigitsAndUnderscores
-	:	HexDigitOrUnderscore+
-	;
+    :    HexDigitOrUnderscore+
+    ;
 
 fragment
 HexDigitOrUnderscore
-	:	HexDigit
-	|	'_'
-	;
+    :    HexDigit
+    |    '_'
+    ;
 
 fragment
 OctalNumeral
-	:	'0' Underscores? OctalDigits
-	;
+    :    '0' Underscores? OctalDigits
+    ;
 
 fragment
 OctalDigits
-	:	OctalDigit (OctalDigitsAndUnderscores? OctalDigit)?
-	;
+    :    OctalDigit (OctalDigitsAndUnderscores? OctalDigit)?
+    ;
 
 fragment
 OctalDigit
-	:	[0-7]
-	;
+    :    [0-7]
+    ;
 
 fragment
 OctalDigitsAndUnderscores
-	:	OctalDigitOrUnderscore+
-	;
+    :    OctalDigitOrUnderscore+
+    ;
 
 fragment
 OctalDigitOrUnderscore
-	:	OctalDigit
-	|	'_'
-	;
+    :    OctalDigit
+    |    '_'
+    ;
 
 fragment
 BinaryNumeral
-	:	'0' [bB] BinaryDigits
-	;
+    :    '0' [bB] BinaryDigits
+    ;
 
 fragment
 BinaryDigits
-	:	BinaryDigit (BinaryDigitsAndUnderscores? BinaryDigit)?
-	;
+    :    BinaryDigit (BinaryDigitsAndUnderscores? BinaryDigit)?
+    ;
 
 fragment
 BinaryDigit
-	:	[01]
-	;
+    :    [01]
+    ;
 
 fragment
 BinaryDigitsAndUnderscores
-	:	BinaryDigitOrUnderscore+
-	;
+    :    BinaryDigitOrUnderscore+
+    ;
 
 fragment
 BinaryDigitOrUnderscore
-	:	BinaryDigit
-	|	'_'
-	;
+    :    BinaryDigit
+    |    '_'
+    ;
 
 // §3.10.2 Floating-Point Literals
 
 FloatingPointLiteral
-	:	DecimalFloatingPointLiteral
-	|	HexadecimalFloatingPointLiteral
-	;
+    :    DecimalFloatingPointLiteral
+    |    HexadecimalFloatingPointLiteral
+    ;
 
 fragment
 DecimalFloatingPointLiteral
-	:	Digits '.' Digits ExponentPart? FloatTypeSuffix?
-	|	'.' Digits ExponentPart? FloatTypeSuffix?
-	|	Digits ExponentPart FloatTypeSuffix?
-	|	Digits FloatTypeSuffix
-	;
+    :    Digits '.' Digits ExponentPart? FloatTypeSuffix?
+    |    '.' Digits ExponentPart? FloatTypeSuffix?
+    |    Digits ExponentPart FloatTypeSuffix?
+    |    Digits FloatTypeSuffix
+    ;
 
 fragment
 ExponentPart
-	:	ExponentIndicator SignedInteger
-	;
+    :    ExponentIndicator SignedInteger
+    ;
 
 fragment
 ExponentIndicator
-	:	[eE]
-	;
+    :    [eE]
+    ;
 
 fragment
 SignedInteger
-	:	Sign? Digits
-	;
+    :    Sign? Digits
+    ;
 
 fragment
 Sign
-	:	[+-]
-	;
+    :    [+-]
+    ;
 
 fragment
 FloatTypeSuffix
-	:	[fFdD]
-	;
+    :    [fFdD]
+    ;
 
 fragment
 HexadecimalFloatingPointLiteral
-	:	HexSignificand BinaryExponent FloatTypeSuffix?
-	;
+    :    HexSignificand BinaryExponent FloatTypeSuffix?
+    ;
 
 fragment
 HexSignificand
-	:	HexNumeral '.'?
-	|	'0' [xX] HexDigits? '.' HexDigits
-	;
+    :    HexNumeral '.'?
+    |    '0' [xX] HexDigits? '.' HexDigits
+    ;
 
 fragment
 BinaryExponent
-	:	BinaryExponentIndicator SignedInteger
-	;
+    :    BinaryExponentIndicator SignedInteger
+    ;
 
 fragment
 BinaryExponentIndicator
-	:	[pP]
-	;
+    :    [pP]
+    ;
 
 // §3.10.3 Boolean Literals
 
 BooleanLiteral
-	:	LITERAL_TRUE
-	|	LITERAL_FALSE
-	;
+    :    LITERAL_TRUE
+    |    LITERAL_FALSE
+    ;
 
 LITERAL_TRUE  : 'true';
 LITERAL_FALSE : 'false';
@@ -592,46 +592,46 @@ LITERAL_FALSE : 'false';
 // §3.10.4 Character Literals
 
 CharacterLiteral
-	:	'\'' SingleCharacter '\''
-	|	'\'' EscapeSequence '\''
-	;
+    :    '\'' SingleCharacter '\''
+    |    '\'' EscapeSequence '\''
+    ;
 
 fragment
 SingleCharacter
-	:	~['\\\r\n]
-	;
+    :    ~['\\\r\n]
+    ;
 // §3.10.5 String Literals
 StringLiteral
-	:	'"' StringCharacters? '"'
-	;
+    :    '"' StringCharacters? '"'
+    ;
 fragment
 StringCharacters
-	:	StringCharacter+
-	;
+    :    StringCharacter+
+    ;
 fragment
 StringCharacter
-	:	~["\\\r\n]
-	|	EscapeSequence
-	;
+    :    ~["\\\r\n]
+    |    EscapeSequence
+    ;
 // §3.10.6 Escape Sequences for Character and String Literals
 fragment
 EscapeSequence
-	:	'\\' [btnfr"'\\]
-	|	OctalEscape
+    :    '\\' [btnfr"'\\]
+    |    OctalEscape
     |   UnicodeEscape // This is not in the spec but prevents having to preprocess the input
-	;
+    ;
 
 fragment
 OctalEscape
-	:	'\\' OctalDigit
-	|	'\\' OctalDigit OctalDigit
-	|	'\\' ZeroToThree OctalDigit OctalDigit
-	;
+    :    '\\' OctalDigit
+    |    '\\' OctalDigit OctalDigit
+    |    '\\' ZeroToThree OctalDigit OctalDigit
+    ;
 
 fragment
 ZeroToThree
-	:	[0-3]
-	;
+    :    [0-3]
+    ;
 
 // This is not in the spec but prevents having to preprocess the input
 fragment
@@ -642,30 +642,30 @@ UnicodeEscape
 // §3.8 Identifiers (must appear after all keywords in the grammar)
 
 Identifier
-	:	JavaLetter JavaLetterOrDigit*
-	;
+    :    JavaLetter JavaLetterOrDigit*
+    ;
 
 fragment
 JavaLetter
-	:	[a-zA-Z$_] // these are the "java letters" below 0x7F
-	|	// covers all characters above 0x7F which are not a surrogate
-		~[\u0000-\u007F\uD800-\uDBFF]
-		{Character.isJavaIdentifierStart(_input.LA(-1))}?
-	|	// covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
-		[\uD800-\uDBFF] [\uDC00-\uDFFF]
-		{Character.isJavaIdentifierStart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
-	;
+    :    [a-zA-Z$_] // these are the "java letters" below 0x7F
+    |    // covers all characters above 0x7F which are not a surrogate
+        ~[\u0000-\u007F\uD800-\uDBFF]
+        {Character.isJavaIdentifierStart(_input.LA(-1))}?
+    |    // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
+        [\uD800-\uDBFF] [\uDC00-\uDFFF]
+        {Character.isJavaIdentifierStart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
+    ;
 
 fragment
 JavaLetterOrDigit
-	:	[a-zA-Z0-9$_] // these are the "java letters or digits" below 0x7F
-	|	// covers all characters above 0x7F which are not a surrogate
-		~[\u0000-\u007F\uD800-\uDBFF]
-		{Character.isJavaIdentifierPart(_input.LA(-1))}?
-	|	// covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
-		[\uD800-\uDBFF] [\uDC00-\uDFFF]
-		{Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
-	;
+    :    [a-zA-Z0-9$_] // these are the "java letters or digits" below 0x7F
+    |    // covers all characters above 0x7F which are not a surrogate
+        ~[\u0000-\u007F\uD800-\uDBFF]
+        {Character.isJavaIdentifierPart(_input.LA(-1))}?
+    |    // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
+        [\uD800-\uDBFF] [\uDC00-\uDFFF]
+        {Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
+    ;
 
 //
 // Whitespace and comments
