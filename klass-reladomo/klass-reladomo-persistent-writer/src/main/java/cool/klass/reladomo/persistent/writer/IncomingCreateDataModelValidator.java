@@ -223,13 +223,13 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            String error = "Error at %s. Expected createdOn property '%s' to match current transaction time '%s' but got '%s'."
+            String warning = "Warning at %s. Expected createdOn property '%s' to be absent or to match current transaction time '%s' but got '%s'."
                     .formatted(
                             this.getContextString(),
                             dataTypeProperty.getName(),
                             this.mutationContext.getTransactionTime(),
                             jsonDataTypeValue.asText());
-            this.errors.add(error);
+            this.warnings.add(warning);
         }
         finally
         {
