@@ -56,6 +56,5 @@
         <module>klass-generator-reladomo-readable-interface-plugin</module>
         <module>klass-generator-service-resources-plugin</module>
         <module>klass-generator-uml-nomnoml-plugin</module>
-        <module>klass-generator-xsd2bean-plugin</module>
     </modules>
 </project>
