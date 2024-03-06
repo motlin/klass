@@ -1,0 +1,17 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0
+  detailedJsonProcessingExceptionMapper: true
+
+logging:
+  level: DEBUG
+  loggers:
+    com.stackoverflow: DEBUG
+    com.gs.fw.common.mithra.sqllogs: DEBUG
+    com.gs.fw.common.mithra.batch.sqllogs: DEBUG
+    com.gs.fw.common.mithra.connectionmanager: INFO
+    org.eclipse.jetty: INFO

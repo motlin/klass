@@ -18,7 +18,7 @@ public class CompilerError implements Comparable<CompilerError>
     private final String                           message;
     @Nonnull
     private final ParserRuleContext                offendingParserRuleContext;
-    // TODO: Change the list of contexts into a list of AntlrElements
+    // TODO: ❗ Change the list of contexts into a list of AntlrElements
     private final ImmutableList<ParserRuleContext> parserRuleContexts;
     private final Token                            offendingToken;
 

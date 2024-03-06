@@ -41,6 +41,7 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-connection-manager-h2</artifactId>
             <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -139,6 +140,30 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-test-rule</artifactId>
+            <version>${klass.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-client</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -163,7 +188,8 @@
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
-s                    <klassSourcePackages>
+                    s
+                    <klassSourcePackages>
                         <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
@@ -177,9 +203,13 @@ s                    <klassSourcePackages>
                             <goal>generate-reladomo-runtime-configuration</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/generated-resources/reladomo-runtime-configuration</outputDirectory>
+                            <outputDirectory>
+                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
+                            </outputDirectory>
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerFullyQualifiedName>cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager</connectionManagerFullyQualifiedName>
+                            <connectionManagerFullyQualifiedName>
+                                cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager
+                            </connectionManagerFullyQualifiedName>
                             <isTest>false</isTest>
                         </configuration>
                     </execution>
