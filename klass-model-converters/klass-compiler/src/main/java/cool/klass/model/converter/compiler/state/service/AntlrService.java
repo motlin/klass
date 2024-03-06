@@ -154,7 +154,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     {
         this.reportDuplicateKeywords(compilerErrorHolder);
 
-        // TODO: reportErrors: Find url parameters which are unused by any criteria
+        // TODO: ☑ reportErrors: Find url parameters which are unused by any criteria
 
         this.reportInvalidProjection(compilerErrorHolder);
 

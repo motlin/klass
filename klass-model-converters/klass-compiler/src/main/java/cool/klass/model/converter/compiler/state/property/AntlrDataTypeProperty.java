@@ -117,10 +117,10 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
-        // TODO: Check for duplicate modifiers
-        // TODO: Check for nullable key properties
-        // TODO: Check that ID properties are key properties
-        // TODO: Only Integer and Long may be ID (no enums either)
+        // TODO: ☑ Check for duplicate modifiers
+        // TODO: ☑ Check for nullable key properties
+        // TODO: ☑ Check that ID properties are key properties
+        // TODO: ☑ Only Integer and Long may be ID (no enums either)
     }
 
     @Nonnull

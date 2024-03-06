@@ -141,11 +141,20 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     @Override
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
-        // TODO: Check that there are no duplicate modifiers
+        // TODO: ☑ Check that there are no duplicate modifiers
 
         if (this.orderByState != null)
         {
             this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+        }
+
+        if (this.isVersion() && !this.isOwned())
+        {
+            String message = String.format(
+                    "ERR_VER_OWN: Expected version association end '%s.%s' to be owned.",
+                    this.getOwningClassState().getName(),
+                    this.getName());
+            compilerErrorHolder.add(message, this, this.nameContext);
         }
     }
 

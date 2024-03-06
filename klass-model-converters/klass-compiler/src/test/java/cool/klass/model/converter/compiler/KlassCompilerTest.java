@@ -431,8 +431,8 @@ public class KlassCompilerTest
                 + "\n"
                 + "association DoubleVersionAssociation\n"
                 + "{\n"
-                + "    source: ExampleSource[1..1] version;\n"
-                + "    target: ExampleTarget[1..1] version;\n"
+                + "    source: ExampleSource[1..1] version owned;\n"
+                + "    target: ExampleTarget[1..1] version owned;\n"
                 + "\n"
                 + "    relationship this.id == ExampleTarget.id\n"
                 + "}\n"
@@ -450,14 +450,14 @@ public class KlassCompilerTest
 
         String[] errors = {
                 ""
-                        + "File: example.klass Line: 5 Char: 26 Error: ERR_ASO_SYM: Association 'DoubleVersionAssociation' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.\n"
+                        + "File: example.klass Line: 5 Char: 41 Error: ERR_ASO_OWN: Both associations are owned in association 'DoubleVersionAssociation'. At most one end may be owned.\n"
                         + "package dummy\n"
                         + "association DoubleVersionAssociation\n"
                         + "{\n"
-                        + "    source: ExampleSource[1..1] version;\n"
-                        + "                         ^^^^^^\n"
-                        + "    target: ExampleTarget[1..1] version;\n"
-                        + "                         ^^^^^^\n"
+                        + "    source: ExampleSource[1..1] version owned;\n"
+                        + "                                        ^^^^^\n"
+                        + "    target: ExampleTarget[1..1] version owned;\n"
+                        + "                                        ^^^^^\n"
                         + "}\n",
                 ""
                         + "File: example.klass Line: 11 Char: 7 Error: ERR_VER_VER: Class 'ExampleSource' is a version and has a version.\n"
@@ -505,6 +505,82 @@ public class KlassCompilerTest
                 + "                      ^^^^^^\n"
                 + "    target: DummyClass[1..1];\n"
                 + "                      ^^^^^^\n"
+                + "}\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
+    }
+
+    @Test
+    public void versionOwnsClass()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = "package example\n"
+                + "\n"
+                + "association ExampleAssociation\n"
+                + "{\n"
+                + "    source: ExampleClass[1..1] owned;\n"
+                + "    target: ExampleVersion[1..1] version;\n"
+                + "\n"
+                + "    relationship this.id == ExampleVersion.id\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleClass\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleVersion\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String error = ""
+                + "File: example.klass Line: 6 Char: 5 Error: ERR_VER_OWN: Expected version association end 'ExampleClass.target' to be owned.\n"
+                + "package example\n"
+                + "association ExampleAssociation\n"
+                + "{\n"
+                + "    target: ExampleVersion[1..1] version;\n"
+                + "    ^^^^^^\n"
+                + "}\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
+    }
+
+    @Test
+    public void unownedVersion()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = "package example\n"
+                + "\n"
+                + "association ExampleAssociation\n"
+                + "{\n"
+                + "    source: ExampleClass[1..1];\n"
+                + "    target: ExampleVersion[0..1] version;\n"
+                + "\n"
+                + "    relationship this.id == ExampleVersion.id\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleClass\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n"
+                + "\n"
+                + "class ExampleVersion\n"
+                + "{\n"
+                + "    id: Long key;\n"
+                + "}\n";
+        //</editor-fold>
+
+        String error = ""
+                + "File: example.klass Line: 6 Char: 5 Error: ERR_VER_OWN: Expected version association end 'ExampleClass.target' to be owned.\n"
+                + "package example\n"
+                + "association ExampleAssociation\n"
+                + "{\n"
+                + "    target: ExampleVersion[0..1] version;\n"
+                + "    ^^^^^^\n"
                 + "}\n";
 
         this.assertCompilerErrors(sourceCodeText, error);
