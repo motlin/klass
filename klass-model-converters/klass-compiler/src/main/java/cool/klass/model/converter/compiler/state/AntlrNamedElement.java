@@ -95,6 +95,10 @@ public abstract class AntlrNamedElement extends AntlrElement
         super(elementContext, compilationUnit);
         this.name        = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
+        if (!nameContext.getText().equals("") && !name.equals(nameContext.getText()))
+        {
+            throw new AssertionError(name);
+        }
         this.ordinal     = ordinal;
     }
 
