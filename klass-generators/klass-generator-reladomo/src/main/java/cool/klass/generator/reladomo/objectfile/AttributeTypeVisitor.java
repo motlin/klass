@@ -1,24 +1,30 @@
 package cool.klass.generator.reladomo.objectfile;
 
+import java.util.Objects;
+
 import com.gs.fw.common.mithra.generator.metamodel.AttributePureType;
 import com.gs.fw.common.mithra.generator.metamodel.PrimaryKeyGeneratorStrategyType;
 import com.gs.fw.common.mithra.generator.metamodel.SimulatedSequenceType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import io.liftwizard.reladomo.simseq.ObjectSequenceObjectFactory;
 
 // TODO: Create a DataTypeVisitor that factors in enumerations too
-class AttributeTypeVisitor implements PrimitiveTypeVisitor
+class AttributeTypeVisitor
+        implements PrimitiveTypeVisitor
 {
     private final AttributePureType attributeType;
+    private final Klass             owningClass;
     private final PrimitiveProperty primitiveProperty;
 
-    AttributeTypeVisitor(AttributePureType attributeType, PrimitiveProperty primitiveProperty)
+    AttributeTypeVisitor(AttributePureType attributeType, Klass owningClass, PrimitiveProperty primitiveProperty)
     {
-        this.attributeType     = attributeType;
-        this.primitiveProperty = primitiveProperty;
+        this.attributeType     = Objects.requireNonNull(attributeType);
+        this.owningClass       = Objects.requireNonNull(owningClass);
+        this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
     }
 
     @Override
@@ -44,14 +50,14 @@ class AttributeTypeVisitor implements PrimitiveTypeVisitor
     {
         this.attributeType.setJavaType("long");
 
-        if (this.primitiveProperty.isID())
+        if (this.primitiveProperty.isID() && (this.owningClass == this.primitiveProperty.getOwningClassifier() || this.owningClass.getSuperClass().isEmpty()))
         {
             // TODO: Infer during compilation that ID properties are key properties, or add an error when they are not.
             PrimaryKeyGeneratorStrategyType primaryKeyGeneratorStrategyType = new PrimaryKeyGeneratorStrategyType();
             primaryKeyGeneratorStrategyType.with("SimulatedSequence", this.attributeType);
             this.attributeType.setPrimaryKeyGeneratorStrategy(primaryKeyGeneratorStrategyType);
             SimulatedSequenceType simulatedSequence = new SimulatedSequenceType();
-            simulatedSequence.setSequenceName(this.primitiveProperty.getOwningClassifier().getName());
+            simulatedSequence.setSequenceName(this.owningClass.getName());
             simulatedSequence.setSequenceObjectFactoryName(ObjectSequenceObjectFactory.class.getCanonicalName());
             simulatedSequence.setHasSourceAttribute(false);
             simulatedSequence.setBatchSize(10);

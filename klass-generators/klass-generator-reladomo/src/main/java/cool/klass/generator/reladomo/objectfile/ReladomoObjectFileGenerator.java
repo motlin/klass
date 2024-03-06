@@ -103,7 +103,7 @@ public class ReladomoObjectFileGenerator
                 .collect(this::convertToAsOfAttributePureType);
 
         ImmutableList<AttributePureType> attributeTypes = this.getDataTypeProperties(klass)
-                .collect(this::convertToAttributePureType);
+                .collect(dataTypeProperty -> this.convertToAttributePureType(klass, dataTypeProperty));
 
         // TODO: Test that private properties are not included in Projections
         // TODO: Add foreign keys
@@ -144,9 +144,7 @@ public class ReladomoObjectFileGenerator
         ImmutableList<AttributeType> attributeTypes = this.getDataTypeProperties(klass)
                 .reject(DataTypeProperty::isTemporal)
                 .reject(DataTypeProperty::isDerived)
-                .collect(this::convertToAttributeType);
-
-        // TODO: Add foreign keys
+                .collect(dataTypeProperty -> this.convertToAttributeType(klass, dataTypeProperty));
 
         mithraObject.setAsOfAttributes(asOfAttributeTypes.castToList());
         mithraObject.setAttributes(attributeTypes.castToList());
@@ -369,15 +367,16 @@ public class ReladomoObjectFileGenerator
     }
 
     @Nonnull
-    private AttributeType convertToAttributeType(@Nonnull DataTypeProperty dataTypeProperty)
+    private AttributeType convertToAttributeType(@Nonnull Klass owningClass, @Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
-        this.convertToAttributeType(dataTypeProperty, attributeType);
+        this.convertToAttributeType(dataTypeProperty, owningClass, attributeType);
         return attributeType;
     }
 
     private void convertToAttributeType(
             @Nonnull DataTypeProperty dataTypeProperty,
+            @Nonnull Klass owningClass,
             @Nonnull AttributePureType attributeType)
     {
         String propertyName = dataTypeProperty.getName();
@@ -392,10 +391,13 @@ public class ReladomoObjectFileGenerator
             attributeType.setReadonly(true);
         }
 
-        this.handleType(attributeType, dataTypeProperty);
+        this.handleType(attributeType, owningClass, dataTypeProperty);
     }
 
-    private void handleType(@Nonnull AttributePureType attributeType, DataTypeProperty dataTypeProperty)
+    private void handleType(
+            @Nonnull AttributePureType attributeType,
+            @Nonnull Klass owningClass,
+            @Nonnull DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty instanceof EnumerationProperty)
         {
@@ -411,15 +413,15 @@ public class ReladomoObjectFileGenerator
         if (dataTypeProperty instanceof PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
-            primitiveType.visit(new AttributeTypeVisitor(attributeType, primitiveProperty));
+            primitiveType.visit(new AttributeTypeVisitor(attributeType, owningClass, primitiveProperty));
         }
     }
 
     @Nonnull
-    private AttributePureType convertToAttributePureType(@Nonnull DataTypeProperty dataTypeProperty)
+    private AttributePureType convertToAttributePureType(@Nonnull Klass owningClass, @Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributePureType attributeType = new AttributePureType();
-        this.convertToAttributeType(dataTypeProperty, attributeType);
+        this.convertToAttributeType(dataTypeProperty, owningClass, attributeType);
         return attributeType;
     }
 }
