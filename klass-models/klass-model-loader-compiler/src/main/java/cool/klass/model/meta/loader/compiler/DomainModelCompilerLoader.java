@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
-import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
@@ -103,21 +101,13 @@ public class DomainModelCompilerLoader
     @Nonnull
     private DomainModelWithSourceCode handleResult(@Nonnull CompilationResult compilationResult)
     {
-        if (compilationResult instanceof ErrorsCompilationResult)
-        {
-            return this.handleFailure((ErrorsCompilationResult) compilationResult);
-        }
-
-        if (compilationResult instanceof DomainModelCompilationResult)
-        {
-            return this.handleSuccess((DomainModelCompilationResult) compilationResult);
-        }
-
-        throw new AssertionError(compilationResult.getClass().getSimpleName());
+        return compilationResult.domainModelWithSourceCode().isPresent()
+                ? this.handleSuccess(compilationResult)
+                : this.handleFailure(compilationResult);
     }
 
     @Nonnull
-    private DomainModelWithSourceCode handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
+    private DomainModelWithSourceCode handleFailure(@Nonnull CompilationResult compilationResult)
     {
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
         for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
@@ -128,8 +118,8 @@ public class DomainModelCompilerLoader
     }
 
     @Nonnull
-    private DomainModelWithSourceCode handleSuccess(@Nonnull DomainModelCompilationResult compilationResult)
+    private DomainModelWithSourceCode handleSuccess(@Nonnull CompilationResult compilationResult)
     {
-        return compilationResult.domainModel();
+        return compilationResult.domainModelWithSourceCode().get();
     }
 }

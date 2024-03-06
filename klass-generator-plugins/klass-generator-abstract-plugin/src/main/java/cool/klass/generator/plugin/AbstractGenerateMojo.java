@@ -12,12 +12,10 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
-import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -46,18 +44,13 @@ public abstract class AbstractGenerateMojo
     protected MavenProject mavenProject;
 
     @Nonnull
-    protected DomainModel getDomainModelFromFiles() throws MojoExecutionException
+    protected DomainModelWithSourceCode getDomainModelFromFiles() throws MojoExecutionException
     {
         CompilationResult compilationResult = this.getCompilationResultFromFiles();
 
         this.handleErrorsCompilationResult(compilationResult);
 
-        if (compilationResult instanceof DomainModelCompilationResult)
-        {
-            return ((DomainModelCompilationResult) compilationResult).domainModel();
-        }
-
-        throw new AssertionError(compilationResult.getClass().getSimpleName());
+        return compilationResult.domainModelWithSourceCode().get();
     }
 
     @Nonnull
@@ -79,6 +72,35 @@ public abstract class AbstractGenerateMojo
         // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
         KlassCompiler klassCompiler = new KlassCompiler(compilationUnits);
         return klassCompiler.compile();
+    }
+
+    @Nonnull
+    protected DomainModelWithSourceCode getDomainModel() throws MojoExecutionException
+    {
+        // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
+        CompilationResult compilationResult = this.getCompilationResult();
+
+        this.handleErrorsCompilationResult(compilationResult);
+
+        return compilationResult.domainModelWithSourceCode().get();
+    }
+
+    protected CompilationResult getCompilationResult() throws MojoExecutionException
+    {
+        if (this.klassSourcePackages.isEmpty())
+        {
+            String message = ""
+                             + "Klass maven plugins must be configured with at least one klassSourcePackage. For example:\n"
+                             + "<klassSourcePackages>\n"
+                             + "    <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>\n"
+                             + "    <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>\n"
+                             + "</klassSourcePackages>";
+            throw new MojoExecutionException(message);
+        }
+
+        ClassLoader classLoader = this.getClassLoader();
+
+        return this.load(classLoader);
     }
 
     private MutableList<File> loadFiles()
@@ -129,64 +151,27 @@ public abstract class AbstractGenerateMojo
                         .into(resultKlassLocations));
     }
 
-    @Nonnull
-    protected DomainModel getDomainModel() throws MojoExecutionException
-    {
-        // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
-        CompilationResult compilationResult = this.getCompilationResult();
-
-        this.handleErrorsCompilationResult(compilationResult);
-
-        if (compilationResult instanceof DomainModelCompilationResult)
-        {
-            return ((DomainModelCompilationResult) compilationResult).domainModel();
-        }
-
-        throw new AssertionError(compilationResult.getClass().getSimpleName());
-    }
-
     protected void handleErrorsCompilationResult(CompilationResult compilationResult) throws MojoExecutionException
     {
-        if (compilationResult instanceof ErrorsCompilationResult errorsCompilationResult)
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
+        ImmutableList<RootCompilerAnnotation> errors = compilerAnnotations.select(AbstractCompilerAnnotation::isError);
+        ImmutableList<RootCompilerAnnotation> warnings = compilerAnnotations.select(AbstractCompilerAnnotation::isWarning);
+
+        for (RootCompilerAnnotation error : errors)
         {
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.compilerAnnotations();
-            ImmutableList<RootCompilerAnnotation> errors = compilerAnnotations.select(AbstractCompilerAnnotation::isError);
-            ImmutableList<RootCompilerAnnotation> warnings = compilerAnnotations.select(AbstractCompilerAnnotation::isWarning);
-
-            for (RootCompilerAnnotation error : errors)
-            {
-                this.getLog().info(error.toGitHubAnnotation());
-                this.getLog().error(error.toString());
-            }
-            for (RootCompilerAnnotation warning : warnings)
-            {
-                this.getLog().info(warning.toGitHubAnnotation());
-                this.getLog().warn(warning.toString());
-            }
-
-            if (errors.notEmpty())
-            {
-                throw new MojoExecutionException("There were compiler errors.");
-            }
+            this.getLog().info(error.toGitHubAnnotation());
+            this.getLog().error("\n" + error);
         }
-    }
-
-    protected CompilationResult getCompilationResult() throws MojoExecutionException
-    {
-        if (this.klassSourcePackages.isEmpty())
+        for (RootCompilerAnnotation warning : warnings)
         {
-            String message = ""
-                    + "Klass maven plugins must be configured with at least one klassSourcePackage. For example:\n"
-                    + "<klassSourcePackages>\n"
-                    + "    <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>\n"
-                    + "    <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>\n"
-                    + "</klassSourcePackages>";
-            throw new MojoExecutionException(message);
+            this.getLog().info(warning.toGitHubAnnotation());
+            this.getLog().warn("\n" + warning);
         }
 
-        ClassLoader classLoader = this.getClassLoader();
-
-        return this.load(classLoader);
+        if (compilationResult.domainModelWithSourceCode().isEmpty())
+        {
+            throw new MojoExecutionException("There were compiler errors.");
+        }
     }
 
     @Nonnull

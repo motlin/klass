@@ -5,7 +5,6 @@ import java.io.File;
 import cool.klass.generator.klass.html.KlassSourceCodeHtmlGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.converter.compiler.CompilationResult;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -27,19 +26,15 @@ public class GenerateHtmlMojo
     private File outputDirectory;
 
     @Override
-    public void execute() throws MojoExecutionException
+    public void execute()
+            throws MojoExecutionException
     {
         CompilationResult compilationResult = this.getCompilationResult();
 
         this.handleErrorsCompilationResult(compilationResult);
 
-        if (!(compilationResult instanceof DomainModelCompilationResult))
-        {
-            throw new AssertionError(compilationResult.getClass().getSimpleName());
-        }
-
-        DomainModelWithSourceCode    domainModel = ((DomainModelCompilationResult) compilationResult).domainModel();
-        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(domainModel);
+        DomainModelWithSourceCode domainModel = compilationResult.domainModelWithSourceCode().get();
+        var                       generator   = new KlassSourceCodeHtmlGenerator(domainModel);
         generator.writeHtmlFiles(this.outputDirectory.toPath());
     }
 }

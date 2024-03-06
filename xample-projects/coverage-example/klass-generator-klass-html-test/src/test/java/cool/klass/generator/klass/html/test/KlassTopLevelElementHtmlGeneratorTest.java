@@ -5,8 +5,6 @@ import java.util.Optional;
 import cool.klass.generator.klass.html.KlassTopLevelElementHtmlGenerator;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
-import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.TopLevelElement;
@@ -43,18 +41,15 @@ public class KlassTopLevelElementHtmlGeneratorTest
                 sourceCodeText);
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
-        if (compilationResult instanceof ErrorsCompilationResult)
+        if (compilationResult.domainModelWithSourceCode().isEmpty())
         {
-            ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = compilationResult.compilerAnnotations();
             String                                message                 = compilerAnnotations.makeString("\n");
             fail(message);
         }
-        else if (compilationResult instanceof DomainModelCompilationResult)
+        else
         {
-            DomainModelCompilationResult domainModelCompilationResult =
-                    (DomainModelCompilationResult) compilationResult;
-            DomainModelWithSourceCode domainModel = domainModelCompilationResult.domainModel();
+            DomainModelWithSourceCode domainModel = compilationResult.domainModelWithSourceCode().get();
             assertThat(domainModel, notNullValue());
 
             for (TopLevelElement topLevelElement : domainModel.getTopLevelElements())
@@ -64,10 +59,6 @@ public class KlassTopLevelElementHtmlGeneratorTest
                 String html = KlassTopLevelElementHtmlGenerator.writeHtml(domainModel, topLevelElementWithSourceCode);
                 LOGGER.info(html);
             }
-        }
-        else
-        {
-            fail(compilationResult.getClass().getSimpleName());
         }
     }
 }

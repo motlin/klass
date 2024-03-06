@@ -2,9 +2,11 @@ package cool.klass.model.converter.compiler;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.annotation.AbstractCompilerAnnotation;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
@@ -133,11 +135,11 @@ public class CompilerState
     public CompilationResult getCompilationResult(
             ImmutableList<RootCompilerAnnotation> compilerAnnotations)
     {
-        if (compilerAnnotations.notEmpty())
+        if (compilerAnnotations.anySatisfy(AbstractCompilerAnnotation::isError))
         {
-            return new ErrorsCompilationResult(compilerAnnotations);
+            return new CompilationResult(compilerAnnotations, Optional.empty());
         }
-        return new DomainModelCompilationResult(this.buildDomainModel());
+        return new CompilationResult(compilerAnnotations, Optional.of(this.buildDomainModel()));
     }
 
     @Nonnull

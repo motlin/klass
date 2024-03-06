@@ -4,17 +4,14 @@ import java.util.Optional;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
-import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public abstract class AbstractKlassCompilerErrorTestCase
@@ -42,14 +39,14 @@ public abstract class AbstractKlassCompilerErrorTestCase
                 sourceCodeText);
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
-        if (compilationResult instanceof DomainModelCompilationResult)
+        // TODO: Split the ability to assert that there are errors and no domain model, from warnings and yes a domain model
+        if (compilationResult.compilerAnnotations().isEmpty() || compilationResult.domainModelWithSourceCode().isPresent())
         {
             fail("Expected a compile error but found:\n" + sourceCodeText);
         }
-        else if (compilationResult instanceof ErrorsCompilationResult)
+        else
         {
-            ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = compilationResult.compilerAnnotations();
             ImmutableList<String> compilerAnnotationStrings =
                     compilerAnnotations.collect(RootCompilerAnnotation::toString);
 
@@ -59,10 +56,6 @@ public abstract class AbstractKlassCompilerErrorTestCase
                 String compilerAnnotationString = compilerAnnotationStrings.get(i);
                 this.rule.assertFileContents(errorSourceName, compilerAnnotationString, callingClass);
             }
-        }
-        else
-        {
-            fail(compilationResult.getClass().getSimpleName());
         }
     }
 
@@ -81,23 +74,18 @@ public abstract class AbstractKlassCompilerErrorTestCase
                 sourceCodeText);
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
-        if (compilationResult instanceof ErrorsCompilationResult)
+        ImmutableList<RootCompilerAnnotation> compilerErrors = compilationResult
+                .compilerAnnotations()
+                .select(AbstractCompilerAnnotation::isError);
+        if (compilerErrors.notEmpty())
         {
-            ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
-            String                                message                 = compilerAnnotations.makeString("\n");
+            String message = compilerErrors.makeString("\n");
             fail(message);
-        }
-        else if (compilationResult instanceof DomainModelCompilationResult)
-        {
-            DomainModelCompilationResult domainModelCompilationResult =
-                    (DomainModelCompilationResult) compilationResult;
-            DomainModel domainModel = domainModelCompilationResult.domainModel();
-            assertThat(domainModel, notNullValue());
         }
         else
         {
-            fail(compilationResult.getClass().getSimpleName());
+            Optional<DomainModelWithSourceCode> domainModelWithSourceCode = compilationResult.domainModelWithSourceCode();
+            assertTrue(domainModelWithSourceCode.isPresent());
         }
     }
 }

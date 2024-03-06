@@ -4,12 +4,10 @@ import java.util.Optional;
 
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.DomainModelCompilationResult;
-import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
-import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Test;
 
@@ -60,17 +58,15 @@ public class ReladomoConcreteClassGeneratorTest
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
 
-        if (compilationResult instanceof ErrorsCompilationResult)
+        if (compilationResult.domainModelWithSourceCode().isEmpty())
         {
-            ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.compilerAnnotations();
-            String                                message                 = compilerAnnotations.makeString("\n");
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.compilerAnnotations();
+            String                                message             = compilerAnnotations.makeString("\n");
             fail(message);
         }
-        else if (compilationResult instanceof DomainModelCompilationResult)
+        else
         {
-            DomainModelCompilationResult domainModelCompilationResult = (DomainModelCompilationResult) compilationResult;
-            DomainModel                  domainModel                  = domainModelCompilationResult.domainModel();
+            DomainModelWithSourceCode domainModel = compilationResult.domainModelWithSourceCode().get();
             assertThat(domainModel, notNullValue());
 
             ReladomoConcreteClassGenerator generator = new ReladomoConcreteClassGenerator(domainModel);
@@ -222,10 +218,6 @@ public class ReladomoConcreteClassGeneratorTest
             //</editor-fold>
 
             assertThat(javaSourceCode, javaSourceCode, is(expectedSourceCode));
-        }
-        else
-        {
-            fail(compilationResult.getClass().getSimpleName());
         }
     }
 }
