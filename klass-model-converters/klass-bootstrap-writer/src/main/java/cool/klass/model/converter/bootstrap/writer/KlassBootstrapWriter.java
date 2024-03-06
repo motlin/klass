@@ -1,6 +1,10 @@
 package cool.klass.model.converter.bootstrap.writer;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
@@ -20,8 +24,13 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
+import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
 import klass.model.meta.domain.ElementAbstract;
+import klass.model.meta.domain.MaxLengthPropertyValidation;
+import klass.model.meta.domain.MaxPropertyValidation;
+import klass.model.meta.domain.MinLengthPropertyValidation;
+import klass.model.meta.domain.MinPropertyValidation;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.PackageableElementAbstract;
 
@@ -123,6 +132,7 @@ public class KlassBootstrapWriter
                 bootstrappedPrimitiveProperty.insert();
 
                 this.handlePropertyModifiers(classifier, dataTypeProperty);
+                this.handleValidations(classifier, dataTypeProperty);
             }
             else if (dataTypeProperty instanceof EnumerationProperty)
             {
@@ -134,6 +144,7 @@ public class KlassBootstrapWriter
                 bootstrappedEnumerationProperty.insert();
 
                 this.handlePropertyModifiers(classifier, dataTypeProperty);
+                this.handleValidations(classifier, dataTypeProperty);
 
                 // TODO: dataTypeProperty.getMinLengthPropertyValidation();
                 // TODO: dataTypeProperty.getMaxLengthPropertyValidation();
@@ -168,6 +179,49 @@ public class KlassBootstrapWriter
             bootstrappedPropertyModifier.setPropertyName(dataTypeProperty.getName());
             bootstrappedPropertyModifier.insert();
         }
+    }
+
+    private void handleValidations(Classifier classifier, DataTypeProperty property)
+    {
+        property.getMinLengthPropertyValidation()
+                .ifPresent(this.getValidationHandler(classifier, property, MinLengthPropertyValidation::new));
+
+        property.getMaxLengthPropertyValidation()
+                .ifPresent(this.getValidationHandler(classifier, property, MaxLengthPropertyValidation::new));
+
+        property.getMinPropertyValidation()
+                .ifPresent(this.getValidationHandler(classifier, property, MinPropertyValidation::new));
+
+        property.getMaxPropertyValidation()
+                .ifPresent(this.getValidationHandler(classifier, property, MaxPropertyValidation::new));
+    }
+
+    @Nonnull
+    private Consumer<NumericPropertyValidation> getValidationHandler(
+            Classifier classifier,
+            DataTypeProperty dataTypeProperty,
+            Supplier<klass.model.meta.domain.NumericPropertyValidation> bootstrappedValidationSupplier)
+    {
+        return validation ->
+        {
+            this.handleValidation(classifier, dataTypeProperty, bootstrappedValidationSupplier.get(), validation);
+        };
+    }
+
+    protected void handleValidation(
+            Classifier classifier,
+            DataTypeProperty dataTypeProperty,
+            klass.model.meta.domain.NumericPropertyValidation boostrappedValidation,
+            NumericPropertyValidation validation)
+    {
+        // TODO: Fix reladomo bug causing abstract classes to not implement interfaces
+        boostrappedValidation.setInferred(validation.isInferred());
+        boostrappedValidation.setSourceCode(validation.getSourceCode());
+        boostrappedValidation.setSourceCodeWithInference(validation.getSourceCodeWithInference());
+        boostrappedValidation.setClassifierName(classifier.getName());
+        boostrappedValidation.setPropertyName(dataTypeProperty.getName());
+        boostrappedValidation.setNumber(validation.getNumber());
+        boostrappedValidation.insert();
     }
 
     private void handleClassifierModifiers(Classifier classifier)
