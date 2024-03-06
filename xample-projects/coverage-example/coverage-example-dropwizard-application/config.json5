@@ -28,7 +28,7 @@
   "logging": {
     "level": "DEBUG",
     "loggers": {
-      "com.gs.fw.common.mithra.batch.sqllogs":     "DEBUG",
+      "com.gs.fw.common.mithra.batch.sqllogs":     "INFO",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "com.gs.fw.common.mithra.sqllogs":           "INFO",
       "cool.klass.xample.coverage":                 "DEBUG",
@@ -37,6 +37,9 @@
       "io.liftwizard":                             "DEBUG",
       "io.liftwizard.logging.p6spy":               "INFO",
       "klass.model.meta.domain":                   "DEBUG",
+      "liquibase.changelog":                       "WARN",
+      "liquibase.database":                        "INFO",
+      "liquibase.executor":                        "INFO",
       "liquibase.resource":                        "INFO",
       "liquibase.servicelocator":                  "INFO",
       "liquibase.util":                            "INFO",
