@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.api;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.projection.Projection;
@@ -8,6 +10,11 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public interface DomainModel
 {
+    default Optional<Klass> getUserClass()
+    {
+        return this.getClasses().detectOptional(Klass::isUser);
+    }
+
     @Nonnull
     ImmutableList<TopLevelElement> getTopLevelElements();
 
