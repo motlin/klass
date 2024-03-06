@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.parser.ThrowingErrorListener;
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;

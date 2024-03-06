@@ -6,9 +6,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.AntlrUtils;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
+import cool.klass.model.converter.compiler.parser.AntlrUtils;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteriaVisitor;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;

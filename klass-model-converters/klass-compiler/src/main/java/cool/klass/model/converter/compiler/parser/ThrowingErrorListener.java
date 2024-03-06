@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler;
+package cool.klass.model.converter.compiler.parser;
 
 import javax.annotation.Nonnull;
 
