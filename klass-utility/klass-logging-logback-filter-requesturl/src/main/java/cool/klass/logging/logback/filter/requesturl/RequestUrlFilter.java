@@ -1,4 +1,4 @@
-package cool.klass.dropwizard.configuration.logging.filter.url;
+package cool.klass.logging.logback.filter.requesturl;
 
 import java.util.Objects;
 
@@ -7,11 +7,11 @@ import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class UrlFilter extends Filter<IAccessEvent>
+public class RequestUrlFilter extends Filter<IAccessEvent>
 {
     private final ImmutableList<String> bannedUrls;
 
-    UrlFilter(ImmutableList<String> bannedUrls)
+    public RequestUrlFilter(ImmutableList<String> bannedUrls)
     {
         this.bannedUrls = Objects.requireNonNull(bannedUrls);
     }

@@ -11,6 +11,7 @@ import ch.qos.logback.core.filter.Filter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.auto.service.AutoService;
+import cool.klass.logging.logback.filter.requesturl.RequestUrlFilter;
 import io.dropwizard.logging.filter.FilterFactory;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -27,7 +28,7 @@ public class RequestUrlFilterFactory implements FilterFactory<IAccessEvent>
     public Filter<IAccessEvent> build()
     {
         ImmutableList<String> bannedUrls = Lists.immutable.withAll(this.bannedUrls);
-        return new UrlFilter(bannedUrls);
+        return new RequestUrlFilter(bannedUrls);
     }
 
     @JsonProperty

@@ -28,6 +28,7 @@
         <module>klass-reladomo-timestamp</module>
         <module>klass-serialization-jackson-config</module>
         <module>klass-serialization-jackson-pretty-printer</module>
+        <module>klass-logging-logback-filter-requesturl</module>
     </modules>
 
     <dependencyManagement>

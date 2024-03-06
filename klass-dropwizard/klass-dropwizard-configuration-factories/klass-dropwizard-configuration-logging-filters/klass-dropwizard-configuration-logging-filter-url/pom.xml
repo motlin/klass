@@ -17,6 +17,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-logging-logback-filter-requesturl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <scope>compile</scope>
