@@ -113,10 +113,11 @@ public class QuestionResourceManual
         MutableList<String> errors = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
+                StackOverflowDomainModel.QuestionWriteProjection.getKlass(),
                 incomingInstance,
-                StackOverflowDomainModel.QuestionWriteProjection,
                 OperationMode.REPLACE,
                 errors);
+
         if (errors.notEmpty())
         {
             Response response = Response
@@ -126,17 +127,9 @@ public class QuestionResourceManual
             throw new BadRequestException("Incoming data failed validation.", response);
         }
 
-        // Question
-
         // this.id == id
-        Operation queryOperation = QuestionFinder.id().eq(id);
-        // this.version.number == version
-        Operation conflictOperation = optionalVersion
-                .map(version -> QuestionFinder.version().number().eq(version))
-                .orElse(QuestionFinder.all());
-
-        QuestionList result = QuestionFinder.findMany(queryOperation);
-        // Deep fetch using projection QuestionWriteProjection
+        Operation    queryOperation = QuestionFinder.id().eq(id);
+        QuestionList result         = QuestionFinder.findMany(queryOperation);
         result.deepFetch(QuestionFinder.tags().tag());
         result.deepFetch(QuestionFinder.version());
 
@@ -145,7 +138,9 @@ public class QuestionResourceManual
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
 
-        boolean hasConflict = !result.asEcList().allSatisfy(conflictOperation::matches);
+        // this.version.number == version
+        Operation conflictOperation = QuestionFinder.version().number().eq(optionalVersion.get());
+        boolean   hasConflict       = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (hasConflict)
         {
             throw new ClientErrorException(Status.CONFLICT);
@@ -155,15 +150,14 @@ public class QuestionResourceManual
         {
             throw new InternalServerErrorException("TODO");
         }
+        Object persistentInstance = result.get(0);
 
         Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-
-        Object persistentInstance = result.get(0);
         IncomingUpdateDataModelValidator.validate(
                 this.dataStore,
+                projection.getKlass(),
                 persistentInstance,
                 incomingInstance,
-                projection,
                 errors);
         if (errors.notEmpty())
         {
@@ -344,8 +338,8 @@ public class QuestionResourceManual
         MutableList<String> errors = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
+                StackOverflowDomainModel.QuestionWriteProjection.getKlass(),
                 incomingInstance,
-                StackOverflowDomainModel.QuestionWriteProjection,
                 OperationMode.CREATE,
                 errors);
         if (errors.notEmpty())
