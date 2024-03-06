@@ -31,6 +31,7 @@
         <module>klass-generator-reladomo-code-plugin</module>
         <module>klass-generator-reladomo-database-plugin</module>
         <module>klass-maven-reladomo-logger</module>
+        <module>klass-generator-react-prop-type-plugin</module>
     </modules>
 
     <dependencyManagement>
