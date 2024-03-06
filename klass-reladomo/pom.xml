@@ -39,6 +39,7 @@
         <module>klass-reladomo-primitive-visitor</module>
         <module>klass-reladomo-sample-data</module>
         <module>klass-reladomo-tree-deep-fetcher</module>
+        <module>klass-reladomo-tree-serializer</module>
     </modules>
 
 </project>
