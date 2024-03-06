@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
  */
 public interface DataType extends Type
 {
+    String getDataTypeName();
+
     interface DataTypeGetter extends TypeGetter
     {
         @Nonnull

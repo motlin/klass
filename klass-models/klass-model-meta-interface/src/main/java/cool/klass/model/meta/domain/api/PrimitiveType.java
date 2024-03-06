@@ -151,6 +151,7 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
             }
         }
     },
+    // TODO: OffsetDateTime
     LOCAL_DATE("LocalDate", false, LocalDate.class)
     {
         @Override
@@ -251,6 +252,12 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
     public String getPrettyName()
     {
         return this.prettyName;
+    }
+
+    @Override
+    public String getDataTypeName()
+    {
+        return this.getPrettyName();
     }
 
     @Nonnull
