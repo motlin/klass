@@ -65,6 +65,16 @@ public abstract class AntlrProperty
     @Nonnull
     public abstract AntlrClassifier getOwningClassifierState();
 
+    public boolean isVersion()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
+    }
+
+    public boolean isPrivate()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isPrivate);
+    }
+
     public boolean isCreatedBy()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isCreatedBy);

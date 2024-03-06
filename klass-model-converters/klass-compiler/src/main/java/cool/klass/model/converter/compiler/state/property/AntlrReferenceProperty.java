@@ -210,11 +210,6 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
     }
 
-    public boolean isVersion()
-    {
-        return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
-    }
-
     protected void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         if (this.multiplicityState.getMultiplicity() == null)
