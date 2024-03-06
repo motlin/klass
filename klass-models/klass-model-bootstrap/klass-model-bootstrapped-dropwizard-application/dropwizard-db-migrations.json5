@@ -2,19 +2,18 @@
   "logging"           : {
     "level"    : "DEBUG",
     "loggers"  : {
-      "com.gs.fw.common.mithra.batch.sqllogs"    : "INFO",
+      "com.gs.fw.common.mithra.batch.sqllogs":     "INFO",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
-      "com.gs.fw.common.mithra.sqllogs"          : "DEBUG",
-      "klass.model.meta.domain"                  : "INFO",
-      "liquibase.resource"                       : "INFO",
-      "io.liftwizard"                            : "DEBUG",
-      "liquibase.servicelocator"                 : "INFO",
-      "liquibase.util.MD5Util"                   : "INFO",
-      "org.apache.http"                          : "INFO",
-      "org.eclipse.jetty"                        : "INFO",
-      "org.hibernate.validator.internal"         : "INFO",
-      "org.reflections.Reflections"              : "INFO",
-
+      "com.gs.fw.common.mithra.sqllogs":           "DEBUG",
+      "io.liftwizard":                             "DEBUG",
+      "klass.model.meta.domain":                   "DEBUG",
+      "liquibase.resource":                        "INFO",
+      "liquibase.servicelocator":                  "INFO",
+      "liquibase.util.MD5Util":                    "INFO",
+      "org.apache.http":                           "INFO",
+      "org.eclipse.jetty":                         "INFO",
+      "org.hibernate.validator.internal":          "INFO",
+      "org.reflections.Reflections":               "INFO",
     },
     "appenders": [
       {
@@ -40,7 +39,7 @@
       "uuid": {
         "type": "system"
       }
-    }
+    },
   },
   "configLogging": {
     "enabled": true
