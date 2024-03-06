@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
@@ -32,7 +33,7 @@ public abstract class AbstractMemberReferencePath
     protected AbstractMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull KlassImpl klass,
             @Nonnull ImmutableList<AssociationEnd> associationEnds,
             @Nonnull AbstractDataTypeProperty<?> property)
@@ -77,7 +78,7 @@ public abstract class AbstractMemberReferencePath
         protected AbstractMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull KlassBuilder klassBuilder,
                 @Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)

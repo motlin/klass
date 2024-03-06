@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.property;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
@@ -20,7 +21,7 @@ public final class PrimitivePropertyImpl
     private PrimitivePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -46,7 +47,7 @@ public final class PrimitivePropertyImpl
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -73,7 +74,7 @@ public final class PrimitivePropertyImpl
             return new PrimitivePropertyImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

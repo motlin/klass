@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -33,7 +34,7 @@ public final class ProjectionProjectionReferenceImpl
     private ProjectionProjectionReferenceImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -87,7 +88,7 @@ public final class ProjectionProjectionReferenceImpl
         public ProjectionProjectionReferenceBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -116,7 +117,7 @@ public final class ProjectionProjectionReferenceImpl
             return new ProjectionProjectionReferenceImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

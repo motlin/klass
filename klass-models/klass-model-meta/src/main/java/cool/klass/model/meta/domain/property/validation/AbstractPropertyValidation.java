@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -23,7 +24,7 @@ public abstract class AbstractPropertyValidation
     protected AbstractPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty)
     {
         super(elementContext, macroElement, sourceCode);
@@ -38,7 +39,7 @@ public abstract class AbstractPropertyValidation
         protected PropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder)
         {
             super(elementContext, macroElement, sourceCode);

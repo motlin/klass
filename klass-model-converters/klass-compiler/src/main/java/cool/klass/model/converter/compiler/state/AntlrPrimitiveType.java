@@ -12,7 +12,9 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
+public final class AntlrPrimitiveType
+        extends AntlrElement
+        implements AntlrType
 {
     public static final AntlrPrimitiveType INTEGER          = new AntlrPrimitiveType(PrimitiveType.INTEGER);
     public static final AntlrPrimitiveType LONG             = new AntlrPrimitiveType(PrimitiveType.LONG);
@@ -96,7 +98,6 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return new PrimitiveTypeBuilder(
                 this.getElementContext(),
                 this.getMacroElementBuilder(),
-                this.getSourceCodeBuilder(),
                 this.primitiveType);
     }
 

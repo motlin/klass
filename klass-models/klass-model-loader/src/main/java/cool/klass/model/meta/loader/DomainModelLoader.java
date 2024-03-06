@@ -14,7 +14,7 @@ import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.RootCompilerError;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -38,17 +38,17 @@ public class DomainModelLoader
     }
 
     @Nonnull
-    public DomainModel load()
+    public DomainModelWithSourceCode load()
     {
         LOGGER.info("Running domain model compiler in packages: {}", this.klassSourcePackages);
         ImmutableList<String> klassSourcePackagesImmutable = Lists.immutable.withAll(this.klassSourcePackages);
 
         MutableList<CompilationUnit> compilationUnits = this.getCompilationUnits(klassSourcePackagesImmutable);
 
-        CompilerState     compilerState     = new CompilerState(compilationUnits);
-        KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
-        CompilationResult compilationResult = klassCompiler.compile();
-        DomainModel       domainModel       = this.handleResult(compilationResult);
+        CompilerState             compilerState     = new CompilerState(compilationUnits);
+        KlassCompiler             klassCompiler     = new KlassCompiler(compilerState);
+        CompilationResult         compilationResult = klassCompiler.compile();
+        DomainModelWithSourceCode domainModel       = this.handleResult(compilationResult);
 
         LOGGER.info("Completing domain model compilation.");
 
@@ -79,7 +79,7 @@ public class DomainModelLoader
     }
 
     @Nonnull
-    private DomainModel handleResult(@Nonnull CompilationResult compilationResult)
+    private DomainModelWithSourceCode handleResult(@Nonnull CompilationResult compilationResult)
     {
         if (compilationResult instanceof ErrorsCompilationResult)
         {
@@ -95,7 +95,7 @@ public class DomainModelLoader
     }
 
     @Nonnull
-    private DomainModel handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
+    private DomainModelWithSourceCode handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
     {
         ImmutableList<RootCompilerError> compilerErrors = compilationResult.getCompilerErrors();
         for (RootCompilerError compilerError : compilerErrors)
@@ -106,7 +106,7 @@ public class DomainModelLoader
     }
 
     @Nonnull
-    private DomainModel handleSuccess(@Nonnull DomainModelCompilationResult compilationResult)
+    private DomainModelWithSourceCode handleSuccess(@Nonnull DomainModelCompilationResult compilationResult)
     {
         return compilationResult.getDomainModel();
     }

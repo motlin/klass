@@ -32,7 +32,8 @@ import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
-public abstract class AbstractGenerateMojo extends AbstractMojo
+public abstract class AbstractGenerateMojo
+        extends AbstractMojo
 {
     @Parameter(property = "klassSourcePackages", required = true, readonly = true)
     protected List<String> klassSourcePackages;
@@ -43,6 +44,7 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
     @Nonnull
     protected DomainModel getDomainModel() throws MojoExecutionException
     {
+        // TODO: We should use an abstract DomainModelFactory here, not necessarily the compiler.
         CompilationResult compilationResult = this.getCompilationResult();
 
         this.handleErrorsCompilationResult(compilationResult);

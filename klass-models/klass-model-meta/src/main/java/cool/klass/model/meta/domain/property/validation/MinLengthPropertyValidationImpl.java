@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.property.validation;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
@@ -19,7 +20,7 @@ public class MinLengthPropertyValidationImpl
     public MinLengthPropertyValidationImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
@@ -32,7 +33,7 @@ public class MinLengthPropertyValidationImpl
         public MinLengthPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> owningPropertyBuilder,
                 int number)
         {
@@ -46,7 +47,7 @@ public class MinLengthPropertyValidationImpl
             return new MinLengthPropertyValidationImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.owningPropertyBuilder.getElement(),
                     this.number);
         }

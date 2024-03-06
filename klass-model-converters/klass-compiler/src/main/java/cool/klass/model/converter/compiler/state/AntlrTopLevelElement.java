@@ -5,12 +5,13 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
 
-public interface AntlrTopLevelElement extends IAntlrElement
+public interface AntlrTopLevelElement
+        extends IAntlrElement
 {
     @Nonnull
-    TopLevelElementBuilder getElementBuilder();
+    TopLevelElementBuilderWithSourceCode getElementBuilder();
 
     @Override
     default boolean omitParentFromSurroundingElements()

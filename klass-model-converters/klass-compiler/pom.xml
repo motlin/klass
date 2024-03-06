@@ -31,6 +31,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-grammar</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -57,6 +63,7 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-test-constants</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

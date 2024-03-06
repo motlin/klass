@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.value.literal;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -17,7 +18,7 @@ public final class UserLiteralImpl
     private UserLiteralImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode)
+            @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
@@ -28,7 +29,7 @@ public final class UserLiteralImpl
         public UserLiteralBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode)
+                @Nullable SourceCodeBuilder sourceCode)
         {
             super(elementContext, macroElement, sourceCode);
         }
@@ -40,7 +41,7 @@ public final class UserLiteralImpl
             return new UserLiteralImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build));
+                    this.sourceCode.build());
         }
     }
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
@@ -12,11 +13,12 @@ import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionImpl
         extends AbstractProjectionParent
-        implements Projection
+        implements Projection, TopLevelElementWithSourceCode
 {
     @Nonnull
     private final String             packageName;
@@ -26,7 +28,7 @@ public final class ProjectionImpl
     private ProjectionImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -60,7 +62,7 @@ public final class ProjectionImpl
 
     public static final class ProjectionBuilder
             extends AbstractProjectionParentBuilder<ProjectionImpl>
-            implements TopLevelElementBuilder
+            implements TopLevelElementBuilderWithSourceCode
     {
         @Nonnull
         private final String               packageName;
@@ -70,7 +72,7 @@ public final class ProjectionImpl
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -89,7 +91,7 @@ public final class ProjectionImpl
             return new ProjectionImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

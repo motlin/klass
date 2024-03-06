@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.criteria;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
@@ -17,7 +18,7 @@ public final class OrCriteriaImpl
     private OrCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractCriteria left,
             @Nonnull AbstractCriteria right)
     {
@@ -30,7 +31,7 @@ public final class OrCriteriaImpl
         public OrCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractCriteriaBuilder<?> left,
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {
@@ -44,7 +45,7 @@ public final class OrCriteriaImpl
             return new OrCriteriaImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.left.build(),
                     this.right.build());
         }

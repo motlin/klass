@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Type;
@@ -27,7 +28,7 @@ public final class LiteralListValueImpl
     private LiteralListValueImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull Type type)
     {
         super(elementContext, macroElement, sourceCode);
@@ -67,7 +68,7 @@ public final class LiteralListValueImpl
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull TypeGetter typeBuilder)
         {
             super(elementContext, macroElement, sourceCode);
@@ -90,7 +91,7 @@ public final class LiteralListValueImpl
             return new LiteralListValueImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.typeBuilder.getType());
         }
 

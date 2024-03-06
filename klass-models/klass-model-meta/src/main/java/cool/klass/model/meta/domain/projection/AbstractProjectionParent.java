@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractNamedElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -23,7 +24,7 @@ public abstract class AbstractProjectionParent
     protected AbstractProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
@@ -51,7 +52,7 @@ public abstract class AbstractProjectionParent
         protected AbstractProjectionParentBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)

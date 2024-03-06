@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -19,7 +20,9 @@ import cool.klass.model.meta.domain.service.ServiceImpl.ServiceBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class UrlImpl extends AbstractElement implements Url
+public final class UrlImpl
+        extends AbstractElement
+        implements Url
 {
     @Nonnull
     private final ServiceGroupImpl         serviceGroup;
@@ -32,7 +35,7 @@ public final class UrlImpl extends AbstractElement implements Url
     private UrlImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ServiceGroupImpl serviceGroup)
     {
         super(elementContext, macroElement, sourceCode);
@@ -121,7 +124,8 @@ public final class UrlImpl extends AbstractElement implements Url
         this.services = Objects.requireNonNull(services);
     }
 
-    public static final class UrlBuilder extends ElementBuilder<UrlImpl>
+    public static final class UrlBuilder
+            extends ElementBuilder<UrlImpl>
     {
         @Nonnull
         private final ServiceGroupBuilder serviceGroupBuilder;
@@ -135,7 +139,7 @@ public final class UrlImpl extends AbstractElement implements Url
         public UrlBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ServiceGroupBuilder serviceGroupBuilder)
         {
             super(elementContext, macroElement, sourceCode);
@@ -174,7 +178,7 @@ public final class UrlImpl extends AbstractElement implements Url
             return new UrlImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.serviceGroupBuilder.getElement());
         }
 

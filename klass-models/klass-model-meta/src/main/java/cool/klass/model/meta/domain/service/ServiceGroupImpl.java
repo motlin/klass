@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractPackageableElement;
 import cool.klass.model.meta.domain.KlassImpl;
@@ -13,13 +14,14 @@ import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public final class ServiceGroupImpl
         extends AbstractPackageableElement
-        implements ServiceGroup
+        implements ServiceGroup, TopLevelElementWithSourceCode
 {
     @Nonnull
     private final KlassImpl klass;
@@ -29,7 +31,7 @@ public final class ServiceGroupImpl
     private ServiceGroupImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -65,7 +67,7 @@ public final class ServiceGroupImpl
 
     public static final class ServiceGroupBuilder
             extends PackageableElementBuilder<ServiceGroupImpl>
-            implements TopLevelElementBuilder
+            implements TopLevelElementBuilderWithSourceCode
     {
         @Nonnull
         private final KlassBuilder klassBuilder;
@@ -75,7 +77,7 @@ public final class ServiceGroupImpl
         public ServiceGroupBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -98,7 +100,7 @@ public final class ServiceGroupImpl
             return new ServiceGroupImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

@@ -13,13 +13,13 @@
     <!--TODO: Rename klass-model-loader-classpath-->
     <artifactId>klass-model-loader</artifactId>
 
-    <name>Klass Model Loader</name>
+    <name>Klass Domain Model Loader: Source Code from Classpath</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
             <version>${project.version}</version>
         </dependency>
 

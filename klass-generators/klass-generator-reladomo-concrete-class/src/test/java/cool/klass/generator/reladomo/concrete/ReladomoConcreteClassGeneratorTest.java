@@ -76,7 +76,7 @@ public class ReladomoConcreteClassGeneratorTest
 
             ReladomoConcreteClassGenerator generator = new ReladomoConcreteClassGenerator(domainModel);
 
-            Klass  klass           = domainModel.getClassByName("ClassWithDerivedProperty");
+            Klass  klass          = domainModel.getClassByName("ClassWithDerivedProperty");
             String javaSourceCode = generator.getSourceCode(klass);
 
             //<editor-fold desc="expected java code">

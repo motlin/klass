@@ -76,7 +76,7 @@ public class ReladomoReadableInterfaceGeneratorTest
 
             ReladomoReadableInterfaceGenerator generator = new ReladomoReadableInterfaceGenerator(domainModel);
 
-            Klass  klass           = domainModel.getClassByName("ClassWithDerivedProperty");
+            Klass  klass          = domainModel.getClassByName("ClassWithDerivedProperty");
             String javaSourceCode = generator.getSourceCode(klass);
 
             //<editor-fold desc="expected java code">

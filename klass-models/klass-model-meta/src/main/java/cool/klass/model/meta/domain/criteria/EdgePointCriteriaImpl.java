@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
@@ -23,7 +24,7 @@ public final class EdgePointCriteriaImpl
     private EdgePointCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractMemberReferencePath memberExpressionValue)
     {
         super(elementContext, macroElement, sourceCode);
@@ -46,7 +47,7 @@ public final class EdgePointCriteriaImpl
         public EdgePointCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractMemberReferencePathBuilder<?> memberExpressionValue)
         {
             super(elementContext, macroElement, sourceCode);
@@ -60,7 +61,7 @@ public final class EdgePointCriteriaImpl
             return new EdgePointCriteriaImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.memberExpressionValue.build());
         }
     }

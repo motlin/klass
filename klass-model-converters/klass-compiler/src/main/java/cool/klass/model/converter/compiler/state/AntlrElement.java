@@ -18,6 +18,10 @@ public abstract class AntlrElement
 {
     @Nonnull
     protected final ParserRuleContext         elementContext;
+    // TODO: Consider creating a "native" source file with native declarations of PrimitiveTypes
+    /**
+     * The type of compilationUnit is Optional because some Elements, specifically PrimitiveTypes are not declared in SourceCode
+     */
     @Nonnull
     protected final Optional<CompilationUnit> compilationUnit;
 
@@ -70,9 +74,9 @@ public abstract class AntlrElement
         return this.getMacroElement().map(antlrElement -> Objects.requireNonNull(antlrElement.getElementBuilder()));
     }
 
-    protected Optional<SourceCodeBuilder> getSourceCodeBuilder()
+    protected SourceCodeBuilder getSourceCodeBuilder()
     {
-        return this.compilationUnit.map(CompilationUnit::build);
+        return this.compilationUnit.map(CompilationUnit::build).orElseThrow();
     }
 
     @Override

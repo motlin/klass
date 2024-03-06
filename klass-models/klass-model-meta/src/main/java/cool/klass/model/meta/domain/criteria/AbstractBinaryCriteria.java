@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.BinaryCriteria;
@@ -23,7 +24,7 @@ public abstract class AbstractBinaryCriteria
     protected AbstractBinaryCriteria(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractCriteria left,
             @Nonnull AbstractCriteria right)
     {
@@ -57,7 +58,7 @@ public abstract class AbstractBinaryCriteria
         protected AbstractBinaryCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractCriteriaBuilder<?> left,
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {

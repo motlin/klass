@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.value.literal;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -18,7 +19,7 @@ public abstract class AbstractLiteralValue
     protected AbstractLiteralValue(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode)
+            @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
@@ -29,7 +30,7 @@ public abstract class AbstractLiteralValue
         protected AbstractLiteralValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode)
+                @Nullable SourceCodeBuilder sourceCode)
         {
             super(elementContext, macroElement, sourceCode);
         }

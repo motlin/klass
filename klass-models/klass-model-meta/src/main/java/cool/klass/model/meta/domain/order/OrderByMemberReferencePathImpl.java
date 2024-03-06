@@ -33,7 +33,7 @@ public final class OrderByMemberReferencePathImpl
     private OrderByMemberReferencePathImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull OrderByImpl orderBy,
             int ordinal,
             @Nonnull ThisMemberReferencePathImpl thisMemberReferencePath)
@@ -78,7 +78,7 @@ public final class OrderByMemberReferencePathImpl
         public OrderByMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull OrderByBuilder orderByBuilder,
                 int ordinal,
                 @Nonnull ThisMemberReferencePathBuilder thisMemberReferencePathBuilder)
@@ -101,7 +101,7 @@ public final class OrderByMemberReferencePathImpl
             return new OrderByMemberReferencePathImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.orderByBuilder.getElement(),
                     this.ordinal,
                     this.thisMemberReferencePathBuilder.build());

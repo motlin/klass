@@ -4,14 +4,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.source.NamedElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 
-public abstract class AbstractNamedElement extends AbstractElement implements NamedElement
+public abstract class AbstractNamedElement
+        extends AbstractElement
+        implements NamedElementWithSourceCode
 {
     @Nonnull
     private final ParserRuleContext nameContext;
@@ -22,7 +26,7 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
     protected AbstractNamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal)
@@ -31,6 +35,13 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         this.nameContext = Objects.requireNonNull(nameContext);
         this.name        = Objects.requireNonNull(name);
         this.ordinal     = ordinal;
+    }
+
+    @Override
+    @Nonnull
+    public Token getNameToken()
+    {
+        return this.nameContext.getStart();
     }
 
     @Override
@@ -64,7 +75,7 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         protected NamedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal)

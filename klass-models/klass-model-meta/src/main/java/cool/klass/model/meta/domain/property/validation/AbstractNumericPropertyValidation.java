@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.property.validation;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.validation.NumericPropertyValidation;
@@ -21,7 +22,7 @@ public abstract class AbstractNumericPropertyValidation
     protected AbstractNumericPropertyValidation(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractDataTypeProperty<?> owningProperty,
             int number)
     {
@@ -43,7 +44,7 @@ public abstract class AbstractNumericPropertyValidation
         protected NumericPropertyValidationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder,
                 int number)
         {

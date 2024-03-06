@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassBaseListener;
@@ -138,28 +138,29 @@ public class CompilerState
     @Nonnull
     public CompilationResult getCompilationResult()
     {
-        ImmutableList<SourceCodeBuilder> sourceCodeBuilders = this.compilerInputState
-                .getCompilationUnits()
-                .collect(CompilationUnit::build)
-                .toImmutable();
-        ImmutableList<SourceCode>        sourceCodes    = sourceCodeBuilders.collect(SourceCodeBuilder::build);
         ImmutableList<RootCompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
         if (compilerErrors.notEmpty())
         {
+            ImmutableList<SourceCodeBuilder> sourceCodeBuilders = this.compilerInputState
+                    .getCompilationUnits()
+                    .collect(CompilationUnit::build)
+                    .toImmutable();
+            ImmutableList<SourceCode> sourceCodes = sourceCodeBuilders.collect(SourceCodeBuilder::build);
             return new ErrorsCompilationResult(sourceCodes, compilerErrors);
         }
-        return new DomainModelCompilationResult(sourceCodes, this.buildDomainModel());
+        return new DomainModelCompilationResult(this.buildDomainModel());
     }
 
     @Nonnull
-    private DomainModel buildDomainModel()
+    private DomainModelWithSourceCode buildDomainModel()
     {
         if (this.compilerErrorHolder.hasCompilerErrors())
         {
             throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
         }
 
-        DomainModelBuilder domainModelBuilder = this.domainModelState.build();
+        ImmutableList<CompilationUnit> compilationUnits   = this.compilerInputState.getCompilationUnits().toImmutable();
+        DomainModelBuilder             domainModelBuilder = this.domainModelState.build(compilationUnits);
         return domainModelBuilder.build();
     }
 

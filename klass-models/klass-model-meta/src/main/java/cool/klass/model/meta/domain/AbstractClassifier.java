@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
@@ -15,6 +16,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -22,7 +24,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class AbstractClassifier
         extends AbstractPackageableElement
-        implements Classifier
+        implements Classifier, TopLevelElementWithSourceCode
 {
     private ImmutableList<DataTypeProperty>        dataTypeProperties;
     private ImmutableList<ClassifierModifier>      classifierModifiers;
@@ -32,7 +34,7 @@ public abstract class AbstractClassifier
     protected AbstractClassifier(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -100,7 +102,7 @@ public abstract class AbstractClassifier
 
     public abstract static class ClassifierBuilder<BuiltElement extends AbstractClassifier>
             extends PackageableElementBuilder<BuiltElement>
-            implements TypeGetter, TopLevelElementBuilder
+            implements TypeGetter, TopLevelElementBuilderWithSourceCode
     {
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
         protected ImmutableList<ClassifierModifierBuilder>        classifierModifierBuilders;
@@ -110,7 +112,7 @@ public abstract class AbstractClassifier
         protected ClassifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

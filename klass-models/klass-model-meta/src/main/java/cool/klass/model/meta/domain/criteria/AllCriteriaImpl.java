@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.criteria;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.AllCriteria;
@@ -14,16 +15,10 @@ public final class AllCriteriaImpl
         extends AbstractCriteria
         implements AllCriteria
 {
-    // TODO: Make a distinction between macroElement and declaration
-    public static final AllCriteriaImpl INSTANCE = new AllCriteriaImpl(
-            new ParserRuleContext(),
-            Optional.empty(),
-            Optional.empty());
-
-    private AllCriteriaImpl(
+    public AllCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode)
+            @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
@@ -41,7 +36,7 @@ public final class AllCriteriaImpl
         public AllCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode)
+                @Nullable SourceCodeBuilder sourceCode)
         {
             super(elementContext, macroElement, sourceCode);
         }
@@ -50,7 +45,10 @@ public final class AllCriteriaImpl
         @Override
         protected AllCriteriaImpl buildUnsafe()
         {
-            return INSTANCE;
+            return new AllCriteriaImpl(
+                    this.elementContext,
+                    this.macroElement.map(ElementBuilder::getElement),
+                    this.sourceCode.build());
         }
     }
 }

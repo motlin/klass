@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -46,7 +47,7 @@ public final class ServiceImpl
     private ServiceImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull UrlImpl url,
             @Nonnull Verb verb,
             @Nonnull ServiceMultiplicity serviceMultiplicity)
@@ -214,7 +215,7 @@ public final class ServiceImpl
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull UrlBuilder urlBuilder,
                 @Nonnull Verb verb,
                 @Nonnull ServiceMultiplicity serviceMultiplicity)
@@ -294,7 +295,7 @@ public final class ServiceImpl
             ServiceImpl service = new ServiceImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.urlBuilder.getElement(),
                     this.verb,
                     this.serviceMultiplicity);

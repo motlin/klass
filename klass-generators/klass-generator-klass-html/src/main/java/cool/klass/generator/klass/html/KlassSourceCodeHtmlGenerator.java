@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -27,10 +28,14 @@ public class KlassSourceCodeHtmlGenerator
     public static final Converter<String, String> CONVERTER =
             CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_HYPHEN);
 
+    private final DomainModelWithSourceCode domainModel;
     private final ImmutableList<SourceCode> sourceCodes;
 
-    public KlassSourceCodeHtmlGenerator(ImmutableList<SourceCode> sourceCodes)
+    public KlassSourceCodeHtmlGenerator(
+            DomainModelWithSourceCode domainModel,
+            ImmutableList<SourceCode> sourceCodes)
     {
+        this.domainModel = Objects.requireNonNull(domainModel);
         this.sourceCodes = Objects.requireNonNull(sourceCodes);
     }
 
@@ -39,10 +44,10 @@ public class KlassSourceCodeHtmlGenerator
         this.sourceCodes
                 // TODO: Graft in macros
                 .select(sourceCode -> !sourceCode.getMacroSourceCode().isPresent())
-                .forEachWith(KlassSourceCodeHtmlGenerator::writeHtmlFile, outputPath);
+                .forEachWith(this::writeHtmlFile, outputPath);
     }
 
-    private static void writeHtmlFile(SourceCode sourceCode, Path outputPath)
+    private void writeHtmlFile(SourceCode sourceCode, Path outputPath)
     {
         Path   htmlOutputPath = KlassSourceCodeHtmlGenerator.getOutputPath(outputPath, sourceCode);
         String sourceCodeText = KlassSourceCodeHtmlGenerator.getSourceCode(sourceCode);

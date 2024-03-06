@@ -9,8 +9,10 @@ import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ErrorsCompilationResult
-        extends AbstractCompilationResult
+        implements CompilationResult
 {
+    @Nonnull
+    private final ImmutableList<SourceCode>        sourceCodes;
     @Nonnull
     private final ImmutableList<RootCompilerError> compilerErrors;
 
@@ -18,8 +20,15 @@ public class ErrorsCompilationResult
             @Nonnull ImmutableList<SourceCode> sourceCodes,
             @Nonnull ImmutableList<RootCompilerError> compilerErrors)
     {
-        super(sourceCodes);
+        this.sourceCodes    = Objects.requireNonNull(sourceCodes);
         this.compilerErrors = Objects.requireNonNull(compilerErrors);
+    }
+
+    @Override
+    @Nonnull
+    public ImmutableList<SourceCode> getSourceCodes()
+    {
+        return this.sourceCodes;
     }
 
     public ImmutableList<RootCompilerError> getCompilerErrors()

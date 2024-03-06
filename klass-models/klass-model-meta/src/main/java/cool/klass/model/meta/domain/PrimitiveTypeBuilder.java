@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.AbstractElement.ElementBuilder;
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class PrimitiveTypeBuilder
@@ -21,10 +20,9 @@ public class PrimitiveTypeBuilder
     public PrimitiveTypeBuilder(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<ElementBuilder<?>> macroElement,
-            @Nonnull Optional<SourceCodeBuilder> sourceCode,
             @Nonnull PrimitiveType primitiveType)
     {
-        super(elementContext, macroElement, sourceCode);
+        super(elementContext, macroElement, null);
         this.primitiveType = Objects.requireNonNull(primitiveType);
     }
 

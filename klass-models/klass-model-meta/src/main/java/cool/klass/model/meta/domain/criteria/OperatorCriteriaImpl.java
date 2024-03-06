@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
@@ -15,7 +16,9 @@ import cool.klass.model.meta.domain.value.AbstractExpressionValue;
 import cool.klass.model.meta.domain.value.AbstractExpressionValue.AbstractExpressionValueBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public final class OperatorCriteriaImpl extends AbstractCriteria implements OperatorCriteria
+public final class OperatorCriteriaImpl
+        extends AbstractCriteria
+        implements OperatorCriteria
 {
     @Nonnull
     private final AbstractOperator        operator;
@@ -27,7 +30,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
     private OperatorCriteriaImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull AbstractOperator operator,
             @Nonnull AbstractExpressionValue sourceValue,
             @Nonnull AbstractExpressionValue targetValue)
@@ -59,7 +62,8 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
         return this.targetValue;
     }
 
-    public static final class OperatorCriteriaBuilder extends AbstractCriteriaBuilder<OperatorCriteriaImpl>
+    public static final class OperatorCriteriaBuilder
+            extends AbstractCriteriaBuilder<OperatorCriteriaImpl>
     {
         @Nonnull
         private final AbstractOperatorBuilder<?>        operator;
@@ -71,7 +75,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
         public OperatorCriteriaBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull AbstractOperatorBuilder<?> operator,
                 @Nonnull AbstractExpressionValueBuilder<?> sourceValue,
                 @Nonnull AbstractExpressionValueBuilder<?> targetValue)
@@ -89,7 +93,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
             return new OperatorCriteriaImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.operator.build(),
                     this.sourceValue.build(),
                     this.targetValue.build());

@@ -7,8 +7,8 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.meta.domain.AbstractElement;
-import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -26,15 +26,14 @@ public final class KlassTopLevelElementHtmlGenerator
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static String writeHtml(TopLevelElement topLevelElement)
+    public static String writeHtml(TopLevelElementWithSourceCode topLevelElement)
     {
-        Optional<SourceCode> sourceCodeObject = topLevelElement.getSourceCodeObject();
-        AbstractElement      abstractElement  = (AbstractElement) topLevelElement;
-        ParserRuleContext    elementContext   = abstractElement.getElementContext();
-        Token                start            = elementContext.getStart();
-        Token                stop             = elementContext.getStop();
+        SourceCode        sourceCode      = topLevelElement.getSourceCodeObject();
+        AbstractElement   abstractElement = (AbstractElement) topLevelElement;
+        ParserRuleContext elementContext  = abstractElement.getElementContext();
+        Token             start           = elementContext.getStart();
+        Token             stop            = elementContext.getStop();
 
-        SourceCode          sourceCode    = sourceCodeObject.get();
         BufferedTokenStream tokenStream   = sourceCode.getTokenStream();
         MutableList<Token>  tokens        = ListAdapter.adapt(tokenStream.getTokens());
         boolean             containsStart = tokens.contains(start);

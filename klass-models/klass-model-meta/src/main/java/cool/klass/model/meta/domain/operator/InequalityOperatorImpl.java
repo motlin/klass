@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.operator;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.operator.InequalityOperator;
@@ -17,7 +18,7 @@ public final class InequalityOperatorImpl
     private InequalityOperatorImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull String operatorText)
     {
         super(elementContext, macroElement, sourceCode, operatorText);
@@ -29,7 +30,7 @@ public final class InequalityOperatorImpl
         public InequalityOperatorBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull String operatorText)
         {
             super(elementContext, macroElement, sourceCode, operatorText);
@@ -42,7 +43,7 @@ public final class InequalityOperatorImpl
             return new InequalityOperatorImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.operatorText);
         }
     }

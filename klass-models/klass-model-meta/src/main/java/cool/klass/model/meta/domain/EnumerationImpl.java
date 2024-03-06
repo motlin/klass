@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.domain.api.Element;
@@ -10,17 +11,20 @@ import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class EnumerationImpl extends AbstractPackageableElement implements Enumeration
+public final class EnumerationImpl
+        extends AbstractPackageableElement
+        implements Enumeration, TopLevelElementWithSourceCode
 {
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 
     private EnumerationImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -42,14 +46,14 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
 
     public static final class EnumerationBuilder
             extends PackageableElementBuilder<EnumerationImpl>
-            implements DataTypeGetter, TopLevelElementBuilder
+            implements DataTypeGetter, TopLevelElementBuilderWithSourceCode
     {
         private ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
 
         public EnumerationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -70,7 +74,7 @@ public final class EnumerationImpl extends AbstractPackageableElement implements
             return new EnumerationImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

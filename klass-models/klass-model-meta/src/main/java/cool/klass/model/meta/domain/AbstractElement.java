@@ -4,33 +4,38 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.source.ElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 
 public abstract class AbstractElement
-        implements Element
+        implements ElementWithSourceCode
 {
     public static final ParserRuleContext NO_CONTEXT = new ParserRuleContext();
 
     @Nonnull
-    private final ParserRuleContext    elementContext;
+    private final ParserRuleContext elementContext;
     @Nonnull
-    private final Optional<Element>    macroElement;
-    @Nonnull
-    private final Optional<SourceCode> sourceCode;
+    private final Optional<Element> macroElement;
+    /**
+     * The type of sourceCode is null only for Elements that don't appear in source code, like PrimitiveType declarations
+     */
+    @Nullable
+    private final SourceCode        sourceCode;
 
     protected AbstractElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode)
+            @Nullable SourceCode sourceCode)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
         this.macroElement   = Objects.requireNonNull(macroElement);
-        this.sourceCode     = Objects.requireNonNull(sourceCode);
+        this.sourceCode     = sourceCode;
     }
 
     @Nonnull
@@ -41,9 +46,9 @@ public abstract class AbstractElement
     }
 
     @Override
-    public Optional<SourceCode> getSourceCodeObject()
+    public SourceCode getSourceCodeObject()
     {
-        return this.sourceCode;
+        return Objects.requireNonNull(this.sourceCode);
     }
 
     @Nonnull
@@ -68,18 +73,18 @@ public abstract class AbstractElement
         protected final ParserRuleContext           elementContext;
         @Nonnull
         protected final Optional<ElementBuilder<?>> macroElement;
-        @Nonnull
-        protected final Optional<SourceCodeBuilder> sourceCode;
+        @Nullable
+        protected final SourceCodeBuilder           sourceCode;
         protected       BuiltElement                element;
 
         protected ElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode)
+                @Nullable SourceCodeBuilder sourceCode)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
             this.macroElement   = Objects.requireNonNull(macroElement);
-            this.sourceCode     = Objects.requireNonNull(sourceCode);
+            this.sourceCode     = sourceCode;
         }
 
         @Nonnull

@@ -3,6 +3,7 @@ package cool.klass.model.meta.domain.value;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -18,7 +19,7 @@ public abstract class AbstractExpressionValue
     protected AbstractExpressionValue(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode)
+            @Nullable SourceCode sourceCode)
     {
         super(elementContext, macroElement, sourceCode);
     }
@@ -29,7 +30,7 @@ public abstract class AbstractExpressionValue
         protected AbstractExpressionValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode)
+                @Nullable SourceCodeBuilder sourceCode)
         {
             super(elementContext, macroElement, sourceCode);
         }

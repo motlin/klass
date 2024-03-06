@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.AntlrUtils;
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
@@ -15,7 +16,8 @@ import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
-import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
@@ -464,8 +466,10 @@ public class AntlrDomainModel
     }
 
     @Nonnull
-    public DomainModelBuilder build()
+    public DomainModelBuilder build(ImmutableList<CompilationUnit> compilationUnits)
     {
+        ImmutableList<SourceCodeBuilder> sourceCodeBuilders = compilationUnits
+                .collect(CompilationUnit::build);
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates
                 .collect(AntlrEnumeration::build)
                 .toImmutable();
@@ -493,12 +497,13 @@ public class AntlrDomainModel
                 .collect(AntlrServiceGroup::build)
                 .toImmutable();
 
-        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementsByContext
+        ImmutableList<TopLevelElementBuilderWithSourceCode> topLevelElementBuilders = this.topLevelElementsByContext
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
                 .collect(AntlrTopLevelElement::getElementBuilder)
                 .toImmutable();
 
         return new DomainModelBuilder(
+                sourceCodeBuilders,
                 topLevelElementBuilders,
                 enumerationBuilders,
                 classifierBuilders,

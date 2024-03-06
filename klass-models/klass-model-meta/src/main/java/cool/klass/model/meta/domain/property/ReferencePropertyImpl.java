@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractClassifier;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
@@ -35,7 +36,7 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
     protected ReferencePropertyImpl(
             ParserRuleContext elementContext,
             Optional<Element> macroElement,
-            Optional<SourceCode> sourceCode,
+            SourceCode sourceCode,
             ParserRuleContext nameContext,
             String name,
             int ordinal,
@@ -98,7 +99,7 @@ public abstract class ReferencePropertyImpl<T extends Classifier>
         protected ReferencePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

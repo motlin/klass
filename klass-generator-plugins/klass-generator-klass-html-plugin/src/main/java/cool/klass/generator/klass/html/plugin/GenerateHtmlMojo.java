@@ -6,6 +6,7 @@ import cool.klass.generator.klass.html.KlassSourceCodeHtmlGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.model.converter.compiler.CompilationResult;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -39,8 +40,9 @@ public class GenerateHtmlMojo
             throw new AssertionError(compilationResult.getClass().getSimpleName());
         }
 
+        DomainModelWithSourceCode    domainModel = ((DomainModelCompilationResult) compilationResult).getDomainModel();
         ImmutableList<SourceCode>    sourceCodes = compilationResult.getSourceCodes();
-        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(sourceCodes);
+        KlassSourceCodeHtmlGenerator generator   = new KlassSourceCodeHtmlGenerator(domainModel, sourceCodes);
         generator.writeHtmlFiles(this.outputDirectory.toPath());
     }
 }

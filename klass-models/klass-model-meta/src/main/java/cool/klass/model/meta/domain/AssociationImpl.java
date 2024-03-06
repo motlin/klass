@@ -4,12 +4,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -18,7 +20,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public final class AssociationImpl
         extends AbstractPackageableElement
-        implements Association
+        implements Association, TopLevelElementWithSourceCode
 {
     @Nonnull
     private final AbstractCriteria criteria;
@@ -30,7 +32,7 @@ public final class AssociationImpl
     private AssociationImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -79,7 +81,7 @@ public final class AssociationImpl
 
     public static final class AssociationBuilder
             extends PackageableElementBuilder<AssociationImpl>
-            implements TopLevelElementBuilder
+            implements TopLevelElementBuilderWithSourceCode
     {
         @Nonnull
         private final AbstractCriteriaBuilder<?> criteriaBuilder;
@@ -89,7 +91,7 @@ public final class AssociationImpl
         public AssociationBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
@@ -112,7 +114,7 @@ public final class AssociationImpl
             return new AssociationImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
-                    this.sourceCode.map(SourceCodeBuilder::build),
+                    this.sourceCode.build(),
                     this.nameContext,
                     this.name,
                     this.ordinal,

@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.DataType.DataTypeGetter;
-import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
@@ -17,7 +16,8 @@ import org.eclipse.collections.impl.factory.Lists;
 /**
  * Predefined native types.
  */
-public enum PrimitiveType implements Element, DataType, DataTypeGetter
+public enum PrimitiveType
+        implements Element, DataType, DataTypeGetter
 {
     INTEGER("Integer", true, Integer.class)
     {
@@ -309,12 +309,6 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
 
     @Override
     public Optional<Element> getMacroElement()
-    {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<SourceCode> getSourceCodeObject()
     {
         return Optional.empty();
     }

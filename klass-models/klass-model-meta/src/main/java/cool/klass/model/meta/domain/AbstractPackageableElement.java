@@ -4,14 +4,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.source.PackageableElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AbstractPackageableElement extends AbstractNamedElement implements PackageableElement
+public abstract class AbstractPackageableElement
+        extends AbstractNamedElement
+        implements PackageableElementWithSourceCode
 {
     @Nonnull
     private final String packageName;
@@ -19,7 +22,7 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
     protected AbstractPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
-            @Nonnull Optional<SourceCode> sourceCode,
+            @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
@@ -53,7 +56,7 @@ public abstract class AbstractPackageableElement extends AbstractNamedElement im
         protected PackageableElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
-                @Nonnull Optional<SourceCodeBuilder> sourceCode,
+                @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,

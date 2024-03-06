@@ -10,8 +10,9 @@ import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.error.RootCompilerError;
-import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.TopLevelElement;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
+import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode;
 import cool.klass.test.constants.KlassTestConstants;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -54,12 +55,14 @@ public class KlassTopLevelElementHtmlGeneratorTest
         {
             DomainModelCompilationResult domainModelCompilationResult =
                     (DomainModelCompilationResult) compilationResult;
-            DomainModel domainModel = domainModelCompilationResult.getDomainModel();
+            DomainModelWithSourceCode domainModel = domainModelCompilationResult.getDomainModel();
             assertThat(domainModel, notNullValue());
 
             for (TopLevelElement topLevelElement : domainModel.getTopLevelElements())
             {
-                String html = KlassTopLevelElementHtmlGenerator.writeHtml(topLevelElement);
+                TopLevelElementWithSourceCode topLevelElementWithSourceCode = (TopLevelElementWithSourceCode) topLevelElement;
+
+                String html = KlassTopLevelElementHtmlGenerator.writeHtml(topLevelElementWithSourceCode);
                 LOGGER.info(html);
             }
         }

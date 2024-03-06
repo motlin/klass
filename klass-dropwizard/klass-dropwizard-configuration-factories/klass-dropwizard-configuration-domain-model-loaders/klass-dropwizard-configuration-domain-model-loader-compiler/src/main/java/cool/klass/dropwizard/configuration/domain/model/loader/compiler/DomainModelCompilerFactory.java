@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.auto.service.AutoService;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -25,11 +25,11 @@ public class DomainModelCompilerFactory
     @NotEmpty
     private @Valid @NotNull List<String> sourcePackages = Arrays.asList("klass.model.meta.domain");
 
-    private DomainModel domainModel;
+    private DomainModelWithSourceCode domainModel;
 
     @Nonnull
     @Override
-    public DomainModel createDomainModel()
+    public DomainModelWithSourceCode createDomainModel()
     {
         if (this.domainModel != null)
         {
