@@ -19,6 +19,8 @@ public class FixedClockFactory implements ClockFactory
 {
     private @Valid @NotNull Instant instant = Instant.parse("2000-12-31T23:59:59Z");
 
+    // TODO: Allow configuring the time zone like io.dropwizard.logging.AbstractAppenderFactory.setTimeZone(java.lang.String)
+
     @Nonnull
     @Override
     public Clock createClock()
