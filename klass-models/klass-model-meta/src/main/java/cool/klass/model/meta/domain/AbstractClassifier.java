@@ -443,10 +443,10 @@ public abstract class AbstractClassifier
                     .toImmutable();
             this.element.setDeclaredAssociationEndSignatures(declaredAssociationEndSignatures);
 
-            ImmutableList<ReferenceProperty> referenceProperties = this.declaredReferencePropertyBuilders
+            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferencePropertyBuilders
                     .<ReferenceProperty>collect(ReferencePropertyBuilder::getElement)
                     .toImmutable();
-            this.element.setDeclaredReferenceProperties(referenceProperties);
+            this.element.setDeclaredReferenceProperties(declaredReferenceProperties);
 
             ImmutableList<Property> properties = this.propertyBuilders
                     .<Property>collect(PropertyBuilder::getElement)

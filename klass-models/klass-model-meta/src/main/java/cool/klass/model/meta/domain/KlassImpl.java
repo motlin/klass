@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
@@ -297,6 +298,33 @@ public final class KlassImpl
                     .newWithAll(declaredDataTypeProperties);
 
             ImmutableList<DataTypeProperty> result = allDataTypeProperties
+                    .toReversed()
+                    .distinctBy(NamedElement::getName)
+                    .toReversed();
+
+            return result;
+        }
+
+        @Override
+        protected ImmutableList<ReferenceProperty> getReferenceProperties()
+        {
+            ImmutableList<ReferenceProperty> declaredReferenceProperties = this.declaredReferencePropertyBuilders
+                    .collect(property -> property.getElement());
+
+            ImmutableList<ReferenceProperty> superClassProperties = this.superClassBuilder
+                    .map(KlassBuilder::getReferenceProperties)
+                    .orElseGet(Lists.immutable::empty);
+
+            ImmutableList<ReferenceProperty> interfaceProperties = this.interfaceBuilders
+                    .collect(ElementBuilder::getElement)
+                    .flatCollect(Classifier::getReferenceProperties)
+                    .toImmutable();
+
+            ImmutableList<ReferenceProperty> allReferenceProperties = interfaceProperties
+                    .newWithAll(superClassProperties)
+                    .newWithAll(declaredReferenceProperties);
+
+            ImmutableList<ReferenceProperty> result = allReferenceProperties
                     .toReversed()
                     .distinctBy(NamedElement::getName)
                     .toReversed();
