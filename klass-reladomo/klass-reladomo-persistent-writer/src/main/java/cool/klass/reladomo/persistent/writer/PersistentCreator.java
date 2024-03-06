@@ -117,8 +117,14 @@ public class PersistentCreator extends PersistentSynchronizer
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
+            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                    incomingChildInstance,
+                    associationEnd,
+                    persistentParentInstance);
+            String error = String.format("Could not find existing %s with key %s", associationEnd.getType(), keys);
             // TODO: Error message including full path here. Error message earlier, during validation.
-            throw new AssertionError("TODO: Error message when unable to find associated item by key.");
+            // It's possible to trigger this code path by deleting reference data from tests, like one of the Tags listed in test-data/create-blueprint.txt
+            throw new IllegalStateException(error);
         }
 
         this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);

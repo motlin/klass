@@ -8,6 +8,7 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class PersistentReplacer extends PersistentSynchronizer
 {
@@ -87,7 +88,14 @@ public class PersistentReplacer extends PersistentSynchronizer
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
-            throw new AssertionError();
+            ImmutableList<Object> keys = this.getKeysFromJsonNode(
+                    incomingChildInstance,
+                    associationEnd,
+                    persistentParentInstance);
+            String error = String.format("Could not find existing %s with key %s", associationEnd.getType(), keys);
+            // TODO: Error message including full path here. Error message earlier, during validation.
+            // It's possible to trigger this code path by deleting reference data from tests, like one of the Tags listed in test-data/create-blueprint.txt
+            throw new IllegalStateException(error);
         }
 
         if (childPersistentInstanceAssociated == childPersistentInstanceWithKey)

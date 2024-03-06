@@ -713,7 +713,7 @@ public abstract class PersistentSynchronizer
                 (ObjectNode) jsonNode);
     }
 
-    private ImmutableList<Object> getKeysFromJsonNode(
+    protected ImmutableList<Object> getKeysFromJsonNode(
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
