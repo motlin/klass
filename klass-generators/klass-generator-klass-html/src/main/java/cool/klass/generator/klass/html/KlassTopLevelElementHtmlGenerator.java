@@ -1,5 +1,7 @@
 package cool.klass.generator.klass.html;
 
+import java.util.Optional;
+
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
@@ -32,28 +34,38 @@ public final class KlassTopLevelElementHtmlGenerator
 
         String body = tokens
                 .reject(token -> token.getType() == Token.EOF)
-                .collectWith(KlassSourceCodeHtmlGenerator::getSourceCode, domainModel)
+                .collect(each -> KlassSourceCodeHtmlGenerator.getSourceCode(
+                        each,
+                        domainModel,
+                        Optional.empty(),
+                        Optional.empty()))
                 .makeString("");
 
         //language=HTML
-        return ""
-                + "<html>\n"
-                + "<head>\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-light.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-dark.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-syntax.css\">\n"
-                + "    <style>\n"
-                + "        :root {\n"
-                + "            font-family: \"Lucida Console\", Courier, monospace;\n"
-                + "            font-size: 16;\n"
-                + "        }\n"
-                + "    </style>\n"
-                + "</head>\n"
-                + "<body class=\"klass-theme-dark\">"
-                + "<pre>\n"
-                + body
-                + "</pre>\n"
-                + "</body>\n"
-                + "</html>\n";
+        String prefix = """
+                <html>
+                <head>
+                    <link rel="stylesheet" type="text/css" href="/static/css/light.css" media="(prefers-color-scheme: light)">
+                    <link rel="stylesheet" type="text/css" href="/static/css/dark.css" media="(prefers-color-scheme: dark)">
+                    <link rel="stylesheet" type="text/css" href="/static/css/klass-syntax.css">
+                    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
+                    <style>
+                        :root {
+                            font-family: "Lucida Console", Courier, monospace;
+                            font-size: 16;
+                        }
+                    </style>
+                </head>
+                <body class="klass">
+                <aside>
+                  <dark-mode-toggle class="slider" legend="Dark Mode" appearance="toggle"></dark-mode-toggle>
+                </aside>
+                <pre>
+                """;
+        return prefix
+               + body
+               + "</pre>\n"
+               + "</body>\n"
+               + "</html>\n";
     }
 }

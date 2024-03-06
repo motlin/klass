@@ -43,7 +43,9 @@ public class KlassSourceCodeHtmlGenerator
 
     public static String getSourceCode(
             Token token,
-            DomainModelWithSourceCode domainModel)
+            DomainModelWithSourceCode domainModel,
+            Optional<TopLevelElementWithSourceCode> topLevelElement,
+            Optional<String> memberName)
     {
         Optional<TokenCategory>         maybeTokenCategory        = domainModel.getTokenCategory(token);
         Optional<ElementWithSourceCode> maybeElementByReference   = domainModel.getElementByReference(token);
@@ -65,7 +67,7 @@ public class KlassSourceCodeHtmlGenerator
 
         if (maybeElementByReference.isEmpty() && maybeElementByDeclaration.isEmpty())
         {
-            return getSpan(escapedText, tokenCategory);
+            return getSpan(escapedText, tokenCategory, false);
         }
 
         if (maybeElementByDeclaration.isPresent() && maybeElementByReference.isEmpty())
@@ -81,7 +83,10 @@ public class KlassSourceCodeHtmlGenerator
                     linkForElement,
                     escapedName);
 
-            return getSpan(declarationAnchor, tokenCategory);
+            return getSpan(
+                    declarationAnchor,
+                    tokenCategory,
+                    matchesHighlight(maybeElementByDeclaration.get(), topLevelElement, memberName));
         }
 
         if (maybeElementByDeclaration.isEmpty() && maybeElementByReference.isPresent())
@@ -89,7 +94,7 @@ public class KlassSourceCodeHtmlGenerator
             String linkForElement  = KlassSourceCodeHtmlGenerator.getLinkForElement(maybeElementByReference.get());
             String referenceAnchor = "<a href=\"%s\">%s</a>".formatted(linkForElement, escapedText);
 
-            return getSpan(referenceAnchor, tokenCategory);
+            return getSpan(referenceAnchor, tokenCategory, false);
         }
 
         throw new AssertionError(token);
@@ -111,37 +116,65 @@ public class KlassSourceCodeHtmlGenerator
 
         String body = tokens
                 .reject(token -> token.getType() == Token.EOF)
-                .collect(token -> getSourceCode(token, domainModel))
+                .collect(token -> getSourceCode(token, domainModel, topLevelElement, memberName))
                 .makeString("");
 
         //language=HTML
-        return ""
-                + "<html>\n"
-                + "<head>\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-light.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-theme-dark.css\">\n"
-                + "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/static/css/klass-syntax.css\">\n"
-                + "    <style>\n"
-                + "        :root {\n"
-                + "            font-family: \"Lucida Console\", Courier, monospace;\n"
-                + "            font-size: 16;\n"
-                + "        }\n"
-                + "    </style>\n"
-                + "</head>\n"
-                + "<body class=\"klass-theme-light\">"
-                + "<pre>\n"
-                + body
-                + "</pre>\n"
-                + "</body>\n"
-                + "</html>\n";
+        String prefix = """
+                <html>
+                <head>
+                    <link rel="stylesheet" type="text/css" href="/static/css/light.css" media="(prefers-color-scheme: light)">
+                    <link rel="stylesheet" type="text/css" href="/static/css/dark.css" media="(prefers-color-scheme: dark)">
+                    <link rel="stylesheet" type="text/css" href="/static/css/slider.css">
+                    <link rel="stylesheet" type="text/css" href="/static/css/klass-syntax.css">
+                    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
+                </head>
+                <body class="klass">
+                <aside>
+                  <dark-mode-toggle class="slider" legend="Dark Mode" appearance="toggle"></dark-mode-toggle>
+                </aside>
+                <pre>
+                """;
+        return prefix
+               + body
+               + "</pre>\n"
+               + "</body>\n"
+               + "</html>\n";
+    }
+
+    private static boolean matchesHighlight(
+            ElementWithSourceCode element,
+            Optional<TopLevelElementWithSourceCode> topLevelElement,
+            Optional<String> memberName)
+    {
+        if (element instanceof TopLevelElement && memberName.isPresent())
+        {
+            return false;
+        }
+        if (memberName.isEmpty())
+        {
+            return Optional.of(element).equals(topLevelElement);
+        }
+        if (element instanceof Property property)
+        {
+            return Optional.of(property.getName()).equals(memberName)
+                   && Optional.of(property.getOwningClassifier()).equals(topLevelElement);
+        }
+        if (element instanceof EnumerationLiteral enumerationLiteral)
+        {
+            return Optional.of(enumerationLiteral.getName()).equals(memberName)
+                   && Optional.of(enumerationLiteral.getType()).equals(topLevelElement);
+        }
+        return false;
     }
 
     @Nonnull
-    private static String getSpan(String text, TokenCategory tokenCategory)
+    private static String getSpan(String text, TokenCategory tokenCategory, boolean matchesHighlight)
     {
-        String tokenCategoryName = tokenCategory.name();
-        String className = CONVERTER.convert(tokenCategoryName);
-        return "<span class='klass-" + className + "'>" + text + "</span>";
+        String tokenCategoryName  = tokenCategory.name();
+        String className          = CONVERTER.convert(tokenCategoryName);
+        String highlightClassName = matchesHighlight ? " highlight" : "";
+        return "<span class='klass-" + className + highlightClassName + "'>" + text + "</span>";
     }
 
     private void writeHtmlFile(SourceCode sourceCode, Path outputPath)

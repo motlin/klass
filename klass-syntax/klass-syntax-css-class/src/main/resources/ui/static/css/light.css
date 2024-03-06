@@ -1,10 +1,11 @@
-.klass-theme-light {
+:root {
+    color-scheme: light;
     --color-foreground: Black;
     --color-background: White;
 
     --klass-color-comment: #8C8C8C;
     --klass-color-keyword: #0033B3;
-    --klass-color-identifier: Black;
+    --klass-color-identifier: color var(--color-foreground);
     --klass-color-package-name: #AA0000;
     --klass-color-top-level-element-name: #AA0000;
     --klass-color-interface-name: #00AAAA;
