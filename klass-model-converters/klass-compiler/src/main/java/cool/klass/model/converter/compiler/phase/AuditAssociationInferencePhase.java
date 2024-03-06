@@ -80,11 +80,15 @@ public class AuditAssociationInferencePhase
 
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro(this.getSourceCode(userClass, "createdBy", AntlrDataTypeProperty::isCreatedBy));
+            this.runCompilerMacro(this.getSourceCode(userClass, "createdBy", AntlrDataTypeProperty::isCreatedBy, true));
         }
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            this.runCompilerMacro(this.getSourceCode(userClass, "lastUpdatedBy", AntlrDataTypeProperty::isLastUpdatedBy));
+            this.runCompilerMacro(this.getSourceCode(
+                    userClass,
+                    "lastUpdatedBy",
+                    AntlrDataTypeProperty::isLastUpdatedBy,
+                    false));
         }
     }
 
@@ -110,7 +114,8 @@ public class AuditAssociationInferencePhase
     private String getSourceCode(
             AntlrClass userClass,
             String modifier,
-            Predicate<AntlrDataTypeProperty> predicate)
+            Predicate<AntlrDataTypeProperty> predicate,
+            boolean isFinal)
     {
         String suffix = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, modifier);
 
@@ -123,6 +128,8 @@ public class AuditAssociationInferencePhase
                 .detect(AntlrDataTypeProperty::isUserId)
                 .getName();
 
+        String finalModifier = isFinal ? " final" : "";
+
         AntlrDataTypeProperty<?> auditProperty = classState.getDataTypeProperties().detect(predicate);
 
         //language=Klass
@@ -132,7 +139,7 @@ public class AuditAssociationInferencePhase
                 + "association " + className + "Has" + suffix + "\n"
                 + "{\n"
                 + "    " + associationEndName + suffix + ": " + className + "[0..*];\n"
-                + "    " + modifier + ": " + userClass.getName() + "[1..1] " + modifier + ";\n"
+                + "    " + modifier + ": " + userClass.getName() + "[1..1] " + modifier + finalModifier + ";\n"
                 + "\n"
                 + "    relationship this." + auditProperty.getName() + " == " + userClass.getName() + "." + userIdPropertyName
                 + "\n"
