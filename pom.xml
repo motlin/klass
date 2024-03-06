@@ -31,6 +31,7 @@
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
         <module>klass-logging-context</module>
+        <module>klass-utility</module>
     </modules>
 
     <properties>
