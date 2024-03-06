@@ -2,8 +2,6 @@ package cool.klass.dropwizard.bundle.reladomo;
 
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;

@@ -2,13 +2,12 @@ package cool.klass.dropwizard.bundle.cors;
 
 import java.util.EnumSet;
 
-import javax.annotation.Nonnull;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
-import io.dropwizard.Configuration;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
@@ -16,7 +15,12 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 public class CorsBundle implements PrioritizedBundle
 {
     @Override
-    public void run(Configuration configuration, @Nonnull Environment environment)
+    public void initialize(Bootstrap<?> bootstrap)
+    {
+    }
+
+    @Override
+    public void run(Environment environment)
     {
         // https://stackoverflow.com/a/25801822/23572
 
