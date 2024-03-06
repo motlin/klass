@@ -1,0 +1,16 @@
+package example
+
+class StringId
+{
+    stringId: String id;
+}
+
+class IntegerId
+{
+    integerId: Integer id;
+}
+
+class LongId
+{
+    longId: Long id;
+}

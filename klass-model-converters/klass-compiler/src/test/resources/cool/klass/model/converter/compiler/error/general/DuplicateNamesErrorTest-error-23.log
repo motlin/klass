@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_PAR[m [33m════════════════════════════════════════[m
+[31mDuplicate parameter: 'duplicate'.[m
+
+Error at location. (DuplicateNamesErrorTest.klass:46)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m44║ [40;35mservice [40;97mDuplicateTopLevelElement
+[40;37m45║ [40;36m{
+[40;37m46║     [40;36m/[40;97mduplicate[40;36m/[40;97mduplicate[40;36m/[40;36m{[40;97mduplicate[40;36m: [40;95mString[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m}[40;36m/[40;36m{[40;97mduplicate[40;36m: [40;95mString[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m}
+[40;37m  ║                           [40;91m^^^^^^^^^
+[40;37m56║ [40;36m}
+[m
+[36mLocation:  [mDuplicateNamesErrorTest.klass:46[m
+[36mFile:      [mDuplicateNamesErrorTest.klass[m
+[36mLine:      [m46[m
+[36mCharacter: [m27[m

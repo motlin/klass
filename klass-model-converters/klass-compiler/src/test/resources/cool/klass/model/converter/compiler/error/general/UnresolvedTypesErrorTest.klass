@@ -1,0 +1,62 @@
+package dummy
+
+interface InterfaceWithUnresolved implements UnresolvedInterface1, UnresolvedInterface2
+{
+    unresolvedEnumerationProperty: UnresolvedEnumeration key;
+}
+
+class ClassWithUnresolved extends UnresolvedClass implements UnresolvedInterface1, UnresolvedInterface2
+{
+    unresolvedEnumerationProperty: UnresolvedEnumeration key;
+
+    unresolvedParameterizedProperty(): UnresolvedClass[1..1]
+    {
+        this.unresolvedEnumerationProperty == UnresolvedEnumeration.unresolvedEnumerationLiteral
+    }
+}
+
+association AssociationWithUnresolved
+{
+    parent: UnresolvedClass[0..1];
+    children: UnresolvedClass[0..*];
+
+    relationship this.unresolvedEnumerationProperty == UnresolvedClass.unresolvedEnumerationProperty
+}
+
+projection EmptyProjection on ClassWithUnresolved
+{
+    unresolvedProjectionMember: "Header",
+}
+
+projection ProjectionWithUnresolvedClass on UnresolvedClass
+{
+}
+
+service ClassWithUnresolved
+{
+    /unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.unresolvedEnumerationProperty == unresolvedParameter;
+            projection  : UnresolvedProjection;
+        }
+    /fake1/
+        GET
+        {
+            multiplicity: one;
+            criteria    : all;
+            projection  : ProjectionWithUnresolvedClass;
+        }
+}
+
+service UnresolvedClass
+{
+    /fake/
+        GET
+        {
+            multiplicity: one;
+            criteria    : all;
+            projection  : EmptyProjection;
+        }
+}

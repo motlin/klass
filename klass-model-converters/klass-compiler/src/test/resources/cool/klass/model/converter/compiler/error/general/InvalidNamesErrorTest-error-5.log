@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
+[31mName must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badEnumeration'.[m
+
+Error at location. (InvalidNamesErrorTest.klass:3)
+[40m[40;37m1║ [40;35mpackage [40;97mBADPACKAGE
+[40;37m3║ [40;35menumeration [40;97mbadEnumeration
+[40;37m ║             [40;91m^^^^^^^^^^^^^^
+[m
+[36mLocation:  [mInvalidNamesErrorTest.klass:3[m
+[36mFile:      [mInvalidNamesErrorTest.klass[m
+[36mLine:      [m3[m
+[36mCharacter: [m13[m

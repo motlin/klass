@@ -1,0 +1,25 @@
+package com.errors
+
+user User
+{
+    userId: String key userId;
+}
+
+class ExampleClass systemTemporal versioned
+{
+    id: Long key;
+}
+
+class SecondClassVersion systemTemporal
+{
+    id: Long key;
+    number: Integer version;
+}
+
+association ExampleClassHasVersion
+{
+    exampleClass: ExampleClass[1..1];
+    version: SecondClassVersion[1..1] owned version;
+
+    relationship this.id == SecondClassVersion.id
+}

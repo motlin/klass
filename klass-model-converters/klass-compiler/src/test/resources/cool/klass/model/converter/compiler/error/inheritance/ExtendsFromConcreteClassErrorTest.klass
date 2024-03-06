@@ -1,0 +1,11 @@
+package example
+
+class ConcreteSuperclass
+{
+    key: Long key;
+}
+
+class ConcreteSubclass extends ConcreteSuperclass
+{
+    key: Long key;
+}

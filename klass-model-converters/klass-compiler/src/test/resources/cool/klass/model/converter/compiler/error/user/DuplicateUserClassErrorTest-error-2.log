@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m
+[31mDuplicate userId property: 'User1.userId2'.[m
+
+Error at location. (DuplicateUserClassErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
+[40;37m3║ [40;95muser [40;97mUser1
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97muserId2[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;
+[40;37m ║     [40;91m^^^^^^^
+[40;37m7║ [40;36m}
+[m
+[36mLocation:  [mDuplicateUserClassErrorTest.klass:6[m
+[36mFile:      [mDuplicateUserClassErrorTest.klass[m
+[36mLine:      [m6[m
+[36mCharacter: [m5[m

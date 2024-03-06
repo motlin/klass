@@ -1,0 +1,14 @@
+package example
+
+class TransientSuperClass
+    abstract
+    transient
+{
+    key: Long key id;
+}
+
+class SubClass
+    extends TransientSuperClass
+{
+    string: String;
+}

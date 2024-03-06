@@ -1,0 +1,14 @@
+package dummy
+
+association DummyAssociation
+{
+    parent: Dummy[0..1];
+    children: Dummy[0..*] owned owned;
+
+    relationship this.id == Dummy.id
+}
+
+class Dummy
+{
+    id: Long id key;
+}

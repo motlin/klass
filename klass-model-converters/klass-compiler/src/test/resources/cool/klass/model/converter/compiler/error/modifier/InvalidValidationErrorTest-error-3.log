@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_VLD_TYP[m [33m════════════════════════════════════════[m
+[31mInvalid validation 'max(10)' for type String.[m
+
+Error at location. (InvalidValidationErrorTest.klass:7)
+[40m[40;37m1║ [40;35mpackage [40;97mdummy
+[40;37m3║ [40;35mclass [40;97mDummy
+[40;37m4║ [40;36m{
+[40;37m7║     [40;97mstring[40;36m: [40;95mString [40;33mmin[40;36m([40;94m1[40;36m) [40;33mmax[40;36m([40;94m10[40;36m)[40;36m;
+[40;37m ║                           [40;91m^^^
+[40;37m8║ [40;36m}
+[m
+[36mLocation:  [mInvalidValidationErrorTest.klass:7[m
+[36mFile:      [mInvalidValidationErrorTest.klass[m
+[36mLine:      [m7[m
+[36mCharacter: [m27[m

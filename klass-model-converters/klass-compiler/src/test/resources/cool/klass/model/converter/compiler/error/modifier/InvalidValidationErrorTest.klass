@@ -1,0 +1,8 @@
+package dummy
+
+class Dummy
+{
+    id: Long id key;
+    number: Long minLength(1) maxLength(10);
+    string: String min(1) max(10);
+}

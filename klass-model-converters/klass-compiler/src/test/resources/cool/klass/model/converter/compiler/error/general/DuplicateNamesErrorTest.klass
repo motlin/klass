@@ -1,0 +1,56 @@
+package dummy
+
+enumeration DuplicateTopLevelElement
+{
+    DUPLICATE_ENUM_LITERAL("Duplicate pretty name"),
+    DUPLICATE_ENUM_LITERAL("Duplicate pretty name"),
+}
+
+interface DuplicateTopLevelElement
+{
+    duplicateMember: String key;
+    duplicateMember: DuplicateTopLevelElement;
+}
+
+class DuplicateTopLevelElement
+{
+    duplicateMember: String key;
+    duplicateMember: DuplicateTopLevelElement;
+
+    duplicateMember(duplicateParameter: String[1..1], duplicateParameter: String[1..1]): DuplicateTopLevelElement[1..1]
+    {
+        this.duplicateMember == duplicateParameter
+    }
+}
+
+association DuplicateTopLevelElement
+{
+    duplicateMember: DuplicateTopLevelElement[1..1];
+    duplicateMember: DuplicateTopLevelElement[0..1];
+}
+
+association DuplicateAssociationEnd
+{
+    duplicateAssociationEnd: DuplicateTopLevelElement[1..1];
+    duplicateAssociationEnd: DuplicateTopLevelElement[0..1];
+}
+
+projection DuplicateTopLevelElement on DuplicateTopLevelElement
+{
+    duplicateMember: "Duplicate Header",
+    duplicateMember: "Duplicate Header",
+}
+
+service DuplicateTopLevelElement
+{
+    /duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}
+        GET
+        {
+            projection  : DuplicateTopLevelElement;
+        }
+    /duplicate/duplicate/{different: String[1..1]}/{duplicate: String[1..1]}
+        GET
+        {
+            projection  : DuplicateTopLevelElement;
+        }
+}

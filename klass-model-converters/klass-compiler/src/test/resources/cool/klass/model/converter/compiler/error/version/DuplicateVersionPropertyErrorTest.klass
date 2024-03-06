@@ -1,0 +1,9 @@
+package com.errors
+
+class ExampleVersion systemTemporal
+{
+    id: Long key;
+    // TODO: reject duplicate version properties
+    number1: Integer version;
+    number2: Integer version;
+}

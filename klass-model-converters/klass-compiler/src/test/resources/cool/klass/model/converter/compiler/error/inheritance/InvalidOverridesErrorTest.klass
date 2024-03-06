@@ -1,0 +1,14 @@
+package example
+
+class AbstractSuperClass
+    abstract
+{
+    key: Long key;
+}
+
+class ConcreteSubClass
+    extends AbstractSuperClass
+{
+    // TODO: Reject bad overrides with a compiler error
+    key: String key;
+}

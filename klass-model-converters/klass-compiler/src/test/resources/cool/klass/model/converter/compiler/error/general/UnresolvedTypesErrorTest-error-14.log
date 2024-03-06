@@ -1,0 +1,19 @@
+[33m════════════════════════════════════════[m [35mERR_SER_PRJ[m [33m════════════════════════════════════════[m
+[31mCannot find projection 'UnresolvedProjection'[m
+
+Error at location. (UnresolvedTypesErrorTest.klass:42)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m35║ [40;35mservice [40;97mClassWithUnresolved
+[40;37m36║ [40;36m{
+[40;37m37║     [40;36m/[40;97munresolved[40;36m/[40;36m{[40;97munresolvedParameterDeclaration[40;36m: [40;97mUnresolvedEnumeration[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m}
+[40;37m38║         [40;92mGET
+[40;37m39║         [40;36m{
+[40;37m42║             [40;35mprojection  [40;36m: [40;97mUnresolvedProjection[40;36m;
+[40;37m  ║                           [40;91m^^^^^^^^^^^^^^^^^^^^
+[40;37m43║         [40;36m}
+[40;37m51║ [40;36m}
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:42[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m42[m
+[36mCharacter: [m27[m

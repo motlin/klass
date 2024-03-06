@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_IMP_SLF[m [33m════════════════════════════════════════[m
+[31mCircular inheritance 'InterfaceImplementsSelf'.[m
+
+Error at location. (CircularInheritanceErrorTest.klass:4)
+[40m[40;37m1║ [40;35mpackage [40;97mexample
+[40;37m4║     [40;95mimplements [40;97mInterfaceImplementsSelf
+[40;37m ║                [40;91m^^^^^^^^^^^^^^^^^^^^^^^
+[m
+[36mLocation:  [mCircularInheritanceErrorTest.klass:4[m
+[36mFile:      [mCircularInheritanceErrorTest.klass[m
+[36mLine:      [m4[m
+[36mCharacter: [m16[m

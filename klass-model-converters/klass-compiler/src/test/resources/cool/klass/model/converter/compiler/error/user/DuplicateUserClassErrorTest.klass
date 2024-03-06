@@ -1,0 +1,12 @@
+package com.errors
+
+user User1
+{
+    userId1: String key userId;
+    userId2: String key userId;
+}
+
+user User2
+{
+    userId: String key userId;
+}

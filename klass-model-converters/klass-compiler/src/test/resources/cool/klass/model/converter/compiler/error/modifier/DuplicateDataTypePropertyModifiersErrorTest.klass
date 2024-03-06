@@ -1,0 +1,6 @@
+package dummy
+
+class Dummy
+{
+    id: Long id key key;
+}

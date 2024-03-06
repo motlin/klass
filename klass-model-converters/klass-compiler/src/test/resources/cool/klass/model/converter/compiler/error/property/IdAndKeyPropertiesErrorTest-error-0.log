@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_KEY_IDS[m [33m════════════════════════════════════════[m
+[31mClass 'ExampleClass' may have id properties or non-id key properties, but not both. Found id properties: id: Long id key. Found non-id key properties: key: Long key.[m
+
+Error at location. (IdAndKeyPropertiesErrorTest.klass:3)
+[40m[40;37m1║ [40;35mpackage [40;97mexample
+[40;37m3║ [40;35mclass [40;97mExampleClass
+[40;37m ║       [40;91m^^^^^^^^^^^^
+[m
+[36mLocation:  [mIdAndKeyPropertiesErrorTest.klass:3[m
+[36mFile:      [mIdAndKeyPropertiesErrorTest.klass[m
+[36mLine:      [m3[m
+[36mCharacter: [m7[m

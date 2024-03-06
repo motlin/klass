@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_VER_OWN[m [33m════════════════════════════════════════[m
+[31mExpected version association end 'ExampleClass.target' to be owned.[m
+
+Error at location. (VersionOwnsVersionedErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mexample
+[40;37m3║ [40;35massociation [40;97mExampleAssociation
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97mtarget[40;36m: [40;97mExampleVersion[40;36m[[40;94m1[40;36m..[40;94m1[40;36m] [40;33mversion[40;36m;
+[40;37m ║     [40;91m^^^^^^
+[40;37m9║ [40;36m}
+[m
+[36mLocation:  [mVersionOwnsVersionedErrorTest.klass:6[m
+[36mFile:      [mVersionOwnsVersionedErrorTest.klass[m
+[36mLine:      [m6[m
+[36mCharacter: [m5[m

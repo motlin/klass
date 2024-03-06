@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_SRG_TYP[m [33m════════════════════════════════════════[m
+[31mCannot find class 'UnresolvedClass'[m
+
+Error at location. (UnresolvedTypesErrorTest.klass:53)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m53║ [40;35mservice [40;97mUnresolvedClass
+[40;37m  ║         [40;91m^^^^^^^^^^^^^^^
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:53[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m53[m
+[36mCharacter: [m9[m

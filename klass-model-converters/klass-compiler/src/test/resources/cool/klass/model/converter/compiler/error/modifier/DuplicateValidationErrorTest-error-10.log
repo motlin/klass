@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_VAL[m [33m════════════════════════════════════════[m
+[31mDuplicate validation 'maximumLength(10)'.[m
+
+Error at location. (DuplicateValidationErrorTest.klass:13)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m 8║ [40;35mclass [40;97mDummyClass
+[40;37m 9║ [40;36m{
+[40;37m13║     [40;35menumeration[40;36m: [40;97mDummyEnumeration [40;33mminimumLength[40;36m([40;94m1[40;36m) [40;33mminLength[40;36m([40;94m1[40;36m) [40;33mmaximumLength[40;36m([40;94m10[40;36m) [40;33mmaxLength[40;36m([40;94m10[40;36m)[40;36m;
+[40;37m  ║                                                                 [40;91m^^^^^^^^^^^^^
+[40;37m14║ [40;36m}
+[m
+[36mLocation:  [mDuplicateValidationErrorTest.klass:13[m
+[36mFile:      [mDuplicateValidationErrorTest.klass[m
+[36mLine:      [m13[m
+[36mCharacter: [m65[m

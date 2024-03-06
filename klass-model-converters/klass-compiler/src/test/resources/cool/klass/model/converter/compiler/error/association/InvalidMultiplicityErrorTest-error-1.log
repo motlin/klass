@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_ASO_MUL[m [33m════════════════════════════════════════[m
+[31mAssociation end 'target: DummyClass[4..5]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].[m
+
+Error at location. (InvalidMultiplicityErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mdummy
+[40;37m3║ [40;35massociation [40;97mDummyAssociation
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97mtarget[40;36m: [40;97mDummyClass[40;36m[[40;94m4[40;36m..[40;94m5[40;36m][40;36m;
+[40;37m ║                       [40;91m^^^^^^
+[40;37m9║ [40;36m}
+[m
+[36mLocation:  [mInvalidMultiplicityErrorTest.klass:6[m
+[36mFile:      [mInvalidMultiplicityErrorTest.klass[m
+[36mLine:      [m6[m
+[36mCharacter: [m23[m

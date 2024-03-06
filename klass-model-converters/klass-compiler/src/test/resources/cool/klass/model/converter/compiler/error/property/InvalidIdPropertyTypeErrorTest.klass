@@ -1,0 +1,61 @@
+package example
+
+class StringId
+{
+    stringId: String id key;
+}
+
+class IntegerId
+{
+    integerId: Integer id key;
+}
+
+class LongId
+{
+    longId          : Long id key;
+}
+
+class DoubleId
+{
+    doubleId        : Double id key;
+}
+
+class FloatId
+{
+    floatId         : Float id key;
+}
+
+class BooleanId
+{
+    booleanId       : Boolean id key;
+}
+
+class InstantId
+{
+    instantId       : Instant id key;
+}
+
+class LocalDateId
+{
+    localDateId: LocalDate id key;
+}
+
+class TemporalInstantId
+{
+    temporalInstantId: TemporalInstant id key;
+}
+
+class TemporalRangeId
+{
+    temporalRangeId: TemporalRange id key;
+}
+
+enumeration ExampleEnumeration
+{
+    DUMMY,
+}
+
+class EnumerationId
+{
+    enumerationId: ExampleEnumeration id key;
+}

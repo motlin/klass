@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_MOD[m [33m════════════════════════════════════════[m
+[31mDuplicate modifier 'owned'.[m
+
+Error at location. (DuplicateAssociationModifierErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mdummy
+[40;37m3║ [40;35massociation [40;97mDummyAssociation
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97mchildren[40;36m: [40;97mDummy[40;36m[[40;94m0[40;36m..[40;94m*[40;36m] [40;93mowned [40;93mowned[40;36m;
+[40;37m ║                           [40;91m^^^^^
+[40;37m9║ [40;36m}
+[m
+[36mLocation:  [mDuplicateAssociationModifierErrorTest.klass:6[m
+[36mFile:      [mDuplicateAssociationModifierErrorTest.klass[m
+[36mLine:      [m6[m
+[36mCharacter: [m27[m

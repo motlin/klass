@@ -1,0 +1,19 @@
+[33m════════════════════════════════════════[m [35mERR_SRV_PRJ[m [33m════════════════════════════════════════[m
+[31mExpected projection referencing 'Class2' but projection 'ExampleProjection' references 'Class1'.[m
+
+Error at location. (ServiceProjectionTypeMismatchErrorTest.klass:23)
+[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
+[40;37m17║ [40;35mservice [40;97mClass2
+[40;37m18║ [40;36m{
+[40;37m19║     [40;36m/[40;97mexample
+[40;37m20║         [40;92mGET
+[40;37m21║         [40;36m{
+[40;37m23║             [40;35mprojection  [40;36m: [40;97mExampleProjection[40;36m;
+[40;37m  ║                           [40;91m^^^^^^^^^^^^^^^^^
+[40;37m24║         [40;36m}
+[40;37m25║ [40;36m}
+[m
+[36mLocation:  [mServiceProjectionTypeMismatchErrorTest.klass:23[m
+[36mFile:      [mServiceProjectionTypeMismatchErrorTest.klass[m
+[36mLine:      [m23[m
+[36mCharacter: [m27[m

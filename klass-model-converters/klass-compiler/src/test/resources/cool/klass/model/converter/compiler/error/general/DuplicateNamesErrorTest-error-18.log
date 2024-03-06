@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_PRP[m [33m════════════════════════════════════════[m
+[31mDuplicate member: 'DuplicateTopLevelElement.duplicateAssociationEnd'.[m
+
+Error at location. (DuplicateNamesErrorTest.klass:35)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m32║ [40;35massociation [40;97mDuplicateAssociationEnd
+[40;37m33║ [40;36m{
+[40;37m35║     [40;97mduplicateAssociationEnd[40;36m: [40;97mDuplicateTopLevelElement[40;36m[[40;94m0[40;36m..[40;94m1[40;36m][40;36m;
+[40;37m  ║     [40;91m^^^^^^^^^^^^^^^^^^^^^^^
+[40;37m36║ [40;36m}
+[m
+[36mLocation:  [mDuplicateNamesErrorTest.klass:35[m
+[36mFile:      [mDuplicateNamesErrorTest.klass[m
+[36mLine:      [m35[m
+[36mCharacter: [m5[m

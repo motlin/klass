@@ -1,0 +1,19 @@
+[33m════════════════════════════════════════[m [35mERR_THS_MEM[m [33m════════════════════════════════════════[m
+[31mCannot find member 'DummyClass.invalidMember'.[m
+
+Error at location. (ServiceErrorTest.klass:53)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m24║ [40;35mservice [40;97mDummyClass
+[40;37m25║ [40;36m{
+[40;37m47║     [40;36m/[40;97mdummies
+[40;37m48║         [40;92mGET
+[40;37m49║         [40;36m{
+[40;37m53║             [40;95morderBy[40;36m: [40;95mthis[40;36m.[40;97minvalidMember [40;91mdescending[40;36m;
+[40;37m  ║                           [40;91m^^^^^^^^^^^^^
+[40;37m54║         [40;36m}
+[40;37m55║ [40;36m}
+[m
+[36mLocation:  [mServiceErrorTest.klass:53[m
+[36mFile:      [mServiceErrorTest.klass[m
+[36mLine:      [m53[m
+[36mCharacter: [m27[m

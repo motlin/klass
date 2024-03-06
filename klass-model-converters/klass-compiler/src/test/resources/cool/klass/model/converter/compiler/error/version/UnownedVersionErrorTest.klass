@@ -1,0 +1,19 @@
+package example
+
+association ExampleAssociation
+{
+    source: ExampleClass[1..1];
+    target: ExampleVersion[0..1] version;
+
+    relationship this.id == ExampleVersion.id
+}
+
+class ExampleClass
+{
+    id: Long key;
+}
+
+class ExampleVersion
+{
+    id: Long key;
+}

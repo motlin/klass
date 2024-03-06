@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_ONE_END[m [33m════════════════════════════════════════[m
+[31mReference type properties (single association ends in classifiers) are not yet supported but found 'DummyClass.associationEndSignature'.[m
+
+Error at location. (UnsupportedAssociationEndSignatureErrorTest.klass:6)
+[40m[40;37m1║ [40;35mpackage [40;97mdummy
+[40;37m3║ [40;35mclass [40;97mDummyClass
+[40;37m4║ [40;36m{
+[40;37m6║     [40;97massociationEndSignature[40;36m: [40;97mDummyClass[40;36m[[40;94m0[40;36m..[40;94m1[40;36m][40;36m;
+[40;37m ║     [40;91m^^^^^^^^^^^^^^^^^^^^^^^
+[40;37m7║ [40;36m}
+[m
+[36mLocation:  [mUnsupportedAssociationEndSignatureErrorTest.klass:6[m
+[36mFile:      [mUnsupportedAssociationEndSignatureErrorTest.klass[m
+[36mLine:      [m6[m
+[36mCharacter: [m5[m

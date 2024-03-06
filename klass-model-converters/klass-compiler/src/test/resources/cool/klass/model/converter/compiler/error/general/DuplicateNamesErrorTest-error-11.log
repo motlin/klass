@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_DUP_PRP[m [33m════════════════════════════════════════[m
+[31mDuplicate member: 'DuplicateTopLevelElement.duplicateMember'.[m
+
+Error at location. (DuplicateNamesErrorTest.klass:20)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m15║ [40;35mclass [40;97mDuplicateTopLevelElement
+[40;37m16║ [40;36m{
+[40;37m20║     [40;97mduplicateMember[40;36m([40;97mduplicateParameter[40;36m: [40;95mString[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m, [40;97mduplicateParameter[40;36m: [40;95mString[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m)[40;36m: [40;97mDuplicateTopLevelElement[40;36m[[40;94m1[40;36m..[40;94m1[40;36m]
+[40;37m  ║     [40;91m^^^^^^^^^^^^^^^
+[40;37m24║ [40;36m}
+[m
+[36mLocation:  [mDuplicateNamesErrorTest.klass:20[m
+[36mFile:      [mDuplicateNamesErrorTest.klass[m
+[36mLine:      [m20[m
+[36mCharacter: [m5[m

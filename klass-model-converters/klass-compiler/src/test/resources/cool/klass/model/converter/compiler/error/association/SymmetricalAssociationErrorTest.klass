@@ -1,0 +1,14 @@
+package dummy
+
+association DummyAssociation
+{
+    source: DummyClass[1..1];
+    target: DummyClass[1..1];
+    
+    relationship this.id == DummyClass.id
+}
+
+class DummyClass
+{
+    id: Long key;
+}

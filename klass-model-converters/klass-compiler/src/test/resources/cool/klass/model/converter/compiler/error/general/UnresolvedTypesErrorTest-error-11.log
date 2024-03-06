@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
+[31mCannot find class 'UnresolvedClass'[m
+
+Error at location. (UnresolvedTypesErrorTest.klass:31)
+[40m[40;37m 1║ [40;35mpackage [40;97mdummy
+[40;37m31║ [40;35mprojection [40;97mProjectionWithUnresolvedClass [40;95mon [40;97mUnresolvedClass
+[40;37m  ║                                             [40;91m^^^^^^^^^^^^^^^
+[m
+[36mLocation:  [mUnresolvedTypesErrorTest.klass:31[m
+[36mFile:      [mUnresolvedTypesErrorTest.klass[m
+[36mLine:      [m31[m
+[36mCharacter: [m45[m

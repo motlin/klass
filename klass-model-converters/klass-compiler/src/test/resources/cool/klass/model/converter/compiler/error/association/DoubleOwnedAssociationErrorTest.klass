@@ -1,0 +1,14 @@
+package dummy
+
+association DoubleOwnedAssociation
+{
+    source: DoubleOwnedClass[1..1] owned;
+    target: DoubleOwnedClass[1..1] owned;
+
+    relationship this.id == DoubleOwnedClass.id
+}
+
+class DoubleOwnedClass
+{
+    id: Long key;
+}

@@ -1,0 +1,15 @@
+[33m════════════════════════════════════════[m [35mERR_ADT_MOD[m [33m════════════════════════════════════════[m
+[31mModifier 'userId' requires one 'user' class in the domain model.[m
+
+Error at location. (UserIdWithoutUserClassErrorTest.klass:5)
+[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
+[40;37m3║ [40;35mclass [40;97mUser
+[40;37m4║ [40;36m{
+[40;37m5║     [40;33muserId[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;
+[40;37m ║                        [40;91m^^^^^^
+[40;37m6║ [40;36m}
+[m
+[36mLocation:  [mUserIdWithoutUserClassErrorTest.klass:5[m
+[36mFile:      [mUserIdWithoutUserClassErrorTest.klass[m
+[36mLine:      [m5[m
+[36mCharacter: [m24[m

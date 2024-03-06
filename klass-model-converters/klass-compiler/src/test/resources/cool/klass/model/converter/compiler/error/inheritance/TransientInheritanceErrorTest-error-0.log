@@ -1,0 +1,12 @@
+[33m════════════════════════════════════════[m [35mERR_TNS_IDP[m [33m════════════════════════════════════════[m
+[31mTransient class 'TransientSuperClass' may not have id properties.[m
+
+Error at location. (TransientInheritanceErrorTest.klass:3)
+[40m[40;37m1║ [40;35mpackage [40;97mexample
+[40;37m3║ [40;35mclass [40;97mTransientSuperClass
+[40;37m ║       [40;91m^^^^^^^^^^^^^^^^^^^
+[m
+[36mLocation:  [mTransientInheritanceErrorTest.klass:3[m
+[36mFile:      [mTransientInheritanceErrorTest.klass[m
+[36mLine:      [m3[m
+[36mCharacter: [m7[m
