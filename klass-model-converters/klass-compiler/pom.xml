@@ -60,6 +60,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-test-constants</artifactId>
             <version>${project.version}</version>
@@ -104,12 +110,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-junit-rule-match-file</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
