@@ -8,10 +8,12 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.block.predicate.Predicate;
 
 // TODO: Only put audit properties onto version types
 public class ClassAuditPropertyInferencePhase
@@ -35,71 +37,94 @@ public class ClassAuditPropertyInferencePhase
         super.enterClassifierModifier(ctx);
 
         String modifierText = ctx.getText();
-        // TODO: Inference happens for batches of three properties. It could check whether it needs to add each of the three individually
-        if ("audited".equals(modifierText) && !this.hasAuditProperty())
+        if ("audited".equals(modifierText))
         {
             this.addAuditProperties();
         }
     }
 
-    private boolean hasAuditProperty()
+    private boolean hasAuditProperty(Predicate<AntlrDataTypeProperty> predicate)
     {
         return this.compilerState
                 .getCompilerWalkState()
                 .getClassState()
                 .getDataTypeProperties()
                 .asLazy()
-                .anySatisfy(AntlrDataTypeProperty::isAudit);
+                .anySatisfy(predicate);
+    }
+
+    private boolean hasAuditReferenceProperty(Predicate<AntlrParameterizedProperty> predicate)
+    {
+        return this.compilerState
+                .getCompilerWalkState()
+                .getClassState()
+                .getProperties()
+                .selectInstancesOf(AntlrParameterizedProperty.class)
+                .asLazy()
+                .anySatisfy(predicate);
     }
 
     private void addAuditProperties()
     {
-        // TODO: Make createdById and lastUpdatedById private once one-way reference properties are supported.
-        this.runCompilerMacro("    createdById    : String createdBy;\n");
-        this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
-        this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy;\n");
-
-        Optional<AntlrClass> userClassOptional = this.compilerState.getDomainModelState().getUserClassState();
-        if (!userClassOptional.isPresent())
+        Optional<AntlrClass> maybeUserClass = this.compilerState.getDomainModelState().getUserClassState();
+        if (maybeUserClass.isEmpty())
         {
             return;
         }
-
-        AntlrClass userClass = userClassOptional.get();
-
-        ImmutableList<AntlrDataTypeProperty<?>> userIdProperties = userClass
-                .getDataTypeProperties()
-                .select(AntlrDataTypeProperty::isUserId);
-        if (userIdProperties.size() != 1)
+        AntlrClass userClass        = maybeUserClass.get();
+        int        userIdProperties = userClass.getDataTypeProperties().count(AntlrDataTypeProperty::isUserId);
+        if (userIdProperties != 1)
         {
-            throw new AssertionError("TODO");
+            return;
         }
+        AntlrDataTypeProperty<?> userIdProperty = userClass
+                .getDataTypeProperties()
+                .detect(AntlrDataTypeProperty::isUserId);
 
-        AntlrDataTypeProperty<?> userIdProperty = userIdProperties.getOnly();
-
+        // TODO: Add validations that audit properties have the right types (String, Instant)
+        // TODO: Add validation that any userId is joined to another property that's also userId
         // TODO: Validate that the return type is the 'user' class for audit parameterized properties
 
-        String createdBySourceCodeText = ""
-                + "    createdBy(): " + userClass.getName() + "[1..1] createdBy\n"
-                + "    {\n"
-                + "        this.createdById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
-                + "    }\n";
+        if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
+        {
+            this.runCompilerMacro("    createdById    : String createdBy userId private;\n");
+        }
+        if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
+        {
+            this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
+        }
+        if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
+        {
+            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId private;\n");
+        }
 
-        String lastUpdatedBySourceCodeText = ""
-                + "    lastUpdatedBy(): " + userClass.getName() + "[1..1] lastUpdatedBy\n"
-                + "    {\n"
-                + "        this.lastUpdatedById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
-                + "    }\n";
+        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy))
+        {
+            String createdBySourceCodeText = ""
+                    + "    createdBy(): " + userClass.getName() + "[1..1] createdBy\n"
+                    + "    {\n"
+                    + "        this.createdById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
+                    + "    }\n";
 
-        this.runCompilerMacro(createdBySourceCodeText);
-        this.runCompilerMacro(lastUpdatedBySourceCodeText);
+            this.runCompilerMacro(createdBySourceCodeText);
+        }
+        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy))
+        {
+            String lastUpdatedBySourceCodeText = ""
+                    + "    lastUpdatedBy(): " + userClass.getName() + "[1..1] lastUpdatedBy\n"
+                    + "    {\n"
+                    + "        this.lastUpdatedById == " + userClass.getName() + "." + userIdProperty.getName() + "\n"
+                    + "    }\n";
+
+            this.runCompilerMacro(lastUpdatedBySourceCodeText);
+        }
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
         AntlrModifier classifierModifierState =
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
-        ParseTreeListener       compilerPhase           = new PropertyPhase(this.compilerState);
+        ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 classifierModifierState,

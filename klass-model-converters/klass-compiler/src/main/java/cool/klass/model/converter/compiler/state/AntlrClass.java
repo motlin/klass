@@ -147,7 +147,21 @@ public class AntlrClass
     }
 
     @Override
-    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrProperty> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
+    {
+        ImmutableList<AntlrProperty> superClassProperties = this.superClassState
+                .map(antlrClass -> antlrClass.getProperties(visited))
+                .orElseGet(Lists.immutable::empty);
+
+        ImmutableList<AntlrProperty> interfaceProperties = this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getProperties, visited)
+                .toImmutable();
+
+        return superClassProperties.newWithAll(interfaceProperties).distinctBy(AntlrNamedElement::getName);
+    }
+
+    @Override
+    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedDataTypeProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
         ImmutableList<AntlrDataTypeProperty<?>> superClassProperties = this.superClassState
                 .map(antlrClass -> antlrClass.getDataTypeProperties(visited))
@@ -205,6 +219,7 @@ public class AntlrClass
 
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
     {
+        this.propertyStates.add(antlrAssociationEnd);
         this.associationEndStates.add(antlrAssociationEnd);
         this.associationEndsByName.compute(
                 antlrAssociationEnd.getName(),
@@ -229,6 +244,7 @@ public class AntlrClass
 
     public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
     {
+        this.propertyStates.add(parameterizedPropertyState);
         this.parameterizedPropertyStates.add(parameterizedPropertyState);
         this.parameterizedPropertiesByName.compute(
                 parameterizedPropertyState.getName(),

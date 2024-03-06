@@ -100,6 +100,21 @@ public class AntlrModifier
         return this.is("audited") || AUDIT_PROPERTY_NAMES.contains(this.name);
     }
 
+    public boolean isCreatedBy()
+    {
+        return this.is("createdBy");
+    }
+
+    public boolean isCreatedOn()
+    {
+        return this.is("createdOn");
+    }
+
+    public boolean isLastUpdatedBy()
+    {
+        return this.is("lastUpdatedBy");
+    }
+
     public boolean isUser()
     {
         return this.is("userId");

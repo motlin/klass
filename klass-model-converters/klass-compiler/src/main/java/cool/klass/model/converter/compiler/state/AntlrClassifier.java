@@ -15,6 +15,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
@@ -98,6 +99,7 @@ public abstract class AntlrClassifier
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected final MutableList<AntlrModifier>            modifierStates         = Lists.mutable.empty();
+    protected final MutableList<AntlrProperty>            propertyStates         = Lists.mutable.empty();
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
     protected final MutableList<AntlrInterface>           interfaceStates        = Lists.mutable.empty();
 
@@ -152,6 +154,35 @@ public abstract class AntlrClassifier
                 + ".getModifierByName() not implemented yet");
     }
 
+    public final ImmutableList<AntlrProperty> getProperties()
+    {
+        return this.getProperties(Lists.mutable.empty());
+    }
+
+    protected ImmutableList<AntlrProperty> getProperties(@Nonnull MutableList<AntlrClassifier> visited)
+    {
+        if (visited.contains(this))
+        {
+            return Lists.immutable.empty();
+        }
+        visited.add(this);
+
+        MutableSet<String> propertyNames = this.propertyStates.collect(AntlrNamedElement::getName).toSet();
+
+        ImmutableList<AntlrProperty> inheritedProperties = this.getInheritedProperties(visited)
+                .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
+
+        return this.propertyStates.toImmutable().newWithAll(inheritedProperties);
+    }
+
+    protected ImmutableList<AntlrProperty> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
+    {
+        return this.interfaceStates
+                .flatCollectWith(AntlrClassifier::getProperties, visited)
+                .distinctBy(AntlrNamedElement::getName)
+                .toImmutable();
+    }
+
     public final ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
     {
         return this.getDataTypeProperties(Lists.mutable.empty());
@@ -167,13 +198,13 @@ public abstract class AntlrClassifier
 
         MutableSet<String> propertyNames = this.dataTypePropertyStates.collect(AntlrNamedElement::getName).toSet();
 
-        ImmutableList<AntlrDataTypeProperty<?>> inheritedProperties = this.getInheritedProperties(visited)
+        ImmutableList<AntlrDataTypeProperty<?>> inheritedProperties = this.getInheritedDataTypeProperties(visited)
                 .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
 
         return this.dataTypePropertyStates.toImmutable().newWithAll(inheritedProperties);
     }
 
-    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedProperties(@Nonnull MutableList<AntlrClassifier> visited)
+    protected ImmutableList<AntlrDataTypeProperty<?>> getInheritedDataTypeProperties(@Nonnull MutableList<AntlrClassifier> visited)
     {
         return this.interfaceStates
                 .flatCollectWith(AntlrClassifier::getDataTypeProperties, visited)
@@ -224,6 +255,7 @@ public abstract class AntlrClassifier
     public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
     {
         Objects.requireNonNull(antlrDataTypeProperty);
+        this.propertyStates.add(antlrDataTypeProperty);
         this.dataTypePropertyStates.add(antlrDataTypeProperty);
         this.dataTypePropertiesByName.compute(
                 antlrDataTypeProperty.getName(),
@@ -247,6 +279,7 @@ public abstract class AntlrClassifier
     public void enterAssociationEndSignature(@Nonnull AntlrAssociationEndSignature associationEndSignatureState)
     {
         Objects.requireNonNull(associationEndSignatureState);
+        this.propertyStates.add(associationEndSignatureState);
         this.associationEndSignatureStates.add(associationEndSignatureState);
         this.associationEndSignaturesByName.compute(
                 associationEndSignatureState.getName(),

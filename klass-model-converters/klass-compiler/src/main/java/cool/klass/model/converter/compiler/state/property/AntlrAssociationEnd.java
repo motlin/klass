@@ -165,6 +165,11 @@ public class AntlrAssociationEnd
         return this.getModifiers().anySatisfy(AntlrModifier::isVersion);
     }
 
+    public boolean isAudit()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
+    }
+
     public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
     {
         this.opposite = Objects.requireNonNull(opposite);

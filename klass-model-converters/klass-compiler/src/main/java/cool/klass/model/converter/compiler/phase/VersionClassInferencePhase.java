@@ -47,8 +47,7 @@ public class VersionClassInferencePhase
                 new TopLevelElementsPhase(this.compilerState),
                 new ClassifierPhase(this.compilerState),
                 new PropertyPhase(this.compilerState),
-                new ClassTemporalPropertyInferencePhase(this.compilerState),
-                new ClassAuditPropertyInferencePhase(this.compilerState));
+                new ClassTemporalPropertyInferencePhase(this.compilerState));
 
         this.compilerState.runRootCompilerMacro(
                 classifierModifierState,
@@ -62,7 +61,7 @@ public class VersionClassInferencePhase
     private String getSourceCode()
     {
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        String keyPropertySourceCode = classState
+        String propertySourceCode = classState
                 .getDataTypeProperties()
                 .select(property -> property.isKey() || property.isValid() || property.isSystem() || property.isAudit())
                 .collect(this::getSourceCode)
@@ -74,14 +73,13 @@ public class VersionClassInferencePhase
 
         // TODO: If main class is transient, version should also be transient, so copy classifier modifiers
         //language=Klass
-        String sourceCode = "package " + classState.getPackageName() + "\n"
+        return "package " + classState.getPackageName() + "\n"
                 + "\n"
                 + "class " + classState.getName() + "Version systemTemporal" + auditedSourceCode + "\n"
                 + "{\n"
-                + keyPropertySourceCode
+                + propertySourceCode
                 + "    number: Integer version;\n"
                 + "}\n";
-        return sourceCode;
     }
 
     private String getSourceCode(@Nonnull AntlrDataTypeProperty<?> dataTypeProperty)

@@ -213,6 +213,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.getModifiers().anySatisfy(AntlrModifier::isAudit);
     }
 
+    public boolean isCreatedOn()
+    {
+        return this.getModifiers().anySatisfy(AntlrModifier::isCreatedOn);
+    }
+
     public boolean isDerived()
     {
         return this.getModifiers().anySatisfy(AntlrModifier::isDerived);
@@ -429,7 +434,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         if (this.isOptional() != associationEnd.isToOneOptional())
         {
-            String message  = String.format(
+            String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] but foreign key '%s.%s' is %srequired.",
                     associationEnd.getOwningClassifierState().getName(),
                     associationEnd.getName(),
