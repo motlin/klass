@@ -24,7 +24,7 @@
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-Dconfig.resource=demo.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
+                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
                 </configuration>
             </plugin>
 
