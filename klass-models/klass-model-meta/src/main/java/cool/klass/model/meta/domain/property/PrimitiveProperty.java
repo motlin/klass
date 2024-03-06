@@ -1,9 +1,10 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.property;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
-import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
+import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>

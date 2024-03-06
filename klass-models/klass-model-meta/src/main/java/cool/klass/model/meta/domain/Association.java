@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.property.AssociationEnd;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 

@@ -15,16 +15,16 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import com.gs.fw.common.mithra.generator.metamodel.RelationshipType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
-import cool.klass.model.meta.domain.AssociationEnd;
-import cool.klass.model.meta.domain.DataTypeProperty;
 import cool.klass.model.meta.domain.DomainModel;
-import cool.klass.model.meta.domain.EnumerationProperty;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Multiplicity;
-import cool.klass.model.meta.domain.PrimitiveProperty;
-import cool.klass.model.meta.domain.PrimitiveType;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.criteria.CriteriaVisitor;
+import cool.klass.model.meta.domain.property.AssociationEnd;
+import cool.klass.model.meta.domain.property.DataTypeProperty;
+import cool.klass.model.meta.domain.property.EnumerationProperty;
+import cool.klass.model.meta.domain.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.property.PrimitiveType;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator

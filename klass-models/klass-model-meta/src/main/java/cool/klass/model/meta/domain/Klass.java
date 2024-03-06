@@ -2,8 +2,10 @@ package cool.klass.model.meta.domain;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AssociationEnd;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.DataTypeProperty;
+import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 

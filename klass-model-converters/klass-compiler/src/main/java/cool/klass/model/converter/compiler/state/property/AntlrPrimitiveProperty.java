@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler.state;
+package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
 
@@ -6,10 +6,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
-import cool.klass.model.meta.domain.PrimitiveType;
-import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
+import cool.klass.model.meta.domain.property.PrimitiveProperty.PrimitivePropertyBuilder;
+import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

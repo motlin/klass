@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.value.TypeMemberExpressionValue.TypeMemberExpressionValueBuilder;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
 

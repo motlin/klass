@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler.state;
+package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
 
@@ -6,8 +6,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.Enumeration;
-import cool.klass.model.meta.domain.EnumerationProperty.EnumerationPropertyBuilder;
+import cool.klass.model.meta.domain.property.EnumerationProperty.EnumerationPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

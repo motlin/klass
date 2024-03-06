@@ -39,14 +39,16 @@ relationship: 'relationship' criteriaExpression;
 // projection
 projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classReference projectionBody;
 projectionBody: '{' (projectionMember ',')* '}';
-projectionMember: projectionMemberWithBody | projectionPrimitiveMember;
+projectionMember: projectionPrimitiveMember | projectionAssociationEnd | projectionParameterizedProperty;
 // TODO: Call this an *Invocation instead of projection*?
-projectionMemberWithBody: identifier argumentList? ':' projectionBody;
 projectionPrimitiveMember: identifier ':' header;
+projectionAssociationEnd: identifier ':' projectionBody;
+projectionParameterizedProperty: identifier argumentList ':' projectionBody;
 header: StringLiteral;
 
 // service
-serviceGroupDeclaration: 'service' classReference '{' urlDeclaration* '}';
+serviceGroupDeclaration: 'service' classReference serviceGroupDeclarationBody;
+serviceGroupDeclarationBody : '{' urlDeclaration* '}' ;
 // url
 urlDeclaration: url serviceDeclaration+;
 url: urlPathSegment+ '/'? queryParameterList?;
@@ -54,7 +56,8 @@ urlPathSegment: '/' (urlConstant=identifier | urlParameterDeclaration);
 queryParameterList: '?' urlParameterDeclaration ('&' urlParameterDeclaration)*;
 urlParameterDeclaration: '{' parameterDeclaration '}';
 // service
-serviceDeclaration: verb '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch orderByDeclaration? '}';
+serviceDeclaration: verb serviceDeclarationBody;
+serviceDeclarationBody : '{' serviceMultiplicityDeclaration? serviceCriteriaDeclaration* serviceProjectionDispatch orderByDeclaration? '}' ;
 serviceMultiplicityDeclaration: 'multiplicity' ':' serviceMultiplicity;
 serviceMultiplicity: one='one' | many='many';
 serviceCriteriaDeclaration: serviceCriteriaKeyword ':' criteriaExpression;

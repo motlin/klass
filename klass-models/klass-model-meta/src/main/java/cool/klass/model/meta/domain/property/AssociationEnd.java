@@ -1,11 +1,14 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.property;
 
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.Association;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
+import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.Multiplicity;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?

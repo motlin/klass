@@ -59,10 +59,11 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberWithBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
@@ -238,10 +239,17 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterProjectionMemberWithBody(ProjectionMemberWithBodyContext ctx)
+    public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterProjectionMemberWithBody() not implemented yet");
+                + ".enterProjectionAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void enterProjectionParameterizedProperty(ProjectionParameterizedPropertyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionParameterizedProperty() not implemented yet");
     }
 
     @Override

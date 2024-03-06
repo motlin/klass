@@ -1,7 +1,9 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.property;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.DataType;
+import cool.klass.model.meta.domain.NamedElement;
 import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;

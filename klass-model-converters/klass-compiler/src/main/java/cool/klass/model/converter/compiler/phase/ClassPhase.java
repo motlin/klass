@@ -9,11 +9,11 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
-import cool.klass.model.converter.compiler.state.AntlrEnumerationProperty;
-import cool.klass.model.converter.compiler.state.AntlrPrimitiveProperty;
-import cool.klass.model.converter.compiler.state.AntlrPropertyModifier;
-import cool.klass.model.meta.domain.PrimitiveType;
-import cool.klass.model.meta.domain.PrimitiveType.PrimitiveTypeBuilder;
+import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
+import cool.klass.model.meta.domain.property.PrimitiveType;
+import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -53,12 +53,12 @@ public class ClassPhase extends AbstractCompilerPhase
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 this.packageName);
-        this.domainModelState.enterClassDeclaration(this.classState);
     }
 
     @Override
     public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
+        this.domainModelState.exitClassDeclaration(this.classState);
         this.classState = null;
     }
 

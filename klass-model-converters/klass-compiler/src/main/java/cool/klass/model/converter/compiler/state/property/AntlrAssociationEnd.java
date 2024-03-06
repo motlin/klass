@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler.state;
+package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
 
@@ -6,10 +6,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.Association.AssociationBuilder;
-import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.converter.compiler.state.AntlrAssociation;
+import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -21,12 +23,25 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             new AssociationEndContext(null, -1),
             null,
             true,
-            "ambiguous property",
+            "ambiguous association end",
             Element.NO_CONTEXT,
+            AntlrAssociation.AMBIGUOUS,
+            AntlrClass.AMBIGUOUS,
+            null,
+            Lists.immutable.empty());
+    public static final AntlrAssociationEnd NOT_FOUND = new AntlrAssociationEnd(
+            new AssociationEndContext(null, -1),
+            null,
+            true,
+            "not found association end",
+            Element.NO_CONTEXT,
+            AntlrAssociation.AMBIGUOUS,
             AntlrClass.AMBIGUOUS,
             null,
             Lists.immutable.empty());
 
+    @Nonnull
+    private final AntlrAssociation                           owningAssociationState;
     @Nonnull
     private final AntlrClass                                 type;
     private final AntlrMultiplicity                          antlrMultiplicity;
@@ -35,7 +50,6 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
 
     private AntlrClass            owningClassState;
     private AntlrAssociationEnd   opposite;
-    private AssociationBuilder    associationBuilder;
     private AssociationEndBuilder associationEndBuilder;
 
     public AntlrAssociationEnd(
@@ -44,11 +58,13 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
             boolean inferred,
             @Nonnull String name,
             @Nonnull ParserRuleContext nameContext,
+            @Nonnull AntlrAssociation owningAssociationState,
             @Nonnull AntlrClass type,
             AntlrMultiplicity antlrMultiplicity,
             @Nonnull ImmutableList<AntlrAssociationEndModifier> modifiers)
     {
         super(elementContext, compilationUnit, inferred, name, nameContext);
+        this.owningAssociationState = Objects.requireNonNull(owningAssociationState);
         this.type = Objects.requireNonNull(type);
         this.antlrMultiplicity = antlrMultiplicity;
         this.modifiers = Objects.requireNonNull(modifiers);
@@ -94,7 +110,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
                 this.name,
                 this.type.getKlassBuilder(),
                 this.owningClassState.getKlassBuilder(),
-                this.associationBuilder,
+                this.owningAssociationState.getAssociationBuilder(),
                 this.antlrMultiplicity.getMultiplicity(),
                 this.isOwned());
         return this.associationEndBuilder;
@@ -117,24 +133,24 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
     }
 
     @Nonnull
-    public AssociationBuilder getAssociationBuilder()
-    {
-        return Objects.requireNonNull(this.associationBuilder);
-    }
-
-    @Nonnull
     public AssociationEndBuilder getAssociationEndBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
     }
 
-    public void setOwningAssociation(@Nonnull AssociationBuilder associationBuilder)
-    {
-        this.associationBuilder = Objects.requireNonNull(associationBuilder);
-    }
-
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check that there are no duplicate modifiers
+    }
+
+    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
+
+        compilerErrorHolder.add(
+                this.compilationUnit,
+                message,
+                this.nameContext,
+                this.owningAssociationState.getElementContext());
     }
 }

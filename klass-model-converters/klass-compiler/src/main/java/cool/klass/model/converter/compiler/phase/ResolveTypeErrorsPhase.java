@@ -76,6 +76,8 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     String.format("Cannot find projection '%s'", reference.getText()),
                     reference,
                     ctx,
+                    this.serviceDeclarationContext,
+                    this.urlDeclarationContext,
                     this.serviceGroupDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }

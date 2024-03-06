@@ -1,4 +1,4 @@
-package cool.klass.model.converter.compiler.state;
+package cool.klass.model.converter.compiler.state.property;
 
 import java.util.Objects;
 

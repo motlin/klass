@@ -12,6 +12,7 @@ import cool.klass.model.converter.compiler.phase.ClassPhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
+import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
@@ -48,12 +49,6 @@ public class KlassCompiler
     }
 
     @Nullable
-    public DomainModel compile(CompilationUnit... compilationUnits)
-    {
-        return this.compile(Sets.mutable.with(compilationUnits));
-    }
-
-    @Nullable
     public DomainModel compile(@Nonnull MutableSet<CompilationUnit> compilationUnits)
     {
         MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext =
@@ -61,27 +56,27 @@ public class KlassCompiler
                         CompilationUnit::getCompilationUnitContext,
                         MapAdapter.adapt(new IdentityHashMap<>()));
 
-        DeclarationsByNamePhase    phase3 = new DeclarationsByNamePhase();
-        ResolveTypeReferencesPhase phase4 = new ResolveTypeReferencesPhase(phase3);
-        ResolveTypesPhase          phase5 = new ResolveTypesPhase(phase4);
-        KlassListener phase6 = new ResolveTypeErrorsPhase(
+        DeclarationsByNamePhase    phase1 = new DeclarationsByNamePhase();
+        ResolveTypeReferencesPhase phase2 = new ResolveTypeReferencesPhase(phase1);
+        ResolveTypesPhase          phase3 = new ResolveTypesPhase(phase2);
+        KlassListener phase4 = new ResolveTypeErrorsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                phase5);
+                phase3);
 
         AntlrDomainModel domainModelState = new AntlrDomainModel();
 
-        KlassListener phase7 = new EnumerationsPhase(
+        KlassListener phase5 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
 
-        KlassListener phase8 = new ClassPhase(
+        KlassListener phase6 = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
 
-        ClassTemporalPropertyInferencePhase phase9 = new ClassTemporalPropertyInferencePhase(
+        KlassListener phase7 = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
@@ -89,20 +84,26 @@ public class KlassCompiler
         // TODO: Phase for inference on classes?
         // Like adding temporal and audit properties, and version types and version associations
 
-        KlassListener phase10 = new AssociationPhase(
+        KlassListener phase8 = new AssociationPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                domainModelState);
+
+        KlassListener phase9 = new ProjectionPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
 
         ImmutableList<KlassListener> phases = Lists.immutable.with(
+                phase1,
+                phase2,
                 phase3,
                 phase4,
                 phase5,
                 phase6,
                 phase7,
                 phase8,
-                phase9,
-                phase10);
+                phase9);
 
         phases.forEachWith(this::executeCompilerPhase, compilationUnits);
 
@@ -114,6 +115,12 @@ public class KlassCompiler
             return domainModelBuilder.build();
         }
         return null;
+    }
+
+    @Nullable
+    public DomainModel compile(CompilationUnit... compilationUnits)
+    {
+        return this.compile(Sets.mutable.with(compilationUnits));
     }
 
     protected void executeCompilerPhase(

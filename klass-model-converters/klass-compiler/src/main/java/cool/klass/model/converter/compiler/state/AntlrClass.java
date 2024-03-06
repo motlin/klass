@@ -7,9 +7,14 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
-import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -185,5 +190,10 @@ public class AntlrClass extends AntlrPackageableElement
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
         return this.dataTypePropertiesByName.getIfAbsentValue(name, AntlrEnumerationProperty.NOT_FOUND);
+    }
+
+    public AntlrAssociationEnd getAssociationEndByName(String name)
+    {
+        return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
     }
 }

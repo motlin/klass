@@ -19,8 +19,8 @@ public abstract class AntlrNamedElement extends AntlrElement
             @Nonnull ParserRuleContext elementContext,
             @Nullable CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
-            @Nonnull ParserRuleContext nameContext)
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name)
     {
         super(elementContext, compilationUnit, inferred);
         this.name = Objects.requireNonNull(name);

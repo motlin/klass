@@ -44,7 +44,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             String prettyName,
             AntlrEnumeration owningEnumeration)
     {
-        super(elementContext, compilationUnit, inferred, name, nameContext);
+        super(elementContext, compilationUnit, inferred, nameContext, name);
         this.prettyName = prettyName;
         this.owningEnumeration = owningEnumeration;
     }

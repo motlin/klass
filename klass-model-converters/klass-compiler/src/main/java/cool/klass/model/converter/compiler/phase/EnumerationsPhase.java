@@ -41,12 +41,12 @@ public class EnumerationsPhase extends AbstractCompilerPhase
                 identifier,
                 identifier.getText(),
                 this.packageName);
-        this.domainModelState.enterEnumerationDeclaration(this.enumerationState);
     }
 
     @Override
     public void exitEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
+        this.domainModelState.exitEnumerationDeclaration(this.enumerationState);
         this.enumerationState = null;
     }
 

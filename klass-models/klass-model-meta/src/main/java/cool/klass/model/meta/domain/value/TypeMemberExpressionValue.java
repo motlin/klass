@@ -2,10 +2,10 @@ package cool.klass.model.meta.domain.value;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.DataTypeProperty;
-import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.property.DataTypeProperty;
+import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class TypeMemberExpressionValue extends MemberExpressionValue

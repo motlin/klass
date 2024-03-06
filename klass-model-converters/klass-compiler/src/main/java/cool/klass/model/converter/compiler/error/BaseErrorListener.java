@@ -19,10 +19,10 @@ public class BaseErrorListener extends KlassBaseListener
         this.contextualStrings = contextualStrings;
     }
 
-    protected void addTextInclusive(@Nonnull Token start, @Nonnull Token stop)
+    protected void addTextInclusive(String indent, @Nonnull Token start, @Nonnull Token stop)
     {
         String text = this.getTextInclusive(start, stop);
-        this.contextualStrings.add(text);
+        this.contextualStrings.add(indent + text);
     }
 
     protected String getTextInclusive(@Nonnull Token startToken, @Nonnull Token stopToken)

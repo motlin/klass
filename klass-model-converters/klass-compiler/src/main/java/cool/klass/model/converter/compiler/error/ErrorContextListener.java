@@ -59,10 +59,11 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationListContext
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberWithBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
@@ -75,7 +76,6 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
@@ -101,13 +101,55 @@ public class ErrorContextListener extends BaseErrorListener
     @Override
     public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
     {
-        this.addTextInclusive(ctx.getStart(), ctx.packageDeclaration().getStop());
+        this.addTextInclusive("", ctx.getStart(), ctx.packageDeclaration().getStop());
+    }
+
+    @Override
+    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterPackageDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitPackageDeclaration(PackageDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitPackageDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterPackageName(PackageNameContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterPackageName() not implemented yet");
+    }
+
+    @Override
+    public void exitPackageName(PackageNameContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitPackageName() not implemented yet");
+    }
+
+    @Override
+    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterTopLevelDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitTopLevelDeclaration() not implemented yet");
     }
 
     @Override
     public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
-        this.addTextInclusive(ctx.getStart(), ctx.classBody().getStart());
+        this.addTextInclusive("", ctx.getStart(), ctx.classBody().getStart());
     }
 
     @Override
@@ -117,9 +159,65 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
+    public void enterClassOrUser(ClassOrUserContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassOrUser() not implemented yet");
+    }
+
+    @Override
+    public void exitClassOrUser(ClassOrUserContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassOrUser() not implemented yet");
+    }
+
+    @Override
+    public void enterClassServiceModifier(ClassServiceModifierContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassServiceModifier() not implemented yet");
+    }
+
+    @Override
+    public void exitClassServiceModifier(ClassServiceModifierContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassServiceModifier() not implemented yet");
+    }
+
+    @Override
+    public void enterServiceCategoryModifier(ServiceCategoryModifierContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceCategoryModifier() not implemented yet");
+    }
+
+    @Override
+    public void exitServiceCategoryModifier(ServiceCategoryModifierContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitServiceCategoryModifier() not implemented yet");
+    }
+
+    @Override
+    public void enterClassBody(ClassBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassBody() not implemented yet");
+    }
+
+    @Override
+    public void exitClassBody(ClassBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassBody() not implemented yet");
+    }
+
+    @Override
     public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
     {
-        this.addTextInclusive(ctx.getStart(), ctx.enumerationBody().getStart());
+        this.addTextInclusive("", ctx.getStart(), ctx.enumerationBody().getStart());
     }
 
     @Override
@@ -129,9 +227,51 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
+    public void enterEnumerationBody(EnumerationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationBody() not implemented yet");
+    }
+
+    @Override
+    public void exitEnumerationBody(EnumerationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitEnumerationBody() not implemented yet");
+    }
+
+    @Override
+    public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationLiteral() not implemented yet");
+    }
+
+    @Override
+    public void exitEnumerationLiteral(EnumerationLiteralContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitEnumerationLiteral() not implemented yet");
+    }
+
+    @Override
+    public void enterEnumerationPrettyName(EnumerationPrettyNameContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationPrettyName() not implemented yet");
+    }
+
+    @Override
+    public void exitEnumerationPrettyName(EnumerationPrettyNameContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitEnumerationPrettyName() not implemented yet");
+    }
+
+    @Override
     public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
-        this.addTextInclusive(ctx.getStart(), ctx.associationBody().getStart());
+        this.addTextInclusive("", ctx.getStart(), ctx.associationBody().getStart());
     }
 
     @Override
@@ -141,9 +281,51 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
+    public void enterAssociationBody(AssociationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAssociationBody() not implemented yet");
+    }
+
+    @Override
+    public void exitAssociationBody(AssociationBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAssociationBody() not implemented yet");
+    }
+
+    @Override
+    public void enterAssociationEnd(AssociationEndContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void exitAssociationEnd(AssociationEndContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void enterRelationship(RelationshipContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterRelationship() not implemented yet");
+    }
+
+    @Override
+    public void exitRelationship(RelationshipContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitRelationship() not implemented yet");
+    }
+
+    @Override
     public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
     {
-        this.addTextInclusive(ctx.getStart(), ctx.projectionBody().getStart());
+        this.addTextInclusive("", ctx.getStart(), ctx.projectionBody().getStart());
     }
 
     @Override
@@ -153,241 +335,73 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPackageDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitPackageDeclaration(PackageDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitPackageDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterPackageName(PackageNameContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPackageName() not implemented yet");
-    }
-
-    @Override
-    public void exitPackageName(PackageNameContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitPackageName() not implemented yet");
-    }
-
-    @Override
-    public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTopLevelDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitTopLevelDeclaration(TopLevelDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitTopLevelDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterClassOrUser(ClassOrUserContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassOrUser() not implemented yet");
-    }
-
-    @Override
-    public void exitClassOrUser(ClassOrUserContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassOrUser() not implemented yet");
-    }
-
-    @Override
-    public void enterClassServiceModifier(ClassServiceModifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassServiceModifier() not implemented yet");
-    }
-
-    @Override
-    public void exitClassServiceModifier(ClassServiceModifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassServiceModifier() not implemented yet");
-    }
-
-    @Override
-    public void enterServiceCategoryModifier(ServiceCategoryModifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCategoryModifier() not implemented yet");
-    }
-
-    @Override
-    public void exitServiceCategoryModifier(ServiceCategoryModifierContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceCategoryModifier() not implemented yet");
-    }
-
-    @Override
-    public void enterClassBody(ClassBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassBody() not implemented yet");
-    }
-
-    @Override
-    public void exitClassBody(ClassBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassBody() not implemented yet");
-    }
-
-    @Override
-    public void enterEnumerationBody(EnumerationBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationBody() not implemented yet");
-    }
-
-    @Override
-    public void exitEnumerationBody(EnumerationBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEnumerationBody() not implemented yet");
-    }
-
-    @Override
-    public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationLiteral() not implemented yet");
-    }
-
-    @Override
-    public void exitEnumerationLiteral(EnumerationLiteralContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEnumerationLiteral() not implemented yet");
-    }
-
-    @Override
-    public void enterEnumerationPrettyName(EnumerationPrettyNameContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationPrettyName() not implemented yet");
-    }
-
-    @Override
-    public void exitEnumerationPrettyName(EnumerationPrettyNameContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEnumerationPrettyName() not implemented yet");
-    }
-
-    @Override
-    public void enterAssociationBody(AssociationBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationBody() not implemented yet");
-    }
-
-    @Override
-    public void exitAssociationBody(AssociationBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitAssociationBody() not implemented yet");
-    }
-
-    @Override
-    public void enterAssociationEnd(AssociationEndContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationEnd() not implemented yet");
-    }
-
-    @Override
-    public void exitAssociationEnd(AssociationEndContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitAssociationEnd() not implemented yet");
-    }
-
-    @Override
-    public void enterRelationship(RelationshipContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterRelationship() not implemented yet");
-    }
-
-    @Override
-    public void exitRelationship(RelationshipContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitRelationship() not implemented yet");
-    }
-
-    @Override
     public void enterProjectionBody(ProjectionBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionBody() not implemented yet");
+                + ".enterProjectionBody() not implemented yet");
     }
 
     @Override
     public void exitProjectionBody(ProjectionBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitProjectionBody() not implemented yet");
+                + ".exitProjectionBody() not implemented yet");
     }
 
     @Override
     public void enterProjectionMember(ProjectionMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionMember() not implemented yet");
+                + ".enterProjectionMember() not implemented yet");
     }
 
     @Override
     public void exitProjectionMember(ProjectionMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitProjectionMember() not implemented yet");
-    }
-
-    @Override
-    public void enterProjectionMemberWithBody(ProjectionMemberWithBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionMemberWithBody() not implemented yet");
-    }
-
-    @Override
-    public void exitProjectionMemberWithBody(ProjectionMemberWithBodyContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitProjectionMemberWithBody() not implemented yet");
+                + ".exitProjectionMember() not implemented yet");
     }
 
     @Override
     public void enterProjectionPrimitiveMember(ProjectionPrimitiveMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionPrimitiveMember() not implemented yet");
+                + ".enterProjectionPrimitiveMember() not implemented yet");
     }
 
     @Override
     public void exitProjectionPrimitiveMember(ProjectionPrimitiveMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitProjectionPrimitiveMember() not implemented yet");
+                + ".exitProjectionPrimitiveMember() not implemented yet");
+    }
+
+    @Override
+    public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void exitProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitProjectionAssociationEnd() not implemented yet");
+    }
+
+    @Override
+    public void enterProjectionParameterizedProperty(ProjectionParameterizedPropertyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionParameterizedProperty() not implemented yet");
+    }
+
+    @Override
+    public void exitProjectionParameterizedProperty(ProjectionParameterizedPropertyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitProjectionParameterizedProperty() not implemented yet");
     }
 
     @Override
@@ -403,31 +417,21 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
+    public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceGroupDeclaration() not implemented yet");
+        this.addTextInclusive("", ctx.getStart(), ctx.serviceGroupDeclarationBody().getStart());
     }
 
     @Override
     public void exitServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceGroupDeclaration() not implemented yet");
+        this.contextualStrings.add("}");
     }
 
     @Override
-    public void enterUrlDeclaration(UrlDeclarationContext ctx)
+    public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitUrlDeclaration(UrlDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitUrlDeclaration() not implemented yet");
+        this.addTextInclusive("    ", ctx.getStart(), ctx.url().getStop());
     }
 
     @Override
@@ -446,126 +450,110 @@ public class ErrorContextListener extends BaseErrorListener
     public void enterUrlPathSegment(UrlPathSegmentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlPathSegment() not implemented yet");
+                + ".enterUrlPathSegment() not implemented yet");
     }
 
     @Override
     public void exitUrlPathSegment(UrlPathSegmentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitUrlPathSegment() not implemented yet");
+                + ".exitUrlPathSegment() not implemented yet");
     }
 
     @Override
     public void enterQueryParameterList(QueryParameterListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterQueryParameterList() not implemented yet");
+                + ".enterQueryParameterList() not implemented yet");
     }
 
     @Override
     public void exitQueryParameterList(QueryParameterListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitQueryParameterList() not implemented yet");
+                + ".exitQueryParameterList() not implemented yet");
     }
 
     @Override
     public void enterUrlParameterDeclaration(UrlParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlParameterDeclaration() not implemented yet");
+                + ".enterUrlParameterDeclaration() not implemented yet");
     }
 
     @Override
     public void exitUrlParameterDeclaration(UrlParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitUrlParameterDeclaration() not implemented yet");
+                + ".exitUrlParameterDeclaration() not implemented yet");
     }
 
     @Override
-    public void enterServiceDeclaration(ServiceDeclarationContext ctx)
+    public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceDeclaration() not implemented yet");
+        this.addTextInclusive("        ", ctx.getStart(), ctx.serviceDeclarationBody().getStart());
     }
 
     @Override
     public void exitServiceDeclaration(ServiceDeclarationContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceDeclaration() not implemented yet");
+        this.contextualStrings.add("        }");
     }
 
     @Override
     public void enterServiceMultiplicityDeclaration(ServiceMultiplicityDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceMultiplicityDeclaration() not implemented yet");
+                + ".enterServiceMultiplicityDeclaration() not implemented yet");
     }
 
     @Override
     public void exitServiceMultiplicityDeclaration(ServiceMultiplicityDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceMultiplicityDeclaration() not implemented yet");
+                + ".exitServiceMultiplicityDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceMultiplicity(ServiceMultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceMultiplicity() not implemented yet");
+                + ".enterServiceMultiplicity() not implemented yet");
     }
 
     @Override
     public void exitServiceMultiplicity(ServiceMultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceMultiplicity() not implemented yet");
+                + ".exitServiceMultiplicity() not implemented yet");
     }
 
     @Override
     public void enterServiceCriteriaDeclaration(ServiceCriteriaDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCriteriaDeclaration() not implemented yet");
+                + ".enterServiceCriteriaDeclaration() not implemented yet");
     }
 
     @Override
     public void exitServiceCriteriaDeclaration(ServiceCriteriaDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceCriteriaDeclaration() not implemented yet");
+                + ".exitServiceCriteriaDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceCriteriaKeyword(ServiceCriteriaKeywordContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCriteriaKeyword() not implemented yet");
+                + ".enterServiceCriteriaKeyword() not implemented yet");
     }
 
     @Override
     public void exitServiceCriteriaKeyword(ServiceCriteriaKeywordContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceCriteriaKeyword() not implemented yet");
-    }
-
-    @Override
-    public void enterServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceProjectionDispatch() not implemented yet");
-    }
-
-    @Override
-    public void exitServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitServiceProjectionDispatch() not implemented yet");
+                + ".exitServiceCriteriaKeyword() not implemented yet");
     }
 
     @Override
@@ -584,546 +572,420 @@ public class ErrorContextListener extends BaseErrorListener
     public void enterClassMember(ClassMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassMember() not implemented yet");
+                + ".enterClassMember() not implemented yet");
     }
 
     @Override
     public void exitClassMember(ClassMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassMember() not implemented yet");
+                + ".exitClassMember() not implemented yet");
     }
 
     @Override
     public void enterDataTypeProperty(DataTypePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataTypeProperty() not implemented yet");
+                + ".enterDataTypeProperty() not implemented yet");
     }
 
     @Override
     public void exitDataTypeProperty(DataTypePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitDataTypeProperty() not implemented yet");
+                + ".exitDataTypeProperty() not implemented yet");
     }
 
     @Override
     public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPrimitiveProperty() not implemented yet");
+                + ".enterPrimitiveProperty() not implemented yet");
     }
 
     @Override
     public void exitPrimitiveProperty(PrimitivePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitPrimitiveProperty() not implemented yet");
+                + ".exitPrimitiveProperty() not implemented yet");
     }
 
     @Override
     public void enterEnumerationProperty(EnumerationPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationProperty() not implemented yet");
+                + ".enterEnumerationProperty() not implemented yet");
     }
 
     @Override
     public void exitEnumerationProperty(EnumerationPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEnumerationProperty() not implemented yet");
+                + ".exitEnumerationProperty() not implemented yet");
     }
 
     @Override
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterizedProperty() not implemented yet");
+                + ".enterParameterizedProperty() not implemented yet");
     }
 
     @Override
     public void exitParameterizedProperty(ParameterizedPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitParameterizedProperty() not implemented yet");
+                + ".exitParameterizedProperty() not implemented yet");
     }
 
     @Override
     public void enterOptionalMarker(OptionalMarkerContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOptionalMarker() not implemented yet");
+                + ".enterOptionalMarker() not implemented yet");
     }
 
     @Override
     public void exitOptionalMarker(OptionalMarkerContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOptionalMarker() not implemented yet");
+                + ".exitOptionalMarker() not implemented yet");
     }
 
     @Override
     public void enterParameterDeclaration(ParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterDeclaration() not implemented yet");
+                + ".enterParameterDeclaration() not implemented yet");
     }
 
     @Override
     public void exitParameterDeclaration(ParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitParameterDeclaration() not implemented yet");
+                + ".exitParameterDeclaration() not implemented yet");
     }
 
     @Override
     public void enterDataTypeDeclaration(DataTypeDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataTypeDeclaration() not implemented yet");
+                + ".enterDataTypeDeclaration() not implemented yet");
     }
 
     @Override
     public void exitDataTypeDeclaration(DataTypeDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitDataTypeDeclaration() not implemented yet");
+                + ".exitDataTypeDeclaration() not implemented yet");
     }
 
     @Override
     public void enterParameterDeclarationList(ParameterDeclarationListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterDeclarationList() not implemented yet");
+                + ".enterParameterDeclarationList() not implemented yet");
     }
 
     @Override
     public void exitParameterDeclarationList(ParameterDeclarationListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitParameterDeclarationList() not implemented yet");
+                + ".exitParameterDeclarationList() not implemented yet");
     }
 
     @Override
     public void enterArgumentList(ArgumentListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterArgumentList() not implemented yet");
+                + ".enterArgumentList() not implemented yet");
     }
 
     @Override
     public void exitArgumentList(ArgumentListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitArgumentList() not implemented yet");
+                + ".exitArgumentList() not implemented yet");
     }
 
     @Override
     public void enterArgument(ArgumentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterArgument() not implemented yet");
+                + ".enterArgument() not implemented yet");
     }
 
     @Override
     public void exitArgument(ArgumentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitArgument() not implemented yet");
+                + ".exitArgument() not implemented yet");
     }
 
     @Override
     public void enterMultiplicity(MultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMultiplicity() not implemented yet");
+                + ".enterMultiplicity() not implemented yet");
     }
 
     @Override
     public void exitMultiplicity(MultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitMultiplicity() not implemented yet");
+                + ".exitMultiplicity() not implemented yet");
     }
 
     @Override
     public void enterMultiplicityBody(MultiplicityBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMultiplicityBody() not implemented yet");
+                + ".enterMultiplicityBody() not implemented yet");
     }
 
     @Override
     public void exitMultiplicityBody(MultiplicityBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitMultiplicityBody() not implemented yet");
+                + ".exitMultiplicityBody() not implemented yet");
     }
 
     @Override
     public void enterPrimitiveType(PrimitiveTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPrimitiveType() not implemented yet");
+                + ".enterPrimitiveType() not implemented yet");
     }
 
     @Override
     public void exitPrimitiveType(PrimitiveTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitPrimitiveType() not implemented yet");
+                + ".exitPrimitiveType() not implemented yet");
     }
 
     @Override
     public void enterClassModifier(ClassModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassModifier() not implemented yet");
+                + ".enterClassModifier() not implemented yet");
     }
 
     @Override
     public void exitClassModifier(ClassModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassModifier() not implemented yet");
+                + ".exitClassModifier() not implemented yet");
     }
 
     @Override
     public void enterPropertyModifier(PropertyModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPropertyModifier() not implemented yet");
+                + ".enterPropertyModifier() not implemented yet");
     }
 
     @Override
     public void exitPropertyModifier(PropertyModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitPropertyModifier() not implemented yet");
+                + ".exitPropertyModifier() not implemented yet");
     }
 
     @Override
     public void enterAssociationEndModifier(AssociationEndModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationEndModifier() not implemented yet");
+                + ".enterAssociationEndModifier() not implemented yet");
     }
 
     @Override
     public void exitAssociationEndModifier(AssociationEndModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitAssociationEndModifier() not implemented yet");
+                + ".exitAssociationEndModifier() not implemented yet");
     }
 
     @Override
     public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByDeclaration() not implemented yet");
+                + ".enterOrderByDeclaration() not implemented yet");
     }
 
     @Override
     public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOrderByDeclaration() not implemented yet");
+                + ".exitOrderByDeclaration() not implemented yet");
     }
 
     @Override
     public void enterOrderByList(OrderByListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByList() not implemented yet");
+                + ".enterOrderByList() not implemented yet");
     }
 
     @Override
     public void exitOrderByList(OrderByListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOrderByList() not implemented yet");
+                + ".exitOrderByList() not implemented yet");
     }
 
     @Override
     public void enterOrderByProperty(OrderByPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByProperty() not implemented yet");
+                + ".enterOrderByProperty() not implemented yet");
     }
 
     @Override
     public void exitOrderByProperty(OrderByPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOrderByProperty() not implemented yet");
+                + ".exitOrderByProperty() not implemented yet");
     }
 
     @Override
     public void enterOrderByDirection(OrderByDirectionContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByDirection() not implemented yet");
+                + ".enterOrderByDirection() not implemented yet");
     }
 
     @Override
     public void exitOrderByDirection(OrderByDirectionContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOrderByDirection() not implemented yet");
+                + ".exitOrderByDirection() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionAnd(CriteriaExpressionAndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionAnd() not implemented yet");
+                + ".enterCriteriaExpressionAnd() not implemented yet");
     }
 
     @Override
     public void exitCriteriaExpressionAnd(CriteriaExpressionAndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCriteriaExpressionAnd() not implemented yet");
+                + ".exitCriteriaExpressionAnd() not implemented yet");
     }
 
     @Override
     public void enterCriteriaNative(CriteriaNativeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaNative() not implemented yet");
+                + ".enterCriteriaNative() not implemented yet");
     }
 
     @Override
     public void exitCriteriaNative(CriteriaNativeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCriteriaNative() not implemented yet");
+                + ".exitCriteriaNative() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionGroup(CriteriaExpressionGroupContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionGroup() not implemented yet");
+                + ".enterCriteriaExpressionGroup() not implemented yet");
     }
 
     @Override
     public void exitCriteriaExpressionGroup(CriteriaExpressionGroupContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCriteriaExpressionGroup() not implemented yet");
+                + ".exitCriteriaExpressionGroup() not implemented yet");
     }
 
     @Override
     public void enterCriteriaOperator(CriteriaOperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaOperator() not implemented yet");
+                + ".enterCriteriaOperator() not implemented yet");
     }
 
     @Override
     public void exitCriteriaOperator(CriteriaOperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCriteriaOperator() not implemented yet");
+                + ".exitCriteriaOperator() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionOr(CriteriaExpressionOrContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionOr() not implemented yet");
+                + ".enterCriteriaExpressionOr() not implemented yet");
     }
 
     @Override
     public void exitCriteriaExpressionOr(CriteriaExpressionOrContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCriteriaExpressionOr() not implemented yet");
+                + ".exitCriteriaExpressionOr() not implemented yet");
     }
 
     @Override
     public void enterExpressionValue(ExpressionValueContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterExpressionValue() not implemented yet");
+                + ".enterExpressionValue() not implemented yet");
     }
 
     @Override
     public void exitExpressionValue(ExpressionValueContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitExpressionValue() not implemented yet");
+                + ".exitExpressionValue() not implemented yet");
     }
 
     @Override
     public void enterLiteralList(LiteralListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterLiteralList() not implemented yet");
+                + ".enterLiteralList() not implemented yet");
     }
 
     @Override
     public void exitLiteralList(LiteralListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitLiteralList() not implemented yet");
+                + ".exitLiteralList() not implemented yet");
     }
 
     @Override
     public void enterNativeLiteral(NativeLiteralContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterNativeLiteral() not implemented yet");
+                + ".enterNativeLiteral() not implemented yet");
     }
 
     @Override
     public void exitNativeLiteral(NativeLiteralContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitNativeLiteral() not implemented yet");
+                + ".exitNativeLiteral() not implemented yet");
     }
 
     @Override
     public void enterOperator(OperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOperator() not implemented yet");
+                + ".enterOperator() not implemented yet");
     }
 
     @Override
     public void exitOperator(OperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitOperator() not implemented yet");
-    }
-
-    @Override
-    public void enterClassType(ClassTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassType() not implemented yet");
-    }
-
-    @Override
-    public void exitClassType(ClassTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassType() not implemented yet");
-    }
-
-    @Override
-    public void enterDataType(DataTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataType() not implemented yet");
-    }
-
-    @Override
-    public void exitDataType(DataTypeContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitDataType() not implemented yet");
-    }
-
-    @Override
-    public void enterClassReference(ClassReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassReference() not implemented yet");
-    }
-
-    @Override
-    public void exitClassReference(ClassReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitClassReference() not implemented yet");
-    }
-
-    @Override
-    public void enterEnumerationReference(EnumerationReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationReference() not implemented yet");
-    }
-
-    @Override
-    public void exitEnumerationReference(EnumerationReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEnumerationReference() not implemented yet");
-    }
-
-    @Override
-    public void enterProjectionReference(ProjectionReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionReference() not implemented yet");
-    }
-
-    @Override
-    public void exitProjectionReference(ProjectionReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitProjectionReference() not implemented yet");
-    }
-
-    @Override
-    public void enterMemberReference(MemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void exitMemberReference(MemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void enterVariableReference(VariableReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterVariableReference() not implemented yet");
-    }
-
-    @Override
-    public void exitVariableReference(VariableReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitVariableReference() not implemented yet");
-    }
-
-    @Override
-    public void enterThisMemberReference(ThisMemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterThisMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void exitThisMemberReference(ThisMemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitThisMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void enterTypeMemberReference(TypeMemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTypeMemberReference() not implemented yet");
-    }
-
-    @Override
-    public void exitTypeMemberReference(TypeMemberReferenceContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitTypeMemberReference() not implemented yet");
+                + ".exitOperator() not implemented yet");
     }
 
     @Override
@@ -1183,52 +1045,178 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
+    public void enterClassType(ClassTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassType() not implemented yet");
+    }
+
+    @Override
+    public void exitClassType(ClassTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassType() not implemented yet");
+    }
+
+    @Override
+    public void enterDataType(DataTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterDataType() not implemented yet");
+    }
+
+    @Override
+    public void exitDataType(DataTypeContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitDataType() not implemented yet");
+    }
+
+    @Override
+    public void enterClassReference(ClassReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassReference() not implemented yet");
+    }
+
+    @Override
+    public void exitClassReference(ClassReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassReference() not implemented yet");
+    }
+
+    @Override
+    public void enterEnumerationReference(EnumerationReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterEnumerationReference() not implemented yet");
+    }
+
+    @Override
+    public void exitEnumerationReference(EnumerationReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitEnumerationReference() not implemented yet");
+    }
+
+    @Override
+    public void enterProjectionReference(ProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterProjectionReference() not implemented yet");
+    }
+
+    @Override
+    public void exitProjectionReference(ProjectionReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitProjectionReference() not implemented yet");
+    }
+
+    @Override
+    public void enterMemberReference(MemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterMemberReference() not implemented yet");
+    }
+
+    @Override
+    public void exitMemberReference(MemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitMemberReference() not implemented yet");
+    }
+
+    @Override
+    public void enterVariableReference(VariableReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterVariableReference() not implemented yet");
+    }
+
+    @Override
+    public void exitVariableReference(VariableReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitVariableReference() not implemented yet");
+    }
+
+    @Override
+    public void enterThisMemberReference(ThisMemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterThisMemberReference() not implemented yet");
+    }
+
+    @Override
+    public void exitThisMemberReference(ThisMemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitThisMemberReference() not implemented yet");
+    }
+
+    @Override
+    public void enterTypeMemberReference(TypeMemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterTypeMemberReference() not implemented yet");
+    }
+
+    @Override
+    public void exitTypeMemberReference(TypeMemberReferenceContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitTypeMemberReference() not implemented yet");
+    }
+
+    @Override
     public void enterIdentifier(IdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterIdentifier() not implemented yet");
+                + ".enterIdentifier() not implemented yet");
     }
 
     @Override
     public void exitIdentifier(IdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitIdentifier() not implemented yet");
+                + ".exitIdentifier() not implemented yet");
     }
 
     @Override
     public void enterEscapedIdentifier(EscapedIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEscapedIdentifier() not implemented yet");
+                + ".enterEscapedIdentifier() not implemented yet");
     }
 
     @Override
     public void exitEscapedIdentifier(EscapedIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEscapedIdentifier() not implemented yet");
+                + ".exitEscapedIdentifier() not implemented yet");
     }
 
     @Override
     public void enterKeywordValidAsIdentifier(KeywordValidAsIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterKeywordValidAsIdentifier() not implemented yet");
+                + ".enterKeywordValidAsIdentifier() not implemented yet");
     }
 
     @Override
     public void exitKeywordValidAsIdentifier(KeywordValidAsIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitKeywordValidAsIdentifier() not implemented yet");
+                + ".exitKeywordValidAsIdentifier() not implemented yet");
     }
 
     @Override
     public void enterLiteral(LiteralContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterLiteral() not implemented yet");
+                + ".enterLiteral() not implemented yet");
     }
 
     @Override
@@ -1241,27 +1229,27 @@ public class ErrorContextListener extends BaseErrorListener
     public void enterEveryRule(ParserRuleContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEveryRule() not implemented yet");
+                + ".enterEveryRule() not implemented yet");
     }
 
     @Override
     public void exitEveryRule(ParserRuleContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitEveryRule() not implemented yet");
+                + ".exitEveryRule() not implemented yet");
     }
 
     @Override
     public void visitTerminal(TerminalNode node)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".visitTerminal() not implemented yet");
+                + ".visitTerminal() not implemented yet");
     }
 
     @Override
     public void visitErrorNode(ErrorNode node)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".visitErrorNode() not implemented yet");
+                + ".visitErrorNode() not implemented yet");
     }
 }

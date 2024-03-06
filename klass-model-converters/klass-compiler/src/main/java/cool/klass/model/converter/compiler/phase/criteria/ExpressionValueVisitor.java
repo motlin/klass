@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
-import cool.klass.model.converter.compiler.state.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.AntlrClass;
-import cool.klass.model.converter.compiler.state.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberValue;
 import cool.klass.model.converter.compiler.state.value.AntlrTypeMemberValue;

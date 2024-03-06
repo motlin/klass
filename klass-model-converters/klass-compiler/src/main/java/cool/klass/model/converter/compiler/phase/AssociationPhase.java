@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -7,12 +9,12 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
-import cool.klass.model.converter.compiler.state.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.AntlrAssociationEndModifier;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -28,6 +30,7 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class AssociationPhase extends AbstractCompilerPhase
 {
+    @Nonnull
     private final AntlrDomainModel domainModelState;
 
     @Nullable
@@ -36,10 +39,10 @@ public class AssociationPhase extends AbstractCompilerPhase
     public AssociationPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState)
+            @Nonnull AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
-        this.domainModelState = domainModelState;
+        this.domainModelState = Objects.requireNonNull(domainModelState);
     }
 
     @Override
@@ -53,12 +56,13 @@ public class AssociationPhase extends AbstractCompilerPhase
                 identifier,
                 identifier.getText(),
                 this.packageName);
-        this.domainModelState.enterAssociationDeclaration(this.associationState);
     }
 
     @Override
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
+        this.associationState.exitAssociationDeclaration();
+        this.domainModelState.exitAssociationDeclaration(this.associationState);
         this.associationState = null;
     }
 
@@ -87,6 +91,7 @@ public class AssociationPhase extends AbstractCompilerPhase
                 false,
                 associationEndName,
                 ctx.identifier(),
+                this.associationState,
                 antlrClass,
                 antlrMultiplicity,
                 associationEndModifiers);

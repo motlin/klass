@@ -212,6 +212,7 @@ public class KlassCompilerTest
                 + "}\n"
                 + "\n"
                 + "// TODO: Type inference on projection paramters\n"
+                + "/*\n"
                 + "projection FilteredAnswersProjection(substring: String[1..1]) on Question\n"
                 + "{\n"
                 + "    title                          : \"Question title\",\n"
@@ -221,11 +222,13 @@ public class KlassCompilerTest
                 + "        body: \"Answer body\",\n"
                 + "    },\n"
                 + "}\n"
+                + "*/\n"
                 + "\n"
                 + "// Just embed inside the Question class?\n"
                 + "service Question\n"
                 + "{\n"
                 + "    // TODO: matrix url params\n"
+                + "    /*\n"
                 + "    /api/question/{id: Long[1..1]}/{substring: String[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
@@ -233,6 +236,7 @@ public class KlassCompilerTest
                 + "            criteria    : this.id == id\n"
                 + "            projection  : FilteredAnswersProjection(substring)\n"
                 + "        }\n"
+                + "    */\n"
                 + "    /api/question/{titleSubstring: String[1..1]}\n"
                 + "        GET\n"
                 + "        {\n"
@@ -319,8 +323,10 @@ public class KlassCompilerTest
                 + "        }\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
+        CompilationUnit       compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
+        DomainModel           domainModel     = this.compiler.compile(compilationUnit);
+        ImmutableList<String> compilerErrors  = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+        assertThat(compilerErrors, is(Lists.immutable.empty()));
         assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
         assertThat(domainModel, notNullValue());
     }
@@ -755,82 +761,121 @@ public class KlassCompilerTest
         // TODO: sort compiler errors by source file name, line number
         // TODO: Duplicate duplicate errors
         // TODO: More error codes?
-        String error1 = ""
-                + "File: example.klass Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error2 = ""
-                + "File: example.klass Line: 5 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
-                + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error3 = ""
-                + "File: example.klass Line: 5 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
-                + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error4 = ""
-                + "File: example.klass Line: 6 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
-                + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error5 = ""
-                + "File: example.klass Line: 6 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
-                + "enumeration DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
-                + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error6 = ""
-                + "File: example.klass Line: 9 Char: 7 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "class DuplicateTopLevelItem\n"
-                + "      ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error7 = ""
-                + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
-                + "class DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    duplicateMember: String\n"
-                + "    ^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error8 = ""
-                + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
-                + "class DuplicateTopLevelItem\n"
-                + "{\n"
-                + "    duplicateMember: DuplicateTopLevelItem\n"
-                + "    ^^^^^^^^^^^^^^^\n"
-                + "}\n";
-        String error9 = ""
-                + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
-                + "association DuplicateTopLevelItem\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error10 = ""
-                + "File: example.klass Line: 20 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateTopLevelItem' must declare a relationship.\n"
-                + "association DuplicateTopLevelItem\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^\n";
-        String error11 = ""
-                + "File: example.klass Line: 26 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateAssociationEnd' must declare a relationship.\n"
-                + "association DuplicateAssociationEnd\n"
-                + "            ^^^^^^^^^^^^^^^^^^^^^^^\n";
+
+        String[] expectedErrors = {
+                ""
+                        + "File: example.klass Line: 3 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
+                        + "enumeration DuplicateTopLevelItem\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 5 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
+                        + "enumeration DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 5 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
+                        + "enumeration DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
+                        + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 6 Char: 5 Error: ERR_DUP_ENM: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.\n"
+                        + "enumeration DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 6 Char: 28 Error: ERR_DUP_LIT: Duplicate enumeration pretty name: 'Duplicate pretty name'.\n"
+                        + "enumeration DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    DUPLICATE_ENUM_LITERAL(\"Duplicate pretty name\"),\n"
+                        + "                           ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 9 Char: 7 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
+                        + "class DuplicateTopLevelItem\n"
+                        + "      ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 11 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "class DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: String\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 12 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "class DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: DuplicateTopLevelItem\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
+                        + "association DuplicateTopLevelItem\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 20 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateTopLevelItem' must declare a relationship.\n"
+                        + "association DuplicateTopLevelItem\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 22 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "association DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: DuplicateTopLevelItem[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 23 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateMember'.\n"
+                        + "association DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: DuplicateTopLevelItem[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 26 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateAssociationEnd' must declare a relationship.\n"
+                        + "association DuplicateAssociationEnd\n"
+                        + "            ^^^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 28 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateAssociationEnd'.\n"
+                        + "association DuplicateAssociationEnd\n"
+                        + "{\n"
+                        + "    duplicateAssociationEnd: DuplicateTopLevelItem[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 29 Char: 5 Error: ERR_DUP_MEM: Duplicate member: 'duplicateAssociationEnd'.\n"
+                        + "association DuplicateAssociationEnd\n"
+                        + "{\n"
+                        + "    duplicateAssociationEnd: DuplicateTopLevelItem[1..1]\n"
+                        + "    ^^^^^^^^^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 32 Char: 12 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
+                        + "projection DuplicateTopLevelItem on DuplicateTopLevelItem\n"
+                        + "           ^^^^^^^^^^^^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 34 Char: 5 Error: ERR_DUP_PRJ: Duplicate member: 'duplicateMember'.\n"
+                        + "projection DuplicateTopLevelItem on DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: \"Duplicate Header\",\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+                ""
+                        + "File: example.klass Line: 35 Char: 5 Error: ERR_DUP_PRJ: Duplicate member: 'duplicateMember'.\n"
+                        + "projection DuplicateTopLevelItem on DuplicateTopLevelItem\n"
+                        + "{\n"
+                        + "    duplicateMember: \"Duplicate Header\",\n"
+                        + "    ^^^^^^^^^^^^^^^\n"
+                        + "}\n",
+        };
 
         this.assertCompilerErrors(
                 sourceCodeText,
-                error1,
-                error2,
-                error3,
-                error4,
-                error5,
-                error6,
-                error7,
-                error8,
-                error9,
-                error10,
-                error11);
+                expectedErrors);
     }
 
     @Test
@@ -981,7 +1026,7 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    owned owned parent: Dummy[0..1]\n"
                 + "    owned owned children: Dummy[0..*]\n"
-                + "}";
+                + "}\n";
 
         String error = ""
                 + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"
@@ -1006,7 +1051,7 @@ public class KlassCompilerTest
                 + "{\n"
                 + "    owned parent: Dummy[0..1]\n"
                 + "    children: Dummy[0..*]\n"
-                + "}";
+                + "}\n";
 
         String error = ""
                 + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"

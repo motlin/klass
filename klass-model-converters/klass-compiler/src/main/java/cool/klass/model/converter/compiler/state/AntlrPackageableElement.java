@@ -17,7 +17,7 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
             @Nonnull String name,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, name, nameContext);
+        super(elementContext, compilationUnit, inferred, nameContext, name);
         this.packageName = packageName;
     }
 

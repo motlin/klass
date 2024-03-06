@@ -169,6 +169,7 @@ projection QuestionWriteProjection on Question
 }
 
 // TODO: Type inference on projection paramters
+/*
 projection FilteredAnswersProjection(substring: String[1..1]) on Question
 {
     title                          : "Question title",
@@ -178,25 +179,28 @@ projection FilteredAnswersProjection(substring: String[1..1]) on Question
         body: "Answer body",
     },
 }
+*/
 
 // Just embed inside the Question class?
 service Question
 {
     // TODO: matrix url params
-    /api/question/{id: Long[1..1]}/{substring: String[1..1]}
-        GET
-        {
-            multiplicity: many
-            criteria    : this.id == id
-            projection  : FilteredAnswersProjection(substring)
-        }
-    /api/question/{titleSubstring: String[1..1]}
-        GET
-        {
-            multiplicity: many
-            criteria    : this.title startsWith titleSubstring
-            projection  : QuestionReadProjection
-        }
+    /*
+        /api/question/{id: Long[1..1]}/{substring: String[1..1]}
+            GET
+            {
+                multiplicity: many
+                criteria    : this.id == id
+                projection  : FilteredAnswersProjection(substring)
+            }
+        /api/question/{titleSubstring: String[1..1]}
+            GET
+            {
+                multiplicity: many
+                criteria    : this.title startsWith titleSubstring
+                projection  : QuestionReadProjection
+            }
+    */
     /api/question/{id: Long[1..1]}
         GET
         {

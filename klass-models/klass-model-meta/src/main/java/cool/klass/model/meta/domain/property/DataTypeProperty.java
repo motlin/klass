@@ -1,8 +1,10 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.property;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.DataType.DataTypeBuilder;
+import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 

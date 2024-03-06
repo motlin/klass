@@ -6,9 +6,10 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
-import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
+import cool.klass.model.meta.domain.property.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -57,13 +58,8 @@ public class AntlrAssociation extends AntlrPackageableElement
         this.antlrCriteria = antlrCriteria;
     }
 
-    public AssociationBuilder build()
+    public void exitAssociationDeclaration()
     {
-        if (this.associationBuilder != null)
-        {
-            throw new IllegalStateException();
-        }
-
         int numAssociationEnds = this.associationEndStates.size();
         if (numAssociationEnds != 2)
         {
@@ -81,6 +77,20 @@ public class AntlrAssociation extends AntlrPackageableElement
 
         sourceAntlrAssociationEnd.getType().enterAssociationEnd(targetAntlrAssociationEnd);
         targetAntlrAssociationEnd.getType().enterAssociationEnd(sourceAntlrAssociationEnd);
+    }
+
+    public AssociationBuilder build()
+    {
+        if (this.associationBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+
+        int numAssociationEnds = this.associationEndStates.size();
+        if (numAssociationEnds != 2)
+        {
+            throw new AssertionError(numAssociationEnds);
+        }
 
         CriteriaBuilder criteriaBuilder = this.antlrCriteria.build();
 
@@ -91,14 +101,16 @@ public class AntlrAssociation extends AntlrPackageableElement
                 this.packageName,
                 criteriaBuilder);
 
-        sourceAntlrAssociationEnd.setOwningAssociation(this.associationBuilder);
-        targetAntlrAssociationEnd.setOwningAssociation(this.associationBuilder);
-
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
                 .collect(AntlrAssociationEnd::build)
                 .toImmutable();
 
         this.associationBuilder.setAssociationEndBuilders(associationEndBuilders);
+        return this.associationBuilder;
+    }
+
+    public AssociationBuilder getAssociationBuilder()
+    {
         return this.associationBuilder;
     }
 

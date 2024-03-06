@@ -1,11 +1,14 @@
-package cool.klass.model.meta.domain;
+package cool.klass.model.meta.domain.property;
 
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.Type;
 import cool.klass.model.meta.domain.Type.TypeBuilder;
+import cool.klass.model.meta.domain.TypedElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class Property<T extends Type> extends TypedElement<T>

@@ -5,10 +5,12 @@ import java.util.LinkedHashMap;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -24,6 +26,7 @@ public class AntlrDomainModel
     private final MutableList<AntlrEnumeration> enumerationStates = Lists.mutable.empty();
     private final MutableList<AntlrClass>       classStates       = Lists.mutable.empty();
     private final MutableList<AntlrAssociation> associationStates = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>  projectionStates  = Lists.mutable.empty();
 
     private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration> enumerationsByContext = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
@@ -35,8 +38,9 @@ public class AntlrDomainModel
     private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrAssociation> associationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrProjection>  projectionsByName  = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    public void enterEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
+    public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumerationState)
     {
         this.enumerationStates.add(enumerationState);
         this.enumerationsByName.compute(
@@ -54,7 +58,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void enterClassDeclaration(@Nonnull AntlrClass classState)
+    public void exitClassDeclaration(@Nonnull AntlrClass classState)
     {
         this.classStates.add(classState);
         this.classesByName.compute(
@@ -70,7 +74,7 @@ public class AntlrDomainModel
         }
     }
 
-    public void enterAssociationDeclaration(@Nonnull AntlrAssociation associationState)
+    public void exitAssociationDeclaration(@Nonnull AntlrAssociation associationState)
     {
         this.associationStates.add(associationState);
         this.associationsByName.compute(
@@ -86,6 +90,16 @@ public class AntlrDomainModel
         {
             throw new AssertionError();
         }
+    }
+
+    public void exitProjectionDeclaration(@Nonnull AntlrProjection projectionState)
+    {
+        this.projectionStates.add(projectionState);
+        this.projectionsByName.compute(
+                projectionState.getName(),
+                (name, builder) -> builder == null
+                        ? projectionState
+                        : AntlrProjection.AMBIGUOUS);
     }
 
     public AntlrEnumeration getEnumerationByName(String enumerationName)
@@ -143,6 +157,15 @@ public class AntlrDomainModel
             }
             associationState.reportErrors(compilerErrorHolder);
         }
+
+        for (AntlrProjection projectionState : this.projectionStates)
+        {
+            if (duplicateTopLevelNames.contains(projectionState.getName()))
+            {
+                projectionState.reportDuplicateTopLevelName(compilerErrorHolder);
+            }
+            projectionState.reportErrors(compilerErrorHolder);
+        }
     }
 
     private ImmutableList<String> getTopLevelNames()
@@ -151,6 +174,7 @@ public class AntlrDomainModel
         this.enumerationStates.collect(AntlrEnumeration::getName, topLevelNames);
         this.classStates.collect(AntlrClass::getName, topLevelNames);
         this.associationStates.collect(AntlrAssociation::getName, topLevelNames);
+        this.projectionStates.collect(AntlrProjection::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 
@@ -161,7 +185,8 @@ public class AntlrDomainModel
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
         ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
         this.classStates.each(AntlrClass::build2);
+        ImmutableList<ProjectionBuilder> projectionBuilders = this.projectionStates.collect(AntlrProjection::build).toImmutable();
 
-        return new DomainModelBuilder(enumerationBuilders, classBuilders, associationBuilders);
+        return new DomainModelBuilder(enumerationBuilders, classBuilders, associationBuilders, projectionBuilders);
     }
 }
