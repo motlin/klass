@@ -177,6 +177,7 @@
             <property name="tokens" value="LITERAL_IF" />
             <property name="tokens" value="LITERAL_TRY" />
             <property name="tokens" value="ANNOTATION_DEF" />
+            <property name="tokens" value="ENUM_DEF" />
             <property name="option" value="alone" />
         </module>
         <module name="RightCurly">
@@ -204,6 +205,7 @@
 
         <!-- Coding -->
         <module name="ArrayTrailingComma" />
+        <module name="AvoidNoArgumentSuperConstructorCall" />
         <module name="CovariantEquals" />
         <module name="DeclarationOrder" />
         <module name="DefaultComesLast" />
