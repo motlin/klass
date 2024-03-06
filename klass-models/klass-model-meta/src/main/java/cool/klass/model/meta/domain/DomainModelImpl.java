@@ -336,6 +336,8 @@ public final class DomainModelImpl
             ImmutableList<Association> associations = this.associationBuilders.<Association>collect(AssociationBuilder::build).toImmutable();
             this.interfaceBuilders.each(InterfaceBuilder::build2);
             this.classBuilders.each(KlassBuilder::build2);
+            this.interfaceBuilders.each(InterfaceBuilder::build3);
+            this.classBuilders.each(KlassBuilder::build3);
 
             ImmutableList<Projection> projections = this.projectionBuilders.<Projection>collect(ProjectionBuilder::build).toImmutable();
             this.projectionBuilders.each(AbstractProjectionParentBuilder::build2);

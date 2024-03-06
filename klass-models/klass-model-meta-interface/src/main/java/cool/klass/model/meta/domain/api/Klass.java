@@ -1,6 +1,5 @@
 package cool.klass.model.meta.domain.api;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -8,7 +7,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
-import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -33,52 +31,6 @@ public interface Klass
 
         ImmutableList<Modifier> allModifiers = superClassModifiers.newWithAll(interfaceModifiers);
         return allModifiers.distinctBy(Modifier::getKeyword);
-    }
-
-    @Override
-    default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
-    {
-        ImmutableList<DataTypeProperty> interfaceProperties = this.getInterfaces()
-                .flatCollect(Classifier::getDataTypeProperties)
-                .toImmutable();
-
-        ImmutableList<DataTypeProperty> superClassProperties = this.getSuperClass()
-                .map(Classifier::getDataTypeProperties)
-                .orElseGet(Lists.immutable::empty);
-
-        ImmutableList<DataTypeProperty> allDataTypeProperties = this
-                .getDeclaredDataTypeProperties()
-                .newWithAll(superClassProperties)
-                .newWithAll(interfaceProperties);
-        ImmutableList<DataTypeProperty> result = allDataTypeProperties
-                .distinctBy(NamedElement::getName)
-                .newWithoutAll(this.getDeclaredDataTypeProperties());
-        return result;
-    }
-
-    @Override
-    default DataTypeProperty getDataTypePropertyByName(String name)
-    {
-        DataTypeProperty declaredDataTypePropertyByName = this.getDeclaredDataTypePropertyByName(name);
-        if (declaredDataTypePropertyByName != null)
-        {
-            return declaredDataTypePropertyByName;
-        }
-
-        DataTypeProperty superClassDataTypeProperty = this
-                .getSuperClass()
-                .map(superClass -> superClass.getDataTypePropertyByName(name))
-                .orElse(null);
-
-        if (superClassDataTypeProperty != null)
-        {
-            return superClassDataTypeProperty;
-        }
-
-        return this.getInterfaces()
-                .asLazy()
-                .collectWith(Classifier::getDataTypePropertyByName, name)
-                .detect(Objects::nonNull);
     }
 
     ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
@@ -239,44 +191,6 @@ public interface Klass
         }
 
         return superClass.isStrictSubTypeOf(classifier);
-    }
-
-    default Optional<PrimitiveProperty> getCreatedByProperty()
-    {
-        return this.getDataTypeProperties()
-                .asLazy()
-                .selectInstancesOf(PrimitiveProperty.class)
-                .detectOptional(DataTypeProperty::isCreatedBy);
-    }
-
-    default Optional<PrimitiveProperty> getCreatedOnProperty()
-    {
-        return this.getDataTypeProperties()
-                .asLazy()
-                .selectInstancesOf(PrimitiveProperty.class)
-                .detectOptional(DataTypeProperty::isCreatedOn);
-    }
-
-    default Optional<PrimitiveProperty> getLastUpdatedByProperty()
-    {
-        return this.getDataTypeProperties()
-                .asLazy()
-                .selectInstancesOf(PrimitiveProperty.class)
-                .detectOptional(DataTypeProperty::isLastUpdatedBy);
-    }
-
-    default Optional<DataTypeProperty> getSystemFromProperty()
-    {
-        return this.getDataTypeProperties()
-                .select(DataTypeProperty::isSystem)
-                .detectOptional(DataTypeProperty::isFrom);
-    }
-
-    default Optional<DataTypeProperty> getSystemToProperty()
-    {
-        return this.getDataTypeProperties()
-                .select(DataTypeProperty::isSystem)
-                .detectOptional(DataTypeProperty::isTo);
     }
 
     default ImmutableList<Klass> getSubClassChain()

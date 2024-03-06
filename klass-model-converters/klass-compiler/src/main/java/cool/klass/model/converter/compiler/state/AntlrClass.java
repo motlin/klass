@@ -388,19 +388,6 @@ public class AntlrClass
 
         this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
 
-        Optional<AntlrAssociationEnd> versionAssociationEnd =
-                this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersion);
-        Optional<AntlrAssociationEnd> versionedAssociationEnd =
-                this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersioned);
-
-        Optional<AssociationEndBuilder> versionAssociationEndBuilder =
-                versionAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
-        Optional<AssociationEndBuilder> versionedAssociationEndBuilder =
-                versionedAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
-
-        this.klassBuilder.setVersionPropertyBuilder(versionAssociationEndBuilder);
-        this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
-
         ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
                 .collect(AntlrAssociationEndSignature::build)
                 .toImmutable();

@@ -2,6 +2,7 @@ package cool.klass.model.meta.domain.api;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -9,12 +10,12 @@ import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.modifier.ModifierOwner;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public interface Classifier
@@ -54,85 +55,13 @@ public interface Classifier
 
     ImmutableList<Property> getDeclaredProperties();
 
-    // TODO: Optimize Classifier.getKeyProperties()
-    default ImmutableList<DataTypeProperty> getKeyProperties()
-    {
-        return this.getDataTypeProperties().select(DataTypeProperty::isKey);
-    }
+    ImmutableList<DataTypeProperty> getKeyProperties();
 
     @Nonnull
-    default ImmutableList<DataTypeProperty> getDataTypeProperties()
-    {
-        ImmutableList<DataTypeProperty> inheritedDataTypeProperties = this.getInheritedDataTypeProperties();
-
-        MutableSet<String> propertyNames = inheritedDataTypeProperties.collect(NamedElement::getName).toSet();
-
-        ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.getDeclaredDataTypeProperties()
-                .reject(declaredProperty -> propertyNames.contains(declaredProperty.getName()));
-
-        ImmutableList<DataTypeProperty> dataTypeProperties = inheritedDataTypeProperties.newWithAll(
-                declaredDataTypeProperties);
-
-        ImmutableList<DataTypeProperty> foreignKeys = dataTypeProperties.select(DataTypeProperty::isForeignKey);
-        ImmutableList<DataTypeProperty> keysAndForeignKeys = foreignKeys.select(DataTypeProperty::isKey);
-        ImmutableList<DataTypeProperty> keys = dataTypeProperties.select(DataTypeProperty::isKey).reject(DataTypeProperty::isForeignKey);
-        ImmutableList<DataTypeProperty> nonKeyForeignKeys = foreignKeys.reject(DataTypeProperty::isKey).reject(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isLastUpdatedBy);
-        ImmutableList<DataTypeProperty> system = dataTypeProperties.select(DataTypeProperty::isSystemRange);
-        ImmutableList<DataTypeProperty> systemFrom = dataTypeProperties.select(DataTypeProperty::isSystemFrom);
-        ImmutableList<DataTypeProperty> systemTo = dataTypeProperties.select(DataTypeProperty::isSystemTo);
-        ImmutableList<DataTypeProperty> valid = dataTypeProperties.select(DataTypeProperty::isValidRange);
-        ImmutableList<DataTypeProperty> validFrom = dataTypeProperties.select(DataTypeProperty::isValidFrom);
-        ImmutableList<DataTypeProperty> validTo = dataTypeProperties.select(DataTypeProperty::isValidTo);
-        ImmutableList<DataTypeProperty> createdBy = dataTypeProperties.select(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isKey);
-        ImmutableList<DataTypeProperty> createdOn = dataTypeProperties.select(DataTypeProperty::isCreatedOn);
-        ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy).reject(DataTypeProperty::isKey);
-
-        ImmutableList<DataTypeProperty> initialDataTypeProperties = Lists.immutable
-                .withAll(keysAndForeignKeys)
-                .newWithAll(keys)
-                .newWithAll(nonKeyForeignKeys)
-                .newWithAll(system)
-                .newWithAll(systemFrom)
-                .newWithAll(systemTo)
-                .newWithAll(valid)
-                .newWithAll(validFrom)
-                .newWithAll(validTo)
-                .newWithAll(createdBy)
-                .newWithAll(createdOn)
-                .newWithAll(lastUpdatedBy);
-
-        ImmutableList<DataTypeProperty> otherDataTypeProperties = dataTypeProperties
-                .reject(initialDataTypeProperties::contains);
-
-        ImmutableList<DataTypeProperty> result = initialDataTypeProperties.newWithAll(otherDataTypeProperties);
-
-        if (!result.equals(result.distinct()))
-        {
-            throw new AssertionError(result);
-        }
-
-        return result;
-    }
-
-    default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
-    {
-        // TODO: Factor in depth of declaration
-
-        ImmutableList<DataTypeProperty> inheritedDataTypeProperties = this.getInterfaces()
-                .flatCollect(Classifier::getDataTypeProperties)
-                .toImmutable();
-
-        return this
-                .getDeclaredDataTypeProperties()
-                .newWithAll(inheritedDataTypeProperties)
-                .distinctBy(NamedElement::getName)
-                .newWithoutAll(this.getDeclaredDataTypeProperties());
-    }
+    ImmutableList<DataTypeProperty> getDataTypeProperties();
 
     @Nonnull
     ImmutableList<DataTypeProperty> getDeclaredDataTypeProperties();
-
-    DataTypeProperty getDeclaredDataTypePropertyByName(String name);
 
     DataTypeProperty getDataTypePropertyByName(String name);
 
@@ -224,4 +153,22 @@ public interface Classifier
 
         return foreignKeyConstraints;
     }
+
+    Optional<PrimitiveProperty> getSystemProperty();
+
+    Optional<PrimitiveProperty> getSystemFromProperty();
+
+    Optional<PrimitiveProperty> getSystemToProperty();
+
+    Optional<PrimitiveProperty> getValidProperty();
+
+    Optional<PrimitiveProperty> getValidFromProperty();
+
+    Optional<PrimitiveProperty> getValidToProperty();
+
+    Optional<PrimitiveProperty> getCreatedByProperty();
+
+    Optional<PrimitiveProperty> getCreatedOnProperty();
+
+    Optional<PrimitiveProperty> getLastUpdatedByProperty();
 }

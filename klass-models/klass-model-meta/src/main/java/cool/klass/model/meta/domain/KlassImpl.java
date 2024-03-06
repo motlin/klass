@@ -6,11 +6,13 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.source.KlassWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
@@ -38,6 +40,7 @@ public final class KlassImpl
     private Optional<AssociationEnd> versionProperty   = Optional.empty();
     @Nonnull
     private Optional<AssociationEnd> versionedProperty = Optional.empty();
+
     private Optional<Klass>          superClass;
     private ImmutableList<Klass>     subClasses;
 
@@ -72,21 +75,11 @@ public final class KlassImpl
         return this.versionProperty;
     }
 
-    private void setVersionProperty(@Nonnull Optional<AssociationEnd> versionProperty)
-    {
-        this.versionProperty = Objects.requireNonNull(versionProperty);
-    }
-
     @Override
     @Nonnull
     public Optional<AssociationEnd> getVersionedProperty()
     {
         return this.versionedProperty;
-    }
-
-    private void setVersionedProperty(@Nonnull Optional<AssociationEnd> versionedProperty)
-    {
-        this.versionedProperty = Objects.requireNonNull(versionedProperty);
     }
 
     @Override
@@ -136,6 +129,9 @@ public final class KlassImpl
         }
         this.associationEnds = Objects.requireNonNull(associationEnds);
         this.associationEndsByName = this.associationEnds.groupByUniqueKey(AssociationEnd::getName);
+
+        this.versionProperty = this.associationEnds.detectOptional(AssociationEnd::isVersion);
+        this.versionedProperty = this.associationEnds.detectOptional(AssociationEnd::isVersioned);
     }
 
     @Override
@@ -192,11 +188,6 @@ public final class KlassImpl
         @Nullable
         private ImmutableList<AssociationEndBuilder> associationEndBuilders;
 
-        @Nonnull
-        private Optional<AssociationEndBuilder> versionPropertyBuilder   = Optional.empty();
-        @Nonnull
-        private Optional<AssociationEndBuilder> versionedPropertyBuilder = Optional.empty();
-
         private Optional<KlassBuilder> superClassBuilder;
         private ImmutableList<KlassBuilder> subClassBuilders;
 
@@ -215,24 +206,6 @@ public final class KlassImpl
             this.inheritanceType = Objects.requireNonNull(inheritanceType);
             this.isUser          = isUser;
             this.isTransient     = isTransient;
-        }
-
-        public void setVersionPropertyBuilder(@Nonnull Optional<AssociationEndBuilder> versionPropertyBuilder)
-        {
-            if (this.versionedPropertyBuilder.isPresent())
-            {
-                throw new IllegalStateException();
-            }
-            this.versionPropertyBuilder = Objects.requireNonNull(versionPropertyBuilder);
-        }
-
-        public void setVersionedPropertyBuilder(@Nonnull Optional<AssociationEndBuilder> versionedPropertyBuilder)
-        {
-            if (this.versionedPropertyBuilder.isPresent())
-            {
-                throw new IllegalStateException();
-            }
-            this.versionedPropertyBuilder = Objects.requireNonNull(versionedPropertyBuilder);
         }
 
         public void setAssociationEndBuilders(@Nonnull ImmutableList<AssociationEndBuilder> associationEndBuilders)
@@ -288,8 +261,6 @@ public final class KlassImpl
                     .toImmutable();
             this.element.setDeclaredAssociationEnds(declaredAssociationEnds);
 
-            this.element.setVersionProperty(this.versionPropertyBuilder.map(AssociationEndBuilder::getElement));
-            this.element.setVersionedProperty(this.versionedPropertyBuilder.map(AssociationEndBuilder::getElement));
             Optional<Klass> maybeSuperClass = this.superClassBuilder.map(ElementBuilder::getElement);
             this.element.setSuperClass(maybeSuperClass);
             ImmutableList<Klass> subClasses = this.subClassBuilders.collect(ElementBuilder::getElement);
@@ -304,6 +275,34 @@ public final class KlassImpl
                     .toReversed();
 
             this.element.setAssociationEnds(associationEnds);
+        }
+
+        @Override
+        protected ImmutableList<DataTypeProperty> getDataTypeProperties()
+        {
+            ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.dataTypePropertyBuilders
+                    .collect(property -> property.getElement());
+
+            ImmutableList<DataTypeProperty> interfaceProperties = this.interfaceBuilders
+                    .collect(ElementBuilder::getElement)
+                    .flatCollect(Classifier::getDataTypeProperties)
+                    .toImmutable();
+
+            ImmutableList<DataTypeProperty> superClassProperties = this.superClassBuilder
+                    .map(ElementBuilder::getElement)
+                    .map(Classifier::getDataTypeProperties)
+                    .orElseGet(Lists.immutable::empty);
+
+            ImmutableList<DataTypeProperty> allDataTypeProperties = interfaceProperties
+                    .newWithAll(superClassProperties)
+                    .newWithAll(declaredDataTypeProperties);
+
+            ImmutableList<DataTypeProperty> result = allDataTypeProperties
+                    .toReversed()
+                    .distinctBy(NamedElement::getName)
+                    .toReversed();
+
+            return result;
         }
 
         @Override

@@ -51,4 +51,9 @@ public interface AssociationEnd
                         !keyProperty.isForeignKeyWithOpposite()
                                 && !keyProperty.isForeignKeyMatchingKeyOnPath(this));
     }
+
+    default boolean isVersioned()
+    {
+        return this.getOpposite().isVersion();
+    }
 }
