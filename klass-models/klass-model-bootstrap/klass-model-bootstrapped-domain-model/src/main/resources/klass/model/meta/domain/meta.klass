@@ -470,7 +470,7 @@ association AssociationEndHasModifiers
 association OperatorCriteriaHasSourceExpressionValue
 {
     operatorCriteriaSourceOf: OperatorCriteria[0..1];
-    sourceExpressionValue: ExpressionValue[1..1];
+    sourceExpressionValue: ExpressionValue[1..1] owned;
 
     relationship this.sourceExpressionId == ExpressionValue.id
 }
@@ -478,7 +478,7 @@ association OperatorCriteriaHasSourceExpressionValue
 association OperatorCriteriaHasTargetExpressionValue
 {
     operatorCriteriaTargetOf: OperatorCriteria[0..1];
-    targetExpressionValue: ExpressionValue[1..1];
+    targetExpressionValue: ExpressionValue[1..1] owned;
 
     relationship this.targetExpressionId == ExpressionValue.id
 }
