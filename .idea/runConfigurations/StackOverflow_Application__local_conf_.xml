@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StackOverflow Application (local.conf)" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.stackoverflow.dropwizard.application.StackOverflowApplication" />
+    <module name="stackoverflow-dropwizard-application" />
+    <option name="PROGRAM_PARAMETERS" value="server config.yml" />
+    <option name="VM_PARAMETERS" value="-Dconfig.resource=local.conf" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
