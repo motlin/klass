@@ -12,6 +12,8 @@ import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,10 +58,14 @@ public class SampleDataGeneratorBundle implements Bundle
 
         String  systemTimeString = sampleDataGeneratorConfig.getString("dataSystemTime");
         Instant systemTime       = Instant.parse(systemTimeString);
+
+        ImmutableList<String> skippedPackages = Lists.immutable.withAll(sampleDataGeneratorConfig.getStringList("skippedPackages"));
+
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 this.domainModel,
                 this.dataStore,
-                systemTime);
+                systemTime,
+                skippedPackages);
         sampleDataGenerator.generate();
     }
 }

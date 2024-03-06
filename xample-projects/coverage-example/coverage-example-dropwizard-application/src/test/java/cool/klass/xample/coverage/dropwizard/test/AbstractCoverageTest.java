@@ -17,6 +17,7 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
+import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -45,7 +46,8 @@ public class AbstractCoverageTest
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
                 application.getDomainModel(),
                 application.getDataStore(),
-                this.now);
+                this.now,
+                Lists.immutable.empty());
         sampleDataGenerator.generate();
     }
 
