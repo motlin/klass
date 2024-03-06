@@ -18,19 +18,31 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-graphql-data-fetchers</artifactId>
+            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
+            <artifactId>${app.artifactId}-graphql-data-fetchers</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-graphql-type-runtime-wiring-provider</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-data-fetchers</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -60,13 +72,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
+            <artifactId>klass-data-store</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-data-store</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -93,8 +105,8 @@
 
                 <configuration>
                     <klassSourcePackages>
-                        <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
 
@@ -113,6 +125,12 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-domain-model</artifactId>
+                        <version>${klass.version}</version>
                     </dependency>
 
                 </dependencies>

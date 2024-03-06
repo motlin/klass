@@ -36,20 +36,20 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-graphql-reladomo-operation-fetcher</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-graphql-reladomo-finder-fetcher</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-graphql-deep-fetcher</artifactId>
+            <artifactId>klass-graphql-reladomo-operation-fetcher</artifactId>
             <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-graphql-deep-fetcher</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -60,13 +60,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
+            <artifactId>klass-data-store</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-data-store</artifactId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
