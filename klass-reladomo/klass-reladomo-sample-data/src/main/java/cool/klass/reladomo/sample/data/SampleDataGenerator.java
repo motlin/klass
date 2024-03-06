@@ -3,8 +3,11 @@ package cool.klass.reladomo.sample.data;
 import java.time.Instant;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -39,8 +42,15 @@ public class SampleDataGenerator
         this.dataStore.runInTransaction(transaction ->
         {
             transaction.setSystemTime(this.systemTime.toEpochMilli());
-            this.domainModel.getKlasses().reject(Klass::isAbstract).each(this::generate);
+            ImmutableList<Klass> classesWithTables = this.domainModel.getKlasses().select(this::needsTable);
+            classesWithTables.each(this::generate);
         });
+    }
+
+    private boolean needsTable(@Nonnull Klass klass)
+    {
+        return klass.getInheritanceType() == InheritanceType.NONE
+                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 
     private void generate(Klass klass)

@@ -121,8 +121,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
 
-        if (!klass.isAbstract()
-                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS)
+        if (this.needsTable(klass))
         {
             mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
         }
@@ -154,6 +153,12 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         mithraObject.setRelationships(this.convertRelationships(klass.getAssociationEnds()));
 
         return mithraObject;
+    }
+
+    private boolean needsTable(@Nonnull Klass klass)
+    {
+        return klass.getInheritanceType() == InheritanceType.NONE
+                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS;
     }
 
     private ImmutableList<DataTypeProperty> getDataTypeProperties(@Nonnull Klass klass)
