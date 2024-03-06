@@ -64,7 +64,15 @@ public class DomainModelCompilerLoader
         this.compilerAnnotationHandler = Objects.requireNonNull(compilerAnnotationHandler);
     }
 
-    private static void logCompilerAnnotation(RootCompilerAnnotation compilerAnnotation)
+    public static void logCompilerError(RootCompilerAnnotation compilerAnnotation)
+    {
+        if (compilerAnnotation.isError())
+        {
+            LOGGER.error("{}", compilerAnnotation);
+        }
+    }
+
+    public static void logCompilerAnnotation(RootCompilerAnnotation compilerAnnotation)
     {
         if (compilerAnnotation.isError())
         {
