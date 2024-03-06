@@ -28,6 +28,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-reladomo-simulated-sequence</artifactId>
             <version>${project.version}</version>
@@ -46,16 +51,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections</artifactId>
         </dependency>
 
         <!-- TODO: These two dependencies are only needed by cool.klass.generator.reladomo.ReladomoRuntimeConfigurationGenerator. Decide if it's convenient to have all the Reladomo code generators in a single plugin or whether it would be cleaner to split them. -->
