@@ -151,6 +151,10 @@ public class IncomingUpdateDataModelValidator
         }
         if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
+            if (dataTypeProperty.isForeignKey())
+            {
+                return;
+            }
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "user id");
             return;
         }

@@ -146,6 +146,10 @@ public class IncomingCreateDataModelValidator
         }
         else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
+            if (dataTypeProperty.isForeignKey())
+            {
+                return;
+            }
             this.handleAuditProperty(dataTypeProperty);
         }
         else if (dataTypeProperty.isCreatedOn())
