@@ -82,6 +82,7 @@
     "domainModel": {
       "type": "compiler",
       "sourcePackages": [
+        "klass.model.meta.domain",
         "cool.klass.xample.coverage"
       ]
     },
@@ -140,7 +141,7 @@
     ]
   },
   "bootstrap": {
-    "enabled": false
+    "enabled": true
   },
   "liquibase": {
     "enabled": true,
@@ -164,7 +165,6 @@
       "cool/klass/xample/coverage/graphql/schema/query/GraphQLQuerySchema.graphqls",
       "cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls",
       "cool/klass/xample/coverage/graphql/schema/GraphQLSchema.graphqls",
-      "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
   },
   "spaRedirectFilter": {

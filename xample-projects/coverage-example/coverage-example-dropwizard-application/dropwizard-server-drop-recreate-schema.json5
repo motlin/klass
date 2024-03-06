@@ -99,7 +99,7 @@
     "maxEntitySize": "1 kilobyte"
   },
   "bootstrap": {
-    "enabled": false
+    "enabled": true
   },
   "liquibase": {
     "enabled": true,

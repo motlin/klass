@@ -189,7 +189,7 @@
     "dryRun": false,
   },
   "bootstrap": {
-    "enabled": false
+    "enabled": true
   },
   "graphQL": {
     "enableTracing": false,

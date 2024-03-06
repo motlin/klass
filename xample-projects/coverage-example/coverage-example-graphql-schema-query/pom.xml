@@ -25,6 +25,7 @@
 
                 <configuration>
                     <klassSourcePackages>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>

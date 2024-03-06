@@ -7,13 +7,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
 import io.liftwizard.dropwizard.configuration.graphql.GraphQLFactoryProvider;
+import io.liftwizard.servlet.config.spa.SPARedirectFilterFactory;
+import io.liftwizard.servlet.config.spa.SPARedirectFilterFactoryProvider;
 
 public class CoverageExampleConfiguration
         extends AbstractKlassConfiguration
-        implements GraphQLFactoryProvider
+        implements GraphQLFactoryProvider,
+        SPARedirectFilterFactoryProvider
 {
     @Nonnull
     private @Valid GraphQLFactory graphQL = new GraphQLFactory();
+
+    private SPARedirectFilterFactory spaRedirectFilterFactory = new SPARedirectFilterFactory();
 
     @Override
     @Nonnull
@@ -29,5 +34,16 @@ public class CoverageExampleConfiguration
         this.graphQL = factory;
     }
 
-    // TODO: implement service configuration
+    @Override
+    @JsonProperty("spaRedirectFilter")
+    public SPARedirectFilterFactory getSPARedirectFilterFactory()
+    {
+        return this.spaRedirectFilterFactory;
+    }
+
+    @JsonProperty("spaRedirectFilter")
+    public void setSPARedirectFilterFactory(SPARedirectFilterFactory spaRedirectFilterFactory)
+    {
+        this.spaRedirectFilterFactory = spaRedirectFilterFactory;
+    }
 }

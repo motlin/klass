@@ -35,6 +35,18 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-data-fetchers</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-graphql-operation-fetcher</artifactId>
         </dependency>
@@ -68,6 +80,7 @@
                 <configuration>
                     <klassSourcePackages>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
 
@@ -86,6 +99,12 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-domain-model</artifactId>
+                        <version>${klass.version}</version>
                     </dependency>
 
                 </dependencies>

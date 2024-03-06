@@ -66,6 +66,7 @@
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
+                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
@@ -83,6 +84,12 @@
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-domain-model</artifactId>
+                        <version>${klass.version}</version>
                     </dependency>
 
                 </dependencies>
@@ -207,6 +214,16 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-spa-redirect-filter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-spa-redirect-filter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
 
@@ -243,6 +260,11 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-named-data-source-factory</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
         </dependency>
         <!--endregion-->
 
@@ -420,6 +442,18 @@
             <artifactId>klass-serialization-jackson-module-meta-model</artifactId>
             <version>${klass.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-services</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-runtime-wiring</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Klass runtime dependencies -->
@@ -464,6 +498,48 @@
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-bootstrap-writer</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-liquibase-schema</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-domain-model</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-schema</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-graphql-reladomo-finder</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Compile dependencies -->
@@ -488,8 +564,23 @@
         </dependency>
 
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-assets</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.smoketurner.dropwizard</groupId>
             <artifactId>graphql-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
         </dependency>
 
         <dependency>

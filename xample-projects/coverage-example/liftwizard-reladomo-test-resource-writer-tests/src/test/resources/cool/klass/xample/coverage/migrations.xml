@@ -6,5 +6,6 @@
 
     <include file="io/liftwizard/liquibase/migrations-object-sequence.xml" />
     <include file="cool/klass/xample/coverage/liquibase/schema/migrations-initial-schema.xml" />
+    <include file="klass/model/meta/domain/liquibase/schema/migrations-initial-schema.xml" />
 
 </databaseChangeLog>
