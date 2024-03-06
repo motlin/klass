@@ -2,15 +2,17 @@
 
 set -uo pipefail
 
-VOICE='Serena (Premium)'
+VOICE="${VOICE:-Serena (Premium)}"
+RECORD="${RECORD:-false}"
+PUSHOVER="${PUSHOVER:-false}"
+SILENT="${SILENT:-false}"
+
 MAVEN='mvnd'
 COMMAND="Build"
 INCREMENTAL=false
 SERIAL=false
-RECORD=false
-ANALYZE_FLAG=false
-PUSHOVER_FLAG=false
-LIFTWIZARD_FILE_MATCH_RULE_RERECORD=false
+ANALYZE=false
+LIFTWIZARD_RERECORD=false
 
 while [[ $# -gt 0 ]]; do
     key="$1"
@@ -33,11 +35,15 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --analyze)
-            ANALYZE_FLAG=true
+            ANALYZE=true
             shift
             ;;
         --pushover)
-            PUSHOVER_FLAG=true
+            PUSHOVER=true
+            shift
+            ;;
+        --silent)
+            SILENT=true
             shift
             ;;
         *)
@@ -47,15 +53,28 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ "$ANALYZE_FLAG" = true ]; then
-    ANALYZE_SKIP=false
-else
-    ANALYZE_SKIP=true
-fi
+# Function to check if a flag is set in either environment variable or command line
+function checkFlag {
+    key="$1"
+    value="${!key:-false}"
+    if [ "$value" = true ] || [ "${!key}" = true ]; then
+        echo true
+    else
+        echo false
+    fi
+}
+
+# Check flags from environment variables
+RECORD=$(checkFlag "RECORD")
+PUSHOVER=$(checkFlag "PUSHOVER")
+SILENT=$(checkFlag "SILENT")
+ANALYZE_SKIP=$(checkFlag "ANALYZE")
 
 function echoSay {
     echo "$1"
-    say --voice "$VOICE" "$1" &
+    if [ "$SILENT" = false ]; then
+        say --voice "$VOICE" "$1" &
+    fi
 }
 
 function failWithMessage {
@@ -69,7 +88,7 @@ function failWithMessage {
 
         # osascript -e "display notification \"$MESSAGE\" with title \"$COMMAND failed\""
 
-        if [ "$PUSHOVER_FLAG" = true ]; then
+        if [ "$PUSHOVER" = true ]; then
             curl -s \
                 --form-string "token=$PUSHOVER_TOKEN" \
                 --form-string "user=$PUSHOVER_USER" \
@@ -104,9 +123,9 @@ if [[ $COMMIT_MESSAGE == *\[no-daemon\]* ]]; then
 fi
 
 if [ "$RECORD" = true ] || [[ $COMMIT_MESSAGE == *\[record\]* ]]; then
-    LIFTWIZARD_FILE_MATCH_RULE_RERECORD=true
+    LIFTWIZARD_RERECORD=true
 fi
-export LIFTWIZARD_FILE_MATCH_RULE_RERECORD
+export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=${LIFTWIZARD_RERECORD}
 
 if [[ $COMMIT_MESSAGE == *\[serial\]* ]]; then
     SERIAL=true
@@ -124,14 +143,13 @@ if [ "$INCREMENTAL" != true ]; then
     $MAVEN clean --threads 2C --quiet
 fi
 
-ALWAYS_RUN_PLUGINS='liftwizard-generator-reladomo-code:*,liftwizard-generator-reladomo-database:*,liftwizard-generator-xsd2bean:*,klass-compiler:*,klass-generator-dropwizard:*,klass-generator-dto:*,klass-generator-graphql-data-fetcher:*'
-$MAVEN verify $PARALLELISM -Dmaven.build.cache.alwaysRunPlugins=$ALWAYS_RUN_PLUGINS -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
+$MAVEN verify $PARALLELISM -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
     if [ "$SERIAL" != true ]; then
         export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=false
-        ./mvnw verify --resume --fail-fast -Dmaven.build.cache.enabled=false -Dmaven.build.cache.alwaysRunPlugins=$ALWAYS_RUN_PLUGINS -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
+        ./mvnw verify --resume --fail-fast -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
     fi
     failWithMessage $EXIT_CODE "$MAVEN verify"
     exit 1
