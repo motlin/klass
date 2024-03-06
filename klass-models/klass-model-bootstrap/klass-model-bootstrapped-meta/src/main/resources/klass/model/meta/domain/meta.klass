@@ -10,13 +10,13 @@ interface Element
 interface NamedElement
     implements Element
 {
-    name: String key;
+    name: String key maximumLength(256);
     ordinal: Integer;
 }
 
 interface PackageableElement implements NamedElement
 {
-    packageName: String;
+    packageName: String maximumLength(100000);
 
     // fullyQualifiedName: String = packageName + "." + name;
 }
@@ -27,8 +27,8 @@ class Enumeration implements PackageableElement
 
 class EnumerationLiteral implements NamedElement
 {
-    enumerationName               : String key;
-    prettyName                    : String?;
+    enumerationName               : String key maximumLength(256);
+    prettyName                    : String? maximumLength(256);
 }
 
 association EnumerationHasLiterals
@@ -64,8 +64,8 @@ class Interface
 
 class ClassifierInterfaceMapping
 {
-    classifierName: String key private;
-    interfaceName: String key private;
+    classifierName: String key private maximumLength(256);
+    interfaceName: String key private maximumLength(256);
 }
 
 association ClassifierHasClassifierInterfaceMapping
@@ -87,7 +87,7 @@ association ClassifierInterfaceMappingHasInterface
 class Klass
     extends Classifier
 {
-    superClassName: String? private;
+    superClassName: String? private maximumLength(256);
     inheritanceType: InheritanceType;
 }
 
@@ -127,7 +127,7 @@ class DataTypeProperty
     abstract(table-per-class)
     implements NamedElement
 {
-    classifierName                : String key;
+    classifierName                : String key maximumLength(256);
     optional                      : Boolean;
     key                           : Boolean;
 }
@@ -142,7 +142,7 @@ class PrimitiveProperty
 class EnumerationProperty
     extends DataTypeProperty
 {
-    enumerationName               : String private;
+    enumerationName               : String private maximumLength(256);
 }
 
 association EnumerationPropertyHasEnumeration
@@ -193,8 +193,8 @@ class NumericPropertyValidation
     abstract(table-per-subclass)
     implements PropertyValidation
 {
-    classifierName                : String key;
-    propertyName                  : String key;
+    classifierName                : String key maximumLength(256);
+    propertyName                  : String key maximumLength(256);
     number: Integer;
 }
 
@@ -257,8 +257,8 @@ association PrimitivePropertyHasMaxPropertyValidation
 class PropertyModifier
     implements NamedElement
 {
-    classifierName                : String key;
-    propertyName                  : String key;
+    classifierName                : String key maximumLength(256);
+    propertyName                  : String key maximumLength(256);
 }
 
 association DataTypePropertyHasModifiers
@@ -274,7 +274,7 @@ association DataTypePropertyHasModifiers
 class ClassifierModifier
     implements NamedElement
 {
-    classifierName: String key;
+    classifierName: String key maximumLength(256);
 }
 
 association ClassifierHasModifiers
@@ -311,11 +311,11 @@ class Association implements PackageableElement
 
 class AssociationEnd implements NamedElement
 {
-    owningClassName               : String key private;
-    associationName               : String;
+    owningClassName               : String key private maximumLength(256);
+    associationName               : String maximumLength(256);
     direction                     : AssociationEndDirection;
     multiplicity                  : Multiplicity;
-    resultTypeName                : String private;
+    resultTypeName                : String private maximumLength(256);
 }
 
 // TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)
@@ -349,8 +349,8 @@ association AssociationEndHasResultType
 class AssociationEndModifier
     implements NamedElement
 {
-    owningClassName               : String key;
-    associationEndName            : String key;
+    owningClassName               : String key maximumLength(256);
+    associationEndName            : String key maximumLength(256);
 }
 
 association AssociationEndHasModifiers
@@ -497,7 +497,7 @@ class Parameter
     implements NamedElement
 {
     // name isn't key
-    name: String;
+    name: String maximumLength(256);
     id: Long key id;
     multiplicity: Multiplicity;
 }
@@ -506,7 +506,7 @@ class EnumerationParameter
     extends Parameter
 {
     id  : Long key private;
-    enumerationName: String private;
+    enumerationName: String private maximumLength(256);
 }
 
 class PrimitiveParameter
@@ -529,9 +529,9 @@ class MemberReferencePath
     extends ExpressionValue
 {
     id  : Long key private;
-    className: String private;
-    propertyClassName: String private;
-    propertyName: String private;
+    className: String private maximumLength(256);
+    propertyClassName: String private maximumLength(256);
+    propertyName: String private maximumLength(256);
 }
 
 association MemberReferencePathHasClass
@@ -545,8 +545,8 @@ association MemberReferencePathHasClass
 class MemberReferencePathAssociationEndMapping
 {
     memberReferencePathId: Long key private;
-    associationOwningClassName: String key private;
-    associationEndName: String key private;
+    associationOwningClassName: String key private maximumLength(256);
+    associationEndName: String key private maximumLength(256);
 }
 
 association MemberReferencePathHasMemberReferencePathAssociationEndMapping
@@ -607,9 +607,9 @@ association BinaryCriteriaHasRight
 class ParameterizedProperty
     implements NamedElement
 {
-    owningClassName               : String key private;
+    owningClassName               : String key private maximumLength(256);
     multiplicity                  : Multiplicity;
-    resultTypeName                : String private;
+    resultTypeName                : String private maximumLength(256);
 }
 
 association ClassHasParameterizedProperties
@@ -629,8 +629,8 @@ enumeration OrderByDirection
 
 class AssociationEndOrderBy
 {
-    associationEndClassName: String key private;
-    associationEndName: String key private;
+    associationEndClassName: String key private maximumLength(256);
+    associationEndName: String key private maximumLength(256);
     thisMemberReferencePathId: Long key private;
     orderByDirection: OrderByDirection;
 }
@@ -662,8 +662,8 @@ association ParameterizedPropertyHasResultType
 
 class ParameterizedPropertyOrdering
 {
-    owningClassName               : String private key;
-    name                          : String key;
+    owningClassName               : String private key maximumLength(256);
+    name                          : String key maximumLength(256);
     inferred                      : Boolean;
     orderingId                    : Long private;
 }
@@ -688,8 +688,8 @@ association ParameterizedPropertyHasParameters
 
 class ParameterizedPropertyParameter implements NamedElement
 {
-    classifierName                : String key private;
-    parameterizedPropertyName     : String key;
+    classifierName                : String key private maximumLength(256);
+    parameterizedPropertyName     : String key maximumLength(256);
 }
 
 class ProjectionElement
@@ -698,7 +698,7 @@ class ProjectionElement
 {
     // TODO: Write a test that fails if name is a key
     // name isn't key
-    name: String;
+    name: String maximumLength(256);
     id  : Long key id;
     parentId: Long? private;
 }
@@ -710,7 +710,7 @@ class ServiceProjection
 {
     id  : Long key private;
     // TODO: unique constraint on name
-    className                     : String private;
+    className                     : String private maximumLength(256);
 }
 
 // TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
@@ -720,8 +720,8 @@ class ProjectionWithAssociationEnd
 {
     id  : Long key private;
     parentId                      : Long private;
-    associationEndClass           : String private;
-    associationEndName: String private;
+    associationEndClass           : String private maximumLength(256);
+    associationEndName: String private maximumLength(256);
 }
 
 class ProjectionAssociationEnd
@@ -729,8 +729,8 @@ class ProjectionAssociationEnd
 {
     id  : Long key private;
     parentId                      : Long private;
-    associationEndClass           : String private;
-    associationEndName: String private;
+    associationEndClass           : String private maximumLength(256);
+    associationEndName: String private maximumLength(256);
 }
 
 class ProjectionProjectionReference
@@ -738,9 +738,9 @@ class ProjectionProjectionReference
 {
     id  : Long key private;
     parentId                      : Long private;
-    associationEndClass           : String private;
-    associationEndName: String private;
-    projectionName                  : String private;
+    associationEndClass           : String private maximumLength(256);
+    associationEndName: String private maximumLength(256);
+    projectionName                  : String private maximumLength(256);
 }
 
 class ProjectionDataTypeProperty
@@ -748,8 +748,8 @@ class ProjectionDataTypeProperty
 {
     id  : Long key private;
     parentId                      : Long private;
-    propertyClassifierName        : String private;
-    propertyName: String private;
+    propertyClassifierName        : String private maximumLength(256);
+    propertyName: String private maximumLength(256);
 }
 
 association ProjectionElementHasChildren
@@ -798,7 +798,7 @@ association ProjectionProjectionReferenceHasProjection
 class ServiceGroup
     implements PackageableElement
 {
-    className                     : String key;
+    className                     : String key maximumLength(256);
 }
 
 association ServiceGroupHasClass
@@ -812,8 +812,8 @@ association ServiceGroupHasClass
 class Url
     implements Element
 {
-    className                     : String key;
-    url                           : String key;
+    className                     : String key maximumLength(256);
+    url                           : String key maximumLength(8192);
 }
 
 enumeration UrlParameterType
@@ -825,8 +825,8 @@ enumeration UrlParameterType
 class UrlParameter
     implements Element
 {
-    urlClassName                  : String key private;
-    urlString                     : String key private;
+    urlClassName                  : String key private maximumLength(256);
+    urlString                     : String key private maximumLength(8192);
     parameterId                   : Long key private;
     type                          : UrlParameterType;
 }
@@ -874,11 +874,11 @@ enumeration Verb
 class Service
     implements Element
 {
-    className                     : String key;
-    urlString                     : String key;
+    className                     : String key maximumLength(256);
+    urlString                     : String key maximumLength(8192);
     verb                          : Verb key;
     serviceMultiplicity           : ServiceMultiplicity;
-    projectionName                : String? private;
+    projectionName                : String? private maximumLength(256);
     queryCriteriaId               : Long? private;
     authorizeCriteriaId           : Long? private;
     validateCriteriaId            : Long? private;
@@ -936,8 +936,8 @@ association ServiceHasConflictCriteria
 
 class ServiceOrderBy
 {
-    serviceClassName: String key private;
-    serviceUrlString: String key private;
+    serviceClassName: String key private maximumLength(256);
+    serviceUrlString: String key private maximumLength(8192);
     serviceVerb: Verb key private;
     thisMemberReferencePathId     : Long key private;
     orderByDirection: OrderByDirection;

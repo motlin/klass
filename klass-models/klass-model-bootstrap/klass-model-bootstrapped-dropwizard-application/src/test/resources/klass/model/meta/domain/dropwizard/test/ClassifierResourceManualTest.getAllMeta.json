@@ -55,7 +55,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "ordinal",
@@ -83,7 +86,10 @@
         "primitiveType": "String",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 100000
+        }
       }
     ]
   },
@@ -121,14 +127,20 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "prettyName",
         "primitiveType": "String",
         "optional": true,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -170,7 +182,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "interfaceName",
@@ -185,7 +200,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -207,7 +225,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ],
     "enumerationProperties": [
@@ -243,7 +264,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "optional",
@@ -306,7 +330,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -344,7 +371,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "propertyName",
@@ -356,7 +386,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "number",
@@ -421,7 +454,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "propertyName",
@@ -433,7 +469,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -459,7 +498,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -514,14 +556,20 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationName",
         "primitiveType": "String",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "resultTypeName",
@@ -533,7 +581,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ],
     "enumerationProperties": [
@@ -577,7 +628,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -589,7 +643,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -968,7 +1025,10 @@
         "primitiveType": "String",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "id",
@@ -1030,7 +1090,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1102,7 +1165,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "propertyClassName",
@@ -1114,7 +1180,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "propertyName",
@@ -1126,7 +1195,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1163,7 +1235,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -1178,7 +1253,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1257,7 +1335,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "resultTypeName",
@@ -1269,7 +1350,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ],
     "enumerationProperties": [
@@ -1301,7 +1385,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -1316,7 +1403,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "thisMemberReferencePathId",
@@ -1363,7 +1453,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "name",
@@ -1375,7 +1468,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "inferred",
@@ -1423,7 +1519,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "parameterizedPropertyName",
@@ -1435,7 +1534,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1456,7 +1558,10 @@
         "primitiveType": "String",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "id",
@@ -1527,7 +1632,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1576,7 +1684,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -1588,7 +1699,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1637,7 +1751,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -1649,7 +1766,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1698,7 +1818,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "associationEndName",
@@ -1710,7 +1833,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "projectionName",
@@ -1722,7 +1848,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1771,7 +1900,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "propertyName",
@@ -1783,7 +1915,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1809,7 +1944,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       }
     ]
   },
@@ -1835,7 +1973,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "url",
@@ -1847,7 +1988,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 8192
+        }
       }
     ]
   },
@@ -1876,7 +2020,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "urlString",
@@ -1891,7 +2038,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 8192
+        }
       },
       {
         "name": "parameterId",
@@ -1942,7 +2092,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "urlString",
@@ -1954,7 +2107,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 8192
+        }
       },
       {
         "name": "projectionName",
@@ -1966,7 +2122,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "queryCriteriaId",
@@ -2059,7 +2218,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "serviceUrlString",
@@ -2074,7 +2236,10 @@
           {
             "name": "private"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 8192
+        }
       },
       {
         "name": "thisMemberReferencePathId",

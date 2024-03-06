@@ -14,7 +14,10 @@
       "primitiveType": "String",
       "optional": false,
       "key": false,
-      "id": false
+      "id": false,
+      "maxLengthValidation": {
+        "number": 100000
+      }
     }
   ]
 }

@@ -3,8 +3,8 @@
   "inferred": false,
   "packageName": "klass.model.meta.domain",
   "ordinal": 12,
-  "sourceCode": "interface PackageableElement implements NamedElement\n{\n    packageName: String;\n\n    // fullyQualifiedName: String = packageName + \".\" + name;\n}",
-  "sourceCodeWithInference": "interface PackageableElement\n    implements NamedElement\n{\n    packageName: String;\n}\n",
+  "sourceCode": "interface PackageableElement implements NamedElement\n{\n    packageName: String maximumLength(100000);\n\n    // fullyQualifiedName: String = packageName + \".\" + name;\n}",
+  "sourceCodeWithInference": "interface PackageableElement\n    implements NamedElement\n{\n    packageName: String maximumLength(100000);\n}\n",
   "superInterfaces": [
     {
       "superInterface": {
@@ -29,7 +29,10 @@
       "optional": false,
       "key": false,
       "id": false,
-      "ordinal": 1
+      "ordinal": 1,
+      "maxLengthValidation": {
+        "number": 100000
+      }
     }
   ]
 }

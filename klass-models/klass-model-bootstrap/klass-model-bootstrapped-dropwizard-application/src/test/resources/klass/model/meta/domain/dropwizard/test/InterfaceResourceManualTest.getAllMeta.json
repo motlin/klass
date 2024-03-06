@@ -53,7 +53,10 @@
           {
             "name": "key"
           }
-        ]
+        ],
+        "maxLengthValidation": {
+          "number": 256
+        }
       },
       {
         "name": "ordinal",
@@ -80,7 +83,10 @@
         "primitiveType": "String",
         "optional": false,
         "key": false,
-        "id": false
+        "id": false,
+        "maxLengthValidation": {
+          "number": 100000
+        }
       }
     ]
   },
