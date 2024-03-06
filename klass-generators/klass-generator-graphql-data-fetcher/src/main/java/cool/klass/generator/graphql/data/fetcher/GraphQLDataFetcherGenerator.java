@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -18,6 +19,7 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyVisitor;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLDataFetcherGenerator
@@ -158,6 +160,8 @@ public class GraphQLDataFetcherGenerator
         String sourceCode = ""
                 + "package " + this.rootPackageName + ".graphql.data.fetcher.key;\n"
                 + "\n"
+                + "import java.sql.*;\n"
+                + "import java.time.*;\n"
                 + "\n"
                 + "import com.gs.fw.common.mithra.finder.Operation;\n"
                 + "import " + klass.getPackageName() + "." + klass.getName() + ";\n"
@@ -186,7 +190,7 @@ public class GraphQLDataFetcherGenerator
 
     private String getArgumentSourceCode(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        GraphQLScalarDataTypePropertyVisitor visitor = new GraphQLScalarDataTypePropertyVisitor();
+        var visitor = new GraphQLScalarDataTypePropertyVisitor();
         dataTypeProperty.visit(visitor);
         String scalarTypeSourceCode = visitor.getSourceCode();
         String propertyName         = dataTypeProperty.getName();
@@ -200,12 +204,18 @@ public class GraphQLDataFetcherGenerator
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull Klass klass)
     {
+        var visitor = new GraphQLCoercedScalarDataTypePropertyVisitor(dataTypeProperty.getName());
+        dataTypeProperty.visit(visitor);
+        String coercedScalarSourceCode = visitor.getSourceCode();
+
         return String.format(
-                "                .and(%1$sFinder.%2$s().eq(%2$s))",
+                "                .and(%1$sFinder.%2$s().eq(%3$s))",
                 klass.getName(),
-                dataTypeProperty.getName());
+                dataTypeProperty.getName(),
+                coercedScalarSourceCode);
     }
 
+    // TODO fix this for types coerced from Strings like Instant and LocalDate
     private static class GraphQLScalarDataTypePropertyVisitor
             implements PropertyVisitor
     {
@@ -247,6 +257,144 @@ public class GraphQLDataFetcherGenerator
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".visitParameterizedProperty() not implemented yet");
+        }
+    }
+
+    // TODO fix this for types coerced from Strings like Instant and LocalDate
+    private static final class GraphQLCoercedScalarDataTypePropertyVisitor
+            implements PropertyVisitor
+    {
+        private final String propertyName;
+
+        private String sourceCode;
+
+        private GraphQLCoercedScalarDataTypePropertyVisitor(String propertyName)
+        {
+            this.propertyName = Objects.requireNonNull(propertyName);
+        }
+
+        public String getSourceCode()
+        {
+            return this.sourceCode;
+        }
+
+        @Override
+        public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
+        {
+            PrimitiveType primitiveType = primitiveProperty.getType();
+            var           visitor       = new GraphCoercedQLScalarPrimitiveTypeVisitor(this.propertyName);
+            primitiveType.visit(visitor);
+            this.sourceCode = visitor.getSourceCode();
+        }
+
+        @Override
+        public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitAssociationEndSignature() not implemented yet");
+        }
+
+        @Override
+        public void visitAssociationEnd(AssociationEnd associationEnd)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitAssociationEnd() not implemented yet");
+        }
+
+        @Override
+        public void visitParameterizedProperty(ParameterizedProperty parameterizedProperty)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitParameterizedProperty() not implemented yet");
+        }
+    }
+
+    private static final class GraphCoercedQLScalarPrimitiveTypeVisitor implements PrimitiveTypeVisitor
+    {
+        private final String propertyName;
+
+        private String sourceCode;
+
+        private GraphCoercedQLScalarPrimitiveTypeVisitor(String propertyName)
+        {
+            this.propertyName = Objects.requireNonNull(propertyName);
+        }
+
+        public String getSourceCode()
+        {
+            return this.sourceCode;
+        }
+
+        @Override
+        public void visitString()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitInteger()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitLong()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitDouble()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitFloat()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitBoolean()
+        {
+            this.sourceCode = this.propertyName;
+        }
+
+        @Override
+        public void visitInstant()
+        {
+            this.sourceCode = String.format(
+                    "Timestamp.from(%s)",
+                    this.propertyName);
+        }
+
+        @Override
+        public void visitLocalDate()
+        {
+            this.sourceCode = String.format("Timestamp.valueOf(%s.atStartOfDay())", this.propertyName);
+        }
+
+        @Override
+        public void visitTemporalInstant()
+        {
+            this.sourceCode = String.format(
+                    "Timestamp.valueOf(LocalDateTime.ofInstant(%s, ZoneOffset.UTC))",
+                    this.propertyName);
+        }
+
+        @Override
+        public void visitTemporalRange()
+        {
+            this.sourceCode = String.format(
+                    "Timestamp.valueOf(LocalDateTime.ofInstant(%s, ZoneOffset.UTC))",
+                    this.propertyName);
         }
     }
 }
