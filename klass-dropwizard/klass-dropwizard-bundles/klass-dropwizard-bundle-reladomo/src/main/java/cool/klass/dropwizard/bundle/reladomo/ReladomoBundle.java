@@ -54,14 +54,17 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
         ReladomoConfig.addSerializer(environment.getObjectMapper(), KlassResponse.class, serializer2);
         environment.getObjectMapper().registerModule(new MetaJacksonModule());
 
-        Duration     transactionTimeout         = reladomoFactory.getTransactionTimeout();
-        int          transactionTimeoutSeconds  = Math.toIntExact(transactionTimeout.toSeconds());
-        List<String> runtimeConfigurationPaths  = reladomoFactory.getRuntimeConfigurationPaths();
-        boolean      enableRetrieveCountMetrics = reladomoFactory.isEnableRetrieveCountMetrics();
+        Duration     transactionTimeout                     = reladomoFactory.getTransactionTimeout();
+        int          transactionTimeoutSeconds              = Math.toIntExact(transactionTimeout.toSeconds());
+        List<String> runtimeConfigurationPaths              = reladomoFactory.getRuntimeConfigurationPaths();
+        boolean      enableRetrieveCountMetrics             = reladomoFactory.isEnableRetrieveCountMetrics();
+        boolean      captureTransactionLevelPerformanceData = reladomoFactory.isCaptureTransactionLevelPerformanceData();
 
         ReladomoConfig.setTransactionTimeout(transactionTimeoutSeconds);
         // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
         ReladomoConfig.loadRuntimeConfigurations(runtimeConfigurationPaths);
+
+        ReladomoConfig.setCaptureTransactionLevelPerformanceData(captureTransactionLevelPerformanceData);
 
         if (enableRetrieveCountMetrics)
         {

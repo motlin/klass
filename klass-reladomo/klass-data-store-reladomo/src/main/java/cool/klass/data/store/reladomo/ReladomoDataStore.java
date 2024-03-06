@@ -22,6 +22,7 @@ import com.gs.fw.common.mithra.MithraDatedTransactionalObject;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.MithraObject;
+import com.gs.fw.common.mithra.MithraTransaction;
 import com.gs.fw.common.mithra.MithraTransactionalObject;
 import com.gs.fw.common.mithra.attribute.AsOfAttribute;
 import com.gs.fw.common.mithra.attribute.Attribute;
@@ -47,10 +48,15 @@ import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 // TODO: Refactor this whole thing to use generated getters/setters instead of Reladomo Attribute
 public class ReladomoDataStore implements DataStore
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
+
     private static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
     private static final Converter<String, String> UPPER_CAMEL = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
@@ -61,17 +67,60 @@ public class ReladomoDataStore implements DataStore
     public ReladomoDataStore(@Nonnull Supplier<UUID> uuidSupplier, int retryCount)
     {
         this.uuidSupplier = Objects.requireNonNull(uuidSupplier);
-        this.retryCount = retryCount;
+        this.retryCount   = retryCount;
     }
 
     @Override
     public <Result> Result runInTransaction(@Nonnull TransactionalCommand<Result> transactionalCommand)
     {
-        return MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+        return MithraManagerProvider.getMithraManager().executeTransactionalCommand(transaction ->
         {
-            Transaction transactionAdapter = new TransactionAdapter(tx);
-            return transactionalCommand.run(transactionAdapter);
+            ReladomoDataStore.logTransactionalStats("Starting", transaction);
+
+            try
+            {
+                Transaction transactionAdapter = new TransactionAdapter(transaction);
+                return transactionalCommand.run(transactionAdapter);
+            }
+            finally
+            {
+                ReladomoDataStore.logTransactionalStats("Ending", transaction);
+            }
         }, this.retryCount);
+    }
+
+    private static void logTransactionalStats(
+            String context,
+            MithraTransaction reladomoTransaction)
+    {
+        if (MithraManagerProvider.getMithraManager().getCurrentTransaction() != reladomoTransaction)
+        {
+            throw new AssertionError();
+        }
+
+        MDC.put(
+                "total remote retrievals",
+                String.valueOf(MithraManagerProvider.getMithraManager().getRemoteRetrieveCount()));
+        MDC.put(
+                "total database retrievals",
+                String.valueOf(MithraManagerProvider.getMithraManager().getDatabaseRetrieveCount()));
+        MDC.put(
+                "remote retrievals",
+                String.valueOf(reladomoTransaction.getRemoteRetrieveCount()));
+        MDC.put(
+                "database retrievals",
+                String.valueOf(reladomoTransaction.getDatabaseRetrieveCount()));
+
+        LOGGER.debug(
+                "{} transaction: {}, identityHashCode: {}",
+                context,
+                reladomoTransaction,
+                System.identityHashCode(reladomoTransaction));
+
+        MDC.remove("total remote retrievals");
+        MDC.remove("total database retrievals");
+        MDC.remove("remote retrievals");
+        MDC.remove("database retrievals");
     }
 
     @Override
@@ -172,7 +221,7 @@ public class ReladomoDataStore implements DataStore
         }
     }
 
-    public void setKeys(@Nonnull Klass klass, @Nonnull Object newInstance, @Nonnull ImmutableList<Object> keys)
+    private void setKeys(@Nonnull Klass klass, @Nonnull Object newInstance, @Nonnull ImmutableList<Object> keys)
     {
         this.generateAndSetId(newInstance, klass);
 
@@ -368,7 +417,7 @@ public class ReladomoDataStore implements DataStore
         return result;
     }
 
-    public Object getPropertyReflectively(
+    private Object getPropertyReflectively(
             @Nonnull Object persistentInstance,
             @Nonnull Property property)
     {

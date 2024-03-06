@@ -12,11 +12,12 @@ import org.eclipse.collections.impl.factory.Lists;
 public class ReladomoFactory
 {
     // Something like 30 seconds to 2 minutes makes sense in production
-    private          Duration     transactionTimeout         = Duration.minutes(5);
+    private          Duration     transactionTimeout                     = Duration.minutes(5);
     // reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml in production
-    private @NotNull List<String> runtimeConfigurationPaths  = Arrays.asList(
+    private @NotNull List<String> runtimeConfigurationPaths              = Arrays.asList(
             "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
-    private          boolean      enableRetrieveCountMetrics = true;
+    private          boolean      enableRetrieveCountMetrics             = true;
+    private          boolean      captureTransactionLevelPerformanceData = true;
 
     @JsonProperty
     public Duration getTransactionTimeout()
@@ -52,5 +53,17 @@ public class ReladomoFactory
     public void setEnableRetrieveCountMetrics(boolean enableRetrieveCountMetrics)
     {
         this.enableRetrieveCountMetrics = enableRetrieveCountMetrics;
+    }
+
+    @JsonProperty
+    public boolean isCaptureTransactionLevelPerformanceData()
+    {
+        return this.captureTransactionLevelPerformanceData;
+    }
+
+    @JsonProperty
+    public void setCaptureTransactionLevelPerformanceData(boolean captureTransactionLevelPerformanceData)
+    {
+        this.captureTransactionLevelPerformanceData = captureTransactionLevelPerformanceData;
     }
 }

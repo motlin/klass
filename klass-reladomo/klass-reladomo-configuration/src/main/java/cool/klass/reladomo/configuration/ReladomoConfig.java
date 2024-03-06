@@ -39,6 +39,12 @@ public final class ReladomoConfig
         mithraManager.setTransactionTimeout(transactionTimeoutSeconds);
     }
 
+    public static void setCaptureTransactionLevelPerformanceData(boolean captureTransactionLevelPerformanceData)
+    {
+        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
+        mithraManager.setCaptureTransactionLevelPerformanceData(captureTransactionLevelPerformanceData);
+    }
+
     public static void loadRuntimeConfigurations(@Nonnull List<String> reladomoRuntimeConfigurationPaths)
     {
         reladomoRuntimeConfigurationPaths.forEach(ReladomoConfig::loadRuntimeConfiguration);
