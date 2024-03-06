@@ -43,9 +43,9 @@ public class AbstractCoverageTest
     public void setUpSampleData()
     {
         KlassFactory klassFactory = RULE.getConfiguration().getKlassFactory();
-        DataStore    dataStore    = klassFactory.getDataStoreFactory().getDataStore();
-        Clock        clock        = klassFactory.getClockFactory().getClock();
-        DomainModel  domainModel  = klassFactory.getDomainModelFactory().getDomainModel();
+        DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
+        Clock        clock        = klassFactory.getClockFactory().createClock();
+        DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel();
         Instant      now          = Instant.now(clock);
 
         SampleDataGenerator sampleDataGenerator = new SampleDataGenerator(
