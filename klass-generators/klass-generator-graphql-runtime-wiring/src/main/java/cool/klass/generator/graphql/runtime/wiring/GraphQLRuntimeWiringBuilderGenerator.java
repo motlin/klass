@@ -55,7 +55,7 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "\n"
                 + "import " + this.rootPackageName + ".graphql.runtime.wiring.query." + this.applicationName + "QueryTypeRuntimeWiringProvider;\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getImport).makeString("")
-                + "import graphql.scalars.java.JavaPrimitives;\n"
+                + "import graphql.Scalars;\n"
                 + "import graphql.schema.idl.RuntimeWiring.Builder;\n"
                 + "import io.liftwizard.graphql.scalar.temporal.*;\n"
                 + "\n"
@@ -69,9 +69,9 @@ public class GraphQLRuntimeWiringBuilderGenerator
                 + "    public void accept(Builder builder)\n"
                 + "    {\n"
                 + "        builder\n"
-                + "                .scalar(GraphQLTemporalScalar.INSTANT_INSTANCE)\n"
-                + "                .scalar(GraphQLTemporalScalar.TEMPORAL_INSTANT_INSTANCE)\n"
-                + "                .scalar(GraphQLTemporalScalar.TEMPORAL_RANGE_INSTANCE)\n"
+                + "                .scalar(new GraphQLTemporalScalar(\"Instant\"))\n"
+                + "                .scalar(new GraphQLTemporalScalar(\"TemporalInstant\"))\n"
+                + "                .scalar(new GraphQLTemporalScalar(\"TemporalRange\"))\n"
                 + this.getPrimitiveScalarsSourceCode()
                 + "                .type(new " + this.applicationName + "QueryTypeRuntimeWiringProvider().get())\n"
                 + this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getSourceCode).makeString("") + ";\n"
@@ -93,8 +93,8 @@ public class GraphQLRuntimeWiringBuilderGenerator
         boolean containsLong      = dataTypes.contains(PrimitiveType.LONG);
         boolean containsLocalDate = dataTypes.contains(PrimitiveType.LOCAL_DATE);
 
-        String longSourceCode      = containsLong ? "                .scalar(JavaPrimitives.GraphQLLong)\n" : "";
-        String localDateSourceCode = containsLocalDate ? "                .scalar(GraphQLLocalDateScalar.INSTANCE)\n" : "";
+        String longSourceCode      = containsLong ? "                .scalar(Scalars.GraphQLLong)\n" : "";
+        String localDateSourceCode = containsLocalDate ? "                .scalar(new GraphQLLocalDateScalar())\n" : "";
         return longSourceCode + localDateSourceCode;
     }
 
