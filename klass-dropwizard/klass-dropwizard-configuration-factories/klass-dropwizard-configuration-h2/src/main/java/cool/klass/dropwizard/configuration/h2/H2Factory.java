@@ -17,8 +17,10 @@ public class H2Factory
     private @NotNull List<String> tcpServerArgs = Arrays.asList(
             "-tcp",
             "-tcpAllowOthers",
+            "-tcpDaemon",
             "-web",
             "-webAllowOthers",
+            "-webDaemon",
             // https://stackoverflow.com/a/55368174/23572
             "-ifNotExists",
             "-baseDir",
