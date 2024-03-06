@@ -1,0 +1,21 @@
+package com.stackoverflow
+
+class Question
+    systemTemporal
+    versioned
+{
+    id: Long key id;
+    title: String;
+    createdById: String final private;
+}
+
+service Question
+{
+    /question/{id: Long[1..1]}
+        DELETE
+        {
+            multiplicity: one;
+            criteria    : this.id == id;
+            authorize   : this.createdById == user;
+        }
+}

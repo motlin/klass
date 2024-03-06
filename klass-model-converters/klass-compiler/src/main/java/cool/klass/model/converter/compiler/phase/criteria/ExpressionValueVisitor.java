@@ -102,7 +102,8 @@ public class ExpressionValueVisitor extends KlassBaseVisitor<AntlrExpressionValu
                 return new AntlrUserLiteral(
                         ctx,
                         Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                        this.expressionValueOwner);
+                        this.expressionValueOwner,
+                        this.compilerState.getDomainModelState().getUserClassState());
             }
             default:
             {

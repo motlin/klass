@@ -135,7 +135,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         {
             if (targetPossibleTypes.size() != 1)
             {
-                throw new AssertionError();
+                return;
             }
             ((AbstractAntlrLiteralValue) this.sourceValue).setInferredType(targetPossibleTypes.getOnly());
         }
@@ -143,7 +143,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         {
             if (sourcePossibleTypes.size() != 1)
             {
-                throw new AssertionError();
+                return;
             }
             ((AbstractAntlrLiteralValue) this.targetValue).setInferredType(sourcePossibleTypes.getOnly());
         }
