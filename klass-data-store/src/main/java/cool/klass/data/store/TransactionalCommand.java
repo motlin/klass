@@ -1,6 +1,6 @@
 package cool.klass.data.store;
 
-public interface TransactionalCommand
+public interface TransactionalCommand<Result>
 {
-    void run(Transaction transaction);
+    Result run(Transaction transaction);
 }

@@ -46,6 +46,7 @@ public class SampleDataGenerator
             transaction.setSystemTime(this.systemTime.toEpochMilli());
             ImmutableList<Klass> classesWithTables = this.domainModel.getClasses().select(this::needsTable);
             classesWithTables.each(this::generate);
+            return null;
         });
     }
 

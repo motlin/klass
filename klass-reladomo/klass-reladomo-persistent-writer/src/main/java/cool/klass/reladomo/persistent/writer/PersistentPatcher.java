@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
 public class PersistentPatcher extends PersistentSynchronizer
@@ -37,17 +38,22 @@ public class PersistentPatcher extends PersistentSynchronizer
     }
 
     @Override
+    protected void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        // Deliberately empty for update operation
+    }
+
+    @Override
     protected void handleVersion(
             AssociationEnd associationEnd,
-            Object persistentInstance,
-            JsonNode jsonNode)
+            Object persistentInstance)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".handleVersion() not implemented yet");
     }
 
     @Override
-    protected void handleToOneOutsideProjection(
+    protected boolean handleToOneOutsideProjection(
             AssociationEnd associationEnd,
             Object persistentParentInstance,
             JsonNode incomingChildInstance)

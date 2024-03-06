@@ -1,5 +1,8 @@
 package cool.klass.reladomo.persistent.writer;
 
+import java.time.Instant;
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,8 +11,8 @@ import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.utility.Iterate;
 
 public class PersistentCreator extends PersistentSynchronizer
 {
@@ -41,10 +44,29 @@ public class PersistentCreator extends PersistentSynchronizer
     }
 
     @Override
+    protected void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        Optional<PrimitiveProperty> createdByProperty = klass.getCreatedByProperty();
+        Optional<PrimitiveProperty> createdOnProperty = klass.getCreatedOnProperty();
+
+        createdByProperty.ifPresent(primitiveProperty ->
+        {
+            Optional<String> optionalUserId = this.mutationContext.getUserId();
+            String           userId         = optionalUserId.orElseThrow(() -> new AssertionError(primitiveProperty));
+            this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, userId);
+        });
+
+        createdOnProperty.ifPresent(primitiveProperty ->
+        {
+            Instant transactionTime = this.mutationContext.getTransactionTime();
+            this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, transactionTime);
+        });
+    }
+
+    @Override
     protected void handleVersion(
             @Nonnull AssociationEnd associationEnd,
-            Object persistentInstance,
-            JsonNode jsonNode)
+            Object persistentInstance)
     {
         Object persistentChildInstance = this.dataStore.getToOne(persistentInstance, associationEnd);
         if (persistentChildInstance != null)
@@ -59,7 +81,7 @@ public class PersistentCreator extends PersistentSynchronizer
     }
 
     @Override
-    protected void handleToOneOutsideProjection(
+    protected boolean handleToOneOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstance)
@@ -72,7 +94,7 @@ public class PersistentCreator extends PersistentSynchronizer
         if (incomingChildInstance.isMissingNode()
                 || incomingChildInstance.isNull())
         {
-            return;
+            return false;
         }
 
         Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(
@@ -87,27 +109,30 @@ public class PersistentCreator extends PersistentSynchronizer
 
         this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);
         // TODO: Return a flag indicating a mutation happened
+        return true;
     }
 
     private void insertVersion(
             Object persistentInstance,
             @Nonnull AssociationEnd associationEnd,
-            ImmutableList<Object> keys)
+            @Nonnull ImmutableList<Object> keys)
     {
-        Klass  resultType  = associationEnd.getType();
-        Object newInstance = this.dataStore.instantiate(resultType, keys);
+        Klass  versionType  = associationEnd.getType();
+        Object versionInstance = this.dataStore.instantiate(versionType, keys);
 
         // TODO: Test where version association end and version property are not named "version"
         // TODO: Enforce that version association ends are either always or never part of the write projection. Probably always included. Or always infer that they are included.
 
         // Set version: 1
-        ImmutableList<DataTypeProperty> versionProperties = resultType.getDataTypeProperties().select(DataTypeProperty::isVersion);
-        DataTypeProperty                versionProperty   = Iterate.getOnly(versionProperties);
-        this.dataStore.setDataTypeProperty(newInstance, versionProperty, 1);
+        DataTypeProperty versionProperty = versionType.getVersionNumberProperty().get();
+        this.dataStore.setDataTypeProperty(versionInstance, versionProperty, 1);
+
+        this.synchronizeCreatedDataTypeProperties(versionType, versionInstance);
+        this.synchronizeUpdatedDataTypeProperties(versionType, versionInstance);
 
         // TODO: This is the backwards order from how I used to do it
-        this.dataStore.setToOne(persistentInstance, associationEnd, newInstance);
-        this.dataStore.insert(newInstance);
+        this.dataStore.setToOne(persistentInstance, associationEnd, versionInstance);
+        this.dataStore.insert(versionInstance);
     }
 
     @Nonnull

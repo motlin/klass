@@ -72,13 +72,12 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void runInTransaction(@Nonnull TransactionalCommand transactionalCommand)
+    public <Result> Result runInTransaction(@Nonnull TransactionalCommand<Result> transactionalCommand)
     {
-        MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
+        return MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
             Transaction transactionAdapter = new TransactionAdapter(tx);
-            transactionalCommand.run(transactionAdapter);
-            return null;
+            return transactionalCommand.run(transactionAdapter);
         }, this.retryCount);
     }
 
@@ -210,7 +209,7 @@ public class ReladomoDataStore implements DataStore
 
     @Nullable
     @Override
-    public Object getDataTypeProperty(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
+    public Object getDataTypeProperty(@Nonnull Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
     {
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
@@ -271,7 +270,9 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Nullable
-    public Object getDataTypePropertyLenient(Object persistentInstance, @Nonnull DataTypeProperty dataTypeProperty)
+    public Object getDataTypePropertyLenient(
+            @Nonnull Object persistentInstance,
+            @Nonnull DataTypeProperty dataTypeProperty)
     {
         RelatedFinder<?> finder    = this.getRelatedFinder((MithraObject) persistentInstance);
         Attribute        attribute = finder.getAttributeByName(dataTypeProperty.getName());
@@ -328,7 +329,7 @@ public class ReladomoDataStore implements DataStore
 
     @Override
     public boolean setDataTypeProperty(
-            Object persistentInstance,
+            @Nonnull Object persistentInstance,
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nullable Object newValue)
     {
@@ -385,12 +386,14 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void setToOne(
-            Object persistentSourceInstance,
+    public boolean setToOne(
+            @Nonnull Object persistentSourceInstance,
             @Nonnull AssociationEnd associationEnd,
-            Object persistentTargetInstance)
+            @Nonnull Object persistentTargetInstance)
     {
         Objects.requireNonNull(persistentTargetInstance);
+
+        boolean mutationOccurred = false;
 
         // A Reladomo bug prevents just calling a method like setQuestion here. Instead we have to call foreign key setters like setQuestionId
 
@@ -414,8 +417,10 @@ public class ReladomoDataStore implements DataStore
 
             Object keyValue = this.getDataTypeProperty(persistentTargetInstance, keyInRelatedObject);
 
-            this.setDataTypeProperty(persistentSourceInstance, foreignKey, keyValue);
+            mutationOccurred |= this.setDataTypeProperty(persistentSourceInstance, foreignKey, keyValue);
         }
+
+        return mutationOccurred;
     }
 
     @Override
@@ -430,7 +435,7 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public void deleteOrTerminate(Object persistentInstance)
+    public void deleteOrTerminate(@Nonnull Object persistentInstance)
     {
         if (persistentInstance instanceof MithraDatedTransactionalObject)
         {

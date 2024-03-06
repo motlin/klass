@@ -13,13 +13,13 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public interface DataStore
 {
-    void runInTransaction(TransactionalCommand transactionalCommand);
+    <Result> Result runInTransaction(TransactionalCommand<Result> transactionalCommand);
 
     void runInTransaction(Runnable runnable);
 
     Object findByKey(Klass klass, ImmutableList<Object> keys);
 
-    Object getToOne(Object persistentSourceInstance, AssociationEnd associationEnd);
+    Object getToOne(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd);
 
     @Nonnull
     List<Object> getToMany(Object persistentSourceInstance, AssociationEnd associationEnd);
@@ -34,9 +34,9 @@ public interface DataStore
 
     void insert(Object persistentInstance);
 
-    void setToOne(Object persistentSourceInstance, AssociationEnd associationEnd, Object persistentTargetInstance);
+    boolean setToOne(Object persistentSourceInstance, AssociationEnd associationEnd, Object persistentTargetInstance);
 
-    void deleteOrTerminate(Object persistentInstance);
+    void deleteOrTerminate(@Nonnull Object persistentInstance);
 
     boolean isInstanceOf(Object persistentInstance, Classifier classifier);
 }

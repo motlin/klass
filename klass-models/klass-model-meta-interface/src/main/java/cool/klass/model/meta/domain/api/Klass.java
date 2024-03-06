@@ -108,6 +108,20 @@ public interface Klass extends Classifier
     @Nonnull
     Optional<AssociationEnd> getVersionedProperty();
 
+    default Optional<DataTypeProperty> getVersionNumberProperty()
+    {
+        ImmutableList<DataTypeProperty> versionProperties = this.getDataTypeProperties().select(DataTypeProperty::isVersion);
+        if (versionProperties.size() > 1)
+        {
+            throw new AssertionError();
+        }
+        if (versionProperties.isEmpty())
+        {
+            return Optional.empty();
+        }
+        return Optional.of(versionProperties.getOnly());
+    }
+
     @Nonnull
     Optional<Klass> getSuperClass();
 

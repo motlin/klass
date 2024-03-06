@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.OperationMode;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
@@ -38,10 +39,15 @@ public class PersistentReplacer extends PersistentSynchronizer
     }
 
     @Override
+    protected void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        // Deliberately empty for update operation
+    }
+
+    @Override
     protected void handleVersion(
             @Nonnull AssociationEnd associationEnd,
-            Object persistentInstance,
-            JsonNode jsonNode)
+            Object persistentInstance)
     {
         // TODO: Only increment version if values actually changed
         // TODO: Always deep-fetch versions
@@ -57,7 +63,7 @@ public class PersistentReplacer extends PersistentSynchronizer
     }
 
     @Override
-    protected void handleToOneOutsideProjection(
+    protected boolean handleToOneOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstance)
@@ -70,8 +76,7 @@ public class PersistentReplacer extends PersistentSynchronizer
         if (incomingChildInstance.isMissingNode()
                 || incomingChildInstance.isNull())
         {
-            this.dataStore.setToOne(persistentParentInstance, associationEnd, null);
-            return;
+            return this.dataStore.setToOne(persistentParentInstance, associationEnd, null);
         }
 
         Object childPersistentInstanceAssociated = this.dataStore.getToOne(persistentParentInstance, associationEnd);
@@ -87,8 +92,7 @@ public class PersistentReplacer extends PersistentSynchronizer
 
         if (childPersistentInstanceAssociated == childPersistentInstanceWithKey)
         {
-            // TODO: Return a flag indicating nothing changed
-            return;
+            return false;
         }
 
         if (associationEnd.isFinal())
@@ -96,8 +100,7 @@ public class PersistentReplacer extends PersistentSynchronizer
             throw new AssertionError();
         }
 
-        this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);
-        // TODO: Return a flag indicating a mutation happened
+        return this.dataStore.setToOne(persistentParentInstance, associationEnd, childPersistentInstanceWithKey);
     }
 
     @Nonnull

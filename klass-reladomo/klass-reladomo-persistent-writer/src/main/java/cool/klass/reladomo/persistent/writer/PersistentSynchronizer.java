@@ -52,7 +52,7 @@ public abstract class PersistentSynchronizer
 
     protected abstract boolean shouldWriteId();
 
-    public void synchronize(
+    public boolean synchronize(
             @Nonnull Klass klass,
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
@@ -62,7 +62,7 @@ public abstract class PersistentSynchronizer
             throw new AssertionError();
         }
 
-        this.dataStore.runInTransaction(transaction ->
+        return this.dataStore.runInTransaction(transaction ->
         {
             Instant transactionTime       = this.mutationContext.getTransactionTime();
             long    transactionTimeMillis = transactionTime.toEpochMilli();
@@ -71,7 +71,7 @@ public abstract class PersistentSynchronizer
             this.inTransaction = true;
             try
             {
-                this.synchronizeInTransaction(klass, Optional.empty(), persistentInstance, incomingJson);
+                return this.synchronizeInTransaction(klass, Optional.empty(), persistentInstance, incomingJson);
             }
             finally
             {
@@ -102,7 +102,7 @@ public abstract class PersistentSynchronizer
         }
     }
 
-    protected void synchronizeInTransaction(
+    protected boolean synchronizeInTransaction(
             @Nonnull Klass klass,
             @Nonnull Optional<AssociationEnd> pathHere,
             Object persistentInstance,
@@ -113,11 +113,42 @@ public abstract class PersistentSynchronizer
             throw new AssertionError();
         }
 
+        boolean propertyMutationOccurred = false;
         if (!this.isRestrictedFromWriting(klass))
         {
-            this.synchronizeDataTypeProperties(klass, persistentInstance, incomingJson);
+            propertyMutationOccurred |= this.synchronizeDataTypeProperties(klass, persistentInstance, incomingJson);
         }
-        this.synchronizeAssociationEnds(klass, pathHere, persistentInstance, incomingJson);
+        boolean associatedMutationOccurred = this.synchronizeAssociationEnds(
+                klass,
+                pathHere,
+                persistentInstance,
+                incomingJson);
+        boolean mutationOccurred = propertyMutationOccurred || associatedMutationOccurred;
+
+        if (propertyMutationOccurred)
+        {
+            this.synchronizeUpdatedDataTypeProperties(klass, persistentInstance);
+        }
+
+        if (mutationOccurred)
+        {
+            // TODO: Bump version number and version audit properties
+            klass.getVersionProperty()
+                    .ifPresent(associationEnd -> this.handleVersion(associationEnd, persistentInstance));
+        }
+
+        return mutationOccurred;
+    }
+
+    protected void synchronizeUpdatedDataTypeProperties(Klass klass, Object persistentInstance)
+    {
+        Optional<PrimitiveProperty> lastUpdatedByProperty = klass.getLastUpdatedByProperty();
+        lastUpdatedByProperty.ifPresent(primitiveProperty ->
+        {
+            Optional<String> optionalUserId = this.mutationContext.getUserId();
+            String           userId         = optionalUserId.orElseThrow(() -> new AssertionError(primitiveProperty));
+            this.dataStore.setDataTypeProperty(persistentInstance, primitiveProperty, userId);
+        });
     }
 
     //region DataTypeProperties
@@ -126,7 +157,7 @@ public abstract class PersistentSynchronizer
         return klass.isTransient() || klass.getVersionedProperty().isPresent();
     }
 
-    private void synchronizeDataTypeProperties(
+    protected boolean synchronizeDataTypeProperties(
             @Nonnull Klass klass,
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
@@ -137,16 +168,17 @@ public abstract class PersistentSynchronizer
                 klass);
 
         boolean mutationOccurred = false;
-
         for (DataTypeProperty dataTypeProperty : simpleDataTypeProperties)
         {
             mutationOccurred |= this.synchronizeDataTypeProperty(dataTypeProperty, persistentInstance, incomingJson);
         }
 
-        Optional<PrimitiveProperty> createdByProperty     = klass.getCreatedByProperty();
-        Optional<PrimitiveProperty> createdOnProperty     = klass.getCreatedOnProperty();
-        Optional<PrimitiveProperty> lastUpdatedByProperty = klass.getLastUpdatedByProperty();
+        this.synchronizeCreatedDataTypeProperties(klass, persistentInstance);
+
+        return mutationOccurred;
     }
+
+    protected abstract void synchronizeCreatedDataTypeProperties(Klass klass, Object persistentInstance);
 
     private boolean synchronizeDataTypeProperty(
             DataTypeProperty dataTypeProperty,
@@ -171,7 +203,7 @@ public abstract class PersistentSynchronizer
     //endregion
 
     //region AssociationEnds
-    private void synchronizeAssociationEnds(
+    private boolean synchronizeAssociationEnds(
             @Nonnull Klass klass,
             @Nonnull Optional<AssociationEnd> pathHere,
             Object persistentInstance,
@@ -179,24 +211,22 @@ public abstract class PersistentSynchronizer
     {
         PartitionImmutableList<AssociationEnd> forwardOwnedAssociationEnds = klass.getAssociationEnds()
                 .reject(associationEnd -> pathHere.equals(Optional.of(associationEnd.getOpposite())))
+                .reject(AssociationEnd::isVersion)
                 .partition(AssociationEnd::isOwned);
 
+        boolean mutationOccurred = false;
         for (AssociationEnd associationEnd : forwardOwnedAssociationEnds.getSelected())
         {
             Multiplicity multiplicity = associationEnd.getMultiplicity();
 
             JsonNode jsonNode = incomingObjectNode.path(associationEnd.getName());
-            if (associationEnd.isVersion())
+            if (multiplicity.isToOne())
             {
-                this.handleVersion(associationEnd, persistentInstance, jsonNode);
-            }
-            else if (multiplicity.isToOne())
-            {
-                this.handleToOne(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToOne(associationEnd, persistentInstance, jsonNode);
             }
             else
             {
-                this.handleToMany(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToMany(associationEnd, persistentInstance, jsonNode);
             }
         }
 
@@ -205,27 +235,23 @@ public abstract class PersistentSynchronizer
             Multiplicity multiplicity = associationEnd.getMultiplicity();
             JsonNode     jsonNode     = incomingObjectNode.path(associationEnd.getName());
 
-            if (associationEnd.isVersion())
+            if (multiplicity.isToOne())
             {
-                this.handleVersion(associationEnd, persistentInstance, jsonNode);
-            }
-            else if (multiplicity.isToOne())
-            {
-                this.handleToOneOutsideProjection(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToOneOutsideProjection(associationEnd, persistentInstance, jsonNode);
             }
             else
             {
-                this.handleToManyOutsideProjection(associationEnd, persistentInstance, jsonNode);
+                mutationOccurred |= this.handleToManyOutsideProjection(associationEnd, persistentInstance, jsonNode);
             }
         }
+        return mutationOccurred;
     }
 
     protected abstract void handleVersion(
             AssociationEnd associationEnd,
-            Object persistentInstance,
-            JsonNode jsonNode);
+            Object persistentInstance);
 
-    private void handleToOne(
+    private boolean handleToOne(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstance)
@@ -241,24 +267,30 @@ public abstract class PersistentSynchronizer
                     associationEnd,
                     persistentParentInstance);
             this.insert(associationEnd, persistentParentInstance, incomingChildInstance, keys);
+            return true;
         }
-        else if (persistentChildInstance != null
+
+        if (persistentChildInstance != null
                 && incomingChildInstance.isMissingNode()
                 || incomingChildInstance.isNull())
         {
             this.deleteOrTerminate(associationEnd.getType(), persistentChildInstance);
+            return true;
         }
-        else if (persistentChildInstance != null && incomingChildInstance != null)
+
+        if (persistentChildInstance != null && incomingChildInstance != null)
         {
             PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-            synchronizer.synchronize(
+            return synchronizer.synchronize(
                     associationEnd.getType(),
                     persistentChildInstance,
                     (ObjectNode) incomingChildInstance);
         }
+
+        return false;
     }
 
-    protected abstract void handleToOneOutsideProjection(
+    protected abstract boolean handleToOneOutsideProjection(
             AssociationEnd associationEnd,
             Object persistentParentInstance,
             JsonNode incomingChildInstance);
@@ -288,27 +320,32 @@ public abstract class PersistentSynchronizer
         Klass                  resultType   = associationEnd.getType();
         Object                 newInstance  = this.dataStore.instantiate(resultType, keys);
         PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
-        synchronizer.synchronizeInTransaction(
+        boolean mutationOccurred = synchronizer.synchronizeInTransaction(
                 associationEnd.getType(),
                 Optional.of(associationEnd),
                 newInstance,
                 (ObjectNode) incomingChildInstance);
+        if (!mutationOccurred)
+        {
+            throw new AssertionError();
+        }
         // TODO: This is the backwards order from how I used to do it
         this.dataStore.setToOne(persistentParentInstance, associationEnd, newInstance);
         this.dataStore.insert(newInstance);
     }
 
-    private void deleteOrTerminate(Klass klass, Object persistentChildInstance)
+    private void deleteOrTerminate(Klass klass, @Nonnull Object persistentInstance)
     {
         ReladomoPersistentDeleter reladomoPersistentDeleter = new ReladomoPersistentDeleter(this.dataStore);
-        reladomoPersistentDeleter.deleteOrTerminate(klass, persistentChildInstance);
+        reladomoPersistentDeleter.deleteOrTerminate(klass, persistentInstance);
     }
 
-    private void handleToMany(
+    private boolean handleToMany(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstances)
     {
+        boolean mutationOccurred = false;
         // TODO: Test null where an array goes
 
         ImmutableList<JsonNode> incomingInstancesForUpdate = Lists.immutable.withAll(incomingChildInstances)
@@ -330,7 +367,10 @@ public abstract class PersistentSynchronizer
             if (!incomingChildInstancesByKey.containsKey(keys))
             {
                 ReladomoPersistentDeleter reladomoPersistentDeleter = new ReladomoPersistentDeleter(this.dataStore);
-                reladomoPersistentDeleter.deleteOrTerminate(associationEnd.getType(), persistentChildInstance);
+                reladomoPersistentDeleter.deleteOrTerminate(
+                        associationEnd.getType(),
+                        persistentChildInstance);
+                mutationOccurred = true;
             }
         }
 
@@ -367,24 +407,31 @@ public abstract class PersistentSynchronizer
                 this.dataStore.setToOne(newInstance, associationEnd.getOpposite(), persistentParentInstance);
 
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.CREATE);
-                synchronizer.synchronizeInTransaction(
+                boolean result = synchronizer.synchronizeInTransaction(
                         associationEnd.getType(),
                         Optional.of(associationEnd),
                         newInstance,
                         (ObjectNode) incomingChildInstance);
+                if (!result)
+                {
+                    throw new AssertionError();
+                }
 
                 this.dataStore.insert(newInstance);
+                mutationOccurred = true;
             }
             else
             {
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-                synchronizer.synchronizeInTransaction(
+                mutationOccurred |= synchronizer.synchronizeInTransaction(
                         associationEnd.getType(),
                         Optional.of(associationEnd),
                         persistentChildInstance,
                         (ObjectNode) incomingChildInstance);
             }
         }
+
+        return mutationOccurred;
     }
 
     @Nullable
@@ -407,11 +454,13 @@ public abstract class PersistentSynchronizer
         return persistentChildInstancesByKey.get(keys);
     }
 
-    private void handleToManyOutsideProjection(
+    private boolean handleToManyOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstances)
     {
+        boolean mutationOccurred = false;
+
         // TODO: Test null where an array goes
 
         MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey = this.indexIncomingJsonInstances(
@@ -469,13 +518,15 @@ public abstract class PersistentSynchronizer
             else
             {
                 PersistentSynchronizer synchronizer = this.determineNextMode(OperationMode.REPLACE);
-                synchronizer.synchronizeInTransaction(
+                mutationOccurred = synchronizer.synchronizeInTransaction(
                         associationEnd.getType(),
                         Optional.of(associationEnd),
                         persistentChildInstance,
                         (ObjectNode) incomingChildInstance);
             }
         }
+
+        return mutationOccurred;
     }
 
     @Nonnull
