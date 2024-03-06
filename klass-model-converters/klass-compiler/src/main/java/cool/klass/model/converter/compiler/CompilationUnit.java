@@ -24,6 +24,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.block.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +95,30 @@ public final class CompilationUnit
     public String getSourceName()
     {
         return this.sourceName;
+    }
+
+    @Nonnull
+    public String getFullPathSourceName()
+    {
+        if (this.macroElement.isEmpty())
+        {
+            String[] split = this.sourceName.split("/");
+            return split[split.length - 1];
+        }
+
+        String fullPathSourceName = this.macroElement
+                .flatMap(AntlrElement::getCompilationUnit)
+                .map(CompilationUnit::getFullPathSourceName)
+                .orElseThrow();
+
+        var   abstractElement = this.macroElement.orElseThrow();
+        Token startToken      = abstractElement.getElementContext().getStart();
+
+        return "%s:%d:%d --> %s".formatted(
+                fullPathSourceName,
+                startToken.getLine(),
+                startToken.getCharPositionInLine(),
+                this.sourceName);
     }
 
     @Nonnull
@@ -229,14 +254,15 @@ public final class CompilationUnit
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
-        LOGGER.debug(sourceCodeText);
         String sourceName = macroExpansionCompilerPhase.getName() + " macro";
-        return CompilationUnit.createFromText(
+        CompilationUnit result = CompilationUnit.createFromText(
                 ordinal,
                 Optional.of(macroElement),
                 sourceName,
                 sourceCodeText,
                 parserRule);
+        LOGGER.debug("{}\n{}\n", result.getFullPathSourceName(), sourceCodeText);
+        return result;
     }
 
     @Override
