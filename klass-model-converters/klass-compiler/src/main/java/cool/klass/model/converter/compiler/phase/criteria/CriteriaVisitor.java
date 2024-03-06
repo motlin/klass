@@ -20,6 +20,7 @@ import cool.klass.model.meta.grammar.KlassBaseVisitor;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionGroupContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
@@ -102,8 +103,8 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
     @Override
     public AntlrCriteria visitCriteriaExpressionGroup(@Nonnull CriteriaExpressionGroupContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitCriteriaExpressionGroup() not implemented yet");
+        CriteriaExpressionContext childContext = ctx.criteriaExpression();
+        return childContext.accept(this);
     }
 
     @Nonnull
