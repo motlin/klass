@@ -2,19 +2,14 @@ package cool.klass.dropwizard.configuration;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-import javax.annotation.Nonnull;
-import javax.sql.DataSource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
@@ -22,20 +17,17 @@ import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactor
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactory;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider;
 import io.dropwizard.Configuration;
-import io.dropwizard.db.ManagedDataSource;
-import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import io.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
 import io.liftwizard.dropwizard.configuration.clock.ClockFactory;
 import io.liftwizard.dropwizard.configuration.clock.ClockFactoryProvider;
 import io.liftwizard.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
-import io.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerConfiguration;
-import io.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerFactory;
-import io.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerFactoryProvider;
+import io.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerProvider;
+import io.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagersFactory;
 import io.liftwizard.dropwizard.configuration.cors.CorsFactory;
 import io.liftwizard.dropwizard.configuration.cors.CorsFactoryProvider;
-import io.liftwizard.dropwizard.configuration.datasource.NamedDataSourceConfiguration;
 import io.liftwizard.dropwizard.configuration.datasource.NamedDataSourceProvider;
+import io.liftwizard.dropwizard.configuration.datasource.NamedDataSourcesFactory;
 import io.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import io.liftwizard.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import io.liftwizard.dropwizard.configuration.enabled.EnabledFactory;
@@ -51,7 +43,6 @@ import io.liftwizard.dropwizard.configuration.system.properties.SystemProperties
 import io.liftwizard.dropwizard.configuration.system.properties.SystemPropertiesFactoryProvider;
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
-import io.liftwizard.dropwizard.db.NamedDataSourceFactory;
 
 @JsonPropertyOrder({
         "server",
@@ -87,7 +78,7 @@ public class AbstractKlassConfiguration
         UUIDSupplierFactoryProvider,
         ClockFactoryProvider,
         NamedDataSourceProvider,
-        ConnectionManagerFactoryProvider,
+        ConnectionManagerProvider,
         SystemPropertiesFactoryProvider
 {
     // General
@@ -108,10 +99,13 @@ public class AbstractKlassConfiguration
     private @Valid @NotNull SampleDataFactory        sampleDataFactory    = new SampleDataFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory     = new EnabledFactory();
 
-    private final @Valid @NotNull NamedDataSourceConfiguration   namedDataSourceConfiguration   =
-            new NamedDataSourceConfiguration();
-    private final @Valid @NotNull ConnectionManagerConfiguration connectionManagerConfiguration =
-            new ConnectionManagerConfiguration();
+    @JsonUnwrapped
+    private @Valid @NotNull NamedDataSourcesFactory namedDataSourcesFactory =
+            new NamedDataSourcesFactory();
+
+    @JsonUnwrapped
+    private @Valid @NotNull ConnectionManagersFactory connectionManagersFactory =
+            new ConnectionManagersFactory();
 
     @JsonProperty("klass")
     public KlassFactory getKlassFactory()
@@ -181,39 +175,34 @@ public class AbstractKlassConfiguration
         this.h2Factory = h2Factory;
     }
 
-    @Override
-    public void initializeDataSources(
-            @Nonnull MetricRegistry metricRegistry,
-            @Nonnull LifecycleEnvironment lifecycle)
-    {
-        this.namedDataSourceConfiguration.initializeDataSources(metricRegistry, lifecycle);
-    }
-
-    @Override
     @JsonProperty("dataSources")
-    public List<NamedDataSourceFactory> getNamedDataSourceFactories()
+    @JsonUnwrapped
+    @Override
+    public NamedDataSourcesFactory getNamedDataSourcesFactory()
     {
-        return this.namedDataSourceConfiguration.getNamedDataSourceFactories();
+        return this.namedDataSourcesFactory;
     }
 
     @JsonProperty("dataSources")
-    public void setNamedDataSourceFactories(List<NamedDataSourceFactory> namedDataSourceFactories)
+    @JsonUnwrapped
+    public void setNamedDataSourcesFactory(NamedDataSourcesFactory namedDataSourcesFactory)
     {
-        this.namedDataSourceConfiguration.setNamedDataSourceFactories(namedDataSourceFactories);
+        this.namedDataSourcesFactory = namedDataSourcesFactory;
     }
 
+    @JsonProperty("connectionManagers")
+    @JsonUnwrapped
     @Override
-    @JsonIgnore
-    public DataSource getDataSourceByName(@Nonnull String name)
+    public ConnectionManagersFactory getConnectionManagersFactory()
     {
-        return this.namedDataSourceConfiguration.getDataSourceByName(name);
+        return this.connectionManagersFactory;
     }
 
-    @Override
-    @JsonIgnore
-    public Map<String, ManagedDataSource> getDataSourcesByName()
+    @JsonProperty("connectionManagers")
+    @JsonUnwrapped
+    public void setConnectionManagersFactory(ConnectionManagersFactory connectionManagersFactory)
     {
-        return this.namedDataSourceConfiguration.getDataSourcesByName();
+        this.connectionManagersFactory = connectionManagersFactory;
     }
 
     @Override
@@ -240,46 +229,6 @@ public class AbstractKlassConfiguration
     public void setReladomo(ReladomoFactory reladomoFactory)
     {
         this.reladomoFactory = reladomoFactory;
-    }
-
-    @Override
-    public void initializeConnectionManagers(@Nonnull Map<String, ManagedDataSource> dataSourcesByName)
-    {
-        this.connectionManagerConfiguration.initializeConnectionManagers(dataSourcesByName);
-    }
-
-    @Override
-    @JsonProperty("connectionManagers")
-    public List<ConnectionManagerFactory> getConnectionManagerFactories()
-    {
-        return this.connectionManagerConfiguration.getConnectionManagerFactories();
-    }
-
-    @JsonProperty("connectionManagers")
-    public void setConnectionManagerFactories(List<ConnectionManagerFactory> connectionManagerFactories)
-    {
-        this.connectionManagerConfiguration.setConnectionManagerFactories(connectionManagerFactories);
-    }
-
-    @JsonIgnore
-    @Override
-    public SourcelessConnectionManager getConnectionManagerByName(@Nonnull String name)
-    {
-        SourcelessConnectionManager sourcelessConnectionManager =
-                this.connectionManagerConfiguration.getConnectionManagerByName(name);
-        return Objects.requireNonNull(
-                sourcelessConnectionManager,
-                () -> String.format(
-                        "Could not find connection manager with name %s. Valid choices are %s",
-                        name,
-                        this.connectionManagerConfiguration.getConnectionManagersByName().keySet()));
-    }
-
-    @JsonIgnore
-    @Override
-    public Map<String, SourcelessConnectionManager> getConnectionManagersByName()
-    {
-        return this.connectionManagerConfiguration.getConnectionManagersByName();
     }
 
     @Override

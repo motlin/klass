@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
-        <version>0.27.0</version>
+        <version>0.28.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,7 +44,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>0.27.0</liftwizard.version>
+        <liftwizard.version>0.28.0</liftwizard.version>
     </properties>
 
     <dependencyManagement>
@@ -136,12 +136,10 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls-workaround</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-connection-manager-holder</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-connection-manager</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-ddl-executor</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-h2</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-config</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-logging-http</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-named-data-source</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-object-mapper</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-reladomo</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-config-clock-fixed</ignoredUnusedDeclaredDependency>

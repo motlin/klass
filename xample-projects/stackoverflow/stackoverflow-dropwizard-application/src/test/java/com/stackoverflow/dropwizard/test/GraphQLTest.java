@@ -10,6 +10,7 @@ import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
+import io.dropwizard.setup.Environment;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
@@ -38,7 +39,16 @@ public class GraphQLTest
     @Rule
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
             .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
-            .setConnectionSupplier(() -> this.rule.getConfiguration().getConnectionManagerByName("h2-tcp").getConnection())
+            .setConnectionSupplier(() ->
+            {
+                StackOverflowConfiguration configuration = this.rule.getConfiguration();
+                Environment                environment   = this.rule.getEnvironment();
+                return configuration
+                        .getConnectionManagersFactory()
+                        .getConnectionManagersByName(configuration, environment)
+                        .get("h2-tcp")
+                        .getConnection();
+            })
             .build();
 
     protected Client getClient(String clientName)

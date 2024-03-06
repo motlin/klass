@@ -222,18 +222,6 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-named-data-source</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-connection-manager</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-reladomo</artifactId>
             <scope>runtime</scope>
         </dependency>
