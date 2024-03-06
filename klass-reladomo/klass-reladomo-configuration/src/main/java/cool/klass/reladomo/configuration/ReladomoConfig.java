@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.gs.fw.common.mithra.MithraManager;
 import com.gs.fw.common.mithra.MithraManagerProvider;
+import com.gs.fw.common.mithra.MithraObject;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -21,7 +25,7 @@ public final class ReladomoConfig
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void configure()
+    public static void configure(ObjectMapper objectMapper, JsonSerializer<MithraObject> jsonSerializer)
     {
         Config config         = ConfigFactory.load();
         Config reladomoConfig = config.getConfig("klass.data.reladomo");
@@ -35,21 +39,26 @@ public final class ReladomoConfig
             LOGGER.debug("Reladomo configuration:\n{}", render);
         }
 
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(MithraObject.class, jsonSerializer);
+        objectMapper.registerModule(module);
+
+        int transactionTimeoutSeconds =
+                reladomoConfig.getInt("transactionTimeoutSeconds");
+        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
+        mithraManager.setTransactionTimeout(transactionTimeoutSeconds);
+
+        // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
+
+        // Rename enabled, since it's really only being used for the xml configuration mechanism vs MithraTestResource
         boolean enabled = reladomoConfig.getBoolean("enabled");
         if (!enabled)
         {
             return;
         }
 
-        int transactionTimeoutSeconds =
-                reladomoConfig.getInt("transactionTimeoutSeconds");
         List<String> reladomoRuntimeConfigurationPaths =
                 reladomoConfig.getStringList("reladomoRuntimeConfigurationPaths");
-
-        MithraManager mithraManager = MithraManagerProvider.getMithraManager();
-        mithraManager.setTransactionTimeout(transactionTimeoutSeconds);
-        // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
-
         reladomoRuntimeConfigurationPaths.forEach(ReladomoConfig::loadReladomoRuntimeConfigurationPath);
     }
 

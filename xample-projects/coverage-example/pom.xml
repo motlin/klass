@@ -208,11 +208,12 @@
                                     </requireMavenVersion>
                                     <requirePluginVersions>
                                         <unCheckedPluginList>
+                                            cool.klass:klass-generator-dropwizard-plugin,
+                                            cool.klass:klass-generator-dto-plugin,
+                                            cool.klass:klass-generator-json-view-plugin,
+                                            cool.klass:klass-generator-meta-constants-plugin,
                                             cool.klass:klass-generator-reladomo-plugin,
                                             cool.klass:klass-generator-service-resources-plugin,
-                                            cool.klass:klass-generator-dto-plugin,
-                                            cool.klass:klass-generator-meta-constants-plugin,
-                                            cool.klass:klass-generator-dropwizard-plugin,
                                             cool.klass:klass-compiler-plugin
                                         </unCheckedPluginList>
                                     </requirePluginVersions>

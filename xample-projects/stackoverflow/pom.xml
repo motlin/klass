@@ -70,5 +70,6 @@
         <module>${app.artifactId}-dtos</module>
         <module>${app.artifactId}-dropwizard-application</module>
         <module>${app.artifactId}-meta-model-constants</module>
+		<module>${app.artifactId}-json-views</module>
     </modules>
 </project>

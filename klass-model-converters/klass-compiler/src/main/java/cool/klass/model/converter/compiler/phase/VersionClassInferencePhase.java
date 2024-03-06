@@ -55,6 +55,7 @@ public class VersionClassInferencePhase extends AbstractCompilerPhase
                 .collect(each -> String.format("    %s\n", each))
                 .makeString("");
 
+        // TODO: If main class is transient, version should also be transient, so copy class modifiers
         //language=Klass
         String sourceCode = "package " + classState.getPackageName() + "\n"
                 + "\n"

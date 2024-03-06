@@ -190,12 +190,15 @@
                                         <version>3.1.0</version>
                                     </requireMavenVersion>
                                     <requirePluginVersions>
-                                        <unCheckedPluginList>cool.klass:klass-generator-reladomo-plugin,
-                                            cool.klass:klass-generator-service-resources-plugin,
-                                            cool.klass:klass-generator-dto-plugin,
-                                            cool.klass:klass-generator-meta-constants-plugin,
+                                        <unCheckedPluginList>
                                             cool.klass:klass-generator-dropwizard-plugin,
-                                            cool.klass:klass-compiler-plugin</unCheckedPluginList>
+                                            cool.klass:klass-generator-dto-plugin,
+                                            cool.klass:klass-generator-json-view-plugin,
+                                            cool.klass:klass-generator-meta-constants-plugin,
+                                            cool.klass:klass-generator-reladomo-plugin,
+                                            cool.klass:klass-generator-service-resources-plugin,
+                                            cool.klass:klass-compiler-plugin
+                                        </unCheckedPluginList>
                                     </requirePluginVersions>
                                     <bannedDependencies>
                                         <excludes>

@@ -33,13 +33,12 @@ import javax.ws.rs.core.UriInfo;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import cool.klass.data.store.DataStore;
-import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
@@ -48,11 +47,11 @@ import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
 import cool.klass.serializer.json.ReladomoJsonSerializable;
-import cool.klass.serializer.json.ReladomoJsonSerializer;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
+import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
 import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -70,21 +69,13 @@ public class QuestionResourceManual
         this.dataStore = dataStore;
     }
 
-    public static class QuestionReadProjectionJsonSerializer extends ReladomoJsonSerializer
-    {
-        public QuestionReadProjectionJsonSerializer()
-        {
-            super(new ReladomoDataStore(), StackOverflowDomainModel.QuestionReadProjection);
-        }
-    }
-
     @Nonnull
     @Timed
     @ExceptionMetered
     @GET
     @Path("/api/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
-    @JsonSerialize(using = QuestionReadProjectionJsonSerializer.class)
+    @JsonView(QuestionReadProjection_JsonView.class)
     public Question method0(
             @PathParam("id") Long id,
             @Nullable @QueryParam("version") Integer version)
@@ -92,9 +83,9 @@ public class QuestionResourceManual
         // Question
 
         // this.id == id
-        Operation queryOperation     = QuestionFinder.id().eq(id);
+        Operation queryOperation = QuestionFinder.id().eq(id);
         // this.system equalsEdgePoint && this.version.number == version
-        Operation versionOperation   = version == null
+        Operation versionOperation = version == null
                 ? QuestionFinder.all()
                 : QuestionFinder.system().equalsEdgePoint().and(QuestionFinder.version().number().eq(version));
 
@@ -374,7 +365,7 @@ public class QuestionResourceManual
 
         Question persistentInstance = MithraManagerProvider.getMithraManager().executeTransactionalCommand(tx ->
         {
-            Instant  now  = Instant.ofEpochMilli(tx.getProcessingStartTime());
+            Instant  now      = Instant.ofEpochMilli(tx.getProcessingStartTime());
             Question question = new Question();
             question.setCreatedById("TODO");
             question.setLastUpdatedById("TODO");

@@ -11,13 +11,16 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
+import cool.klass.jackson.jsonview.KlassJsonView;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
+import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
@@ -28,19 +31,13 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
 {
-    private final DataStore        dataStore;
-    private final ProjectionParent projectionParent;
+    private final DomainModel domainModel;
+    private final DataStore dataStore;
 
-    public ReladomoJsonSerializer(
-            DataStore dataStore,
-            ProjectionParent projectionParent)
+    public ReladomoJsonSerializer(DomainModel domainModel, DataStore dataStore)
     {
+        this.domainModel = domainModel;
         this.dataStore = Objects.requireNonNull(dataStore);
-        this.projectionParent = Objects.requireNonNull(projectionParent);
-        if (projectionParent.getChildren().isEmpty())
-        {
-            throw new AssertionError();
-        }
     }
 
     @Override
@@ -49,7 +46,31 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
             JsonGenerator jsonGenerator,
             SerializerProvider serializers) throws IOException
     {
-        this.serialize(mithraObject, jsonGenerator, this.projectionParent);
+        Class<?>                    activeViewClass = serializers.getActiveView();
+        Objects.requireNonNull(activeViewClass);
+
+        if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
+        {
+            throw new IllegalStateException(activeViewClass.getCanonicalName());
+        }
+        KlassJsonView klassJsonView = instantiate(activeViewClass);
+        Projection    projection   = klassJsonView.getProjection();
+
+        // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).
+        // Projection projection = this.domainModel.getProjections().selectInstancesOf(activeView).getOnly();
+        this.serialize(mithraObject, jsonGenerator, projection);
+    }
+
+    private KlassJsonView instantiate(Class<?> activeViewClass)
+    {
+        try
+        {
+            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public void serialize(
