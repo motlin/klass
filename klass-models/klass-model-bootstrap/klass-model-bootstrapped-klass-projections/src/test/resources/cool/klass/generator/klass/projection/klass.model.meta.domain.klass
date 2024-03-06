@@ -183,7 +183,6 @@ projection ExpressionValueProjection on ExpressionValue
 {
     id: "ExpressionValue id",
     VariableReference.parameter: ParameterProjection,
-    MemberReferencePath.edgePointCriteria: EdgePointCriteriaProjection,
     MemberReferencePath.klass: KlassProjection,
     MemberReferencePath.associationEnds: MemberReferencePathAssociationEndMappingProjection,
     MemberReferencePath.dataTypeProperty: DataTypePropertyProjection,
@@ -208,7 +207,6 @@ projection VariableReferenceProjection on VariableReference
 projection MemberReferencePathProjection on MemberReferencePath
 {
     id: "ExpressionValue id",
-    edgePointCriteria: EdgePointCriteriaProjection,
     klass: KlassProjection,
     associationEnds: MemberReferencePathAssociationEndMappingProjection,
     dataTypeProperty: DataTypePropertyProjection,
@@ -222,6 +220,7 @@ projection CriteriaProjection on Criteria
     OperatorCriteria.operator: "OperatorCriteria operator",
     OperatorCriteria.sourceExpressionValue: ExpressionValueProjection,
     OperatorCriteria.targetExpressionValue: ExpressionValueProjection,
+    EdgePointCriteria.memberReferencePath: MemberReferencePathProjection,
 }
 
 projection AllCriteriaProjection on AllCriteria
@@ -261,6 +260,7 @@ projection OperatorCriteriaProjection on OperatorCriteria
 projection EdgePointCriteriaProjection on EdgePointCriteria
 {
     id: "Criteria id",
+    memberReferencePath: MemberReferencePathProjection,
 }
 
 projection AssociationProjection on Association
@@ -297,7 +297,6 @@ projection MemberReferencePathAssociationEndMappingProjection on MemberReference
 projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 {
     id: "ExpressionValue id",
-    edgePointCriteria: EdgePointCriteriaProjection,
     klass: KlassProjection,
     associationEnds: MemberReferencePathAssociationEndMappingProjection,
     dataTypeProperty: DataTypePropertyProjection,
@@ -306,7 +305,6 @@ projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 projection TypeMemberReferencePathProjection on TypeMemberReferencePath
 {
     id: "ExpressionValue id",
-    edgePointCriteria: EdgePointCriteriaProjection,
     klass: KlassProjection,
     associationEnds: MemberReferencePathAssociationEndMappingProjection,
     dataTypeProperty: DataTypePropertyProjection,

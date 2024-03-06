@@ -1229,8 +1229,17 @@
   },
   {
     "packageName": "klass.model.meta.domain",
-    "name": "MemberReferencePathHasEdgePointCriteria",
+    "name": "EdgePointCriteriaHasMemberReferencePath",
     "associationEnds": [
+      {
+        "name": "edgePointCriteria",
+        "multiplicity": "0..1",
+        "resultType": {
+          "name": "EdgePointCriteria"
+        },
+        "associationEndModifiers": [],
+        "orderBys": []
+      },
       {
         "name": "memberReferencePath",
         "multiplicity": "1..1",
@@ -1238,19 +1247,6 @@
           "name": "MemberReferencePath"
         },
         "associationEndModifiers": [],
-        "orderBys": []
-      },
-      {
-        "name": "edgePointCriteria",
-        "multiplicity": "1..1",
-        "resultType": {
-          "name": "EdgePointCriteria"
-        },
-        "associationEndModifiers": [
-          {
-            "keyword": "owned"
-          }
-        ],
         "orderBys": []
       }
     ],
@@ -1260,21 +1256,21 @@
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
         "klass": {
-          "name": "MemberReferencePath"
-        },
-        "associationEnds": [],
-        "dataTypeProperty": {
-          "name": "id"
-        }
-      },
-      "targetExpressionValue": {
-        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
-        "klass": {
           "name": "EdgePointCriteria"
         },
         "associationEnds": [],
         "dataTypeProperty": {
           "name": "memberReferencePathId"
+        }
+      },
+      "targetExpressionValue": {
+        "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
+        "klass": {
+          "name": "MemberReferencePath"
+        },
+        "associationEnds": [],
+        "dataTypeProperty": {
+          "name": "id"
         }
       }
     }

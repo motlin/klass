@@ -454,10 +454,10 @@ association OperatorCriteriaHasTargetExpressionValue
     relationship this.targetExpressionId == ExpressionValue.id
 }
 
-association MemberReferencePathHasEdgePointCriteria
+association EdgePointCriteriaHasMemberReferencePath
 {
+    edgePointCriteria: EdgePointCriteria[0..1];
     memberReferencePath: MemberReferencePath[1..1];
-    edgePointCriteria: EdgePointCriteria[1..1] owned;
 }
 
 association EnumerationParameterHasEnumeration
