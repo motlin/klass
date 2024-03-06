@@ -310,8 +310,14 @@ public abstract class PersistentSynchronizer
                 && incomingChildInstance.isMissingNode()
                 || incomingChildInstance.isNull())
         {
-            this.deleteOrTerminate(associationEnd.getType(), persistentChildInstance);
-            return true;
+            if (incomingChildInstance.isMissingNode())
+            {
+                return this.handleMissingToOne(associationEnd.getType(), persistentChildInstance);
+            }
+            if (incomingChildInstance.isNull())
+            {
+                return this.handleNullToOne(associationEnd.getType(), persistentChildInstance);
+            }
         }
 
         if (persistentChildInstance != null && incomingChildInstance != null)
@@ -325,6 +331,18 @@ public abstract class PersistentSynchronizer
         }
 
         return false;
+    }
+
+    protected boolean handleMissingToOne(Klass klass, Object persistentChildInstance)
+    {
+        this.deleteOrTerminate(klass, persistentChildInstance);
+        return true;
+    }
+
+    protected boolean handleNullToOne(Klass klass, Object persistentChildInstance)
+    {
+        this.deleteOrTerminate(klass, persistentChildInstance);
+        return true;
     }
 
     protected abstract boolean handleToOneOutsideProjection(
@@ -375,7 +393,7 @@ public abstract class PersistentSynchronizer
         reladomoPersistentDeleter.deleteOrTerminate(klass, persistentInstance);
     }
 
-    private boolean handleToMany(
+    protected boolean handleToMany(
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance,
             @Nonnull JsonNode incomingChildInstances)

@@ -103,6 +103,25 @@ public class PersistentPatcher
     }
 
     @Override
+    protected boolean handleMissingToOne(Klass klass, Object persistentChildInstance)
+    {
+        return false;
+    }
+
+    @Override
+    protected boolean handleToMany(
+            @Nonnull AssociationEnd associationEnd,
+            Object persistentParentInstance,
+            @Nonnull JsonNode incomingChildInstances)
+    {
+        if (incomingChildInstances.isMissingNode())
+        {
+            return false;
+        }
+        return super.handleToMany(associationEnd, persistentParentInstance, incomingChildInstances);
+    }
+
+    @Override
     protected boolean handleToOneOutsideProjection(
             @Nonnull AssociationEnd associationEnd,
             @Nonnull Object persistentParentInstance,
