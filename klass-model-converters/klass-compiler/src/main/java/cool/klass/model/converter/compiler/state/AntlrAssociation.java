@@ -198,7 +198,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
         }
         else
         {
-            this.criteriaState.reportErrors(compilerErrorHolder, this.getParserRuleContexts());
+            this.criteriaState.reportErrors(compilerErrorHolder);
         }
     }
 

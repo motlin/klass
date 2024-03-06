@@ -7,8 +7,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.criteria.AndCriteriaImpl.AndCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionAndContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public class AntlrAndCriteria extends AntlrBinaryCriteria
 {
@@ -36,13 +34,11 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     }
 
     @Override
-    public void reportErrors(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
 
-        super.reportErrors(compilerErrorHolder, parserRuleContexts);
+        super.reportErrors(compilerErrorHolder);
     }
 }

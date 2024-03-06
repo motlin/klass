@@ -13,6 +13,7 @@ import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.service.ServiceGroupImpl.ServiceGroupBuilder;
 import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -94,26 +95,41 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        this.reportDuplicateUrls(compilerErrorHolder);
         this.reportNoUrls(compilerErrorHolder);
+        this.reportDuplicateUrls(compilerErrorHolder);
 
-        // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
-        if (this.klass != AntlrClass.NOT_FOUND)
+        if (this.klass == AntlrClass.NOT_FOUND)
         {
-            for (AntlrUrl urlState : this.urlStates)
-            {
-                urlState.reportErrors(compilerErrorHolder);
-            }
+            this.reportTypeNotFound(compilerErrorHolder);
+            return;
         }
 
+        for (AntlrUrl urlState : this.urlStates)
+        {
+            urlState.reportErrors(compilerErrorHolder);
+        }
         // TODO: Not here, but report if there are more than one service group for a class.
+    }
+
+    private void reportTypeNotFound(CompilerErrorHolder compilerErrorHolder)
+    {
+        if (this.klass != AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
+        ClassReferenceContext reference = this.getElementContext().classReference();
+        compilerErrorHolder.add(
+                String.format("ERR_SRG_TYP: Cannot find class '%s'", reference.getText()),
+                reference,
+                this);
     }
 
     private void reportDuplicateUrls(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: reportDuplicateUrls
-        HashBagWithHashingStrategy<AntlrUrl> antlrUrls = new HashBagWithHashingStrategy<>(HashingStrategies.fromFunction(
-                AntlrUrl::getNormalizedPathSegments));
+        HashBagWithHashingStrategy<AntlrUrl> antlrUrls =
+                new HashBagWithHashingStrategy<>(HashingStrategies.fromFunction(AntlrUrl::getNormalizedPathSegments));
 
         MutableBag<AntlrUrl> duplicateUrls = antlrUrls.selectByOccurrences(occurrences -> occurrences > 1);
         if (duplicateUrls.notEmpty())

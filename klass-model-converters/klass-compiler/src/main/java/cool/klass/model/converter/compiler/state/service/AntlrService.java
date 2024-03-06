@@ -152,15 +152,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
-                .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
-                .toBag()
-                .selectByOccurrences(occurrences -> occurrences > 1)
-                .toImmutable();
-
-        this.serviceCriteriaStates
-                .select(each -> duplicateKeywords.contains(each.getServiceCriteriaKeyword()))
-                .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerErrorHolder);
+        this.reportDuplicateKeywords(compilerErrorHolder);
 
         // TODO: reportErrors: Find url parameters which are unused by any criteria
 
@@ -176,20 +168,39 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 throw new AssertionError(verb);
             }
             serviceCriteriaState.reportAllowedCriteriaTypes(compilerErrorHolder, allowedCriteriaTypes);
-
-            ImmutableList<ParserRuleContext> parserRuleContexts = this.getParserRuleContexts();
-            serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder, parserRuleContexts);
+            serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder);
         }
+    }
+
+    protected void reportDuplicateKeywords(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
+                .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
+                .toBag()
+                .selectByOccurrences(occurrences -> occurrences > 1)
+                .toImmutable();
+
+        this.serviceCriteriaStates
+                .select(each -> duplicateKeywords.contains(each.getServiceCriteriaKeyword()))
+                .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerErrorHolder);
     }
 
     private void reportInvalidProjection(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
+        AntlrProjection projection = this.serviceProjectionDispatchState.getProjection();
+        this.serviceProjectionDispatchState.reportErrors(compilerErrorHolder);
+
+        if (projection == AntlrProjection.NOT_FOUND || projection.getKlass() == AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
         Verb verb = this.verbState.getVerb();
 
         if (verb == Verb.POST || verb == Verb.PUT)
         {
-            AntlrProjection                       projection             = this.serviceProjectionDispatchState.getProjection();
-            AntlrClass                            klass                  = projection.getKlass();
+            AntlrClass klass = projection.getKlass();
+
             MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = klass.getDataTypePropertyStates();
             MutableList<AntlrDataTypeProperty<?>> requiredProperties = dataTypePropertyStates
                     .asLazy()

@@ -14,7 +14,6 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceCriteria;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
 public abstract class AntlrCriteria extends AntlrElement
@@ -48,9 +47,7 @@ public abstract class AntlrCriteria extends AntlrElement
     @Nonnull
     public abstract AbstractCriteriaBuilder<?> build();
 
-    public abstract void reportErrors(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts);
+    public abstract void reportErrors(CompilerErrorHolder compilerErrorHolder);
 
     public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName);
 

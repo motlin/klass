@@ -15,7 +15,6 @@ import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
 import cool.klass.model.meta.domain.criteria.OperatorCriteriaImpl.OperatorCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.map.OrderedMap;
@@ -92,9 +91,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         this.sourceValue.reportErrors(compilerErrorHolder);
         this.targetValue.reportErrors(compilerErrorHolder);

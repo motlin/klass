@@ -18,7 +18,6 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterModifie
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.meta.domain.api.PrimitiveType;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
@@ -59,15 +58,15 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
-        IdentifierContext     identifier            = ctx.identifier();
-        ClassTypeContext      classTypeContext      = ctx.classType();
-        ClassReferenceContext classReferenceContext = classTypeContext.classReference();
-        MultiplicityContext   multiplicityContext   = classTypeContext.multiplicity();
+        super.enterParameterizedProperty(ctx);
 
-        String     parameterizedPropertyName = identifier.getText();
-        AntlrClass antlrClass                = this.domainModelState.getClassByName(classReferenceContext.getText());
+        ClassTypeContext classTypeContext          = ctx.classType();
+        String           parameterizedPropertyName = ctx.identifier().getText();
+        String           className                 = classTypeContext.classReference().getText();
+        AntlrClass       antlrClass                = this.domainModelState.getClassByName(className);
+
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(
-                multiplicityContext,
+                classTypeContext.multiplicity(),
                 this.currentCompilationUnit,
                 this.isInference);
 
@@ -101,6 +100,8 @@ public class ParameterizedPropertyPhase extends AbstractDomainModelCompilerPhase
         this.parameterizedPropertyState = null;
         this.parameterOwnerState = null;
         this.criteriaOwnerState = null;
+
+        super.exitParameterizedProperty(ctx);
     }
 
     // TODO: Should probably be moved to its own phase for consistency

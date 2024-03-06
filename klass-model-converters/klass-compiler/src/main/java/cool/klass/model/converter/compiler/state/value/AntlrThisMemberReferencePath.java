@@ -58,8 +58,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
     }
 
     @Override
-    public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(

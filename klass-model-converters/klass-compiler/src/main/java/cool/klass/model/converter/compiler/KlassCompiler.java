@@ -14,9 +14,6 @@ import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.OrderByPhase;
 import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
-import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
-import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
-import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
@@ -97,8 +94,8 @@ public class KlassCompiler
         KlassListener phase1 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState,
-                false);
+                false,
+                this.domainModelState);
 
         KlassListener phase2 = new ClassPhase(
                 this.compilerErrorHolder,
@@ -120,8 +117,8 @@ public class KlassCompiler
         KlassListener phase5 = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                this.domainModelState,
-                false);
+                false,
+                this.domainModelState);
 
         KlassListener phase6 = new VersionAssociationInferencePhase(
                 this.compilerErrorHolder,
@@ -155,18 +152,6 @@ public class KlassCompiler
                 this.domainModelState,
                 false);
 
-        // TODO: Redo these 4 phases to use domainModelState
-        ResolveTypeReferencesPhase phase11 = new ResolveTypeReferencesPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelState);
-        ResolveTypesPhase          phase12 = new ResolveTypesPhase(phase11);
-        KlassListener phase13 = new ResolveTypeErrorsPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                phase12,
-                this.domainModelState);
-
         return Lists.immutable.with(
                 phase1,
                 phase2,
@@ -177,10 +162,7 @@ public class KlassCompiler
                 phase7,
                 phase8,
                 phase9,
-                phase10,
-                phase11,
-                phase12,
-                phase13);
+                phase10);
     }
 
     @Nullable

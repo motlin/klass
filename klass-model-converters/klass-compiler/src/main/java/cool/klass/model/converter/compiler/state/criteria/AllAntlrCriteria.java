@@ -8,8 +8,6 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.meta.domain.criteria.AllCriteriaImpl.AllCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
 public class AllAntlrCriteria extends AntlrCriteria
@@ -38,9 +36,7 @@ public class AllAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // Intentionally blank
     }

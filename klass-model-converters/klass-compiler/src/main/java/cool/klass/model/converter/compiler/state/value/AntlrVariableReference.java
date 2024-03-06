@@ -47,8 +47,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
     }
 
     @Override
-    public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (this.antlrParameter == AntlrParameter.NOT_FOUND)
         {

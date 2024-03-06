@@ -13,6 +13,7 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.ServiceProjectionDispatchBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -58,25 +59,32 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     {
         if (this.projection == AntlrProjection.NOT_FOUND)
         {
-            String message = "TODO";
-            compilerErrorHolder.add(message, this);
+            ProjectionReferenceContext reference = this.getElementContext().projectionReference();
+
+            compilerErrorHolder.add(
+                    String.format("ERR_SER_PRJ: Cannot find projection '%s'", reference.getText()),
+                    reference,
+                    this);
+            return;
         }
-        else
+
+        AntlrClass projectionKlass   = this.projection.getKlass();
+        if (projectionKlass == AntlrClass.NOT_FOUND)
         {
-            AntlrClass projectionKlass   = this.projection.getKlass();
-            AntlrClass serviceGroupKlass = this.serviceState.getUrlState().getServiceGroup().getKlass();
-            if (projectionKlass != serviceGroupKlass)
-            {
-                String error = String.format(
-                        "ERR_SRV_PRJ: Expected projection referencing '%s' but projection '%s' references '%s'.",
-                        serviceGroupKlass.getName(),
-                        this.projection.getName(),
-                        projectionKlass.getName());
-                compilerErrorHolder.add(
-                        error,
-                        this.getElementContext().projectionReference(),
-                        this);
-            }
+            return;
+        }
+        AntlrClass serviceGroupKlass = this.serviceState.getUrlState().getServiceGroup().getKlass();
+        if (projectionKlass != serviceGroupKlass)
+        {
+            String error = String.format(
+                    "ERR_SRV_PRJ: Expected projection referencing '%s' but projection '%s' references '%s'.",
+                    serviceGroupKlass.getName(),
+                    this.projection.getName(),
+                    projectionKlass.getName());
+            compilerErrorHolder.add(
+                    error,
+                    this.getElementContext().projectionReference(),
+                    this);
         }
     }
 

@@ -34,6 +34,7 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
     @Nullable
     protected AntlrOrderByOwner orderByOwnerState;
 
+    // TODO: Consider abstracting these four pieces of information into a type called CompilationState
     protected AbstractDomainModelCompilerPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
@@ -47,8 +48,13 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
     @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
+        AbstractDomainModelCompilerPhase.assertNull(this.classDeclarationContext);
+        AbstractDomainModelCompilerPhase.assertNull(this.classState);
+        AbstractDomainModelCompilerPhase.assertNull(this.thisReference);
+
+        AntlrClass classByContext = this.domainModelState.getClassByContext(ctx);
+
         this.classDeclarationContext = ctx;
-        AntlrClass classByContext = this.domainModelState.getClassByContext(this.classDeclarationContext);
         this.classState = classByContext;
         this.thisReference = classByContext;
     }
@@ -64,6 +70,9 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
     @Override
     public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
     {
+        AbstractDomainModelCompilerPhase.assertNull(this.associationDeclarationContext);
+        AbstractDomainModelCompilerPhase.assertNull(this.associationState);
+
         this.associationDeclarationContext = ctx;
         this.associationState = this.domainModelState.getAssociationByContext(ctx);
     }
@@ -82,10 +91,19 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
         {
             return;
         }
+
+        AbstractDomainModelCompilerPhase.assertNull(this.associationEndState);
+        AbstractDomainModelCompilerPhase.assertNull(this.thisReference);
+        AbstractDomainModelCompilerPhase.assertNull(this.orderByOwnerState);
+
         super.enterAssociationEnd(ctx);
         this.associationEndState = this.associationState.getAssociationEndByContext(ctx);
-        this.thisReference = this.associationEndState.getType();
+        if (this.associationEndState == null)
+        {
+            return;
+        }
         this.orderByOwnerState = this.associationEndState;
+        this.thisReference = this.associationEndState.getType();
     }
 
     @Override
@@ -95,5 +113,13 @@ public abstract class AbstractDomainModelCompilerPhase extends AbstractCompilerP
         this.associationEndState = null;
         this.thisReference = null;
         this.orderByOwnerState = null;
+    }
+
+    private static void assertNull(Object object)
+    {
+        if (object != null)
+        {
+            throw new IllegalStateException();
+        }
     }
 }

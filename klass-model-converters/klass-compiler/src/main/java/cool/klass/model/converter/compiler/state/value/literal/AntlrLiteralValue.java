@@ -24,8 +24,7 @@ public abstract class AntlrLiteralValue extends AbstractAntlrLiteralValue
     public abstract AbstractLiteralValueBuilder<?> build();
 
     @Override
-    public void reportErrors(
-            CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // Deliberately empty
     }

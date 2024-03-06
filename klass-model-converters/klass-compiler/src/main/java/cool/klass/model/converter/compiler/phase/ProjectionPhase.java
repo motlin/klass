@@ -1,7 +1,5 @@
 package cool.klass.model.converter.compiler.phase;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
@@ -25,12 +23,8 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
-// TODO: This probably doesn't need to extend AbstractCompilerPhase
-public class ProjectionPhase extends AbstractCompilerPhase
+public class ProjectionPhase extends AbstractDomainModelCompilerPhase
 {
-    @Nonnull
-    private final AntlrDomainModel domainModelState;
-
     private final MutableStack<AntlrProjectionParent> elementStack = Stacks.mutable.empty();
 
     public ProjectionPhase(
@@ -39,8 +33,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
             @Nonnull AntlrDomainModel domainModelState,
             boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override
@@ -77,10 +70,10 @@ public class ProjectionPhase extends AbstractCompilerPhase
         String            name             = nameContext.getText();
         HeaderContext     header           = ctx.header();
         String            headerQuotedText = header.StringLiteral().getText();
+        // TODO: Unescaping header text?
         String            headerText       = headerQuotedText.substring(1, headerQuotedText.length() - 1);
 
-        AntlrClass               klass            = antlrProjectionParent.getKlass();
-        AntlrDataTypeProperty<?> dataTypeProperty = klass.getDataTypePropertyByName(name);
+        AntlrDataTypeProperty<?> dataTypeProperty = antlrProjectionParent.getKlass().getDataTypePropertyByName(name);
 
         AntlrProjectionDataTypeProperty antlrProjectionPrimitiveMember = new AntlrProjectionDataTypeProperty(
                 ctx,

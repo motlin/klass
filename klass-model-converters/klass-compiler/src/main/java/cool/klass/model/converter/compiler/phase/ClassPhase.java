@@ -1,7 +1,6 @@
 package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -30,9 +29,6 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ClassPhase extends AbstractDomainModelCompilerPhase
 {
-    @Nullable
-    private AntlrClass classState;
-
     public ClassPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
@@ -45,6 +41,8 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
     @Override
     public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
+        super.enterClassDeclaration(ctx);
+
         String classOrUserKeyword = ctx.classOrUser().getText();
 
         this.classState = new AntlrClass(
@@ -62,7 +60,7 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
     public void exitClassDeclaration(ClassDeclarationContext ctx)
     {
         this.domainModelState.exitClassDeclaration(this.classState);
-        this.classState = null;
+        super.exitClassDeclaration(ctx);
     }
 
     @Override
@@ -123,6 +121,7 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
         AntlrEnumeration enumerationState = this.domainModelState.getEnumerationByName(enumerationReferenceContext.getText());
         boolean          isOptional       = optionalMarkerContext != null;
 
+        // TODO: Superclass above all modifiers. Modifiers hold their owners.
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
                 .collectWithIndex(this::getAntlrPropertyModifier)
                 .toImmutable();

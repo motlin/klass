@@ -1,14 +1,11 @@
 package cool.klass.model.converter.compiler.phase;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
-import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
@@ -29,7 +26,6 @@ import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -40,7 +36,6 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
@@ -53,11 +48,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public class ServicePhase extends AbstractCompilerPhase
+public class ServicePhase extends AbstractDomainModelCompilerPhase
 {
-    @Nonnull
-    private final AntlrDomainModel domainModelState;
-
     @Nullable
     private AntlrServiceGroup serviceGroupState;
     @Nullable
@@ -76,17 +68,14 @@ public class ServicePhase extends AbstractCompilerPhase
             @Nonnull AntlrDomainModel domainModelState,
             boolean isInference)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = Objects.requireNonNull(domainModelState);
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override
     public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
     {
-        ClassReferenceContext classReferenceContext = ctx.classReference();
-        IdentifierContext     classNameContext      = classReferenceContext.identifier();
-        String                className             = classNameContext.getText();
-        AntlrClass            klass                 = this.domainModelState.getClassByName(className);
+        IdentifierContext classNameContext = ctx.classReference().identifier();
+        String            className        = classNameContext.getText();
 
         this.serviceGroupState = new AntlrServiceGroup(
                 ctx,
@@ -96,7 +85,7 @@ public class ServicePhase extends AbstractCompilerPhase
                 className,
                 this.domainModelState.getNumTopLevelElements() + 1,
                 this.packageName,
-                klass);
+                this.domainModelState.getClassByName(className));
     }
 
     @Override
@@ -150,16 +139,18 @@ public class ServicePhase extends AbstractCompilerPhase
     @Override
     public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
     {
-        VerbContext                           verb                                  = ctx.verb();
-        ServiceDeclarationBodyContext         serviceDeclarationBodyContext         = ctx.serviceDeclarationBody();
-        ServiceMultiplicityDeclarationContext serviceMultiplicityDeclarationContext = serviceDeclarationBodyContext.serviceMultiplicityDeclaration();
+        VerbContext verb      = ctx.verb();
+        AntlrVerb   antlrVerb = new AntlrVerb(verb, this.currentCompilationUnit, false, Verb.valueOf(verb.getText()));
+        AntlrServiceMultiplicity serviceMultiplicity =
+                this.getServiceMultiplicity(ctx.serviceDeclarationBody().serviceMultiplicityDeclaration());
 
-        AntlrVerb antlrVerb = new AntlrVerb(verb, this.currentCompilationUnit, false, Verb.valueOf(verb.getText()));
-
-        AntlrServiceMultiplicity serviceMultiplicity = this.getServiceMultiplicity(serviceMultiplicityDeclarationContext);
-
-        this.serviceState = new AntlrService(ctx,
-                this.currentCompilationUnit, false, this.urlState, antlrVerb, serviceMultiplicity);
+        this.serviceState = new AntlrService(
+                ctx,
+                this.currentCompilationUnit,
+                false,
+                this.urlState,
+                antlrVerb,
+                serviceMultiplicity);
     }
 
     private AntlrServiceMultiplicity getServiceMultiplicity(@Nullable ServiceMultiplicityDeclarationContext serviceMultiplicityDeclarationContext)
@@ -291,8 +282,6 @@ public class ServicePhase extends AbstractCompilerPhase
                 false,
                 this.serviceState,
                 projection);
-
-        projectionDispatch.reportErrors(this.compilerErrorHolder);
 
         this.serviceState.enterServiceProjectionDispatch(projectionDispatch);
     }

@@ -15,20 +15,18 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MutableMap;
 
-public class EnumerationsPhase extends AbstractCompilerPhase
+public class EnumerationsPhase extends AbstractDomainModelCompilerPhase
 {
-    private final AntlrDomainModel domainModelState;
     @Nullable
     private       AntlrEnumeration enumerationState;
 
     public EnumerationsPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
             @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
-            AntlrDomainModel domainModelState,
-            boolean isInference)
+            boolean isInference,
+            AntlrDomainModel domainModelState)
     {
-        super(compilerErrorHolder, compilationUnitsByContext, isInference);
-        this.domainModelState = domainModelState;
+        super(compilerErrorHolder, compilationUnitsByContext, isInference, domainModelState);
     }
 
     @Override

@@ -14,8 +14,6 @@ import cool.klass.model.converter.compiler.state.value.AntlrMemberReferencePath;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.criteria.EdgePointCriteriaImpl.EdgePointCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.map.OrderedMap;
 
@@ -66,9 +64,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(
-            CompilerErrorHolder compilerErrorHolder,
-            ImmutableList<ParserRuleContext> parserRuleContexts)
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         this.memberExpressionValue.reportErrors(compilerErrorHolder);
         ListIterable<AntlrType> possibleTypes = this.memberExpressionValue.getPossibleTypes();

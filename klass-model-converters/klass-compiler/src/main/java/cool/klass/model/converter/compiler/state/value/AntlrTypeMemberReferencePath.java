@@ -55,8 +55,7 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
     }
 
     @Override
-    public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
 

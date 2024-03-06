@@ -54,8 +54,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
     }
 
     @Override
-    public void reportErrors(
-            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (this.getPossibleTypes().isEmpty())
         {
