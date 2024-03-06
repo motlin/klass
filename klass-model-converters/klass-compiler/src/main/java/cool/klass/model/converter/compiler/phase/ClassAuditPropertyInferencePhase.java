@@ -10,6 +10,7 @@ import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
+// TODO: Only put audit properties onto version types
 public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
 {
     public ClassAuditPropertyInferencePhase(CompilerState compilerState)
