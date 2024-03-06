@@ -10,9 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- TODO: Rename to include Ansi, since the implementation is tied to ansi/jansi -->
-    <artifactId>klass-syntax-highlighter</artifactId>
+    <artifactId>klass-syntax-highlighter-ansi</artifactId>
 
-    <name>Klass Syntax Highlighter</name>
+    <name>Klass Syntax Highlighter Ansi</name>
 
     <dependencies>
 

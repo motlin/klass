@@ -1,10 +1,10 @@
-package cool.klass.model.converter.compiler.syntax.highlighter;
+package cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 
-public enum LightColorScheme
-        implements ColorScheme
+public enum LightAnsiColorScheme
+        implements AnsiColorScheme
 {
     INSTANCE;
 

@@ -20,7 +20,7 @@
         <module>klass-bootstrap-writer</module>
         <module>klass-compiler</module>
         <module>klass-grammar</module>
-        <module>klass-syntax-highlighter</module>
+        <module>klass-syntax-highlighter-ansi</module>
         <module>klass-token-categories</module>
         <module>klass-token-categorizing-lexer</module>
         <module>klass-token-categorizing-parser</module>

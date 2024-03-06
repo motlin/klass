@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
-import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.AnsiTokenColorizer;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;

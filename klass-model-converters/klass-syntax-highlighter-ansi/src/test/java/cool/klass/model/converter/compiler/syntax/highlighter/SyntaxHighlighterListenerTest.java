@@ -3,6 +3,10 @@ package cool.klass.model.converter.compiler.syntax.highlighter;
 import java.time.Duration;
 
 import com.google.common.base.Stopwatch;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.AnsiTokenColorizer;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.AnsiColorScheme;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.DarkAnsiColorScheme;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.LightAnsiColorScheme;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
 import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
@@ -33,16 +37,16 @@ public class SyntaxHighlighterListenerTest
     @Test
     public void lightColorScheme()
     {
-        this.testColorScheme(LightColorScheme.INSTANCE);
+        this.testColorScheme(LightAnsiColorScheme.INSTANCE);
     }
 
     @Test
     public void darkColorScheme()
     {
-        this.testColorScheme(DarkColorScheme.INSTANCE);
+        this.testColorScheme(DarkAnsiColorScheme.INSTANCE);
     }
 
-    private void testColorScheme(ColorScheme colorScheme)
+    private void testColorScheme(AnsiColorScheme colorScheme)
     {
         Stopwatch           lexerStopwatch = Stopwatch.createStarted();
         String              sourceCodeText = KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT;

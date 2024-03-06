@@ -1,17 +1,18 @@
-package cool.klass.model.converter.compiler.syntax.highlighter;
+package cool.klass.model.converter.compiler.syntax.highlighter.ansi;
 
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.AnsiColorScheme;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import org.fusesource.jansi.Ansi;
 
-public final class TokenCategoryToColor
+public final class TokenCategoryToAnsiColor
 {
-    private TokenCategoryToColor()
+    private TokenCategoryToAnsiColor()
     {
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
     public static void applyColor(
-            TokenCategory tokenCategory, Ansi ansi, ColorScheme colorScheme)
+            TokenCategory tokenCategory, Ansi ansi, AnsiColorScheme colorScheme)
     {
         switch (tokenCategory)
         {

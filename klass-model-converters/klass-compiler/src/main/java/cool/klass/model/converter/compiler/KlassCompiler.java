@@ -34,8 +34,8 @@ import cool.klass.model.converter.compiler.phase.UrlParameterPhase;
 import cool.klass.model.converter.compiler.phase.VariableResolutionPhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
-import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
-import cool.klass.model.converter.compiler.syntax.highlighter.DarkColorScheme;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.AnsiTokenColorizer;
+import cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme.DarkAnsiColorScheme;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
 import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
 import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
@@ -138,7 +138,7 @@ public class KlassCompiler
 
         // TODO: Make the ColorScheme configurable
         var ansiTokenColorizer = new AnsiTokenColorizer(
-                DarkColorScheme.INSTANCE,
+                DarkAnsiColorScheme.INSTANCE,
                 tokenCategoriesFromParser,
                 tokenCategoriesFromLexer);
         compilerAnnotationHolder.setAnsiTokenColorizer(ansiTokenColorizer);

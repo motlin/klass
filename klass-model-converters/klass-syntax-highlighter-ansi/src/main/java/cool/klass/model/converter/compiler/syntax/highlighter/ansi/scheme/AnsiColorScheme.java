@@ -1,8 +1,8 @@
-package cool.klass.model.converter.compiler.syntax.highlighter;
+package cool.klass.model.converter.compiler.syntax.highlighter.ansi.scheme;
 
 import org.fusesource.jansi.Ansi;
 
-public interface ColorScheme
+public interface AnsiColorScheme
 {
     void background(Ansi ansi);
 
