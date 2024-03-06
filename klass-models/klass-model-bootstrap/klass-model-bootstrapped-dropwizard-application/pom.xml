@@ -222,6 +222,48 @@
 
         <dependency>
             <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-h2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-ddl-executor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-named-data-source</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-reladomo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock-system</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -274,6 +316,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
             <version>${klass.version}</version>
@@ -295,8 +343,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-connection-manager-h2</artifactId>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-ddls-workaround</artifactId>
+            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -341,50 +390,6 @@
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-named-data-source</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-connection-manager</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-reladomo</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
