@@ -304,6 +304,11 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
+            if (childJsonNode.isMissingNode() && !associationEnd.isRequired())
+            {
+                return;
+            }
+
             Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(
                     parentJsonNode,
                     childJsonNode,
