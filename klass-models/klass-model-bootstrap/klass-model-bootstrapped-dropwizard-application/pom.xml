@@ -227,6 +227,12 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-query-schema</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid-seed</artifactId>
             <scope>runtime</scope>
         </dependency>
