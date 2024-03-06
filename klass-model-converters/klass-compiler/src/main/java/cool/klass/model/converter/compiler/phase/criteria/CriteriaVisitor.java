@@ -132,6 +132,9 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 this.criteriaOwner,
                 operator);
 
+        // TODO: This is probably backwards
+        operator.setOwningOperatorAntlrCriteria(operatorAntlrCriteria);
+
         KlassVisitor<AntlrExpressionValue> expressionValueVisitor = this.getExpressionValueVisitor(operatorAntlrCriteria);
 
         AntlrExpressionValue sourceValue = expressionValueVisitor.visitExpressionValue(ctx.source);

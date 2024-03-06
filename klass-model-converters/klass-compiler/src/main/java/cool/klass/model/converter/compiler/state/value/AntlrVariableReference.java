@@ -83,7 +83,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         {
             return Lists.immutable.empty();
         }
-        return Lists.immutable.with(type);
+        return type.getPotentialWiderTypes();
     }
 
     @Override
