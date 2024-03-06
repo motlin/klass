@@ -38,9 +38,14 @@ public interface ReladomoTreeNode
         return '.' + this.getName() + "()";
     }
 
-    default String getNodeString()
+    default String getNodeString(String indent)
     {
-        return this.getOwningClassifier().getName() + this.getShortString() + ": " + this.getType().getName();
+        return indent
+                + this.getOwningClassifier().getName()
+                + this.getShortString()
+                + ": "
+                + this.getType().getName()
+                + "\n";
     }
 
     default boolean isLeaf()
@@ -54,8 +59,8 @@ public interface ReladomoTreeNode
         {
             return Lists.immutable.empty();
         }
-        MutableList<String> result = Lists.mutable.empty();
-        MutableStack<String> stack = Stacks.mutable.empty();
+        MutableList<String>  result = Lists.mutable.empty();
+        MutableStack<String> stack  = Stacks.mutable.empty();
         this.getDeepFetchStrings(result, stack);
         return result.toImmutable();
     }
@@ -79,4 +84,6 @@ public interface ReladomoTreeNode
         }
         stack.pop();
     }
+
+    String toString(String indent);
 }

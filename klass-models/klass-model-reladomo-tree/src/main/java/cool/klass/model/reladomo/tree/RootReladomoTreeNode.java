@@ -35,35 +35,14 @@ public class RootReladomoTreeNode
     }
 
     @Override
-    public String toString()
-    {
-        return this.toString(this, "");
-    }
-
-    private String toString(
-            ReladomoTreeNode node,
-            String indent)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(indent);
-        stringBuilder.append(node.getNodeString());
-        stringBuilder.append('\n');
-
-        String childIndent = indent + "  ";
-        node.getChildren().forEachValue(child -> stringBuilder.append(this.toString(child, childIndent)));
-
-        return stringBuilder.toString();
-    }
-
-    @Override
     public String getShortString()
     {
         return this.getType().getName() + "Finder";
     }
 
     @Override
-    public String getNodeString()
+    public String getNodeString(String indent)
     {
-        return this.getShortString() + ": " + this.getType().getName();
+        return indent + this.getShortString() + ": " + this.getType().getName() + "\n";
     }
 }

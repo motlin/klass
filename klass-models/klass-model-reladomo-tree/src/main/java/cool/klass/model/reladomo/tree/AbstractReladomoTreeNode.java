@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import cool.klass.model.meta.domain.api.Klass;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
@@ -55,6 +56,16 @@ public abstract class AbstractReladomoTreeNode
     @Override
     public String toString()
     {
-        return this.getNodeString();
+        return this.toString("");
+    }
+
+    @Override
+    public String toString(String indent)
+    {
+        RichIterable<String> childrenStrings = this.getChildren().keyValuesView().collect(pair ->
+                pair.getTwo().toString(indent + "  "));
+        String result = this.getNodeString(indent)
+                + childrenStrings.makeString("");
+        return result;
     }
 }
