@@ -37,9 +37,18 @@ public class EnumerationProperty extends DataTypeProperty<Enumeration>
                 ParserRuleContext enumerationContext,
                 Enumeration enumeration,
                 KlassBuilder owningKlassBuilder,
+                boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, enumerationContext, enumeration, owningKlassBuilder, isOptional);
+            super(
+                    elementContext,
+                    nameContext,
+                    name,
+                    enumerationContext,
+                    enumeration,
+                    owningKlassBuilder,
+                    isKey,
+                    isOptional);
         }
 
         @Override
@@ -53,7 +62,8 @@ public class EnumerationProperty extends DataTypeProperty<Enumeration>
                     this.type,
                     owningKlassContext,
                     owningKlass,
-                    this.isKey(), this.isOptional);
+                    this.isKey,
+                    this.isOptional);
         }
     }
 }

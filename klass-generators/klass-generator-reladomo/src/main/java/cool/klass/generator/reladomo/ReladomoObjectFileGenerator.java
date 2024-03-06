@@ -10,7 +10,10 @@ import com.gs.fw.common.mithra.generator.metamodel.MithraObject;
 import com.gs.fw.common.mithra.generator.metamodel.ObjectType;
 import cool.klass.model.meta.domain.DataTypeProperty;
 import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.EnumerationProperty;
 import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.PrimitiveProperty;
+import cool.klass.model.meta.domain.PrimitiveType;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
@@ -71,12 +74,30 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         String        propertyName  = dataTypeProperty.getName();
         attributeType.setName(propertyName);
         attributeType.setColumnName(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, propertyName));
-        attributeType.setNullable(dataTypeProperty.isOptional());
         attributeType.setPrimaryKey(dataTypeProperty.isKey());
+        attributeType.setNullable(dataTypeProperty.isOptional());
+
+        this.handleType(attributeType, dataTypeProperty);
 
         // TODO: Type
         // TODO: SimulatedSequence
 
         return attributeType;
+    }
+
+    private void handleType(AttributeType attributeType, DataTypeProperty<?> dataTypeProperty)
+    {
+        if (dataTypeProperty instanceof EnumerationProperty)
+        {
+            attributeType.setJavaType("String");
+            attributeType.setTrim(false);
+        }
+
+        if (dataTypeProperty instanceof PrimitiveProperty)
+        {
+            PrimitiveProperty primitiveProperty = (PrimitiveProperty) dataTypeProperty;
+            PrimitiveType     primitiveType     = primitiveProperty.getType();
+            primitiveType.visit(new AttributeTypeVisitor(attributeType, primitiveProperty));
+        }
     }
 }

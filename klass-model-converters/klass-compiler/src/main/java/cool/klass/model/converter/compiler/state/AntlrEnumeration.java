@@ -7,8 +7,6 @@ import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -18,12 +16,13 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEnumeration
 {
-    private final String                                      packageName;
-    private final EnumerationDeclarationContext               ctx;
-    private final MutableList<AntlrEnumerationLiteral>        enumerationLiteralStates = Lists.mutable.empty();
-    private       MutableMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName;
+    private final String                        packageName;
+    private final EnumerationDeclarationContext ctx;
 
-    private EnumerationBuilder enumerationBuilder;
+    private final MutableList<AntlrEnumerationLiteral> enumerationLiteralStates = Lists.mutable.empty();
+
+    private EnumerationBuilder                          enumerationBuilder;
+    private MutableMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName;
 
     public AntlrEnumeration(String packageName, EnumerationDeclarationContext ctx)
     {
@@ -31,14 +30,8 @@ public class AntlrEnumeration
         this.ctx = ctx;
     }
 
-    public void addLiteral(
-            EnumerationLiteralContext ctx,
-            EnumerationPrettyNameContext prettyNameContext,
-            String literalName,
-            String prettyName)
+    public void add(AntlrEnumerationLiteral enumerationLiteralState)
     {
-        AntlrEnumerationLiteral enumerationLiteralState =
-                new AntlrEnumerationLiteral(ctx, prettyNameContext, literalName, prettyName);
         this.enumerationLiteralStates.add(enumerationLiteralState);
     }
 

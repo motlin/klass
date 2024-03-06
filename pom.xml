@@ -19,6 +19,7 @@
         <module>klass-model-converters</module>
         <module>klass-generators</module>
         <module>klass-generator-plugins</module>
+        <module>klass-reladomo</module>
     </modules>
 
     <properties>

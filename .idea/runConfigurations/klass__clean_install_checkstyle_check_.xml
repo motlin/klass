@@ -13,6 +13,7 @@
               <option value="clean" />
               <option value="install" />
               <option value="checkstyle:check" />
+              <option value="-Dmaven.repo.local=.m2" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />

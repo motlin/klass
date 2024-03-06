@@ -1,21 +1,33 @@
 package cool.klass.model.converter.compiler.state;
 
+import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.domain.Property.PropertyBuilder;
+import cool.klass.model.meta.domain.Type;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrProperty<T extends ParserRuleContext>
+public abstract class AntlrProperty<C extends ParserRuleContext, T extends Type>
 {
-    public static final AntlrProperty<ParserRuleContext> AMBIGUOUS = new AntlrProperty<>(null, null);
+    public static final AntlrProperty<ParserRuleContext, Type> AMBIGUOUS = new AntlrProperty<ParserRuleContext, Type>(
+            null,
+            null)
+    {
+        @Override
+        public PropertyBuilder<Type> build(KlassBuilder klassBuilder)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+        }
+    };
 
-    protected final T      ctx;
+    protected final C ctx;
     protected final String name;
 
-    public AntlrProperty(T ctx, String name)
+    protected AntlrProperty(C ctx, String name)
     {
         this.ctx = ctx;
         this.name = name;
     }
 
-    public T getCtx()
+    public C getCtx()
     {
         return this.ctx;
     }
@@ -24,4 +36,6 @@ public class AntlrProperty<T extends ParserRuleContext>
     {
         return this.name;
     }
+
+    public abstract PropertyBuilder<T> build(KlassBuilder klassBuilder);
 }

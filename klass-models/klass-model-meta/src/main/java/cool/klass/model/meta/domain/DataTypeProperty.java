@@ -1,11 +1,7 @@
 package cool.klass.model.meta.domain;
 
-import java.util.LinkedHashSet;
-
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.impl.set.mutable.SetAdapter;
 
 public class DataTypeProperty<T extends DataType> extends Property<T>
 {
@@ -40,8 +36,8 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
 
     public abstract static class DataTypePropertyBuilder<T extends DataType> extends PropertyBuilder<T>
     {
-        protected final boolean            isOptional;
-        protected final MutableSet<String> modifiers = SetAdapter.adapt(new LinkedHashSet<>());
+        protected final boolean isKey;
+        protected final boolean isOptional;
 
         protected DataTypePropertyBuilder(
                 ParserRuleContext elementContext,
@@ -50,20 +46,12 @@ public class DataTypeProperty<T extends DataType> extends Property<T>
                 ParserRuleContext typeContext,
                 T type,
                 KlassBuilder owningKlassBuilder,
+                boolean isKey,
                 boolean isOptional)
         {
             super(elementContext, nameContext, name, typeContext, type, owningKlassBuilder);
+            this.isKey = isKey;
             this.isOptional = isOptional;
-        }
-
-        public boolean addModifier(String modifier)
-        {
-            return this.modifiers.add(modifier);
-        }
-
-        protected boolean isKey()
-        {
-            return this.modifiers.contains("key");
         }
     }
 }

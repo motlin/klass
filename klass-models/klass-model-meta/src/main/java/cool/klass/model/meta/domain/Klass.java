@@ -1,12 +1,8 @@
 package cool.klass.model.meta.domain;
 
-import cool.klass.model.meta.domain.EnumerationProperty.EnumerationPropertyBuilder;
-import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
 import cool.klass.model.meta.domain.Property.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.factory.Lists;
 
 public class Klass extends Type
 {
@@ -41,7 +37,7 @@ public class Klass extends Type
 
     public static final class KlassBuilder extends TypeBuilder
     {
-        private final MutableList<PropertyBuilder<?>> memberBuilders = Lists.mutable.empty();
+        private ImmutableList<PropertyBuilder<?>> propertyBuilders;
 
         public KlassBuilder(
                 ParserRuleContext elementContext,
@@ -52,16 +48,9 @@ public class Klass extends Type
             super(elementContext, nameContext, name, packageName);
         }
 
-        public KlassBuilder primitiveProperty(PrimitivePropertyBuilder primitivePropertyBuilder)
+        public void setProperties(ImmutableList<PropertyBuilder<?>> propertyBuilders)
         {
-            this.memberBuilders.add(primitivePropertyBuilder);
-            return this;
-        }
-
-        public KlassBuilder enumerationProperty(EnumerationPropertyBuilder enumerationPropertyBuilder)
-        {
-            this.memberBuilders.add(enumerationPropertyBuilder);
-            return this;
+            this.propertyBuilders = propertyBuilders;
         }
 
         public Klass build()
@@ -72,7 +61,7 @@ public class Klass extends Type
                     this.name,
                     this.packageName);
 
-            ImmutableList<Property<?>> properties = this.memberBuilders
+            ImmutableList<Property<?>> properties = this.propertyBuilders
                     .<Property<?>>collect(each -> each.build(this.elementContext, klass))
                     .toImmutable();
 

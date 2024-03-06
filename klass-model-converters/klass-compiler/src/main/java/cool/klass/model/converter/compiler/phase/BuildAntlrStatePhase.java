@@ -7,6 +7,7 @@ import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrEnumerationLiteral;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.PrimitiveType;
@@ -23,7 +24,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
-import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
@@ -65,15 +65,9 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void exitCompilationUnit(CompilationUnitContext ctx)
-    {
-        this.packageName = null;
-    }
-
-    @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.classState = new AntlrClass(ctx);
+        this.classState = new AntlrClass(this.packageName, ctx);
         this.classStates.put(ctx, this.classState);
     }
 
@@ -147,12 +141,6 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterPackageName(PackageNameContext ctx)
-    {
-        this.packageName = ctx.getText();
-    }
-
-    @Override
     public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
     {
         String literalName = ctx.identifier().getText();
@@ -163,7 +151,12 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
                 ? null
                 : prettyNameContext.getText().substring(1, prettyNameContext.getText().length() - 1);
 
-        this.enumerationState.addLiteral(ctx, prettyNameContext, literalName, prettyName);
+        AntlrEnumerationLiteral enumerationLiteralState = new AntlrEnumerationLiteral(
+                ctx,
+                prettyNameContext,
+                literalName,
+                prettyName);
+        this.enumerationState.add(enumerationLiteralState);
     }
 
     @Override
@@ -221,15 +214,9 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
         PrimitiveTypeContext     primitiveTypeContext     = ctx.primitiveType();
         OptionalMarkerContext    optionalMarkerContext    = ctx.optionalMarker();
 
-        String        propertyName  = this.getName(escapedIdentifierContext);
+        String        propertyName  = EscapedIdentifierVisitor.get(escapedIdentifierContext);
         PrimitiveType primitiveType = PrimitiveType.valueOf(primitiveTypeContext.getText());
         boolean       isOptional    = optionalMarkerContext != null;
-
-        AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
-                ctx,
-                propertyName,
-                primitiveType,
-                isOptional);
 
         MutableList<PropertyModifierContext> propertyModifierContexts = ListAdapter.adapt(ctx.propertyModifier());
         MutableBag<String> propertyModifierStrings = propertyModifierContexts
@@ -239,12 +226,16 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
         MutableBag<String> duplicateModifiers = propertyModifierStrings.selectByOccurrences(occurrences -> occurrences
                                                                                                            > 1);
 
-        this.classState.add(primitivePropertyState);
-    }
+        // TODO: Consider moving the duplicate modifier check here?
 
-    private String getName(EscapedIdentifierContext escapedIdentifierContext)
-    {
-        return EscapedIdentifierVisitor.INSTANCE.visitEscapedIdentifier(escapedIdentifierContext);
+        AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
+                ctx,
+                propertyName,
+                primitiveType,
+                isOptional,
+                propertyModifierStrings.toSet().toImmutable());
+
+        this.classState.add(primitivePropertyState);
     }
 
     @Override
@@ -273,6 +264,7 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
 
     public void build(DomainModelBuilder domainModelBuilder)
     {
+        this.classStates.forEachValue(antlrClass -> antlrClass.build(domainModelBuilder));
         this.enumerationStates.forEachValue(antlrEnumeration -> antlrEnumeration.build(domainModelBuilder));
     }
 }

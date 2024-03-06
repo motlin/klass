@@ -37,9 +37,10 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 ParserRuleContext typeContext,
                 PrimitiveType primitiveType,
                 KlassBuilder owningKlassBuilder,
+                boolean isKey,
                 boolean isOptional)
         {
-            super(elementContext, nameContext, name, typeContext, primitiveType, owningKlassBuilder, isOptional);
+            super(elementContext, nameContext, name, typeContext, primitiveType, owningKlassBuilder, isKey, isOptional);
         }
 
         @Override
@@ -53,7 +54,7 @@ public class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.type,
                     owningKlassContext,
                     owningKlass,
-                    this.isKey(),
+                    this.isKey,
                     this.isOptional);
         }
     }

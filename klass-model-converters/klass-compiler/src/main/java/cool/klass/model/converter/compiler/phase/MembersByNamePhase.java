@@ -13,7 +13,6 @@ import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MapIterable;
@@ -91,7 +90,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
     @Override
     public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
     {
-        String name = this.getName(ctx.escapedIdentifier());
+        String name = EscapedIdentifierVisitor.get(ctx.escapedIdentifier());
 
         MutableOrderedMap<String, ParserRuleContext> members = this.classMembersByName.getIfAbsentPut(
                 this.classDeclarationContext,
@@ -126,15 +125,10 @@ public class MembersByNamePhase extends AbstractCompilerPhase
                         : AMBIGUOUS_PRIMITIVE_PROPERTY);
     }
 
-    private String getName(EscapedIdentifierContext escapedIdentifierContext)
-    {
-        return EscapedIdentifierVisitor.INSTANCE.visitEscapedIdentifier(escapedIdentifierContext);
-    }
-
     @Override
     public void enterEnumerationProperty(EnumerationPropertyContext ctx)
     {
-        String name = this.getName(ctx.escapedIdentifier());
+        String name = EscapedIdentifierVisitor.get(ctx.escapedIdentifier());
 
         MutableOrderedMap<String, ParserRuleContext> members = this.classMembersByName.getIfAbsentPut(
                 this.classDeclarationContext,

@@ -7,17 +7,80 @@ import org.eclipse.collections.impl.factory.Lists;
 /**
  * Predefined native types.
  */
-public final class PrimitiveType extends DataType
+public abstract class PrimitiveType extends DataType
 {
-    public static final PrimitiveType INTEGER    = new PrimitiveType("Integer");
-    public static final PrimitiveType LONG       = new PrimitiveType("Long");
-    public static final PrimitiveType DOUBLE     = new PrimitiveType("Double");
-    public static final PrimitiveType FLOAT      = new PrimitiveType("Float");
-    public static final PrimitiveType BOOLEAN    = new PrimitiveType("Boolean");
-    public static final PrimitiveType STRING     = new PrimitiveType("String");
-    public static final PrimitiveType INSTANT    = new PrimitiveType("Instant");
-    public static final PrimitiveType LOCAL_DATE = new PrimitiveType("LocalDate");
-    public static final PrimitiveType ID         = new PrimitiveType("ID");
+    public static final PrimitiveType ID         = new PrimitiveType("ID")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitID();
+        }
+    };
+    public static final PrimitiveType INTEGER    = new PrimitiveType("Integer")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitInteger();
+        }
+    };
+    public static final PrimitiveType LONG       = new PrimitiveType("Long")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitLong();
+        }
+    };
+    public static final PrimitiveType DOUBLE     = new PrimitiveType("Double")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitDouble();
+        }
+    };
+    public static final PrimitiveType FLOAT      = new PrimitiveType("Float")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitFloat();
+        }
+    };
+    public static final PrimitiveType BOOLEAN    = new PrimitiveType("Boolean")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitBoolean();
+        }
+    };
+    public static final PrimitiveType STRING     = new PrimitiveType("String")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitString();
+        }
+    };
+    public static final PrimitiveType INSTANT    = new PrimitiveType("Instant")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitInstant();
+        }
+    };
+    public static final PrimitiveType LOCAL_DATE = new PrimitiveType("LocalDate")
+    {
+        @Override
+        public void visit(PrimitiveTypeVisitor visitor)
+        {
+            visitor.visitLocalDate();
+        }
+    };
 
     public static final ImmutableList<PrimitiveType> PRIMITIVE_TYPES = Lists.immutable.with(
             INTEGER,
@@ -41,4 +104,12 @@ public final class PrimitiveType extends DataType
     {
         return BY_NAME.get(name);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getName();
+    }
+
+    public abstract void visit(PrimitiveTypeVisitor visitor);
 }
