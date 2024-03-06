@@ -125,26 +125,6 @@
         </module>
 
         <module
-                id="${rootArtifactId}-reladomo-test-data"
-                dir="__rootArtifactId__-reladomo-test-data"
-                name="${rootArtifactId}-reladomo-test-data">
-            <fileSets>
-                <fileSet filtered="true" packaged="true" encoding="UTF-8">
-                    <directory>src/main/java</directory>
-                </fileSet>
-                <fileSet encoding="UTF-8">
-                    <directory>src/main/resources</directory>
-                </fileSet>
-                <fileSet filtered="true">
-                    <directory></directory>
-                    <includes>
-                        <include>__rootArtifactId__-reladomo-test-data.iml</include>
-                    </includes>
-                </fileSet>
-            </fileSets>
-        </module>
-
-        <module
                 id="${rootArtifactId}-dtos"
                 dir="__rootArtifactId__-dtos"
                 name="${rootArtifactId}-dtos">
