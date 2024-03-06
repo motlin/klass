@@ -24,13 +24,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
             @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState)
     {
-        super(elementContext, compilationUnit, inferred, name, nameContext);
+        super(elementContext, compilationUnit, inferred, nameContext, name);
         this.isOptional = isOptional;
         this.modifiers = Objects.requireNonNull(modifiers);
         this.owningClassState = owningClassState;
@@ -41,7 +41,18 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.modifiers.anySatisfy(AntlrPropertyModifier::isKey);
     }
 
+    public boolean isOptional()
+    {
+        return this.isOptional;
+    }
+
     public abstract boolean isTemporal();
+
+    @Nonnull
+    public ImmutableList<AntlrPropertyModifier> getModifiers()
+    {
+        return this.modifiers;
+    }
 
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();

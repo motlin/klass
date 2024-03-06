@@ -11,8 +11,8 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
-import org.eclipse.collections.api.map.MapIterable;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 
 public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
@@ -21,7 +21,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
 
     public ClassTemporalPropertyInferencePhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -91,8 +91,8 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                name,
                 ctx,
+                name,
                 false,
                 Lists.immutable.empty(),
                 classState,

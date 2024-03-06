@@ -33,7 +33,9 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             true,
             new ParserRuleContext(),
             "ambiguous class",
-            null)
+            null,
+            Lists.immutable.empty(),
+            false)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -56,7 +58,9 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             true,
             new ParserRuleContext(),
             "not found class",
-            null)
+            null,
+            Lists.immutable.empty(),
+            false)
     {
         @Override
         public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
@@ -80,17 +84,29 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
+    private MutableList<AntlrClass> versionClasses = Lists.mutable.empty();
+    private AntlrClass              versionedClass;
+
+    private MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
+
+    private final ImmutableList<AntlrClassModifier> classModifiers;
+    private boolean isUser;
+
     private KlassBuilder klassBuilder;
 
     public AntlrClass(
-            @Nonnull ClassDeclarationContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
-            String packageName)
+            String packageName,
+            ImmutableList<AntlrClassModifier> classModifiers,
+            boolean isUser)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
+        this.classModifiers = Objects.requireNonNull(classModifiers);
+        this.isUser = isUser;
     }
 
     public MutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
@@ -125,11 +141,13 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             throw new IllegalStateException();
         }
 
+        // TODO: Pass through class modifiers?
         this.klassBuilder = new KlassBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.packageName);
+                this.packageName,
+                isUser);
 
         ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?>>collect(AntlrDataTypeProperty::build)
@@ -146,16 +164,34 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             throw new IllegalStateException();
         }
 
-        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
-                .collect(AntlrAssociationEnd::getAssociationEndBuilder)
-                .toImmutable();
+        if (this.versionClasses.notEmpty())
+        {
+            this.klassBuilder.setVersionClassBuilder(this.versionClasses.getOnly().getKlassBuilder());
+        }
 
-        this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
+        if (this.versionedClass != null)
+        {
+            this.klassBuilder.setVersionedClassBuilder(this.versionedClass.getKlassBuilder());
+        }
     }
 
     public KlassBuilder getKlassBuilder()
     {
         return Objects.requireNonNull(this.klassBuilder);
+    }
+
+    public void build3()
+    {
+        if (this.klassBuilder == null)
+        {
+            throw new IllegalStateException();
+        }
+
+        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
+                .collect(AntlrAssociationEnd::getAssociationEndBuilder)
+                .toImmutable();
+
+        this.klassBuilder.setAssociationEndBuilders(associationEndBuilders);
     }
 
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -186,6 +222,36 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
             associationEndState.reportErrors(compilerErrorHolder);
         }
 
+        if (this.versionClasses.size() > 1)
+        {
+            for (AntlrClass versionClass : this.versionClasses)
+            {
+                versionClass.reportDuplicateVersionClass(compilerErrorHolder, this);
+            }
+        }
+
+        if (this.versionAssociations.size() > 1)
+        {
+            for (AntlrAssociation versionAssociation : this.versionAssociations)
+            {
+                versionAssociation.reportDuplicateVersionAssociation(compilerErrorHolder, this);
+            }
+        }
+
+        if (this.versionedClass == null)
+        {
+            for (AntlrAssociation versionAssociation : this.versionAssociations)
+            {
+                versionAssociation.reportVersionAssociation(compilerErrorHolder, this);
+            }
+        }
+
+        if (this.versionedClass != null && this.versionClasses.notEmpty())
+        {
+            String message = String.format("ERR_VER_VER: Class is a version and has a version: '%s'.", this.name);
+            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+        }
+
         // TODO: Warn if class is owned by multiple
         // TODO: Detect ownership cycles
         // TODO: Check that there's at least one key property
@@ -200,6 +266,14 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
+    }
+
+    private void reportDuplicateVersionClass(CompilerErrorHolder compilerErrorHolder, AntlrClass versionedClass)
+    {
+        String message = String.format(
+                "ERR_VER_CLS: Multiple version classes on '%s'.",
+                versionedClass.getName());
+        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
     }
 
     private ImmutableList<String> getMemberNames()
@@ -232,5 +306,34 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getTypeBuilder() not implemented yet");
+    }
+
+    public void addVersionClass(AntlrClass versionClass)
+    {
+        this.versionClasses.add(Objects.requireNonNull(versionClass));
+    }
+
+    public void setVersionedClass(AntlrClass versionedClass)
+    {
+        if (this.versionedClass != null)
+        {
+            throw new AssertionError();
+        }
+        this.versionedClass = Objects.requireNonNull(versionedClass);
+    }
+
+    public void addVersionAssociation(AntlrAssociation versionAssociation)
+    {
+        this.versionAssociations.add(Objects.requireNonNull(versionAssociation));
+    }
+
+    public boolean hasVersion()
+    {
+        return this.versionClasses.notEmpty();
+    }
+
+    public boolean hasVersionedModifier()
+    {
+        return this.classModifiers.anySatisfy(AntlrClassModifier::isVersioned);
     }
 }

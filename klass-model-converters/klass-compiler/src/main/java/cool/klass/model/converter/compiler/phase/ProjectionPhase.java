@@ -14,14 +14,14 @@ import cool.klass.model.converter.compiler.state.projection.AntlrProjectionParen
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionPrimitiveMember;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
-import org.eclipse.collections.api.map.MapIterable;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
@@ -35,7 +35,7 @@ public class ProjectionPhase extends AbstractCompilerPhase
 
     public ProjectionPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             @Nonnull AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);

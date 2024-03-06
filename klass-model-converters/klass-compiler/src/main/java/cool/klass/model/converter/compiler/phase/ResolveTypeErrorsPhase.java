@@ -8,7 +8,6 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassServiceModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -18,7 +17,9 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
-import org.eclipse.collections.api.map.MapIterable;
+import cool.klass.model.meta.grammar.KlassParser.VersionsContext;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.map.MutableMap;
 
 public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
 {
@@ -26,7 +27,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
 
     public ResolveTypeErrorsPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             ResolveTypesPhase resolveTypesPhase)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -45,7 +46,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     reference,
                     ctx,
                     this.classDeclarationContext,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -80,7 +81,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     this.serviceDeclarationContext,
                     this.urlDeclarationContext,
                     this.serviceGroupDeclarationContext,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -95,7 +96,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     String.format("Cannot find enumeration '%s'", reference.getText()),
                     reference,
                     this.classDeclarationContext,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -112,7 +113,21 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     enumerationReferenceContext,
                     ctx,
                     this.classDeclarationContext,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
+        }
+    }
+
+    @Override
+    public void enterVersions(VersionsContext ctx)
+    {
+        ClassDeclarationContext declaration = this.resolveTypesPhase.getType(ctx);
+        if (declaration == DeclarationsByNamePhase.NO_SUCH_CLASS)
+        {
+            ClassReferenceContext reference = ctx.classReference();
+            this.error(
+                    String.format("Cannot find class '%s'", reference.getText()),
+                    reference,
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -126,7 +141,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -142,7 +157,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 
@@ -157,7 +172,7 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
                     this.classDeclarationContext,
-                    this.currentCompilationUnit.getCompilationUnitContext());
+                    this.currentCompilationUnit.getParserContext());
         }
     }
 }

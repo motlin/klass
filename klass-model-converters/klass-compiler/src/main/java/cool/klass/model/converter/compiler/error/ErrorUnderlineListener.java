@@ -361,8 +361,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     @Override
     public void enterServiceCriteriaKeyword(ServiceCriteriaKeywordContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterServiceCriteriaKeyword() not implemented yet");
+        this.addUnderlinedToken(ctx.getStart());
     }
 
     @Override

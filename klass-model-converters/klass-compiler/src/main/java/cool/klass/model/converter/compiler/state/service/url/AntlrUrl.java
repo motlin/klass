@@ -69,6 +69,11 @@ public class AntlrUrl extends AntlrElement
         return this.serviceGroup;
     }
 
+    public boolean hasQueryParameters()
+    {
+        return this.urlQueryParameterStates.notEmpty();
+    }
+
     public void enterUrlConstant(AntlrUrlConstant antlrUrlConstant)
     {
         this.urlPathSegments.add(antlrUrlConstant);

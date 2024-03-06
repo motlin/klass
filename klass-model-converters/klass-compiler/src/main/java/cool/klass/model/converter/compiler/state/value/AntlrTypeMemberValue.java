@@ -48,6 +48,7 @@ public class AntlrTypeMemberValue extends AntlrMemberExpressionValue
         {
             ClassReferenceContext offendingToken = this.getElementContext().classReference();
 
+            // TODO: This error message is firing for ambiguity, not just NOT_FOUND.
             String message = String.format(
                     "ERR_MEM_TYP: Cannot find class '%s'.",
                     offendingToken.getText());

@@ -8,12 +8,12 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrEnumerationLiteral;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import org.eclipse.collections.api.map.MapIterable;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.map.MutableMap;
 
 public class EnumerationsPhase extends AbstractCompilerPhase
 {
@@ -23,7 +23,7 @@ public class EnumerationsPhase extends AbstractCompilerPhase
 
     public EnumerationsPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);

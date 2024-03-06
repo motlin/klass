@@ -7,10 +7,8 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
-import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.property.EnumerationProperty.EnumerationPropertyBuilder;
-import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -19,7 +17,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 {
     @Nonnull
     public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
-            new EnumerationPropertyContext(null, -1),
+            new ParserRuleContext(),
             null,
             true,
             new ParserRuleContext(),
@@ -36,7 +34,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
     private EnumerationPropertyBuilder enumerationPropertyBuilder;
 
     public AntlrEnumerationProperty(
-            @Nonnull EnumerationPropertyContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
@@ -46,14 +44,14 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             AntlrClass owningClassState,
             @Nonnull AntlrEnumeration antlrEnumeration)
     {
-        super(elementContext, compilationUnit, inferred, name, nameContext, isOptional, modifiers, owningClassState);
+        super(elementContext, compilationUnit, inferred, nameContext, name, isOptional, modifiers, owningClassState);
         // TODO: is this nullable?
         this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }
 
     @Nonnull
     @Override
-    public AntlrType getType()
+    public AntlrEnumeration getType()
     {
         return this.antlrEnumeration;
     }

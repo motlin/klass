@@ -23,7 +23,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
 {
     @Nonnull
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
-            new AssociationDeclarationContext(null, -1),
+            new ParserRuleContext(),
             null,
             true,
             new ParserRuleContext(),
@@ -42,9 +42,10 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
     private       AntlrCriteria                    antlrCriteria;
 
     private AssociationBuilder associationBuilder;
+    private AntlrClass         versionClass;
 
     public AntlrAssociation(
-            @Nonnull AssociationDeclarationContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
             @Nonnull ParserRuleContext nameContext,
@@ -220,6 +221,32 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
     public void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts)
     {
         parserRuleContexts.add(this.getElementContext());
-        parserRuleContexts.add(this.compilationUnit.getCompilationUnitContext());
+        parserRuleContexts.add(this.compilationUnit.getParserContext());
+    }
+
+    public void setVersionClass(AntlrClass classState)
+    {
+        if (this.versionClass != null)
+        {
+            throw new AssertionError();
+        }
+        this.versionClass = Objects.requireNonNull(classState);
+    }
+
+    public void reportDuplicateVersionAssociation(CompilerErrorHolder compilerErrorHolder, AntlrClass versionClass)
+    {
+        String message = String.format(
+                "ERR_MUL_VER_ASSO: Multiple version associations on '%s'.",
+                versionClass.getName());
+        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
+    }
+
+    public void reportVersionAssociation(CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
+    {
+        // TODO: Check for the class they probably meant to point to
+        String message = String.format(
+                "ERR_VER_ASSO: Version association points to class which isn't a version '%s'.",
+                versionClass.getName());
+        compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().versions().classReference());
     }
 }

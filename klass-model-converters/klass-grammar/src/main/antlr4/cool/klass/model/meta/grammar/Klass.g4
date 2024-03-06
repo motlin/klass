@@ -1,6 +1,7 @@
 grammar Klass;
 
 compilationUnit: packageDeclaration topLevelDeclaration* EOF;
+urlParameterDeclarationEOF: urlParameterDeclaration EOF;
 
 packageDeclaration: 'package' packageName;
 
@@ -18,7 +19,7 @@ topLevelDeclaration
     ;
 
 // class
-classDeclaration: classOrUser identifier classServiceModifier* classModifier* classBody;
+classDeclaration: classOrUser identifier classServiceModifier* classModifier* versions? classBody;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
@@ -31,7 +32,7 @@ enumerationLiteral: identifier ('(' enumerationPrettyName ')')?;
 enumerationPrettyName: StringLiteral;
 
 // association
-associationDeclaration: 'association' identifier associationBody;
+associationDeclaration: 'association' identifier versions? associationBody;
 associationBody: '{' associationEnd* relationship? '}';
 associationEnd: associationEndModifier* identifier ':' classType orderByDeclaration?;
 relationship: 'relationship' criteriaExpression;
@@ -75,9 +76,10 @@ parameterizedProperty: escapedIdentifier '(' (parameterDeclaration (',' paramete
 optionalMarker: '?';
 
 // parameter
-parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration;
-primitiveParameterDeclaration: identifier (':' primitiveType multiplicity)?;
-enumerationParameterDeclaration: identifier (':' enumerationReference multiplicity)?;
+parameterDeclaration: primitiveParameterDeclaration | enumerationParameterDeclaration | versionParameterDeclaration;
+primitiveParameterDeclaration: identifier ':' primitiveType multiplicity;
+enumerationParameterDeclaration: identifier ':' enumerationReference multiplicity;
+versionParameterDeclaration: 'version';
 parameterDeclarationList: '(' parameterDeclaration (',' parameterDeclaration)* ')';
 
 // argument
@@ -99,6 +101,7 @@ primitiveType: 'ID' | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'Str
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked';
 propertyModifier: 'key' | 'private';
 associationEndModifier: 'owned';
+versions: 'versions' '(' classReference ')';
 
 // order by
 orderByDeclaration: 'orderBy' ':' orderByList;
@@ -158,11 +161,11 @@ escapedIdentifier: identifier | '`' keywordValidAsIdentifier '`';
 keywordValidAsIdentifier
     : 'package'
     | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
-    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked'
+    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'versions'
     | 'key' | 'private' | 'owned'
     | 'read' | 'write' | 'create' | 'update' | 'delete'
     | 'in' | 'contains' | 'startsWith' | 'endsWith'
-    | 'native'
+    | 'native' | 'version'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
     // TODO: Split these keywords out, since they're really only ok as enumeration literals

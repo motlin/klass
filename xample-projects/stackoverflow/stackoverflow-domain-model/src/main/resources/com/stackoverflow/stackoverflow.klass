@@ -18,6 +18,8 @@ user User
     lastName          : String?
     // TODO: Consider adding primitive types like email address and url
     email             : String?
+
+    // TODO: Unique property sets
 }
 
 enumeration Status
@@ -98,8 +100,12 @@ class Question
 
 // The _Version class is implied by the versioned annotation, and not supposed to actually be declared
 // TODO: If you do declare one, we'd need a special keyword version instead of class
+// TODO: Needs a syntax like versions(Question)
+// TODO: Error message if versions does point to a version, if the versioned type isn't systemTemporal, maybe also if the versioned type isn't systemTemporal/versioned
+/*
 class QuestionVersion
     systemTemporal
+    versions(Question)
 {
     // Key properties copied from Question
     key id            : ID
@@ -107,9 +113,12 @@ class QuestionVersion
     // The version number
     // It gets incremented automatically when anything in the version project (QuestionWriteProjection) gets edited
     // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64
+    // TODO: Consider a primitive property type VersionNumber
     number            : Integer
 }
+*/
 
+// TODO: Error message if versions doesn't point to a version class
 association QuestionHasAnswer
 {
     // TODO: *final* question: Question[1..1]
@@ -124,6 +133,7 @@ association QuestionHasAnswer
 
 // The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared
 // It could automatically be part of read projections and not write projections
+/*
 association QuestionHasVersion
 {
     question: Question[1..1]
@@ -133,6 +143,7 @@ association QuestionHasVersion
     relationship this.id == QuestionVersion.id
             && this.system == QuestionVersion.system
 }
+*/
 
 class Answer
     systemTemporal
@@ -239,28 +250,8 @@ service Question
             multiplicity: one
             criteria    : this.id == id
             projection  : QuestionReadProjection
+
             // TODO: format: json
-        }
-    /api/question/in?{ids: Long[0..*]}
-        GET
-        {
-            multiplicity: one
-            criteria    : this.id in ids
-            projection  : QuestionReadProjection
-        }
-    /api/question/firstTwo
-        GET
-        {
-            multiplicity: one
-            criteria    : this.id in (1, 2)
-            projection  : QuestionReadProjection
-        }
-    /api/question/{id: Long[1..1]}?{version: Integer[1..1]}
-        GET
-        {
-            multiplicity: one
-            criteria    : this.id == id
-            projection  : QuestionReadProjection
         }
         PUT
         {
@@ -272,7 +263,7 @@ service Question
             // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409
             // Consider 412 Precondition Failed or 417 Expectation Failed instead of 400, and leave bad request for problems like invalid json, or mismatches with the meta model
             conflict    : this.id == QuestionVersion.id
-                && QuestionVersion.number == version
+                    && QuestionVersion.number == version
             // TODO: Allow anonymous/undeclared projections created from all owned association ends
             projection  : QuestionWriteProjection
         }
@@ -288,9 +279,24 @@ service Question
             authorize   : this.createdById == user
 
             // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409
-            validate    : this.id == QuestionVersion.id
+            conflict    : this.id == QuestionVersion.id
                     && QuestionVersion.number == version
             projection  : QuestionWriteProjection
+        }
+    /api/question/in?{ids: Long[0..*]}
+        GET
+        {
+            multiplicity: many
+            criteria    : this.id in ids
+            projection  : QuestionReadProjection
+        }
+    /api/question/firstTwo
+        GET
+        {
+            // TODO: Warn if multiplicity is one and criteria uses in clause, or anything other than equality on a unique property
+            multiplicity: many
+            criteria    : this.id in (1, 2)
+            projection  : QuestionReadProjection
         }
     /api/question
         POST

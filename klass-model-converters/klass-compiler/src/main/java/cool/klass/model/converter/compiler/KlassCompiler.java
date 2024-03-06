@@ -17,14 +17,18 @@ import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypesPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
+import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
+import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
+import cool.klass.model.converter.compiler.phase.VersionReferencePhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.grammar.KlassListener;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
@@ -34,10 +38,24 @@ import org.eclipse.collections.impl.set.mutable.SetAdapter;
 public class KlassCompiler
 {
     private final CompilerErrorHolder compilerErrorHolder;
+    private final AntlrDomainModel    domainModelState = new AntlrDomainModel();
 
     public KlassCompiler(CompilerErrorHolder compilerErrorHolder)
     {
         this.compilerErrorHolder = compilerErrorHolder;
+    }
+
+    public static void executeCompilerPhase(
+            KlassListener compilerPhase,
+            @Nonnull MutableSet<CompilationUnit> compilationUnits)
+    {
+        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+        // Compiler macros may add new compilation units within a compiler phase
+        ImmutableSet<CompilationUnit> immutableCompilationUnits = compilationUnits.toImmutable();
+        for (CompilationUnit compilationUnit : immutableCompilationUnits)
+        {
+            parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext());
+        }
     }
 
     @Nullable
@@ -52,55 +70,86 @@ public class KlassCompiler
     @Nullable
     public DomainModel compile(@Nonnull MutableSet<CompilationUnit> compilationUnits)
     {
-        MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext =
+        MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext =
                 compilationUnits.groupByUniqueKey(
-                        CompilationUnit::getCompilationUnitContext,
+                        CompilationUnit::getParserContext,
                         MapAdapter.adapt(new IdentityHashMap<>()));
 
-        DeclarationsByNamePhase    phase1 = new DeclarationsByNamePhase();
-        ResolveTypeReferencesPhase phase2 = new ResolveTypeReferencesPhase(phase1);
-        ResolveTypesPhase          phase3 = new ResolveTypesPhase(phase2);
-        KlassListener phase4 = new ResolveTypeErrorsPhase(
+        ImmutableList<KlassListener> phases = this.getCompilerPhases(compilationUnitsByContext, compilationUnits);
+
+        phases.forEachWith(KlassCompiler::executeCompilerPhase, compilationUnits);
+
+        this.domainModelState.reportErrors(this.compilerErrorHolder);
+
+        if (!this.compilerErrorHolder.hasCompilerErrors())
+        {
+            DomainModelBuilder domainModelBuilder = this.domainModelState.build();
+            return domainModelBuilder.build();
+        }
+        return null;
+    }
+
+    private ImmutableList<KlassListener> getCompilerPhases(
+            MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
+            MutableSet<CompilationUnit> compilationUnits)
+    {
+        KlassListener phase1 = new EnumerationsPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                phase3);
+                this.domainModelState);
 
-        AntlrDomainModel domainModelState = new AntlrDomainModel();
-
-        KlassListener phase5 = new EnumerationsPhase(
+        KlassListener phase2 = new ClassPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState);
 
-        KlassListener phase6 = new ClassPhase(
+        KlassListener phase3 = new ClassTemporalPropertyInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState);
 
-        KlassListener phase7 = new ClassTemporalPropertyInferencePhase(
+        KlassListener phase4 = new VersionClassInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState,
+                compilationUnits);
 
-        // TODO: Phase for inference on classes?
-        // Like adding temporal and audit properties, and version types and version associations
-
-        KlassListener phase8 = new AssociationPhase(
+        KlassListener phase5 = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState);
 
-        KlassListener phase9 = new ProjectionPhase(
+        KlassListener phase6 = new VersionAssociationInferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState,
+                compilationUnits);
 
-        KlassListener phase10 = new ServicePhase(
+        KlassListener phase7 = new VersionReferencePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
-                domainModelState);
+                this.domainModelState);
 
-        ImmutableList<KlassListener> phases = Lists.immutable.with(
+        // TODO: Redo these 4 phases to use domainModelState
+        DeclarationsByNamePhase    phase8 = new DeclarationsByNamePhase();
+        ResolveTypeReferencesPhase phase9 = new ResolveTypeReferencesPhase(phase8);
+        ResolveTypesPhase          phase10 = new ResolveTypesPhase(phase9);
+        KlassListener phase11 = new ResolveTypeErrorsPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                phase10);
+
+        KlassListener phase12 = new ProjectionPhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelState);
+
+        KlassListener phase13 = new ServicePhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                this.domainModelState);
+
+        return Lists.immutable.with(
                 phase1,
                 phase2,
                 phase3,
@@ -110,35 +159,15 @@ public class KlassCompiler
                 phase7,
                 phase8,
                 phase9,
-                phase10);
-
-        phases.forEachWith(this::executeCompilerPhase, compilationUnits);
-
-        domainModelState.reportErrors(this.compilerErrorHolder);
-
-        if (!this.compilerErrorHolder.hasCompilerErrors())
-        {
-            DomainModelBuilder domainModelBuilder = domainModelState.build();
-            return domainModelBuilder.build();
-        }
-        return null;
+                phase10,
+                phase11,
+                phase12,
+                phase13);
     }
 
     @Nullable
     public DomainModel compile(CompilationUnit... compilationUnits)
     {
         return this.compile(Sets.mutable.with(compilationUnits));
-    }
-
-    protected void executeCompilerPhase(
-            KlassListener compilerPhase,
-            @Nonnull MutableSet<CompilationUnit> compilationUnits)
-    {
-        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
-        for (CompilationUnit compilationUnit : compilationUnits)
-        {
-            CompilationUnitContext compilationUnitContext = compilationUnit.getCompilationUnitContext();
-            parseTreeWalker.walk(compilerPhase, compilationUnitContext);
-        }
     }
 }

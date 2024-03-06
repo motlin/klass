@@ -20,7 +20,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.factory.Maps;
 
 public class AntlrService extends AntlrElement
 {
@@ -32,6 +34,14 @@ public class AntlrService extends AntlrElement
             AntlrUrl.AMBIGUOUS,
             AntlrVerb.AMBIGUOUS,
             AntlrServiceMultiplicity.AMBIGUOUS);
+
+    private static final ImmutableMap<Verb, ImmutableList<String>> ALLOWED_CRITERIA_TYPES =
+            Maps.immutable.<Verb, ImmutableList<String>>empty()
+                    .newWithKeyValue(Verb.GET, Lists.immutable.with("authorize", "criteria"))
+                    .newWithKeyValue(Verb.POST, Lists.immutable.with("authorize"))
+                    .newWithKeyValue(Verb.PUT, Lists.immutable.with("authorize", "criteria", "conflict"))
+                    .newWithKeyValue(Verb.PATCH, Lists.immutable.with("authorize", "criteria", "conflict"))
+                    .newWithKeyValue(Verb.DELETE, Lists.immutable.with("authorize", "criteria", "conflict"));
 
     @Nonnull
     private final AntlrUrl                 urlState;
@@ -60,9 +70,9 @@ public class AntlrService extends AntlrElement
     }
 
     @Nonnull
-    public AntlrVerb getVerbState()
+    public AntlrUrl getUrlState()
     {
-        return this.verbState;
+        return this.urlState;
     }
 
     public void reportDuplicateVerb(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -100,6 +110,37 @@ public class AntlrService extends AntlrElement
                 .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerErrorHolder);
 
         // TODO: reportErrors: Find url parameters which are unused by any criteria
+
+        Verb                  verb                 = this.getVerbState().getVerb();
+        ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
+
+        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
+        {
+            String serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
+            if (allowedCriteriaTypes == null)
+            {
+                throw new AssertionError(verb);
+            }
+            if (!allowedCriteriaTypes.contains(serviceCriteriaKeyword))
+            {
+                String error = String.format(
+                        "Critiera '%s' not allowed for verb '%s'. Must be one of %s.",
+                        serviceCriteriaKeyword,
+                        verb,
+                        allowedCriteriaTypes);
+                compilerErrorHolder.add(
+                        this.compilationUnit,
+                        error,
+                        serviceCriteriaState.getElementContext().serviceCriteriaKeyword(),
+                        this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+            }
+        }
+    }
+
+    @Nonnull
+    public AntlrVerb getVerbState()
+    {
+        return this.verbState;
     }
 
     public ImmutableList<ParserRuleContext> getParserRuleContexts()

@@ -55,6 +55,12 @@ public final class Projection extends ProjectionParent
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
+        @Nonnull
+        public KlassBuilder getKlassBuilder()
+        {
+            return this.klassBuilder;
+        }
+
         public Projection build()
         {
             if (this.projection != null)

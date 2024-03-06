@@ -9,37 +9,38 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
+import org.eclipse.collections.api.block.function.Function;
 
 public final class CompilationUnit
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
     @Nonnull
-    private final String[]               lines;
+    private final String[]          lines;
     @Nonnull
-    private final CharStream             charStream;
+    private final CharStream        charStream;
     @Nonnull
-    private final TokenStream            tokenStream;
+    private final TokenStream       tokenStream;
     @Nonnull
-    private final CompilationUnitContext compilationUnitContext;
+    private final ParserRuleContext parserContext;
 
     private CompilationUnit(
             @Nonnull String[] lines,
             @Nonnull CharStream charStream,
             @Nonnull TokenStream tokenStream,
-            @Nonnull CompilationUnitContext compilationUnitContext)
+            @Nonnull ParserRuleContext parserRuleContext)
     {
         this.lines = Objects.requireNonNull(lines);
         this.charStream = Objects.requireNonNull(charStream);
         this.tokenStream = Objects.requireNonNull(tokenStream);
-        this.compilationUnitContext = Objects.requireNonNull(compilationUnitContext);
+        this.parserContext = Objects.requireNonNull(parserRuleContext);
     }
 
     public static CompilationUnit createFromClasspathLocation(String classpathLocation)
@@ -56,19 +57,29 @@ public final class CompilationUnit
         return CompilationUnit.slurp(inputStream);
     }
 
-    public static CompilationUnit createFromText(String sourceName, @Nonnull String sourceCodeText)
+    public static CompilationUnit createFromText(
+        String sourceName,
+        @Nonnull String sourceCodeText)
     {
-        String[]               lines                  = NEWLINE_PATTERN.split(sourceCodeText);
-        ANTLRErrorListener     errorListener          = new ThrowingErrorListener(sourceName, lines);
-        CodePointCharStream    charStream             = CharStreams.fromString(sourceCodeText, sourceName);
-        CommonTokenStream      tokenStream            = CompilationUnit.getTokenStream(charStream, errorListener);
-        KlassParser            parser                 = CompilationUnit.getParser(errorListener, tokenStream);
-        CompilationUnitContext compilationUnitContext = parser.compilationUnit();
+        return createFromText(sourceName, sourceCodeText, KlassParser::compilationUnit);
+    }
+
+    public static CompilationUnit createFromText(
+            String sourceName,
+            @Nonnull String sourceCodeText,
+            Function<KlassParser, ? extends ParserRuleContext> parserRule)
+    {
+        String[]            lines             = NEWLINE_PATTERN.split(sourceCodeText);
+        ANTLRErrorListener  errorListener     = new ThrowingErrorListener(sourceName, lines);
+        CodePointCharStream charStream        = CharStreams.fromString(sourceCodeText, sourceName);
+        CommonTokenStream   tokenStream       = CompilationUnit.getTokenStream(charStream, errorListener);
+        KlassParser         parser            = CompilationUnit.getParser(errorListener, tokenStream);
+        ParserRuleContext   parserRuleContext = parserRule.apply(parser);
         return new CompilationUnit(
                 lines,
                 charStream,
                 tokenStream,
-                compilationUnitContext);
+                parserRuleContext);
     }
 
     @Nonnull
@@ -117,9 +128,9 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public CompilationUnitContext getCompilationUnitContext()
+    public ParserRuleContext getParserContext()
     {
-        return this.compilationUnitContext;
+        return this.parserContext;
     }
 
     @Override

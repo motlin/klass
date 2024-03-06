@@ -7,6 +7,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
@@ -15,16 +16,17 @@ import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty
 import cool.klass.model.converter.compiler.state.property.AntlrPropertyModifier;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
 public class ClassPhase extends AbstractCompilerPhase
@@ -36,7 +38,7 @@ public class ClassPhase extends AbstractCompilerPhase
 
     public ClassPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -46,13 +48,23 @@ public class ClassPhase extends AbstractCompilerPhase
     @Override
     public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
     {
-        this.classState = new AntlrClass(
+        ImmutableList<AntlrClassModifier> classModifiers = ListAdapter.adapt(ctx.classModifier())
+                .collect(this::getAntlrClassModifier)
+                .toImmutable();
+
+        String classOrUserKeyword = ctx.classOrUser().getText();
+
+        AntlrClass classState = new AntlrClass(
                 ctx,
                 this.currentCompilationUnit,
                 false,
                 ctx.identifier(),
                 ctx.identifier().getText(),
-                this.packageName);
+                this.packageName,
+                classModifiers,
+                classOrUserKeyword.equals("user"));
+
+        this.classState = classState;
     }
 
     @Override
@@ -77,15 +89,15 @@ public class ClassPhase extends AbstractCompilerPhase
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collect(AntlrPropertyModifier::new)
+                .collect(this::getAntlrPropertyModifier)
                 .toImmutable();
 
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
                 this.currentCompilationUnit,
                 false,
-                propertyName,
                 nameContext,
+                propertyName,
                 isOptional,
                 propertyModifiers,
                 this.classState,
@@ -108,7 +120,7 @@ public class ClassPhase extends AbstractCompilerPhase
         boolean          isOptional       = optionalMarkerContext != null;
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())
-                .collect(AntlrPropertyModifier::new)
+                .collect(this::getAntlrPropertyModifier)
                 .toImmutable();
 
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
@@ -123,5 +135,17 @@ public class ClassPhase extends AbstractCompilerPhase
                 antlrEnumeration);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
+    }
+
+    @Nonnull
+    public AntlrClassModifier getAntlrClassModifier(ClassModifierContext context)
+    {
+        return new AntlrClassModifier(context, this.currentCompilationUnit, false, context.getText());
+    }
+
+    @Nonnull
+    public AntlrPropertyModifier getAntlrPropertyModifier(PropertyModifierContext context)
+    {
+        return new AntlrPropertyModifier(context, this.currentCompilationUnit, false, context.getText());
     }
 }

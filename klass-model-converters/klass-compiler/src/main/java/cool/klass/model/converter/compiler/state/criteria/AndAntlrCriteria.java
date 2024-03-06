@@ -44,5 +44,8 @@ public class AndAntlrCriteria extends BinaryAntlrCriteria
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
+
+        this.left.reportErrors(compilerErrorHolder, parserRuleContexts);
+        this.right.reportErrors(compilerErrorHolder, parserRuleContexts);
     }
 }

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
-import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.property.PrimitiveProperty.PrimitivePropertyBuilder;
 import cool.klass.model.meta.domain.property.PrimitiveType;
@@ -23,8 +22,8 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             new PrimitivePropertyContext(null, -1),
             null,
             true,
-            "ambiguous primitive property name",
             Element.NO_CONTEXT,
+            "ambiguous primitive property name",
             false,
             Lists.immutable.empty(),
             AntlrClass.AMBIGUOUS,
@@ -39,20 +38,20 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
             @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             boolean isOptional,
             @Nonnull ImmutableList<AntlrPropertyModifier> modifiers,
             AntlrClass owningClassState,
             @Nonnull AntlrPrimitiveType antlrPrimitiveType)
     {
-        super(elementContext, compilationUnit, inferred, name, nameContext, isOptional, modifiers, owningClassState);
+        super(elementContext, compilationUnit, inferred, nameContext, name, isOptional, modifiers, owningClassState);
         this.antlrPrimitiveType = Objects.requireNonNull(antlrPrimitiveType);
     }
 
     @Nonnull
     @Override
-    public AntlrType getType()
+    public AntlrPrimitiveType getType()
     {
         return this.antlrPrimitiveType;
     }
@@ -60,7 +59,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     @Override
     public boolean isTemporal()
     {
-        return this.antlrPrimitiveType.getPrimitiveType().isTemporal();
+        return this.antlrPrimitiveType.isTemporal();
     }
 
     @Override
@@ -71,6 +70,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             throw new IllegalStateException();
         }
 
+        // TODO: Pass through property modifiers?
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
                 this.nameContext,

@@ -16,8 +16,8 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            @Nonnull String name,
-            @Nonnull ParserRuleContext nameContext)
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name)
     {
         super(elementContext, compilationUnit, inferred, nameContext, name);
     }

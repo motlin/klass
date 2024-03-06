@@ -4,25 +4,23 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
+import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.state.AntlrElement;
+import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrPropertyModifier
+public class AntlrPropertyModifier extends AntlrElement
 {
     @Nonnull
-    private final PropertyModifierContext context;
-    @Nonnull
-    private final String                  name;
+    private final String name;
 
-    public AntlrPropertyModifier(@Nonnull PropertyModifierContext context)
+    public AntlrPropertyModifier(
+            @Nonnull ParserRuleContext context,
+            CompilationUnit compilationUnit,
+            boolean inferred,
+            String name)
     {
-        this.context = Objects.requireNonNull(context);
-        this.name = Objects.requireNonNull(context.getText());
-    }
-
-    @Nonnull
-    public PropertyModifierContext getContext()
-    {
-        return this.context;
+        super(context, compilationUnit, inferred);
+        this.name = Objects.requireNonNull(name);
     }
 
     @Nonnull
@@ -34,5 +32,10 @@ public class AntlrPropertyModifier
     public boolean isKey()
     {
         return this.name.equals("key");
+    }
+
+    public boolean isVersionNumber()
+    {
+        return this.name.equals("version");
     }
 }

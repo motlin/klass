@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassBaseListener;
+import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -20,19 +21,25 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.map.MapIterable;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.collections.api.block.function.Function;
+import org.eclipse.collections.api.map.MutableMap;
 
 public abstract class AbstractCompilerPhase extends KlassBaseListener
 {
     @Nonnull
-    protected final MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext;
+    protected final MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext;
     @Nonnull
-    protected final CompilerErrorHolder                                  compilerErrorHolder;
+    protected final CompilerErrorHolder                                 compilerErrorHolder;
 
     @Nullable
-    protected String                         packageName;
+    protected String          packageName;
     @Nullable
-    protected CompilationUnit                currentCompilationUnit;
+    protected CompilationUnit currentCompilationUnit;
+
+    // TODO: Use isInference flag consistently
+    protected boolean isInference;
+
     @Nullable
     protected ClassDeclarationContext        classDeclarationContext;
     @Nullable
@@ -52,7 +59,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
 
     protected AbstractCompilerPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext)
     {
         this.compilerErrorHolder = Objects.requireNonNull(compilerErrorHolder);
         this.compilationUnitsByContext = Objects.requireNonNull(compilationUnitsByContext);
@@ -184,5 +191,33 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
                 message,
                 offendingParserRuleContext,
                 parserRuleContexts);
+    }
+
+    public <T extends ParserRuleContext> void runCompilerMacro(
+            String macroName,
+            String sourceCodeText,
+            Function<KlassParser, T> parserRule)
+    {
+        CompilationUnit compilationUnit = CompilationUnit.createFromText(
+                macroName + " compiler macro",
+                sourceCodeText,
+                parserRule);
+
+        CompilationUnit oldCompilationUnit = this.currentCompilationUnit;
+        boolean         oldIsInference     = this.isInference;
+
+        try
+        {
+            this.currentCompilationUnit = compilationUnit;
+            this.isInference = true;
+
+            ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+            parseTreeWalker.walk(this, compilationUnit.getParserContext());
+        }
+        finally
+        {
+            this.currentCompilationUnit = oldCompilationUnit;
+            this.isInference = oldIsInference;
+        }
     }
 }

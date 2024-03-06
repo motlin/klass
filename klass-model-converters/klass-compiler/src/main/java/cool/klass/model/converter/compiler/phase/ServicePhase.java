@@ -30,8 +30,8 @@ import cool.klass.model.converter.compiler.state.service.url.AntlrUrlConstant;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.service.Verb;
+import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
@@ -50,11 +50,12 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlConstantContext;
+import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 
 public class ServicePhase extends AbstractCompilerPhase
@@ -74,7 +75,7 @@ public class ServicePhase extends AbstractCompilerPhase
 
     public ServicePhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext,
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext,
             @Nonnull AntlrDomainModel domainModelState)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
@@ -177,6 +178,20 @@ public class ServicePhase extends AbstractCompilerPhase
     {
         this.urlState.exitServiceDeclaration(this.serviceState);
         this.serviceState = null;
+    }
+
+    @Override
+    public void exitUrl(UrlContext ctx)
+    {
+        if (this.serviceGroupState.getKlass().hasVersionedModifier())
+        {
+            this.inQueryParameterList = true;
+
+            this.runCompilerMacro(
+                    ServicePhase.class.getSimpleName(),
+                    "{version}",
+                    KlassParser::urlParameterDeclaration);
+        }
     }
 
     @Override

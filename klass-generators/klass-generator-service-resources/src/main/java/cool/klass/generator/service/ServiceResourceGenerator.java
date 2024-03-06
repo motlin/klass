@@ -7,13 +7,13 @@ import java.io.PrintStream;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Klass;
-import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
@@ -124,6 +124,13 @@ public class ServiceResourceGenerator
     {
         Url                       url                 = service.getUrl();
         Verb                      verb                = service.getVerb();
+
+        if (verb == Verb.POST)
+        {
+            // TODO: POST
+            return "";
+        }
+
         ServiceMultiplicity       serviceMultiplicity = service.getServiceMultiplicity();
         ServiceProjectionDispatch projectionDispatch  = service.getProjectionDispatch();
 
@@ -136,32 +143,30 @@ public class ServiceResourceGenerator
         String klassName       = klass.getName();
         String returnType      = this.getReturnType(serviceMultiplicity);
         String projectionName  = projectionDispatch.getProjection().getName();
-        String returnStatement = this.getReturnStatement(serviceMultiplicity, klassName, projectionName);
-
-        String executeOperationSourceCode = MessageFormat.format(
-                "        {0}List result = {0}Finder.findMany(queryOperation);\n",
-                klassName);
+        String returnStatement = this.getReturnStatement(serviceMultiplicity, projectionName);
 
         String urlPathString = urlPathSegments.makeString("/", "/", "");
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
-                : queryParameters.makeString("?", "&", "");
+                : queryParameters.makeString(" // ?", "&", "");
 
-        boolean hasAuthorizeCriteria = service.getAuthorizeCriteria() != AllCriteria.INSTANCE;
+        boolean hasAuthorizeCriteria = service.isAuthorizeClauseRequired();
 
-        int     numUrlParameters       = urlParameters.size();
-        int     numAuthorizeParameters = hasAuthorizeCriteria ? 1 : 0;
-        int     numParameters          = numUrlParameters + numAuthorizeParameters;
-        boolean lineWrapParameters     = numParameters > 1;
+        int     numParameters      = service.getNumParameters();
+        boolean lineWrapParameters = numParameters > 1;
 
         String parameterPrefix = lineWrapParameters ? "\n" : "";
         String parameterIndent = lineWrapParameters ? "            " : "";
 
-        ImmutableList<String> basicParameterStrings = urlParameters
+        ImmutableList<String> parameterStrings1 = urlParameters
                 .collectWith(this::getParameterSourceCode, parameterIndent);
+        // TODO: This version query parameter should be inferred during the compilation of the service
+        ImmutableList<String> parameterStrings2 = service.isVersionClauseRequired()
+                ? parameterStrings1.newWith(parameterIndent + "@QueryParam(\"version\") Integer version")
+                : parameterStrings1;
         ImmutableList<String> parameterStrings = hasAuthorizeCriteria
-                ? basicParameterStrings.newWith(parameterIndent + "@Context SecurityContext securityContext")
-                : basicParameterStrings;
+                ? parameterStrings2.newWith(parameterIndent + "@Context SecurityContext securityContext")
+                : parameterStrings2;
 
         String userPrincipalNameLocalVariable = hasAuthorizeCriteria
                 ? "        String    userPrincipalName  = securityContext.getUserPrincipal().getName();\n"
@@ -170,36 +175,67 @@ public class ServiceResourceGenerator
         String parametersSourceCode = parameterStrings.makeString(",\n");
 
         String finderName                   = klassName + "Finder";
-        String queryOperationSourceCode     = this.getOperation(service.getQueryCriteria(), finderName);
-        String authorizeOperationSourceCode = this.getOperation(service.getAuthorizeCriteria(), finderName);
-        String validateOperationSourceCode  = this.getOperation(service.getValidateCriteria(), finderName);
-        String conflictOperationSourceCode  = this.getOperation(service.getConflictCriteria(), finderName);
+        String queryOperationSourceCode     = this.getOperation(finderName, service.getQueryCriteria(), "query");
+        String authorizeOperationSourceCode = this.getOperation(finderName, service.getAuthorizeCriteria(), "authorize");
+        String validateOperationSourceCode  = this.getOperation(finderName, service.getValidateCriteria(), "validate");
+        String conflictOperationSourceCode  = this.getOperation(finderName, service.getConflictCriteria(), "conflict");
+
+        String authorizePredicateSourceCode = this.checkPredicate(service.getAuthorizeCriteria(), "authorize", "isAuthorized", "ForbiddenException()");
+        String validatePredicateSourceCode = this.checkPredicate(service.getValidateCriteria(), "validate", "isValidated", "BadRequestException()");
+        String conflictPredicateSourceCode = this.checkPredicate(service.getConflictCriteria(), "conflict", "hasConflict", "ClientErrorException(Response.Status.CONFLICT)");
+
+        String executeOperationSourceCode = this.getExecuteOperationSourceCode(service.getQueryCriteria(), klassName, klass);
+
+        String versionOperation = service.isVersionClauseRequired()
+                ? "        Operation versionOperation = " + klassName + "Finder.system().equalsEdgePoint()\n"
+                + "                .and(" + klassName + "Finder.version().number().eq(version));\n"
+                : "";
 
         //language=JAVA
         String sourceCode = ""
                 + "    @Timed\n"
                 + "    @ExceptionMetered\n"
                 + "    @" + verb.name() + "\n"
-                + "    @Path(\"" + urlPathString + queryParametersString + "\")\n"
+                + "    @Path(\"" + urlPathString + "\")" + queryParametersString + "\n"
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
                 + "    public " + returnType + " method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
                 + "    {\n"
+                + "        // " + klassName + "\n"
+                + "\n"
                 + userPrincipalNameLocalVariable
-                + "        Operation queryOperation     = " + queryOperationSourceCode + ";\n"
-                + "        Operation authorizeOperation = " + authorizeOperationSourceCode + ";\n"
-                + "        Operation validateOperation  = " + validateOperationSourceCode + ";\n"
-                + "        Operation conflictOperation  = " + conflictOperationSourceCode + ";\n"
+                + queryOperationSourceCode
+                + versionOperation
+                + authorizeOperationSourceCode
+                + validateOperationSourceCode
+                + conflictOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
                 + "        // TODO: Deep fetch using projection " + projectionName + "\n"
                 + "\n"
-                + "        boolean isAuthorized = !result.asEcList().allSatisfy(authorizeOperation::matches);\n"
-                + "        boolean isValidated  = !result.asEcList().allSatisfy(validateOperation::matches);\n"
-                + "        boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);\n"
+                + authorizePredicateSourceCode
+                + validatePredicateSourceCode
+                + conflictPredicateSourceCode
                 + returnStatement
                 + "    }\n";
 
         return sourceCode;
+    }
+
+    private String getExecuteOperationSourceCode(
+            Optional<Criteria> queryCriteria,
+            String klassName,
+            Klass klass)
+    {
+        if (!queryCriteria.isPresent())
+        {
+            return "";
+        }
+
+        String versionClause   = klass.getVersionClass().isPresent() ? "\n        .and(versionOperation)" : "";
+        return MessageFormat.format(
+                "        {0}List result = {0}Finder.findMany(queryOperation{1});\n",
+                klassName,
+                versionClause);
     }
 
     @Nonnull
@@ -214,7 +250,6 @@ public class ServiceResourceGenerator
     @Nonnull
     private String getReturnStatement(
             ServiceMultiplicity serviceMultiplicity,
-            String klassName,
             String projectionName)
     {
         boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
@@ -240,11 +275,51 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getOperation(Criteria criteria, String finderName)
+    private String getOperation(
+            String finderName,
+            Optional<Criteria> optionalCriteria,
+            String criteriaName)
+    {
+        return optionalCriteria
+                .map(criteria -> this.getOperation(finderName, criteria, criteriaName))
+                .orElse("");
+    }
+
+    @Nonnull
+    private String getOperation(String finderName, Criteria criteria, String criteriaName)
+    {
+        String operation = this.getOperation(finderName, criteria);
+        return ""
+                + "        // " + criteria.getSourceCode().replaceAll("\\s+", " ") + "\n" +
+                String.format("        Operation %-18s = ", criteriaName + "Operation") + operation + ";\n";
+    }
+
+    @Nonnull
+    private String getOperation(String finderName, Criteria criteria)
     {
         StringBuilder stringBuilder = new StringBuilder();
         criteria.visit(new OperationCriteriaVisitor(finderName, stringBuilder));
         return stringBuilder.toString();
+    }
+
+    private String checkPredicate(
+            Optional<Criteria> optionalCriteria,
+            String criteriaName,
+            String flagName,
+            String exceptionName)
+    {
+        return optionalCriteria
+                .map(criteria -> this.checkPredicate(criteriaName, flagName, exceptionName))
+                .orElse("");
+    }
+
+    private String checkPredicate(String criteriaName, String flagName, String exceptionName)
+    {
+        return "        boolean is" + flagName + " = !result.asEcList().allSatisfy(" + criteriaName + "Operation::matches);\n"
+                + "        if (!is" + flagName + ")\n"
+                + "        {\n"
+                + "            throw new " + exceptionName + ";\n"
+                + "        }\n";
     }
 
     private String getParameterSourceCode(@Nonnull UrlParameter urlParameter, String indent)

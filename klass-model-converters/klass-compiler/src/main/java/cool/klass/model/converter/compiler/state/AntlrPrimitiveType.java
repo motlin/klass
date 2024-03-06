@@ -81,4 +81,9 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     {
         return Objects.requireNonNull(this.primitiveTypeBuilder);
     }
+
+    public boolean isTemporal()
+    {
+        return this.primitiveType.isTemporal();
+    }
 }

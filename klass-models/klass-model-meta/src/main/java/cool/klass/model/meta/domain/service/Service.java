@@ -1,11 +1,11 @@
 package cool.klass.model.meta.domain.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.Element;
-import cool.klass.model.meta.domain.criteria.AllCriteria;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import cool.klass.model.meta.domain.service.ServiceProjectionDispatch.ServiceProjectionDispatchBuilder;
@@ -21,10 +21,10 @@ public final class Service extends Element
     private final Verb                      verb;
     @Nonnull
     private final ServiceMultiplicity       serviceMultiplicity;
-    private       Criteria                  queryCriteria;
-    private       Criteria                  authorizeCriteria;
-    private       Criteria                  validateCriteria;
-    private       Criteria                  conflictCriteria;
+    private       Optional<Criteria>        queryCriteria;
+    private       Optional<Criteria>        authorizeCriteria;
+    private       Optional<Criteria>        validateCriteria;
+    private       Optional<Criteria>        conflictCriteria;
     private       ServiceProjectionDispatch projectionDispatch;
 
     private Service(
@@ -57,12 +57,12 @@ public final class Service extends Element
         return this.serviceMultiplicity;
     }
 
-    public Criteria getQueryCriteria()
+    public Optional<Criteria> getQueryCriteria()
     {
         return this.queryCriteria;
     }
 
-    private void setQueryCriteria(@Nonnull Criteria queryCriteria)
+    private void setQueryCriteria(@Nonnull Optional<Criteria> queryCriteria)
     {
         if (this.queryCriteria != null)
         {
@@ -71,12 +71,12 @@ public final class Service extends Element
         this.queryCriteria = Objects.requireNonNull(queryCriteria);
     }
 
-    public Criteria getAuthorizeCriteria()
+    public Optional<Criteria> getAuthorizeCriteria()
     {
         return this.authorizeCriteria;
     }
 
-    private void setAuthorizeCriteria(@Nonnull Criteria authorizeCriteria)
+    private void setAuthorizeCriteria(@Nonnull Optional<Criteria> authorizeCriteria)
     {
         if (this.authorizeCriteria != null)
         {
@@ -85,12 +85,12 @@ public final class Service extends Element
         this.authorizeCriteria = Objects.requireNonNull(authorizeCriteria);
     }
 
-    public Criteria getValidateCriteria()
+    public Optional<Criteria> getValidateCriteria()
     {
         return this.validateCriteria;
     }
 
-    private void setValidateCriteria(@Nonnull Criteria validateCriteria)
+    private void setValidateCriteria(@Nonnull Optional<Criteria> validateCriteria)
     {
         if (this.validateCriteria != null)
         {
@@ -99,12 +99,12 @@ public final class Service extends Element
         this.validateCriteria = Objects.requireNonNull(validateCriteria);
     }
 
-    public Criteria getConflictCriteria()
+    public Optional<Criteria> getConflictCriteria()
     {
         return this.conflictCriteria;
     }
 
-    private void setConflictCriteria(@Nonnull Criteria conflictCriteria)
+    private void setConflictCriteria(@Nonnull Optional<Criteria> conflictCriteria)
     {
         if (this.conflictCriteria != null)
         {
@@ -127,6 +127,25 @@ public final class Service extends Element
         this.projectionDispatch = Objects.requireNonNull(projectionDispatch);
     }
 
+    public int getNumParameters()
+    {
+        int numUrlParameters       = this.url.getUrlParameters().size();
+        int numVersionParameters   = this.isVersionClauseRequired() ? 1 : 0;
+        int numAuthorizeParameters = this.isAuthorizeClauseRequired() ? 1 : 0;
+        return numUrlParameters + numVersionParameters + numAuthorizeParameters;
+    }
+
+    public boolean isVersionClauseRequired()
+    {
+        return this.serviceMultiplicity == ServiceMultiplicity.ONE
+                && this.url.getServiceGroup().getKlass().getVersionClass().isPresent();
+    }
+
+    public boolean isAuthorizeClauseRequired()
+    {
+        return this.authorizeCriteria.isPresent();
+    }
+
     public static final class ServiceBuilder extends ElementBuilder
     {
         @Nonnull
@@ -138,11 +157,11 @@ public final class Service extends Element
 
         private ServiceProjectionDispatchBuilder projectionDispatchBuilder;
 
-        private CriteriaBuilder criteria;
-        private CriteriaBuilder authorize;
-        private CriteriaBuilder validate;
-        private CriteriaBuilder conflict;
-        private Service         service;
+        private Optional<CriteriaBuilder> criteria  = Optional.empty();
+        private Optional<CriteriaBuilder> authorize = Optional.empty();
+        private Optional<CriteriaBuilder> validate  = Optional.empty();
+        private Optional<CriteriaBuilder> conflict  = Optional.empty();
+        private Service                   service;
 
         public ServiceBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -164,32 +183,32 @@ public final class Service extends Element
             switch (criteriaKeyword)
             {
                 case "criteria":
-                    if (this.criteria != null)
+                    if (this.criteria.isPresent())
                     {
                         throw new IllegalStateException();
                     }
-                    this.criteria = criteriaBuilder;
+                    this.criteria = Optional.of(criteriaBuilder);
                     return;
                 case "authorize":
-                    if (this.authorize != null)
+                    if (this.authorize.isPresent())
                     {
                         throw new IllegalStateException();
                     }
-                    this.authorize = criteriaBuilder;
+                    this.authorize = Optional.of(criteriaBuilder);
                     return;
                 case "validate":
-                    if (this.validate != null)
+                    if (this.validate.isPresent())
                     {
                         throw new IllegalStateException();
                     }
-                    this.validate = criteriaBuilder;
+                    this.validate = Optional.of(criteriaBuilder);
                     return;
                 case "conflict":
-                    if (this.conflict != null)
+                    if (this.conflict.isPresent())
                     {
                         throw new IllegalStateException();
                     }
-                    this.conflict = criteriaBuilder;
+                    this.conflict = Optional.of(criteriaBuilder);
                     return;
                 default:
                     throw new AssertionError();
@@ -216,10 +235,10 @@ public final class Service extends Element
             ServiceProjectionDispatch projectionDispatch = this.projectionDispatchBuilder.build();
             this.service.setProjectionDispatch(projectionDispatch);
 
-            Criteria queryCriteria     = this.criteria == null ? AllCriteria.INSTANCE : this.criteria.build();
-            Criteria authorizeCriteria = this.authorize == null ? AllCriteria.INSTANCE : this.authorize.build();
-            Criteria validateCriteria  = this.validate == null ? AllCriteria.INSTANCE : this.validate.build();
-            Criteria conflictCriteria  = this.conflict == null ? AllCriteria.INSTANCE : this.conflict.build();
+            Optional<Criteria> queryCriteria     = this.criteria.map(CriteriaBuilder::build);
+            Optional<Criteria> authorizeCriteria = this.authorize.map(CriteriaBuilder::build);
+            Optional<Criteria> validateCriteria  = this.validate.map(CriteriaBuilder::build);
+            Optional<Criteria> conflictCriteria  = this.conflict.map(CriteriaBuilder::build);
 
             this.service.setQueryCriteria(queryCriteria);
             this.service.setAuthorizeCriteria(authorizeCriteria);

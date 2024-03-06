@@ -20,10 +20,10 @@
         <module>klass-generators</module>
         <module>klass-generator-plugins</module>
         <module>klass-reladomo</module>
-        <module>klass-tests</module>
-        <module>klass-dropwizard-bundles</module>
         <module>klass-jackson</module>
         <module>klass-serializers</module>
+        <module>klass-dropwizard-bundles</module>
+        <module>klass-test-modules</module>
     </modules>
 
     <properties>

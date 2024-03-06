@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 
 public abstract class AntlrElement
 {
@@ -36,5 +37,13 @@ public abstract class AntlrElement
     public CompilationUnit getCompilationUnit()
     {
         return this.compilationUnit;
+    }
+
+    public String getSourceCode()
+    {
+        Interval interval = new Interval(
+                this.elementContext.getStart().getStartIndex(),
+                this.elementContext.getStop().getStopIndex());
+        return this.elementContext.getStart().getInputStream().getText(interval);
     }
 }

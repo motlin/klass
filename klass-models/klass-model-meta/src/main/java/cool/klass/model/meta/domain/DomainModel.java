@@ -134,8 +134,9 @@ public final class DomainModel
         {
             ImmutableList<Enumeration> enumerations = this.enumerationBuilders.collect(EnumerationBuilder::build).toImmutable();
             ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build1).toImmutable();
-            ImmutableList<Association> associations = this.associationBuilders.collect(AssociationBuilder::build).toImmutable();
             this.klassBuilders.each(KlassBuilder::build2);
+            ImmutableList<Association> associations = this.associationBuilders.collect(AssociationBuilder::build).toImmutable();
+            this.klassBuilders.each(KlassBuilder::build3);
             ImmutableList<Projection>   projections   = this.projectionBuilders.collect(ProjectionBuilder::build).toImmutable();
             ImmutableList<ServiceGroup> serviceGroups = this.serviceGroupBuilders.collect(ServiceGroupBuilder::build).toImmutable();
 

@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
-import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
-import org.eclipse.collections.api.map.MapIterable;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.map.MutableMap;
 
 // TODO: Check name patterns
 public class NamePatternPhase extends AbstractCompilerPhase
@@ -19,7 +19,7 @@ public class NamePatternPhase extends AbstractCompilerPhase
 
     public NamePatternPhase(
             @Nonnull CompilerErrorHolder compilerErrorHolder,
-            @Nonnull MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext)
+            @Nonnull MutableMap<ParserRuleContext, CompilationUnit> compilationUnitsByContext)
     {
         super(compilerErrorHolder, compilationUnitsByContext);
     }

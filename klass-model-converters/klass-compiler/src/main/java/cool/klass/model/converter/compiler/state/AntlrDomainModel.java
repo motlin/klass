@@ -139,6 +139,11 @@ public class AntlrDomainModel
         return this.classesByContext.get(context);
     }
 
+    public AntlrAssociation getAssociationByContext(AssociationDeclarationContext context)
+    {
+        return this.associationsByContext.get(context);
+    }
+
     public AntlrProjection getProjectionByName(String projectionName)
     {
         return this.projectionsByName.getIfAbsentValue(projectionName, AntlrProjection.NOT_FOUND);
@@ -224,8 +229,9 @@ public class AntlrDomainModel
     {
         ImmutableList<EnumerationBuilder> enumerationBuilders = this.enumerationStates.collect(AntlrEnumeration::build).toImmutable();
         ImmutableList<KlassBuilder>       classBuilders       = this.classStates.collect(AntlrClass::build1).toImmutable();
-        ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
         this.classStates.each(AntlrClass::build2);
+        ImmutableList<AssociationBuilder> associationBuilders = this.associationStates.collect(AntlrAssociation::build).toImmutable();
+        this.classStates.each(AntlrClass::build3);
         ImmutableList<ProjectionBuilder>   projectionBuilders   = this.projectionStates.collect(AntlrProjection::build).toImmutable();
         ImmutableList<ServiceGroupBuilder> serviceGroupBuilders = this.serviceGroupStates.collect(AntlrServiceGroup::build).toImmutable();
 
