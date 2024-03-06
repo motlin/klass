@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
     <include file="migrations-01-object-sequence.xml" />
-    <include file="cool/klass/xample/coverage/migrations-initial-schema.xml" />
+    <include file="cool/klass/xample/coverage/liquibase/schema/migrations-initial-schema.xml" />
     <include file="migrations-03-bootstrap-schema.xml" />
     <!--<include file="migrations-03-initial-data.xml" />-->
     <!--<include file="migrations-04-initial-indices.xml" />-->

@@ -1,5 +1,6 @@
 package cool.klass.generator.liquibase.schema;
 
+import java.nio.file.Path;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -23,9 +24,16 @@ public class LiquibaseSchemaGenerator
         this.fileName = Objects.requireNonNull(fileName);
     }
 
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
+    {
+        return path.resolve("liquibase").resolve("schema");
+    }
+
     @Override
     @Nonnull
-    protected String getFileName(@Nonnull String fullyQualifiedPackage)
+    protected String getFileName()
     {
         return this.fileName;
     }

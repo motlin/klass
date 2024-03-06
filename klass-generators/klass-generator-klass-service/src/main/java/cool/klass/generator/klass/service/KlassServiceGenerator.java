@@ -1,5 +1,7 @@
 package cool.klass.generator.klass.service;
 
+import java.nio.file.Path;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
@@ -13,11 +15,18 @@ public class KlassServiceGenerator
         super(domainModel);
     }
 
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
+    {
+        return path.resolve("klass").resolve("service");
+    }
+
     @Override
     @Nonnull
-    protected String getFileName(@Nonnull String fullyQualifiedPackage)
+    protected String getFileName()
     {
-        return fullyQualifiedPackage + ".klass";
+        return "generated-services.klass";
     }
 
     @Override

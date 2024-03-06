@@ -54,10 +54,10 @@ public abstract class AbstractPerPackageGenerator
             @Nonnull Path outputPath,
             @Nonnull String fullyQualifiedPackage)
     {
-        String packageRelativePath = fullyQualifiedPackage.replaceAll("\\.", "/");
-        Path   klassDirectory      = outputPath.resolve(packageRelativePath);
-        klassDirectory.toFile().mkdirs();
-        return klassDirectory.resolve(this.getFileName(fullyQualifiedPackage));
+        String packageRelativePathString = fullyQualifiedPackage.replaceAll("\\.", "/");
+        Path   packageRelativePath      = this.getPluginRelativePath(outputPath.resolve(packageRelativePathString));
+        packageRelativePath.toFile().mkdirs();
+        return packageRelativePath.resolve(this.getFileName());
     }
 
     protected void printStringToFile(@Nonnull Path path, String contents)
@@ -73,7 +73,10 @@ public abstract class AbstractPerPackageGenerator
     }
 
     @Nonnull
-    protected abstract String getFileName(@Nonnull String fullyQualifiedPackage);
+    protected abstract Path getPluginRelativePath(Path path);
+
+    @Nonnull
+    protected abstract String getFileName();
 
     @Nonnull
     protected abstract String getPackageSourceCode(@Nonnull String fullyQualifiedPackage);

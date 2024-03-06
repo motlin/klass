@@ -1,5 +1,7 @@
 package cool.klass.generator.klass.projection;
 
+import java.nio.file.Path;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
@@ -27,11 +29,18 @@ public class KlassProjectionGenerator
                 .toImmutableList();
     }
 
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
+    {
+        return path.resolve("klass").resolve("projection");
+    }
+
     @Override
     @Nonnull
-    protected String getFileName(@Nonnull String fullyQualifiedPackage)
+    protected String getFileName()
     {
-        return fullyQualifiedPackage + ".klass";
+        return "generated-projections.klass";
     }
 
     @Override
