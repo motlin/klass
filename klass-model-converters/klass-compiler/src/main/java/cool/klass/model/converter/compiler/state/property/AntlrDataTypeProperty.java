@@ -618,8 +618,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     private void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
     {
-        if (this.getModifiers().anySatisfy(AntlrModifier::isCreatedBy)
-                || this.getModifiers().anySatisfy(AntlrModifier::isLastUpdatedBy))
+        if (this.isCreatedBy() || this.isLastUpdatedBy())
         {
             AntlrType antlrType = this.getType();
             if (!(antlrType instanceof AntlrPrimitiveType)
@@ -642,7 +641,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             }
         }
 
-        if (this.getModifiers().anySatisfy(AntlrModifier::isCreatedOn))
+        if (this.isCreatedOn())
         {
             AntlrType antlrType = this.getType();
             if (!(antlrType instanceof AntlrPrimitiveType)

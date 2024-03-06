@@ -1,17 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRP_MOD[m [33m════════════════════════════════════════[m
 [31mError: Multiple properties on 'DummyClass' with modifiers [createdBy].[m
 
-At (DuplicateAuditModifierErrorTest.klass:47)
+At (DuplicateAuditModifierErrorTest.klass:33)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m44║ [35massociation [39mLastUpdatedBy
-[39m45║ [36m{
-[39m47║     [33mlastUpdatedBy[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [33mcreatedBy [33mlastUpdatedBy[36m;
-[39m  ║ [31m                              ^^^^^^^^^
-[39m50║ [36m}
+[39m30║ [35massociation [39mCreatedBy
+[39m31║ [36m{
+[39m33║     [33mcreatedBy[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [33mcreatedBy [33mlastUpdatedBy[36m;
+[39m  ║ [31m                          ^^^^^^^^^
+[39m36║ [36m}
 [m
-[36mLocation:  [mDuplicateAuditModifierErrorTest.klass:47[m
+[36mLocation:  [mDuplicateAuditModifierErrorTest.klass:33[m
 [36mFile:      [mDuplicateAuditModifierErrorTest.klass[m
-[36mLine:      [m47[m
-[36mCharacter: [m31
+[36mLine:      [m33[m
+[36mCharacter: [m27
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

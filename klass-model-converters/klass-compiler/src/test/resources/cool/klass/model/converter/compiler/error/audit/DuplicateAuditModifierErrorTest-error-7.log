@@ -1,17 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_PRP_MOD[m [33m════════════════════════════════════════[m
-[31mError: Multiple properties on 'DummyClass' with modifiers [createdBy].[m
+[33m════════════════════════════════════════[m [35mERR_CBY_LBY[m [33m════════════════════════════════════════[m
+[31mError: Property may not have both 'createdBy' and lastUpdatedBy' modifiers.[m
 
-At (DuplicateAuditModifierErrorTest.klass:39)
+At (DuplicateAuditModifierErrorTest.klass:27)
 
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
-[39m36║ [35massociation [39mCreatedBy
-[39m37║ [36m{
-[39m39║     [33mcreatedBy[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [33mcreatedBy [33mlastUpdatedBy[36m;
-[39m  ║ [31m                          ^^^^^^^^^
-[39m42║ [36m}
+[39m24║ [35mclass [39mDummyClass2 [33msystemTemporal [33mversioned [33maudited
+[39m25║ [36m{
+[39m27║     [39mcreatedById    [36m: [35mString [33mcreatedBy [33mlastUpdatedBy [33muserId [33mfinal [33mprivate[36m;
+[39m  ║ [31m                            ^^^^^^^^^ ^^^^^^^^^^^^^
+[39m28║ [36m}
 [m
-[36mLocation:  [mDuplicateAuditModifierErrorTest.klass:39[m
+[36mLocation:  [mDuplicateAuditModifierErrorTest.klass:27[m
 [36mFile:      [mDuplicateAuditModifierErrorTest.klass[m
-[36mLine:      [m39[m
-[36mCharacter: [m27
+[36mLine:      [m27[m
+[36mCharacter: [m29
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

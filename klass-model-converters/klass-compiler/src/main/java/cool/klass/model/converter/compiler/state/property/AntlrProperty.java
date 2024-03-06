@@ -108,6 +108,7 @@ public abstract class AntlrProperty
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.reportDuplicateModifiers(compilerErrorHolder);
+        this.reportDuplicateAuditModifiers(compilerErrorHolder);
     }
 
     private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -127,6 +128,25 @@ public abstract class AntlrProperty
                         modifier.getName());
                 compilerErrorHolder.add("ERR_DUP_MOD", message, modifier);
             }
+        }
+    }
+
+    private void reportDuplicateAuditModifiers(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isCreatedBy() && this.isLastUpdatedBy())
+        {
+            ImmutableList<AntlrModifier> modifiers = this
+                    .getModifiers()
+                    .select(modifier -> modifier.isCreatedBy() || modifier.isLastUpdatedBy())
+                    .toImmutable();
+            ImmutableList<ParserRuleContext> modifierContexts = modifiers
+                    .collect(AntlrElement::getElementContext);
+            String message = "Property may not have both 'createdBy' and lastUpdatedBy' modifiers.";
+            compilerErrorHolder.add(
+                    "ERR_CBY_LBY",
+                    message,
+                    this,
+                    modifierContexts);
         }
     }
 

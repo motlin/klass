@@ -27,12 +27,6 @@ class DummyClass2 systemTemporal versioned audited
     createdById    : String createdBy lastUpdatedBy userId final private;
 }
 
-class DummyClass3 systemTemporal versioned audited
-{
-    id             : Long id key;
-    by             : String private createdBy lastUpdatedBy;
-}
-
 association CreatedBy
 {
     dummyClassesCreatedBy: DummyClass[0..*];
