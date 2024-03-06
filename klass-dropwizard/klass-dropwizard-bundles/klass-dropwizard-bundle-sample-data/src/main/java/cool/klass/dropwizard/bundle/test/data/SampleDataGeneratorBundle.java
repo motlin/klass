@@ -44,11 +44,11 @@ public class SampleDataGeneratorBundle
         SampleDataFactory sampleDataFactory = sampleDataFactoryProvider.getSampleDataFactory();
         if (!sampleDataFactory.isEnabled())
         {
-            LOGGER.info("{} disabled.", SampleDataGeneratorBundle.class.getSimpleName());
+            LOGGER.info("{} disabled.", this.getClass().getSimpleName());
             return;
         }
 
-        LOGGER.info("Running {}.", SampleDataGeneratorBundle.class.getSimpleName());
+        LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         Instant               dataInstant     = sampleDataFactory.getDataInstant();
         ImmutableList<String> skippedPackages = sampleDataFactory.getSkippedPackages();
@@ -64,6 +64,6 @@ public class SampleDataGeneratorBundle
                 skippedPackages);
         sampleDataGenerator.generate();
 
-        LOGGER.info("Completing {}.", SampleDataGeneratorBundle.class.getSimpleName());
+        LOGGER.info("Completing {}.", this.getClass().getSimpleName());
     }
 }

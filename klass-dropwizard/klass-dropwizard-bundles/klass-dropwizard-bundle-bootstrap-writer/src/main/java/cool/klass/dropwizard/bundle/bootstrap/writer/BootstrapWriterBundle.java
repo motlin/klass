@@ -32,11 +32,11 @@ public class BootstrapWriterBundle
         boolean enabled = configuration.getBootstrapFactory().isEnabled();
         if (!enabled)
         {
-            LOGGER.info("{} disabled.", BootstrapWriterBundle.class.getSimpleName());
+            LOGGER.info("{} disabled.", this.getClass().getSimpleName());
             return;
         }
 
-        LOGGER.info("Running {}.", BootstrapWriterBundle.class.getSimpleName());
+        LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         ObjectMapper objectMapper = environment.getObjectMapper();
         KlassFactory klassFactory = configuration.getKlassFactory();
@@ -46,6 +46,6 @@ public class BootstrapWriterBundle
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(domainModel, dataStore);
         klassBootstrapWriter.bootstrapMetaModel();
 
-        LOGGER.info("Completing {}.", BootstrapWriterBundle.class.getSimpleName());
+        LOGGER.info("Completing {}.", this.getClass().getSimpleName());
     }
 }

@@ -41,7 +41,7 @@ public class ReladomoResponseBundle
                 DataStoreFactoryProvider.class,
                 configuration);
 
-        LOGGER.info("Running {}.", ReladomoResponseBundle.class.getSimpleName());
+        LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         ObjectMapper objectMapper = environment.getObjectMapper();
         DomainModel  domainModel  = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);
@@ -53,6 +53,6 @@ public class ReladomoResponseBundle
         module.addSerializer(KlassResponse.class, serializer);
         objectMapper.registerModule(module);
 
-        LOGGER.info("Completing {}.", ReladomoResponseBundle.class.getSimpleName());
+        LOGGER.info("Completing {}.", this.getClass().getSimpleName());
     }
 }

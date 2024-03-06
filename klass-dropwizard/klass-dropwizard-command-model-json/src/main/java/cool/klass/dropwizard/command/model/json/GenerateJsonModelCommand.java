@@ -96,7 +96,7 @@ public class GenerateJsonModelCommand<T extends Configuration>
                 ClockFactoryProvider.class,
                 configuration);
 
-        LOGGER.info("Running {}.", GenerateJsonModelCommand.class.getSimpleName());
+        LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         ObjectMapper objectMapper = environment.getObjectMapper();
         DomainModel  domainModel   = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);

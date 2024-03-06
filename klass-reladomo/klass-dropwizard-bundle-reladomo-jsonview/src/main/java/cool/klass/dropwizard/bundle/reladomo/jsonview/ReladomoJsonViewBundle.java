@@ -39,7 +39,7 @@ public class ReladomoJsonViewBundle
                 DataStoreFactoryProvider.class,
                 configuration);
 
-        LOGGER.info("Running {}.", ReladomoJsonViewBundle.class.getSimpleName());
+        LOGGER.info("Running {}.", this.getClass().getSimpleName());
 
         ObjectMapper objectMapper = environment.getObjectMapper();
         DomainModel  domainModel  = domainModelFactoryProvider.getDomainModelFactory().createDomainModel(objectMapper);
@@ -51,6 +51,6 @@ public class ReladomoJsonViewBundle
         module.addSerializer(MithraObject.class, serializer);
         objectMapper.registerModule(module);
 
-        LOGGER.info("Completing {}.", ReladomoJsonViewBundle.class.getSimpleName());
+        LOGGER.info("Completing {}.", this.getClass().getSimpleName());
     }
 }
