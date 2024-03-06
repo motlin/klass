@@ -12,7 +12,7 @@ public class AbstractKlassConfiguration extends Configuration
 
     public KlassFactory getKlassFactory()
     {
-        return klassFactory;
+        return this.klassFactory;
     }
 
     @JsonProperty("klass")

@@ -80,6 +80,6 @@ public class KlassCompiler
                 COMPILER_PHASE_BUILDERS.collectWith(Function::apply, this.compilerState);
         compilerPhases.forEach(this::executeCompilerPhase);
         this.compilerState.reportErrors();
-        return compilerState.getCompilationResult();
+        return this.compilerState.getCompilationResult();
     }
 }
