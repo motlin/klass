@@ -18,6 +18,7 @@
 
     <modules>
         <module>klass-clock-incrementing</module>
+        <module>klass-context-thread-local</module>
     </modules>
 
     <dependencyManagement>
