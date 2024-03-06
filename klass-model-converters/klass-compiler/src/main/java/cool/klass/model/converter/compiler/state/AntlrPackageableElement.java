@@ -22,12 +22,11 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.packageContext = Objects.requireNonNull(packageContext);
         this.packageName    = Objects.requireNonNull(packageName);
     }

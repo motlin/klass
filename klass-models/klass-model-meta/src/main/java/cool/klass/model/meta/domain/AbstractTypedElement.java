@@ -26,11 +26,10 @@ public abstract class AbstractTypedElement<T extends Type>
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull T type)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
         this.type = Objects.requireNonNull(type);
     }
 
@@ -52,11 +51,10 @@ public abstract class AbstractTypedElement<T extends Type>
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);
         }
     }

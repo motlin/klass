@@ -91,7 +91,6 @@ public class AntlrPrimitiveProperty
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.antlrPrimitiveType.getPrimitiveType(),
                 this.owningClassifierState.getElementBuilder(),

@@ -19,10 +19,9 @@ public final class UrlConstantImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
     }
 
     public static final class UrlConstantBuilder
@@ -33,10 +32,9 @@ public final class UrlConstantImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
         }
 
         @Override
@@ -48,7 +46,6 @@ public final class UrlConstantImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal);
         }
     }

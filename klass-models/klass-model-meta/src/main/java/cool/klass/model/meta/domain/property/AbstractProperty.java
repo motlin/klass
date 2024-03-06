@@ -30,12 +30,11 @@ public abstract class AbstractProperty<T extends Type>
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull T type,
             @Nonnull AbstractClassifier owningClassifier)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal, type);
         this.owningClassifier = Objects.requireNonNull(owningClassifier);
     }
 
@@ -57,12 +56,11 @@ public abstract class AbstractProperty<T extends Type>
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull TG typeBuilder,
                 @Nonnull ClassifierBuilder<?> owningClassifierBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, typeBuilder);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal, typeBuilder);
             this.owningClassifierBuilder = Objects.requireNonNull(owningClassifierBuilder);
         }
     }

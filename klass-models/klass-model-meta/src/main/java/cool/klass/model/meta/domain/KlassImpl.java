@@ -37,14 +37,13 @@ public final class KlassImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull InheritanceType inheritanceType,
             boolean isUser,
             boolean isTransient)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
         this.inheritanceType = Objects.requireNonNull(inheritanceType);
         this.isUser          = isUser;
         this.isTransient     = isTransient;
@@ -148,14 +147,13 @@ public final class KlassImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull InheritanceType inheritanceType,
                 boolean isUser,
                 boolean isTransient)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
             this.inheritanceType = Objects.requireNonNull(inheritanceType);
             this.isUser          = isUser;
             this.isTransient     = isTransient;
@@ -197,7 +195,6 @@ public final class KlassImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal,
                     this.packageName,
                     this.inheritanceType,

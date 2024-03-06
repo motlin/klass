@@ -51,7 +51,7 @@ public class AntlrModifier
             int ordinal,
             @Nonnull AntlrNamedElement surroundingElement)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.surroundingElement = surroundingElement;
     }
 
@@ -92,12 +92,12 @@ public class AntlrModifier
 
     public boolean is(String name)
     {
-        return this.name.equals(name);
+        return this.getName().equals(name);
     }
 
     public boolean isAudit()
     {
-        return this.is("audited") || AUDIT_PROPERTY_NAMES.contains(this.name);
+        return this.is("audited") || AUDIT_PROPERTY_NAMES.contains(this.getName());
     }
 
     public boolean isCreatedBy()
@@ -177,7 +177,7 @@ public class AntlrModifier
 
     public boolean isTransient()
     {
-        return this.name.equals("transient");
+        return this.getName().equals("transient");
     }
 
     @Override
@@ -198,7 +198,6 @@ public class AntlrModifier
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.surroundingElement.getElementBuilder());
         return this.elementBuilder;

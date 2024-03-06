@@ -33,12 +33,11 @@ public final class ServiceGroupImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
             @Nonnull KlassImpl klass)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -79,12 +78,11 @@ public final class ServiceGroupImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
                 @Nonnull KlassBuilder klassBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 
@@ -102,7 +100,6 @@ public final class ServiceGroupImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal,
                     this.packageName,
                     this.klassBuilder.getElement());

@@ -36,12 +36,11 @@ public final class ProjectionProjectionReferenceImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ProjectionParent parent,
             @Nonnull ReferenceProperty referenceProperty)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
         this.parent            = Objects.requireNonNull(parent);
         this.referenceProperty = Objects.requireNonNull(referenceProperty);
     }
@@ -90,12 +89,11 @@ public final class ProjectionProjectionReferenceImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull ReferencePropertyBuilder<?, ?, ?> referencePropertyBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
             this.parentBuilder            = Objects.requireNonNull(parentBuilder);
             this.referencePropertyBuilder = Objects.requireNonNull(referencePropertyBuilder);
         }
@@ -119,7 +117,6 @@ public final class ProjectionProjectionReferenceImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal,
                     this.parentBuilder.getElement(),
                     this.referencePropertyBuilder.getElement());

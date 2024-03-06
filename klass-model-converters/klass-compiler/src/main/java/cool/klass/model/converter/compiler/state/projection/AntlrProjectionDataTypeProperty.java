@@ -54,7 +54,7 @@ public class AntlrProjectionDataTypeProperty
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrDataTypeProperty<?> dataTypeProperty)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
         this.headerText            = Objects.requireNonNull(headerText);
         this.headerContext         = Objects.requireNonNull(headerContext);
@@ -80,7 +80,6 @@ public class AntlrProjectionDataTypeProperty
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.headerContext,
                 this.headerText,
@@ -136,7 +135,7 @@ public class AntlrProjectionDataTypeProperty
             String message = String.format(
                     "Cannot find member '%s.%s'.",
                     this.antlrProjectionParent.getClassifier().getName(),
-                    this.name);
+                    this.getName());
             compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
         }
 
@@ -145,7 +144,7 @@ public class AntlrProjectionDataTypeProperty
             String message = String.format(
                     "Projection includes private property '%s.%s'.",
                     this.dataTypeProperty.getOwningClassifierState().getName(),
-                    this.name);
+                    this.getName());
             compilerErrorHolder.add("ERR_PRJ_PRV", message, this);
         }
     }

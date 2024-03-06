@@ -47,7 +47,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             @Nonnull Optional<String> prettyName,
             @Nonnull AntlrEnumeration owningEnumeration)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.prettyName = prettyName;
         this.owningEnumeration = Objects.requireNonNull(owningEnumeration);
     }
@@ -97,7 +97,6 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.prettyName,
                 this.owningEnumeration.getElementBuilder());

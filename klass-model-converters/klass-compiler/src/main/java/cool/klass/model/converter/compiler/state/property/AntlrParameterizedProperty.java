@@ -140,7 +140,6 @@ public class AntlrParameterizedProperty
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassState.getElementBuilder(),

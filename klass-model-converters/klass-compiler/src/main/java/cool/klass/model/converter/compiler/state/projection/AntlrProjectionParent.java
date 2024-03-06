@@ -39,7 +39,7 @@ public abstract class AntlrProjectionParent
             int ordinal,
             @Nonnull AntlrClassifier classifier)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.classifier = Objects.requireNonNull(classifier);
         if (classifier == AntlrClass.NOT_FOUND
                 || classifier == AntlrClass.AMBIGUOUS

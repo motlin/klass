@@ -83,7 +83,6 @@ public class AntlrProjectionReferenceProperty
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
@@ -119,7 +118,7 @@ public class AntlrProjectionReferenceProperty
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("Duplicate member: '%s'.", this.name);
+        String message = String.format("Duplicate member: '%s'.", this.getName());
         compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
     }
 
@@ -144,7 +143,7 @@ public class AntlrProjectionReferenceProperty
 
         if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
-            String message = String.format("Not found: '%s'.", this.name);
+            String message = String.format("Not found: '%s'.", this.getName());
             compilerErrorHolder.add("ERR_PAE_NFD", message, this);
         }
     }

@@ -21,11 +21,10 @@ public final class InterfaceImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull String packageName)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
     }
 
     public static final class InterfaceBuilder
@@ -36,11 +35,10 @@ public final class InterfaceImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, packageName);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal, packageName);
         }
 
         @Override
@@ -52,7 +50,6 @@ public final class InterfaceImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal,
                     this.packageName);
         }

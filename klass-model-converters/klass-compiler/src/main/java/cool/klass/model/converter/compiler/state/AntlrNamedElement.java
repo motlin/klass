@@ -81,24 +81,16 @@ public abstract class AntlrNamedElement extends AntlrElement
 
     @Nonnull
     protected final ParserRuleContext nameContext;
-    @Nonnull
-    protected final String            name;
     protected final int               ordinal;
 
     protected AntlrNamedElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal)
     {
         super(elementContext, compilationUnit);
-        this.name        = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
-        if (!nameContext.getText().equals("") && !name.equals(nameContext.getText()))
-        {
-            throw new AssertionError(name);
-        }
         this.ordinal     = ordinal;
     }
 
@@ -111,7 +103,7 @@ public abstract class AntlrNamedElement extends AntlrElement
     @Nonnull
     public String getName()
     {
-        return this.name;
+        return this.nameContext.getText();
     }
 
     public int getOrdinal()
@@ -124,12 +116,12 @@ public abstract class AntlrNamedElement extends AntlrElement
     {
         this.reportKeywordCollision(compilerErrorHolder);
 
-        if (!this.getNamePattern().matcher(this.name).matches())
+        if (!this.getNamePattern().matcher(this.getName()).matches())
         {
             String message = String.format(
                     "Name must match pattern %s but was '%s'.",
                     this.getNamePattern(),
-                    this.name);
+                    this.getName());
             compilerErrorHolder.add("ERR_NME_PAT", message, this);
         }
     }
@@ -139,21 +131,21 @@ public abstract class AntlrNamedElement extends AntlrElement
     // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations/projections/services and a separate name pattern
     protected void reportKeywordCollision(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (JAVA_KEYWORDS.contains(this.name))
+        if (JAVA_KEYWORDS.contains(this.getName()))
         {
-            String message = String.format("'%s' is a reserved Java keyword.", this.name);
+            String message = String.format("'%s' is a reserved Java keyword.", this.getName());
             compilerErrorHolder.add("ERR_NME_KEY", message, this);
         }
 
-        if (JAVA_LITERALS.contains(this.name))
+        if (JAVA_LITERALS.contains(this.getName()))
         {
-            String message = String.format("'%s' is a reserved Java literal.", this.name);
+            String message = String.format("'%s' is a reserved Java literal.", this.getName());
             compilerErrorHolder.add("ERR_NME_LIT", message, this);
         }
 
-        if (SQL_KEYWORDS.contains(this.name))
+        if (SQL_KEYWORDS.contains(this.getName()))
         {
-            String message = String.format("'%s' is a reserved SQL keyword.", this.name);
+            String message = String.format("'%s' is a reserved SQL keyword.", this.getName());
             compilerErrorHolder.add("ERR_SQL_KEY", message, this);
         }
     }
@@ -161,6 +153,6 @@ public abstract class AntlrNamedElement extends AntlrElement
     @Override
     public String toString()
     {
-        return this.name;
+        return this.getName();
     }
 }

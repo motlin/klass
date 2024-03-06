@@ -19,8 +19,6 @@ public abstract class AbstractNamedElement
 {
     @Nonnull
     private final ParserRuleContext nameContext;
-    @Nonnull
-    private final String            name;
     private final int               ordinal;
 
     protected AbstractNamedElement(
@@ -28,12 +26,10 @@ public abstract class AbstractNamedElement
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal)
     {
         super(elementContext, macroElement, sourceCode);
         this.nameContext = Objects.requireNonNull(nameContext);
-        this.name        = Objects.requireNonNull(name);
         this.ordinal     = ordinal;
     }
 
@@ -48,7 +44,7 @@ public abstract class AbstractNamedElement
     @Nonnull
     public final String getName()
     {
-        return this.name;
+        return this.nameContext.getText();
     }
 
     @Override
@@ -60,7 +56,7 @@ public abstract class AbstractNamedElement
     @Override
     public String toString()
     {
-        return this.name;
+        return this.getName();
     }
 
     public abstract static class NamedElementBuilder<BuiltElement extends AbstractNamedElement>
@@ -68,8 +64,6 @@ public abstract class AbstractNamedElement
     {
         @Nonnull
         protected final ParserRuleContext nameContext;
-        @Nonnull
-        protected final String            name;
         protected final int               ordinal;
 
         protected NamedElementBuilder(
@@ -77,12 +71,10 @@ public abstract class AbstractNamedElement
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal)
         {
             super(elementContext, macroElement, sourceCode);
             this.nameContext = Objects.requireNonNull(nameContext);
-            this.name        = Objects.requireNonNull(name);
             this.ordinal     = ordinal;
         }
     }

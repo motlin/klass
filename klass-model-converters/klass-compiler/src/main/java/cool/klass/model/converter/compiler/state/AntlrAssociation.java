@@ -62,7 +62,7 @@ public class AntlrAssociation
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
     }
 
     @Nonnull
@@ -149,7 +149,6 @@ public class AntlrAssociation
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.packageName,
                 criteriaBuilder);
@@ -176,7 +175,7 @@ public class AntlrAssociation
         {
             String message = String.format(
                     "Association '%s' should have 2 ends. Found %d",
-                    this.name,
+                    this.getName(),
                     numAssociationEnds);
             compilerErrorHolder.add("ERR_ASO_END", message, this);
             return;
@@ -186,7 +185,7 @@ public class AntlrAssociation
         {
             String message = String.format(
                     "Both associations are owned in association '%s'. At most one end may be owned.",
-                    this.name);
+                    this.getName());
             AntlrModifier sourceOwnedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
             AntlrModifier targetOwnedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
 

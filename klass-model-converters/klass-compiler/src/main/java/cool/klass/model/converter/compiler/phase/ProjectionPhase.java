@@ -151,7 +151,6 @@ public class ProjectionPhase
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 nameContext,
-                name,
                 projectionParentState.getNumChildren() + 1,
                 referenceProperty.getType(),
                 projectionParentState,

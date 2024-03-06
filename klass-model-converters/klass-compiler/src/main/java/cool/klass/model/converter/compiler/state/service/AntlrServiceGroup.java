@@ -59,7 +59,7 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             @Nonnull String packageName,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 
@@ -175,7 +175,6 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.packageName,
                 this.klass.getElementBuilder());

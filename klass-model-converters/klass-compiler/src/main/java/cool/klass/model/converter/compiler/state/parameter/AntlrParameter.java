@@ -72,7 +72,7 @@ public final class AntlrParameter
             @Nonnull AntlrType typeState,
             @Nonnull IAntlrElement parameterOwner)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.typeState      = Objects.requireNonNull(typeState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
@@ -161,7 +161,6 @@ public final class AntlrParameter
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 // TODO: Fuller interface hierarchy with AntlrType, AntlrDataType, etc.
                 (DataTypeGetter) this.typeState.getElementBuilder(),

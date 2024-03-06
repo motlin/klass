@@ -35,14 +35,13 @@ public final class ProjectionDataTypePropertyImpl
             @Nonnull Optional<Element> macroElement,
             @Nullable SourceCode sourceCode,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext headerContext,
             @Nonnull String headerText,
             @Nonnull ProjectionParent parent,
             @Nonnull AbstractDataTypeProperty<?> property)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+        super(elementContext, macroElement, sourceCode, nameContext, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
         this.headerText    = Objects.requireNonNull(headerText);
         this.parent        = Objects.requireNonNull(parent);
@@ -88,14 +87,13 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nullable SourceCodeBuilder sourceCode,
                 @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
                 int ordinal,
                 @Nonnull ParserRuleContext headerContext,
                 @Nonnull String headerText,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
+            super(elementContext, macroElement, sourceCode, nameContext, ordinal);
             this.headerContext   = Objects.requireNonNull(headerContext);
             this.headerText      = Objects.requireNonNull(headerText);
             this.parentBuilder   = Objects.requireNonNull(parentBuilder);
@@ -111,7 +109,6 @@ public final class ProjectionDataTypePropertyImpl
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.build(),
                     this.nameContext,
-                    this.name,
                     this.ordinal,
                     this.headerContext,
                     this.headerText,

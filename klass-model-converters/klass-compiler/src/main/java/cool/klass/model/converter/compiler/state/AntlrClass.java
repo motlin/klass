@@ -137,7 +137,7 @@ public class AntlrClass
             @Nonnull String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
         this.isUser = isUser;
     }
 
@@ -332,7 +332,6 @@ public class AntlrClass
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.packageName,
                 this.inheritanceType,
@@ -483,7 +482,7 @@ public class AntlrClass
 
         if (versionAssociationEnds.notEmpty() && versionedAssociationEnds.notEmpty())
         {
-            String message = String.format("Class '%s' is a version and has a version.", this.name);
+            String message = String.format("Class '%s' is a version and has a version.", this.getName());
             compilerErrorHolder.add("ERR_VER_VER", message, this);
         }
     }
@@ -495,7 +494,7 @@ public class AntlrClass
                 && this.inheritanceTypeRequiresKeyProperties()
                 && !this.superClassShouldHaveKey())
         {
-            String message = String.format("Class '%s' must have at least one key property.", this.name);
+            String message = String.format("Class '%s' must have at least one key property.", this.getName());
             compilerErrorHolder.add("ERR_CLS_KEY", message, this);
         }
     }

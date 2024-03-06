@@ -24,7 +24,7 @@ public class AntlrUrlConstant extends AntlrNamedElement
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
     }
 
     @Nonnull
@@ -53,7 +53,6 @@ public class AntlrUrlConstant extends AntlrNamedElement
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal);
         return this.elementBuilder;
     }

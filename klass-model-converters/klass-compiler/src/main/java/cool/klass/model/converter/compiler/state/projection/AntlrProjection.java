@@ -76,7 +76,6 @@ public class AntlrProjection
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.packageName,
                 this.classifier.getElementBuilder());

@@ -39,7 +39,7 @@ public abstract class AntlrProperty
             @Nonnull String name,
             int ordinal)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
     }
 
     @Override
@@ -133,7 +133,7 @@ public abstract class AntlrProperty
         String message = String.format(
                 "Duplicate userId property: '%s.%s'.",
                 this.getOwningClassifierState().getName(),
-                this.name);
+                this.getName());
 
         compilerErrorHolder.add("ERR_DUP_UID", message, this);
     }
@@ -143,7 +143,7 @@ public abstract class AntlrProperty
         String message = String.format(
                 "Duplicate member: '%s.%s'.",
                 this.getOwningClassifierState().getName(),
-                this.name);
+                this.getName());
 
         compilerErrorHolder.add("ERR_DUP_PRP", message, this);
     }

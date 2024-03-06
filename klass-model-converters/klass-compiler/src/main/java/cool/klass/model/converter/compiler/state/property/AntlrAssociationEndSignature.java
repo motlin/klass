@@ -87,7 +87,6 @@ public class AntlrAssociationEndSignature
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.getType().getElementBuilder(),
                 this.owningClassifierState.getElementBuilder(),

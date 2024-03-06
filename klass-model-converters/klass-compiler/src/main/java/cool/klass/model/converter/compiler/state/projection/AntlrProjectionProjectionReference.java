@@ -28,7 +28,6 @@ public class AntlrProjectionProjectionReference
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous projection",
             -1,
             AntlrClass.AMBIGUOUS,
             AntlrProjection.AMBIGUOUS,
@@ -40,7 +39,6 @@ public class AntlrProjectionProjectionReference
             new ProjectionProjectionReferenceContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found projection",
             -1,
             AntlrClass.NOT_FOUND,
             AntlrProjection.NOT_FOUND,
@@ -62,14 +60,13 @@ public class AntlrProjectionProjectionReference
             @Nonnull ProjectionProjectionReferenceContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
             @Nonnull AntlrReferenceProperty<?> referenceProperty,
             @Nonnull AntlrProjection referencedProjectionState)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal);
+        super(elementContext, compilationUnit, nameContext, ordinal);
         this.classifier                = Objects.requireNonNull(classifier);
         this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
         this.referenceProperty         = Objects.requireNonNull(referenceProperty);
@@ -90,7 +87,6 @@ public class AntlrProjectionProjectionReference
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.nameContext,
-                this.name,
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
                 this.referenceProperty.getElementBuilder());
@@ -115,7 +111,7 @@ public class AntlrProjectionProjectionReference
     @Override
     public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        String message = String.format("Duplicate member: '%s'.", this.name);
+        String message = String.format("Duplicate member: '%s'.", this.getName());
         compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
     }
 
@@ -129,7 +125,7 @@ public class AntlrProjectionProjectionReference
 
         if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
-            String message = String.format("Not found: '%s'.", this.name);
+            String message = String.format("Not found: '%s'.", this.getName());
             compilerErrorHolder.add("ERR_PAE_NFD", message, this);
         }
 
@@ -138,7 +134,7 @@ public class AntlrProjectionProjectionReference
         {
             String message = String.format(
                     "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
-                    this.name,
+                    this.getName(),
                     this.classifier.getName(),
                     this.referencedProjectionState.getName(),
                     this.referencedProjectionState.getClassifier().getName());

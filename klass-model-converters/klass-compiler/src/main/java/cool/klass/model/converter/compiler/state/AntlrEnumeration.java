@@ -59,7 +59,7 @@ public class AntlrEnumeration
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
     }
 
     public int getNumLiterals()
@@ -89,7 +89,6 @@ public class AntlrEnumeration
                 this.getMacroElementBuilder(),
                 this.getSourceCodeBuilder(),
                 this.getElementContext().identifier(),
-                this.name,
                 this.ordinal,
                 this.packageName);
 
@@ -160,7 +159,7 @@ public class AntlrEnumeration
     @Override
     public String toString()
     {
-        return String.format("%s.%s", this.packageName, this.name);
+        return String.format("%s.%s", this.packageName, this.getName());
     }
 
     @Override

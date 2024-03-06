@@ -41,7 +41,6 @@ public abstract class AntlrClassifier
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "ambiguous class",
             -1,
             new ParserRuleContext(),
             "klass.meta")
@@ -64,7 +63,6 @@ public abstract class AntlrClassifier
             new ClassDeclarationContext(null, -1),
             Optional.empty(),
             new ParserRuleContext(),
-            "not found class",
             -1,
             new ParserRuleContext(),
             "klass.meta")
@@ -114,12 +112,11 @@ public abstract class AntlrClassifier
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
             int ordinal,
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, packageContext, packageName);
     }
 
     public abstract AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name);
@@ -394,7 +391,7 @@ public abstract class AntlrClassifier
         {
             String message = String.format(
                     "Class '%s' may only have one id property. Found: %s.",
-                    this.name,
+                    this.getName(),
                     this.dataTypePropertyStates
                             .select(AntlrDataTypeProperty::isId)
                             .collect(AntlrDataTypeProperty::getShortString)
@@ -424,7 +421,7 @@ public abstract class AntlrClassifier
 
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
-                this.name,
+                this.getName(),
                 idProperties
                         .makeString(),
                 nonIdKeyProperties
