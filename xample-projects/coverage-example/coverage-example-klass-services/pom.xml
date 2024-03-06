@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -8,54 +9,78 @@
         <artifactId>coverage-example</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>coverage-example-klass-services</artifactId>
 
     <name>${app.name} Klass Services</name>
 
-    <build>
-        <plugins>
+    <dependencies>
 
-            <plugin>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-klass-service-plugin</artifactId>
-                <version>${klass.version}</version>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-domain-model</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-                <configuration>
-                    <klassSourcePackages>
-                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
-                    </klassSourcePackages>
-                </configuration>
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-                <executions>
-                    <execution>
-                        <id>generate-klass-service</id>
-                        <goals>
-                            <goal>generate-klass-service</goal>
-                        </goals>
-                    </execution>
-                </executions>
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-logging-buffered-appender</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-                <dependencies>
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-log-marker</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-generator-klass-service</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-klass-projections</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-                </dependencies>
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-compiler</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-            </plugin>
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-loader-compiler</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-        </plugins>
-    </build>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
