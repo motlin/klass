@@ -29,30 +29,26 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
     @Parameter(
             property = "outputFilename",
             required = true,
-            readonly = true,
             defaultValue = "TestReladomoRuntimeConfiguration.xml")
     private String outputFilename;
 
     @Parameter(
             property = "connectionManagerClassName",
             required = true,
-            readonly = true,
             defaultValue = "io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder")
     private String connectionManagerClassName;
 
-    @Parameter(
-            property = "connectionManagerName",
-            readonly = true)
+    @Parameter(property = "connectionManagerName")
     private String connectionManagerName;
 
     @SuppressWarnings("FieldMayBeFinal")
-    @Parameter(property = "isTest", required = true, readonly = true, defaultValue = "true")
+    @Parameter(property = "isTest", required = true, defaultValue = "true")
     private boolean isTest = true;
 
     @Parameter(property = "rootPackageName", required = true)
     private String rootPackageName;
 
-    @Parameter(property = "cacheType", required = true, readonly = true, defaultValue = "partial")
+    @Parameter(property = "cacheType", required = true, defaultValue = "partial")
     private String cacheType;
 
     @Override

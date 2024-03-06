@@ -24,7 +24,7 @@ public class GenerateReladomoClassListMojo extends AbstractGenerateMojo
     @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-resources/reladomo")
     private File outputDirectory;
 
-    @Parameter(property = "outputFilename", required = true, readonly = true, defaultValue = "ReladomoClassList.xml")
+    @Parameter(property = "outputFilename", required = true, defaultValue = "ReladomoClassList.xml")
     private String outputFilename;
 
     @Override
