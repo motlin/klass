@@ -8,7 +8,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.modifier.Modifier;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
@@ -17,8 +16,6 @@ import org.eclipse.collections.api.stack.MutableStack;
 
 public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {
-    @Nonnull
-    private final Classifier           classifier;
     @Nonnull
     private final PrimitiveProperty    primitiveProperty;
     @Nonnull
@@ -29,13 +26,11 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     private final MutableList<String>  errors;
 
     public JsonTypeCheckingPrimitiveTypeVisitor(
-            Classifier classifier,
             PrimitiveProperty primitiveProperty,
             JsonNode jsonDataTypeValue,
             MutableStack<String> contextStack,
             MutableList<String> errors)
     {
-        this.classifier        = Objects.requireNonNull(classifier);
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
         this.contextStack      = Objects.requireNonNull(contextStack);
@@ -157,8 +152,8 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         catch (DateTimeParseException e)
         {
             String error = String.format(
-                    "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by LocalDate.parse().",
-                    this.classifier,
+                    "Error at %s. Expected property with type '%s' but got '%s' which could not be parsed by LocalDate.parse() which expects a String like '1999-12-31.",
+                    this.getContextString(),
                     this.primitiveProperty,
                     this.jsonDataTypeValue);
             this.errors.add(error);
@@ -206,11 +201,19 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         catch (DateTimeParseException e)
         {
             String error = String.format(
-                    "Incoming '%s' has property '%s' but got '%s'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
-                    this.classifier,
+                    "Error at %s. Expected property with type '%s' but got '%s' which could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                    this.getContextString(),
                     this.primitiveProperty,
                     this.jsonDataTypeValue);
             this.errors.add(error);
         }
+    }
+
+    protected String getContextString()
+    {
+        return this.contextStack
+                .toList()
+                .asReversed()
+                .makeString(".");
     }
 }

@@ -153,7 +153,6 @@ public final class JsonTypeCheckingValidator
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
             PrimitiveTypeVisitor visitor = new JsonTypeCheckingPrimitiveTypeVisitor(
-                    primitiveProperty.getOwningClassifier(),
                     primitiveProperty,
                     this.jsonNode,
                     JsonTypeCheckingValidator.this.contextStack,
