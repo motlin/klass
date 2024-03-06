@@ -8,7 +8,6 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
-import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
@@ -54,6 +53,7 @@ public class AuditPropertyInferencePhase
                 .anySatisfy(predicate);
     }
 
+    /*
     private boolean hasAuditReferenceProperty(Predicate<AntlrParameterizedProperty> predicate)
     {
         return this.compilerState
@@ -64,6 +64,7 @@ public class AuditPropertyInferencePhase
                 .asLazy()
                 .anySatisfy(predicate);
     }
+    */
 
     private void addAuditProperties()
     {
