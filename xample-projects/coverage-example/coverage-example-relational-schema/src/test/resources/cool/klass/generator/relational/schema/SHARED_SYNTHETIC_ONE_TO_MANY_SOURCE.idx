@@ -1,0 +1,2 @@
+alter table SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE add constraint SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE_PK primary key (id);
+

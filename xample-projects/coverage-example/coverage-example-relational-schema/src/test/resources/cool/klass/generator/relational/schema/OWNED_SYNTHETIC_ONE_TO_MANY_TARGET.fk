@@ -1,0 +1,7 @@
+alter table OWNED_SYNTHETIC_ONE_TO_MANY_TARGET add constraint OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE foreign key (
+    source_id
+)
+references OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE(
+    id
+);
+

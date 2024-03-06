@@ -1,0 +1,2 @@
+alter table USER add constraint USER_PK primary key (user_id, system_to);
+
