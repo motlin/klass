@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="klass [clean,install,checkstyle:check]" type="MavenRunConfiguration" factoryName="Maven" singleton="false">
+  <configuration default="false" name="klass [clean,install,checkstyle:check]" type="MavenRunConfiguration" factoryName="Maven" singleton="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
