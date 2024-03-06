@@ -237,7 +237,11 @@ public class CreateVersionPropertiesValidator
         return this.pathHere.map(dataTypeProperty::isForeignKeyMatchingKeyOnPath).orElse(false);
     }
 
-    protected void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
+    protected void handleAnnotationIfPresent(
+            @Nonnull DataTypeProperty property,
+            String propertyKind,
+            MutableList<String> annotations,
+            String severityString)
     {
         JsonNode jsonNode = this.objectNode.path(property.getName());
         if (jsonNode.isMissingNode())
@@ -246,8 +250,9 @@ public class CreateVersionPropertiesValidator
         }
 
         String jsonNodeString = jsonNode.isNull() ? "" : ": " + jsonNode;
-        String warning = String.format(
-                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s%s.",
+        String annotation = String.format(
+                "%s at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s%s.",
+                severityString,
                 this.getContextString(),
                 propertyKind,
                 property.getOwningClassifier().getName(),
@@ -256,7 +261,17 @@ public class CreateVersionPropertiesValidator
                 property.isOptional() ? "?" : "",
                 jsonNode.getNodeType().toString().toLowerCase(),
                 jsonNodeString);
-        this.warnings.add(warning);
+        annotations.add(annotation);
+    }
+
+    protected void handleErrorIfPresent(@Nonnull DataTypeProperty dataTypeProperty, String propertyKind)
+    {
+        this.handleAnnotationIfPresent(dataTypeProperty, propertyKind, this.errors, "Error");
+    }
+
+    protected void handleWarnIfPresent(@Nonnull DataTypeProperty dataTypeProperty, String propertyKind)
+    {
+        this.handleAnnotationIfPresent(dataTypeProperty, propertyKind, this.warnings, "Warning");
     }
 
     protected void handleWarnIfPresent(@Nonnull AssociationEnd property)
