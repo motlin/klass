@@ -3,11 +3,10 @@ package cool.klass.model.converter.compiler;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
+import cool.klass.model.converter.compiler.error.CompilerError;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.BuildAntlrStatePhase;
-import cool.klass.model.converter.compiler.phase.CompilerPhaseEnumerationsAndClasses;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
-import cool.klass.model.converter.compiler.phase.DomainModelBuilderPhase;
 import cool.klass.model.converter.compiler.phase.MembersByNamePhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeReferencesPhase;
@@ -24,9 +23,13 @@ import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KlassCompiler
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KlassCompiler.class);
+
     private final DomainModelBuilder  domainModelBuilder;
     private final CompilerErrorHolder compilerErrorHolder;
 
@@ -61,28 +64,17 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 phase5);
 
-        BuildAntlrStatePhase buildAntlrStatePhase = new BuildAntlrStatePhase(
+        BuildAntlrStatePhase phase7 = new BuildAntlrStatePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 phase5);
 
-        MembersByNamePhase phase7 = new MembersByNamePhase(
+        MembersByNamePhase phase8 = new MembersByNamePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 phase3,
                 phase4,
                 phase5);
-
-        CompilerPhaseEnumerationsAndClasses phase8 = new CompilerPhaseEnumerationsAndClasses(
-                compilationUnitsByContext,
-                this.compilerErrorHolder,
-                this.domainModelBuilder,
-                phase5);
-
-        DomainModelBuilderPhase phase9 = new DomainModelBuilderPhase(
-                this.compilerErrorHolder,
-                compilationUnitsByContext,
-                this.domainModelBuilder);
 
         this.executeCompilerPhase(compilationUnits, phase1);
         this.executeCompilerPhase(compilationUnits, phase2);
@@ -90,10 +82,8 @@ public class KlassCompiler
         this.executeCompilerPhase(compilationUnits, phase4);
         this.executeCompilerPhase(compilationUnits, phase5);
         this.executeCompilerPhase(compilationUnits, phase6);
-        this.executeCompilerPhase(compilationUnits, buildAntlrStatePhase);
         this.executeCompilerPhase(compilationUnits, phase7);
         this.executeCompilerPhase(compilationUnits, phase8);
-        this.executeCompilerPhase(compilationUnits, phase9);
 
         ImmutableList<KlassListener> phases = Lists.immutable.with(
                 phase1,
@@ -103,14 +93,21 @@ public class KlassCompiler
                 phase5,
                 phase6,
                 phase7,
-                phase8,
-                phase9);
+                phase8);
 
         for (KlassListener phase : phases)
         {
         }
 
-        this.compilerErrorHolder.logAll();
+        ImmutableList<CompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
+        if (compilerErrors.notEmpty())
+        {
+            compilerErrors.each(compilerError -> LOGGER.warn("{}", compilerError));
+        }
+        else
+        {
+            phase7.build(this.domainModelBuilder);
+        }
     }
 
     protected void executeCompilerPhase(

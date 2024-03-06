@@ -2,6 +2,7 @@ package cool.klass.model.converter.compiler.error;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -20,8 +21,8 @@ public class CompilerErrorHolder
         this.compilerErrors.add(compilerError);
     }
 
-    public void logAll()
+    public ImmutableList<CompilerError> getCompilerErrors()
     {
-        this.compilerErrors.each(System.out::println);
+        return this.compilerErrors.toImmutable();
     }
 }

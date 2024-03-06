@@ -8,6 +8,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveProperty;
+import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
@@ -86,7 +87,7 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
     @Override
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
-        this.enumerationState = new AntlrEnumeration(ctx);
+        this.enumerationState = new AntlrEnumeration(this.packageName, ctx);
         this.enumerationStates.put(ctx, this.enumerationState);
     }
 
@@ -163,12 +164,6 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
                 : prettyNameContext.getText().substring(1, prettyNameContext.getText().length() - 1);
 
         this.enumerationState.addLiteral(ctx, prettyNameContext, literalName, prettyName);
-    }
-
-    @Override
-    public void enterEnumerationPrettyName(EnumerationPrettyNameContext ctx)
-    {
-        // TODO
     }
 
     @Override
@@ -274,5 +269,10 @@ public class BuildAntlrStatePhase extends AbstractCompilerPhase
     public void enterAssociationEndModifier(AssociationEndModifierContext ctx)
     {
         // TODO
+    }
+
+    public void build(DomainModelBuilder domainModelBuilder)
+    {
+        this.enumerationStates.forEachValue(antlrEnumeration -> antlrEnumeration.build(domainModelBuilder));
     }
 }
