@@ -15,6 +15,14 @@ public interface ProjectionParent extends ProjectionElement
     @Override
     ImmutableList<ProjectionElement> getChildren();
 
+    default void visitChildren(ProjectionListener projectionListener)
+    {
+        for (ProjectionElement projectionElement : this.getChildren())
+        {
+            projectionElement.visit(projectionListener);
+        }
+    }
+
     default ImmutableList<ProjectionAssociationEnd> getAssociationEndChildren()
     {
         return this.getChildren().selectInstancesOf(ProjectionAssociationEnd.class);

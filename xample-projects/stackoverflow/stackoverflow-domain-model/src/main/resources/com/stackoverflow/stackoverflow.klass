@@ -180,6 +180,41 @@ enumeration VoteDirection
     DOWN("down"),
 }
 
+class Tag
+    systemTemporal
+    versioned
+    audited
+    optimisticallyLocked
+{
+    name                  : String key;
+    description           : String;
+}
+
+class QuestionTagMapping
+    systemTemporal
+{
+    questionId: Long key private;
+    tagName: String key private;
+}
+
+association QuestionHasTagMappings
+{
+    question: Question[1..1] final;
+    tags: QuestionTagMapping[0..*] owned
+        orderBy: this.tagName;
+
+    relationship this.id == QuestionTagMapping.questionId
+}
+
+association TagHasQuestionMappings
+{
+    tag: Tag[1..1] final;
+    questions: QuestionTagMapping[0..*] owned
+        orderBy: this.questionId;
+
+    relationship this.name == QuestionTagMapping.tagName
+}
+
 // TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection
 projection QuestionReadProjection on Question
 {
@@ -201,6 +236,14 @@ projection QuestionReadProjection on Question
         body: "Answer body",
     },
 
+    tags           :
+    {
+        tag:
+        {
+            name: "Question tag name",
+        },
+    },
+
     version        :
     {
         number: "Question version number",
@@ -211,10 +254,25 @@ projection QuestionWriteProjection on Question
 {
     title  : "Question title",
     body   : "Question body",
+
     // TODO: Status property should default to OPEN, and default properties shouldn't be required in write projections.
     status : "Question status",
+
     // TODO: Deleted property should default to false, and default properties shouldn't be required in write projections.
     deleted: "Question is deleted",
+
+    tags   :
+    {
+        tag:
+        {
+            name: "Tag name",
+        },
+    },
+
+    version        :
+    {
+        number: "Question version number",
+    },
 }
 
 // TODO: Type inference on projection paramters

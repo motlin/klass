@@ -49,6 +49,11 @@ public interface Klass extends Type, PackageableElement
         return Optional.of(associationEnds.getOnly());
     }
 
+    default ImmutableList<DataTypeProperty> getKeyProperties()
+    {
+        return this.getDataTypeProperties().select(DataTypeProperty::isKey);
+    }
+
     @Nonnull
     Optional<AssociationEnd> getVersionProperty();
 

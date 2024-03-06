@@ -79,10 +79,10 @@ public final class IncomingDataModelValidator
         try
         {
             String error = String.format(
-                    "Error at %s. No such property '%s' on type %s but got %s. Expected properties: %s.",
+                    "Error at %s. No such property '%s.%s' but got %s. Expected properties: %s.",
                     this.getContextString(),
-                    fieldName,
                     klass,
+                    fieldName,
                     jsonNode,
                     klass.getProperties().collect(NamedElement::getName).makeString());
             this.errors.add(error);
@@ -129,7 +129,7 @@ public final class IncomingDataModelValidator
         public void handlePrimitiveProperty(PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
-            primitiveType.visit(new ValidateIncomingDataPrimitiveTypeVisitor(
+            primitiveType.visit(new ValidateIncomingPrimitiveTypeVisitor(
                     primitiveProperty.getOwningKlass(),
                     primitiveProperty,
                     this.jsonNode,
@@ -148,11 +148,14 @@ public final class IncomingDataModelValidator
             if (!this.jsonNode.isTextual())
             {
                 String error = String.format(
-                        "Incoming '%s' has property '%s' but got '%s'. Context: %s.",
-                        enumerationProperty.getOwningKlass(),
-                        enumerationProperty,
+                        "Error at %s. Expected enumerated property with type '%s.%s: %s%s' but got %s with type '%s'.",
+                        IncomingDataModelValidator.this.getContextString(),
+                        enumerationProperty.getOwningKlass().getName(),
+                        enumerationProperty.getName(),
+                        enumerationProperty.getType().getName(),
+                        enumerationProperty.isOptional() ? "?" : "",
                         this.jsonNode,
-                        IncomingDataModelValidator.this.getContextString());
+                        this.jsonNode.getNodeType().toString().toLowerCase());
                 IncomingDataModelValidator.this.errors.add(error);
             }
 
@@ -189,48 +192,54 @@ public final class IncomingDataModelValidator
             if (multiplicity.isToOne())
             {
                 this.visitPropertyWithContext(() -> this.handleToOneAssociationEnd(associationEnd));
+                return;
             }
-            else
-            {
-                if (this.jsonNode.isArray())
-                {
-                    for (int index = 0; index < this.jsonNode.size(); index++)
-                    {
-                        String contextString = String.format("%s[%d]", this.fieldName, index);
-                        IncomingDataModelValidator.this.contextStack.push(contextString);
 
-                        try
-                        {
-                            JsonNode jsonNode = this.jsonNode.get(index);
-                            if (jsonNode instanceof ObjectNode)
-                            {
-                                IncomingDataModelValidator.this.validateIncomingData(
-                                        (ObjectNode) jsonNode,
-                                        associationEnd.getType());
-                            }
-                            else
-                            {
-                                IncomingDataModelValidator.this.errors.add("TODO");
-                            }
-                        }
-                        finally
-                        {
-                            IncomingDataModelValidator.this.contextStack.pop();
-                        }
+            if (!this.jsonNode.isArray())
+            {
+                IncomingDataModelValidator.this.contextStack.push(this.fieldName);
+
+                try
+                {
+                    String error = String.format(
+                            "Error at %s. Expected json array but value was %s.",
+                            IncomingDataModelValidator.this.getContextString(),
+                            this.jsonNode.getNodeType().toString().toLowerCase());
+                    IncomingDataModelValidator.this.errors.add(error);
+                }
+                finally
+                {
+                    IncomingDataModelValidator.this.contextStack.pop();
+                }
+                return;
+            }
+
+            for (int index = 0; index < this.jsonNode.size(); index++)
+            {
+                String contextString = String.format("%s[%d]", this.fieldName, index);
+                IncomingDataModelValidator.this.contextStack.push(contextString);
+
+                try
+                {
+                    JsonNode jsonNode = this.jsonNode.get(index);
+                    if (jsonNode instanceof ObjectNode)
+                    {
+                        IncomingDataModelValidator.this.validateIncomingData(
+                                (ObjectNode) jsonNode,
+                                associationEnd.getType());
+                    }
+                    else
+                    {
+                        String error = String.format(
+                                "Error at %s. Expected json object but value was %s.",
+                                IncomingDataModelValidator.this.getContextString(),
+                                jsonNode.getNodeType().toString().toLowerCase());
+                        IncomingDataModelValidator.this.errors.add(error);
                     }
                 }
-                else
+                finally
                 {
-                    IncomingDataModelValidator.this.contextStack.push(this.fieldName);
-
-                    try
-                    {
-                        IncomingDataModelValidator.this.errors.add("TODO");
-                    }
-                    finally
-                    {
-                        IncomingDataModelValidator.this.contextStack.pop();
-                    }
+                    IncomingDataModelValidator.this.contextStack.pop();
                 }
             }
         }
@@ -243,7 +252,11 @@ public final class IncomingDataModelValidator
             }
             else
             {
-                IncomingDataModelValidator.this.errors.add("TODO");
+                String error = String.format(
+                        "Error at %s. Expected json object but value was %s.",
+                        IncomingDataModelValidator.this.getContextString(),
+                        this.jsonNode.getNodeType().toString().toLowerCase());
+                IncomingDataModelValidator.this.errors.add(error);
             }
         }
 

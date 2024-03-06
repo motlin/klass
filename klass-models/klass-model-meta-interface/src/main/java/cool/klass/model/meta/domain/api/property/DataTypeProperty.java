@@ -36,6 +36,11 @@ public interface DataTypeProperty extends Property
 
     boolean isOptional();
 
+    default boolean isRequired()
+    {
+        return !this.isOptional();
+    }
+
     boolean isTemporalRange();
 
     boolean isTemporalInstant();

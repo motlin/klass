@@ -12,7 +12,7 @@ import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 
-public class ValidateIncomingDataPrimitiveTypeVisitor implements PrimitiveTypeVisitor
+public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {
     private final Klass                klass;
     private final PrimitiveProperty    primitiveProperty;
@@ -20,7 +20,7 @@ public class ValidateIncomingDataPrimitiveTypeVisitor implements PrimitiveTypeVi
     private final MutableStack<String> contextStack;
     private final MutableList<String>  errors;
 
-    public ValidateIncomingDataPrimitiveTypeVisitor(
+    public ValidateIncomingPrimitiveTypeVisitor(
             Klass klass,
             PrimitiveProperty primitiveProperty,
             JsonNode jsonNode,

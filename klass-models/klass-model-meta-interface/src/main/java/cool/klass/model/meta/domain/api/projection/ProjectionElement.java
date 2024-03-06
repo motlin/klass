@@ -16,4 +16,16 @@ public interface ProjectionElement extends NamedElement
     void enter(ProjectionListener listener);
 
     void exit(ProjectionListener listener);
+
+    default void visit(ProjectionListener listener)
+    {
+        try
+        {
+            this.enter(listener);
+        }
+        finally
+        {
+            this.exit(listener);
+        }
+    }
 }
