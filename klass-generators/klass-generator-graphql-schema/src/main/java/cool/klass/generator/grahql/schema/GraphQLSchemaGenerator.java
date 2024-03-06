@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -39,7 +38,7 @@ public class GraphQLSchemaGenerator
     public void writeSchemaFiles(@Nonnull Path outputPath)
     {
         String orderBySourceCode = this.domainModel
-                .getClasses()
+                .getClassifiers()
                 .collect(this::getOrderBySourceCode)
                 .makeString("");
 
@@ -120,11 +119,11 @@ public class GraphQLSchemaGenerator
         return longSourceCode + localDateSourceCode;
     }
 
-    private String getOrderBySourceCode(Klass klass)
+    private String getOrderBySourceCode(Classifier classifier)
     {
         //language=GraphQL
-        return "input _" + klass.getName() + "OrderBy {\n"
-                + "    attribute: _" + klass.getName() + "Finder\n"
+        return "input _" + classifier.getName() + "OrderBy {\n"
+                + "    attribute: _" + classifier.getName() + "Finder\n"
                 + "    direction: OrderByDirection\n"
                 + "}\n\n";
     }
