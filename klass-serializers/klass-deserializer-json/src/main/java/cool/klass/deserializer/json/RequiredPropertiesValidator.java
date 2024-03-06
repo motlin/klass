@@ -410,7 +410,7 @@ public class RequiredPropertiesValidator
         }
         else if (associationEnd.isCreatedBy() || associationEnd.isLastUpdatedBy())
         {
-            return;
+            this.handleAuditAssociationEnd(associationEnd);
         }
         else if (associationEnd.isOwned())
         {
@@ -839,6 +839,17 @@ public class RequiredPropertiesValidator
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".handleVersionAssociationEnd() not implemented yet");
         }
+    }
+
+    protected void handleAuditAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+        if (jsonNode.isMissingNode())
+        {
+            return;
+        }
+
+        this.handleAssociationEndOutsideProjection(associationEnd);
     }
 
     protected void handlePlainAssociationEnd(
