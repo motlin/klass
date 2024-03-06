@@ -135,13 +135,15 @@ public class GraphQLTypeRuntimeWiringProviderGenerator
     @Nonnull
     private String getConcreteSourceCode(@Nonnull Klass klass)
     {
-        String dataFetchersSourceCode = klass
+        ImmutableList<Property> properties = klass
                 .getProperties()
+                .reject(Property::isPrivate);
+
+        String dataFetchersSourceCode = properties
                 .collectWith(this::getDataFetcherSourceCode, klass)
                 .makeString("");
 
-        ImmutableList<Classifier> associatedTypes = klass
-                .getProperties()
+        ImmutableList<Classifier> associatedTypes = properties
                 .selectInstancesOf(ReferenceProperty.class)
                 .collect(ReferenceProperty::getType);
 
