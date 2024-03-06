@@ -48,7 +48,7 @@ public class CompilerError
                 "File: %s Line: %d Char: %d Error: %s",
                 sourceName,
                 line,
-                charPositionInLine - 1,
+                charPositionInLine + 1,
                 this.message);
     }
 

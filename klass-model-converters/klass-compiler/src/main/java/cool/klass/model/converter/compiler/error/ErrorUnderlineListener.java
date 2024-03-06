@@ -2,6 +2,8 @@ package cool.klass.model.converter.compiler.error;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
@@ -52,6 +54,18 @@ public class ErrorUnderlineListener extends BaseErrorListener
 
     @Override
     public void enterEnumerationReference(EnumerationReferenceContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterEnumerationLiteral(EnumerationLiteralContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterEnumerationPrettyName(EnumerationPrettyNameContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

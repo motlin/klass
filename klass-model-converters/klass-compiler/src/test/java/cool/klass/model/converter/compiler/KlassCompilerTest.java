@@ -31,7 +31,7 @@ public class KlassCompilerTest
     protected Set<String> getResourceNames(String packageName)
     {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(packageName))
+                .setUrls(ClasspathHelper.forPackage(packageName.replaceAll("\\.", "/")))
                 .setScanners(new ResourcesScanner()).filterInputsBy(path -> path.startsWith(packageName)));
 
         return reflections.getResources(Pattern.compile(".*\\.klass"));

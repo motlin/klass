@@ -9,6 +9,8 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
@@ -20,8 +22,9 @@ import org.eclipse.collections.api.map.MapIterable;
 public abstract class AbstractCompilerPhase extends KlassBaseListener
 {
     protected final MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext;
-    protected final CompilerErrorHolder compilerErrorHolder;
+    protected final CompilerErrorHolder                                  compilerErrorHolder;
 
+    protected String                         packageName;
     protected CompilationUnit                currentCompilationUnit;
     protected ClassDeclarationContext        classDeclarationContext;
     protected AssociationDeclarationContext  associationDeclarationContext;
@@ -50,6 +53,14 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     public void exitCompilationUnit(CompilationUnitContext ctx)
     {
         this.currentCompilationUnit = null;
+        this.packageName = null;
+    }
+
+    @Override
+    public void enterPackageDeclaration(PackageDeclarationContext ctx)
+    {
+        PackageNameContext packageNameContext = ctx.packageName();
+        this.packageName = packageNameContext.getText();
     }
 
     @Override
@@ -148,7 +159,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
         this.parameterizedPropertyContext = null;
     }
 
-    protected void error(
+    public void error(
             String message,
             ParserRuleContext offendingParserRuleContext,
             ParserRuleContext... parserRuleContexts)

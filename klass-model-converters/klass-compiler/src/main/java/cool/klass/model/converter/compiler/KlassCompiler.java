@@ -4,6 +4,7 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.phase.BuildAntlrStatePhase;
 import cool.klass.model.converter.compiler.phase.CompilerPhaseEnumerationsAndClasses;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
 import cool.klass.model.converter.compiler.phase.DomainModelBuilderPhase;
@@ -59,6 +60,11 @@ public class KlassCompiler
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 phase5);
+
+        BuildAntlrStatePhase buildAntlrStatePhase = new BuildAntlrStatePhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext);
+
         MembersByNamePhase phase7 = new MembersByNamePhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
@@ -83,6 +89,7 @@ public class KlassCompiler
         this.executeCompilerPhase(compilationUnits, phase4);
         this.executeCompilerPhase(compilationUnits, phase5);
         this.executeCompilerPhase(compilationUnits, phase6);
+        this.executeCompilerPhase(compilationUnits, buildAntlrStatePhase);
         this.executeCompilerPhase(compilationUnits, phase7);
         this.executeCompilerPhase(compilationUnits, phase8);
         this.executeCompilerPhase(compilationUnits, phase9);

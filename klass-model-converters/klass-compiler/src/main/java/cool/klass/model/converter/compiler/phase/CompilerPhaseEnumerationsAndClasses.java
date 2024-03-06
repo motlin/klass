@@ -20,8 +20,6 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.OptionalMarkerContext;
-import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.PropertyModifierContext;
@@ -40,8 +38,6 @@ public class CompilerPhaseEnumerationsAndClasses extends AbstractCompilerPhase
     private final Map<EnumerationPropertyContext, EnumerationPropertyBuilder> enumerationPropertyBuilders =
             new IdentityHashMap<>();
 
-    private String packageName;
-
     private KlassBuilder               klassBuilder;
     private EnumerationBuilder         enumerationBuilder;
     private DataTypePropertyBuilder    dataTypePropertyBuilder;
@@ -57,13 +53,6 @@ public class CompilerPhaseEnumerationsAndClasses extends AbstractCompilerPhase
         super(compilerErrorHolder, compilationUnitsByContext);
         this.domainModelBuilder = Objects.requireNonNull(domainModelBuilder);
         this.resolveTypesPhase = Objects.requireNonNull(resolveTypesPhase);
-    }
-
-    @Override
-    public void enterPackageDeclaration(PackageDeclarationContext ctx)
-    {
-        PackageNameContext packageNameContext = ctx.packageName();
-        this.packageName = packageNameContext.getText();
     }
 
     @Override

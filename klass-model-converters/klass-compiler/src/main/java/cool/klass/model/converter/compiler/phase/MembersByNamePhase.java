@@ -80,6 +80,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
             ClassDeclarationContext sourceReturnType = this.resolveTypesPhase.getType(source);
             ClassDeclarationContext targetReturnType = this.resolveTypesPhase.getType(target);
 
+            // TODO
             if (sourceReturnType != DeclarationsByNamePhase.NO_SUCH_CLASS
                 && sourceReturnType != DeclarationsByNamePhase.AMBIGUOUS_CLASS_DECLARATION)
             {
