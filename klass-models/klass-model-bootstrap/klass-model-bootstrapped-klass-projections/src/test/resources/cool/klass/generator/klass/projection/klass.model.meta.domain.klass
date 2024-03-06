@@ -49,6 +49,13 @@ projection EnumerationProjection on Enumeration
     enumerationLiterals: EnumerationLiteralProjection,
 }
 
+projection EnumerationLiteralProjection on EnumerationLiteral
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    prettyName: "EnumerationLiteral prettyName",
+}
+
 projection ClassifierProjection on Classifier
 {
     name: "NamedElement name",
@@ -77,6 +84,19 @@ projection InterfaceProjection on Interface
     dataTypeProperties: DataTypePropertyProjection,
 }
 
+projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
+{
+    superInterface: {
+        name: "NamedElement name",
+    },
+}
+
+projection ClassifierModifierProjection on ClassifierModifier
+{
+    keyword: "ClassifierModifier keyword",
+    ordinal: "ClassifierModifier ordinal",
+}
+
 projection KlassProjection on Klass
 {
     name: "NamedElement name",
@@ -95,7 +115,75 @@ projection KlassProjection on Klass
     parameterizedProperties: ParameterizedPropertyProjection,
 }
 
+projection DataTypePropertyProjection on DataTypeProperty
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    optional: "DataTypeProperty optional",
+    minLengthValidation: MinLengthPropertyValidationProjection,
+    maxLengthValidation: MaxLengthPropertyValidationProjection,
+    propertyModifiers: {
+        keyword: "PropertyModifier keyword",
+    },
+    PrimitiveProperty.primitiveType: "PrimitiveProperty primitiveType",
+    PrimitiveProperty.minValidation: MinPropertyValidationProjection,
+    PrimitiveProperty.maxValidation: MaxPropertyValidationProjection,
+    EnumerationProperty.enumeration: {
+        NamedElement.name: "NamedElement name",
+    },
+}
+
+projection PrimitivePropertyProjection on PrimitiveProperty
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    optional: "DataTypeProperty optional",
+    primitiveType: "PrimitiveProperty primitiveType",
+    minLengthValidation: MinLengthPropertyValidationProjection,
+    maxLengthValidation: MaxLengthPropertyValidationProjection,
+    propertyModifiers: {
+        keyword: "PropertyModifier keyword",
+    },
+    minValidation: MinPropertyValidationProjection,
+    maxValidation: MaxPropertyValidationProjection,
+}
+
+projection EnumerationPropertyProjection on EnumerationProperty
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    optional: "DataTypeProperty optional",
+    minLengthValidation: MinLengthPropertyValidationProjection,
+    maxLengthValidation: MaxLengthPropertyValidationProjection,
+    propertyModifiers: {
+        keyword: "PropertyModifier keyword",
+    },
+    enumeration: {
+        name: "NamedElement name",
+    },
+}
+
 projection NumericPropertyValidationProjection on NumericPropertyValidation
+{
+    number: "NumericPropertyValidation number",
+}
+
+projection MinLengthPropertyValidationProjection on MinLengthPropertyValidation
+{
+    number: "NumericPropertyValidation number",
+}
+
+projection MaxLengthPropertyValidationProjection on MaxLengthPropertyValidation
+{
+    number: "NumericPropertyValidation number",
+}
+
+projection MinPropertyValidationProjection on MinPropertyValidation
+{
+    number: "NumericPropertyValidation number",
+}
+
+projection MaxPropertyValidationProjection on MaxPropertyValidation
 {
     number: "NumericPropertyValidation number",
 }
@@ -265,6 +353,32 @@ projection AssociationProjection on Association
     },
 }
 
+projection AssociationEndProjection on AssociationEnd
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    direction: "AssociationEnd direction",
+    multiplicity: "AssociationEnd multiplicity",
+    resultType: {
+        name: "NamedElement name",
+    },
+    associationEndModifiers: AssociationEndModifierProjection,
+    orderBys: AssociationEndOrderByProjection,
+}
+
+projection AssociationEndModifierProjection on AssociationEndModifier
+{
+    keyword: "AssociationEndModifier keyword",
+    ordinal: "AssociationEndModifier ordinal",
+}
+
+projection MemberReferencePathAssociationEndMappingProjection on MemberReferencePathAssociationEndMapping
+{
+    associationEnd: {
+        name: "NamedElement name",
+    },
+}
+
 projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 {
     id: "ExpressionValue id",
@@ -287,6 +401,33 @@ projection TypeMemberReferencePathProjection on TypeMemberReferencePath
     dataTypeProperty: {
         name: "NamedElement name",
     },
+}
+
+projection ParameterizedPropertyProjection on ParameterizedProperty
+{
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    multiplicity: "ParameterizedProperty multiplicity",
+    resultType: {
+        name: "NamedElement name",
+    },
+    parameterizedPropertyOrderings: ParameterizedPropertyOrderingProjection,
+    parameters: {
+        name: "NamedElement name",
+    },
+}
+
+projection AssociationEndOrderByProjection on AssociationEndOrderBy
+{
+    orderByDirection: "AssociationEndOrderBy orderByDirection",
+    thisMemberReferencePath: {
+        id: "ExpressionValue id",
+    },
+}
+
+projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrdering
+{
+    orderingId: "ParameterizedPropertyOrdering orderingId",
 }
 
 projection ParameterizedPropertyParameterProjection on ParameterizedPropertyParameter
@@ -425,4 +566,41 @@ projection ServiceGroupProjection on ServiceGroup
         name: "NamedElement name",
     },
     urls: UrlProjection,
+}
+
+projection UrlProjection on Url
+{
+    url: "Url url",
+    parameters: UrlParameterProjection,
+    services: ServiceProjection,
+}
+
+projection UrlParameterProjection on UrlParameter
+{
+    type: "UrlParameter type",
+    parameter: {
+        id: "Parameter id",
+    },
+}
+
+projection ServiceProjection on Service
+{
+    verb: "Service verb",
+    serviceMultiplicity: "Service serviceMultiplicity",
+    projection: {
+        name: "NamedElement name",
+    },
+    queryCriteria: CriteriaProjection,
+    authorizeCriteria: CriteriaProjection,
+    validateCriteria: CriteriaProjection,
+    conflictCriteria: CriteriaProjection,
+    orderBys: ServiceOrderByProjection,
+}
+
+projection ServiceOrderByProjection on ServiceOrderBy
+{
+    orderByDirection: "ServiceOrderBy orderByDirection",
+    thisMemberReferencePath: {
+        id: "ExpressionValue id",
+    },
 }

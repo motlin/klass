@@ -88,6 +88,13 @@ fragment EveryTypeKeyPropertyFragment on EveryTypeKeyProperty {
   }
 }
 
+fragment EveryTypeForeignKeyPropertyFragment on EveryTypeForeignKeyProperty {
+  id
+  systemFrom
+  systemTo
+  data
+}
+
 fragment FinalPropertiesFragment on FinalProperties {
   id
   data
@@ -101,12 +108,22 @@ fragment OwnedNaturalOneToManySourceFragment on OwnedNaturalOneToManySource {
   }
 }
 
+fragment OwnedNaturalOneToManyTargetFragment on OwnedNaturalOneToManyTarget {
+  key
+  value
+}
+
 fragment OwnedNaturalOneToOneSourceFragment on OwnedNaturalOneToOneSource {
   key
   value
   target {
     ...OwnedNaturalOneToOneTargetFragment
   }
+}
+
+fragment OwnedNaturalOneToOneTargetFragment on OwnedNaturalOneToOneTarget {
+  key
+  value
 }
 
 fragment OwnedNaturalOneToManySelfFragment on OwnedNaturalOneToManySelf {
@@ -128,12 +145,22 @@ fragment OwnedSyntheticOneToManySourceFragment on OwnedSyntheticOneToManySource 
   }
 }
 
+fragment OwnedSyntheticOneToManyTargetFragment on OwnedSyntheticOneToManyTarget {
+  id
+  value
+}
+
 fragment OwnedSyntheticOneToOneSourceFragment on OwnedSyntheticOneToOneSource {
   id
   value
   target {
     ...OwnedSyntheticOneToOneTargetFragment
   }
+}
+
+fragment OwnedSyntheticOneToOneTargetFragment on OwnedSyntheticOneToOneTarget {
+  id
+  value
 }
 
 fragment OwnedSyntheticOneToManySelfFragment on OwnedSyntheticOneToManySelf {
@@ -238,5 +265,70 @@ fragment ClassOwningClassWithDerivedPropertyFragment on ClassOwningClassWithDeri
   key
   classWithDerivedProperties {
     ...ClassWithDerivedPropertyFragment
+  }
+}
+
+fragment ClassWithDerivedPropertyFragment on ClassWithDerivedProperty {
+  key
+  derivedRequiredString
+  derivedRequiredInteger
+  derivedRequiredLong
+  derivedRequiredDouble
+  derivedRequiredFloat
+  derivedRequiredBoolean
+  derivedRequiredInstant
+  derivedRequiredLocalDate
+  derivedOptionalString
+  derivedOptionalInteger
+  derivedOptionalLong
+  derivedOptionalDouble
+  derivedOptionalFloat
+  derivedOptionalBoolean
+  derivedOptionalInstant
+  derivedOptionalLocalDate
+}
+
+fragment UserVersionFragment on UserVersion {
+  systemFrom
+  systemTo
+  number
+}
+
+fragment PropertiesRequiredVersionFragment on PropertiesRequiredVersion {
+  systemFrom
+  systemTo
+  createdOn
+  number
+  createdBy {
+    userId
+  }
+  lastUpdatedBy {
+    userId
+  }
+}
+
+fragment PropertiesOptionalVersionFragment on PropertiesOptionalVersion {
+  systemFrom
+  systemTo
+  createdOn
+  number
+  createdBy {
+    userId
+  }
+  lastUpdatedBy {
+    userId
+  }
+}
+
+fragment EveryTypeKeyPropertyVersionFragment on EveryTypeKeyPropertyVersion {
+  systemFrom
+  systemTo
+  createdOn
+  number
+  createdBy {
+    userId
+  }
+  lastUpdatedBy {
+    userId
   }
 }
