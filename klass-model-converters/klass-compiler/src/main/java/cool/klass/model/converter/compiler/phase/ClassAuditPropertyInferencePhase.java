@@ -38,7 +38,7 @@ public class ClassAuditPropertyInferencePhase
         // TODO: Inference happens for batches of three properties. It could check whether it needs to add each of the three individually
         if ("audited".equals(modifierText) && !this.hasAuditProperty())
         {
-            this.addAuditProperties(ctx);
+            this.addAuditProperties();
         }
     }
 
@@ -52,7 +52,7 @@ public class ClassAuditPropertyInferencePhase
                 .anySatisfy(AntlrDataTypeProperty::isAudit);
     }
 
-    private void addAuditProperties(@Nonnull ClassModifierContext ctx)
+    private void addAuditProperties()
     {
         this.runCompilerMacro("    createdById    : String private createdBy;\n");
         this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
@@ -61,7 +61,7 @@ public class ClassAuditPropertyInferencePhase
         Optional<AntlrClass> userClassOptional = this.compilerState.getDomainModelState().getUserClassState();
         if (!userClassOptional.isPresent())
         {
-            throw new AssertionError("TODO");
+            return;
         }
 
         AntlrClass userClass = userClassOptional.get();
