@@ -5,14 +5,14 @@ import org.eclipse.collections.api.list.ImmutableList;
 public class AssociationEndDTO
 {
     private final String                     name;
-    private final String                     multiplicity;
+    private final MultiplicityDTO            multiplicity;
     private final ReferenceDTO               resultType;
     private final ImmutableList<ModifierDTO> associationEndModifiers;
     private final ImmutableList<OrderByDTO>  orderBys;
 
     public AssociationEndDTO(
             String name,
-            String multiplicity,
+            MultiplicityDTO multiplicity,
             ReferenceDTO resultType,
             ImmutableList<ModifierDTO> associationEndModifiers,
             ImmutableList<OrderByDTO> orderBys)
@@ -29,7 +29,7 @@ public class AssociationEndDTO
         return this.name;
     }
 
-    public String getMultiplicity()
+    public MultiplicityDTO getMultiplicity()
     {
         return this.multiplicity;
     }
