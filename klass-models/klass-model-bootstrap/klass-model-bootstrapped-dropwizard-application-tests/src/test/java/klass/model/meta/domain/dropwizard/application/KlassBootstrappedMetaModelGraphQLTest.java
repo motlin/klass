@@ -13,13 +13,71 @@ public class KlassBootstrappedMetaModelGraphQLTest
         extends AbstractKlassBootstrappedMetaModelApplicationTest
 {
     @Test
-    public void graphqlSmokeTest()
+    public void packageableElements()
     {
-        Client client = this.getClient("graphqlSmokeTest");
+        this.assertGraphQL("packageableElements");
+    }
+
+    @Test
+    public void enumerations()
+    {
+        this.assertGraphQL("enumerations");
+    }
+
+    @Test
+    public void interfaces()
+    {
+        this.assertGraphQL("interfaces");
+    }
+
+    @Test
+    public void classes()
+    {
+        this.assertGraphQL("classes");
+    }
+
+    @Test
+    public void associations()
+    {
+        this.assertGraphQL("associations");
+    }
+
+    @Test
+    public void projectionElements()
+    {
+        this.assertGraphQL("projectionElements");
+    }
+
+    @Test
+    public void namedProjections()
+    {
+        this.assertGraphQL("namedProjections");
+    }
+
+    @Test
+    public void expressionValue()
+    {
+        this.assertGraphQL("expressionValue");
+    }
+
+    @Test
+    public void criteria()
+    {
+        this.assertGraphQL("criteria");
+    }
+
+    @Test
+    public void serviceGroups()
+    {
+        this.assertGraphQL("serviceGroups");
+    }
+
+    private void assertGraphQL(String testName)
+    {
+        Client client   = this.getClient(testName);
 
         Class<?> callingClass   = this.getClass();
-        String   testName       = callingClass.getSimpleName();
-        String   sourceName     = testName + ".graphql";
+        String   sourceName     = callingClass.getSimpleName() + "." + testName + ".graphql";
         String   query = FileMatchRule.slurp(sourceName, callingClass);
 
         Response response = client.target("http://localhost:{port}/graphql")
@@ -27,6 +85,6 @@ public class KlassBootstrappedMetaModelGraphQLTest
                 .request()
                 .post(Entity.json(Maps.mutable.with("query", query)));
 
-        this.assertResponse("graphqlSmokeTest", Status.OK, response);
+        this.assertResponse(testName, Status.OK, response);
     }
 }

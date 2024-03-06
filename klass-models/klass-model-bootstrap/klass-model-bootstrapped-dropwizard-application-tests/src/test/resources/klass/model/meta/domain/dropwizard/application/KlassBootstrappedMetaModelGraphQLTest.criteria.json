@@ -1,0 +1,17 @@
+{
+  "errors": [
+    {
+      "message": "Validation error (MissingFieldArgument@[criteria]) : Missing field argument 'id'",
+      "locations": [
+        {
+          "line": 61,
+          "column": 3
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    }
+  ],
+  "data": null
+}

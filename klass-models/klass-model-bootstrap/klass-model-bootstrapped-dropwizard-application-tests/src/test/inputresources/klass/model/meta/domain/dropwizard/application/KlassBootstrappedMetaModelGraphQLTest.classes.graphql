@@ -1,0 +1,76 @@
+fragment MinLengthPropertyValidationFragment on MinLengthPropertyValidation {
+  number
+}
+
+fragment MaxLengthPropertyValidationFragment on MaxLengthPropertyValidation {
+  number
+}
+
+fragment MinPropertyValidationFragment on MinPropertyValidation {
+  number
+}
+
+fragment MaxPropertyValidationFragment on MaxPropertyValidation {
+  number
+}
+
+fragment DataTypePropertyFragment on DataTypeProperty {
+  __typename
+  name
+  ordinal
+  optional
+  minLengthValidation {
+    ...MinLengthPropertyValidationFragment
+  }
+  maxLengthValidation {
+    ...MaxLengthPropertyValidationFragment
+  }
+  propertyModifiers {
+    keyword
+  }
+  ... on PrimitiveProperty {
+    primitiveType
+    minValidation {
+      ...MinPropertyValidationFragment
+    }
+    maxValidation {
+      ...MaxPropertyValidationFragment
+    }
+  }
+  ... on EnumerationProperty {
+    enumeration {
+      name
+    }
+  }
+}
+
+fragment ClassifierInterfaceMappingFragment on ClassifierInterfaceMapping {
+  superInterface {
+    name
+  }
+}
+
+fragment KlassFragment on Klass {
+  name
+  ordinal
+  packageName
+  abstractClass
+  superInterfaces {
+    ...ClassifierInterfaceMappingFragment
+  }
+  dataTypeProperties {
+    ...DataTypePropertyFragment
+  }
+  classifierModifiers {
+    keyword
+  }
+  superClass {
+    name
+  }
+}
+
+query {
+  klasses {
+    ...KlassFragment
+  }
+}

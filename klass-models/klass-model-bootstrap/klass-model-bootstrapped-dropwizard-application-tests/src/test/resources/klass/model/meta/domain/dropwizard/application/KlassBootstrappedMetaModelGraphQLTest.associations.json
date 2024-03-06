@@ -1,0 +1,1871 @@
+{
+  "data": {
+    "associations": [
+      {
+        "name": "EnumerationHasLiterals",
+        "ordinal": 6,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "enumeration",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Enumeration"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "enumerationLiterals",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_MANY",
+            "resultType": {
+              "name": "EnumerationLiteral"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 165
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 1
+        }
+      },
+      {
+        "name": "ClassifierHasClassifierInterfaceMapping",
+        "ordinal": 10,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "subClassifier",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Classifier"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "superInterfaces",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ClassifierInterfaceMapping"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 2
+        }
+      },
+      {
+        "name": "ClassifierInterfaceMappingHasInterface",
+        "ordinal": 11,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "subClassifiers",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ClassifierInterfaceMapping"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "superInterface",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Interface"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 3
+        }
+      },
+      {
+        "name": "ClassifierHasModifiers",
+        "ordinal": 13,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "owningClassifier",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Classifier"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "classifierModifiers",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ClassifierModifier"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 166
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 4
+        }
+      },
+      {
+        "name": "ClassHasSuperClass",
+        "ordinal": 15,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "subClasses",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "superClass",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 5
+        }
+      },
+      {
+        "name": "EnumerationPropertyHasEnumeration",
+        "ordinal": 21,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "enumerationProperties",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "EnumerationProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "enumeration",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Enumeration"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 6
+        }
+      },
+      {
+        "name": "ClassifierHasDataTypeTypeProperties",
+        "ordinal": 22,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "owningClassifier",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Classifier"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "dataTypeProperties",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 167
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 7
+        }
+      },
+      {
+        "name": "DataTypePropertyHasMinLengthPropertyValidation",
+        "ordinal": 28,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "dataTypeProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "minLengthValidation",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "MinLengthPropertyValidation"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 8
+        }
+      },
+      {
+        "name": "DataTypePropertyHasMaxLengthPropertyValidation",
+        "ordinal": 29,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "dataTypeProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "maxLengthValidation",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "MaxLengthPropertyValidation"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 11
+        }
+      },
+      {
+        "name": "PrimitivePropertyHasMinPropertyValidation",
+        "ordinal": 30,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "primitiveProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "PrimitiveProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "minValidation",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "MinPropertyValidation"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 14
+        }
+      },
+      {
+        "name": "PrimitivePropertyHasMaxPropertyValidation",
+        "ordinal": 31,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "primitiveProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "PrimitiveProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "maxValidation",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "MaxPropertyValidation"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 17
+        }
+      },
+      {
+        "name": "DataTypePropertyHasModifiers",
+        "ordinal": 33,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "dataTypeProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "propertyModifiers",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "PropertyModifier"
+            },
+            "associationEndModifiers": [],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 168
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 20
+        }
+      },
+      {
+        "name": "VariableReferenceHasParameter",
+        "ordinal": 42,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "variableReferences",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "VariableReference"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameter",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Parameter"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 23
+        }
+      },
+      {
+        "name": "AssociationHasEnds",
+        "ordinal": 54,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "owningAssociation",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Association"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEnds",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 169
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 24
+        }
+      },
+      {
+        "name": "ClassHasAssociationEnds",
+        "ordinal": 55,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "owningClass",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEnds",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 25
+        }
+      },
+      {
+        "name": "AssociationEndHasResultType",
+        "ordinal": 56,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "associationEndsResultTypeOf",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "resultType",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 26
+        }
+      },
+      {
+        "name": "AssociationEndHasModifiers",
+        "ordinal": 58,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "associationEnd",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEndModifiers",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "AssociationEndModifier"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 170
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 27
+        }
+      },
+      {
+        "name": "AssociationHasCriteria",
+        "ordinal": 59,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "association",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Association"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "criteria",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 30
+        }
+      },
+      {
+        "name": "OperatorCriteriaHasSourceExpressionValue",
+        "ordinal": 60,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "operatorCriteriaSourceOf",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "OperatorCriteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "sourceExpressionValue",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ExpressionValue"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 31
+        }
+      },
+      {
+        "name": "OperatorCriteriaHasTargetExpressionValue",
+        "ordinal": 61,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "operatorCriteriaTargetOf",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "OperatorCriteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "targetExpressionValue",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ExpressionValue"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 32
+        }
+      },
+      {
+        "name": "EdgePointCriteriaHasMemberReferencePath",
+        "ordinal": 62,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "edgePointCriteria",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "EdgePointCriteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "memberReferencePath",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "MemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 33
+        }
+      },
+      {
+        "name": "EnumerationParameterHasEnumeration",
+        "ordinal": 63,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "enumerationParameters",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "EnumerationParameter"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "enumeration",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Enumeration"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 34
+        }
+      },
+      {
+        "name": "MemberReferencePathHasClass",
+        "ordinal": 64,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "memberReferencePaths",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "MemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "klass",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 35
+        }
+      },
+      {
+        "name": "MemberReferencePathHasMemberReferencePathAssociationEndMapping",
+        "ordinal": 66,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "memberReferencePath",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "MemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEnds",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "MemberReferencePathAssociationEndMapping"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 36
+        }
+      },
+      {
+        "name": "MemberReferencePathAssociationEndMappingHasAssociationEnd",
+        "ordinal": 67,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "memberReferencePaths",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "MemberReferencePathAssociationEndMapping"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEnd",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 37
+        }
+      },
+      {
+        "name": "DataTypePropertyHasMemberReferencePaths",
+        "ordinal": 68,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "memberReferencePaths",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "MemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "dataTypeProperty",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 40
+        }
+      },
+      {
+        "name": "BinaryCriteriaHasLeft",
+        "ordinal": 71,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "ownerOfLeftCriteria",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "BinaryCriteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "left",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 43
+        }
+      },
+      {
+        "name": "BinaryCriteriaHasRight",
+        "ordinal": 72,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "ownerOfRightCriteria",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "BinaryCriteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "right",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 44
+        }
+      },
+      {
+        "name": "ClassHasParameterizedProperties",
+        "ordinal": 74,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "owningClass",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameterizedProperties",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ParameterizedProperty"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": [
+              {
+                "orderByDirection": "ASCENDING",
+                "thisMemberReferencePath": {
+                  "id": 171
+                }
+              }
+            ]
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 45
+        }
+      },
+      {
+        "name": "AssociationEndHasOrderBy",
+        "ordinal": 77,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "associationEnd",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "orderBys",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "AssociationEndOrderBy"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 46
+        }
+      },
+      {
+        "name": "AssociationEndOrderByHasMemberReferencePath",
+        "ordinal": 78,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "associationEndOrderBy",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "AssociationEndOrderBy"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "thisMemberReferencePath",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ThisMemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 49
+        }
+      },
+      {
+        "name": "ParameterizedPropertyHasResultType",
+        "ordinal": 79,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "parameterizedPropertiesResultTypeOf",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ParameterizedProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "resultType",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 50
+        }
+      },
+      {
+        "name": "ParameterizedPropertyHasOrdering",
+        "ordinal": 81,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "parameterizedProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ParameterizedProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameterizedPropertyOrderings",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ParameterizedPropertyOrdering"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 51
+        }
+      },
+      {
+        "name": "ParameterizedPropertyHasParameters",
+        "ordinal": 83,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "parameterizedProperty",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ParameterizedProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameters",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ParameterizedPropertyParameter"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 54
+        }
+      },
+      {
+        "name": "NamedProjectionHasRootProjection",
+        "ordinal": 87,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "namedProjection",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "NamedProjection"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "rootProjection",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "RootProjection"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 57
+        }
+      },
+      {
+        "name": "ProjectionElementHasChildren",
+        "ordinal": 92,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "parent",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "ProjectionElement"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "children",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ProjectionElement"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 58
+        }
+      },
+      {
+        "name": "ProjectionWithAssociationEndHasAssociationEnd",
+        "ordinal": 93,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "projectionsWithAssociationEnd",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ProjectionWithAssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "associationEnd",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "AssociationEnd"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 59
+        }
+      },
+      {
+        "name": "ProjectionDataTypePropertyHasDataTypeProperty",
+        "ordinal": 94,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "projectionDataTypeProperties",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ProjectionDataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "dataTypeProperty",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "DataTypeProperty"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 62
+        }
+      },
+      {
+        "name": "RootProjectionHasClass",
+        "ordinal": 95,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "projections",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "RootProjection"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "klass",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 65
+        }
+      },
+      {
+        "name": "ProjectionProjectionReferenceHasProjection",
+        "ordinal": 96,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "projectionProjectionReferences",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ProjectionProjectionReference"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "projection",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "NamedProjection"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 66
+        }
+      },
+      {
+        "name": "ServiceGroupHasClass",
+        "ordinal": 98,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "serviceGroups",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ServiceGroup"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "owningClass",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Klass"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 67
+        }
+      },
+      {
+        "name": "UrlHasUrlParameters",
+        "ordinal": 102,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "url",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Url"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameters",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "UrlParameter"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 68
+        }
+      },
+      {
+        "name": "UrlParameterHasParameter",
+        "ordinal": 103,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "urlParameter",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "UrlParameter"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "parameter",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Parameter"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 71
+        }
+      },
+      {
+        "name": "ServiceGroupHasUrls",
+        "ordinal": 104,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "serviceGroup",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ServiceGroup"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "urls",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_MANY",
+            "resultType": {
+              "name": "Url"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 72
+        }
+      },
+      {
+        "name": "UrlHasServices",
+        "ordinal": 108,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "url",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Url"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "services",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_MANY",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 73
+        }
+      },
+      {
+        "name": "ServiceHasProjection",
+        "ordinal": 109,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "services",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "projection",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "NamedProjection"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 76
+        }
+      },
+      {
+        "name": "ServiceHasQueryCriteria",
+        "ordinal": 110,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "queryService",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "queryCriteria",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 77
+        }
+      },
+      {
+        "name": "ServiceHasAuthorizeCriteria",
+        "ordinal": 111,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "authorizeService",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "authorizeCriteria",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 78
+        }
+      },
+      {
+        "name": "ServiceHasValidateCriteria",
+        "ordinal": 112,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "validateService",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "validateCriteria",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 79
+        }
+      },
+      {
+        "name": "ServiceHasConflictCriteria",
+        "ordinal": 113,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "conflictService",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "conflictCriteria",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "Criteria"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 80
+        }
+      },
+      {
+        "name": "ServiceHasOrderBy",
+        "ordinal": 115,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "service",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "Service"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "orderBys",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ZERO_TO_MANY",
+            "resultType": {
+              "name": "ServiceOrderBy"
+            },
+            "associationEndModifiers": [
+              {
+                "keyword": "owned",
+                "ordinal": 1
+              }
+            ],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "AndCriteria",
+          "id": 81
+        }
+      },
+      {
+        "name": "ServiceOrderByHasMemberReferencePath",
+        "ordinal": 116,
+        "packageName": "klass.model.meta.domain",
+        "associationEnds": [
+          {
+            "name": "serviceOrderBy",
+            "ordinal": 1,
+            "direction": "SOURCE",
+            "multiplicity": "ZERO_TO_ONE",
+            "resultType": {
+              "name": "ServiceOrderBy"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          },
+          {
+            "name": "thisMemberReferencePath",
+            "ordinal": 2,
+            "direction": "TARGET",
+            "multiplicity": "ONE_TO_ONE",
+            "resultType": {
+              "name": "ThisMemberReferencePath"
+            },
+            "associationEndModifiers": [],
+            "orderBys": []
+          }
+        ],
+        "criteria": {
+          "__typename": "OperatorCriteria",
+          "id": 86
+        }
+      }
+    ]
+  }
+}

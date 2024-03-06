@@ -1,0 +1,34 @@
+fragment ExpressionValueFragment on ExpressionValue {
+  __typename
+  id
+  ... on VariableReference {
+    parameter {
+      __typename
+      id
+    }
+  }
+  ... on MemberReferencePath {
+    klass {
+      name
+    }
+    associationEnds {
+      ...MemberReferencePathAssociationEndMappingFragment
+    }
+    dataTypeProperty {
+      __typename
+      name
+    }
+  }
+}
+
+fragment MemberReferencePathAssociationEndMappingFragment on MemberReferencePathAssociationEndMapping {
+  associationEnd {
+    name
+  }
+}
+
+query {
+  expressionValues {
+    ...ExpressionValueFragment
+  }
+}

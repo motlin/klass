@@ -1,0 +1,46 @@
+fragment AssociationEndModifierFragment on AssociationEndModifier {
+  keyword
+  ordinal
+}
+
+fragment AssociationEndFragment on AssociationEnd {
+  name
+  ordinal
+  direction
+  multiplicity
+  resultType {
+    name
+  }
+  associationEndModifiers {
+    ...AssociationEndModifierFragment
+  }
+  orderBys {
+    ...AssociationEndOrderByFragment
+  }
+}
+
+fragment AssociationEndOrderByFragment on AssociationEndOrderBy {
+  orderByDirection
+  thisMemberReferencePath {
+    id
+  }
+}
+
+fragment AssociationFragment on Association {
+  name
+  ordinal
+  packageName
+  associationEnds {
+    ...AssociationEndFragment
+  }
+  criteria {
+    __typename
+    id
+  }
+}
+
+query {
+  associations {
+    ...AssociationFragment
+  }
+}

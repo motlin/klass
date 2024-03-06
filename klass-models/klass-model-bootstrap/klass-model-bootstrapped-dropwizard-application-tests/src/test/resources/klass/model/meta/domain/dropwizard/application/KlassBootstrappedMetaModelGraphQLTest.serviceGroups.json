@@ -1,0 +1,632 @@
+{
+  "data": {
+    "serviceGroups": [
+      {
+        "name": "EnumerationResource",
+        "ordinal": 120,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Enumeration"
+        },
+        "urls": [
+          {
+            "url": "/meta/enumeration",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "EnumerationSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 89
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/enumeration/{enumerationName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 1,
+                  "ordinal": 3,
+                  "name": "enumerationName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "EnumerationProjection"
+                },
+                "queryCriteria": {
+                  "id": 87
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/enumeration/{enumerationName}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 2,
+                  "ordinal": 3,
+                  "name": "enumerationName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "EnumerationSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 88
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "InterfaceResource",
+        "ordinal": 123,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Interface"
+        },
+        "urls": [
+          {
+            "url": "/meta/interface",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "InterfaceSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 92
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/interface/{interfaceName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 3,
+                  "ordinal": 3,
+                  "name": "interfaceName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "InterfaceProjection"
+                },
+                "queryCriteria": {
+                  "id": 90
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/interface/{interfaceName}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 4,
+                  "ordinal": 3,
+                  "name": "interfaceName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "InterfaceSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 91
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KlassResource",
+        "ordinal": 127,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Klass"
+        },
+        "urls": [
+          {
+            "url": "/meta/class",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "ClassSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 95
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/class/{className}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 5,
+                  "ordinal": 3,
+                  "name": "className",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ClassProjection"
+                },
+                "queryCriteria": {
+                  "id": 93
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/class/{className}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 6,
+                  "ordinal": 3,
+                  "name": "className",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ClassSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 94
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ClassifierResource",
+        "ordinal": 129,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Classifier"
+        },
+        "urls": [
+          {
+            "url": "/meta/classifier",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "ClassifierSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 97
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/classifier/{classifierName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 7,
+                  "ordinal": 3,
+                  "name": "classifierName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ClassifierSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 96
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AssociationResource",
+        "ordinal": 142,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Association"
+        },
+        "urls": [
+          {
+            "url": "/meta/association",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "AssociationSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 100
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/association/{associationName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 8,
+                  "ordinal": 3,
+                  "name": "associationName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "AssociationProjection"
+                },
+                "queryCriteria": {
+                  "id": 98
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/association/{associationName}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 9,
+                  "ordinal": 3,
+                  "name": "associationName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "AssociationSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 99
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NamedProjectionResource",
+        "ordinal": 145,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "NamedProjection"
+        },
+        "urls": [
+          {
+            "url": "/meta/projection",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "NamedProjectionProjection"
+                },
+                "queryCriteria": {
+                  "id": 103
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/projection/{projectionName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 10,
+                  "ordinal": 3,
+                  "name": "projectionName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "NamedProjectionProjection"
+                },
+                "queryCriteria": {
+                  "id": 101
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/projection/{projectionName}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 11,
+                  "ordinal": 3,
+                  "name": "projectionName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "NamedProjectionProjection"
+                },
+                "queryCriteria": {
+                  "id": 102
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ServiceGroupResource",
+        "ordinal": 148,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "ServiceGroup"
+        },
+        "urls": [
+          {
+            "url": "/meta/serviceGroup",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "ServiceGroupSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 106
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/serviceGroup/{serviceGroupName}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 12,
+                  "ordinal": 3,
+                  "name": "serviceGroupName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ServiceGroupProjection"
+                },
+                "queryCriteria": {
+                  "id": 104
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/serviceGroup/{serviceGroupName}/summary",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 13,
+                  "ordinal": 3,
+                  "name": "serviceGroupName",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ServiceGroupSummaryProjection"
+                },
+                "queryCriteria": {
+                  "id": 105
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

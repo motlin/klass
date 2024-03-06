@@ -1,0 +1,64 @@
+fragment ExpressionValueFragment on ExpressionValue {
+  __typename
+  id
+  ... on VariableReference {
+    parameter {
+      __typename
+      id
+    }
+  }
+  ... on MemberReferencePath {
+    klass {
+      name
+    }
+    associationEnds {
+      ...MemberReferencePathAssociationEndMappingFragment
+    }
+    dataTypeProperty {
+      __typename
+      name
+    }
+  }
+}
+
+fragment CriteriaFragment on Criteria {
+  __typename
+  id
+  ... on BinaryCriteria {
+    left {
+      __typename
+      id
+    }
+    right {
+      __typename
+      id
+    }
+  }
+  ... on OperatorCriteria {
+    operator
+    sourceExpressionValue {
+      ...ExpressionValueFragment
+    }
+    targetExpressionValue {
+      ...ExpressionValueFragment
+    }
+  }
+  ... on EdgePointCriteria {
+    memberReferencePath {
+      __typename
+      id
+    }
+  }
+}
+
+fragment MemberReferencePathAssociationEndMappingFragment on MemberReferencePathAssociationEndMapping {
+  associationEnd {
+    name
+  }
+}
+
+query {
+  criteria {
+    ...CriteriaFragment
+  }
+}

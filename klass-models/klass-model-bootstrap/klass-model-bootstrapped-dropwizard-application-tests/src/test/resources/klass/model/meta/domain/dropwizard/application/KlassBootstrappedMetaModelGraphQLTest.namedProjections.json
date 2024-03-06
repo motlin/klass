@@ -1,0 +1,206 @@
+{
+  "data": {
+    "namedProjections": [
+      {
+        "name": "EnumerationLiteralProjection",
+        "ordinal": 117,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 1
+        }
+      },
+      {
+        "name": "EnumerationProjection",
+        "ordinal": 118,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 2
+        }
+      },
+      {
+        "name": "EnumerationSummaryProjection",
+        "ordinal": 119,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 3
+        }
+      },
+      {
+        "name": "InterfaceProjection",
+        "ordinal": 121,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 4
+        }
+      },
+      {
+        "name": "InterfaceSummaryProjection",
+        "ordinal": 122,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 5
+        }
+      },
+      {
+        "name": "DataTypePropertyProjection",
+        "ordinal": 124,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 6
+        }
+      },
+      {
+        "name": "ClassProjection",
+        "ordinal": 125,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 7
+        }
+      },
+      {
+        "name": "ClassSummaryProjection",
+        "ordinal": 126,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 8
+        }
+      },
+      {
+        "name": "ClassifierSummaryProjection",
+        "ordinal": 128,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 9
+        }
+      },
+      {
+        "name": "ThisMemberReferencePathProjection",
+        "ordinal": 130,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 10
+        }
+      },
+      {
+        "name": "AssociationEndProjection",
+        "ordinal": 131,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 11
+        }
+      },
+      {
+        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "ordinal": 132,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 12
+        }
+      },
+      {
+        "name": "MemberReferencePathSummaryProjection",
+        "ordinal": 133,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 13
+        }
+      },
+      {
+        "name": "AssociationEndSummaryProjection",
+        "ordinal": 134,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 14
+        }
+      },
+      {
+        "name": "ExpressionValueProjection",
+        "ordinal": 135,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 15
+        }
+      },
+      {
+        "name": "ExpressionValueSummaryProjection",
+        "ordinal": 136,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 16
+        }
+      },
+      {
+        "name": "MemberReferencePathProjection",
+        "ordinal": 137,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 17
+        }
+      },
+      {
+        "name": "CriteriaProjection",
+        "ordinal": 138,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 18
+        }
+      },
+      {
+        "name": "CriteriaSummaryProjection",
+        "ordinal": 139,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 19
+        }
+      },
+      {
+        "name": "AssociationProjection",
+        "ordinal": 140,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 20
+        }
+      },
+      {
+        "name": "AssociationSummaryProjection",
+        "ordinal": 141,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 21
+        }
+      },
+      {
+        "name": "ProjectionElementProjection",
+        "ordinal": 143,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 22
+        }
+      },
+      {
+        "name": "NamedProjectionProjection",
+        "ordinal": 144,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 23
+        }
+      },
+      {
+        "name": "ServiceGroupProjection",
+        "ordinal": 146,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 24
+        }
+      },
+      {
+        "name": "ServiceGroupSummaryProjection",
+        "ordinal": 147,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 25
+        }
+      }
+    ]
+  }
+}
