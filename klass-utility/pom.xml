@@ -18,7 +18,6 @@
 
     <modules>
         <module>klass-clock-incrementing</module>
-        <module>klass-context-thread-local</module>
         <module>klass-firebase-principal</module>
         <module>klass-junit-rule-match-file</module>
         <module>klass-junit-rule-match-json</module>
