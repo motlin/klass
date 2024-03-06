@@ -34,7 +34,7 @@ public class CompilerState
     private final CompilerInputState       compilerInput;
     private final CompilerAnnotationHolder compilerAnnotationHolder = new CompilerAnnotationHolder();
     private final AntlrDomainModel         domainModel              = new AntlrDomainModel();
-    private       CompilerWalkState       compilerWalk             = new CompilerWalkState(this.domainModel);
+    private       CompilerWalkState        compilerWalk             = new CompilerWalkState(this.domainModel);
 
     private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalks =
             OrderedMaps.adapt(new LinkedHashMap<>());
@@ -225,9 +225,7 @@ public class CompilerState
         public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
             super.enterCompilationUnit(ctx);
-
-            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInput.getCompilationUnitByContext(
-                    ctx);
+            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInput.getCompilationUnitByContext(ctx);
             CompilerState.this.compilerWalk.enterCompilationUnit(currentCompilationUnit);
         }
 
@@ -235,7 +233,6 @@ public class CompilerState
         public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
             super.exitCompilationUnit(ctx);
-
             CompilerState.this.compilerWalk.exitCompilationUnit();
         }
     }

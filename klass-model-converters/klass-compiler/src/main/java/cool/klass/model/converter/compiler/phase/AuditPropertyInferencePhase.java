@@ -13,6 +13,7 @@ import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.predicate.Predicate;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
 // TODO: Only put audit properties onto version types
@@ -49,7 +50,6 @@ public class AuditPropertyInferencePhase
                 .getCompilerWalk()
                 .getKlass()
                 .getAllDataTypeProperties()
-                .asLazy()
                 .anySatisfy(predicate);
     }
 
@@ -61,7 +61,6 @@ public class AuditPropertyInferencePhase
                 .getKlass()
                 .getProperties()
                 .selectInstancesOf(AntlrParameterizedProperty.class)
-                .asLazy()
                 .anySatisfy(predicate);
     }
     */
@@ -74,21 +73,23 @@ public class AuditPropertyInferencePhase
             return;
         }
         AntlrClass userClass        = maybeUserClass.get();
-        int        userIdProperties = userClass.getAllDataTypeProperties().count(AntlrDataTypeProperty::isUserId);
-        if (userIdProperties != 1)
+        ImmutableList<AntlrDataTypeProperty<?>> userIdProperties = userClass
+                .getAllDataTypeProperties()
+                .select(AntlrDataTypeProperty::isUserId);
+        if (userIdProperties.size() != 1)
         {
             return;
         }
-        AntlrDataTypeProperty<?> userIdProperty = userClass
-                .getAllDataTypeProperties()
-                .detect(AntlrDataTypeProperty::isUserId);
+        AntlrDataTypeProperty<?> userIdProperty = userIdProperties.getOnly();
 
-        ListIterable<AntlrModifier> modifiers = userIdProperty.getModifiers()
+        ListIterable<AntlrModifier> modifiers = userIdProperty
+                .getModifiers()
                 .reject(AntlrModifier::isUserId)
                 .reject(AntlrModifier::isKey)
                 .reject(AntlrModifier::isId);
-        if (!modifiers.isEmpty())
+        if (modifiers.notEmpty())
         {
+            // TODO: Add test coverage for this line
             throw new AssertionError(modifiers);
         }
         ListIterable<AbstractAntlrPropertyValidation> validations = userIdProperty.getValidations();

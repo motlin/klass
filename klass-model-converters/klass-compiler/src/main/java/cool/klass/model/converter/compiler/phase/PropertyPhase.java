@@ -259,12 +259,6 @@ public class PropertyPhase
         this.associationEndSignature.enterModifier(antlrAssociationEndModifier);
     }
 
-    @Nullable
-    private AntlrClassifier getClassifier()
-    {
-        return this.compilerState.getCompilerWalk().getClassifier();
-    }
-
     @Override
     public void enterClassifierReference(@Nonnull ClassifierReferenceContext ctx)
     {
@@ -303,5 +297,11 @@ public class PropertyPhase
                 this.multiplicityOwner);
 
         this.associationEndSignature.enterMultiplicity(multiplicity);
+    }
+
+    @Nullable
+    private AntlrClassifier getClassifier()
+    {
+        return this.compilerState.getCompilerWalk().getClassifier();
     }
 }

@@ -39,18 +39,15 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         }
 
         AntlrClass klass = this.compilerState.getCompilerWalk().getKlass();
-        ImmutableList<AntlrDataTypeProperty<?>> keyProperties = klass
-                .getAllDataTypeProperties()
-                .select(AntlrDataTypeProperty::isKey);
+        ImmutableList<AntlrDataTypeProperty<?>> allKeyProperties = klass.getAllKeyProperties();
 
-        if (keyProperties.isEmpty())
+        if (allKeyProperties.isEmpty())
         {
             return;
         }
 
-        AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalk().getClassifierModifier();
-        String                  klassSourceCode         = this.getSourceCode(keyProperties);
+        AntlrModifier classifierModifierState = this.compilerState.getCompilerWalk().getClassifierModifier();
+        String        klassSourceCode         = this.getSourceCode(allKeyProperties);
 
         ImmutableList<ParseTreeListener> compilerPhases = Lists.immutable.with(
                 new CompilationUnitPhase(this.compilerState),

@@ -32,7 +32,7 @@ public class ClassTemporalPropertyInferencePhase
 
         String modifierText = ctx.getText();
 
-        ImmutableList<AntlrDataTypeProperty<?>> dataTypeProperties = this.compilerState
+        ImmutableList<AntlrDataTypeProperty<?>> allDataTypeProperties = this.compilerState
                 .getCompilerWalk()
                 .getKlass()
                 .getAllDataTypeProperties();
@@ -42,15 +42,15 @@ public class ClassTemporalPropertyInferencePhase
 
         if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
             {
                 stringBuilder.append("    valid    : TemporalRange?   valid;\n");
             }
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
             {
                 stringBuilder.append("    validFrom: TemporalInstant? valid from;\n");
             }
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidTo))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidTo))
             {
                 stringBuilder.append("    validTo  : TemporalInstant? valid to;\n");
             }
@@ -58,15 +58,15 @@ public class ClassTemporalPropertyInferencePhase
 
         if ("systemTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
             {
                 stringBuilder.append("    system    : TemporalRange?   system private;\n");
             }
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
             {
                 stringBuilder.append("    systemFrom: TemporalInstant? system from;\n");
             }
-            if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemTo))
+            if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemTo))
             {
                 stringBuilder.append("    systemTo  : TemporalInstant? system to;\n");
             }

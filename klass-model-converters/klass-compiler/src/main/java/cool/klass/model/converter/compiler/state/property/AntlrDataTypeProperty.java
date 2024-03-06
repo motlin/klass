@@ -408,8 +408,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     //</editor-fold>
 
     //<editor-fold desc="Report Compiler Errors">
-    @OverridingMethodsMustInvokeSuper
     @Override
+    @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         super.reportErrors(compilerAnnotationHolder);
