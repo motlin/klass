@@ -19,6 +19,16 @@
     <modules>
         <module>stackoverflow</module>
         <module>coverage-example</module>
-        <module>reladomo-bug</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>reladomo-bug</id>
+            <modules>
+                <module>stackoverflow</module>
+                <module>coverage-example</module>
+                <module>reladomo-bug</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
