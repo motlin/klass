@@ -309,17 +309,18 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(
-                    parentJsonNode,
+            ImmutableList<Object> keys = this.getKeysFromJsonNode(
                     childJsonNode,
-                    associationEnd);
+                    associationEnd,
+                    parentJsonNode);
+            if (keys.contains(null))
+            {
+                return;
+            }
+
+            Object childPersistentInstanceWithKey = this.findExistingChildPersistentInstance(associationEnd, keys);
             if (childPersistentInstanceWithKey == null)
             {
-                ImmutableList<Object> keys = this.getKeysFromJsonNode(
-                        childJsonNode,
-                        associationEnd,
-                        parentJsonNode);
-
                 String error = String.format(
                         "Error at '%s'. Could not find existing persistent instance for association end '%s' with key %s.",
                         this.getContextString(),
@@ -334,10 +335,7 @@ public class IncomingCreateDataModelValidator
         }
     }
 
-    protected Object findExistingChildPersistentInstance(
-            @Nonnull ObjectNode parentJsonNode,
-            @Nonnull JsonNode incomingChildInstance,
-            @Nonnull AssociationEnd associationEnd)
+    protected Object findExistingChildPersistentInstance(@Nonnull AssociationEnd associationEnd, ImmutableList<Object> keys)
     {
         /*
         if (!(this instanceof PersistentCreator) && !(this instanceof PersistentReplacer))
@@ -346,10 +344,6 @@ public class IncomingCreateDataModelValidator
         }
         */
 
-        ImmutableList<Object> keys = this.getKeysFromJsonNode(
-                incomingChildInstance,
-                associationEnd,
-                parentJsonNode);
         return this.dataStore.findByKey(associationEnd.getType(), keys);
     }
 
@@ -641,7 +635,20 @@ public class IncomingCreateDataModelValidator
             Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
                     keyProperty,
                     objectNode);
-            return Objects.requireNonNull(result);
+
+            if (result == null)
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for key property '%s.%s: %s%s' but value was %s.",
+                        this.getContextString(),
+                        keyProperty.getOwningClassifier().getName(),
+                        keyProperty.getName(),
+                        keyProperty.getType(),
+                        keyProperty.isOptional() ? "?" : "",
+                        result);
+                this.errors.add(error);
+            }
+            return result;
         }
 
         throw new AssertionError(jsonNode);
