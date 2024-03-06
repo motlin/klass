@@ -24,7 +24,7 @@ class DummyClass systemTemporal versioned audited
 class DummyClass2 systemTemporal versioned audited
 {
     id             : Long id key;
-    createdById    : String createdBy lastUpdatedBy userId final private;
+    createdById    : String createdBy lastUpdatedBy userId private;
 }
 
 association CreatedBy

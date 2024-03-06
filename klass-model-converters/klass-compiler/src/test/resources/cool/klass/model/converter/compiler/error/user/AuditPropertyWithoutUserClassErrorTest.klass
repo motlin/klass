@@ -8,5 +8,5 @@ class DummyClass systemTemporal versioned audited
     systemTo       : TemporalInstant? system to;
     createdById    : String createdBy userId final;
     createdOn      : Instant createdOn final;
-    lastUpdatedById: String lastUpdatedBy userId final;
+    lastUpdatedById: String lastUpdatedBy userId;
 }

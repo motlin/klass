@@ -15,7 +15,7 @@ class DummyClass systemTemporal versioned
 association CreatedBy
 {
     dummyClassesCreatedBy: DummyClass[0..*];
-    createdBy: User[1..1] createdBy;
+    createdBy: User[1..1] createdBy final;
 
     relationship this.createdById == User.id
 }
@@ -31,7 +31,7 @@ association LastUpdatedBy
 association CreatedByDuplicate
 {
     dummyClassesCreatedByDuplicate: DummyClass[0..*];
-    createdByDuplicate: User[1..1] createdBy;
+    createdByDuplicate: User[1..1] createdBy final;
 
     relationship this.createdById == User.id
 }

@@ -9,7 +9,7 @@ class DummyClass systemTemporal versioned
 {
     id                 : Long id key;
     createdById        : String createdBy userId final private;
-    lastUpdatedById    : String lastUpdatedBy userId final private;
+    lastUpdatedById    : String lastUpdatedBy userId private;
 }
 
 association CreatedBy
@@ -23,7 +23,7 @@ association CreatedBy
 association LastUpdatedBy
 {
     dummyClassesLastUpdatedBy: DummyClass[0..*];
-    lastUpdatedBy: NotUserClass[1..1] lastUpdatedBy;
+    lastUpdatedBy: NotUserClass[1..1] lastUpdatedBy final;
 
     relationship this.lastUpdatedById == NotUserClass.id
 }

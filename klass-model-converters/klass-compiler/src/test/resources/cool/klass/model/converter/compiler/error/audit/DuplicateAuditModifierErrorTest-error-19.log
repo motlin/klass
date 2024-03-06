@@ -6,7 +6,7 @@ At (Version class macro)
 [39m1║ [35mpackage [39mcom[36m.[39merrors
 [39m3║ [35mclass [39mDummyClass2Version [33msystemTemporal [33maudited
 [39m4║ [36m{
-[39m6║     [39mcreatedById[36m: [35mString [33mcreatedBy [33mlastUpdatedBy [33muserId [33mfinal [33mprivate[36m;
+[39m6║     [39mcreatedById[36m: [35mString [33mcreatedBy [33mlastUpdatedBy [33muserId [33mprivate[36m;
 [39m ║ [31m                        ^^^^^^^^^ ^^^^^^^^^^^^^
 [39m8║ [36m}
 [m

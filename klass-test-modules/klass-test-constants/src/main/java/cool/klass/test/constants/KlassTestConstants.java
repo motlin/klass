@@ -113,7 +113,7 @@ public final class KlassTestConstants
             + "\n"
             + "    // createdOn, or createdDate?\n"
             + "    createdOn              : Instant createdOn final;\n"
-            + "    lastUpdatedById        : String lastUpdatedBy userId final private;\n"
+            + "    lastUpdatedById        : String lastUpdatedBy userId private;\n"
             + "\n"
             + "    // createdBy(): User[1..1] createdBy\n"
             + "    // {\n"

@@ -14,7 +14,7 @@ class DummyClass systemTemporal versioned audited
 association CreatedBy
 {
     dummyClassesCreatedBy: DummyClass[0..*];
-    createdBy: User[1..1] createdBy;
+    createdBy: User[1..1] createdBy final;
 
     relationship this.createdById
         == User.otherProperty

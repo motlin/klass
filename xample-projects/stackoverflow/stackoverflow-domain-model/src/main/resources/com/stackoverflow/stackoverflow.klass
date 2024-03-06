@@ -106,7 +106,7 @@ class Question
 
     // createdOn, or createdDate?
     createdOn              : Instant createdOn final;
-    lastUpdatedById        : String lastUpdatedBy userId final private;
+    lastUpdatedById        : String lastUpdatedBy userId private;
 
     // createdBy(): User[1..1] createdBy
     // {

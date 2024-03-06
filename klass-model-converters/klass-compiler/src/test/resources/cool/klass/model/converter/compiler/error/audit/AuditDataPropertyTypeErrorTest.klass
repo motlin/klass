@@ -20,3 +20,22 @@ class DummyClass systemTemporal versioned audited
     createdOn      : DummyEnumeration createdOn final;
     lastUpdatedById: DummyEnumeration lastUpdatedBy userId;
 }
+
+class DummyClass2
+{
+    id             : Long id key;
+    system         : TemporalRange?;
+    systemFrom     : TemporalInstant? from;
+    systemTo       : TemporalInstant? to;
+    createdById    : String createdBy;
+    createdOn      : Instant createdOn;
+    lastUpdatedById: String lastUpdatedBy final;
+}
+
+class DummyClass3
+{
+    id             : Long id key;
+    system         : TemporalRange system;
+    systemFrom     : TemporalInstant system from;
+    systemTo       : TemporalInstant system to;
+}

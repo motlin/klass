@@ -6,7 +6,7 @@ At (DuplicateAuditAssociationEndErrorTest.klass:34)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m31║ [35massociation [39mCreatedByDuplicate
 [39m32║ [36m{
-[39m34║     [39mcreatedByDuplicate[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [33mcreatedBy[36m;
+[39m34║     [39mcreatedByDuplicate[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [33mcreatedBy [33mfinal[36m;
 [39m  ║ [31m                                   ^^^^^^^^^
 [39m37║ [36m}
 [m
