@@ -1,10 +1,12 @@
 package cool.klass.model.converter.compiler.error;
 
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.Ordering;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.SourceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -14,6 +16,14 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class RootCompilerError extends AbstractCompilerError implements Comparable<RootCompilerError>
 {
+    private static final Comparator<AbstractCompilerError> FRAME_COMPARATOR = Comparator
+            .comparing(AbstractCompilerError::getSourceName)
+            .thenComparing(AbstractCompilerError::getLine)
+            .thenComparing(AbstractCompilerError::getCharPositionInLine);
+
+    public static final  Ordering<Iterable<AbstractCompilerError>> STACK_COMPARATOR =
+            Ordering.from(FRAME_COMPARATOR).lexicographical();
+
     @Nonnull
     private final String errorCode;
     @Nonnull
@@ -35,19 +45,15 @@ public class RootCompilerError extends AbstractCompilerError implements Comparab
     @Override
     public int compareTo(@Nonnull RootCompilerError other)
     {
-        int sourceNameCompareTo = this.compilationUnit.getSourceName().compareTo(other.compilationUnit.getSourceName());
-        if (sourceNameCompareTo != 0)
-        {
-            return sourceNameCompareTo;
-        }
+        ImmutableList<AbstractCompilerError> thisReverseCauseChain = this.getCauseChain();
+        ImmutableList<AbstractCompilerError> otherReverseCauseChain = other.getCauseChain();
 
-        int lineCompareTo = Integer.compare(this.getLine(), other.getLine());
-        if (lineCompareTo != 0)
-        {
-            return lineCompareTo;
-        }
+        ImmutableList<AbstractCompilerError> thisReverseCauseChainTrimmed =
+                thisReverseCauseChain.size() == 1 ? thisReverseCauseChain : thisReverseCauseChain.drop(1).toReversed();
+        ImmutableList<AbstractCompilerError> otherReverseCauseChainTrimmed =
+                otherReverseCauseChain.size() == 1 ? otherReverseCauseChain : otherReverseCauseChain.drop(1).toReversed();
 
-        return Integer.compare(this.getCharPositionInLine(), other.getCharPositionInLine());
+        return STACK_COMPARATOR.compare(thisReverseCauseChainTrimmed, otherReverseCauseChainTrimmed);
     }
 
     @Nonnull
