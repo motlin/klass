@@ -75,10 +75,10 @@ public final class ForeignKeyGenerator
         return format.formatted(
                 ordinal,
                 constraintName,
-                foreignKeyColumnNames,
-                tableName,
                 constraintName,
-                referencedKeyColumnNames,
-                referencedTableName);
+                tableName,
+                foreignKeyColumnNames,
+                referencedTableName,
+                referencedKeyColumnNames);
     }
 }

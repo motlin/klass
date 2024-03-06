@@ -357,11 +357,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
                 baseTableName="OWNED_NATURAL_ONE_TO_MANY_TARGET"
-                baseColumnNames="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -403,11 +403,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
                 baseTableName="OWNED_NATURAL_ONE_TO_ONE_TARGET"
-                baseColumnNames="OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="OWNED_NATURAL_ONE_TO_ONE_SOURCE"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -435,11 +435,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-11-OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
                 baseTableName="OWNED_NATURAL_ONE_TO_MANY_SELF"
-                baseColumnNames="OWNED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="OWNED_NATURAL_ONE_TO_MANY_SELF"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SELF"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -481,11 +481,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
                 baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET"
-                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="ID"
         />
     </changeSet>
 
@@ -527,11 +527,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
                 baseTableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET"
-                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="ID"
         />
     </changeSet>
 
@@ -559,11 +559,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
                 baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
-                baseColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+                referencedColumnNames="ID"
         />
     </changeSet>
 
@@ -605,11 +605,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET">
         <addForeignKeyConstraint
-                constraintName="TARGET_KEY"
+                constraintName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET"
                 baseTableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE"
-                baseColumnNames="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET"
-                referencedTableName="KEY"
-                referencedColumnNames="SHARED_NATURAL_MANY_TO_ONE_TARGET"
+                baseColumnNames="TARGET_KEY"
+                referencedTableName="SHARED_NATURAL_MANY_TO_ONE_TARGET"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -651,11 +651,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
                 baseTableName="SHARED_NATURAL_ONE_TO_MANY_TARGET"
-                baseColumnNames="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -697,11 +697,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
                 baseTableName="SHARED_NATURAL_ONE_TO_ONE_TARGET"
-                baseColumnNames="SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="SHARED_NATURAL_ONE_TO_ONE_SOURCE"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="SHARED_NATURAL_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -729,11 +729,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-23-SHARED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_KEY"
+                constraintName="SHARED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
                 baseTableName="SHARED_NATURAL_ONE_TO_MANY_SELF"
-                baseColumnNames="SHARED_NATURAL_ONE_TO_MANY_SELF_FK_SOURCE"
-                referencedTableName="KEY"
-                referencedColumnNames="SHARED_NATURAL_ONE_TO_MANY_SELF"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SELF"
+                referencedColumnNames="KEY"
         />
     </changeSet>
 
@@ -775,11 +775,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
                 baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET"
-                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="ID"
         />
     </changeSet>
 
@@ -821,11 +821,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
                 baseTableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET"
-                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="ID"
         />
     </changeSet>
 
@@ -853,11 +853,11 @@
 
     <changeSet author="Klass" id="initial-foreign-key-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE">
         <addForeignKeyConstraint
-                constraintName="SOURCE_ID"
+                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
                 baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
-                baseColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_SOURCE"
-                referencedTableName="ID"
-                referencedColumnNames="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+                referencedColumnNames="ID"
         />
     </changeSet>
 

@@ -12,8 +12,9 @@ import org.junit.rules.TestRule;
 
 public class LiquibaseSchemaGeneratorTest
 {
+    public static final String        FULLY_QUALIFIED_PACKAGE = "cool.klass.generator.liquibase.schema";
     @Rule
-    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+    public final        FileMatchRule fileMatchRule           = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();
@@ -21,7 +22,7 @@ public class LiquibaseSchemaGeneratorTest
     @Test
     public void smokeTest()
     {
-        ImmutableList<String> klassSourcePackages = Lists.immutable.with("cool.klass.generator.liquibase.schema");
+        ImmutableList<String> klassSourcePackages = Lists.immutable.with(FULLY_QUALIFIED_PACKAGE);
 
         var domainModelCompilerLoader = new DomainModelCompilerLoader(
                 klassSourcePackages,
@@ -32,6 +33,6 @@ public class LiquibaseSchemaGeneratorTest
 
         this.fileMatchRule.assertFileContents(
                 this.getClass().getCanonicalName() + ".xml",
-                SchemaGenerator.getSourceCode(domainModel));
+                SchemaGenerator.getSourceCode(domainModel, FULLY_QUALIFIED_PACKAGE));
     }
 }

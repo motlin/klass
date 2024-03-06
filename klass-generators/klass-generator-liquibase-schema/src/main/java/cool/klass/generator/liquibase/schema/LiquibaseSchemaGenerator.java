@@ -2,79 +2,69 @@ package cool.klass.generator.liquibase.schema;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Converter;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.PackageableElement;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class LiquibaseSchemaGenerator
 {
-    private static final Converter<String, String> CONVERTER =
-            CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
-
     private final DomainModel domainModel;
+    private final String      fileName;
 
     public LiquibaseSchemaGenerator(DomainModel domainModel)
     {
+        this(domainModel, "migrations.xml");
+    }
+
+    public LiquibaseSchemaGenerator(DomainModel domainModel, String fileName)
+    {
         this.domainModel = Objects.requireNonNull(domainModel);
+        this.fileName    = Objects.requireNonNull(fileName);
     }
 
-    public void writeLiquibaseSchema(@Nonnull Path path)
+    public void writeLiquibaseSchema(@Nonnull Path outputPath)
     {
-        ImmutableList<Klass> classes = this.domainModel.getClasses();
-        for (int i = 0; i < classes.size(); i++)
+        ImmutableList<String> packageNames = this.domainModel
+                .getClasses()
+                .asLazy()
+                .collect(PackageableElement::getPackageName)
+                .distinct()
+                .toImmutableList();
+        for (String packageName : packageNames)
         {
-            Klass klass = classes.get(i);
-            String tableName = CONVERTER.convert(klass.getName());
-
-            String packageName  = klass.getPackageName();
-            String relativePath = packageName.replaceAll("\\.", "/");
-            Path   parentPath   = path.resolve(relativePath);
-            createDirectories(parentPath);
-
-            Path ddlOutputPath = parentPath.resolve(tableName + ".ddl");
-            if (!ddlOutputPath.toFile().exists())
-            {
-                String sourceCode = TableGenerator.getTable(klass, i + 1);
-                this.printStringToFile(ddlOutputPath, sourceCode);
-            }
-
-            Path idxOutputPath = parentPath.resolve(tableName + ".idx");
-            if (!idxOutputPath.toFile().exists())
-            {
-                String sourceCode = IndexGenerator.getIndex(klass, i + 1);
-                this.printStringToFile(idxOutputPath, sourceCode);
-            }
-
-            Path fkOutputPath = parentPath.resolve(tableName + ".fk");
-            if (!fkOutputPath.toFile().exists())
-            {
-                Optional<String> sourceCode = ForeignKeyGenerator.getForeignKey(klass, i + 1);
-                sourceCode.ifPresent(s -> this.printStringToFile(fkOutputPath, s));
-            }
+            this.writeFile(packageName, outputPath);
         }
     }
 
-    private static void createDirectories(Path dir)
+    private void writeFile(String fullyQualifiedPackage, Path outputPath)
     {
-        try
-        {
-            Files.createDirectories(dir);
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+        Path   klassOutputPath = this.getOutputPath(outputPath, fullyQualifiedPackage);
+        String sourceCode      = getPackageSourceCode(this.domainModel, fullyQualifiedPackage);
+
+        this.printStringToFile(klassOutputPath, sourceCode);
+    }
+
+    @Nonnull
+    private Path getOutputPath(
+            @Nonnull Path outputPath,
+            @Nonnull String fullyQualifiedPackage)
+    {
+        String packageRelativePath = fullyQualifiedPackage.replaceAll("\\.", "/");
+        Path   klassDirectory      = outputPath.resolve(packageRelativePath);
+        klassDirectory.toFile().mkdirs();
+        return klassDirectory.resolve(this.fileName);
+    }
+
+    @Nonnull
+    public static String getPackageSourceCode(@Nonnull DomainModel domainModel, @Nonnull String fullyQualifiedPackage)
+    {
+        return SchemaGenerator.getSourceCode(domainModel, fullyQualifiedPackage);
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)

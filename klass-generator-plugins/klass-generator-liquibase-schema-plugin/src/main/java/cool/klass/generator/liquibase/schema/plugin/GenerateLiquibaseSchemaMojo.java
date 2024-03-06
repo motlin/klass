@@ -26,8 +26,12 @@ public class GenerateLiquibaseSchemaMojo
             defaultValue = "${project.build.directory}/generated-resources/liquibase-schema")
     private File outputDirectory;
 
+    @Parameter(property = "fileName")
+    private final String fileName = "migrations-initial-schema.xml";
+
     @Override
-    public void execute() throws MojoExecutionException
+    public void execute()
+            throws MojoExecutionException
     {
         if (!this.outputDirectory.exists())
         {
@@ -38,7 +42,7 @@ public class GenerateLiquibaseSchemaMojo
 
         Path outputPath = this.outputDirectory.toPath();
 
-        LiquibaseSchemaGenerator generator = new LiquibaseSchemaGenerator(domainModel);
+        LiquibaseSchemaGenerator generator = new LiquibaseSchemaGenerator(domainModel, this.fileName);
         try
         {
             generator.writeLiquibaseSchema(outputPath);

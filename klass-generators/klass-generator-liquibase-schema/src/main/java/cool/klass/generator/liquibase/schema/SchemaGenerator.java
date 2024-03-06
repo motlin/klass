@@ -13,9 +13,11 @@ public final class SchemaGenerator
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static String getSourceCode(DomainModel domainModel)
+    public static String getSourceCode(DomainModel domainModel, String fullyQualifiedPackage)
     {
-        ImmutableList<Klass>  classes     = domainModel.getClasses();
+        ImmutableList<Klass> classes = domainModel
+                .getClasses()
+                .select(each -> each.getPackageName().equals(fullyQualifiedPackage));
         ImmutableList<String> sourceCodes = classes.collectWithIndex(SchemaGenerator::getSourceCode);
 
         //language=XML
