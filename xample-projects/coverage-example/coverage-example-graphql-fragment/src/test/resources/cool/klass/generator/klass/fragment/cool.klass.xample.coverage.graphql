@@ -25,6 +25,7 @@ fragment PropertiesRequiredFragment on PropertiesRequired {
   requiredBoolean
   requiredInstant
   requiredLocalDate
+  requiredDerived
   version {
     ...PropertiesRequiredVersionFragment
   }
@@ -49,6 +50,7 @@ fragment PropertiesOptionalFragment on PropertiesOptional {
   optionalBoolean
   optionalInstant
   optionalLocalDate
+  optionalDerived
   version {
     ...PropertiesOptionalVersionFragment
   }
@@ -268,6 +270,22 @@ fragment ClassOwningClassWithDerivedPropertyFragment on ClassOwningClassWithDeri
 
 fragment ClassWithDerivedPropertyFragment on ClassWithDerivedProperty {
   key
+  derivedRequiredString
+  derivedRequiredInteger
+  derivedRequiredLong
+  derivedRequiredDouble
+  derivedRequiredFloat
+  derivedRequiredBoolean
+  derivedRequiredInstant
+  derivedRequiredLocalDate
+  derivedOptionalString
+  derivedOptionalInteger
+  derivedOptionalLong
+  derivedOptionalDouble
+  derivedOptionalFloat
+  derivedOptionalBoolean
+  derivedOptionalInstant
+  derivedOptionalLocalDate
 }
 
 fragment UserVersionFragment on UserVersion {
@@ -314,4 +332,3 @@ fragment EveryTypeKeyPropertyVersionFragment on EveryTypeKeyPropertyVersion {
     userId
   }
 }
-

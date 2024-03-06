@@ -4,9 +4,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public final class KlassProjectionSourceCodeGenerator
 {
@@ -21,7 +24,7 @@ public final class KlassProjectionSourceCodeGenerator
         String sourceCode = domainModel
                 .getClassifiers()
                 .select(c -> c.getPackageName().equals(fullyQualifiedPackage))
-                .collect(KlassProjectionSourceCodeGenerator::getSourceCode)
+                .collect(KlassProjectionSourceCodeGenerator::getClassifierSourceCode)
                 .makeString("\n");
 
         //language=Klass
@@ -34,47 +37,99 @@ public final class KlassProjectionSourceCodeGenerator
                 + sourceCode;
     }
 
-    public static String getSourceCode(Classifier classifier)
+    private static String getClassifierSourceCode(Classifier classifier)
     {
-        String dataTypePropertiesSourceCode = classifier
-                .getDataTypeProperties()
-                .reject(DataTypeProperty::isPrivate)
-                .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
-                .collect(KlassProjectionSourceCodeGenerator::getSourceCode)
+        String dataTypePropertiesSourceCode = getDataTypePropertiesSourceCode(classifier, false)
                 .makeString("");
 
-        String referencePropertiesSourceCode = classifier
-                .getProperties()
-                .selectInstancesOf(ReferenceProperty.class)
-                .select(KlassProjectionSourceCodeGenerator::includeInProjection)
-                .reject(ReferenceProperty::isPrivate)
-                .collect(KlassProjectionSourceCodeGenerator::getSourceCode)
+        String referencePropertiesSourceCode = getReferencePropertiesSourceCode(classifier, false)
                 .makeString("");
+
+        ImmutableList<Klass> subClasses = classifier instanceof Klass klass
+                ? klass.getSubClasses()
+                : Lists.immutable.empty();
+
+        String subClassesSourceCode = subClasses
+                .collect(KlassProjectionSourceCodeGenerator::getSubClassSourceCode)
+                .makeString("");
+
+        if (dataTypePropertiesSourceCode.isEmpty()
+                && referencePropertiesSourceCode.isEmpty()
+                && subClassesSourceCode.isEmpty())
+        {
+            return "";
+        }
 
         return "projection " + classifier.getName() + "Projection on " + classifier.getName() + '\n'
                 + "{\n"
                 + dataTypePropertiesSourceCode
                 + referencePropertiesSourceCode
+                + subClassesSourceCode
                 + "}\n";
     }
 
-    private static String getSourceCode(DataTypeProperty dataTypeProperty)
+    @Nonnull
+    private static String getSubClassSourceCode(Klass subClass)
     {
+        String dataTypePropertiesSourceCode = getDataTypePropertiesSourceCode(subClass, true)
+                .makeString("");
+
+        String referencePropertiesSourceCode = getReferencePropertiesSourceCode(subClass, true)
+                .makeString("");
+
+        if (dataTypePropertiesSourceCode.isEmpty() && referencePropertiesSourceCode.isEmpty())
+        {
+            return "";
+        }
+
+        return dataTypePropertiesSourceCode + referencePropertiesSourceCode;
+    }
+
+    private static ImmutableList<String> getDataTypePropertiesSourceCode(Classifier classifier, boolean subClassMode)
+    {
+        ImmutableList<DataTypeProperty> dataTypeProperties = subClassMode
+                ? classifier.getDeclaredDataTypeProperties()
+                : classifier.getDataTypeProperties();
+
+        return dataTypeProperties
+                .reject(DataTypeProperty::isPrivate)
+                .reject(property -> property.isForeignKey() && !property.isForeignKeyToSelf())
+                .collectWith(KlassProjectionSourceCodeGenerator::getDataTypePropertySourceCode, subClassMode);
+    }
+
+    private static String getDataTypePropertySourceCode(DataTypeProperty dataTypeProperty, boolean subClassMode)
+    {
+        String prefix = subClassMode ? dataTypeProperty.getOwningClassifier().getName() + "." : "";
         return String.format(
-                "    %s: \"%s %s\",\n",
+                "    %s%s: \"%s %s\",\n",
+                prefix,
                 dataTypeProperty.getName(),
                 dataTypeProperty.getOwningClassifier().getName(),
                 dataTypeProperty.getName());
     }
 
-    private static String getSourceCode(ReferenceProperty referenceProperty)
+    private static ImmutableList<String> getReferencePropertiesSourceCode(Classifier classifier, boolean subClassMode)
     {
-        return String.format("    %s: %sProjection,\n", referenceProperty.getName(), referenceProperty.getType().getName());
+        ImmutableList<ReferenceProperty> properties = subClassMode
+                ? classifier.getDeclaredReferenceProperties()
+                : classifier.getReferenceProperties();
+
+        return properties
+                .select(KlassProjectionSourceCodeGenerator::includeInProjection)
+                .reject(ReferenceProperty::isPrivate)
+                .collectWith(KlassProjectionSourceCodeGenerator::getReferencePropertySourceCode, subClassMode);
+    }
+
+    private static String getReferencePropertySourceCode(ReferenceProperty referenceProperty, boolean subClassMode)
+    {
+        String prefix = subClassMode ? referenceProperty.getOwningClassifier().getName() + "." : "";
+        return String.format("    %s%s: %sProjection,\n", prefix, referenceProperty.getName(), referenceProperty.getType().getName());
     }
 
     private static boolean includeInProjection(ReferenceProperty referenceProperty)
     {
         return !(referenceProperty instanceof AssociationEnd associationEnd)
-               || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd;
+               || associationEnd.getOwningAssociation().getTargetAssociationEnd() == associationEnd
+               || associationEnd.isToSelf() && associationEnd.getMultiplicity().isToOne();
     }
 }

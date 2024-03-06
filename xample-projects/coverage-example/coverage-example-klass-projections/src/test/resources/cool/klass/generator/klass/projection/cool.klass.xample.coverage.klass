@@ -119,6 +119,7 @@ projection OwnedNaturalOneToManySelfProjection on OwnedNaturalOneToManySelf
     key: "OwnedNaturalOneToManySelf key",
     value: "OwnedNaturalOneToManySelf value",
     target: OwnedNaturalOneToManySelfProjection,
+    source: OwnedNaturalOneToManySelfProjection,
 }
 
 projection OwnedSyntheticOneToManySourceProjection on OwnedSyntheticOneToManySource
@@ -152,6 +153,7 @@ projection OwnedSyntheticOneToManySelfProjection on OwnedSyntheticOneToManySelf
     id: "OwnedSyntheticOneToManySelf id",
     value: "OwnedSyntheticOneToManySelf value",
     target: OwnedSyntheticOneToManySelfProjection,
+    source: OwnedSyntheticOneToManySelfProjection,
 }
 
 projection SharedNaturalManyToOneTargetProjection on SharedNaturalManyToOneTarget
@@ -198,6 +200,7 @@ projection SharedNaturalOneToManySelfProjection on SharedNaturalOneToManySelf
     key: "SharedNaturalOneToManySelf key",
     value: "SharedNaturalOneToManySelf value",
     target: SharedNaturalOneToManySelfProjection,
+    source: SharedNaturalOneToManySelfProjection,
 }
 
 projection SharedSyntheticOneToManySourceProjection on SharedSyntheticOneToManySource
@@ -231,6 +234,7 @@ projection SharedSyntheticOneToManySelfProjection on SharedSyntheticOneToManySel
     id: "SharedSyntheticOneToManySelf id",
     value: "SharedSyntheticOneToManySelf value",
     target: SharedSyntheticOneToManySelfProjection,
+    source: SharedSyntheticOneToManySelfProjection,
 }
 
 projection ClassOwningClassWithDerivedPropertyProjection on ClassOwningClassWithDerivedProperty
