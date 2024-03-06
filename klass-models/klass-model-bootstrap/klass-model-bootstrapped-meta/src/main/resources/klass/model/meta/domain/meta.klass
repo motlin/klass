@@ -684,8 +684,11 @@ class ProjectionElement
     abstract(table-per-class)
     implements NamedElement
 {
-    id                            : Long key id;
-    parentId                      : Long? private;
+    // TODO: Write a test that fails if name is a key
+    // name isn't key
+    name: String;
+    id  : Long key id;
+    parentId: Long? private;
 }
 
 // TODO: Rename to Projection, but clashes with names in generated code.
