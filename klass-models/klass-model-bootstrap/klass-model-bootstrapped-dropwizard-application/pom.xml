@@ -153,6 +153,11 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-data-source</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-named-data-source-factory</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
