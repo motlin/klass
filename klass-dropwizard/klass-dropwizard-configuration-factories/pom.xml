@@ -27,6 +27,7 @@
         <module>klass-dropwizard-configuration-logging-logzio</module>
         <module>klass-dropwizard-configuration-logging-encoder</module>
         <module>klass-dropwizard-configuration-enabled</module>
+        <module>klass-dropwizard-configuration-config-logging</module>
     </modules>
 
     <artifactId>klass-dropwizard-configuration-factories</artifactId>
