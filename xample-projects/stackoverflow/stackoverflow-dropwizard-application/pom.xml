@@ -21,42 +21,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <skip>false</skip>
+                    <basedir>${project.basedir}</basedir>
+                    <workingDirectory>${project.basedir}</workingDirectory>
+                    <executable>java</executable>
+                    <commandlineArgs>-Dconfig.resource=local.conf -jar ${project.build.directory}/${project.artifactId}-${project.version}.jar demo config.yml</commandlineArgs>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>ddl-executor</id>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>com.stackoverflow.reladomo.ddl.executor.StackOverflowDdlExecutor</mainClass>
-                            <systemProperties>
-                                <property>
-                                    <key>config.resource</key>
-                                    <value>local.conf</value>
-                                </property>
-                            </systemProperties>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>dropwizard-application</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>java</executable>
-                            <arguments>
-                                <argument>-Dconfig.resource=local.conf</argument>
-                                <argument>-jar</argument>
-                                <argument>${basedir}/target/stackoverflow-dropwizard-application-${project.version}.jar</argument>
-                                <argument>server</argument>
-                                <argument>config.yml</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -209,6 +178,20 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-domain-model</artifactId>
             <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-reladomo-ddls</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-simulated-sequence-ddls</artifactId>
+            <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -405,6 +388,37 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>run-demo</id>
+            <activation>
+                    <activeByDefault>true</activeByDefault>
+
+                <!--<file>-->
+                    <!--<missing>${project.build.directory}/h2db/klass-app-h2.mv.db</missing>-->
+                <!--</file>-->
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>exec-maven-plugin</artifactId>
+                            <version>1.6.0</version>
+                            <executions>
+                                <execution>
+                                    <phase>install</phase>
+                                    <goals>
+                                        <goal>exec</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>
