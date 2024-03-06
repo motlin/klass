@@ -44,8 +44,8 @@ public abstract class PersistentSynchronizer
             boolean inTransaction)
     {
         this.mutationContext = Objects.requireNonNull(mutationContext);
-        this.dataStore = Objects.requireNonNull(dataStore);
-        this.inTransaction = inTransaction;
+        this.dataStore       = Objects.requireNonNull(dataStore);
+        this.inTransaction   = inTransaction;
     }
 
     protected abstract boolean shouldWriteKey();
@@ -56,6 +56,18 @@ public abstract class PersistentSynchronizer
             @Nonnull Klass klass,
             Object persistentInstance,
             @Nonnull ObjectNode incomingJson)
+    {
+        Runnable noop = () ->
+        {
+        };
+        return synchronize(klass, persistentInstance, incomingJson, noop);
+    }
+
+    public boolean synchronize(
+            @Nonnull Klass klass,
+            Object persistentInstance,
+            @Nonnull ObjectNode incomingJson,
+            Runnable finalizer)
     {
         if (this.inTransaction)
         {
@@ -71,7 +83,13 @@ public abstract class PersistentSynchronizer
             this.inTransaction = true;
             try
             {
-                return this.synchronizeInTransaction(klass, Optional.empty(), persistentInstance, incomingJson);
+                boolean result = this.synchronizeInTransaction(
+                        klass,
+                        Optional.empty(),
+                        persistentInstance,
+                        incomingJson);
+                finalizer.run();
+                return result;
             }
             finally
             {
@@ -367,7 +385,9 @@ public abstract class PersistentSynchronizer
                     associationEnd.getType());
             if (!incomingChildInstancesByKey.containsKey(keys))
             {
-                PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(this.mutationContext, this.dataStore);
+                PersistentDeleter reladomoPersistentDeleter = new PersistentDeleter(
+                        this.mutationContext,
+                        this.dataStore);
                 reladomoPersistentDeleter.deleteOrTerminate(
                         associationEnd.getType(),
                         persistentChildInstance);
@@ -586,7 +606,8 @@ public abstract class PersistentSynchronizer
             @Nonnull AssociationEnd associationEnd,
             Object persistentParentInstance)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
@@ -680,7 +701,8 @@ public abstract class PersistentSynchronizer
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
