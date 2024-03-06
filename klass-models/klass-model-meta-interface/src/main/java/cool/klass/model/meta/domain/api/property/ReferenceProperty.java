@@ -47,7 +47,22 @@ public interface ReferenceProperty
 
     default boolean isVersion()
     {
-        return this.getModifiers().anySatisfy(modifier -> modifier.is("version"));
+        return this.getModifiers().anySatisfy(Modifier::isVersion);
+    }
+
+    default boolean isAudit()
+    {
+        return this.isCreatedBy() || this.isLastUpdatedBy();
+    }
+
+    default boolean isCreatedBy()
+    {
+        return this.getModifiers().anySatisfy(Modifier::isCreatedBy);
+    }
+
+    default boolean isLastUpdatedBy()
+    {
+        return this.getModifiers().anySatisfy(Modifier::isLastUpdatedBy);
     }
 
     default boolean isFinal()
