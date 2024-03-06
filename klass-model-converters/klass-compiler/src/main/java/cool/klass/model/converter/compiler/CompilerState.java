@@ -150,17 +150,10 @@ public class CompilerState
     private DomainModelWithSourceCode buildDomainModel()
     {
         ImmutableList<RootCompilerAnnotation> compilerAnnotations = this.compilerAnnotationHolder.getCompilerAnnotations();
-        ImmutableList<RootCompilerAnnotation> errors = compilerAnnotations.select(AbstractCompilerAnnotation::isError);
-        ImmutableList<RootCompilerAnnotation> warnings = compilerAnnotations.select(AbstractCompilerAnnotation::isWarning);
 
-        if (errors.notEmpty())
+        if (compilerAnnotations.anySatisfy(AbstractCompilerAnnotation::isError))
         {
             throw new AssertionError(this.compilerAnnotationHolder.getCompilerAnnotations().makeString("\n"));
-        }
-
-        for (RootCompilerAnnotation warning : warnings)
-        {
-            LOGGER.warn(warning.toString());
         }
 
         ImmutableList<CompilationUnit> compilationUnits   = this.compilerInputState.getCompilationUnits().toImmutable();
