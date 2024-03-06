@@ -102,11 +102,11 @@ class Question
     // TODO: private properties must not be used in projections
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById            : String private createdBy;
+    createdById            : String createdBy userId final private;
 
     // createdOn, or createdDate?
-    createdOn              : Instant createdOn;
-    lastUpdatedById        : String private lastUpdatedBy;
+    createdOn              : Instant createdOn final;
+    lastUpdatedById        : String lastUpdatedBy userId final private;
 
     // createdBy(): User[1..1] createdBy
     // {
@@ -202,7 +202,7 @@ class QuestionVote
     audited
 {
     questionId             : Long key;
-    createdById            : String key createdBy;
+    createdById            : String key createdBy userId final;
     direction              : VoteDirection;
 }
 

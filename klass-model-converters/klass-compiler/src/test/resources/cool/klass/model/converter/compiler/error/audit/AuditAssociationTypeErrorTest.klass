@@ -2,14 +2,14 @@ package com.errors
 
 class DummyClass systemTemporal versioned
 {
-    id: Long id key;
-    createdById: Long;
-    lastUpdatedById: Long;
+    id                 : Long id key;
+    createdById        : String createdBy userId final private;
+    lastUpdatedById    : String lastUpdatedBy userId final private;
 }
 
 class NotUserClass systemTemporal versioned
 {
-    id: Long id key;
+    id: String id key;
 }
 
 association CreatedBy
@@ -26,4 +26,9 @@ association LastUpdatedBy
     lastUpdatedBy: NotUserClass[1..1] lastUpdatedBy;
 
     relationship this.lastUpdatedById == NotUserClass.id
+}
+
+user User systemTemporal versioned
+{
+    id: String key userId;
 }

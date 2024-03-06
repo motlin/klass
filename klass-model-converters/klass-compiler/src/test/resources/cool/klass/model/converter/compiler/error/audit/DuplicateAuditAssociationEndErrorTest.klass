@@ -3,8 +3,8 @@ package com.errors
 class DummyClass systemTemporal versioned
 {
     id: Long id key;
-    createdById: String;
-    lastUpdatedById: String;
+    createdById: String createdBy userId final private;
+    lastUpdatedById: String lastUpdatedBy userId private;
 }
 
 user User systemTemporal versioned
