@@ -24,6 +24,7 @@ import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
+import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
 import cool.klass.data.store.DataStore;
 import cool.klass.data.store.Transaction;
 import cool.klass.data.store.TransactionalCommand;
@@ -134,7 +135,14 @@ public class ReladomoDataStore implements DataStore
         try
         {
             Class<?> aClass = Class.forName(klass.getFullyQualifiedName());
-            return aClass.newInstance();
+            Class<?>[] parameterTypes = klass.isSystemTemporal()
+                    ? new Class<?>[]{Timestamp.class}
+                    : new Class<?>[]{};
+            Constructor<?> constructor = aClass.getConstructor(parameterTypes);
+            Object[] constructorArgs = klass.isSystemTemporal()
+                     ? new Object[]{DefaultInfinityTimestamp.getDefaultInfinity()}
+                     : new Object[]{};
+            return constructor.newInstance(constructorArgs);
         }
         catch (ReflectiveOperationException e)
         {
