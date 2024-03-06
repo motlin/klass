@@ -1,10 +1,8 @@
 package cool.klass.serialization.jackson.response.reladomo;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraObject;
-import cool.klass.context.threadlocal.ThreadLocalContext;
 import cool.klass.data.store.DataStore;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
@@ -20,9 +17,6 @@ import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 // TODO: Split into one for non-null lists and one for nullable MithraObjects
 public class KlassResponseReladomoJsonSerializer extends JsonSerializer<KlassResponse>
 {
-    // TODO: Is this actually used?
-    private static final ThreadLocalContext<Optional<? extends Principal>> PRINCIPAL_THREAD_LOCAL = new ThreadLocalContext<>();
-
     @Nonnull
     private final DataStore dataStore;
 
@@ -42,12 +36,8 @@ public class KlassResponseReladomoJsonSerializer extends JsonSerializer<KlassRes
         try
         {
             KlassResponseMetadata metadata = klassResponse.getMetadata();
-            try (ThreadLocalContext<Optional<? extends Principal>>.ThreadLocalCloseable ignored =
-                         PRINCIPAL_THREAD_LOCAL.withContext(metadata.getPrincipal()))
-            {
-                jsonGenerator.writeObjectField("_metadata", metadata);
-                this.serializeData(klassResponse, jsonGenerator, serializerProvider);
-            }
+            jsonGenerator.writeObjectField("_metadata", metadata);
+            this.serializeData(klassResponse, jsonGenerator, serializerProvider);
         }
         finally
         {
