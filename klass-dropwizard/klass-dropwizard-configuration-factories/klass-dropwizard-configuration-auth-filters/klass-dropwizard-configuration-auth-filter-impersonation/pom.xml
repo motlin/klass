@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-auth-filter-impersonation</artifactId>
 
-    <name>Klass Dropwizard Impersonation Auth Filter Configuration</name>
+    <name>Klass Config Factory: Impersonation Auth Filter</name>
 
     <dependencies>
 

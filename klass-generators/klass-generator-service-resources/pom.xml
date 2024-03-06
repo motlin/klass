@@ -12,7 +12,7 @@
 
     <artifactId>klass-generator-service-resources</artifactId>
 
-    <name>Klass Service Resource Generator</name>
+    <name>Klass Generator: Service Resource</name>
 
     <dependencies>
 

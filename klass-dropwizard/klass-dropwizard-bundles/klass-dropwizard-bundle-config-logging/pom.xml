@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-bundle-config-logging</artifactId>
 
-    <name>Klass Dropwizard Bundle: Config Logging</name>
+    <name>Klass Bundle: Config Logging</name>
 
     <dependencies>
 

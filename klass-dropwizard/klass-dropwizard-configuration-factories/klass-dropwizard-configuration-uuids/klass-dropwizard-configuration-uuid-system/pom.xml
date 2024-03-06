@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-uuid-system</artifactId>
 
-    <name>Klass Dropwizard System UUID Configuration Factory</name>
+    <name>Klass Config Factory: System UUID</name>
 
     <dependencies>
 

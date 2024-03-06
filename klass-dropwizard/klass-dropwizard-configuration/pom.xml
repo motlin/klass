@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration</artifactId>
 
-    <name>Klass Dropwizard Configuration</name>
+    <name>Klass Config</name>
 
     <dependencies>
 

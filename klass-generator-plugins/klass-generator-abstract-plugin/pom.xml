@@ -12,7 +12,7 @@
 
     <artifactId>klass-generator-abstract-plugin</artifactId>
 
-    <name>Klass Abstract Generator Plugin</name>
+    <name>Klass Generator Plugin: Abstract</name>
 
     <dependencies>
 

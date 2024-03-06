@@ -12,7 +12,7 @@
 
     <artifactId>klass-generator-graphql-data-fetcher</artifactId>
 
-    <name>Klass GraphQL Data Fetcher Generator</name>
+    <name>Klass Generator: GraphQL Data Fetcher</name>
 
     <dependencies>
 

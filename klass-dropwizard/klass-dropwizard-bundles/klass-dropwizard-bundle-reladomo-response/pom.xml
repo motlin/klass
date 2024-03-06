@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
 
-    <name>Klass Dropwizard Bundle for Reladomo Response Serializer</name>
+    <name>Klass Bundle: Reladomo Response Serializer</name>
 
     <dependencies>
 

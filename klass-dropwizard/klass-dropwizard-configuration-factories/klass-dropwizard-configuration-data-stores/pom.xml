@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-data-stores</artifactId>
 
-    <name>Klass Dropwizard Data Store Configuration Factories (Module Group)</name>
+    <name>Klass Config Factory: Data Stores (Module Group)</name>
 
     <modules>
         <module>klass-dropwizard-configuration-data-store</module>

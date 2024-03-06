@@ -12,7 +12,7 @@
 
     <artifactId>klass-reladomo-graphql-data-fetcher</artifactId>
 
-    <name>Klass Reladomo GraphQL Data Fetcher</name>
+    <name>Klass Reladomo: GraphQL Data Fetcher</name>
 
     <dependencies>
 

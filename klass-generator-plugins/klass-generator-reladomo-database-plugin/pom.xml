@@ -13,7 +13,7 @@
     <artifactId>klass-generator-reladomo-database-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Klass Reladomo Database Generator Plugin</name>
+    <name>Klass Generator Plugin: Reladomo Database</name>
 
     <prerequisites>
         <maven>3.1.0</maven>

@@ -13,7 +13,7 @@
     <artifactId>klass-generator-graphql-data-fetcher-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Klass GraphQL Data Fetcher Generator Plugin</name>
+    <name>Klass Generator Plugin: GraphQL Data Fetcher</name>
 
     <prerequisites>
         <maven>3.1.0</maven>

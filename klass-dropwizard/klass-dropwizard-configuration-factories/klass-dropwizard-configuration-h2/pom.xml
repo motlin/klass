@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-h2</artifactId>
 
-    <name>Klass H2 Dropwizard Configuration</name>
+    <name>Klass Config: H2</name>
 
     <dependencies>
 

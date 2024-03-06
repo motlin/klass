@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
 
-    <name>Klass Dropwizard Domain Model Loader Configuration Factory</name>
+    <name>Klass Config Factory: Domain Model Loader</name>
 
     <dependencies>
 

@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-uuids</artifactId>
 
-    <name>Klass Dropwizard UUID Configuration Factories (Module Group)</name>
+    <name>Klass Config Factory: UUIDs (Module Group)</name>
 
     <modules>
 

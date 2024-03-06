@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-bundle-ddl-executor</artifactId>
 
-    <name>Klass Dropwizard Bundle: DDL Executor</name>
+    <name>Klass Bundle: DDL Executor</name>
 
     <dependencies>
 

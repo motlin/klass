@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-clock-system</artifactId>
 
-    <name>Klass Dropwizard System Clock Configuration Factory</name>
+    <name>Klass Config Factory: System Clock</name>
 
     <dependencies>
 

@@ -12,7 +12,7 @@
 
     <artifactId>klass-reladomo-persistent-writer</artifactId>
 
-    <name>Klass Reladomo Persistent Writer</name>
+    <name>Klass Reladomo: Persistent Writer</name>
 
     <dependencies>
 

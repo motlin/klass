@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-domain-model-loaders</artifactId>
 
-    <name>Klass Dropwizard Domain Model Loader Configuration Factories</name>
+    <name>Klass Config Factory: Domain Model Loaders (Module Group)</name>
 
     <modules>
         <module>klass-dropwizard-configuration-domain-model-loader</module>

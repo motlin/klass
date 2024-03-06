@@ -12,7 +12,7 @@
 
     <artifactId>klass-generator-graphql-runtime-wiring</artifactId>
 
-    <name>Klass GraphQL Runtime Wiring Generator</name>
+    <name>Klass Generator: GraphQL Runtime Wiring</name>
 
     <dependencies>
 

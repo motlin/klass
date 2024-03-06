@@ -12,7 +12,7 @@
 
     <artifactId>klass-bom</artifactId>
     <packaging>pom</packaging>
-    <name>Klass BOM</name>
+    <name>Klass BOM (Bill of Materials)</name>
     <description>Klass Bill of Materials</description>
 
     <properties>

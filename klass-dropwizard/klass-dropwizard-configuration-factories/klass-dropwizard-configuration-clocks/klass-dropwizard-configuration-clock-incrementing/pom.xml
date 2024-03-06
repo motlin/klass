@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-clock-incrementing</artifactId>
 
-    <name>Klass Dropwizard Incrementing Clock Configuration Factory</name>
+    <name>Klass Config Factory: Incrementing Clock</name>
 
     <dependencies>
 

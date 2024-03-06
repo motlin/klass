@@ -12,7 +12,7 @@
 
     <artifactId>klass-reladomo-simulated-sequence-ddls</artifactId>
 
-    <name>Klass Reladomo Object Sequence DDLs</name>
+    <name>Klass Reladomo: Object Sequence DDLs</name>
 
     <dependencyManagement>
         <dependencies>

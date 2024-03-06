@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-object-mapper</artifactId>
 
-    <name>Klass Object Mapper Dropwizard Configuration</name>
+    <name>Klass Config: Object Mapper</name>
 
     <dependencies>
 

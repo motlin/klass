@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-clocks</artifactId>
 
-    <name>Klass Dropwizard Clock Configuration Factories (Module Group)</name>
+    <name>Klass Config Factory: Clocks (Module Group)</name>
 
     <modules>
         <module>klass-dropwizard-configuration-clock</module>

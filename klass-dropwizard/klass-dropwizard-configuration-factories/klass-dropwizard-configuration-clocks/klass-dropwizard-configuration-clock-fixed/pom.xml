@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-clock-fixed</artifactId>
 
-    <name>Klass Dropwizard Fixed Clock Configuration Factory</name>
+    <name>Klass Config Factory: Fixed Clock</name>
 
     <dependencies>
 

@@ -32,6 +32,6 @@
 
     <artifactId>klass-dropwizard-configuration-factories</artifactId>
 
-    <name>Klass Dropwizard Configuration Factories (Module Group)</name>
+    <name>Klass Config Factories (Module Group)</name>
 
 </project>

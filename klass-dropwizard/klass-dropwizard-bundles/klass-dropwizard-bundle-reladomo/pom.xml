@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-bundle-reladomo</artifactId>
 
-    <name>Klass Dropwizard Bundle for Reladomo config</name>
+    <name>Klass Bundle: Reladomo</name>
 
     <dependencies>
 

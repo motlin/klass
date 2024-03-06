@@ -14,7 +14,7 @@
 
     <artifactId>klass-reladomo-ddl-executor</artifactId>
 
-    <name>Klass Reladomo DDL Executor</name>
+    <name>Klass Reladomo: DDL Executor</name>
 
     <dependencies>
 

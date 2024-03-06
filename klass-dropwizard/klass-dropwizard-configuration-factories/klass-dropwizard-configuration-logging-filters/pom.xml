@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-logging-filters</artifactId>
 
-    <name>Klass Dropwizard Logging Filter Configuration Factories (Module Group)</name>
+    <name>Klass Config Factory: Logging Filters (Module Group)</name>
 
     <modules>
         <module>klass-dropwizard-configuration-logging-filter-url</module>

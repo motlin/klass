@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-auth-filter-firebase</artifactId>
 
-    <name>Klass Dropwizard Firebase Auth Filter Configuration</name>
+    <name>Klass Config Factory: Firebase Auth Filter</name>
 
     <dependencies>
 

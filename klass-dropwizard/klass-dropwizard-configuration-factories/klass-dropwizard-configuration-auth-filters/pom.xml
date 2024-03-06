@@ -13,7 +13,7 @@
 
     <artifactId>klass-dropwizard-configuration-auth-filters</artifactId>
 
-    <name>Klass Dropwizard Auth Filter Configuration Factories (Module Group)</name>
+    <name>Klass Config Factory: Auth Filters (Module Group)</name>
 
     <modules>
         <module>klass-dropwizard-configuration-auth-filter</module>

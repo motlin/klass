@@ -13,7 +13,7 @@
     <artifactId>klass-generator-graphql-schema-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Klass GraphQL Schema Generator Plugin</name>
+    <name>Klass Generator Plugin: GraphQL Schema</name>
 
     <prerequisites>
         <maven>3.1.0</maven>

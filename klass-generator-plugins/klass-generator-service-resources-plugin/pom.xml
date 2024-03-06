@@ -13,7 +13,7 @@
     <artifactId>klass-generator-service-resources-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Klass Service Resource Generator Plugin</name>
+    <name>Klass Generator Plugin: Service Resource</name>
 
     <prerequisites>
         <maven>3.1.0</maven>

@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-factory</artifactId>
 
-    <name>Klass Dropwizard Configuration Factory Factory</name>
+    <name>Klass Config Factory Factory: JSON</name>
 
     <dependencies>
 

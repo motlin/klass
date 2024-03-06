@@ -12,7 +12,7 @@
 
     <artifactId>klass-generator-reladomo</artifactId>
 
-    <name>Klass Reladomo Generator</name>
+    <name>Klass Generator: Reladomo</name>
 
     <dependencies>
 

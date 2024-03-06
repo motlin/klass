@@ -12,7 +12,7 @@
 
     <artifactId>klass-reladomo-sample-data</artifactId>
 
-    <name>Klass Reladomo Sample Data Generator</name>
+    <name>Klass Generator: Reladomo Sample Data</name>
 
     <dependencies>
 

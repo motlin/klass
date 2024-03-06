@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-logging-logzio</artifactId>
 
-    <name>Klass Dropwizard Logzio Logback Appender Configuration Factory</name>
+    <name>Klass Config Factory: Logzio Logback Appender</name>
 
     <dependencies>
 

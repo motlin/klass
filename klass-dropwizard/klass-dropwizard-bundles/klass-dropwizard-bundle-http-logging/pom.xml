@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-bundle-http-logging</artifactId>
 
-    <name>Klass Dropwizard Bundle for HTTP Logging config</name>
+    <name>Klass Bundle: HTTP Loggings</name>
 
     <dependencies>
 

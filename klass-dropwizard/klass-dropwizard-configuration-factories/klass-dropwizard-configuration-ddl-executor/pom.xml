@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-ddl-executor</artifactId>
 
-    <name>Klass DDL Executor Dropwizard Configuration</name>
+    <name>Klass Config: DDL Executor</name>
 
     <dependencies>
 

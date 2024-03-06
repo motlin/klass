@@ -12,7 +12,7 @@
 
     <artifactId>klass-dropwizard-configuration-logging-encoder</artifactId>
 
-    <name>Klass Dropwizard Logback File Appender with Encoder Configuration Factory</name>
+    <name>Klass Config Factory: Logback File Appender with Encoder</name>
 
     <dependencies>
 
