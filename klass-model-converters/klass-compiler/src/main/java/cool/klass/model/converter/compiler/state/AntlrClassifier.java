@@ -390,11 +390,6 @@ public abstract class AntlrClassifier
         this.reportCircularInheritance(compilerAnnotationHolder);
         this.reportPropertyDeclarationOrder(compilerAnnotationHolder);
         this.reportDuplicateAssociationEndSignatureNames(compilerAnnotationHolder);
-
-        // TODO: Warn if class is owned by multiple
-        // TODO: Detect ownership cycles
-
-        // TODO: duplicate modifiers
     }
 
     private void reportDuplicatePropertyNames(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
