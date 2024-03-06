@@ -1,0 +1,96 @@
+{
+  "errors": [
+    {
+      "message": "Validation error (UnknownType@[BlueprintFields]) : Unknown type 'Blueprint'",
+      "locations": [],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprint]) : Field 'blueprint' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 54,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByFinder]) : Field 'blueprintByFinder' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 58,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByFinder]) : Field 'blueprintByFinder' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 62,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByFinder]) : Field 'blueprintByFinder' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 71,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByOperation]) : Field 'blueprintByOperation' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 81,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByOperation]) : Field 'blueprintByOperation' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 87,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    },
+    {
+      "message": "Validation error (FieldUndefined@[blueprintByOperation]) : Field 'blueprintByOperation' in type 'Query' is undefined",
+      "locations": [
+        {
+          "line": 93,
+          "column": 5
+        }
+      ],
+      "extensions": {
+        "classification": "ValidationError"
+      }
+    }
+  ],
+  "data": null
+}
