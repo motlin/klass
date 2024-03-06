@@ -21,5 +21,6 @@
         <module>klass-generator-dropwizard</module>
         <module>klass-generator-dto</module>
         <module>klass-generator-meta-constants</module>
+        <module>klass-generator-json-view</module>
     </modules>
 </project>
