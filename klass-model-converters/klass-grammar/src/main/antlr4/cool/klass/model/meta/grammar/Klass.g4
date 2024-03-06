@@ -217,6 +217,7 @@ identifier
 keywordValidAsIdentifier
     : 'package'
     | 'enumeration' | 'interface' | 'class' | 'association' | 'projection' | 'service' | 'user'
+    | 'abstract' | 'extends' | 'implements'
     | 'native'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
