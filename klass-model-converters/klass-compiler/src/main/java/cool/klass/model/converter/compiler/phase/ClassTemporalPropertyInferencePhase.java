@@ -38,7 +38,6 @@ public class ClassTemporalPropertyInferencePhase
                 .getAllDataTypeProperties();
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{\n");
 
         if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
@@ -72,13 +71,12 @@ public class ClassTemporalPropertyInferencePhase
             }
         }
 
-        stringBuilder.append("}\n");
         this.runCompilerMacro(stringBuilder.toString());
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        if (sourceCodeText.equals("{\n}\n"))
+        if (sourceCodeText.isEmpty())
         {
             return;
         }
@@ -90,7 +88,7 @@ public class ClassTemporalPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classBodyDeclaration,
+                KlassParser::classBody,
                 compilerPhase);
     }
 }

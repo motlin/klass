@@ -96,7 +96,6 @@ public class AuditPropertyInferencePhase
         String validationSourceCode = validations.isEmpty() ? "" : validations.makeString(" ", " ", "");
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{\n");
 
         // TODO: Add validation that any userId is joined to another property that's also userId
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
@@ -112,7 +111,6 @@ public class AuditPropertyInferencePhase
             stringBuilder.append("    lastUpdatedById: String lastUpdatedBy private userId"  + validationSourceCode + ";\n");
         }
 
-        stringBuilder.append("}\n");
         this.runCompilerMacro(stringBuilder.toString());
 
         /*
@@ -143,7 +141,7 @@ public class AuditPropertyInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        if (sourceCodeText.equals("{\n}\n"))
+        if (sourceCodeText.isEmpty())
         {
             return;
         }
@@ -155,7 +153,7 @@ public class AuditPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classBodyDeclaration,
+                KlassParser::classBody,
                 compilerPhase);
     }
 }
