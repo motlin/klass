@@ -94,7 +94,7 @@ public class VersionClassInferencePhase
         return String.format(
                 "%s: %s%s%s;",
                 dataTypeProperty.getName(),
-                dataTypeProperty.getType(),
+                dataTypeProperty.getType().getName(),
                 isOptionalString,
                 modifierSourceCode);
     }
