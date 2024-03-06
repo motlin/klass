@@ -49,6 +49,8 @@ public abstract class AbstractCompilerError
         {
             throw new AssertionError();
         }
+
+        this.applyListenerToStack();
     }
 
     @Nonnull
