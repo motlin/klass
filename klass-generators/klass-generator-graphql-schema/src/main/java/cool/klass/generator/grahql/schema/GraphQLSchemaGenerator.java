@@ -8,13 +8,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.graphql.schema.writer.KlassGraphQLModelConverter;
-import cool.klass.model.graphql.domain.GraphQLDomainModel;
-import cool.klass.model.graphql.domain.GraphQLElement;
-import cool.klass.model.graphql.domain.GraphQLEnumeration;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 
 public class GraphQLSchemaGenerator
@@ -38,14 +35,10 @@ public class GraphQLSchemaGenerator
 
     public void writeSchemaFiles(@Nonnull Path outputPath)
     {
-        KlassGraphQLModelConverter klassGraphQLModelConverter = new KlassGraphQLModelConverter(this.domainModel);
-        GraphQLDomainModel         graphQLDomainModel         = klassGraphQLModelConverter.convert();
-
         String scalarsSourceCode = this.getScalarsSourceCode();
 
-        String topLevelElementsCode = graphQLDomainModel
+        String topLevelElementsCode = this.domainModel
                 .getTopLevelElements()
-                .reject(GraphQLEnumeration.class::isInstance)
                 .collect(this::getSourceCode)
                 .makeString("");
 
@@ -111,10 +104,10 @@ public class GraphQLSchemaGenerator
         return containsLong ? "scalar Long\n" : "";
     }
 
-    private String getSourceCode(@Nonnull GraphQLElement graphQLElement)
+    private String getSourceCode(@Nonnull TopLevelElement topLevelElement)
     {
         var visitor = new GraphQLElementToSchemaSourceVisitor();
-        graphQLElement.visit(visitor);
+        topLevelElement.visit(visitor);
         return visitor.getSourceCode();
     }
 

@@ -2,97 +2,143 @@ package cool.klass.generator.grahql.schema;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.graphql.domain.GraphQLClass;
-import cool.klass.model.graphql.domain.GraphQLElementVisitor;
-import cool.klass.model.graphql.domain.GraphQLEnumeration;
-import cool.klass.model.graphql.domain.GraphQLField;
-import cool.klass.model.graphql.domain.GraphQLInterface;
-import cool.klass.model.graphql.domain.GraphQLNamedElement;
+import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Enumeration;
+import cool.klass.model.meta.domain.api.Interface;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
+import cool.klass.model.meta.domain.api.TopLevelElementVisitor;
+import cool.klass.model.meta.domain.api.Type;
+import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
+import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class GraphQLElementToSchemaSourceVisitor implements GraphQLElementVisitor
+public class GraphQLElementToSchemaSourceVisitor
+        implements TopLevelElementVisitor
 {
     private String sourceCode;
 
     @Override
-    public void visitEnumeration(@Nonnull GraphQLEnumeration graphQLEnumeration)
+    public void visitEnumeration(Enumeration enumeration)
     {
-        this.sourceCode = this.getEnumerationSourceCode(graphQLEnumeration);
+        this.sourceCode = this.getEnumerationSourceCode(enumeration);
     }
 
     @Override
-    public void visitInterface(@Nonnull GraphQLInterface graphQLInterface)
+    public void visitInterface(Interface anInterface)
     {
-        this.sourceCode = this.getInterfaceSourceCode(graphQLInterface);
+        this.sourceCode = this.getInterfaceSourceCode(anInterface);
     }
 
     @Override
-    public void visitClass(@Nonnull GraphQLClass graphQLClass)
+    public void visitKlass(Klass klass)
     {
-        this.sourceCode = this.getClassSourceCode(graphQLClass);
+        this.sourceCode = this.getClassSourceCode(klass);
+    }
+
+    @Override
+    public void visitAssociation(Association association)
+    {
+        this.sourceCode = "";
+    }
+
+    @Override
+    public void visitProjection(Projection projection)
+    {
+        this.sourceCode = "";
+    }
+
+    @Override
+    public void visitServiceGroup(ServiceGroup serviceGroup)
+    {
+        this.sourceCode = "";
     }
 
     @Nonnull
-    private String getEnumerationSourceCode(@Nonnull GraphQLEnumeration graphQLEnumeration)
+    private String getEnumerationSourceCode(@Nonnull Enumeration enumeration)
     {
-        String enumerationLiteralsSourceCode = graphQLEnumeration
+        String enumerationLiteralsSourceCode = enumeration
                 .getEnumerationLiterals()
-                .collect(GraphQLNamedElement::getName)
+                .collect(NamedElement::getName)
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");
 
         return ""
-                + "enum " + graphQLEnumeration.getName() + " {\n"
+                + "enum " + enumeration.getName() + " {\n"
                 + enumerationLiteralsSourceCode
                 + "}\n"
                 + '\n';
     }
 
     @Nonnull
-    private String getInterfaceSourceCode(@Nonnull GraphQLInterface graphQLInterface)
+    private String getInterfaceSourceCode(@Nonnull Interface anInterface)
     {
-        String fieldsSourceCode = graphQLInterface
-                .getFields()
-                .collect(GraphQLElementToSchemaSourceVisitor::getFieldSourceCode)
+        String fieldsSourceCode = anInterface
+                .getProperties()
+                .collect(GraphQLElementToSchemaSourceVisitor::getPropertySourceCode)
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");
 
         return ""
-                + "interface " + graphQLInterface.getName() + " {\n"
+                + "interface " + anInterface.getName() + " {\n"
                 + fieldsSourceCode
                 + "}\n"
                 + '\n';
     }
 
     @Nonnull
-    private String getClassSourceCode(@Nonnull GraphQLClass graphQLClass)
+    private String getClassSourceCode(@Nonnull Klass klass)
     {
-        String fieldsSourceCode = graphQLClass
-                .getFields()
-                .collect(GraphQLElementToSchemaSourceVisitor::getFieldSourceCode)
+        String fieldsSourceCode = klass
+                .getProperties()
+                .collect(GraphQLElementToSchemaSourceVisitor::getPropertySourceCode)
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");
 
-        ImmutableList<String> interfaces = graphQLClass.getInterfaces();
+        ImmutableList<String> interfaces = klass.getInterfaces().collect(NamedElement::getName);
 
         String implementsSourceCode = interfaces.isEmpty() ? "" : " implements " + interfaces.makeString();
 
         return ""
-                + "type " + graphQLClass.getName() + implementsSourceCode + " {\n"
+                + "type " + klass.getName() + implementsSourceCode + " {\n"
                 + fieldsSourceCode
                 + "}\n"
                 + '\n';
     }
 
-    private static String getFieldSourceCode(@Nonnull GraphQLField graphQLField)
+    private static String getPropertySourceCode(@Nonnull Property property)
     {
         return String.format(
                 "%s: %s%s%s%s",
-                graphQLField.getName(),
-                graphQLField.isMany() ? "[" : "",
-                graphQLField.getType(),
-                graphQLField.isMany() ? "!]" : "",
-                graphQLField.isRequired() ? "!" : "");
+                property.getName(),
+                isMany(property) ? "[" : "",
+                getType(property),
+                isMany(property) ? "!]" : "",
+                property.isRequired() ? "!" : "");
+    }
+
+    @Nonnull
+    private static String getType(@Nonnull Property property)
+    {
+        Type type = property.getType();
+        if (type instanceof Enumeration)
+        {
+            return "String";
+        }
+        if (type == PrimitiveType.INTEGER)
+        {
+            return "Int";
+        }
+        return type.toString();
+    }
+
+    private static boolean isMany(@Nonnull Property property)
+    {
+        return property instanceof ReferenceProperty
+                && ((ReferenceProperty) property).getMultiplicity().isToMany();
     }
 
     public String getSourceCode()

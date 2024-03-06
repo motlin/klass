@@ -78,7 +78,7 @@ public class KlassWithInferenceGenerator
 
     private void printStringToFile(@Nonnull Path path, String contents)
     {
-        try (PrintStream printStream = new PrintStream(new FileOutputStream(path.toFile())))
+        try (var printStream = new PrintStream(new FileOutputStream(path.toFile())))
         {
             printStream.print(contents);
         }
