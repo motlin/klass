@@ -5,11 +5,11 @@ Error at location. (InvalidIdPropertyTypeErrorTest.klass:45)
 [40m[40;37m 1║ [40;35mpackage [40;97mexample
 [40;37m43║ [40;35mclass [40;97mTemporalInstantId
 [40;37m44║ [40;36m{
-[40;37m45║     [40;97mtemporalInstantId[40;36m: [40;95mTemporalInstant [40;33mid [40;33mkey[40;36m;
-[40;37m  ║                                        [40;91m^^
+[40;37m45║     [40;97mtemporalInstantId[40;36m: [40;95mTemporalInstant[40;36m? [40;33mid [40;33mkey[40;36m;
+[40;37m  ║                                         [40;91m^^
 [40;37m46║ [40;36m}
 [m
 [36mLocation:  [mInvalidIdPropertyTypeErrorTest.klass:45[m
 [36mFile:      [mInvalidIdPropertyTypeErrorTest.klass[m
 [36mLine:      [m45[m
-[36mCharacter: [m40[m
+[36mCharacter: [m41[m

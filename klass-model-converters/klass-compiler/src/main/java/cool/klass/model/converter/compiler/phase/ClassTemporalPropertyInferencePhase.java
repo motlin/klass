@@ -59,9 +59,9 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
             @Nonnull ClassModifierContext ctx,
             @Nonnull String prefix)
     {
-        this.runCompilerMacro(prefix + "    : TemporalRange   " + prefix + ";");
-        this.runCompilerMacro(prefix + "From: TemporalInstant " + prefix + " from;");
-        this.runCompilerMacro(prefix + "To  : TemporalInstant " + prefix + " to;");
+        this.runCompilerMacro(prefix + "    : TemporalRange?   " + prefix + ";");
+        this.runCompilerMacro(prefix + "From: TemporalInstant? " + prefix + " from;");
+        this.runCompilerMacro(prefix + "To  : TemporalInstant? " + prefix + " to;");
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)

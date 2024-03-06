@@ -95,11 +95,11 @@ class Question
     */
 
     // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system                 : TemporalRange system;
+    system                 : TemporalRange? system;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom             : TemporalInstant system from;
-    systemTo               : TemporalInstant system to;
+    systemFrom             : TemporalInstant? system from;
+    systemTo               : TemporalInstant? system to;
 
     // TODO: private properties must not be used in projections
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared

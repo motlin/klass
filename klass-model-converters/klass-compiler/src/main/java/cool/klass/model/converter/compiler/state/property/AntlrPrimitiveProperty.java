@@ -19,7 +19,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 
-public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
+public class AntlrPrimitiveProperty
+        extends AntlrDataTypeProperty<PrimitiveType>
 {
     @Nonnull
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
@@ -129,6 +130,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     {
         super.reportErrors(compilerErrorHolder);
 
+        this.reportInvalidTemporalMultiplicity(compilerErrorHolder);
         this.reportInvalidStringValidations(compilerErrorHolder);
         this.reportInvalidNumericValidations(compilerErrorHolder);
     }
@@ -181,6 +183,25 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                     PrimitiveType.ID_PRIMITIVE_TYPES);
             compilerErrorHolder.add("ERR_PRP_IDP", message, this, offendingToken);
         }
+    }
+
+    private void reportInvalidTemporalMultiplicity(CompilerErrorState compilerErrorHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
+        if (!primitiveType.isTemporal())
+        {
+            return;
+        }
+
+        if (this.isOptional)
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Primitive properties with type %s may not be required.",
+                primitiveType.getPrettyName());
+        compilerErrorHolder.add("ERR_REQ_TMP", message, this, this.nameContext);
     }
 
     private void reportInvalidStringValidations(@Nonnull CompilerErrorState compilerErrorHolder)

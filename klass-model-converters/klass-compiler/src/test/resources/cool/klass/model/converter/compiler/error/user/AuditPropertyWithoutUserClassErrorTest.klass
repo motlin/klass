@@ -3,9 +3,9 @@ package com.errors
 class DummyClass systemTemporal versioned audited
 {
     id             : Long id key;
-    system         : TemporalRange   system;
-    systemFrom     : TemporalInstant system from;
-    systemTo       : TemporalInstant system to;
+    system         : TemporalRange?   system;
+    systemFrom     : TemporalInstant? system from;
+    systemTo       : TemporalInstant? system to;
     createdById    : String private createdBy;
     createdOn      : Instant createdOn;
     lastUpdatedById: String private lastUpdatedBy;

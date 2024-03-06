@@ -21,9 +21,9 @@ class badClass
         this.BadPrimitiveProperty == BadParameter
     }
 
-    badTemporalProperty   : TemporalRange;
-    badTemporalFrom       : TemporalInstant;
-    badTemporalTo         : TemporalInstant;
+    badTemporalProperty   : TemporalRange?;
+    badTemporalFrom       : TemporalInstant?;
+    badTemporalTo         : TemporalInstant?;
     valid                 : String;
     validFrom             : String;
     validTo               : String;

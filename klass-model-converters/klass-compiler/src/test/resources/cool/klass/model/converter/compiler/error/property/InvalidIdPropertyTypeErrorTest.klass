@@ -42,12 +42,12 @@ class LocalDateId
 
 class TemporalInstantId
 {
-    temporalInstantId: TemporalInstant id key;
+    temporalInstantId: TemporalInstant? id key;
 }
 
 class TemporalRangeId
 {
-    temporalRangeId: TemporalRange id key;
+    temporalRangeId: TemporalRange? id key;
 }
 
 enumeration ExampleEnumeration
