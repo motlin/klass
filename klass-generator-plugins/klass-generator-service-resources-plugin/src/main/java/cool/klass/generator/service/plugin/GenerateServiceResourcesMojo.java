@@ -3,6 +3,7 @@ package cool.klass.generator.service.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Instant;
 
 import cool.klass.generator.plugin.AbstractGenerateMojo;
 import cool.klass.generator.service.ServiceResourceGenerator;
@@ -36,7 +37,7 @@ public class GenerateServiceResourcesMojo extends AbstractGenerateMojo
         Path        outputPath  = this.outputDirectory.toPath();
         try
         {
-            ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(domainModel);
+            ServiceResourceGenerator serviceResourceGenerator = new ServiceResourceGenerator(domainModel, Instant.now());
             serviceResourceGenerator.writeServiceResourceFiles(outputPath);
         }
         catch (IOException e)
