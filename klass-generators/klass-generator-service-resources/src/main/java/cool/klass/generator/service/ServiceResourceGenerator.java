@@ -118,11 +118,8 @@ public class ServiceResourceGenerator
                 ? ""
                 + "import javax.validation.constraints.NotNull;\n"
                 + "import com.fasterxml.jackson.databind.node.ObjectNode;\n"
-                + "import cool.klass.deserializer.json.JsonTypeCheckingValidator;\n"
-                + "import cool.klass.deserializer.json.OperationMode;\n"
-                + "import cool.klass.deserializer.json.RequiredPropertiesValidator;\n"
-                + "import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;\n"
-                + "import cool.klass.reladomo.persistent.writer.PersistentReplacer;\n"
+                + "import cool.klass.deserializer.json.*;\n"
+                + "import cool.klass.reladomo.persistent.writer.*;\n"
                 : "";
 
         // @formatter:off
@@ -215,7 +212,7 @@ public class ServiceResourceGenerator
 
         if (service.getVerb() == Verb.DELETE)
         {
-            return this.getDeleteSourceCode();
+            return this.getDeleteSourceCode(service, index);
         }
 
         throw new AssertionError(service.getVerb().name());
@@ -333,9 +330,137 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getDeleteSourceCode()
+    private String getDeleteSourceCode(@Nonnull Service service, int index)
     {
-        return "    // TODO: DELETE\n";
+        Url url = service.getUrl();
+
+        ServiceGroup serviceGroup = url.getServiceGroup();
+
+        ImmutableList<ObjectBooleanPair<Parameter>> pathParameters = url.getPathParameters()
+                .collectWith(PrimitiveTuples::pair, true);
+        ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
+                .collectWith(PrimitiveTuples::pair, false);
+
+        String klassName = serviceGroup.getKlass().getName();
+
+        String queryParametersString = queryParameters.isEmpty()
+                ? ""
+                : queryParameters.collect(ObjectBooleanPair::getOne).makeString(" // ?", "&", "");
+
+        boolean hasAuthorizeCriteria = service.isAuthorizeClauseRequired();
+
+        int     numParameters      = service.getNumParameters();
+        boolean lineWrapParameters = numParameters > 1;
+
+        String parameterPrefix = lineWrapParameters ? "\n" : "";
+        String parameterIndent = lineWrapParameters ? "            " : "";
+
+        ImmutableList<String> urlParameterStrings = pathParameters.newWithAll(queryParameters)
+                .collectWith(this::getParameterSourceCode, parameterIndent);
+
+        MutableList<String> parameterStrings = urlParameterStrings.toList();
+
+        if (hasAuthorizeCriteria)
+        {
+            parameterStrings.add(parameterIndent + "@Context SecurityContext securityContext");
+        }
+
+        String userPrincipalNameLocalVariable = hasAuthorizeCriteria
+                ? "        String    userPrincipalName  = securityContext.getUserPrincipal().getName();\n"
+                : "";
+
+        String parametersSourceCode = parameterStrings.makeString(",\n");
+
+        String finderName               = klassName + "Finder";
+        String queryOperationSourceCode = this.getOperation(finderName, service.getQueryCriteria(), "query");
+        String authorizeOperationSourceCode = this.getOperation(
+                finderName,
+                service.getAuthorizeCriteria(),
+                "authorize");
+        String validateOperationSourceCode = this.getOperation(
+                finderName,
+                service.getValidateCriteria(),
+                "validate");
+        String conflictOperationSourceCode = this.getOperation(
+                finderName,
+                service.getConflictCriteria(),
+                "conflict");
+        String versionOperationSourceCode = this.getOptionalOperation(
+                finderName,
+                service.getVersionCriteria(),
+                "version");
+
+        String authorizePredicateSourceCode = this.checkPredicate(
+                service.getAuthorizeCriteria(),
+                "authorize",
+                "isAuthorized",
+                "ForbiddenException()");
+        String validatePredicateSourceCode = this.checkPredicate(
+                service.getValidateCriteria(),
+                "validate",
+                "isValidated",
+                "BadRequestException()");
+        String conflictPredicateSourceCode = this.checkPredicate(
+                service.getConflictCriteria(),
+                "conflict",
+                "hasConflict",
+                "ClientErrorException(Status.CONFLICT)");
+
+        String executeOperationSourceCode = this.getExecuteOperationSourceCode(
+                service.getQueryCriteria(),
+                service.getVersionCriteria(),
+                klassName);
+
+        ImmutableList<String> deepFetchStrings = DeepFetchWalker.walk(serviceGroup.getKlass());
+        String deepFetchSourceCode = deepFetchStrings
+                .collect(each -> "        result.deepFetch(" + each + ");\n")
+                .makeString("");
+
+        String orderBySourceCode = service.getOrderBy().map(this::getOrderBysSourceCode).orElse("");
+
+        // @formatter:off
+        //language=JAVA
+        return ""
+                + "    @Timed\n"
+                + "    @ExceptionMetered\n"
+                + "    @" + service.getVerb().name() + "\n"
+                + "    @Path(\"" + url.getUrlString() + "\")" + queryParametersString + "\n"
+                + "    @Produces(MediaType.APPLICATION_JSON)\n"
+                + "    public void method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
+                + "    {\n"
+                + userPrincipalNameLocalVariable
+                + queryOperationSourceCode
+                + authorizeOperationSourceCode
+                + validateOperationSourceCode
+                + conflictOperationSourceCode
+                + versionOperationSourceCode
+                + "\n"
+                + executeOperationSourceCode
+                + deepFetchSourceCode
+                + orderBySourceCode
+                + "\n"
+                + "        if (result.isEmpty())\n"
+                + "        {\n"
+                + "            throw new ClientErrorException(\"Url valid, data not found.\", Status.GONE);\n"
+                + "        }\n"
+                + "\n"
+                + authorizePredicateSourceCode
+                + validatePredicateSourceCode
+                + "\n"
+                + "        if (result.size() > 1)\n"
+                + "        {\n"
+                + "            throw new InternalServerErrorException(\"TODO\");\n"
+                + "        }\n"
+                + conflictPredicateSourceCode
+                + "\n"
+                + "        Object persistentInstance = result.get(0);\n"
+                + "\n"
+                + "        // TODO: Create a mutation context with now and the principal\n"
+                + "\n"
+                + "        ReladomoPersistentDeleter deleter = new ReladomoPersistentDeleter(this.dataStore);\n"
+                + "        deleter.deleteOrTerminate(" + this.applicationName + "DomainModel." + klassName + ", persistentInstance);\n"
+                + "    }\n";
+        // @formatter:on
     }
 
     @Nonnull
