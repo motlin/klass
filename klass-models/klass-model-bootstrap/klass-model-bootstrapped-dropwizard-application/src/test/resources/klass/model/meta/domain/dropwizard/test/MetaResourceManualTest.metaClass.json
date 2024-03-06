@@ -1,6 +1,7 @@
 {
   "name": "Classifier",
   "packageName": "klass.model.meta.domain",
+  "inheritanceType": "table-per-class",
   "ordinal": 8,
   "superClass": null,
   "superInterfaces": [

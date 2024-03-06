@@ -1263,6 +1263,7 @@ projection ClassProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
+    inheritanceType        : "Class inheritanceType",
     ordinal                : "Class ordinal",
     superClass             :
     {
@@ -1294,13 +1295,6 @@ projection ClassProjection on Klass
             packageName    : "Super interface package name",
         },
     },
-    /*
-    subClasses         :
-    {
-        name       : "Sub Class name",
-        packageName: "Sub Class package name",
-    },
-    */
     classifierModifiers    :
     {
         name    : "Classifier modifier name",
@@ -1315,6 +1309,8 @@ projection ClassSummaryProjection on Klass
 {
     name                   : "Class name",
     packageName            : "Class package name",
+    inheritanceType        : "Class inheritanceType",
+    ordinal                : "Class ordinal",
     superClass             :
     {
         name           : "Super Class name",

@@ -793,6 +793,11 @@
       },
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "inheritanceType",
+        "children": []
+      },
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "ordinal",
         "children": []
       },
@@ -930,6 +935,16 @@
       {
         "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
         "name": "packageName",
+        "children": []
+      },
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "inheritanceType",
+        "children": []
+      },
+      {
+        "@type": "klass.model.meta.domain.ProjectionDataTypeProperty",
+        "name": "ordinal",
         "children": []
       },
       {

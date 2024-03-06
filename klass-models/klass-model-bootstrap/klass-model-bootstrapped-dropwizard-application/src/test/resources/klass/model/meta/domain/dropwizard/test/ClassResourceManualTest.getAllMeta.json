@@ -2,6 +2,8 @@
   {
     "name": "Enumeration",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 4,
     "superClass": null,
     "superInterfaces": [
       {
@@ -17,6 +19,8 @@
   {
     "name": "EnumerationLiteral",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 5,
     "superClass": null,
     "superInterfaces": [
       {
@@ -61,6 +65,8 @@
   {
     "name": "Classifier",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 8,
     "superClass": null,
     "superInterfaces": [
       {
@@ -76,6 +82,8 @@
   {
     "name": "Interface",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 9,
     "superClass": {
       "name": "Classifier"
     },
@@ -87,6 +95,8 @@
   {
     "name": "ClassifierInterfaceMapping",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 10,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -135,6 +145,8 @@
   {
     "name": "Klass",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 13,
     "superClass": {
       "name": "Classifier"
     },
@@ -176,6 +188,8 @@
   {
     "name": "DataTypeProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 17,
     "superClass": null,
     "superInterfaces": [
       {
@@ -218,6 +232,8 @@
   {
     "name": "PrimitiveProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 18,
     "superClass": {
       "name": "DataTypeProperty"
     },
@@ -242,6 +258,8 @@
   {
     "name": "EnumerationProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 19,
     "superClass": {
       "name": "DataTypeProperty"
     },
@@ -270,6 +288,8 @@
   {
     "name": "NumericPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-subclass",
+    "ordinal": 24,
     "superClass": null,
     "superInterfaces": [
       {
@@ -328,6 +348,8 @@
   {
     "name": "MinLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 25,
     "superClass": {
       "name": "NumericPropertyValidation"
     },
@@ -339,6 +361,8 @@
   {
     "name": "MaxLengthPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 26,
     "superClass": {
       "name": "NumericPropertyValidation"
     },
@@ -350,6 +374,8 @@
   {
     "name": "MinPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 27,
     "superClass": {
       "name": "NumericPropertyValidation"
     },
@@ -361,6 +387,8 @@
   {
     "name": "MaxPropertyValidation",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 28,
     "superClass": {
       "name": "NumericPropertyValidation"
     },
@@ -372,6 +400,8 @@
   {
     "name": "PropertyModifier",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 33,
     "superClass": null,
     "superInterfaces": [
       {
@@ -420,6 +450,8 @@
   {
     "name": "ClassifierModifier",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 35,
     "superClass": null,
     "superInterfaces": [
       {
@@ -452,6 +484,8 @@
   {
     "name": "Association",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 38,
     "superClass": null,
     "superInterfaces": [
       {
@@ -482,6 +516,8 @@
   {
     "name": "AssociationEnd",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 39,
     "superClass": null,
     "superInterfaces": [
       {
@@ -570,6 +606,8 @@
   {
     "name": "AssociationEndModifier",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 43,
     "superClass": null,
     "superInterfaces": [
       {
@@ -618,6 +656,8 @@
   {
     "name": "Criteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 47,
     "superClass": null,
     "superInterfaces": [
       {
@@ -651,6 +691,8 @@
   {
     "name": "AllCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 48,
     "superClass": {
       "name": "Criteria"
     },
@@ -680,6 +722,8 @@
   {
     "name": "BinaryCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 49,
     "superClass": {
       "name": "Criteria"
     },
@@ -737,6 +781,8 @@
   {
     "name": "AndCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 50,
     "superClass": {
       "name": "BinaryCriteria"
     },
@@ -766,6 +812,8 @@
   {
     "name": "OrCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 51,
     "superClass": {
       "name": "BinaryCriteria"
     },
@@ -795,6 +843,8 @@
   {
     "name": "OperatorCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 52,
     "superClass": {
       "name": "Criteria"
     },
@@ -865,6 +915,8 @@
   {
     "name": "EdgePointCriteria",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 53,
     "superClass": {
       "name": "Criteria"
     },
@@ -908,6 +960,8 @@
   {
     "name": "ExpressionValue",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 57,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -935,6 +989,8 @@
   {
     "name": "UserLiteral",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 58,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -964,6 +1020,8 @@
   {
     "name": "NullLiteral",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 59,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -993,6 +1051,8 @@
   {
     "name": "VariableReference",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 60,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -1036,6 +1096,8 @@
   {
     "name": "Parameter",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 62,
     "superClass": null,
     "superInterfaces": [
       {
@@ -1094,6 +1156,8 @@
   {
     "name": "EnumerationParameter",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 63,
     "superClass": {
       "name": "Parameter"
     },
@@ -1139,6 +1203,8 @@
   {
     "name": "PrimitiveParameter",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 64,
     "superClass": {
       "name": "Parameter"
     },
@@ -1181,6 +1247,8 @@
   {
     "name": "MemberReferencePath",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 66,
     "superClass": {
       "name": "ExpressionValue"
     },
@@ -1258,6 +1326,8 @@
   {
     "name": "MemberReferencePathAssociationEndMapping",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 68,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -1323,6 +1393,8 @@
   {
     "name": "ThisMemberReferencePath",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 72,
     "superClass": {
       "name": "MemberReferencePath"
     },
@@ -1352,6 +1424,8 @@
   {
     "name": "TypeMemberReferencePath",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 73,
     "superClass": {
       "name": "MemberReferencePath"
     },
@@ -1381,6 +1455,8 @@
   {
     "name": "ParameterizedProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 76,
     "superClass": null,
     "superInterfaces": [
       {
@@ -1449,6 +1525,8 @@
   {
     "name": "AssociationEndOrderBy",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 79,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -1527,6 +1605,8 @@
   {
     "name": "ParameterizedPropertyOrdering",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 83,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
@@ -1586,6 +1666,8 @@
   {
     "name": "ParameterizedPropertyParameter",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 86,
     "superClass": null,
     "superInterfaces": [
       {
@@ -1637,6 +1719,8 @@
   {
     "name": "ProjectionElement",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 87,
     "superClass": null,
     "superInterfaces": [
       {
@@ -1696,6 +1780,8 @@
   {
     "name": "ServiceProjection",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 88,
     "superClass": {
       "name": "ProjectionElement"
     },
@@ -1747,6 +1833,8 @@
   {
     "name": "ProjectionWithAssociationEnd",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "table-per-class",
+    "ordinal": 89,
     "superClass": {
       "name": "ProjectionElement"
     },
@@ -1822,6 +1910,8 @@
   {
     "name": "ProjectionReferenceProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 90,
     "superClass": {
       "name": "ProjectionWithAssociationEnd"
     },
@@ -1897,6 +1987,8 @@
   {
     "name": "ProjectionProjectionReference",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 91,
     "superClass": {
       "name": "ProjectionWithAssociationEnd"
     },
@@ -1988,6 +2080,8 @@
   {
     "name": "ProjectionDataTypeProperty",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 92,
     "superClass": {
       "name": "ProjectionElement"
     },
@@ -2063,6 +2157,8 @@
   {
     "name": "ServiceGroup",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 98,
     "superClass": null,
     "superInterfaces": [
       {
@@ -2095,6 +2191,8 @@
   {
     "name": "Url",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 100,
     "superClass": null,
     "superInterfaces": [
       {
@@ -2143,6 +2241,8 @@
   {
     "name": "UrlParameter",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 102,
     "superClass": null,
     "superInterfaces": [
       {
@@ -2225,6 +2325,8 @@
   {
     "name": "Service",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 108,
     "superClass": null,
     "superInterfaces": [
       {
@@ -2374,6 +2476,8 @@
   {
     "name": "ServiceOrderBy",
     "packageName": "klass.model.meta.domain",
+    "inheritanceType": "none",
+    "ordinal": 115,
     "superClass": null,
     "superInterfaces": [],
     "classifierModifiers": [],
