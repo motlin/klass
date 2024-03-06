@@ -104,6 +104,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
@@ -789,6 +790,20 @@ public class KlassThrowingListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitServiceDeclarationBody() not implemented yet");
+    }
+
+    @Override
+    public void enterServiceBody(ServiceBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterServiceBody() not implemented yet");
+    }
+
+    @Override
+    public void exitServiceBody(ServiceBodyContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitServiceBody() not implemented yet");
     }
 
     @Override

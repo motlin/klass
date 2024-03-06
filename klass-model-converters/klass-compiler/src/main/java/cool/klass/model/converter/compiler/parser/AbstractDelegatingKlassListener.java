@@ -104,6 +104,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
@@ -472,13 +473,13 @@ public abstract class AbstractDelegatingKlassListener
     @Override
     public void enterAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
     {
-        getDelegate().enterAssociationBodyDeclaration(ctx);
+        this.getDelegate().enterAssociationBodyDeclaration(ctx);
     }
 
     @Override
     public void exitAssociationBodyDeclaration(AssociationBodyDeclarationContext ctx)
     {
-        getDelegate().exitAssociationBodyDeclaration(ctx);
+        this.getDelegate().exitAssociationBodyDeclaration(ctx);
     }
 
     @Override
@@ -787,6 +788,18 @@ public abstract class AbstractDelegatingKlassListener
     public void exitServiceDeclarationBody(ServiceDeclarationBodyContext ctx)
     {
         this.getDelegate().exitServiceDeclarationBody(ctx);
+    }
+
+    @Override
+    public void enterServiceBody(ServiceBodyContext ctx)
+    {
+        this.getDelegate().enterServiceBody(ctx);
+    }
+
+    @Override
+    public void exitServiceBody(ServiceBodyContext ctx)
+    {
+        this.getDelegate().exitServiceBody(ctx);
     }
 
     @Override
