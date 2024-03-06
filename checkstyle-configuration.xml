@@ -273,8 +273,7 @@
                         java.util.HashMap, HashMap,
                         java.util.LinkedHashSet, LinkedHashSet,
                         java.util.TreeSet, TreeSet,
-                        java.lang.StringBuffer, StringBuffer,
-                    " />
+                        java.lang.StringBuffer, StringBuffer," />
         </module>
         <module name="InnerAssignment" />
         <module name="MissingSwitchDefault" />
