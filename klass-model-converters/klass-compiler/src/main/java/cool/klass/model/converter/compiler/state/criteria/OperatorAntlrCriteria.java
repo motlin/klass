@@ -150,9 +150,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void addForeignKeys(
-            boolean foreignKeysOnThis,
-            @Nonnull AntlrAssociationEnd endWithForeignKeys)
+    public void addForeignKeys(@Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
         AntlrThisMemberReferencePath thisMemberReferencePathState = this.getThisMemberRefrencePathState();
         AntlrTypeMemberReferencePath typeMemberReferencePathState = this.getTypeMemberRefrencePathState();
@@ -160,24 +158,21 @@ public class OperatorAntlrCriteria extends AntlrCriteria
         AntlrDataTypeProperty<?> thisDataTypePropertyState = thisMemberReferencePathState.getDataTypePropertyState();
         AntlrDataTypeProperty<?> typeDataTypePropertyState = typeMemberReferencePathState.getDataTypePropertyState();
 
-        boolean foreignKeysOnThis2 = endWithForeignKeys.getOwningClassifierState()
-                == thisMemberReferencePathState.getClassState();
-        if (foreignKeysOnThis2 != foreignKeysOnThis)
-        {
-            throw new AssertionError();
-        }
-
         if (endWithForeignKeys.getOwningClassifierState() == thisMemberReferencePathState.getClassState())
         {
             endWithForeignKeys.addForeignKeyPropertyMatchingProperty(
                     thisDataTypePropertyState,
                     typeDataTypePropertyState);
         }
-        else
+        else if (endWithForeignKeys.getOwningClassifierState() == typeMemberReferencePathState.getClassState())
         {
             endWithForeignKeys.addForeignKeyPropertyMatchingProperty(
                     typeDataTypePropertyState,
                     thisDataTypePropertyState);
+        }
+        else
+        {
+            throw new AssertionError();
         }
     }
 

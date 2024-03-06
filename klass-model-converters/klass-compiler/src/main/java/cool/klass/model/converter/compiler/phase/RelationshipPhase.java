@@ -71,9 +71,7 @@ public class RelationshipPhase
 
         if (possibleJoinCriteria)
         {
-            boolean foreignKeysOnThis = this.compilerState.getCompilerWalkState().getThisReference()
-                    == typeWithForeignKeys;
-            criteriaState.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
+            criteriaState.addForeignKeys(endWithForeignKeys);
         }
     }
 

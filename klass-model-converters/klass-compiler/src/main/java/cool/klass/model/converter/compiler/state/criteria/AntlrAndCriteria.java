@@ -65,11 +65,9 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     }
 
     @Override
-    public void addForeignKeys(
-            boolean foreignKeysOnThis,
-            @Nonnull AntlrAssociationEnd endWithForeignKeys)
+    public void addForeignKeys(@Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
-        this.left.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
-        this.right.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
+        this.left.addForeignKeys(endWithForeignKeys);
+        this.right.addForeignKeys(endWithForeignKeys);
     }
 }

@@ -57,9 +57,7 @@ public abstract class AntlrCriteria extends AntlrElement
 
     public abstract void resolveTypes();
 
-    public void addForeignKeys(
-            boolean foreignKeysOnThis,
-            @Nonnull AntlrAssociationEnd endWithForeignKeys)
+    public void addForeignKeys(@Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".addForeignKeys() not implemented yet");
