@@ -21,3 +21,15 @@ jobs:
       - run: ./mvnw verify --threads 2C
         env:
           MAVEN_OPTS: "-Xmx1g"
+  build-serial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - run: ./mvnw verify
+        env:
+          MAVEN_OPTS: "-Xmx1g"
