@@ -56,6 +56,12 @@ public final class ModifierImpl
         return this.modifierOwner;
     }
 
+    @Override
+    public String toString()
+    {
+        return this.getKeyword();
+    }
+
     public static final class ModifierBuilder
             extends OrdinalElementBuilder<ModifierImpl>
     {
