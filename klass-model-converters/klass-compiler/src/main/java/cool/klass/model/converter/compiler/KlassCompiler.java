@@ -63,7 +63,8 @@ public class KlassCompiler
 
         BuildAntlrStatePhase buildAntlrStatePhase = new BuildAntlrStatePhase(
                 this.compilerErrorHolder,
-                compilationUnitsByContext);
+                compilationUnitsByContext,
+                phase5);
 
         MembersByNamePhase phase7 = new MembersByNamePhase(
                 this.compilerErrorHolder,

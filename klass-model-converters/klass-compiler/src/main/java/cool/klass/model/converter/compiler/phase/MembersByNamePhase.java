@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.EscapedIdentifierVisitor;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
@@ -13,8 +14,6 @@ import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.MapIterable;
@@ -129,18 +128,7 @@ public class MembersByNamePhase extends AbstractCompilerPhase
 
     private String getName(EscapedIdentifierContext escapedIdentifierContext)
     {
-        IdentifierContext identifier = escapedIdentifierContext.identifier();
-        if (identifier != null)
-        {
-            return identifier.getText();
-        }
-        KeywordValidAsIdentifierContext keyword = escapedIdentifierContext.keywordValidAsIdentifier();
-        if (keyword != null)
-        {
-            return keyword.getText();
-        }
-
-        throw new AssertionError();
+        return EscapedIdentifierVisitor.INSTANCE.visitEscapedIdentifier(escapedIdentifierContext);
     }
 
     @Override

@@ -3,9 +3,9 @@ package cool.klass.model.converter.compiler.state;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 
-public class AntlrEnumerationLiteralState
+public class AntlrEnumerationLiteral
 {
-    public static final AntlrEnumerationLiteralState AMBIGUOUS = new AntlrEnumerationLiteralState(
+    public static final AntlrEnumerationLiteral AMBIGUOUS = new AntlrEnumerationLiteral(
             null,
             null,
             null,
@@ -16,7 +16,7 @@ public class AntlrEnumerationLiteralState
     private final String                       literalName;
     private final String                       prettyName;
 
-    public AntlrEnumerationLiteralState(
+    public AntlrEnumerationLiteral(
             EnumerationLiteralContext ctx,
             EnumerationPrettyNameContext prettyNameContext,
             String literalName,

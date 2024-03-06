@@ -11,13 +11,13 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrEnumerationState
+public class AntlrEnumeration
 {
-    private final EnumerationDeclarationContext                    ctx;
-    private final MutableList<AntlrEnumerationLiteralState>        enumerationLiteralStates = Lists.mutable.empty();
-    private       MutableMap<String, AntlrEnumerationLiteralState> enumerationLiteralsByName;
+    private final EnumerationDeclarationContext               ctx;
+    private final MutableList<AntlrEnumerationLiteral>        enumerationLiteralStates = Lists.mutable.empty();
+    private       MutableMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName;
 
-    public AntlrEnumerationState(EnumerationDeclarationContext ctx)
+    public AntlrEnumeration(EnumerationDeclarationContext ctx)
     {
         this.ctx = ctx;
     }
@@ -28,8 +28,8 @@ public class AntlrEnumerationState
             String literalName,
             String prettyName)
     {
-        AntlrEnumerationLiteralState enumerationLiteralState =
-                new AntlrEnumerationLiteralState(ctx, prettyNameContext, literalName, prettyName);
+        AntlrEnumerationLiteral enumerationLiteralState =
+                new AntlrEnumerationLiteral(ctx, prettyNameContext, literalName, prettyName);
         this.enumerationLiteralStates.add(enumerationLiteralState);
     }
 
@@ -40,26 +40,26 @@ public class AntlrEnumerationState
         this.checkDuplicatePrettyNames(buildAntlrStatePhase);
 
         this.enumerationLiteralsByName = this.enumerationLiteralStates.toMap(
-                AntlrEnumerationLiteralState::getLiteralName,
+                AntlrEnumerationLiteral::getLiteralName,
                 each ->
                 {
                     if (duplicateNames.contains(each.getLiteralName()))
                     {
-                        return AntlrEnumerationLiteralState.AMBIGUOUS;
+                        return AntlrEnumerationLiteral.AMBIGUOUS;
                     }
                     return each;
                 });
     }
 
-    protected MutableBag<String> getDuplicateLiteralNames()
+    private MutableBag<String> getDuplicateLiteralNames()
     {
         return this.enumerationLiteralStates
-                .collect(AntlrEnumerationLiteralState::getLiteralName)
+                .collect(AntlrEnumerationLiteral::getLiteralName)
                 .toBag()
-                .selectByOccurrences(i -> i > 1);
+                .selectByOccurrences(occurrences -> occurrences > 1);
     }
 
-    protected void checkDuplicateLiteralNames(
+    private void checkDuplicateLiteralNames(
             BuildAntlrStatePhase buildAntlrStatePhase,
             MutableBag<String> duplicateNames)
     {
@@ -73,13 +73,13 @@ public class AntlrEnumerationState
                 });
     }
 
-    protected void checkDuplicatePrettyNames(BuildAntlrStatePhase buildAntlrStatePhase)
+    private void checkDuplicatePrettyNames(BuildAntlrStatePhase buildAntlrStatePhase)
     {
         MutableBag<String> duplicatePrettyNames = this.enumerationLiteralStates
-                .collect(AntlrEnumerationLiteralState::getPrettyName)
+                .collect(AntlrEnumerationLiteral::getPrettyName)
                 .reject(Objects::isNull)
                 .toBag()
-                .selectByOccurrences(i -> i > 1);
+                .selectByOccurrences(occurrences -> occurrences > 1);
         this.enumerationLiteralStates
                 .asLazy()
                 .select(each -> duplicatePrettyNames.contains(each.getPrettyName()))
