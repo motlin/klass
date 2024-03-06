@@ -16,7 +16,8 @@ association CreatedBy
     dummyClassesCreatedBy: DummyClass[0..*];
     createdBy: User[1..1] createdBy;
 
-    relationship this.createdById == User.otherProperty
+    relationship this.createdById
+        == User.otherProperty
 }
 
 association LastUpdatedBy
@@ -24,5 +25,6 @@ association LastUpdatedBy
     dummyClassesLastUpdatedBy: DummyClass[0..*];
     lastUpdatedBy: User[1..1] lastUpdatedBy;
 
-    relationship this.lastUpdatedById == User.otherProperty
+    relationship this.lastUpdatedById ==
+        User.otherProperty
 }

@@ -5,7 +5,10 @@ At (DoubleVersionAssociationErrorTest.klass:18)
 
 [39m 1║ [35mpackage [39mdummy
 [39m18║ [35mclass [39mExampleTarget
-[39m  ║       [31m^^^^^^^^^^^^^
+[39m  ║ [31m      ^^^^^^^^^^^^^
+[39m19║     [33msystemTemporal
+[39m20║ [36m{
+[39m23║ [36m}
 [m
 [36mLocation:  [mDoubleVersionAssociationErrorTest.klass:18[m
 [36mFile:      [mDoubleVersionAssociationErrorTest.klass[m

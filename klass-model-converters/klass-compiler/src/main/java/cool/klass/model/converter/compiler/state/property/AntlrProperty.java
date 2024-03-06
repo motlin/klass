@@ -15,10 +15,12 @@ import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -42,9 +44,9 @@ public abstract class AntlrProperty
     }
 
     @Override
-    public boolean omitParentFromSurroundingElements()
+    public Pair<Token, Token> getContextBefore()
     {
-        return false;
+        return this.getEntireContext();
     }
 
     @Nonnull
@@ -114,15 +116,14 @@ public abstract class AntlrProperty
                 .toBag()
                 .selectDuplicates();
 
-        for (AntlrModifier modifierState : this.getModifiers())
+        for (AntlrModifier modifier : this.getModifiers())
         {
-            if (duplicateModifiers.contains(modifierState.getName()))
+            if (duplicateModifiers.contains(modifier.getName()))
             {
-                ParserRuleContext offendingToken = modifierState.getElementContext();
                 String message = String.format(
                         "Duplicate modifier '%s'.",
-                        offendingToken.getText());
-                compilerErrorHolder.add("ERR_DUP_MOD", message, this, offendingToken);
+                        modifier.getName());
+                compilerErrorHolder.add("ERR_DUP_MOD", message, modifier);
             }
         }
     }
@@ -168,5 +169,11 @@ public abstract class AntlrProperty
                 this.getName(),
                 this.getType().getName(),
                 this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
     }
 }

@@ -27,12 +27,6 @@ public class AntlrClassifierReference
         this.classifierState               = Objects.requireNonNull(classifierState);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

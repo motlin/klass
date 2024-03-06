@@ -7,7 +7,7 @@ At (DuplicateValidationErrorTest.klass:11)
 [39m 8║ [35mclass [39mDummyClass
 [39m 9║ [36m{
 [39m11║     [39mnumber[36m: [35mLong [33mminimum[36m([34m1[36m) [33mmin[36m([34m1[36m) [33mmaximum[36m([34m10[36m) [33mmax[36m([34m10[36m)[36m;
-[39m  ║                                                [31m^^^
+[39m  ║ [31m                                               ^^^
 [39m14║ [36m}
 [m
 [36mLocation:  [mDuplicateValidationErrorTest.klass:11[m

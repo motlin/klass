@@ -7,7 +7,7 @@ At (InvalidIdPropertyTypeErrorTest.klass:25)
 [39m23║ [35mclass [39mFloatId
 [39m24║ [36m{
 [39m25║     [39mfloatId         [36m: [35mFloat [33mid [33mkey[36m;
-[39m  ║                             [31m^^
+[39m  ║ [31m                            ^^
 [39m26║ [36m}
 [m
 [36mLocation:  [mInvalidIdPropertyTypeErrorTest.klass:25[m

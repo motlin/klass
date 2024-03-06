@@ -3,9 +3,13 @@
 
 At (TransientClassWtihIdPropertyErrorTest.klass:9)
 
-[39m1║ [35mpackage [39mexample
-[39m9║ [35mclass [39mConcreteSubClass
-[39m ║       [31m^^^^^^^^^^^^^^^^
+[39m 1║ [35mpackage [39mexample
+[39m 9║ [35mclass [39mConcreteSubClass
+[39m  ║ [31m      ^^^^^^^^^^^^^^^^
+[39m10║     [35mextends [39mAbstractSuperClass
+[39m11║     [33mtransient
+[39m12║ [36m{
+[39m14║ [36m}
 [m
 [36mLocation:  [mTransientClassWtihIdPropertyErrorTest.klass:9[m
 [36mFile:      [mTransientClassWtihIdPropertyErrorTest.klass[m

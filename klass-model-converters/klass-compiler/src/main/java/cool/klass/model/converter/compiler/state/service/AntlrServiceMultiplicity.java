@@ -30,12 +30,6 @@ public class AntlrServiceMultiplicity extends AntlrElement
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

@@ -7,7 +7,7 @@ At (DuplicateUserClassErrorTest.klass:5)
 [39m3║ [35muser [39mUser1
 [39m4║ [36m{
 [39m5║     [39muserId1[36m: [35mString [33mkey [33muserId[36m;
-[39m ║     [31m^^^^^^^
+[39m ║ [31m    ^^^^^^^
 [39m7║ [36m}
 [m
 [36mLocation:  [mDuplicateUserClassErrorTest.klass:5[m

@@ -7,7 +7,7 @@ At (AuditPropertyWithoutUserClassErrorTest.klass:10)
 [39m 3║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
 [39m 4║ [36m{
 [39m10║     [33mcreatedOn      [36m: [35mInstant [33mcreatedOn[36m;
-[39m  ║                              [31m^^^^^^^^^
+[39m  ║ [31m                             ^^^^^^^^^
 [39m12║ [36m}
 [m
 [36mLocation:  [mAuditPropertyWithoutUserClassErrorTest.klass:10[m

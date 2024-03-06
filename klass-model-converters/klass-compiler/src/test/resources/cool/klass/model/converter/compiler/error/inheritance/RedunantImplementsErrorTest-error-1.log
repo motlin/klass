@@ -5,7 +5,9 @@ At (RedunantImplementsErrorTest.klass:23)
 
 [39m 1║ [35mpackage [39mexample
 [39m23║ [35minterface [39mRedundantExtraInterface [35mimplements [39mRedundantTopInterface[36m, [39mRedundantTopInterface
-[39m  ║                                                                     [31m^^^^^^^^^^^^^^^^^^^^^
+[39m  ║ [31m                                                                    ^^^^^^^^^^^^^^^^^^^^^
+[39m24║ [36m{
+[39m26║ [36m}
 [m
 [36mLocation:  [mRedunantImplementsErrorTest.klass:23[m
 [36mFile:      [mRedunantImplementsErrorTest.klass[m

@@ -41,12 +41,6 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         this.thisMemberReferencePathState = Objects.requireNonNull(thisMemberReferencePathState);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

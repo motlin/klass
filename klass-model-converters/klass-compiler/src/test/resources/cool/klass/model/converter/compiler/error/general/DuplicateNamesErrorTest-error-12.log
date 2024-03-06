@@ -5,7 +5,9 @@ At (DuplicateNamesErrorTest.klass:26)
 
 [39m 1║ [35mpackage [39mdummy
 [39m26║ [35massociation [39mDuplicateTopLevelElement
-[39m  ║             [31m^^^^^^^^^^^^^^^^^^^^^^^^
+[39m  ║ [31m            ^^^^^^^^^^^^^^^^^^^^^^^^
+[39m27║ [36m{
+[39m32║ [36m}
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:26[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m

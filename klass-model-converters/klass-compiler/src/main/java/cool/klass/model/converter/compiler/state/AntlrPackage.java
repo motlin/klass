@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrPackage
         extends AntlrNamedElement
@@ -31,16 +33,16 @@ public class AntlrPackage
         return PACKAGE_NAME_PATTERN;
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.compilationUnitState);
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 }

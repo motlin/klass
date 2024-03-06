@@ -184,6 +184,12 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         return this.serviceGroupBuilder;
     }
 
+    @Override
+    public ParserRuleContext getBodyContext()
+    {
+        return this.getElementContext().serviceGroupDeclarationBody();
+    }
+
     @Nonnull
     @Override
     public ServiceGroupBuilder getElementBuilder()

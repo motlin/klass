@@ -5,7 +5,9 @@ At (UnresolvedTypesErrorTest.klass:3)
 
 [39m1║ [35mpackage [39mdummy
 [39m3║ [35minterface [39mInterfaceWithUnresolved [35mimplements [39mUnresolvedInterface1[36m, [39mUnresolvedInterface2
-[39m ║                                                                    [31m^^^^^^^^^^^^^^^^^^^^
+[39m ║ [31m                                                                   ^^^^^^^^^^^^^^^^^^^^
+[39m4║ [36m{
+[39m6║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:3[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m

@@ -7,7 +7,7 @@ At (DuplicateAssociationModifierErrorTest.klass:6)
 [39m3║ [35massociation [39mDummyAssociation
 [39m4║ [36m{
 [39m6║     [39mchildren[36m: [39mDummyChild[36m[[34m0[36m..[34m*[36m] [33mowned [33mowned[36m;
-[39m ║                                [31m^^^^^
+[39m ║ [31m                               ^^^^^
 [39m9║ [36m}
 [m
 [36mLocation:  [mDuplicateAssociationModifierErrorTest.klass:6[m

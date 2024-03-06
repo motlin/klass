@@ -8,6 +8,10 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
+import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrCompilationUnit
         extends AntlrElement
@@ -38,18 +42,24 @@ public class AntlrCompilationUnit
         return (CompilationUnitContext) super.getElementContext();
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".omitParentFromSurroundingElements() not implemented yet");
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.empty();
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        PackageDeclarationContext context = this.getElementContext().packageDeclaration();
+        return Tuples.pair(context.getStart(), context.getStop());
     }
 
     public void enterPackageDeclaration(AntlrPackage packageState)
@@ -69,5 +79,11 @@ public class AntlrCompilationUnit
     public void reportNameErrors(CompilerErrorState compilerErrorHolder)
     {
         this.packageState.reportNameErrors(compilerErrorHolder);
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.packageState.toString();
     }
 }

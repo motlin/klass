@@ -7,7 +7,7 @@ At (DuplicateNamesErrorTest.klass:5)
 [39m3║ [35menumeration [39mDuplicateTopLevelElement
 [39m4║ [36m{
 [39m5║     [39mDUPLICATE_ENUM_LITERAL[36m([34m"Duplicate pretty name"[36m)[36m,
-[39m ║     [31m^^^^^^^^^^^^^^^^^^^^^^
+[39m ║ [31m    ^^^^^^^^^^^^^^^^^^^^^^
 [39m7║ [36m}
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:5[m

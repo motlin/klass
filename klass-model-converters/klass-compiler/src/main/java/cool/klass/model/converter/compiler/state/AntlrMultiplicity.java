@@ -68,12 +68,6 @@ public class AntlrMultiplicity extends AntlrElement
         return null;
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

@@ -5,7 +5,9 @@ At (AuditInferenceWithoutUserClassErrorTest.klass:3)
 
 [39m1║ [35mpackage [39mcom[36m.[39merrors
 [39m3║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
-[39m ║                                           [31m^^^^^^^
+[39m ║ [31m                                          ^^^^^^^
+[39m4║ [36m{
+[39m6║ [36m}
 [m
 [36mLocation:  [mAuditInferenceWithoutUserClassErrorTest.klass:3[m
 [36mFile:      [mAuditInferenceWithoutUserClassErrorTest.klass[m

@@ -28,12 +28,6 @@ public class AntlrOrderByDirection extends AntlrElement
         this.orderByDirection = Objects.requireNonNull(orderByDirection);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

@@ -5,7 +5,9 @@ At (UnresolvedTypesErrorTest.klass:31)
 
 [39m 1║ [35mpackage [39mdummy
 [39m31║ [35mprojection [39mProjectionWithUnresolvedClass [35mon [39mUnresolvedClass
-[39m  ║                                             [31m^^^^^^^^^^^^^^^
+[39m  ║ [31m                                            ^^^^^^^^^^^^^^^
+[39m32║ [36m{
+[39m33║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:31[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m

@@ -7,7 +7,7 @@ At (DuplicateAuditModifierErrorTest.klass:12)
 [39m 8║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
 [39m 9║ [36m{
 [39m12║     [39msystemFrom     [36m: [35mTemporalInstant[36m? [33msystem [33mfrom [33mfrom[36m;
-[39m  ║                                              [31m^^^^
+[39m  ║ [31m                                             ^^^^
 [39m22║ [36m}
 [m
 [36mLocation:  [mDuplicateAuditModifierErrorTest.klass:12[m

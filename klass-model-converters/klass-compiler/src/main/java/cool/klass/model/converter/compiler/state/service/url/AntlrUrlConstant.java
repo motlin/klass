@@ -34,12 +34,6 @@ public class AntlrUrlConstant extends AntlrNamedElement
                 + ".getSurroundingContext() not implemented yet");
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     public UrlConstantBuilder build()
     {

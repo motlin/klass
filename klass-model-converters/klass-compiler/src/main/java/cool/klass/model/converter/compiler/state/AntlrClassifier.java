@@ -99,9 +99,9 @@ public abstract class AntlrClassifier
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
     protected final MutableList<AntlrInterface>           interfaceStates        = Lists.mutable.empty();
 
-    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>>         dataTypePropertiesByName =
+    protected final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    protected final MutableOrderedMap<String, AntlrModifier>                    modifiersByName          =
+    protected final MutableOrderedMap<String, AntlrModifier>            modifiersByName          =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
     protected final MutableOrderedMap<ParserRuleContext, AntlrModifier> modifiersByContext       =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());

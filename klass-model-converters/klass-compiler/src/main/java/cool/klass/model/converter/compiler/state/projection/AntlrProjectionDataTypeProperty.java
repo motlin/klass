@@ -16,6 +16,8 @@ import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty
 import cool.klass.model.meta.domain.projection.ProjectionDataTypePropertyImpl.ProjectionDataTypePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrProjectionDataTypeProperty
         extends AntlrNamedElement
@@ -160,5 +162,17 @@ public class AntlrProjectionDataTypeProperty
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getNamePattern() not implemented yet");
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 }

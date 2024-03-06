@@ -10,7 +10,7 @@ At (ServiceErrorTest.klass:53)
 [39m48║         [32mGET
 [39m49║         [36m{
 [39m53║             [35morderBy[36m: [32mthis[36m.[39minvalidMember [31mdescending[36m;
-[39m  ║                           [31m^^^^^^^^^^^^^
+[39m  ║ [31m                          ^^^^^^^^^^^^^
 [39m54║         [36m}
 [39m55║ [36m}
 [m

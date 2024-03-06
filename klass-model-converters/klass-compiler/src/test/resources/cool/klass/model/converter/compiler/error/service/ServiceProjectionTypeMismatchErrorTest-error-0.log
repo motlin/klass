@@ -10,7 +10,7 @@ At (ServiceProjectionTypeMismatchErrorTest.klass:23)
 [39m20║         [32mGET
 [39m21║         [36m{
 [39m23║             [35mprojection  [36m: [39mExampleProjection[36m;
-[39m  ║                           [31m^^^^^^^^^^^^^^^^^
+[39m  ║ [31m                          ^^^^^^^^^^^^^^^^^
 [39m24║         [36m}
 [39m25║ [36m}
 [m

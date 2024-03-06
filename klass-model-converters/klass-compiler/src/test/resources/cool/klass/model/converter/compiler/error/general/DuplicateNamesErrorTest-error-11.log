@@ -7,7 +7,10 @@ At (DuplicateNamesErrorTest.klass:20)
 [39m15║ [35mclass [39mDuplicateTopLevelElement
 [39m16║ [36m{
 [39m20║     [39mduplicateMember[36m([39mduplicateParameter[36m: [35mString[36m[[34m1[36m..[34m1[36m][36m, [39mduplicateParameter[36m: [35mString[36m[[34m1[36m..[34m1[36m][36m)[36m: [39mDuplicateTopLevelElement[36m[[34m1[36m..[34m1[36m]
-[39m  ║     [31m^^^^^^^^^^^^^^^
+[39m  ║ [31m    ^^^^^^^^^^^^^^^
+[39m21║     [36m{
+[39m22║         [32mthis[36m.[39mduplicateMember [33m== [39mduplicateParameter
+[39m23║     [36m}
 [39m24║ [36m}
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:20[m

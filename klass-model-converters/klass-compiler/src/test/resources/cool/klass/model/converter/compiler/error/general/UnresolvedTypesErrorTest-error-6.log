@@ -7,7 +7,7 @@ At (UnresolvedTypesErrorTest.klass:10)
 [39m 8║ [35mclass [39mClassWithUnresolved [35mextends [39mUnresolvedClass [35mimplements [39mUnresolvedInterface1[36m, [39mUnresolvedInterface2
 [39m 9║ [36m{
 [39m10║     [39munresolvedEnumerationProperty[36m: [39mUnresolvedEnumeration [33mkey[36m;
-[39m  ║                                    [31m^^^^^^^^^^^^^^^^^^^^^
+[39m  ║ [31m                                   ^^^^^^^^^^^^^^^^^^^^^
 [39m16║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:10[m

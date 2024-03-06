@@ -18,12 +18,6 @@ public interface AntlrProjectionElement extends IAntlrElement
     @Nonnull
     AntlrProjectionParent getParent();
 
-    @Override
-    default boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     default Optional<IAntlrElement> getSurroundingElement()

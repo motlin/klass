@@ -7,7 +7,7 @@ At (IdWithoutKeyPropertyErrorTest.klass:15)
 [39m13║ [35mclass [39mLongId
 [39m14║ [36m{
 [39m15║     [39mlongId[36m: [35mLong [33mid[36m;
-[39m  ║                  [31m^^
+[39m  ║ [31m                 ^^
 [39m16║ [36m}
 [m
 [36mLocation:  [mIdWithoutKeyPropertyErrorTest.klass:15[m

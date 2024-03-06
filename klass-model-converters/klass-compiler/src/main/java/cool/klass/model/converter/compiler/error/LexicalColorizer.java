@@ -1,14 +1,9 @@
 package cool.klass.model.converter.compiler.error;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.grammar.KlassLexer;
-import cool.klass.model.meta.grammar.listener.KlassThrowingListener;
 import org.antlr.v4.runtime.Token;
-import org.eclipse.collections.api.list.MutableList;
 import org.fusesource.jansi.Ansi.Color;
 
 import static org.fusesource.jansi.Ansi.Color.BLUE;
@@ -20,22 +15,14 @@ import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
-public class AbstractErrorListener extends KlassThrowingListener
+public final class LexicalColorizer
 {
-    @Nonnull
-    protected final CompilationUnit                    compilationUnit;
-    @Nonnull
-    protected final MutableList<AbstractContextString> contextualStrings;
-
-    protected AbstractErrorListener(
-            @Nonnull CompilationUnit compilationUnit,
-            @Nonnull MutableList<AbstractContextString> contextualStrings)
+    private LexicalColorizer()
     {
-        this.compilationUnit   = Objects.requireNonNull(compilationUnit);
-        this.contextualStrings = Objects.requireNonNull(contextualStrings);
+        throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    protected static String colorize(@Nonnull Token token)
+    public static String colorize(@Nonnull Token token)
     {
         String text = token.getText();
 

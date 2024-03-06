@@ -18,7 +18,7 @@ import org.eclipse.collections.api.list.ListIterable;
 public abstract class AntlrOperator extends AntlrElement
 {
     protected final String                operatorText;
-    private         OperatorAntlrCriteria owningOperatorAntlrCriteria;
+    protected       OperatorAntlrCriteria owningOperatorAntlrCriteria;
 
     protected AntlrOperator(
             @Nonnull ParserRuleContext elementContext,
@@ -27,12 +27,6 @@ public abstract class AntlrOperator extends AntlrElement
     {
         super(elementContext, compilationUnit);
         this.operatorText = Objects.requireNonNull(operatorText);
-    }
-
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
     }
 
     public void setOwningOperatorAntlrCriteria(OperatorAntlrCriteria operatorAntlrCriteria)

@@ -28,12 +28,6 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
         this.owningPropertyState = Objects.requireNonNull(owningPropertyState);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

@@ -7,7 +7,7 @@ At (PrivatePropertyInProjectionErrorTest.klass:12)
 [39m 9║ [35mprojection [39mProjectionOnPrivateProperty [35mon [39mClassWithPrivateProperty
 [39m10║ [36m{
 [39m12║     [39mprivateString[36m: [34m"privateString"[36m,
-[39m  ║     [31m^^^^^^^^^^^^^
+[39m  ║ [31m    ^^^^^^^^^^^^^
 [39m13║ [36m}
 [m
 [36mLocation:  [mPrivatePropertyInProjectionErrorTest.klass:12[m

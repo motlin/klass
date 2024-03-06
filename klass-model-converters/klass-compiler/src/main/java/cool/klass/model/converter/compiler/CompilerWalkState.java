@@ -891,13 +891,7 @@ public class CompilerWalkState
             }
 
             CompilerWalkState.this.orderByOwnerState.getOrderByState().ifPresent(antlrOrderBy ->
-            {
-                if (antlrOrderBy.getElementContext() != ctx)
-                {
-                    throw new AssertionError();
-                }
-                CompilerWalkState.this.orderByState = antlrOrderBy;
-            });
+                    CompilerWalkState.this.orderByState = antlrOrderBy);
         }
 
         @Override

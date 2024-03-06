@@ -58,12 +58,6 @@ public final class AntlrPrimitiveType
         return Objects.requireNonNull(BY_TYPE.get(type));
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

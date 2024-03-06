@@ -11,6 +11,8 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrEnumerationLiteral extends AntlrNamedElement
 {
@@ -66,9 +68,9 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     }
 
     @Override
-    public boolean omitParentFromSurroundingElements()
+    public Pair<Token, Token> getContextBefore()
     {
-        return false;
+        return this.getEntireContext();
     }
 
     @Nonnull
@@ -112,5 +114,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
     {
         String message = String.format("Duplicate enumeration pretty name: '%s'.", this.prettyName.get());
         compilerErrorHolder.add("ERR_DUP_LIT", message, this, this.getElementContext().enumerationPrettyName());
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
     }
 }

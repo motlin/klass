@@ -14,11 +14,15 @@ import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrProjection
         extends AntlrProjectionParent
@@ -117,13 +121,11 @@ public class AntlrProjection
     {
         if (this.classifier == AntlrClassifier.NOT_FOUND)
         {
-            compilerErrorHolder.add(
-                    "ERR_PRJ_TYP",
-                    String.format(
-                            "Cannot find classifier '%s'",
-                            this.getElementContext().classifierReference().getText()),
-                    this,
-                    this.getElementContext().classifierReference());
+            ClassifierReferenceContext offendingContext = this.getElementContext().classifierReference();
+            String                     message          = String.format(
+                    "Cannot find classifier '%s'",
+                    offendingContext.getText());
+            compilerErrorHolder.add("ERR_PRJ_TYP", message, this, offendingContext);
         }
 
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
@@ -154,5 +156,11 @@ public class AntlrProjection
     {
         parserRuleContexts.add(this.elementContext);
         parserRuleContexts.add(this.compilationUnit.get().getParserContext());
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().projectionBody().getStart());
     }
 }

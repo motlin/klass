@@ -414,13 +414,13 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         if (validationStates.size() > 1)
         {
-            for (AbstractAntlrPropertyValidation minLengthValidationState : validationStates)
+            for (AbstractAntlrPropertyValidation minLengthValidation : validationStates)
             {
-                ParserRuleContext offendingToken = minLengthValidationState.getElementContext();
+                ParserRuleContext offendingToken = minLengthValidation.getElementContext();
                 String message = String.format(
                         "Duplicate validation '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add("ERR_DUP_VAL", message, this, offendingToken);
+                compilerErrorHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
             }
         }
     }

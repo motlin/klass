@@ -9,6 +9,8 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrRelationship
         extends AntlrElement
@@ -45,17 +47,23 @@ public class AntlrRelationship
         return this.criteria;
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.ofNullable(this.association);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 
     public void reportErrors(CompilerErrorState compilerErrorHolder)

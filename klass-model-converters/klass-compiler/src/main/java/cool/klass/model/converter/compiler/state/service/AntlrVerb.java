@@ -28,12 +28,6 @@ public class AntlrVerb extends AntlrElement
         this.verb = Objects.requireNonNull(verb);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

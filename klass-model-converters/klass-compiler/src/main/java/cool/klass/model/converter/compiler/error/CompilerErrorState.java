@@ -54,7 +54,7 @@ public class CompilerErrorState
             @Nonnull IAntlrElement element,
             @Nonnull ParserRuleContext offendingContext)
     {
-        this.add(errorCode, message, element, element.getSurroundingElements(), Lists.immutable.with(offendingContext));
+        this.add(errorCode, message, element, Lists.immutable.with(offendingContext));
     }
 
     public void add(
@@ -63,10 +63,10 @@ public class CompilerErrorState
             @Nonnull IAntlrElement element,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts)
     {
-        this.add(errorCode, message, element, element.getSurroundingElementsIncludingThis(), offendingContexts);
+        this.add(errorCode, message, element, element.getSurroundingElements(), offendingContexts);
     }
 
-    private void add(
+    public void add(
             @Nonnull String errorCode,
             @Nonnull String message,
             @Nonnull IAntlrElement element,

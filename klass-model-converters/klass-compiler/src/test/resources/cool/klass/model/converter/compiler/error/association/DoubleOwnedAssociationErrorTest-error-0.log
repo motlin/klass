@@ -7,9 +7,9 @@ At (DoubleOwnedAssociationErrorTest.klass:5)
 [39m3║ [35massociation [39mDoubleOwnedAssociation
 [39m4║ [36m{
 [39m5║     [39msource[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [33mowned[36m;
-[39m ║                                    [31m^^^^^
+[39m ║ [31m                                   ^^^^^
 [39m6║     [39mtarget[36m: [39mDoubleOwnedClass[36m[[34m1[36m..[34m1[36m] [33mowned[36m;
-[39m ║                                    [31m^^^^^
+[39m ║ [31m                                   ^^^^^
 [39m9║ [36m}
 [m
 [36mLocation:  [mDoubleOwnedAssociationErrorTest.klass:5[m

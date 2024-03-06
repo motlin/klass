@@ -7,8 +7,11 @@ At (ServiceErrorTest.klass:73)
 [39m67║ [35mservice [39mStringKeyClass
 [39m68║ [36m{
 [39m69║     [36m/[39mstringKey
+[39m70║         [32mPUT
+[39m71║         [36m{
 [39m73║             [35mprojection  [36m: [39mStringKeyProjection[36m;
-[39m  ║             [31m^^^^^^^^^^
+[39m  ║ [31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m74║         [36m}
 [39m75║ [36m}
 [m
 [36mLocation:  [mServiceErrorTest.klass:73[m

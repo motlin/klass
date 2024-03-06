@@ -5,7 +5,9 @@ At (UnresolvedTypesErrorTest.klass:53)
 
 [39m 1║ [35mpackage [39mdummy
 [39m53║ [35mservice [39mUnresolvedClass
-[39m  ║         [31m^^^^^^^^^^^^^^^
+[39m  ║ [31m        ^^^^^^^^^^^^^^^
+[39m54║ [36m{
+[39m62║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:53[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m

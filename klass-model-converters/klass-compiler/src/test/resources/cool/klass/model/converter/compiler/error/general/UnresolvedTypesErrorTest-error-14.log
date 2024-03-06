@@ -10,7 +10,7 @@ At (UnresolvedTypesErrorTest.klass:42)
 [39m38║         [32mGET
 [39m39║         [36m{
 [39m42║             [35mprojection  [36m: [39mUnresolvedProjection[36m;
-[39m  ║                           [31m^^^^^^^^^^^^^^^^^^^^
+[39m  ║ [31m                          ^^^^^^^^^^^^^^^^^^^^
 [39m43║         [36m}
 [39m51║ [36m}
 [m

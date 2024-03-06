@@ -26,18 +26,20 @@ import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.Associa
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrClass
         extends AntlrClassifier
@@ -517,11 +519,10 @@ public class AntlrClass
 
     public void reportDuplicateUserClass(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        IdentifierContext offendingToken = this.getElementContext().classHeader().identifier();
         String message = String.format(
                 "Only one 'user' class is allowed. Found '%s'.",
-                offendingToken.getText());
-        compilerErrorHolder.add("ERR_DUP_USR", message, this, offendingToken);
+                this.getName());
+        compilerErrorHolder.add("ERR_DUP_USR", message, this, this.nameContext);
     }
 
     public void reportDuplicateUserProperties(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -603,11 +604,10 @@ public class AntlrClass
             return;
         }
 
-        IdentifierContext offendingToken = this.getElementContext().classHeader().identifier();
         String message = String.format(
                 "Transient class '%s' may not have id properties.",
-                offendingToken.getText());
-        compilerErrorHolder.add("ERR_TNS_IDP", message, this, offendingToken);
+                this.getName());
+        compilerErrorHolder.add("ERR_TNS_IDP", message, this);
     }
 
     @Override
@@ -720,6 +720,12 @@ public class AntlrClass
     public ClassDeclarationContext getElementContext()
     {
         return (ClassDeclarationContext) super.getElementContext();
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().classBody().getStart());
     }
 
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)

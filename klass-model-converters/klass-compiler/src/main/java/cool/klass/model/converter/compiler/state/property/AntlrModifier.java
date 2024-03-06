@@ -80,11 +80,10 @@ public class AntlrModifier
             return;
         }
 
-        ParserRuleContext offendingToken = this.getElementContext();
         String message = String.format(
                 "Modifier '%s' requires one 'user' class in the domain model.",
-                offendingToken.getText());
-        compilerErrorHolder.add("ERR_ADT_MOD", message, this, offendingToken);
+                this.getName());
+        compilerErrorHolder.add("ERR_ADT_MOD", message, this);
     }
 
     public boolean is(String name)
@@ -175,12 +174,6 @@ public class AntlrModifier
     public boolean isTransient()
     {
         return this.getName().equals("transient");
-    }
-
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
     }
 
     @Nonnull

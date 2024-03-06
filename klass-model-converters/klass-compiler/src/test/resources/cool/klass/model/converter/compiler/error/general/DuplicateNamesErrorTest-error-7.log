@@ -7,7 +7,7 @@ At (DuplicateNamesErrorTest.klass:12)
 [39m 9║ [35minterface [39mDuplicateTopLevelElement
 [39m10║ [36m{
 [39m12║     [39mduplicateMember[36m: [39mDuplicateTopLevelElement[36m;
-[39m  ║     [31m^^^^^^^^^^^^^^^
+[39m  ║ [31m    ^^^^^^^^^^^^^^^
 [39m13║ [36m}
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:12[m

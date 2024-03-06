@@ -22,7 +22,9 @@ import cool.klass.model.meta.domain.parameter.ParameterImpl.ParameterBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 
 public final class AntlrParameter
@@ -74,17 +76,17 @@ public final class AntlrParameter
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.parameterOwner);
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 
     @Override

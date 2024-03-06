@@ -35,12 +35,6 @@ public abstract class AntlrCriteria extends AntlrElement
         return Optional.of(this.criteriaOwner);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     public abstract AbstractCriteriaBuilder<?> build();
 

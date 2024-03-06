@@ -4,8 +4,11 @@
 At (CircularInheritanceErrorTest.klass:10)
 
 [39m 1║ [35mpackage [39mexample
+[39m 9║ [35minterface [39mInterface1
 [39m10║     [35mimplements [39mInterface2
-[39m  ║                [31m^^^^^^^^^^
+[39m  ║ [31m               ^^^^^^^^^^
+[39m11║ [36m{
+[39m13║ [36m}
 [m
 [36mLocation:  [mCircularInheritanceErrorTest.klass:10[m
 [36mFile:      [mCircularInheritanceErrorTest.klass[m

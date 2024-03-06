@@ -16,6 +16,8 @@ import cool.klass.model.meta.domain.service.ServiceProjectionDispatchImpl.Servic
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
 
 public class AntlrServiceProjectionDispatch
         extends AntlrElement
@@ -37,17 +39,23 @@ public class AntlrServiceProjectionDispatch
         this.projection   = Objects.requireNonNull(projection);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.serviceState);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 
     @Nonnull

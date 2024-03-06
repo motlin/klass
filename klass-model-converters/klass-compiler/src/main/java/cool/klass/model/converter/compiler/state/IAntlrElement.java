@@ -6,9 +6,12 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public interface IAntlrElement
 {
@@ -30,8 +33,6 @@ public interface IAntlrElement
 
     void getParserRuleContexts(@Nonnull MutableList<ParserRuleContext> parserRuleContexts);
 
-    boolean omitParentFromSurroundingElements();
-
     @Nonnull
     Optional<IAntlrElement> getSurroundingElement();
 
@@ -48,36 +49,43 @@ public interface IAntlrElement
     }
 
     @Nonnull
-    default ImmutableList<IAntlrElement> getSurroundingElementsIncludingThis()
-    {
-        return this.gatherSurroundingElements(Lists.mutable.with(this));
-    }
-
-    @Nonnull
     default ImmutableList<IAntlrElement> getSurroundingElements()
     {
-        return this.gatherSurroundingElements(Lists.mutable.empty());
-    }
-
-    @Nonnull
-    default ImmutableList<IAntlrElement> gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result)
-    {
-        boolean omitParent = this.omitParentFromSurroundingElements();
-        this.getSurroundingElement().ifPresent(element -> element.gatherSurroundingElements(result, omitParent));
+        MutableList<IAntlrElement> result = Lists.mutable.empty();
+        this.gatherSurroundingElements(result);
         return result.toImmutable();
     }
 
-    default void gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result, boolean omitThis)
+    @Nonnull
+    default void gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result)
     {
-        if (!omitThis)
-        {
-            result.add(this);
-        }
-        this.getSurroundingElement().ifPresent(element -> element.gatherSurroundingElements(
-                result,
-                this.omitParentFromSurroundingElements()));
+        result.add(this);
+        this.getSurroundingElement().ifPresent(element -> element.gatherSurroundingElements(result));
+    }
+
+    default boolean isContext()
+    {
+        return false;
     }
 
     @Nonnull
     Optional<CompilationUnit> getCompilationUnit();
+
+    default Pair<Token, Token> getContextBefore()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getContextBefore() not implemented yet");
+    }
+
+    default Pair<Token, Token> getContextAfter()
+    {
+        // This makes the default implementation throw, but still not need overrides just to return null
+        this.getContextBefore();
+        return null;
+    }
+
+    default Pair<Token, Token> getEntireContext()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().getStop());
+    }
 }

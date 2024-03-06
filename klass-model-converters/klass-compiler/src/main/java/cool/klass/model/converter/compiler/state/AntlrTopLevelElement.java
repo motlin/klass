@@ -6,24 +6,46 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.api.source.TopLevelElementWithSourceCode.TopLevelElementBuilderWithSourceCode;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public interface AntlrTopLevelElement
         extends IAntlrElement
 {
-    @Nonnull
-    TopLevelElementBuilderWithSourceCode getElementBuilder();
-
     @Override
-    default boolean omitParentFromSurroundingElements()
+    default Pair<Token, Token> getContextBefore()
     {
-        return false;
+        return Tuples.pair(this.getElementContext().getStart(), this.getBodyContext().getStart());
     }
 
     @Nonnull
     @Override
+    default Pair<Token, Token> getContextAfter()
+    {
+        Token token = this.getElementContext().getStop();
+        return Tuples.pair(token, token);
+    }
+
+    default ParserRuleContext getBodyContext()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getBodyContext() not implemented yet");
+    }
+
+    @Nonnull
+    TopLevelElementBuilderWithSourceCode getElementBuilder();
+
     default Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.empty();
+    }
+
+    @Override
+    default boolean isContext()
+    {
+        return true;
     }
 
     default void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)

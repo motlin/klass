@@ -11,13 +11,16 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -47,18 +50,23 @@ public class AntlrOrderBy extends AntlrElement
         this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        // TODO: Is this backwards?
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.orderByOwnerState);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return orderByOwnerState instanceof AntlrService;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return this.getEntireContext();
     }
 
     public int getNumProperties()

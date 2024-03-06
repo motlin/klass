@@ -10,6 +10,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
@@ -99,6 +100,12 @@ public class AntlrEnumeration
     public EnumerationDeclarationContext getElementContext()
     {
         return (EnumerationDeclarationContext) super.getElementContext();
+    }
+
+    @Override
+    public EnumerationBodyContext getBodyContext()
+    {
+        return this.getElementContext().enumerationBody();
     }
 
     @Nonnull

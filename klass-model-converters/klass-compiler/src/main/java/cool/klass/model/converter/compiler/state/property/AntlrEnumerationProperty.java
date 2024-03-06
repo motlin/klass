@@ -138,9 +138,8 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
         for (AntlrModifier idModifier : idModifiers)
         {
-            ParserRuleContext offendingToken = idModifier.getElementContext();
-            String            message        = "Enumeration properties may not be auto-generated ids.";
-            compilerErrorHolder.add("ERR_ENM_IDP", message, this, offendingToken);
+            String message = "Enumeration properties may not be auto-generated ids.";
+            compilerErrorHolder.add("ERR_ENM_IDP", message, this, idModifier.getElementContext());
         }
     }
 

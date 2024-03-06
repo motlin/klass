@@ -24,13 +24,16 @@ import cool.klass.model.meta.domain.service.url.UrlImpl.UrlBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrUrl extends AntlrElement
 {
@@ -67,17 +70,23 @@ public class AntlrUrl extends AntlrElement
         this.serviceGroup = Objects.requireNonNull(serviceGroup);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.serviceGroup);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().url().getStop());
     }
 
     @Nonnull

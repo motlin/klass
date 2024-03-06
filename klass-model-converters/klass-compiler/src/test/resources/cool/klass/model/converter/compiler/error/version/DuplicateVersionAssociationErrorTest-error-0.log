@@ -7,7 +7,7 @@ At (DuplicateVersionAssociationErrorTest.klass:10)
 [39m 8║ [35massociation [39mExampleClassVersionAgain
 [39m 9║ [36m{
 [39m10║     [39mduplicateExampleClass[36m: [39mExampleClass[36m[[34m1[36m..[34m1[36m][36m;
-[39m  ║     [31m^^^^^^^^^^^^^^^^^^^^^
+[39m  ║ [31m    ^^^^^^^^^^^^^^^^^^^^^
 [39m14║ [36m}
 [m
 [36mLocation:  [mDuplicateVersionAssociationErrorTest.klass:10[m

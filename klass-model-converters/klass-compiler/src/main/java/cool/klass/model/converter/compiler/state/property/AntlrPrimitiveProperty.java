@@ -151,9 +151,8 @@ public class AntlrPrimitiveProperty
         ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
         for (AntlrModifier idModifier : idModifiers)
         {
-            ParserRuleContext offendingToken = idModifier.getElementContext();
             String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
-            compilerErrorHolder.add("ERR_NKY_IDP", message, this, offendingToken);
+            compilerErrorHolder.add("ERR_NKY_IDP", message, idModifier);
         }
     }
 
@@ -164,12 +163,11 @@ public class AntlrPrimitiveProperty
         ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
         for (AntlrModifier idModifier : idModifiers)
         {
-            ParserRuleContext offendingToken = idModifier.getElementContext();
             String message = String.format(
                     "Primitive properties with type %s may not be auto-generated ids. Only types %s may be id properties.",
                     primitiveType.getPrettyName(),
                     PrimitiveType.ID_PRIMITIVE_TYPES);
-            compilerErrorHolder.add("ERR_PRP_IDP", message, this, offendingToken);
+            compilerErrorHolder.add("ERR_PRP_IDP", message, idModifier);
         }
     }
 

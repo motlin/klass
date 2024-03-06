@@ -7,7 +7,7 @@ At (ManyOwnsOneAssociationErrorTest.klass:20)
 [39m17║ [35massociation [39mDummyAssociation2
 [39m18║ [36m{
 [39m20║     [39mparent2[36m: [39mDummy[36m[[34m0[36m..[34m1[36m] [33mowned[36m;
-[39m  ║                          [31m^^^^^
+[39m  ║ [31m                  ^^^^^^ ^^^^^
 [39m23║ [36m}
 [m
 [36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:20[m

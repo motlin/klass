@@ -26,14 +26,17 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaDeclarationConte
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 
 public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 {
@@ -82,17 +85,29 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         this.verbState = Objects.requireNonNull(verbState);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return false;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
         return Optional.of(this.urlState);
+    }
+
+    @Override
+    public boolean isContext()
+    {
+        return true;
+    }
+
+    @Override
+    public Pair<Token, Token> getContextBefore()
+    {
+        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().serviceDeclarationBody().getStart());
+    }
+
+    @Override
+    public Pair<Token, Token> getContextAfter()
+    {
+        return Tuples.pair(this.getElementContext().serviceDeclarationBody().getStop(), this.getElementContext().serviceDeclarationBody().getStop());
     }
 
     @Nonnull
@@ -201,11 +216,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     {
         ParserRuleContext verbContext = this.verbState.getElementContext();
 
-        compilerErrorHolder.add(
-                "ERR_GET_PRJ",
-                "GET services require a projection.",
-                this,
-                verbContext);
+        compilerErrorHolder.add("ERR_GET_PRJ", "GET services require a projection.", this, verbContext);
     }
 
     private void reportPresentProjection(
@@ -217,7 +228,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         compilerErrorHolder.add(
                 "ERR_GET_PRJ",
                 String.format("%s services must not have a projection.", this.verbState.getVerb().name()),
-                this,
+                projectionDispatch,
                 elementContext);
     }
 

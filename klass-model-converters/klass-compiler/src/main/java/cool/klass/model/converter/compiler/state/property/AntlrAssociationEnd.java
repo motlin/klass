@@ -228,4 +228,9 @@ public class AntlrAssociationEnd
     {
         return this == this.owningAssociationState.getTargetEnd();
     }
+
+    public AntlrAssociationEnd getOpposite()
+    {
+        return this.opposite;
+    }
 }

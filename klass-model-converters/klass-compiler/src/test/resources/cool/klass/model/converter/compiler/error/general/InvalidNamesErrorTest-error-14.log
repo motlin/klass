@@ -5,7 +5,9 @@ At (InvalidNamesErrorTest.klass:43)
 
 [39m 1║ [35mpackage [39mBADPACKAGE
 [39m43║ [35mprojection [39mbadProjection [35mon [39mbadClass
-[39m  ║            [31m^^^^^^^^^^^^^
+[39m  ║ [31m           ^^^^^^^^^^^^^
+[39m44║ [36m{
+[39m46║ [36m}
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:43[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m

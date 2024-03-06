@@ -29,12 +29,6 @@ public abstract class AntlrExpressionValue extends AntlrElement
         this.expressionValueOwner = Objects.requireNonNull(expressionValueOwner);
     }
 
-    @Override
-    public boolean omitParentFromSurroundingElements()
-    {
-        return true;
-    }
-
     @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()

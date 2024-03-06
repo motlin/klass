@@ -13,6 +13,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
 import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -66,6 +67,11 @@ public class AntlrAssociation
     public AssociationDeclarationContext getElementContext()
     {
         return (AssociationDeclarationContext) this.elementContext;
+    }
+
+    public AssociationBodyContext getBodyContext()
+    {
+        return this.getElementContext().associationBody();
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
@@ -189,6 +195,10 @@ public class AntlrAssociation
                     "ERR_ASO_OWN",
                     message,
                     this,
+                    Lists.immutable
+                            .<IAntlrElement>with(this.getTargetEnd())
+                            .newWithAll(this.getSourceEnd().getSurroundingElements())
+                            .distinct(),
                     Lists.immutable.with(
                             sourceOwnedModifier.getElementContext(),
                             targetOwnedModifier.getElementContext()));
@@ -200,7 +210,13 @@ public class AntlrAssociation
                     this.getTargetEnd().getOwningClassifierState().getName(),
                     this.getTargetEnd().getName());
             AntlrModifier ownedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
-            compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
+            compilerErrorHolder.add(
+                    "ERR_OWN_ONE",
+                    message,
+                    ownedModifier,
+                    Lists.immutable.with(
+                            ownedModifier.getElementContext(),
+                            this.getElementContext().associationBody().associationEnd(1).multiplicity()));
         }
         else if (this.getSourceEnd().isToOne() && this.getTargetEnd().isToMany() && this.getSourceEnd().isOwned())
         {
@@ -209,7 +225,13 @@ public class AntlrAssociation
                     this.getSourceEnd().getOwningClassifierState().getName(),
                     this.getSourceEnd().getName());
             AntlrModifier ownedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
-            compilerErrorHolder.add("ERR_OWN_ONE", message, ownedModifier);
+            compilerErrorHolder.add(
+                    "ERR_OWN_ONE",
+                    message,
+                    ownedModifier,
+                    Lists.immutable.with(
+                            ownedModifier.getElementContext(),
+                            this.getElementContext().associationBody().associationEnd(0).multiplicity()));
         }
         else if (this.getSourceEnd().isToOne()
                 && this.getTargetEnd().isToOne()
@@ -224,6 +246,10 @@ public class AntlrAssociation
                     "ERR_ASO_SYM",
                     message,
                     this,
+                    Lists.immutable
+                            .<IAntlrElement>with(this.getTargetEnd())
+                            .newWithAll(this.getSourceEnd().getSurroundingElements())
+                            .distinct(),
                     Lists.immutable.with(
                             this.getSourceEnd().getMultiplicity().getElementContext(),
                             this.getTargetEnd().getMultiplicity().getElementContext()));

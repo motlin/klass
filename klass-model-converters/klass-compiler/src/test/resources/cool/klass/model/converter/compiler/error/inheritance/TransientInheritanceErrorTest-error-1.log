@@ -5,7 +5,10 @@ At (TransientInheritanceErrorTest.klass:10)
 
 [39m 1║ [35mpackage [39mexample
 [39m10║ [35mclass [39mSubClass
-[39m  ║       [31m^^^^^^^^
+[39m  ║ [31m      ^^^^^^^^
+[39m11║     [35mextends [39mTransientSuperClass
+[39m12║ [36m{
+[39m14║ [36m}
 [m
 [36mLocation:  [mTransientInheritanceErrorTest.klass:10[m
 [36mFile:      [mTransientInheritanceErrorTest.klass[m

@@ -17,6 +17,7 @@ import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePr
 import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -230,18 +231,18 @@ public class AntlrInterface extends AntlrClassifier
     private void reportTransientModifier(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Only need to check declared modifiers
-        Optional<AntlrModifier> transientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
+        Optional<AntlrModifier> maybeTransientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
 
-        if (!transientModifier.isPresent())
+        if (!maybeTransientModifier.isPresent())
         {
             return;
         }
 
-        ParserRuleContext offendingToken = transientModifier.get().getElementContext();
+        AntlrModifier transientModifier = maybeTransientModifier.get();
         String message = String.format(
                 "'%s' keyword not applicable to interfaces.",
-                offendingToken.getText());
-        compilerErrorHolder.add("ERR_INT_TRN", message, this, offendingToken);
+                transientModifier.getName());
+        compilerErrorHolder.add("ERR_INT_TRN", message, transientModifier);
     }
 
     @Override
@@ -321,6 +322,11 @@ public class AntlrInterface extends AntlrClassifier
     public InterfaceDeclarationContext getElementContext()
     {
         return (InterfaceDeclarationContext) super.getElementContext();
+    }
+
+    public InterfaceBodyContext getBodyContext()
+    {
+        return this.getElementContext().interfaceBody();
     }
 
     @Nonnull
