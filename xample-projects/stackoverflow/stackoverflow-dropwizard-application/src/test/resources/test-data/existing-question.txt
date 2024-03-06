@@ -1,3 +1,7 @@
+class com.stackoverflow.User
+systemFrom               , systemTo               , userId
+"1999-12-31 23:59:59.999", "9999-12-01 23:59:00.0", "test user 1"
+
 class com.stackoverflow.Question
 id, title         , body         , status, deleted, createdById  , createdOn                , lastUpdatedById, systemFrom               , systemTo
 1 , "test title 1", "test body 1", "Open", false  , "test user 1", "1888-12-31 23:59:59.999", "test user 1"  , "1888-12-31 23:59:59.999", "1999-12-31 23:59:59.999"

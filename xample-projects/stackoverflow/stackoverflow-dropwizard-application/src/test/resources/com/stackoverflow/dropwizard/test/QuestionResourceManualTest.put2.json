@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "title": "edited title 1",
+  "body": "edited body 1",
+  "status": "On hold",
+  "deleted": true,
+  "systemFrom": "2001-01-01T23:59:59Z",
+  "systemTo": null,
+  "createdOn": "1999-12-31T23:59:59.999Z",
+  "answers": [ ],
+  "tags": [
+    {
+      "tag": {
+        "name": "test tag 1"
+      }
+    },
+    {
+      "tag": {
+        "name": "test tag 3"
+      }
+    }
+  ],
+  "version": {
+    "number": 3
+  }
+}

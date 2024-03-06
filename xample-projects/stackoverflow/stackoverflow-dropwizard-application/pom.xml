@@ -197,11 +197,6 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-connection-manager</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
 
@@ -481,11 +476,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.goldmansachs.reladomo</groupId>
-            <artifactId>reladomo</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
@@ -508,11 +498,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
         </dependency>
 
         <dependency>

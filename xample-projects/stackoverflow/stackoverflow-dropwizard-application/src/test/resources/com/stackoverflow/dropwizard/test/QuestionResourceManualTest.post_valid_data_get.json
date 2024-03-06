@@ -1,0 +1,26 @@
+{
+  "id": 2,
+  "title": "example title 2",
+  "body": "example body 2",
+  "status": "Open",
+  "deleted": false,
+  "systemFrom": "2001-01-01T23:59:59Z",
+  "systemTo": null,
+  "createdOn": "2001-01-01T23:59:59Z",
+  "answers": [ ],
+  "tags": [
+    {
+      "tag": {
+        "name": "test tag 1"
+      }
+    },
+    {
+      "tag": {
+        "name": "test tag 3"
+      }
+    }
+  ],
+  "version": {
+    "number": 1
+  }
+}

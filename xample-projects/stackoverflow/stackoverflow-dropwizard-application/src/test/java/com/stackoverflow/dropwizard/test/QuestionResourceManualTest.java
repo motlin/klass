@@ -1,11 +1,8 @@
 package com.stackoverflow.dropwizard.test;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -13,72 +10,96 @@ import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
-import io.dropwizard.setup.Environment;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.rule.match.json.JsonMatchRule;
+import io.liftwizard.reladomo.test.rule.ReladomoLoadDataTestRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
-import org.apache.commons.text.StringEscapeUtils;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.json.JSONException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
-@Ignore("TODO: graphql.schema.idl.errors.SchemaProblem: errors=[There is no type resolver defined for interface / union 'Document' type, There is no type resolver defined for interface / union 'Vote' type]")
 public class QuestionResourceManualTest
 {
     @Rule
-    public final DropwizardAppRule<StackOverflowConfiguration> rule = new DropwizardAppRule<>(
+    public final JsonMatchRule jsonMatchRule = new JsonMatchRule(this.getClass());
+
+    protected final DropwizardAppRule<StackOverflowConfiguration> appRule = new DropwizardAppRule<>(
             StackOverflowApplication.class,
             ResourceHelpers.resourceFilePath("config-test.json5"));
 
-    @Rule
-    public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
-            .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
-            .setConnectionSupplier(() ->
-            {
-                StackOverflowConfiguration configuration = this.rule.getConfiguration();
-                Environment                environment   = this.rule.getEnvironment();
-                return configuration
-                        .getConnectionManagersFactory()
-                        .getConnectionManagersByName(configuration, environment)
-                        .get("h2-tcp")
-                        .getConnection();
-            })
-            .build();
+    protected final TestRule reladomoLoadDataTestRule = new ReladomoLoadDataTestRule();
+    protected final TestRule logMarkerTestRule        = new LogMarkerTestRule();
 
-    protected Client getClient(String clientName)
+    @Rule
+    public final TestRule rule = RuleChain
+            .outerRule(this.appRule)
+            .around(this.reladomoLoadDataTestRule)
+            .around(this.logMarkerTestRule);
+
+    protected Client getClient(String testName)
     {
         var jerseyClientConfiguration = new JerseyClientConfiguration();
         jerseyClientConfiguration.setTimeout(Duration.minutes(5));
 
-        return new JerseyClientBuilder(this.rule.getEnvironment())
+        String className  = this.getClass().getCanonicalName();
+        String clientName = className + "." + testName;
+
+        return new JerseyClientBuilder(this.appRule.getEnvironment())
                 .using(jerseyClientConfiguration)
                 .build(clientName);
     }
 
+    protected void assertEmptyResponse(Status expectedStatus, Response actualResponse)
+    {
+        assertFalse(actualResponse.hasEntity());
+        assertThat(actualResponse.getStatusInfo(), is(expectedStatus));
+    }
+
+    protected void assertResponse(String testName, Status expectedStatus, Response actualResponse)
+    {
+        this.assertResponseStatus(actualResponse, expectedStatus);
+        String actualJsonResponse = actualResponse.readEntity(String.class);
+
+        String expectedResponseClassPathLocation = this.getClass().getSimpleName() + "." + testName + ".json";
+
+        this.jsonMatchRule.assertFileContents(expectedResponseClassPathLocation, actualJsonResponse);
+    }
+
+    protected void assertResponseStatus(@Nonnull Response response, Status status)
+    {
+        response.bufferEntity();
+        String entityAsString = response.readEntity(String.class);
+        assertThat(entityAsString, response.getStatusInfo(), is(status));
+    }
+
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void get_smoke_test() throws JSONException
+    public void get_smoke_test()
+            throws JSONException
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.get_smoke_test");
+        Client client = this.getClient("get_smoke_test");
 
         this.assertQuestion1Unchanged(client);
     }
 
-    protected void assertQuestion1Unchanged(@Nonnull Client client) throws JSONException
+    protected void assertQuestion1Unchanged(@Nonnull Client client)
+            throws JSONException
     {
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -96,9 +117,8 @@ public class QuestionResourceManualTest
                   "deleted": false,
                   "systemFrom": "1999-12-31T23:59:59.999Z",
                   "systemTo": null,
-                  "createdById": "test user 1",
                   "createdOn": "1999-12-31T23:59:59.999Z",
-                  "lastUpdatedById": "test user 1",
+                  "answers": [],
                   "tags": [
                     {
                       "tag": {
@@ -123,8 +143,7 @@ public class QuestionResourceManualTest
     @ReladomoTestFile("test-data/existing-question.txt")
     public void post_invalid_data()
     {
-        Client client =
-                this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_invalid_data");
+        Client client = this.getClient("post_invalid_data");
 
         //language=JSON
         String invalidJson = """
@@ -161,43 +180,22 @@ public class QuestionResourceManualTest
                 }
                 """;
 
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .request()
+                .header("Authorization", "Impersonation User ID")
                 .post(Entity.json(invalidJson));
 
-        this.assertResponseStatus(response, Status.BAD_REQUEST);
-
-        List<String> errors = response.readEntity(new GenericType<>() {});
-        String message = ListAdapter.adapt(errors)
-                .collect(String::toString)
-                .collect(StringEscapeUtils::escapeJava)
-                .makeString("\n\"", "\",\n\"", "\"\n");
-        assertThat(
-                message,
-                errors,
-                is(Lists.immutable.with(
-                        "Error at Question.title. Expected property with type 'Question.title: String' but got '1' with type 'number'.",
-                        "Error at Question.status. Expected enumerated property with type 'Question.status: Status' but got \"Invalid Choice\" with type 'string'. Expected one of \"Open\", \"On hold\", \"Closed\".",
-                        "Error at Question.deleted. Expected property with type 'Question.deleted: Boolean' but got '[]' with type 'array'.",
-                        "Error at Question.extra. No such property 'Question.extra' but got \"extra\". Expected properties: body, id, title, status, deleted, system, systemFrom, systemTo, createdById, createdOn, lastUpdatedById, answers, votes, tags, version.",
-                        "Error at Question.answers[0].body. Expected property with type 'Document.body: String' but got '2' with type 'number'.",
-                        "Error at Question.answers[0].nestedExtra. No such property 'Answer.nestedExtra' but got \"nestedExtra\". Expected properties: body, id, deleted, questionId, system, systemFrom, systemTo, question, version.",
-                        "Error at Question.answers[0].nestedExtraNull. No such property 'Answer.nestedExtraNull' but got null. Expected properties: body, id, deleted, questionId, system, systemFrom, systemTo, question, version.",
-                        "Error at Question.tags[0].name. No such property 'QuestionTagMapping.name' but got [{}]. Expected properties: questionId, tagName, system, systemFrom, systemTo, question, tag.",
-                        "Error at Question.tags[0].tag. Expected json object but value was array.",
-                        "Error at Question.tags[1].name. No such property 'QuestionTagMapping.name' but got {\"name\":{}}. Expected properties: questionId, tagName, system, systemFrom, systemTo, question, tag.",
-                        "Error at Question.tags[2]. Expected json object but value was string.",
-                        "Error at Question.version.number. Expected property with type 'QuestionVersion.number: Integer' but got '20000000000' with type 'number'.",
-                        "Error at Question.body. Expected value for required property 'Document.body: String' but value was missing.")));
-        //</editor-fold>
+        this.assertResponse("post_invalid_data", Status.BAD_REQUEST, response);
     }
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void post_valid_data() throws JSONException
+    public void post_valid_data()
+            throws JSONException
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.post_valid_data");
+        Client client = this.getClient("post_valid_data");
 
         //<editor-fold desc="POST valid json, status: CREATED">
         {
@@ -226,17 +224,19 @@ public class QuestionResourceManualTest
                     }
                     """;
 
-            Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/", this.rule.getLocalPort()))
+            Response response = client
+                    .target("http://localhost:{port}/api/manual/question/")
+                    .resolveTemplate("port", this.appRule.getLocalPort())
                     .request()
+                    .header("Authorization", "Impersonation User ID")
                     .post(Entity.json(validJson));
 
-            this.assertResponseStatus(response, Status.CREATED);
+            this.assertEmptyResponse(Status.CREATED, response);
 
             String body = response.readEntity(String.class);
             assertThat(body, is(""));
 
-            assertThat(response.getLocation().getPath(), is("/manual/api/question/2"));
+            assertThat(response.getLocation().getPath(), is("/api/manual/question/2"));
         }
         //</editor-fold>
 
@@ -244,53 +244,25 @@ public class QuestionResourceManualTest
 
         //<editor-fold desc="GET id: 2, status: ok">
         {
-            Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+            Response response = client
+                    .target("http://localhost:{port}/api/manual/question/{id}")
+                    .resolveTemplate("port", this.appRule.getLocalPort())
                     .resolveTemplate("id", 2)
                     .request()
                     .get();
 
-            this.assertResponseStatus(response, Status.OK);
-
-            String jsonResponse = response.readEntity(String.class);
-            //language=JSON
-            String expected = """
-                    {
-                      "id": 2,
-                      "title": "example title 2",
-                      "body": "example body 2",
-                      "status": "Open",
-                      "deleted": false,
-                      "systemTo": null,
-                      "createdById": "TODO",
-                      "lastUpdatedById": "TODO",
-                      "tags": [
-                        {
-                          "tag": {
-                            "name": "test tag 1"
-                          }
-                        },
-                        {
-                          "tag": {
-                            "name": "test tag 3"
-                          }
-                        }
-                      ],
-                      "version": {
-                        "number": 1
-                      }
-                    }
-                    """;
-            JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
+            this.assertResponse("post_valid_data_get", Status.OK, response);
         }
         //</editor-fold>
     }
 
+    @Ignore("TODO: Add an error when the id in the body doesn't match the id in the url. #1650")
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_invalid_id() throws JSONException
+    public void put_invalid_id()
+            throws JSONException
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_invalid_id");
+        Client client = this.getClient("put_invalid_id");
 
         //language=JSON
         String json = """
@@ -324,22 +296,25 @@ public class QuestionResourceManualTest
                 }
                 """;
 
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
+                .header("Authorization", "Impersonation User ID")
                 .put(Entity.json(json));
 
-        this.assertResponseStatus(response, Status.BAD_REQUEST);
+        this.assertResponseStatus(response, Status.NO_CONTENT);
         this.assertQuestion1Unchanged(client);
     }
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_conflict() throws JSONException
+    public void put_conflict()
+            throws JSONException
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_conflict");
+        Client client = this.getClient("put_conflict");
 
         //language=JSON
         String validJson = """
@@ -356,11 +331,13 @@ public class QuestionResourceManualTest
                 }
                 """;
 
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
+                .header("Authorization", "Impersonation User ID")
                 .put(Entity.json(validJson));
 
         this.assertResponseStatus(response, Status.CONFLICT);
@@ -370,9 +347,9 @@ public class QuestionResourceManualTest
 
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put() throws JSONException
+    public void put()
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put");
+        Client client = this.getClient("put");
 
         //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
@@ -407,65 +384,37 @@ public class QuestionResourceManualTest
                     }
                     """;
 
-            Response response = client.target(
-                            String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+            Response response = client
+                    .target("http://localhost:{port}/api/manual/question/{id}")
+                    .resolveTemplate("port", this.appRule.getLocalPort())
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
+                    .header("Authorization", "Impersonation User ID")
                     .put(Entity.json(validJson));
 
-            this.assertResponseStatus(response, Status.NO_CONTENT);
+            this.assertEmptyResponse(Status.NO_CONTENT, response);
         }
         //</editor-fold>
 
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
 
-        this.assertResponseStatus(response, Status.OK);
-
-        String jsonResponse = response.readEntity(String.class);
-        //language=JSON
-        String expected = """
-                {
-                  "id": 1,
-                  "title": "edited title 1",
-                  "body": "edited body 1",
-                  "status": "On hold",
-                  "deleted": true,
-                  "systemTo": null,
-                  "createdById": "test user 1",
-                  "createdOn": "1999-12-31T23:59:59.999Z",
-                  "lastUpdatedById": "test user 1",
-                  "tags": [
-                    {
-                      "tag": {
-                        "name": "test tag 1"
-                      }
-                    },
-                    {
-                      "tag": {
-                        "name": "test tag 3"
-                      }
-                    }
-                  ],
-                  "version": {
-                    "number": 3
-                  }
-                }""";
-        JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
+        this.assertResponse("put2", Status.OK, response);
 
         // TODO: PUT with owned children, with all four cases of unchanged, created, updated, deleted
     }
 
-    @Ignore("TODO: Only increment version number when data actually changes.")
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
-    public void put_unchanged() throws JSONException
+    public void put_unchanged()
+            throws JSONException
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.put_unchanged");
+        Client client = this.getClient("put_unchanged");
 
         //language=JSON
         String json = """
@@ -498,14 +447,16 @@ public class QuestionResourceManualTest
                 }
                 """;
 
-        Response response = client.target(
-                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+        Response response = client
+                .target("http://localhost:{port}/api/manual/question/{id}")
+                .resolveTemplate("port", this.appRule.getLocalPort())
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
+                .header("Authorization", "Impersonation User ID")
                 .put(Entity.json(json));
 
-        this.assertResponseStatus(response, Status.NO_CONTENT);
+        this.assertEmptyResponse(Status.NO_CONTENT, response);
 
         this.assertQuestion1Unchanged(client);
     }
@@ -513,33 +464,28 @@ public class QuestionResourceManualTest
     @Test
     public void restSet()
     {
-        Client client = this.getClient("com.stackoverflow.dropwizard.test.QuestionResourceManualTest.restSet");
+        Client client = this.getClient("restSet");
 
         {
-            Response response = client.target(
-                            String.format("http://localhost:%d/api/manual/set", this.rule.getLocalPort()))
+            Response response = client
+                    .target("http://localhost:{port}/api/manual/set")
+                    .resolveTemplate("port", this.appRule.getLocalPort())
                     .request()
                     .get();
 
-            this.assertResponseStatus(response, Status.NO_CONTENT);
+            this.assertResponse("restSet", Status.OK, response);
         }
 
         {
-            Response response = client.target(
-                            String.format("http://localhost:%d/api/manual/map", this.rule.getLocalPort()))
+            Response response = client
+                    .target("http://localhost:{port}/api/manual/map")
+                    .resolveTemplate("port", this.appRule.getLocalPort())
                     .request()
                     .get();
 
-            this.assertResponseStatus(response, Status.NO_CONTENT);
+            this.assertResponse("restMap", Status.OK, response);
         }
     }
 
     // TODO: Should PUT return the version number as an indicator that something changed? Or some other HTTP code?
-
-    public void assertResponseStatus(@Nonnull Response response, Status status)
-    {
-        response.bufferEntity();
-        String entityAsString = response.readEntity(String.class);
-        assertThat(entityAsString, response.getStatusInfo(), is(status));
-    }
 }
