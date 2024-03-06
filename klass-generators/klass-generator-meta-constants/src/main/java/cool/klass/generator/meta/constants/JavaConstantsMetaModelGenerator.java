@@ -138,9 +138,9 @@ public class JavaConstantsMetaModelGenerator
                 + "public enum " + this.applicationName + "DomainModel implements DomainModel\n"
                 + "{\n"
                 + "    INSTANCE;\n"
-                + "    \n"
+                + "\n"
                 + this.getTopLevelElementsSourceCode()
-                + "    \n"
+                + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public ImmutableList<PackageableElement> getTopLevelElements()\n"
@@ -408,6 +408,8 @@ public class JavaConstantsMetaModelGenerator
                 + "import cool.klass.model.meta.domain.api.projection.*;\n"
                 + "import cool.klass.model.meta.domain.api.source.*;\n"
                 + "\n"
+                + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
+                + "\n"
                 + "import org.eclipse.collections.api.list.*;\n"
                 + "import org.eclipse.collections.api.multimap.list.*;\n"
                 + "import org.eclipse.collections.impl.factory.*;\n"
@@ -601,6 +603,8 @@ public class JavaConstantsMetaModelGenerator
                 + "import cool.klass.model.meta.domain.api.property.validation.*;\n"
                 + "import cool.klass.model.meta.domain.api.source.*;\n"
                 + "\n"
+                + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
+                + "\n"
                 + "import org.eclipse.collections.api.list.*;\n"
                 + "import org.eclipse.collections.api.multimap.list.*;\n"
                 + "import org.eclipse.collections.impl.factory.*;"
@@ -611,9 +615,9 @@ public class JavaConstantsMetaModelGenerator
                 + "public enum " + eachInterface.getName() + "_Interface implements Interface\n"
                 + "{\n"
                 + "    INSTANCE;\n"
-                + "    \n"
+                + "\n"
                 + this.getMemberConstantsSourceCode(eachInterface)
-                + "    \n"
+                + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public String getPackageName()\n"
@@ -690,7 +694,8 @@ public class JavaConstantsMetaModelGenerator
     {
         // @formatter:off
         //language=JAVA
-        return "package " + klass.getPackageName() + ".meta.constants;\n"
+        return ""
+                + "package " + klass.getPackageName() + ".meta.constants;\n"
                 + "\n"
                 + "import java.util.Optional;\n"
                 + "\n"
@@ -703,6 +708,8 @@ public class JavaConstantsMetaModelGenerator
                 + "import cool.klass.model.meta.domain.api.property.validation.*;\n"
                 + "import cool.klass.model.meta.domain.api.source.*;\n"
                 + "\n"
+                + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
+                + "\n"
                 + "import org.eclipse.collections.api.list.*;\n"
                 + "import org.eclipse.collections.api.multimap.list.*;\n"
                 + "import org.eclipse.collections.impl.factory.*;"
@@ -713,10 +720,10 @@ public class JavaConstantsMetaModelGenerator
                 + "public enum " + klass.getName() + "_Klass implements Klass\n"
                 + "{\n"
                 + "    INSTANCE;\n"
-                + "    \n"
+                + "\n"
                 + this.getMemberConstantsSourceCode(klass)
                 + this.getAssociationEndConstantsSourceCode(klass)
-                + "    \n"
+                + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public String getPackageName()\n"
