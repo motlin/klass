@@ -1,9 +1,12 @@
 package cool.klass.model.converter.compiler;
 
+import java.util.LinkedHashMap;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.AuditAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.AuditPropertyInferencePhase;
@@ -31,11 +34,22 @@ import cool.klass.model.converter.compiler.phase.UrlParameterPhase;
 import cool.klass.model.converter.compiler.phase.VariableResolutionPhase;
 import cool.klass.model.converter.compiler.phase.VersionAssociationInferencePhase;
 import cool.klass.model.converter.compiler.phase.VersionClassInferencePhase;
+import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
+import cool.klass.model.converter.compiler.syntax.highlighter.DarkColorScheme;
+import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
+import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassListener;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableMapIterable;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 import org.fusesource.jansi.AnsiConsole;
 
 public class KlassCompiler
@@ -117,7 +131,47 @@ public class KlassCompiler
                 throw new RuntimeException(message, e);
             }
         }
+
+        CompilerInputState compilerInputState = this.compilerState.getCompilerInputState();
+        ImmutableList<SourceCodeBuilder> sourceCodeBuilders = compilerInputState
+                .getCompilationUnits()
+                .collect(CompilationUnit::build)
+                .toImmutable();
+        ImmutableList<SourceCode>         sourceCodes               = sourceCodeBuilders.collect(SourceCodeBuilder::build);
+        MapIterable<Token, TokenCategory> tokenCategoriesFromLexer  = this.getTokenCategoriesFromLexer(sourceCodes);
+        MapIterable<Token, TokenCategory> tokenCategoriesFromParser = this.getTokenCategoriesFromParser(sourceCodes);
+
+        CompilerAnnotationState compilerAnnotationHolder = this.compilerState.getCompilerAnnotationHolder();
+
+        // TODO: Make the ColorScheme configurable
+        var ansiTokenColorizer = new AnsiTokenColorizer(
+                DarkColorScheme.INSTANCE,
+                tokenCategoriesFromParser,
+                tokenCategoriesFromLexer);
+        compilerAnnotationHolder.setAnsiTokenColorizer(ansiTokenColorizer);
+
         this.compilerState.reportErrors();
-        return this.compilerState.getCompilationResult();
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilerAnnotationHolder.getCompilerAnnotations();
+
+        return this.compilerState.getCompilationResult(sourceCodes, compilerAnnotations);
+    }
+
+    private MapIterable<Token, TokenCategory> getTokenCategoriesFromLexer(ImmutableList<SourceCode> sourceCodes)
+    {
+        MutableMapIterable<Token, TokenCategory> tokenCategoriesFromLexer = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+        sourceCodes
+                .collect(SourceCode::getTokenStream)
+                .forEachWith(LexerBasedTokenCategorizer::findTokenCategoriesFromLexer, tokenCategoriesFromLexer);
+        return tokenCategoriesFromLexer.asUnmodifiable();
+    }
+
+    private MapIterable<Token, TokenCategory> getTokenCategoriesFromParser(ImmutableList<SourceCode> sourceCodes)
+    {
+        var listener = new ParserBasedTokenCategorizer();
+
+        sourceCodes
+                .collect(SourceCode::getParserContext)
+                .forEachWith(ParserBasedTokenCategorizer::findTokenCategoriesFromParser, listener);
+        return listener.getTokenCategories();
     }
 }

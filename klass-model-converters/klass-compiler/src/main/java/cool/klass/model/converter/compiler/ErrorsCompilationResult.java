@@ -17,11 +17,17 @@ public class ErrorsCompilationResult
     private final ImmutableList<RootCompilerAnnotation> compilerAnnotations;
 
     public ErrorsCompilationResult(
-            @Nonnull ImmutableList<SourceCode> sourceCodes,
-            @Nonnull ImmutableList<RootCompilerAnnotation> compilerAnnotations)
+            @Nonnull ImmutableList<RootCompilerAnnotation> compilerAnnotations,
+            @Nonnull ImmutableList<SourceCode> sourceCodes)
     {
-        this.sourceCodes         = Objects.requireNonNull(sourceCodes);
         this.compilerAnnotations = Objects.requireNonNull(compilerAnnotations);
+        this.sourceCodes         = Objects.requireNonNull(sourceCodes);
+    }
+
+    @Nonnull
+    public ImmutableList<RootCompilerAnnotation> getCompilerAnnotations()
+    {
+        return this.compilerAnnotations;
     }
 
     @Override
@@ -29,11 +35,5 @@ public class ErrorsCompilationResult
     public ImmutableList<SourceCode> getSourceCodes()
     {
         return this.sourceCodes;
-    }
-
-    @Nonnull
-    public ImmutableList<RootCompilerAnnotation> getCompilerAnnotations()
-    {
-        return this.compilerAnnotations;
     }
 }

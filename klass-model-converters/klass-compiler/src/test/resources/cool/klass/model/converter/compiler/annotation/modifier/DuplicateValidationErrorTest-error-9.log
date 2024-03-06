@@ -6,7 +6,7 @@ At (DuplicateValidationErrorTest.klass:13)
 [39m 1║ [35mpackage [39mdummy
 [39m 8║ [35mclass [39mDummyClass
 [39m 9║ [36m{
-[39m13║     [35menumeration[36m: [39mDummyEnumeration [32mminimumLength[36m([34m1[36m) [32mminLength[36m([34m1[36m) [32mmaximumLength[36m([34m10[36m) [32mmaxLength[36m([34m10[36m)[36m;
+[39m13║     [39menumeration[36m: [39mDummyEnumeration [32mminimumLength[36m([34m1[36m) [32mminLength[36m([34m1[36m) [32mmaximumLength[36m([34m10[36m) [32mmaxLength[36m([34m10[36m)[36m;
 [39m  ║ [31m                                                   ^^^^^^^^^
 [39m14║ [36m}
 [m

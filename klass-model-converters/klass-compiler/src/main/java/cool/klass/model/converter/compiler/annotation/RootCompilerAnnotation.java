@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -22,8 +23,8 @@ public class RootCompilerAnnotation
         extends AbstractCompilerAnnotation
         implements Comparable<RootCompilerAnnotation>
 {
-    private static final Comparator<RootCompilerAnnotation> COMPILER_ANNOTATION_COMPARATOR = Comparator.comparingInt(
-            (RootCompilerAnnotation each) -> each.getCompilationUnit().getOrdinal())
+    private static final Comparator<RootCompilerAnnotation> COMPILER_ANNOTATION_COMPARATOR = Comparator
+            .comparingInt((RootCompilerAnnotation each) -> each.getCompilationUnit().getOrdinal())
             .thenComparing(AbstractCompilerAnnotation::getLine)
             .thenComparing(AbstractCompilerAnnotation::getCharPositionInLine);
 
@@ -39,9 +40,16 @@ public class RootCompilerAnnotation
             @Nonnull ImmutableList<IAntlrElement> sourceContexts,
             @Nonnull String annotationCode,
             @Nonnull String message,
+            @Nonnull AnsiTokenColorizer ansiTokenColorizer,
             @Nonnull AnnotationSeverity severity)
     {
-        super(compilationUnit, macroCause, offendingContexts, sourceContexts, severity);
+        super(
+                compilationUnit,
+                macroCause,
+                offendingContexts,
+                sourceContexts,
+                ansiTokenColorizer,
+                severity);
         this.annotationCode = Objects.requireNonNull(annotationCode);
         this.message        = Objects.requireNonNull(message);
     }
@@ -62,14 +70,15 @@ public class RootCompilerAnnotation
         String severityColor   = this.severity == AnnotationSeverity.ERROR ? "red" : "yellow";
         String severityName    = this.severity == AnnotationSeverity.ERROR ? "Error" : "Warning";
 
-        String format = ""
-                + "════════════════════════════════════════ @|magenta %s|@ ════════════════════════════════════════\n"
-                + "@|%s %s: %s|@\n"
-                + "\n"
-                + "At %s\n"
-                + "\n"
-                + "%s%s%s\n"
-                + "═════════════════════════════════════════════════════════════════════════════════════════════\n";
+        String format = """
+                ════════════════════════════════════════ @|magenta %s|@ ════════════════════════════════════════
+                @|%s %s: %s|@
+
+                At %s
+
+                %s%s%s
+                ═════════════════════════════════════════════════════════════════════════════════════════════
+                """;
 
         String ansi = String.format(
                 format,
@@ -100,12 +109,6 @@ public class RootCompilerAnnotation
     @Override
     public String toGitHubAnnotation()
     {
-        String contextString   = this.getContextString();
-        String locationMessage = this.getOptionalLocationMessage();
-        String causeString     = this.getCauseString();
-
-        ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();
-
         Pair<Token, Token> firstAndLastToken = this.getFirstAndLastToken();
         Token              startToken        = firstAndLastToken.getOne();
         Token              endToken          = firstAndLastToken.getTwo();

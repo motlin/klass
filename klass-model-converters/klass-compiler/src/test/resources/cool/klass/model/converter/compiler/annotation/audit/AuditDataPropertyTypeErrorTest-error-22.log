@@ -6,7 +6,7 @@ At (Version class macro)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m 3║ [35mclass [39mDummyClassVersion [32msystemTemporal [32maudited
 [39m 4║ [36m{
-[39m10║     [32mcreatedOn[36m: [39mDummyEnumeration [32mcreatedOn [32mfinal[36m;
+[39m10║     [39mcreatedOn[36m: [39mDummyEnumeration [32mcreatedOn [32mfinal[36m;
 [39m  ║ [31m               ^^^^^^^^^^^^^^^^ ^^^^^^^^^
 [39m13║ [36m}
 [m

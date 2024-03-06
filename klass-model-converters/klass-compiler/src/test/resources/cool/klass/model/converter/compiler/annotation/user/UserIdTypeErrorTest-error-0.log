@@ -9,7 +9,7 @@ At (UserIdTypeErrorTest.klass:8)
 [39m5║     [32mversioned
 [39m6║     [32maudited
 [39m7║ [36m{
-[39m8║     [32muserId          [36m: [35mInstant [32mkey [32muserId[36m;
+[39m8║     [39muserId          [36m: [35mInstant [32mkey [32muserId[36m;
 [39m ║ [31m                      ^^^^^^^     ^^^^^^
 [39m9║ [36m}
 [m

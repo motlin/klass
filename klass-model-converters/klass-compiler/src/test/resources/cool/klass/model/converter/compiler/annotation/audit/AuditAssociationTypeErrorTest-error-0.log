@@ -6,7 +6,7 @@ At (AuditAssociationTypeErrorTest.klass:18)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m15║ [35massociation [39mCreatedBy
 [39m16║ [36m{
-[39m18║     [32mcreatedBy[36m: [39mNotUserClass[36m[[34m1[36m..[34m1[36m] [32mcreatedBy[36m;
+[39m18║     [39mcreatedBy[36m: [39mNotUserClass[36m[[34m1[36m..[34m1[36m] [32mcreatedBy[36m;
 [39m  ║ [31m               ^^^^^^^^^^^^       ^^^^^^^^^
 [39m21║ [36m}
 [m

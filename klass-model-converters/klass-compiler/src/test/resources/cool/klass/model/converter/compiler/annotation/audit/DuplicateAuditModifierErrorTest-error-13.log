@@ -6,7 +6,7 @@ At (DuplicateAuditModifierErrorTest.klass:41)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m38║ [35massociation [39mLastUpdatedBy
 [39m39║ [36m{
-[39m41║     [32mlastUpdatedBy[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [32mcreatedBy [32mlastUpdatedBy[36m;
+[39m41║     [39mlastUpdatedBy[36m: [39mUser[36m[[34m1[36m..[34m1[36m] [32mcreatedBy [32mlastUpdatedBy[36m;
 [39m  ║ [31m                                        ^^^^^^^^^^^^^
 [39m44║ [36m}
 [m

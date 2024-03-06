@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
-import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -133,17 +132,13 @@ public class CompilerState
     }
 
     @Nonnull
-    public CompilationResult getCompilationResult()
+    public CompilationResult getCompilationResult(
+            ImmutableList<SourceCode> sourceCodes,
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations)
     {
-        ImmutableList<RootCompilerAnnotation> compilerAnnotations = this.compilerAnnotationHolder.getCompilerAnnotations();
         if (compilerAnnotations.notEmpty())
         {
-            ImmutableList<SourceCodeBuilder> sourceCodeBuilders = this.compilerInputState
-                    .getCompilationUnits()
-                    .collect(CompilationUnit::build)
-                    .toImmutable();
-            ImmutableList<SourceCode> sourceCodes = sourceCodeBuilders.collect(SourceCodeBuilder::build);
-            return new ErrorsCompilationResult(sourceCodes, compilerAnnotations);
+            return new ErrorsCompilationResult(compilerAnnotations, sourceCodes);
         }
         return new DomainModelCompilationResult(this.buildDomainModel());
     }
@@ -171,6 +166,12 @@ public class CompilerState
     public CompilerInputState getCompilerInputState()
     {
         return this.compilerInputState;
+    }
+
+    @Nonnull
+    public CompilerAnnotationState getCompilerAnnotationHolder()
+    {
+        return this.compilerAnnotationHolder;
     }
 
     public CompilerWalkState getCompilerWalkState()

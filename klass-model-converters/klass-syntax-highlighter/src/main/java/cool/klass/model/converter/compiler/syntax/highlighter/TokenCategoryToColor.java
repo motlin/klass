@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.syntax.highlighter;
 
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import org.fusesource.jansi.Ansi;
 
 public final class TokenCategoryToColor
 {
@@ -9,30 +10,33 @@ public final class TokenCategoryToColor
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static Color getColor(
-            TokenCategory tokenCategory,
-            ColorScheme colorScheme)
+    public static void applyColor(
+            TokenCategory tokenCategory, Ansi ansi, ColorScheme colorScheme)
     {
         switch (tokenCategory)
         {
             case BLOCK_COMMENT:
             {
-                return colorScheme.getBlockComment();
+                colorScheme.blockComment(ansi);
+                return;
             }
             case LINE_COMMENT:
             {
-                return colorScheme.getLineComment();
+                colorScheme.lineComment(ansi);
+                return;
             }
             case KEYWORD:
             case WORD_OPERATOR:
             case OPERATOR_IN:
             case OPERATOR_STRING:
             {
-                return colorScheme.getKeyword();
+                colorScheme.keyword(ansi);
+                return;
             }
             case PACKAGE_KEYWORD:
             {
-                return colorScheme.getPackageKeyword();
+                colorScheme.packageKeyword(ansi);
+                return;
             }
             case KEYWORD_ENUMERATION:
             case KEYWORD_INTERFACE:
@@ -53,11 +57,13 @@ public final class TokenCategoryToColor
             case KEYWORD_MULTIPLICITY_CHOICE:
             case KEYWORD_SERVICE_CRITERIA:
             {
-                return colorScheme.getKeyword();
+                colorScheme.keyword(ansi);
+                return;
             }
             case PRIMITIVE_TYPE:
             {
-                return colorScheme.getPrimitiveType();
+                colorScheme.primitiveType(ansi);
+                return;
             }
             case VERB:
             case VERB_GET:
@@ -66,174 +72,224 @@ public final class TokenCategoryToColor
             case VERB_PATCH:
             case VERB_DELETE:
             {
-                return colorScheme.getVerb();
+                colorScheme.verb(ansi);
+                return;
             }
             case MODIFIER:
             {
-                return colorScheme.getModifier();
+                colorScheme.modifier(ansi);
+                return;
             }
             case CLASSIFIER_MODIFIER:
             {
-                return colorScheme.getClassifierModifier();
+                colorScheme.classifierModifier(ansi);
+                return;
             }
             case DATA_TYPE_PROPERTY_MODIFIER:
             {
-                return colorScheme.getDataTypePropertyModifier();
+                colorScheme.dataTypePropertyModifier(ansi);
+                return;
             }
             case ASSOCIATION_END_MODIFIER:
             {
-                return colorScheme.getAssociationEndModifier();
+                colorScheme.associationEndModifier(ansi);
+                return;
             }
             case PARAMETERIZED_PROPERTY_MODIFIER:
             {
-                return colorScheme.getParameterizedPropertyModifier();
+                colorScheme.parameterizedPropertyModifier(ansi);
+                return;
             }
             case PARAMETER_MODIFIER:
             {
-                return colorScheme.getParameterModifier();
+                colorScheme.parameterModifier(ansi);
+                return;
             }
             case VALIDATION_MODIFIER:
             {
-                return colorScheme.getValidationModifier();
+                colorScheme.validationModifier(ansi);
+                return;
             }
             case SERVICE_CATEGORY_MODIFIER:
             {
-                return colorScheme.getServiceCategoryModifier();
+                colorScheme.serviceCategoryModifier(ansi);
+                return;
             }
             case IDENTIFIER:
             {
-                return colorScheme.getIdentifier();
+                colorScheme.identifier(ansi);
+                return;
             }
             case PACKAGE_NAME:
             {
-                return colorScheme.getPackageName();
+                colorScheme.packageName(ansi);
+                return;
             }
             case TOP_LEVEL_ELEMENT_NAME:
             {
-                return colorScheme.getTopLevelElementName();
+                colorScheme.topLevelElementName(ansi);
+                return;
             }
             case ENUMERATION_NAME:
             {
-                return colorScheme.getEnumerationName();
+                colorScheme.enumerationName(ansi);
+                return;
             }
             case CLASSIFIER_NAME:
             {
-                return colorScheme.getClassifierName();
+                colorScheme.classifierName(ansi);
+                return;
             }
             case INTERFACE_NAME:
             {
-                return colorScheme.getInterfaceName();
+                colorScheme.interfaceName(ansi);
+                return;
             }
             case CLASS_NAME:
             {
-                return colorScheme.getClassName();
+                colorScheme.className(ansi);
+                return;
             }
             case ASSOCIATION_NAME:
             {
-                return colorScheme.getAssociationName();
+                colorScheme.associationName(ansi);
+                return;
             }
             case PROJECTION_NAME:
             {
-                return colorScheme.getProjectionName();
+                colorScheme.projectionName(ansi);
+                return;
             }
             case ENUMERATION_LITERAL_NAME:
             {
-                return colorScheme.getEnumerationLiteralName();
+                colorScheme.enumerationLiteralName(ansi);
+                return;
             }
             case PARAMETER_NAME:
             {
-                return colorScheme.getParameterName();
+                colorScheme.parameterName(ansi);
+                return;
             }
             case PROPERTY_NAME:
             {
-                return colorScheme.getPropertyName();
+                colorScheme.propertyName(ansi);
+                return;
             }
             case DATA_TYPE_PROPERTY_NAME:
             {
-                return colorScheme.getDataTypePropertyName();
+                colorScheme.dataTypePropertyName(ansi);
+                return;
             }
             case PRIMITIVE_PROPERTY_NAME:
             {
-                return colorScheme.getPrimitivePropertyName();
+                colorScheme.primitivePropertyName(ansi);
+                return;
             }
             case ENUMERATION_PROPERTY_NAME:
             {
-                return colorScheme.getEnumerationPropertyName();
+                colorScheme.enumerationPropertyName(ansi);
+                return;
             }
             case REFERENCE_PROPERTY_NAME:
             {
-                return colorScheme.getReferencePropertyName();
+                colorScheme.referencePropertyName(ansi);
+                return;
             }
             case PARAMETERIZED_PROPERTY_NAME:
             {
-                return colorScheme.getParameterizedPropertyName();
+                colorScheme.parameterizedPropertyName(ansi);
+                return;
             }
             case ASSOCIATION_END_NAME:
             {
-                return colorScheme.getAssociationEndName();
+                colorScheme.associationEndName(ansi);
+                return;
             }
             case ENUMERATION_REFERENCE:
             {
-                return colorScheme.getEnumerationReference();
+                colorScheme.enumerationReference(ansi);
+                return;
             }
             case INTERFACE_REFERENCE:
             {
-                return colorScheme.getInterfaceReference();
+                colorScheme.interfaceReference(ansi);
+                return;
             }
             case CLASS_REFERENCE:
             {
-                return colorScheme.getClassReference();
+                colorScheme.classReference(ansi);
+                return;
             }
             case PROJECTION_REFERENCE:
             {
-                return colorScheme.getProjectionReference();
+                colorScheme.projectionReference(ansi);
+                return;
             }
             case DATA_TYPE_PROPERTY_REFERENCE:
             {
-                return colorScheme.getDataTypePropertyReference();
+                colorScheme.dataTypePropertyReference(ansi);
+                return;
             }
             case ASSOCIATION_END_REFERENCE:
             {
-                return colorScheme.getAssociationEndReference();
+                colorScheme.associationEndReference(ansi);
+                return;
             }
             case PARAMETERIZED_PROPERTY_REFERENCE:
             {
-                return colorScheme.getParameterizedPropertyReference();
+                colorScheme.parameterizedPropertyReference(ansi);
+                return;
             }
             case PROPERTY_REFERENCE:
             {
-                return colorScheme.getPropertyReference();
+                colorScheme.propertyReference(ansi);
+                return;
             }
             case PARAMETER_REFERENCE:
             {
-                return colorScheme.getParameterReference();
+                colorScheme.parameterReference(ansi);
+                return;
             }
             case LITERAL:
+            {
+                colorScheme.literal(ansi);
+                return;
+            }
             case LITERAL_THIS:
+            {
+                colorScheme.literalThis(ansi);
+                return;
+            }
             case LITERAL_NATIVE:
             {
-                return colorScheme.getLiteral();
+                colorScheme.literalNative(ansi);
+                return;
             }
             case STRING_LITERAL:
             {
-                return colorScheme.getStringLiteral();
+                colorScheme.stringLiteral(ansi);
+                return;
             }
             case INTEGER_LITERAL:
             case ASTERISK_LITERAL:
             {
-                return colorScheme.getIntegerLiteral();
+                colorScheme.integerLiteral(ansi);
+                return;
             }
             case BOOLEAN_LITERAL:
             {
-                return colorScheme.getBooleanLiteral();
+                colorScheme.booleanLiteral(ansi);
+                return;
             }
             case CHARACTER_LITERAL:
             {
-                return colorScheme.getCharacterLiteral();
+                colorScheme.characterLiteral(ansi);
+                return;
             }
             case FLOATING_POINT_LITERAL:
             {
-                return colorScheme.getFloatingPointLiteral();
+                colorScheme.floatingPointLiteral(ansi);
+                return;
             }
             case PUNCTUATION:
             case COLON:
@@ -250,23 +306,28 @@ public final class TokenCategoryToColor
             case SQUARE_BRACKET_LEFT:
             case SQUARE_BRACKET_RIGHT:
             {
-                return colorScheme.getPunctuation();
+                colorScheme.punctuation(ansi);
+                return;
             }
             case COMMA:
             {
-                return colorScheme.getComma();
+                colorScheme.comma(ansi);
+                return;
             }
             case DOT:
             {
-                return colorScheme.getDot();
+                colorScheme.dot(ansi);
+                return;
             }
             case DOTDOT:
             {
-                return colorScheme.getDotDot();
+                colorScheme.dotDot(ansi);
+                return;
             }
             case SEMICOLON:
             {
-                return colorScheme.getSemi();
+                colorScheme.semi(ansi);
+                return;
             }
             case OPERATOR:
             case OPERATOR_EQ:
@@ -276,11 +337,13 @@ public final class TokenCategoryToColor
             case OPERATOR_LE:
             case OPERATOR_GE:
             {
-                return colorScheme.getOperator();
+                colorScheme.operator(ansi);
+                return;
             }
             case URL_CONSTANT:
             {
-                return colorScheme.getUrlConstant();
+                colorScheme.urlConstant(ansi);
+                return;
             }
             default:
             {

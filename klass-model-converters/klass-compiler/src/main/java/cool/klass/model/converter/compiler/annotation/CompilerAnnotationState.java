@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -16,6 +17,8 @@ import org.eclipse.collections.impl.factory.Lists;
 public class CompilerAnnotationState
 {
     private final MutableList<RootCompilerAnnotation> compilerAnnotations = Lists.mutable.empty();
+
+    private AnsiTokenColorizer ansiTokenColorizer;
 
     public void add(
             @Nonnull String annotationCode,
@@ -127,6 +130,7 @@ public class CompilerAnnotationState
                 surroundingElements,
                 annotationCode,
                 message,
+                this.ansiTokenColorizer,
                 severity);
     }
 
@@ -145,6 +149,7 @@ public class CompilerAnnotationState
                 macroCause,
                 offendingContexts,
                 surroundingElements,
+                this.ansiTokenColorizer,
                 severity);
     }
 
@@ -169,5 +174,10 @@ public class CompilerAnnotationState
     public boolean hasCompilerAnnotations()
     {
         return this.compilerAnnotations.notEmpty();
+    }
+
+    public void setAnsiTokenColorizer(@Nonnull AnsiTokenColorizer ansiTokenColorizer)
+    {
+        this.ansiTokenColorizer = Objects.requireNonNull(ansiTokenColorizer);
     }
 }

@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.converter.compiler.syntax.highlighter.AnsiTokenColorizer;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -26,6 +27,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 
 import static org.fusesource.jansi.Ansi.Color.CYAN;
@@ -48,19 +50,24 @@ public abstract class AbstractCompilerAnnotation
     private final   ImmutableList<ParserRuleContext>  offendingContexts;
     @Nonnull
     private final   ImmutableList<IAntlrElement>      sourceContexts;
+    @Nonnull
+    private final   AnsiTokenColorizer                ansiTokenColorizer;
 
     protected AbstractCompilerAnnotation(
             @Nonnull CompilationUnit compilationUnit,
             @Nonnull Optional<CauseCompilerAnnotation> macroCause,
             @Nonnull ImmutableList<ParserRuleContext> offendingContexts,
             @Nonnull ImmutableList<IAntlrElement> sourceContexts,
+            @Nonnull AnsiTokenColorizer ansiTokenColorizer,
             @Nonnull AnnotationSeverity severity)
     {
         this.macroCause        = Objects.requireNonNull(macroCause);
         this.compilationUnit   = Objects.requireNonNull(compilationUnit);
         this.offendingContexts = Objects.requireNonNull(offendingContexts);
         this.sourceContexts    = Objects.requireNonNull(sourceContexts).select(IAntlrElement::isContext);
-        this.severity          = Objects.requireNonNull(severity);
+        // TODO: Make the ColorScheme configurable
+        this.ansiTokenColorizer = Objects.requireNonNull(ansiTokenColorizer);
+        this.severity           = Objects.requireNonNull(severity);
 
         if (offendingContexts.isEmpty())
         {
@@ -164,12 +171,14 @@ public abstract class AbstractCompilerAnnotation
 
         for (TokenLine tokenLine : tokenLines)
         {
-            String string = tokenLine.getTokens().collect(LexicalColorizer::colorize).makeString("");
-            if (!string.endsWith("\n"))
+            Ansi ansi = ansi();
+            tokenLine.getTokens().forEach(token -> this.ansiTokenColorizer.colorizeText(ansi, token));
+
+            if (!ansi.toString().endsWith(System.getProperty("line.separator")))
             {
-                string += "\n";
+                ansi.newline();
             }
-            contextStrings.add(new ContextString(tokenLine.getLine(), string));
+            contextStrings.add(new ContextString(tokenLine.getLine(), ansi.toString()));
             if (underlinedLines.contains(tokenLine.getLine()))
             {
                 String underline = this.getUnderline(tokenLine, underlinedTokens);
@@ -222,7 +231,7 @@ public abstract class AbstractCompilerAnnotation
                 currentToken = nextToken;
             }
             else if (currentToken.getTokenSource() == nextToken.getTokenSource()
-                    && currentToken.getLine() == nextToken.getLine())
+                     && currentToken.getLine() == nextToken.getLine())
             {
                 this.endLine(currentLine, nextToken);
                 currentToken = nextToken;

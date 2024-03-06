@@ -1,7 +1,6 @@
 package cool.klass.model.converter.compiler.syntax.highlighter;
 
 import java.time.Duration;
-import java.util.Optional;
 
 import com.google.common.base.Stopwatch;
 import cool.klass.model.converter.compiler.token.categories.TokenCategory;
@@ -17,6 +16,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.collections.api.map.MapIterable;
+import org.fusesource.jansi.Ansi;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -44,7 +44,7 @@ public class SyntaxHighlighterListenerTest
 
     private void testColorScheme(ColorScheme colorScheme)
     {
-        Stopwatch lexerStopwatch = Stopwatch.createStarted();
+        Stopwatch           lexerStopwatch = Stopwatch.createStarted();
         String              sourceCodeText = KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT;
         String              sourceName     = "example.klass";
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
@@ -58,9 +58,9 @@ public class SyntaxHighlighterListenerTest
         Duration elapsedLexer = lexerStopwatch.elapsed();
         LOGGER.info("elapsedLexer = {}", elapsedLexer);
 
-        Stopwatch parserStopwatch = Stopwatch.createStarted();
-        KlassParser         parser         = new KlassParser(tokenStream);
-        ParseTree           parseTree      = parser.compilationUnit();
+        Stopwatch   parserStopwatch = Stopwatch.createStarted();
+        KlassParser parser          = new KlassParser(tokenStream);
+        ParseTree   parseTree       = parser.compilationUnit();
         MapIterable<Token, TokenCategory> tokenCategoriesFromParser =
                 ParserBasedTokenCategorizer.findTokenCategoriesFromParser(parseTree);
         parserStopwatch.stop();
@@ -68,61 +68,23 @@ public class SyntaxHighlighterListenerTest
         LOGGER.info("elapsedParser = {}", elapsedParser);
 
         Stopwatch rewriteStopwatch = Stopwatch.createStarted();
-        String rewriteText = SyntaxHighlighterListenerTest.getColorizedText(
-                tokenStream,
+        AnsiTokenColorizer ansiTokenColorizer = new AnsiTokenColorizer(
                 colorScheme,
                 tokenCategoriesFromLexer,
                 tokenCategoriesFromParser);
+
+        Ansi ansi = Ansi.ansi();
+        colorScheme.background(ansi);
+
+        tokenStream
+                .getTokens()
+                .forEach(token -> ansiTokenColorizer.colorizeText(ansi, token));
+        ansi.reset();
+
         rewriteStopwatch.stop();
         Duration elapsedRewrite = rewriteStopwatch.elapsed();
         LOGGER.info("elapsedRewrite = {}", elapsedRewrite);
 
-        Color  background = colorScheme.getBackground();
-        String before     = background.getBefore();
-        String after      = background.getAfter().orElse("");
-        LOGGER.info("rewriteText =\n{}{}{}", before, rewriteText, after);
-    }
-
-    private static String getColorizedText(
-            CommonTokenStream tokenStream,
-            ColorScheme colorScheme,
-            MapIterable<Token, TokenCategory> tokenCategoriesFromLexer,
-            MapIterable<Token, TokenCategory> tokenCategoriesFromParser)
-    {
-        StringBuilder result = new StringBuilder();
-        for (Token token : tokenStream.getTokens())
-        {
-            Optional<TokenCategory> tokenCategory = SyntaxHighlighterListenerTest.getTokenCategory(
-                    token,
-                    tokenCategoriesFromLexer,
-                    tokenCategoriesFromParser);
-            Optional<Color> color = tokenCategory.map(justTokenCategory -> TokenCategoryToColor.getColor(justTokenCategory, colorScheme));
-            color.map(Color::getBefore).ifPresent(result::append);
-            result.append(token.getText());
-            color.flatMap(Color::getAfter).ifPresent(result::append);
-        }
-        return result.toString();
-    }
-
-    private static Optional<TokenCategory> getTokenCategory(
-            Token token,
-            MapIterable<Token, TokenCategory> tokenCategoriesFromLexer,
-            MapIterable<Token, TokenCategory> tokenCategoriesFromParser)
-    {
-        TokenCategory lexerCategory  = tokenCategoriesFromLexer.get(token);
-        TokenCategory parserCategory = tokenCategoriesFromParser.get(token);
-        if (lexerCategory != null && parserCategory != null)
-        {
-            throw new AssertionError(token);
-        }
-        if (lexerCategory != null)
-        {
-            return Optional.of(lexerCategory);
-        }
-        if (parserCategory != null)
-        {
-            return Optional.of(parserCategory);
-        }
-        return Optional.empty();
+        LOGGER.info("rewriteText =\n{}", ansi);
     }
 }

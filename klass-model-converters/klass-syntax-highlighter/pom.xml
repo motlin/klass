@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- TODO: Rename to include Ansi, since the implementation is tied to ansi/jansi -->
     <artifactId>klass-syntax-highlighter</artifactId>
 
     <name>Klass Syntax Highlighter</name>
@@ -37,6 +38,11 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-token-categories</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
         </dependency>
 
         <dependency>

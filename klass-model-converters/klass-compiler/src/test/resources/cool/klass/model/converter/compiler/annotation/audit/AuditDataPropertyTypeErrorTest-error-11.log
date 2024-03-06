@@ -6,7 +6,7 @@ At (AuditDataPropertyTypeErrorTest.klass:31)
 [39m 1║ [35mpackage [39mcom[36m.[39merrors
 [39m24║ [35mclass [39mDummyClass2
 [39m25║ [36m{
-[39m31║     [32mcreatedOn      [36m: [35mInstant [32mcreatedOn[36m;
+[39m31║     [39mcreatedOn      [36m: [35mInstant [32mcreatedOn[36m;
 [39m  ║ [31m                             ^^^^^^^^^
 [39m33║ [36m}
 [m

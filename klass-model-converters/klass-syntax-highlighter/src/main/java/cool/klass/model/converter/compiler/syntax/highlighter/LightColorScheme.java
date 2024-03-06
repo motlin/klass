@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.syntax.highlighter;
 
-import java.util.Optional;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Color;
 
 public enum LightColorScheme
         implements ColorScheme
@@ -8,144 +9,68 @@ public enum LightColorScheme
     INSTANCE;
 
     @Override
-    public Color getBackground()
+    public void background(Ansi ansi)
     {
-        return new Ansi8BitColor(0)
-        {
-            @Override
-            public String getBefore()
-            {
-                return "[48;5;255m";
-            }
-
-            @Override
-            public Optional<String> getAfter()
-            {
-                return Optional.of("[0m");
-            }
-        };
+        ansi.bg(Color.WHITE);
     }
 
     @Override
-    public Color getBlockComment()
+    public void blockComment(Ansi ansi)
     {
-        return new Ansi8BitColor(244);
+        ansi.fg(Color.BLACK);
     }
 
     @Override
-    public Color getKeyword()
+    public void keyword(Ansi ansi)
     {
-        // 91
-        return new Ansi8BitColor(90);
+        ansi.fg(Color.MAGENTA);
     }
 
     @Override
-    public Color getIdentifier()
+    public void verb(Ansi ansi)
     {
-        return new Ansi8BitColor(0);
+        ansi.fg(Color.GREEN);
     }
 
     @Override
-    public Color getPackageName()
+    public void modifier(Ansi ansi)
     {
-        return new Ansi8BitColor(88);
+        ansi.fg(Color.GREEN);
     }
 
     @Override
-    public Color getTopLevelElementName()
+    public void identifier(Ansi ansi)
     {
-        return new Ansi8BitColor(88);
+        ansi.fgDefault();
     }
 
     @Override
-    public Color getInterfaceName()
+    public void literal(Ansi ansi)
     {
-        //31
-        //32
-        return new Ansi8BitColor(31);
+        ansi.fg(Color.BLUE);
     }
 
     @Override
-    public Color getEnumerationLiteralName()
+    public void literalThis(Ansi ansi)
     {
-        return new Ansi8BitColor(18)
-        {
-            @Override
-            public String getBefore()
-            {
-                return String.format("[3;38;5;%dm", 18);
-            }
-
-            @Override
-            public Optional<String> getAfter()
-            {
-                return Optional.of("[23m");
-            }
-        };
+        ansi.fg(Color.GREEN);
     }
 
     @Override
-    public Color getParameterName()
+    public void literalNative(Ansi ansi)
     {
-        // 130
-        // 166
-        return new Ansi8BitColor(130);
+        ansi.fg(Color.GREEN);
     }
 
     @Override
-    public Color getPropertyName()
+    public void punctuation(Ansi ansi)
     {
-        return new Ansi8BitColor(63);
+        ansi.fg(Color.CYAN);
     }
 
     @Override
-    public Color getParameterizedPropertyName()
+    public void operator(Ansi ansi)
     {
-        return new Ansi8BitColor(22);
-    }
-
-    @Override
-    public Color getAssociationEndName()
-    {
-        return new Ansi8BitColor(22);
-    }
-
-    @Override
-    public Color getLiteral()
-    {
-        return new Ansi8BitColor(21);
-    }
-
-    @Override
-    public Color getStringLiteral()
-    {
-        return new Ansi8BitColor(28);
-    }
-
-    @Override
-    public Color getPunctuation()
-    {
-        return new Ansi8BitColor(0);
-    }
-
-    @Override
-    public Color getComma()
-    {
-        //163
-        //200
-        return new Ansi8BitColor(164);
-    }
-
-    @Override
-    public Color getSemi()
-    {
-        //250
-        return new Ansi8BitColor(251);
-    }
-
-    @Override
-    public Color getUrlConstant()
-    {
-        return new Ansi8BitColor(34);
+        ansi.fg(Color.MAGENTA);
     }
 }

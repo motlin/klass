@@ -1,261 +1,273 @@
 package cool.klass.model.converter.compiler.syntax.highlighter;
 
+import org.fusesource.jansi.Ansi;
+
 public interface ColorScheme
 {
-    Color getBackground();
+    void background(Ansi ansi);
 
-    Color getBlockComment();
+    void blockComment(Ansi ansi);
 
-    default Color getLineComment()
+    default void lineComment(Ansi ansi)
     {
-        return this.getBlockComment();
+        this.blockComment(ansi);
     }
 
-    Color getKeyword();
+    void keyword(Ansi ansi);
 
-    default Color getPackageKeyword()
+    default void packageKeyword(Ansi ansi)
     {
-        return this.getKeyword();
+        this.keyword(ansi);
     }
 
-    default Color getPrimitiveType()
+    default void primitiveType(Ansi ansi)
     {
-        return this.getKeyword();
+        this.keyword(ansi);
     }
 
-    default Color getVerb()
+    default void verb(Ansi ansi)
     {
-        return this.getKeyword();
+        this.keyword(ansi);
     }
 
-    default Color getModifier()
+    default void modifier(Ansi ansi)
     {
-        return this.getKeyword();
+        this.keyword(ansi);
     }
 
-    default Color getClassifierModifier()
+    default void classifierModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getDataTypePropertyModifier()
+    default void dataTypePropertyModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getAssociationEndModifier()
+    default void associationEndModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getParameterizedPropertyModifier()
+    default void parameterizedPropertyModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getParameterModifier()
+    default void parameterModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getValidationModifier()
+    default void validationModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    default Color getServiceCategoryModifier()
+    default void serviceCategoryModifier(Ansi ansi)
     {
-        return this.getModifier();
+        this.modifier(ansi);
     }
 
-    Color getIdentifier();
+    void identifier(Ansi ansi);
 
-    default Color getPackageName()
+    default void packageName(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.identifier(ansi);
     }
 
-    default Color getTopLevelElementName()
+    default void topLevelElementName(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.identifier(ansi);
     }
 
-    default Color getEnumerationName()
+    default void enumerationName(Ansi ansi)
     {
-        return this.getTopLevelElementName();
+        this.topLevelElementName(ansi);
     }
 
-    default Color getClassifierName()
+    default void classifierName(Ansi ansi)
     {
-        return this.getTopLevelElementName();
+        this.topLevelElementName(ansi);
     }
 
-    default Color getClassName()
+    default void className(Ansi ansi)
     {
-        return this.getClassifierName();
+        this.classifierName(ansi);
     }
 
-    default Color getInterfaceName()
+    default void interfaceName(Ansi ansi)
     {
-        return this.getClassifierName();
+        this.classifierName(ansi);
     }
 
-    default Color getAssociationName()
+    default void associationName(Ansi ansi)
     {
-        return this.getTopLevelElementName();
+        this.topLevelElementName(ansi);
     }
 
-    default Color getProjectionName()
+    default void projectionName(Ansi ansi)
     {
-        return this.getTopLevelElementName();
+        this.topLevelElementName(ansi);
     }
 
-    default Color getEnumerationLiteralName()
+    default void enumerationLiteralName(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.identifier(ansi);
     }
 
-    default Color getParameterName()
+    default void parameterName(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.identifier(ansi);
     }
 
-    default Color getPropertyName()
+    default void propertyName(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.identifier(ansi);
     }
 
-    default Color getDataTypePropertyName()
+    default void dataTypePropertyName(Ansi ansi)
     {
-        return this.getPropertyName();
+        this.propertyName(ansi);
     }
 
-    default Color getPrimitivePropertyName()
+    default void primitivePropertyName(Ansi ansi)
     {
-        return this.getDataTypePropertyName();
+        this.dataTypePropertyName(ansi);
     }
 
-    default Color getEnumerationPropertyName()
+    default void enumerationPropertyName(Ansi ansi)
     {
-        return this.getDataTypePropertyName();
+        this.dataTypePropertyName(ansi);
     }
 
-    default Color getReferencePropertyName()
+    default void referencePropertyName(Ansi ansi)
     {
-        return this.getPropertyName();
+        this.propertyName(ansi);
     }
 
-    default Color getParameterizedPropertyName()
+    default void parameterizedPropertyName(Ansi ansi)
     {
-        return this.getReferencePropertyName();
+        this.referencePropertyName(ansi);
     }
 
-    default Color getAssociationEndName()
+    default void associationEndName(Ansi ansi)
     {
-        return this.getReferencePropertyName();
+        this.referencePropertyName(ansi);
     }
 
-    default Color getEnumerationReference()
+    default void enumerationReference(Ansi ansi)
     {
-        return this.getEnumerationName();
+        this.enumerationName(ansi);
     }
 
-    default Color getInterfaceReference()
+    default void interfaceReference(Ansi ansi)
     {
-        return this.getInterfaceName();
+        this.interfaceName(ansi);
     }
 
-    default Color getClassReference()
+    default void classReference(Ansi ansi)
     {
-        return this.getClassName();
+        this.className(ansi);
     }
 
-    default Color getProjectionReference()
+    default void projectionReference(Ansi ansi)
     {
-        return this.getProjectionName();
+        this.projectionName(ansi);
     }
 
-    default Color getDataTypePropertyReference()
+    default void dataTypePropertyReference(Ansi ansi)
     {
-        return this.getPropertyName();
+        this.propertyName(ansi);
     }
 
-    default Color getAssociationEndReference()
+    default void associationEndReference(Ansi ansi)
     {
-        return this.getAssociationEndName();
+        this.associationEndName(ansi);
     }
 
-    default Color getParameterizedPropertyReference()
+    default void parameterizedPropertyReference(Ansi ansi)
     {
-        return this.getParameterizedPropertyName();
+        this.parameterizedPropertyName(ansi);
     }
 
-    default Color getPropertyReference()
+    default void propertyReference(Ansi ansi)
     {
-        return this.getPropertyName();
+        this.propertyName(ansi);
     }
 
-    default Color getParameterReference()
+    default void parameterReference(Ansi ansi)
     {
-        return this.getParameterName();
+        this.parameterName(ansi);
     }
 
-    Color getLiteral();
+    void literal(Ansi ansi);
 
-    default Color getStringLiteral()
+    default void stringLiteral(Ansi ansi)
     {
-        return this.getLiteral();
+        this.literal(ansi);
     }
 
-    default Color getIntegerLiteral()
+    default void integerLiteral(Ansi ansi)
     {
-        return this.getLiteral();
+        this.literal(ansi);
     }
 
-    default Color getBooleanLiteral()
+    default void booleanLiteral(Ansi ansi)
     {
-        return this.getLiteral();
+        this.literal(ansi);
     }
 
-    default Color getCharacterLiteral()
+    default void characterLiteral(Ansi ansi)
     {
-        return this.getLiteral();
+        this.literal(ansi);
     }
 
-    default Color getFloatingPointLiteral()
+    default void floatingPointLiteral(Ansi ansi)
     {
-        return this.getLiteral();
+        this.literal(ansi);
     }
 
-    Color getPunctuation();
-
-    default Color getComma()
+    default void literalThis(Ansi ansi)
     {
-        return this.getPunctuation();
+        this.literal(ansi);
     }
 
-    default Color getDot()
+    default void literalNative(Ansi ansi)
     {
-        return this.getPunctuation();
+        this.literal(ansi);
     }
 
-    default Color getDotDot()
+    void punctuation(Ansi ansi);
+
+    default void comma(Ansi ansi)
     {
-        return this.getDot();
+        this.punctuation(ansi);
     }
 
-    default Color getSemi()
+    default void dot(Ansi ansi)
     {
-        return this.getPunctuation();
+        this.punctuation(ansi);
     }
 
-    default Color getOperator()
+    default void dotDot(Ansi ansi)
     {
-        return this.getPunctuation();
+        this.dot(ansi);
     }
 
-    default Color getUrlConstant()
+    default void semi(Ansi ansi)
     {
-        return this.getIdentifier();
+        this.punctuation(ansi);
+    }
+
+    default void operator(Ansi ansi)
+    {
+        this.punctuation(ansi);
+    }
+
+    default void urlConstant(Ansi ansi)
+    {
+        this.identifier(ansi);
     }
 }

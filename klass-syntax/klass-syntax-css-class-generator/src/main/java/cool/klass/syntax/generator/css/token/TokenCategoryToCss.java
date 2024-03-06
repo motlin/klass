@@ -31,8 +31,9 @@ public final class TokenCategoryToCss
     private static String getCssVar(TokenCategory tokenCategory)
     {
         TokenCategory parentCategory = tokenCategory.getParentCategory();
-        String fallbackCssVar = parentCategory == null ? "--color-foreground" : TokenCategoryToCss.getCssVar(
-                parentCategory);
+        String fallbackCssVar = parentCategory == null
+                ? "--color-foreground"
+                : TokenCategoryToCss.getCssVar(parentCategory);
 
         return String.format(
                 "var(--klass-color-%s, %s)",

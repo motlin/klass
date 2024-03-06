@@ -8,7 +8,7 @@ At (TransientClassWtihIdPropertyErrorTest.klass:13)
 [39m10║     [35mextends [39mAbstractSuperClass
 [39m11║     [32mtransient
 [39m12║ [36m{
-[39m13║     [32mkey[36m: [35mLong [32mkey [32mid[36m;
+[39m13║     [39mkey[36m: [35mLong [32mkey [32mid[36m;
 [39m  ║ [31m                  ^^
 [39m14║ [36m}
 [m

@@ -8,7 +8,7 @@ At (TransientInheritanceErrorTest.klass:7)
 [39m4║     [35mabstract
 [39m5║     [32mtransient
 [39m6║ [36m{
-[39m7║     [32mkey[36m: [35mLong [32mkey [32mid[36m;
+[39m7║     [39mkey[36m: [35mLong [32mkey [32mid[36m;
 [39m ║ [31m                  ^^
 [39m8║ [36m}
 [m
