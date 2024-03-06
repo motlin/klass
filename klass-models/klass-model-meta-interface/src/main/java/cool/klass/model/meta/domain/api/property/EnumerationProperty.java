@@ -17,6 +17,12 @@ public interface EnumerationProperty extends DataTypeProperty
     Enumeration getType();
 
     @Override
+    default boolean isID()
+    {
+        return false;
+    }
+
+    @Override
     default boolean isTemporalRange()
     {
         return false;

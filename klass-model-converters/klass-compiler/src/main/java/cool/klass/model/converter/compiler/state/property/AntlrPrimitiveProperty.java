@@ -95,9 +95,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.antlrPrimitiveType.getPrimitiveType(),
                 this.owningClassState.getElementBuilder(),
                 propertyModifierBuilders,
-                this.isKey(),
-                this.isOptional,
-                this.isID());
+                this.isOptional);
         return this.primitivePropertyBuilder;
     }
 

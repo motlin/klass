@@ -11,10 +11,10 @@ import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifi
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<PrimitiveType> implements PrimitiveProperty
+public final class PrimitivePropertyImpl
+        extends AbstractDataTypeProperty<PrimitiveType>
+        implements PrimitiveProperty
 {
-    private final boolean isID;
-
     private PrimitivePropertyImpl(
             @Nonnull ParserRuleContext elementContext,
             boolean inferred,
@@ -23,9 +23,7 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
             int ordinal,
             @Nonnull PrimitiveType primitiveType,
             @Nonnull KlassImpl owningKlass,
-            boolean isKey,
-            boolean isOptional,
-            boolean isID)
+            boolean isOptional)
     {
         super(
                 elementContext,
@@ -35,21 +33,11 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                 ordinal,
                 primitiveType,
                 owningKlass,
-                isKey,
                 isOptional);
-        this.isID = isID;
-    }
-
-    @Override
-    public boolean isID()
-    {
-        return this.isID;
     }
 
     public static final class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
     {
-        private final boolean isID;
-
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
@@ -59,9 +47,7 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                 @Nonnull PrimitiveType primitiveType,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
-                boolean isKey,
-                boolean isOptional,
-                boolean isID)
+                boolean isOptional)
         {
             super(
                     elementContext,
@@ -72,9 +58,7 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                     primitiveType,
                     owningKlassBuilder,
                     propertyModifierBuilders,
-                    isKey,
                     isOptional);
-            this.isID = isID;
         }
 
         @Override
@@ -89,9 +73,7 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
                     this.ordinal,
                     this.typeBuilder,
                     this.owningKlassBuilder.getElement(),
-                    this.isKey,
-                    this.isOptional,
-                    this.isID);
+                    this.isOptional);
 
             ImmutableList<PropertyModifier> propertyModifiers =
                     this.propertyModifierBuilders.collect(PropertyModifierBuilder::build);

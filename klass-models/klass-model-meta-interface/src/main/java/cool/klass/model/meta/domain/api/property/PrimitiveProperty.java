@@ -30,7 +30,11 @@ public interface PrimitiveProperty extends DataTypeProperty
         return this.getType().isTemporal();
     }
 
-    boolean isID();
+    @Override
+    default boolean isID()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isID);
+    }
 
     @Override
     @Nonnull

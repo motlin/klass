@@ -17,7 +17,6 @@ import org.eclipse.collections.api.list.ImmutableList;
 // TODO: The generic type here is inconvenient. Replace it with a bunch of overrides of the getType method
 public abstract class AbstractDataTypeProperty<T extends DataType> extends AbstractProperty<T> implements DataTypeProperty
 {
-    private final boolean key;
     private final boolean optional;
 
     private ImmutableList<PropertyModifier> propertyModifiers;
@@ -30,11 +29,9 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             int ordinal,
             @Nonnull T dataType,
             @Nonnull KlassImpl owningKlass,
-            boolean isKey,
             boolean isOptional)
     {
         super(elementContext, inferred, nameContext, name, ordinal, dataType, owningKlass);
-        this.key = isKey;
         this.optional = isOptional;
     }
 
@@ -55,12 +52,6 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
     }
 
     @Override
-    public boolean isKey()
-    {
-        return this.key;
-    }
-
-    @Override
     public boolean isOptional()
     {
         return this.optional;
@@ -70,7 +61,6 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
             extends PropertyBuilder<T, TG, BuiltElement>
     {
         protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;
-        protected final boolean                                isKey;
         protected final boolean                                isOptional;
 
         protected DataTypePropertyBuilder(
@@ -82,12 +72,10 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
                 @Nonnull TG typeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
-                boolean isKey,
                 boolean isOptional)
         {
             super(elementContext, inferred, nameContext, name, ordinal, typeBuilder, owningKlassBuilder);
             this.propertyModifierBuilders = Objects.requireNonNull(propertyModifierBuilders);
-            this.isKey = isKey;
             this.isOptional = isOptional;
         }
     }

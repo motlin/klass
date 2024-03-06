@@ -22,7 +22,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
             int ordinal,
             @Nonnull EnumerationImpl enumeration,
             @Nonnull KlassImpl owningKlass,
-            boolean isKey,
             boolean isOptional)
     {
         super(
@@ -33,7 +32,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                 ordinal,
                 enumeration,
                 owningKlass,
-                isKey,
                 isOptional);
     }
 
@@ -66,7 +64,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                 @Nonnull EnumerationBuilder enumerationBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
-                boolean isKey,
                 boolean isOptional)
         {
             super(
@@ -78,7 +75,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     enumerationBuilder,
                     owningKlassBuilder,
                     propertyModifierBuilders,
-                    isKey,
                     isOptional);
         }
 
@@ -94,7 +90,6 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
                     this.ordinal,
                     this.typeBuilder.getElement(),
                     this.owningKlassBuilder.getElement(),
-                    this.isKey,
                     this.isOptional);
         }
 

@@ -14,7 +14,17 @@ public interface DataTypeProperty extends Property
     @Nonnull
     ImmutableList<PropertyModifier> getPropertyModifiers();
 
-    boolean isKey();
+    default boolean isKey()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isKey);
+    }
+
+    boolean isID();
+
+    default boolean isAudit()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isAudit);
+    }
 
     boolean isOptional();
 
