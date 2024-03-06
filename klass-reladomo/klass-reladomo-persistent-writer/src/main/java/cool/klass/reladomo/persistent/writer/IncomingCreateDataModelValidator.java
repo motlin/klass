@@ -446,7 +446,7 @@ public class IncomingCreateDataModelValidator
 
             try
             {
-                JsonNode childJsonNode = incomingChildInstances.get(index);
+                JsonNode childJsonNode = incomingChildInstances.path(index);
 
                 /*
                 if (this.jsonNodeNeedsIdInferredOnInsert(childJsonNode, associationEnd))
@@ -592,7 +592,7 @@ public class IncomingCreateDataModelValidator
         {
             DataTypeProperty oppositeForeignKey     = oppositeForeignKeys.getOnly();
             String           oppositeForeignKeyName = oppositeForeignKey.getName();
-            Object           result                 = parentJsonNode.get(oppositeForeignKeyName);
+            Object           result                 = parentJsonNode.path(oppositeForeignKeyName);
             return Objects.requireNonNull(result);
         }
 
