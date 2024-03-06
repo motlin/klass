@@ -1,0 +1,221 @@
+<archetype-descriptor
+        xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+        name="${artifactId}">
+
+    <requiredProperties>
+        <requiredProperty key="name" />
+        <requiredProperty key="description">
+            <defaultValue>null</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+
+    <fileSets>
+        <fileSet filtered="true">
+            <directory>.idea</directory>
+        </fileSet>
+
+        <fileSet>
+            <directory>.mvn</directory>
+        </fileSet>
+
+        <fileSet filtered="true">
+            <directory></directory>
+            <includes>
+                <include>__rootArtifactId__.iml</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory></directory>
+            <includes>
+                <include>checkstyle-configuration.xml</include>
+                <include>checkstyle-suppressions.xml</include>
+                <include>mvnw</include>
+                <include>mvnw.cmd</include>
+                <include>.gitignore</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+    <modules>
+        <module
+                id="${rootArtifactId}-domain-model"
+                dir="__rootArtifactId__-domain-model"
+                name="${rootArtifactId}-domain-model">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-definitions"
+                dir="__rootArtifactId__-reladomo-definitions"
+                name="${rootArtifactId}-reladomo-definitions">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-pojos"
+                dir="__rootArtifactId__-reladomo-pojos"
+                name="${rootArtifactId}-reladomo-pojos">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-ddls"
+                dir="__rootArtifactId__-reladomo-ddls"
+                name="${rootArtifactId}-reladomo-ddls">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-ddl-executor"
+                dir="__rootArtifactId__-reladomo-ddl-executor"
+                name="${rootArtifactId}-reladomo-ddl-executor">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-services"
+                dir="__rootArtifactId__-services"
+                name="${rootArtifactId}-services">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-reladomo-test-data"
+                dir="__rootArtifactId__-reladomo-test-data"
+                name="${rootArtifactId}-reladomo-test-data">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-dtos"
+                dir="__rootArtifactId__-dtos"
+                name="${rootArtifactId}-dtos" />
+
+        <module
+                id="${rootArtifactId}-dropwizard-application"
+                dir="__rootArtifactId__-dropwizard-application"
+                name="${rootArtifactId}-dropwizard-application">
+            <fileSets>
+                <fileSet>
+                    <directory></directory>
+                    <includes>
+                        <include>.gitignore</include>
+                        <include>config.yml</include>
+                        <include>README.md</include>
+                    </includes>
+                </fileSet>
+
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
+                id="${rootArtifactId}-meta-model-constants"
+                dir="__rootArtifactId__-meta-model-constants"
+                name="${rootArtifactId}-meta-model-constants">
+            <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/main/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/main/resources</directory>
+                </fileSet>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                    <directory>src/test/java</directory>
+                </fileSet>
+                <fileSet encoding="UTF-8">
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+    </modules>
+
+</archetype-descriptor>

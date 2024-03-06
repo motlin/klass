@@ -25,6 +25,7 @@
         <module>klass-dropwizard-bundles</module>
         <module>klass-test-modules</module>
         <module>klass-data-store</module>
+        <module>klass-maven-archetype</module>
     </modules>
 
     <properties>
@@ -326,6 +327,12 @@
                         <visitor>true</visitor>
                         <treatWarningsAsErrors>true</treatWarningsAsErrors>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>3.0.1</version>
                 </plugin>
 
                 <plugin>
