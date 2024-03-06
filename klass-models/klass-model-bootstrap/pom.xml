@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <app.artifactId>klass-model-bootstrapped</app.artifactId>
+        <app.rootPackageName>klass.model.meta.domain</app.rootPackageName>
+        <app.name>KlassBootstrappedMetaModel</app.name>
+    </properties>
 
     <parent>
         <groupId>cool.klass</groupId>
@@ -15,16 +22,14 @@
 
     <name>Klass Bootstrapped Meta Model (Module Group)</name>
 
-    <properties>
-        <app.rootPackageName>klass.model.meta.domain</app.rootPackageName>
-        <app.name>KlassBootstrap</app.name>
-    </properties>
-
     <modules>
         <module>klass-model-bootstrapped-meta</module>
-        <module>klass-model-bootstrapped-constants</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>
+        <module>klass-model-bootstrapped-reladomo-ddls</module>
         <module>klass-model-bootstrapped-services</module>
+        <module>klass-model-bootstrapped-dtos</module>
+        <module>klass-model-bootstrapped-constants</module>
+        <module>klass-model-bootstrapped-meta-model-constants</module>
     </modules>
 </project>
