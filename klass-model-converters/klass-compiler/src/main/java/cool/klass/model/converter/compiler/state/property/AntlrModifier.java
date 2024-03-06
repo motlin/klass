@@ -145,11 +145,6 @@ public class AntlrModifier
         return this.is("to");
     }
 
-    public boolean isVersionNumber()
-    {
-        return this.is("version");
-    }
-
     public boolean isVersion()
     {
         return this.is("version");
