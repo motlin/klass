@@ -10,6 +10,7 @@ public interface TopLevelElementWithSourceCode
     interface TopLevelElementBuilderWithSourceCode
             extends TopLevelElementBuilder
     {
+        @Override
         @Nonnull
         TopLevelElementWithSourceCode getElement();
     }

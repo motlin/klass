@@ -129,6 +129,7 @@ public class AntlrInterface extends AntlrClassifier
         return Objects.requireNonNull(this.interfaceBuilder);
     }
 
+    @Override
     public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
         AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
@@ -304,6 +305,7 @@ public class AntlrInterface extends AntlrClassifier
         return topLevelNames.toImmutable();
     }
 
+    @Override
     public boolean isSubClassOf(AntlrClassifier classifier)
     {
         return false;
@@ -316,6 +318,7 @@ public class AntlrInterface extends AntlrClassifier
         return (InterfaceDeclarationContext) super.getElementContext();
     }
 
+    @Override
     public InterfaceBodyContext getBodyContext()
     {
         return this.getElementContext().interfaceBody();
@@ -329,6 +332,7 @@ public class AntlrInterface extends AntlrClassifier
                 + ".getTypeBuilder() not implemented yet");
     }
 
+    @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
         if (this.dataTypePropertiesByName.containsKey(name))

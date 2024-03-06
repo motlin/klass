@@ -61,7 +61,7 @@ public class AntlrOrderBy extends AntlrElement
     @Override
     public boolean isContext()
     {
-        return orderByOwnerState instanceof AntlrService;
+        return this.orderByOwnerState instanceof AntlrService;
     }
 
     @Override

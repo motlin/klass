@@ -3,7 +3,7 @@ package cool.klass.model.meta.domain.api;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public interface Enumeration
-        extends PackageableElement, DataType, TopLevelElement
+        extends DataType, TopLevelElement
 {
     @Override
     default void visit(TopLevelElementVisitor visitor)

@@ -132,6 +132,7 @@ public interface Klass
 
     boolean isUser();
 
+    @Override
     default boolean isAbstract()
     {
         return this.getInheritanceType() != InheritanceType.NONE;

@@ -50,7 +50,7 @@ public class ThrowingErrorListener extends BaseErrorListener
     {
         if (line == 1)
         {
-            return this.lines[line - 1];
+            return this.lines[0];
         }
 
         return this.lines[line - 2] + "\n" + this.lines[line - 1];
