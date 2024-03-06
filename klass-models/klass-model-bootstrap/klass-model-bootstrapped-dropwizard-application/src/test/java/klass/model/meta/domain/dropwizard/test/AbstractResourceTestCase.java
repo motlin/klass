@@ -1,7 +1,5 @@
 package klass.model.meta.domain.dropwizard.test;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
@@ -12,12 +10,10 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
-import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelConfiguration;
-import org.eclipse.collections.impl.utility.Iterate;
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 
@@ -67,12 +63,5 @@ public class AbstractResourceTestCase
         response.bufferEntity();
         String entityAsString = response.readEntity(String.class);
         assertThat(entityAsString, response.getStatusInfo(), is(status));
-    }
-
-    private String getRuntimeConfigFilename()
-    {
-        ReladomoFactory reladomoFactory           = this.appRule.getConfiguration().getReladomoFactory();
-        List<String>    runtimeConfigurationPaths = reladomoFactory.getRuntimeConfigurationPaths();
-        return Iterate.getOnly(runtimeConfigurationPaths);
     }
 }
