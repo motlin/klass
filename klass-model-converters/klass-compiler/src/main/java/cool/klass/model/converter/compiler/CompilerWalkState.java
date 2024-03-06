@@ -33,10 +33,12 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
@@ -110,9 +112,27 @@ public class CompilerWalkState
     @Nullable
     private AntlrModifierOwner  modifierOwner;
 
+    private int numClassifierMembers;
+
     public CompilerWalkState(AntlrDomainModel domainModel)
     {
         this.domainModel = domainModel;
+    }
+
+    private static void assertNull(@Nullable Object object)
+    {
+        if (object != null)
+        {
+            throw new IllegalStateException("Expected null but was " + object);
+        }
+    }
+
+    private static void assertZero(int number)
+    {
+        if (number != 0)
+        {
+            throw new IllegalStateException("Expected 0 but was " + number);
+        }
     }
 
     @Nullable
@@ -217,6 +237,11 @@ public class CompilerWalkState
         return this.parameterOwner;
     }
 
+    public int getNumClassifierMembers()
+    {
+        return this.numClassifierMembers;
+    }
+
     @Nonnull
     public CompilationUnit getCurrentCompilationUnit()
     {
@@ -251,14 +276,6 @@ public class CompilerWalkState
         this.packageNameContext     = null;
     }
 
-    private static void assertNull(@Nullable Object object)
-    {
-        if (object != null)
-        {
-            throw new IllegalStateException();
-        }
-    }
-
     @Nonnull
     public CompilerWalkState withCompilationUnit(CompilationUnit compilationUnit)
     {
@@ -287,6 +304,7 @@ public class CompilerWalkState
         compilerWalkState.orderByOwner               = this.orderByOwner;
         compilerWalkState.classifierModifier         = this.classifierModifier;
         compilerWalkState.parameterOwner             = this.parameterOwner;
+        compilerWalkState.numClassifierMembers       = this.numClassifierMembers;
         return compilerWalkState;
     }
 
@@ -369,6 +387,10 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.parameterOwner != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.numClassifierMembers != 0)
         {
             throw new AssertionError();
         }
@@ -472,6 +494,10 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.numClassifierMembers != other.numClassifierMembers)
+        {
+            throw new AssertionError();
+        }
     }
 
     @Nonnull
@@ -485,8 +511,6 @@ public class CompilerWalkState
         @Override
         public void enterCompilationUnit(CompilationUnitContext ctx)
         {
-            super.enterCompilationUnit(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.compilationUnit);
             CompilerWalkState.this.compilationUnit =
                     CompilerWalkState.this.domainModel.getCompilationUnitByContext(ctx);
@@ -495,16 +519,12 @@ public class CompilerWalkState
         @Override
         public void exitCompilationUnit(CompilationUnitContext ctx)
         {
-            super.exitCompilationUnit(ctx);
-
             CompilerWalkState.this.compilationUnit = null;
         }
 
         @Override
         public void enterPackageDeclaration(@Nonnull PackageDeclarationContext packageContext)
         {
-            super.enterPackageDeclaration(packageContext);
-
             CompilerWalkState.this.packageNameContext = packageContext.packageName();
             CompilerWalkState.this.packageName        = CompilerWalkState.this.packageNameContext.getText();
         }
@@ -512,8 +532,6 @@ public class CompilerWalkState
         @Override
         public void enterTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
-            super.enterTopLevelDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.topLevelDeclaration);
             CompilerWalkState.this.topLevelDeclaration =
                     CompilerWalkState.this.domainModel.getTopLevelElementByContext(ctx);
@@ -522,37 +540,16 @@ public class CompilerWalkState
         @Override
         public void exitTopLevelDeclaration(@Nonnull TopLevelDeclarationContext ctx)
         {
-            super.exitTopLevelDeclaration(ctx);
-
             CompilerWalkState.this.topLevelDeclaration = null;
-        }
-
-        @Override
-        public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
-        {
-            super.enterEnumerationDeclaration(ctx);
-
-            CompilerWalkState.assertNull(CompilerWalkState.this.enumeration);
-            CompilerWalkState.this.enumeration =
-                    CompilerWalkState.this.domainModel.getEnumerationByContext(ctx);
-        }
-
-        @Override
-        public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
-        {
-            super.exitEnumerationDeclaration(ctx);
-
-            CompilerWalkState.this.enumeration = null;
         }
 
         @Override
         public void enterInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
-            super.enterInterfaceDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.classifier);
             CompilerWalkState.assertNull(CompilerWalkState.this.iface);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+            CompilerWalkState.assertZero(CompilerWalkState.this.numClassifierMembers);
 
             AntlrInterface interfaceByContext = CompilerWalkState.this.domainModel.getInterfaceByContext(ctx);
 
@@ -564,21 +561,19 @@ public class CompilerWalkState
         @Override
         public void exitInterfaceDeclaration(@Nonnull InterfaceDeclarationContext ctx)
         {
-            super.exitInterfaceDeclaration(ctx);
-
-            CompilerWalkState.this.classifier    = null;
-            CompilerWalkState.this.iface         = null;
-            CompilerWalkState.this.thisReference = null;
+            CompilerWalkState.this.classifier           = null;
+            CompilerWalkState.this.iface                = null;
+            CompilerWalkState.this.thisReference        = null;
+            CompilerWalkState.this.numClassifierMembers = 0;
         }
 
         @Override
         public void enterClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
-            super.enterClassDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.classifier);
             CompilerWalkState.assertNull(CompilerWalkState.this.klass);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
+            CompilerWalkState.assertZero(CompilerWalkState.this.numClassifierMembers);
 
             AntlrClass classByContext = CompilerWalkState.this.domainModel.getClassByContext(ctx);
 
@@ -590,18 +585,29 @@ public class CompilerWalkState
         @Override
         public void exitClassDeclaration(@Nonnull ClassDeclarationContext ctx)
         {
-            super.exitClassDeclaration(ctx);
+            CompilerWalkState.this.classifier           = null;
+            CompilerWalkState.this.klass                = null;
+            CompilerWalkState.this.thisReference        = null;
+            CompilerWalkState.this.numClassifierMembers = 0;
+        }
 
-            CompilerWalkState.this.classifier    = null;
-            CompilerWalkState.this.klass         = null;
-            CompilerWalkState.this.thisReference = null;
+        @Override
+        public void enterEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.enumeration);
+            CompilerWalkState.this.enumeration =
+                    CompilerWalkState.this.domainModel.getEnumerationByContext(ctx);
+        }
+
+        @Override
+        public void exitEnumerationDeclaration(@Nonnull EnumerationDeclarationContext ctx)
+        {
+            CompilerWalkState.this.enumeration = null;
         }
 
         @Override
         public void enterAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
-            super.enterAssociationDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.association);
             CompilerWalkState.this.association =
                     CompilerWalkState.this.domainModel.getAssociationByContext(ctx);
@@ -610,16 +616,12 @@ public class CompilerWalkState
         @Override
         public void exitAssociationDeclaration(@Nonnull AssociationDeclarationContext ctx)
         {
-            super.exitAssociationDeclaration(ctx);
-
             CompilerWalkState.this.association = null;
         }
 
         @Override
         public void enterAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
-            super.enterAssociationEnd(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.associationEnd);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwner);
@@ -642,8 +644,6 @@ public class CompilerWalkState
         @Override
         public void exitAssociationEnd(@Nonnull AssociationEndContext ctx)
         {
-            super.exitAssociationEnd(ctx);
-
             CompilerWalkState.this.associationEnd = null;
             CompilerWalkState.this.orderByOwner   = null;
             CompilerWalkState.this.thisReference  = null;
@@ -652,8 +652,6 @@ public class CompilerWalkState
         @Override
         public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
-            super.enterAssociationEndSignature(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.associationEndSignature);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwner);
 
@@ -674,8 +672,6 @@ public class CompilerWalkState
         @Override
         public void exitAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
         {
-            super.exitAssociationEndSignature(ctx);
-
             CompilerWalkState.this.associationEndSignature = null;
             CompilerWalkState.this.orderByOwner            = null;
         }
@@ -683,8 +679,6 @@ public class CompilerWalkState
         @Override
         public void enterRelationship(@Nonnull RelationshipContext ctx)
         {
-            super.enterRelationship(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
 
             if (CompilerWalkState.this.association == null)
@@ -701,16 +695,12 @@ public class CompilerWalkState
         @Override
         public void exitRelationship(@Nonnull RelationshipContext ctx)
         {
-            super.exitRelationship(ctx);
-
             CompilerWalkState.this.thisReference = null;
         }
 
         @Override
         public void enterProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
-            super.enterProjectionDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.projection);
 
             CompilerWalkState.this.projection =
@@ -720,69 +710,12 @@ public class CompilerWalkState
         @Override
         public void exitProjectionDeclaration(@Nonnull ProjectionDeclarationContext ctx)
         {
-            super.exitProjectionDeclaration(ctx);
-
             CompilerWalkState.this.projection = null;
-        }
-
-        @Override
-        public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
-        {
-            super.enterParameterizedProperty(ctx);
-
-            CompilerWalkState.assertNull(CompilerWalkState.this.parameterizedProperty);
-            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwner);
-            CompilerWalkState.assertNull(CompilerWalkState.this.parameterOwner);
-
-            if (CompilerWalkState.this.klass == null)
-            {
-                return;
-            }
-            CompilerWalkState.this.parameterizedProperty =
-                    CompilerWalkState.this.klass.getParameterizedPropertyByContext(ctx);
-            CompilerWalkState.this.orderByOwner   = CompilerWalkState.this.parameterizedProperty;
-            CompilerWalkState.this.parameterOwner = CompilerWalkState.this.parameterizedProperty;
-        }
-
-        @Override
-        public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
-        {
-            super.exitParameterizedProperty(ctx);
-
-            CompilerWalkState.this.parameterizedProperty = null;
-            CompilerWalkState.this.orderByOwner   = null;
-            CompilerWalkState.this.parameterOwner = null;
-        }
-
-        @Override
-        public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
-        {
-            super.enterParameterDeclaration(ctx);
-
-            CompilerWalkState.assertNull(CompilerWalkState.this.parameter);
-
-            if (CompilerWalkState.this.parameterOwner == null)
-            {
-                return;
-            }
-
-            CompilerWalkState.this.parameter =
-                    CompilerWalkState.this.parameterOwner.getParameterByContext(ctx);
-        }
-
-        @Override
-        public void exitParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
-        {
-            super.exitParameterDeclaration(ctx);
-
-            CompilerWalkState.this.parameter = null;
         }
 
         @Override
         public void enterServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
-            super.enterServiceGroupDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.serviceGroup);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
 
@@ -798,8 +731,6 @@ public class CompilerWalkState
         @Override
         public void exitServiceGroupDeclaration(@Nonnull ServiceGroupDeclarationContext ctx)
         {
-            super.exitServiceGroupDeclaration(ctx);
-
             CompilerWalkState.this.serviceGroup  = null;
             CompilerWalkState.this.thisReference = null;
         }
@@ -807,8 +738,6 @@ public class CompilerWalkState
         @Override
         public void enterUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
-            super.enterUrlDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.url);
             if (CompilerWalkState.this.serviceGroup == null)
             {
@@ -820,16 +749,12 @@ public class CompilerWalkState
         @Override
         public void exitUrlDeclaration(@Nonnull UrlDeclarationContext ctx)
         {
-            super.exitUrlDeclaration(ctx);
-
             CompilerWalkState.this.url = null;
         }
 
         @Override
         public void enterServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
-            super.enterServiceDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.service);
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwner);
 
@@ -848,17 +773,70 @@ public class CompilerWalkState
         @Override
         public void exitServiceDeclaration(@Nonnull ServiceDeclarationContext ctx)
         {
-            super.exitServiceDeclaration(ctx);
-
             CompilerWalkState.this.service      = null;
             CompilerWalkState.this.orderByOwner = null;
         }
 
         @Override
+        public void enterInterfaceMember(InterfaceMemberContext ctx)
+        {
+            CompilerWalkState.this.numClassifierMembers++;
+        }
+
+        @Override
+        public void enterClassMember(ClassMemberContext ctx)
+        {
+            CompilerWalkState.this.numClassifierMembers++;
+        }
+
+        @Override
+        public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameterizedProperty);
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByOwner);
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameterOwner);
+
+            if (CompilerWalkState.this.klass == null)
+            {
+                return;
+            }
+            CompilerWalkState.this.parameterizedProperty =
+                    CompilerWalkState.this.klass.getParameterizedPropertyByContext(ctx);
+            CompilerWalkState.this.orderByOwner   = CompilerWalkState.this.parameterizedProperty;
+            CompilerWalkState.this.parameterOwner = CompilerWalkState.this.parameterizedProperty;
+        }
+
+        @Override
+        public void exitParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
+        {
+            CompilerWalkState.this.parameterizedProperty = null;
+            CompilerWalkState.this.orderByOwner   = null;
+            CompilerWalkState.this.parameterOwner = null;
+        }
+
+        @Override
+        public void enterParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
+        {
+            CompilerWalkState.assertNull(CompilerWalkState.this.parameter);
+
+            if (CompilerWalkState.this.parameterOwner == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.parameter =
+                    CompilerWalkState.this.parameterOwner.getParameterByContext(ctx);
+        }
+
+        @Override
+        public void exitParameterDeclaration(@Nonnull ParameterDeclarationContext ctx)
+        {
+            CompilerWalkState.this.parameter = null;
+        }
+
+        @Override
         public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.enterClassifierModifier(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.classifierModifier);
 
             if (CompilerWalkState.this.classifier == null)
@@ -873,16 +851,12 @@ public class CompilerWalkState
         @Override
         public void exitClassifierModifier(@Nonnull ClassifierModifierContext ctx)
         {
-            super.exitClassifierModifier(ctx);
-
             CompilerWalkState.this.classifierModifier = null;
         }
 
         @Override
         public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
         {
-            super.enterOrderByDeclaration(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.orderBy);
 
             if (CompilerWalkState.this.orderByOwner == null)
@@ -897,16 +871,12 @@ public class CompilerWalkState
         @Override
         public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
         {
-            super.exitOrderByDeclaration(ctx);
-
             CompilerWalkState.this.orderBy = null;
         }
 
         @Override
         public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
         {
-            super.enterOrderByMemberReferencePath(ctx);
-
             CompilerWalkState.assertNull(CompilerWalkState.this.orderByMemberReferencePath);
 
             if (CompilerWalkState.this.orderBy == null)
@@ -921,8 +891,6 @@ public class CompilerWalkState
         @Override
         public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
         {
-            super.exitOrderByMemberReferencePath(ctx);
-
             CompilerWalkState.this.orderByMemberReferencePath = null;
         }
     }
