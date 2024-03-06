@@ -136,12 +136,13 @@ public class CompilerState
     @Nonnull
     public CompilationResult getCompilationResult()
     {
+        ImmutableList<CompilationUnit> compilationUnits = this.compilerInputState.getCompilationUnits().toImmutable();
         ImmutableList<RootCompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
         if (compilerErrors.notEmpty())
         {
-            return new ErrorsCompilationResult(compilerErrors);
+            return new ErrorsCompilationResult(compilationUnits, compilerErrors);
         }
-        return new DomainModelCompilationResult(this.buildDomainModel());
+        return new DomainModelCompilationResult(compilationUnits, this.buildDomainModel());
     }
 
     @Nonnull
