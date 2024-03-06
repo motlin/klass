@@ -61,7 +61,7 @@ public class KlassBootstrapWriter
 
         for (Klass klass: this.domainModel.getKlasses())
         {
-            klass.model.meta.domain.Class bootstrappedClass = new klass.model.meta.domain.Class();
+            klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
             bootstrappedClass.setName(klass.getName());
             bootstrappedClass.setInferred(klass.isInferred());
             bootstrappedClass.setOrdinal(klass.getOrdinal());

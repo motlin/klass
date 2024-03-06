@@ -22,6 +22,7 @@ import com.gs.fw.common.mithra.generator.metamodel.SuperClassAttributeType;
 import com.gs.fw.common.mithra.generator.metamodel.SuperClassType;
 import com.gs.fw.common.mithra.generator.metamodel.TimezoneConversionType;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.NamedElement;
@@ -116,13 +117,17 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     {
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
-        mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+
+        if (!klass.isAbstract()
+                || klass.getInheritanceType() == InheritanceType.TABLE_PER_CLASS)
+        {
+            mithraObject.setDefaultTable(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, klass.getName()));
+        }
 
         if (klass.isAbstract())
         {
             SuperClassType superClassType = new SuperClassType();
-            // TODO: Configurable inheritance type
-            superClassType.with("table-per-class", mithraObject);
+            superClassType.with(klass.getInheritanceType().getPrettyName(), mithraObject);
             mithraObject.setSuperClassType(superClassType);
         }
 
@@ -181,7 +186,10 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         AssociationEnd   opposite         = associationEnd.getOpposite();
         RelationshipType relationshipType = new RelationshipType();
         relationshipType.setName(associationEnd.getName());
-        relationshipType.setReverseRelationshipName(opposite.getName());
+        if (!associationEnd.getOwningClassifier().isAbstract())
+        {
+            relationshipType.setReverseRelationshipName(opposite.getName());
+        }
         relationshipType.setCardinality(this.getCardinality(associationEnd, opposite));
         relationshipType.setRelatedIsDependent(associationEnd.isOwned());
         relationshipType.setRelatedObject(associationEnd.getType().getName());

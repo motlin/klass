@@ -77,7 +77,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
         super.enterAbstractDeclaration(ctx);
 
         AntlrClass classState = this.compilerState.getCompilerWalkState().getClassState();
-        // TODO: InheritanceType
         classState.setInheritanceType(InheritanceType.TABLE_PER_SUBCLASS);
     }
 
@@ -88,7 +87,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
 
         AntlrClass      classState      = this.compilerState.getCompilerWalkState().getClassState();
         InheritanceType inheritanceType = InheritanceType.byPrettyName(ctx.getText());
-        // TODO: InheritanceType
         classState.setInheritanceType(inheritanceType);
     }
 

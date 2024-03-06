@@ -20,10 +20,10 @@ interface PackageableElement
     // fullyQualifiedName: String = packageName + "." + name;
 }
 
+// TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
 class Classifier
-    abstract
+    abstract(table-per-class)
     implements PackageableElement
-    transient
 {
     name: String key;
     inferred: Boolean;
@@ -37,12 +37,10 @@ class Classifier
 // TODO: Error when transient extends non-transient
 class Interface
     extends Classifier
-    transient
 {
 }
 
 class ClassifierInterfaceMapping
-    transient
 {
     classifierName: String key private;
     interfaceName: String key private;
@@ -64,19 +62,18 @@ association ClassifierInterfaceMappingHasInterface
     relationship this.name == ClassifierInterfaceMapping.interfaceName
 }
 
-class Class
+class Klass
     extends Classifier
-    transient
 {
     superClassName: String? private;
 }
 
 association ClassHasSuperClass
 {
-    subClasses: Class[0..*];
-    superClass: Class[0..1];
+    subClasses: Klass[0..*];
+    superClass: Klass[0..1];
 
-    relationship this.superClassName == Class.name
+    relationship this.superClassName == Klass.name
 }
 
 enumeration PrimitiveType
@@ -102,7 +99,6 @@ enumeration Multiplicity
 }
 
 class PrimitiveProperty
-    transient
 {
     className                     : String key;
     name                          : String key;
@@ -116,7 +112,7 @@ class PrimitiveProperty
 
 association ClassHasPrimitiveTypeProperties
 {
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
     primitiveProperties: PrimitiveProperty[0..*] owned
     // TODO: Change the orderBy syntax to orderBy(this.ordinal)
         orderBy: this.ordinal;
@@ -125,7 +121,6 @@ association ClassHasPrimitiveTypeProperties
 }
 
 class Enumeration
-    transient
 {
     name                          : String key;
     inferred                      : Boolean;
@@ -135,7 +130,6 @@ class Enumeration
 }
 
 class EnumerationLiteral
-    transient
 {
     enumerationName               : String key;
     name                          : String key;
@@ -154,7 +148,6 @@ association EnumerationHasLiterals
 }
 
 class EnumerationProperty
-    transient
 {
     className                     : String key;
     name                          : String key;
@@ -175,7 +168,7 @@ association EnumerationPropertyHasEnumeration
 
 association ClassHasEnumerationProperties
 {
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
     enumerationProperties: EnumerationProperty[0..*]
         orderBy: this.ordinal;
 
@@ -183,7 +176,6 @@ association ClassHasEnumerationProperties
 }
 
 class PrimitivePropertyModifier
-    transient
 {
     className                     : String key;
     propertyName                  : String key;
@@ -193,7 +185,6 @@ class PrimitivePropertyModifier
 }
 
 class EnumerationPropertyModifier
-    transient
 {
     className                     : String key;
     propertyName                  : String key;
@@ -223,7 +214,6 @@ association EnumerationPropertyHasModifiers
 }
 
 class ClassModifier
-    transient
 {
     className                     : String key;
     name                          : String key;
@@ -233,7 +223,7 @@ class ClassModifier
 
 association ClassHasModifiers
 {
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
     classModifiers: ClassModifier[0..*]
         orderBy: this.ordinal;
 
@@ -247,7 +237,6 @@ enumeration AssociationEndDirection
 }
 
 class Association
-    transient
 {
     name                          : String key;
     inferred                      : Boolean;
@@ -269,7 +258,6 @@ class Association
 }
 
 class AssociationEnd
-    transient
 {
     owningClassName               : String key private;
     name                          : String key;
@@ -293,7 +281,7 @@ association AssociationHasEnds
 
 association ClassHasAssociationEnds
 {
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
     associationEnds: AssociationEnd[0..*];
     // TODO: Order by this.owningAssociation.ordinal
 
@@ -303,13 +291,12 @@ association ClassHasAssociationEnds
 association AssociationEndHasResultType
 {
     associationEndsResultTypeOf: AssociationEnd[0..*];
-    resultType: Class[1..1];
+    resultType: Klass[1..1];
 
-    relationship this.resultTypeName == Class.name
+    relationship this.resultTypeName == Klass.name
 }
 
 class AssociationEndModifier
-    transient
 {
     owningClassName               : String key;
     associationEndName            : String key;
@@ -329,7 +316,6 @@ association AssociationEndHasModifiers
 }
 
 class ParameterizedProperty
-    transient
 {
     owningClassName               : String key private;
     name                          : String key;
@@ -341,7 +327,7 @@ class ParameterizedProperty
 
 association ClassHasParameterizedProperties
 {
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
     parameterizedProperties: ParameterizedProperty[0..*] owned
         orderBy: this.ordinal;
 
@@ -351,13 +337,12 @@ association ClassHasParameterizedProperties
 association ParameterizedPropertyHasResultType
 {
     parameterizedPropertiesResultTypeOf: ParameterizedProperty[0..*];
-    resultType: Class[1..1];
+    resultType: Klass[1..1];
 
-    relationship this.resultTypeName == Class.name
+    relationship this.resultTypeName == Klass.name
 }
 
 class AssociationEndOrdering
-    transient
 {
     associationName               : String key private;
     name                          : String;
@@ -368,7 +353,6 @@ class AssociationEndOrdering
 }
 
 class ParameterizedPropertyOrdering
-    transient
 {
     owningClassName               : String private key;
     name                          : String key;
@@ -416,7 +400,6 @@ association ParameterizedPropertyOrderingHasParts
 }
 
 class Ordering
-    transient
 {
     id                            : Long id key;
     inferred                      : Boolean;
@@ -424,7 +407,6 @@ class Ordering
 
 // Split into data type / enum type order bys?
 class OrderingPart
-    transient
 {
     orderingId                    : Long key;
     inferred                      : Boolean;
@@ -480,7 +462,6 @@ association ParameterizedPropertyHasParameters
 }
 
 class ParameterizedPropertyParameter
-    transient
 {
     parameterizedPropertyClassName: String key private;
     parameterizedPropertyName     : String key;
@@ -511,7 +492,6 @@ enumeration Verb
 }
 
 class Service
-    transient
 {
     className          : String key;
     urlString          : String key;
@@ -520,14 +500,12 @@ class Service
 }
 
 class Url
-    transient
 {
     className          : String key;
     url                : String key;
 }
 
 class ServiceGroup
-    transient
 {
     className          : String key;
 }
@@ -535,9 +513,9 @@ class ServiceGroup
 association ServiceGroupHasClass
 {
     serviceGroup: ServiceGroup[0..1];
-    owningClass: Class[1..1];
+    owningClass: Klass[1..1];
 
-    relationship this.className == Class.name
+    relationship this.className == Klass.name
 }
 
 association ServiceGroupHasUrls
@@ -556,7 +534,7 @@ association UrlHasServices
     relationship this.className == Service.className && this.url == Service.urlString
 }
 
-projection ClassReadProjection on Class
+projection ClassReadProjection on Klass
 {
     name                 : "Class name",
     inferred             : "Class inferred",
@@ -641,7 +619,7 @@ projection ClassReadProjection on Class
     },
 }
 
-service Class
+service Klass
 {
     /api/meta/class/{className: String[1..1]}
         GET
