@@ -36,6 +36,7 @@
                         <goals>
                             <goal>generate-relational-schema</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
 

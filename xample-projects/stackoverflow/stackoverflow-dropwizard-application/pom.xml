@@ -74,6 +74,7 @@
                         <goals>
                             <goal>generate-abstract-application</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <dependencies>

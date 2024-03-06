@@ -21,7 +21,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-compiler-plugin</artifactId>
-                <version>${project.version}</version>
+                <version>${klass.version}</version>
                 <configuration>
                     <klassSourcePackages>
                         <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
@@ -33,6 +33,7 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>

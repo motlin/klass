@@ -47,6 +47,7 @@
                         <goals>
                             <goal>generate-data-transfer-objects</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <dependencies>

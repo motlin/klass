@@ -37,6 +37,7 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <phase>test</phase>
                     </execution>
                 </executions>
             </plugin>

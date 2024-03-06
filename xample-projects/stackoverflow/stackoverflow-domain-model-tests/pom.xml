@@ -33,6 +33,7 @@
                         <goals>
                             <goal>compile-resources</goal>
                         </goals>
+                        <phase>test</phase>
                     </execution>
                 </executions>
                 <dependencies>

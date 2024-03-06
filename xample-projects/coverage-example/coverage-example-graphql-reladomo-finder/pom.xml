@@ -34,6 +34,7 @@
                         <goals>
                             <goal>generate-graphql-reladomo-finder</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
 

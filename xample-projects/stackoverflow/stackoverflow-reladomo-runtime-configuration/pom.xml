@@ -37,6 +37,7 @@
                         <goals>
                             <goal>generate-reladomo-runtime-configuration</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <outputDirectory>
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration
@@ -52,6 +53,7 @@
                         <goals>
                             <goal>generate-reladomo-runtime-configuration</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <outputDirectory>
                                 ${project.build.directory}/generated-resources/reladomo-runtime-configuration

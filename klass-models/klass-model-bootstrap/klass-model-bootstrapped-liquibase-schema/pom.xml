@@ -123,6 +123,7 @@
                         <goals>
                             <goal>generate-liquibase-schema</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
 

@@ -34,6 +34,7 @@
                         <goals>
                             <goal>generate-klass-html</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
 
