@@ -62,6 +62,7 @@
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
                 <version>${klass.version}</version>
+
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
                     <applicationName>${app.name}</applicationName>
@@ -70,6 +71,7 @@
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
                     </klassSourcePackages>
                 </configuration>
+
                 <executions>
                     <execution>
                         <goals>
@@ -272,12 +274,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-logging-logstash-console</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -337,6 +333,12 @@
         <!--region Liftwizard config-->
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-logstash-console</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -361,13 +363,13 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock-incrementing</artifactId>
+            <artifactId>liftwizard-config-uuid-system</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-config-uuid-system</artifactId>
+            <artifactId>liftwizard-config-clock-incrementing</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
@@ -436,13 +438,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-services</artifactId>
+            <artifactId>klass-bundle-graphql</artifactId>
             <version>${klass.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-bundle-graphql</artifactId>
+            <artifactId>klass-model-bootstrapped-services</artifactId>
             <version>${klass.version}</version>
         </dependency>
         <!--endregion-->
