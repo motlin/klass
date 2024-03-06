@@ -96,6 +96,7 @@
                     </execution>
                 </executions>
                 <dependencies>
+
                     <dependency>
                         <groupId>com.goldmansachs.reladomo</groupId>
                         <artifactId>reladomogen</artifactId>
@@ -107,6 +108,13 @@
                         <artifactId>reladomo-gen-util</artifactId>
                         <version>${reladomo.version}</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>klass-model-bootstrapped-reladomo-definitions</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
 

@@ -97,6 +97,7 @@
                     </execution>
                 </executions>
                 <dependencies>
+
                     <dependency>
                         <groupId>com.goldmansachs.reladomo</groupId>
                         <artifactId>reladomogen</artifactId>
@@ -108,6 +109,13 @@
                         <artifactId>reladomo-gen-util</artifactId>
                         <version>17.0.2</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${app.artifactId}-reladomo-definitions</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
 
