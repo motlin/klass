@@ -17,6 +17,7 @@ import org.eclipse.collections.api.block.predicate.Predicate;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
+// TODO: Only put audit properties onto version types
 public class AuditAssociationInferencePhase
         extends AbstractCompilerPhase
 {
