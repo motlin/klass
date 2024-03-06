@@ -240,10 +240,10 @@ association PrimitivePropertyHasMaxPropertyValidation
 class PropertyModifier
     implements Element
 {
-    keyword: String key maximumLength(256);
-    ordinal: Integer;
     classifierName: String key maximumLength(256);
     propertyName: String key maximumLength(256);
+    keyword: String key maximumLength(256);
+    ordinal: Integer;
 }
 
 association DataTypePropertyHasModifiers
@@ -259,9 +259,9 @@ association DataTypePropertyHasModifiers
 class ClassifierModifier
     implements Element
 {
+    classifierName: String key maximumLength(256);
     keyword: String key maximumLength(256);
     ordinal: Integer;
-    classifierName: String key maximumLength(256);
 }
 
 association ClassifierHasModifiers
@@ -469,10 +469,10 @@ association AssociationEndHasResultType
 class AssociationEndModifier
     implements Element
 {
-    keyword           : String key maximumLength(256);
-    ordinal           : Integer;
     owningClassName   : String key maximumLength(256);
     associationEndName: String key maximumLength(256);
+    keyword           : String key maximumLength(256);
+    ordinal           : Integer;
 }
 
 association AssociationEndHasModifiers

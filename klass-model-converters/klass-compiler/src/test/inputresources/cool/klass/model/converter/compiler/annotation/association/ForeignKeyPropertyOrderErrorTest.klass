@@ -1,0 +1,20 @@
+package dummy
+
+class DummyOwner
+{
+    id: Long key;
+}
+
+class DummyOwned
+{
+    id: Long key;
+    ownerId: Long key private;
+}
+
+association OwnedHasOwner
+{
+    ownerDummy: DummyOwner[1..1];
+    ownedDummies: DummyOwned[0..*] owned;
+
+    relationship this.id == DummyOwned.ownerId
+}

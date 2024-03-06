@@ -13,6 +13,7 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
+import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -417,6 +418,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.reportDuplicateValidations(compilerAnnotationHolder);
         this.reportInvalidIdProperties(compilerAnnotationHolder);
         this.reportInvalidForeignKeyProperties(compilerAnnotationHolder);
+        this.reportForeignKeyPropertyOrder(compilerAnnotationHolder);
         this.reportInvalidUserIdProperties(compilerAnnotationHolder);
         this.reportInvalidVersionProperties(compilerAnnotationHolder);
         this.reportInvalidTemporalProperties(compilerAnnotationHolder);
@@ -506,6 +508,40 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getTypeParserRuleContext(),
                     AnnotationSeverity.WARNING);
         }
+    }
+
+    private void reportForeignKeyPropertyOrder(CompilerAnnotationState compilerAnnotationHolder)
+    {
+        if (!this.isKey())
+        {
+            return;
+        }
+
+        var keysMatchingThisForeignKey = this.getKeysMatchingThisForeignKey();
+        if (this.keyBuildersMatchingThisForeignKey.isEmpty())
+        {
+            return;
+        }
+
+        var nonForeignKeys = this.getOwningClassifierState()
+                .getKeyProperties()
+                .takeWhile(keyProperty -> !keyProperty.equals(this))
+                .select(keyProperty -> keyProperty.getKeysMatchingThisForeignKey().isEmpty());
+
+        if (nonForeignKeys.isEmpty())
+        {
+            return;
+        }
+
+        String format = String.format(
+                "Property '%s' is a foreign key property, so it ought to be declared before the other key properties: %s.",
+                this.getName(),
+                nonForeignKeys.collect(AntlrNamedElement::getName));
+
+        compilerAnnotationHolder.add(
+                "ERR_FKP_ORD",
+                format,
+                this);
     }
 
     private void reportInvalidUserIdProperties(CompilerAnnotationState compilerAnnotationHolder)
