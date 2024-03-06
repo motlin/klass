@@ -1,3 +1,5 @@
+<!--TODO: Move this file to a subdirectory, and code generate it-->
+
 <MithraRuntime>
     <ConnectionManager className="cool.klass.reladomo.connectionmanager.h2.H2ConnectionManager">
 

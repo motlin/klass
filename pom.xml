@@ -21,6 +21,8 @@
         <module>klass-generator-plugins</module>
         <module>klass-reladomo</module>
         <module>klass-tests</module>
+        <module>klass-dropwizard-bundles</module>
+        <module>klass-jackson</module>
     </modules>
 
     <properties>

@@ -3,25 +3,22 @@
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>klass</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>klass-reladomo</artifactId>
     <packaging>pom</packaging>
-
-    <name>Klass Reladomo (Module Group)</name>
-
     <modules>
-        <module>klass-reladomo-simulated-sequence</module>
-        <module>klass-connection-manager-h2</module>
-        <module>klass-reladomo-simulated-sequence-ddls</module>
-        <module>klass-reladomo-ddl-executor</module>
-        <module>klass-reladomo-configuration</module>
+        <module>klass-dropwizard-bundle-object-mapper</module>
+        <module>klass-dropwizard-bundle-cors</module>
+        <module>klass-dropwizard-bundle-http-logging</module>
+        <module>klass-dropwizard-bundle-reladomo</module>
     </modules>
+
+    <artifactId>klass-dropwizard-bundles</artifactId>
+
+    <name>Klass Dropwizard Bundles (Module Group)</name>
 
 </project>
