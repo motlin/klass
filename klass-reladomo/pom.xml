@@ -29,6 +29,7 @@
         <module>klass-reladomo-graphql-data-fetcher</module>
         <module>klass-reladomo-timestamp</module>
         <module>klass-reladomo-serialize</module>
+        <module>klass-reladomo-persistent-writer-test</module>
     </modules>
 
     <dependencyManagement>

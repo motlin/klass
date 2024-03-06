@@ -1,5 +1,6 @@
 package cool.klass.deserializer.json;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -18,6 +19,7 @@ import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.PropertyVisitor;
+import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
@@ -25,17 +27,21 @@ import org.eclipse.collections.impl.factory.Stacks;
 
 public final class JsonTypeCheckingValidator
 {
+    @Nonnull
     private final ObjectNode objectNode;
+    @Nonnull
     private final Klass      klass;
 
+    @Nonnull
     private final MutableStack<String> contextStack = Stacks.mutable.empty();
+    @Nonnull
     private final MutableList<String>  errors;
 
     public JsonTypeCheckingValidator(ObjectNode objectNode, Klass klass, MutableList<String> errors)
     {
-        this.objectNode = objectNode;
-        this.klass = klass;
-        this.errors = errors;
+        this.objectNode = Objects.requireNonNull(objectNode);
+        this.klass = Objects.requireNonNull(klass);
+        this.errors = Objects.requireNonNull(errors);
     }
 
     public static void validate(ObjectNode objectNode, Klass klass, MutableList<String> errors)
@@ -137,12 +143,13 @@ public final class JsonTypeCheckingValidator
         public void handlePrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
-            primitiveType.visit(new JsonTypeCheckingPrimitiveTypeVisitor(
+            PrimitiveTypeVisitor visitor = new JsonTypeCheckingPrimitiveTypeVisitor(
                     primitiveProperty.getOwningClassifier(),
                     primitiveProperty,
                     this.jsonNode,
                     JsonTypeCheckingValidator.this.contextStack,
-                    JsonTypeCheckingValidator.this.errors));
+                    JsonTypeCheckingValidator.this.errors);
+            primitiveType.visit(visitor);
         }
 
         @Override
@@ -258,7 +265,9 @@ public final class JsonTypeCheckingValidator
         {
             if (this.jsonNode.isObject())
             {
-                JsonTypeCheckingValidator.this.validateIncomingData((ObjectNode) this.jsonNode, associationEnd.getType());
+                JsonTypeCheckingValidator.this.validateIncomingData(
+                        (ObjectNode) this.jsonNode,
+                        associationEnd.getType());
             }
             else
             {

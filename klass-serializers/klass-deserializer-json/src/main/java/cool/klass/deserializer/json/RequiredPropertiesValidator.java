@@ -1,6 +1,7 @@
 package cool.klass.deserializer.json;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -13,26 +14,37 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
 import org.eclipse.collections.api.stack.MutableStack;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Stacks;
 
 public class RequiredPropertiesValidator
 {
-    private final Klass                klass;
-    private final ObjectNode           objectNode;
-    private final OperationMode        operationMode;
-    private final MutableList<String>  errors;
-    private final MutableList<String>  warnings;
-    private final MutableStack<String> contextStack;
-    private final boolean              isRoot;
+    @Nonnull
+    private final Klass                    klass;
+    @Nonnull
+    private final ObjectNode               objectNode;
+    @Nonnull
+    private final OperationMode            operationMode;
+    @Nonnull
+    private final MutableList<String>      errors;
+    @Nonnull
+    private final MutableList<String>      warnings;
+    @Nonnull
+    private final MutableStack<String>     contextStack;
+    @Nonnull
+    private final Optional<AssociationEnd> pathHere;
+    private final boolean                  isRoot;
 
     public RequiredPropertiesValidator(
-            Klass klass,
-            ObjectNode objectNode,
-            OperationMode operationMode,
-            MutableList<String> errors,
-            MutableList<String> warnings,
-            MutableStack<String> contextStack,
+            @Nonnull Klass klass,
+            @Nonnull ObjectNode objectNode,
+            @Nonnull OperationMode operationMode,
+            @Nonnull MutableList<String> errors,
+            @Nonnull MutableList<String> warnings,
+            @Nonnull MutableStack<String> contextStack,
+            @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
         this.klass = Objects.requireNonNull(klass);
@@ -41,23 +53,25 @@ public class RequiredPropertiesValidator
         this.errors = Objects.requireNonNull(errors);
         this.warnings = Objects.requireNonNull(warnings);
         this.contextStack = Objects.requireNonNull(contextStack);
+        this.pathHere = Objects.requireNonNull(pathHere);
         this.isRoot = isRoot;
     }
 
     public static void validate(
             @Nonnull Klass klass,
-            @Nonnull ObjectNode incomingInstance,
+            @Nonnull ObjectNode objectNode,
             @Nonnull OperationMode operationMode,
             @Nonnull MutableList<String> errors,
             @Nonnull MutableList<String> warnings)
     {
         RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
                 klass,
-                incomingInstance,
+                objectNode,
                 operationMode,
                 errors,
                 warnings,
                 Stacks.mutable.empty(),
+                Optional.empty(),
                 true);
         validator.validate();
     }
@@ -82,122 +96,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
-    {
-        Multiplicity multiplicity = associationEnd.getMultiplicity();
-
-        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
-
-        if ((jsonNode.isMissingNode() || jsonNode.isNull()) && multiplicity.isRequired())
-        {
-            if (this.operationMode == OperationMode.CREATE && associationEnd.isVersion())
-            {
-                // TODO: Should we actually throw here? Or allow a version as long as its id is 1?
-                return;
-            }
-
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
-                    this.getContextString(),
-                    associationEnd.getOwningClassifier().getName(),
-                    associationEnd.getName(),
-                    associationEnd.getType().toString(),
-                    associationEnd.getMultiplicity().getPrettyName(),
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
-        }
-
-        if (multiplicity.isToOne())
-        {
-            this.handleToOne(associationEnd, jsonNode);
-        }
-        else
-        {
-            this.handleToMany(associationEnd, jsonNode);
-        }
-    }
-
-    public void handleToOne(
-            @Nonnull AssociationEnd associationEnd,
-            JsonNode jsonNode)
-    {
-        this.contextStack.push(associationEnd.getName());
-        try
-        {
-            if (jsonNode instanceof ObjectNode)
-            {
-                this.handleAssociationEnd(associationEnd, (ObjectNode) jsonNode);
-            }
-        }
-        finally
-        {
-            this.contextStack.pop();
-        }
-    }
-
-    public void handleToMany(
-            @Nonnull AssociationEnd associationEnd,
-            JsonNode jsonNode)
-    {
-        if (!(jsonNode instanceof ArrayNode))
-        {
-            return;
-        }
-
-        for (int index = 0; index < jsonNode.size(); index++)
-        {
-            String contextString = String.format(
-                    "%s[%d]",
-                    associationEnd.getName(),
-                    index);
-            this.contextStack.push(contextString);
-
-            try
-            {
-                JsonNode childJsonNode = jsonNode.get(index);
-                if (childJsonNode instanceof ObjectNode)
-                {
-                    this.handleAssociationEnd(associationEnd, (ObjectNode) childJsonNode);
-                }
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
-        }
-    }
-
-    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, ObjectNode objectNode)
-    {
-        OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
-
-        RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
-                associationEnd.getType(),
-                objectNode,
-                nextMode,
-                this.errors,
-                this.warnings,
-                this.contextStack,
-                false);
-        validator.validate();
-    }
-
-    @Nonnull
-    private OperationMode getNextMode(OperationMode operationMode, @Nonnull AssociationEnd associationEnd)
-    {
-        if (operationMode == OperationMode.CREATE && associationEnd.isOwned())
-        {
-            return OperationMode.CREATE;
-        }
-
-        if (operationMode == OperationMode.REPLACE && associationEnd.isOwned())
-        {
-            return OperationMode.REPLACE;
-        }
-
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet");
-    }
-
+    //region DataTypeProperties
     private void handleDataTypeProperties()
     {
         ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
@@ -344,19 +243,172 @@ public class RequiredPropertiesValidator
             this.errors.add(error);
         }
     }
+    //endregion
 
+    //region AssociationEnds
     private void handleAssociationEnds()
     {
-        ImmutableList<AssociationEnd> ownedAssociationEnds = this.klass.getAssociationEnds()
-                .select(AssociationEnd::isOwned);
-
-        for (AssociationEnd associationEnd : ownedAssociationEnds)
+        for (AssociationEnd associationEnd : this.klass.getAssociationEnds())
         {
-            this.contextStack.push(associationEnd.getName());
+            if (this.isBackward(associationEnd))
+            {
+                this.handleWarnIfPresent(associationEnd, "opposite");
+            }
+            else if (associationEnd.isVersion())
+            {
+                this.handleVersionAssociationEnd(associationEnd);
+            }
+            else if (associationEnd.isOwned())
+            {
+                this.handleAssociationEnd(associationEnd);
+            }
+        }
+
+        /*
+        ImmutableList<AssociationEnd> sharedAssociationEnds = this.klass.getAssociationEnds()
+                .reject(AssociationEnd::isOwned);
+        for (AssociationEnd sharedAssociationEnd : sharedAssociationEnds)
+        {
+            if (sharedAssociationEnd.getMultiplicity().isToOne() && sharedAssociationEnd.isRequired())
+            {
+                throw new AssertionError(
+                        "TODO: Required, shared, to-one, that's not opposite the path here requires embedded object with primary key present");
+            }
+        }
+        */
+    }
+
+    private void handleWarnIfPresent(AssociationEnd property, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode())
+        {
+            return;
+        }
+
+        if (jsonNode.isNull())
+        {
+            String warning = String.format(
+                    "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was null.",
+                    this.getContextString(),
+                    propertyKind,
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.getMultiplicity().getPrettyName());
+            this.warnings.add(warning);
+            return;
+        }
+
+        String warning = String.format(
+                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s: %s.",
+                this.getContextString(),
+                propertyKind,
+                property.getOwningClassifier().getName(),
+                property.getName(),
+                property.getType().toString(),
+                property.getMultiplicity().getPrettyName(),
+                jsonNode.getNodeType().toString().toLowerCase(),
+                jsonNode);
+        this.warnings.add(warning);
+    }
+
+    private void handleErrorIfAbsent(AssociationEnd associationEnd, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+        if (!jsonNode.isMissingNode() && !jsonNode.isNull())
+        {
+            return;
+        }
+
+        String error = String.format(
+                "Error at %s. Expected value for %s property '%s.%s: %s[%s]' but value was %s.",
+                this.getContextString(),
+                propertyKind,
+                associationEnd.getOwningClassifier().getName(),
+                associationEnd.getName(),
+                associationEnd.getType().toString(),
+                associationEnd.getMultiplicity().getPrettyName(),
+                jsonNode.getNodeType().toString().toLowerCase());
+        this.errors.add(error);
+    }
+
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        Multiplicity multiplicity = associationEnd.getMultiplicity();
+
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+
+        if ((jsonNode.isMissingNode() || jsonNode.isNull()) && multiplicity.isRequired())
+        {
+            if (this.operationMode == OperationMode.CREATE && associationEnd.isVersion())
+            {
+                return;
+            }
+
+            String error = String.format(
+                    "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
+                    this.getContextString(),
+                    associationEnd.getOwningClassifier().getName(),
+                    associationEnd.getName(),
+                    associationEnd.getType().toString(),
+                    associationEnd.getMultiplicity().getPrettyName(),
+                    jsonNode.getNodeType().toString().toLowerCase());
+            this.errors.add(error);
+        }
+
+        if (multiplicity.isToOne())
+        {
+            this.handleToOne(associationEnd, jsonNode);
+        }
+        else
+        {
+            this.handleToMany(associationEnd, jsonNode);
+        }
+    }
+
+    public void handleToOne(
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode jsonNode)
+    {
+        this.contextStack.push(associationEnd.getName());
+        try
+        {
+            if (jsonNode instanceof ObjectNode)
+            {
+                this.handleAssociationEnd(associationEnd, (ObjectNode) jsonNode);
+            }
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    public void handleToMany(
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode jsonNode)
+    {
+        if (!(jsonNode instanceof ArrayNode))
+        {
+            return;
+        }
+
+        for (int index = 0; index < jsonNode.size(); index++)
+        {
+            String contextString = String.format(
+                    "%s[%d]",
+                    associationEnd.getName(),
+                    index);
+            this.contextStack.push(contextString);
 
             try
             {
-                this.handleAssociationEnd(associationEnd);
+                JsonNode childJsonNode = jsonNode.path(index);
+                if (childJsonNode instanceof ObjectNode)
+                {
+                    this.handleAssociationEnd(associationEnd, (ObjectNode) childJsonNode);
+                }
             }
             finally
             {
@@ -365,11 +417,184 @@ public class RequiredPropertiesValidator
         }
     }
 
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, ObjectNode objectNode)
+    {
+        OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
+
+        if (associationEnd.isVersion())
+        {
+            this.handleVersionAssociationEnd(associationEnd);
+        }
+        else
+        {
+            this.handlePlainAssociationEnd(associationEnd, objectNode, nextMode);
+        }
+    }
+
+    private void handleVersionAssociationEnd(AssociationEnd associationEnd)
+    {
+        if (this.operationMode == OperationMode.CREATE)
+        {
+            // TODO: recurse and error if the version number isn't 1?
+            this.handleWarnIfPresent(associationEnd, "version");
+        }
+        else if (this.operationMode == OperationMode.REPLACE)
+        {
+            if (this.klass.getKeyProperties().anySatisfy(DataTypeProperty::isID))
+            {
+                // Classes with ID properties use separate endpoints for create and replace, so we know we're definitely replacing. Therefore the version must be present.
+                this.handleErrorIfAbsent(associationEnd, "version");
+            }
+
+            // Classes without ID properties use a single endpoint for create and replace. We won't know if we're performing a replacement until querying from the data store. At this point, it's too early to validate anything.
+        }
+        else
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".handleVersionAssociationEnd() not implemented yet");
+        }
+    }
+
+    private void handlePlainAssociationEnd(
+            @Nonnull AssociationEnd associationEnd,
+            ObjectNode objectNode,
+            OperationMode nextMode)
+    {
+        RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
+                associationEnd.getType(),
+                objectNode,
+                nextMode,
+                this.errors,
+                this.warnings,
+                this.contextStack,
+                Optional.of(associationEnd),
+                false);
+        validator.validate();
+    }
+
+    @Nonnull
+    private OperationMode getNextMode(OperationMode operationMode, @Nonnull AssociationEnd associationEnd)
+    {
+        if (operationMode == OperationMode.CREATE && associationEnd.isOwned())
+        {
+            return OperationMode.CREATE;
+        }
+
+        if (operationMode == OperationMode.REPLACE && associationEnd.isOwned())
+        {
+            return OperationMode.REPLACE;
+        }
+
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getNextMode() not implemented yet");
+    }
+
     private String getContextString()
     {
         return this.contextStack
                 .toList()
                 .asReversed()
                 .makeString(".");
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
+            @Nonnull Klass klass)
+    {
+        return klass
+                .getKeyProperties()
+                .reject(DataTypeProperty::isID)
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode));
+    }
+
+    private Object getKeyFromJsonNode(
+            @Nonnull DataTypeProperty keyProperty,
+            @Nonnull JsonNode jsonNode)
+    {
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+
+            JsonNode childNode = jsonNode.path(pair.getOne().getName());
+            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                    pair.getTwo(),
+                    (ObjectNode) childNode);
+            return Objects.requireNonNull(result);
+        }
+
+        return JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
+    }
+
+    private ImmutableList<Object> getKeysFromJsonNode(
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode parentJsonNode)
+    {
+        Klass                           type                    = associationEnd.getType();
+        ImmutableList<DataTypeProperty> keyProperties           = type.getKeyProperties();
+        ImmutableList<DataTypeProperty> nonForeignKeyProperties = keyProperties.reject(DataTypeProperty::isForeignKey);
+        return nonForeignKeyProperties
+                .collect(keyProperty -> this.getKeyFromJsonNode(
+                        keyProperty,
+                        jsonNode,
+                        associationEnd,
+                        parentJsonNode));
+    }
+
+    private Object getKeyFromJsonNode(
+            @Nonnull DataTypeProperty keyProperty,
+            @Nonnull JsonNode jsonNode,
+            @Nonnull AssociationEnd associationEnd,
+            JsonNode parentJsonNode)
+    {
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+
+        AssociationEnd opposite = associationEnd.getOpposite();
+
+        ImmutableList<DataTypeProperty> oppositeForeignKeys = keysMatchingThisForeignKey.get(opposite);
+
+        if (oppositeForeignKeys.notEmpty())
+        {
+            DataTypeProperty oppositeForeignKey     = oppositeForeignKeys.getOnly();
+            String           oppositeForeignKeyName = oppositeForeignKey.getName();
+            Object           result                 = parentJsonNode.path(oppositeForeignKeyName);
+            return Objects.requireNonNull(result);
+        }
+
+        if (keysMatchingThisForeignKey.notEmpty())
+        {
+            if (keysMatchingThisForeignKey.size() != 1)
+            {
+                throw new AssertionError();
+            }
+
+            Pair<AssociationEnd, DataTypeProperty> pair = keysMatchingThisForeignKey.keyValuePairsView().getOnly();
+
+            JsonNode childNode = jsonNode.path(pair.getOne().getName());
+            Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                    pair.getTwo(),
+                    (ObjectNode) childNode);
+            return Objects.requireNonNull(result);
+        }
+
+        Object result = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(
+                keyProperty,
+                (ObjectNode) jsonNode);
+        return Objects.requireNonNull(result);
+    }
+
+    private boolean isBackward(AssociationEnd associationEnd)
+    {
+        return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }
 }

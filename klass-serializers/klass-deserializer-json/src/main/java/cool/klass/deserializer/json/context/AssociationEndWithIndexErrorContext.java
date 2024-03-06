@@ -1,4 +1,4 @@
-package cool.klass.reladomo.persistent.writer.context;
+package cool.klass.deserializer.json.context;
 
 import java.util.Objects;
 

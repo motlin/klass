@@ -5,23 +5,38 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.stack.MutableStack;
 
-public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
+public class JsonPrimitiveValueCheckingVisitor implements PrimitiveTypeVisitor
 {
-    private final JsonNode jsonDataTypeValue;
+    @Nonnull
+    private final PrimitiveProperty    primitiveProperty;
+    @Nonnull
+    private final JsonNode             jsonDataTypeValue;
+    private final Object               persistentValue;
+    @Nonnull
+    private final MutableStack<String> contextStack;
+    @Nonnull
+    private final MutableList<String>  errors;
 
-    private Object result;
-
-    public JsonPrimitiveTypeValueVisitor(JsonNode jsonDataTypeValue)
+    public JsonPrimitiveValueCheckingVisitor(
+            PrimitiveProperty primitiveProperty,
+            JsonNode jsonDataTypeValue,
+            Object persistentValue,
+            MutableStack<String> contextStack,
+            MutableList<String> errors)
     {
+        this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
-    }
-
-    public Object getResult()
-    {
-        return this.result;
+        this.persistentValue = persistentValue;
+        this.contextStack = Objects.requireNonNull(contextStack);
+        this.errors = Objects.requireNonNull(errors);
     }
 
     @Override
@@ -29,10 +44,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isTextual())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.textValue();
+        String incomingValue = this.jsonDataTypeValue.textValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -40,10 +56,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isIntegralNumber() || !this.jsonDataTypeValue.canConvertToInt())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.intValue();
+        int incomingValue = this.jsonDataTypeValue.intValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -51,10 +68,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isIntegralNumber() || !this.jsonDataTypeValue.canConvertToLong())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.longValue();
+        long incomingValue = this.jsonDataTypeValue.longValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -65,10 +83,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
                 && !this.jsonDataTypeValue.isInt()
                 && !this.jsonDataTypeValue.isLong())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.doubleValue();
+        double incomingValue = this.jsonDataTypeValue.doubleValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -80,10 +99,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
                 && !this.jsonDataTypeValue.isLong()
                 || !this.hasValidFloatString())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.floatValue();
+        float incomingValue = this.jsonDataTypeValue.floatValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     private boolean hasValidFloatString()
@@ -100,10 +120,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isBoolean())
         {
-            throw new AssertionError();
+            return;
         }
 
-        this.result = this.jsonDataTypeValue.booleanValue();
+        boolean incomingValue = this.jsonDataTypeValue.booleanValue();
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -117,7 +138,7 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isTextual())
         {
-            throw new AssertionError();
+            return;
         }
 
         String text = this.jsonDataTypeValue.textValue();
@@ -130,7 +151,8 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
             throw new RuntimeException("TODO: Support infinity as a value for dates.");
         }
 
-        this.result = LocalDate.parse(text);
+        LocalDate incomingValue = LocalDate.parse(text);
+        this.assertValuesMatch(incomingValue);
     }
 
     @Override
@@ -149,7 +171,7 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
     {
         if (!this.jsonDataTypeValue.isTextual())
         {
-            throw new AssertionError();
+            return;
         }
 
         String text = this.jsonDataTypeValue.textValue();
@@ -164,11 +186,39 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
 
         try
         {
-            this.result = Instant.parse(text);
+            Instant incomingValue = Instant.parse(text);
+            this.assertValuesMatch(incomingValue);
         }
         catch (DateTimeParseException e)
         {
-            throw new AssertionError(e);
+            // Deliberately empty
         }
+    }
+
+    private void assertValuesMatch(Object incomingValue)
+    {
+        if (Objects.equals(this.persistentValue, incomingValue))
+        {
+            return;
+        }
+
+        String error = String.format(
+                "Error at %s. Mismatched value for property '%s.%s: %s%s'. Expected absent value or '%s' but value was '%s'.",
+                this.getContextString(),
+                this.primitiveProperty.getOwningClassifier().getName(),
+                this.primitiveProperty.getName(),
+                this.primitiveProperty.getType().toString(),
+                this.primitiveProperty.isOptional() ? "?" : "",
+                this.persistentValue,
+                incomingValue);
+        this.errors.add(error);
+    }
+
+    private String getContextString()
+    {
+        return this.contextStack
+                .toList()
+                .asReversed()
+                .makeString(".");
     }
 }

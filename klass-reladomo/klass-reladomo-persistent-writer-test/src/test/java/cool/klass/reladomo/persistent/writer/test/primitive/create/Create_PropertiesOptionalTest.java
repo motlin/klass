@@ -1,16 +1,20 @@
-package cool.klass.deserializer.json.test.primitive;
+package cool.klass.reladomo.persistent.writer.test.primitive.create;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import javax.annotation.Nonnull;
+
 import cool.klass.deserializer.json.OperationMode;
-import cool.klass.deserializer.json.RequiredPropertiesValidator;
+import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.reladomo.persistent.writer.test.primitive.PrimitiveValidatorTest;
 import cool.klass.xample.coverage.meta.constants.CoverageExampleDomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Test;
 
-public class RequiredPropertiesValidator_PropertiesOptionalTest extends AbstractPrimitiveValidatorTest
+public class Create_PropertiesOptionalTest
+        extends AbstractCreateValidatorTest
+        implements PrimitiveValidatorTest
 {
     @Override
     @Test
@@ -32,7 +36,7 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
-        this.validate(incomingJson, expectedErrors);
+        this.validate(incomingJson, null, expectedErrors);
     }
 
     @Test
@@ -58,6 +62,16 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 + "  \"createdById\": \"test user 1\",\n"
                 + "  \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
                 + "  \"lastUpdatedById\": \"test user 1\",\n"
+                + "  \"version\": {\n"
+                + "    \"propertiesOptionalId\": 1,\n"
+                + "    \"number\": 1,\n"
+                + "    \"system\": \"1999-12-31T23:59:59.999Z\",\n"
+                + "    \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
+                + "    \"systemTo\": null,\n"
+                + "    \"createdById\": \"test user 1\",\n"
+                + "    \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "    \"lastUpdatedById\": \"test user 1\",\n"
+                + "  },\n"
                 + "}\n";
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
@@ -68,9 +82,10 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant' but value was null.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was string: \"test user 1\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"2000-01-01T04:59:59.999Z\".",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"test user 1\".");
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"test user 1\".",
+                "Warning at PropertiesOptional. Didn't expect to receive value for version association end 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was object: {\"propertiesOptionalId\":1,\"number\":1,\"system\":\"1999-12-31T23:59:59.999Z\",\"systemFrom\":\"1999-12-31T23:59:59.999Z\",\"systemTo\":null,\"createdById\":\"test user 1\",\"createdOn\":\"2000-01-01T04:59:59.999Z\",\"lastUpdatedById\":\"test user 1\"}.");
 
-        this.validate(incomingJson, expectedErrors, expectedWarnings);
+        this.validate(incomingJson, null, expectedErrors, expectedWarnings);
     }
 
     @Override
@@ -82,7 +97,7 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
-        this.validate(incomingJson, expectedErrors);
+        this.validate(incomingJson, null, expectedErrors);
     }
 
     @Override
@@ -107,10 +122,28 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 + "  \"systemTo\": [],\n"
                 + "  \"createdById\": [],\n"
                 + "  \"createdOn\": [],\n"
-                + "  \"lastUpdatedById\": []\n"
+                + "  \"lastUpdatedById\": [],\n"
+                + "  \"version\": [],\n"
                 + "}\n";
 
-        ImmutableList<String> expectedErrors = Lists.immutable.empty();
+        ImmutableList<String> expectedErrors = Lists.immutable.with(
+                "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalString. Expected property with type 'PropertiesOptional.optionalString: String?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalInteger. Expected property with type 'PropertiesOptional.optionalInteger: Integer?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalLong. Expected property with type 'PropertiesOptional.optionalLong: Long?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalDouble. Expected property with type 'PropertiesOptional.optionalDouble: Double?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalFloat. Expected property with type 'PropertiesOptional.optionalFloat: Float?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalBoolean. Expected property with type 'PropertiesOptional.optionalBoolean: Boolean?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalInstant. Expected property with type 'PropertiesOptional.optionalInstant: Instant?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalLocalDate. Expected property with type 'PropertiesOptional.optionalLocalDate: LocalDate?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.optionalDerived. Expected property with type 'PropertiesOptional.optionalDerived: String?' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.system. Expected property with type 'PropertiesOptional.system: TemporalRange' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.systemFrom. Expected property with type 'PropertiesOptional.systemFrom: TemporalInstant' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.systemTo. Expected property with type 'PropertiesOptional.systemTo: TemporalInstant' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.createdById. Expected property with type 'PropertiesOptional.createdById: String' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.createdOn. Expected property with type 'PropertiesOptional.createdOn: Instant' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.lastUpdatedById. Expected property with type 'PropertiesOptional.lastUpdatedById: String' but got '[]' with type 'array'.",
+                "Error at PropertiesOptional.version. Expected json object but value was array: [].");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesOptional. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was array: [].",
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.system: TemporalRange' but value was array: [].",
@@ -118,9 +151,10 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant' but value was array: [].",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was array: [].",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was array: [].",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was array: [].");
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was array: [].",
+                "Warning at PropertiesOptional. Didn't expect to receive value for version association end 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was array: [].");
 
-        this.validate(incomingJson, expectedErrors, expectedWarnings);
+        this.validate(incomingJson, null, expectedErrors, expectedWarnings);
     }
 
     @Override
@@ -145,10 +179,27 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 + "  \"systemTo\": {},\n"
                 + "  \"createdById\": {},\n"
                 + "  \"createdOn\": {},\n"
-                + "  \"lastUpdatedById\": {}\n"
+                + "  \"lastUpdatedById\": {},\n"
+                + "  \"version\": {},\n"
                 + "}\n";
 
-        ImmutableList<String> expectedErrors = Lists.immutable.empty();
+        ImmutableList<String> expectedErrors = Lists.immutable.with(
+                "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalString. Expected property with type 'PropertiesOptional.optionalString: String?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalInteger. Expected property with type 'PropertiesOptional.optionalInteger: Integer?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalLong. Expected property with type 'PropertiesOptional.optionalLong: Long?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalDouble. Expected property with type 'PropertiesOptional.optionalDouble: Double?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalFloat. Expected property with type 'PropertiesOptional.optionalFloat: Float?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalBoolean. Expected property with type 'PropertiesOptional.optionalBoolean: Boolean?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalInstant. Expected property with type 'PropertiesOptional.optionalInstant: Instant?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalLocalDate. Expected property with type 'PropertiesOptional.optionalLocalDate: LocalDate?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.optionalDerived. Expected property with type 'PropertiesOptional.optionalDerived: String?' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.system. Expected property with type 'PropertiesOptional.system: TemporalRange' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.systemFrom. Expected property with type 'PropertiesOptional.systemFrom: TemporalInstant' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.systemTo. Expected property with type 'PropertiesOptional.systemTo: TemporalInstant' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.createdById. Expected property with type 'PropertiesOptional.createdById: String' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.createdOn. Expected property with type 'PropertiesOptional.createdOn: Instant' but got '{}' with type 'object'.",
+                "Error at PropertiesOptional.lastUpdatedById. Expected property with type 'PropertiesOptional.lastUpdatedById: String' but got '{}' with type 'object'.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesOptional. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was object: {}.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.system: TemporalRange' but value was object: {}.",
@@ -156,9 +207,10 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant' but value was object: {}.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was object: {}.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was object: {}.",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was object: {}.");
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was object: {}.",
+                "Warning at PropertiesOptional. Didn't expect to receive value for version association end 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was object: {}.");
 
-        this.validate(incomingJson, expectedErrors, expectedWarnings);
+        this.validate(incomingJson, null, expectedErrors, expectedWarnings);
     }
 
     @Override
@@ -183,7 +235,8 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 + "  \"systemTo\": null,\n"
                 + "  \"createdById\": null,\n"
                 + "  \"createdOn\": null,\n"
-                + "  \"lastUpdatedById\": null\n"
+                + "  \"lastUpdatedById\": null,\n"
+                + "  \"version\": null,\n"
                 + "}\n";
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
@@ -194,9 +247,10 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant' but value was null.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was null.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was null.",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was null.");
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was null.",
+                "Warning at PropertiesOptional. Didn't expect to receive value for version association end 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was null.");
 
-        this.validate(incomingJson, expectedErrors, expectedWarnings);
+        this.validate(incomingJson, null, expectedErrors, expectedWarnings);
     }
 
     @Override
@@ -221,10 +275,25 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 + "  \"systemTo\": \"PropertiesOptional optionalString 1 ☝\",\n"
                 + "  \"createdById\": \"PropertiesOptional optionalString 1 ☝\",\n"
                 + "  \"createdOn\": \"PropertiesOptional optionalString 1 ☝\",\n"
-                + "  \"lastUpdatedById\": \"PropertiesOptional optionalString 1 ☝\"\n"
+                + "  \"lastUpdatedById\": \"PropertiesOptional optionalString 1 ☝\",\n"
+                + "  \"version\": \"PropertiesOptional requiredString 1 ☝\",\n"
                 + "}\n";
 
-        ImmutableList<String> expectedErrors = Lists.immutable.empty();
+        ImmutableList<String> expectedErrors = Lists.immutable.with(
+                "Error at PropertiesOptional.propertiesOptionalId. Expected property with type 'PropertiesOptional.propertiesOptionalId: Long' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Error at PropertiesOptional.optionalInteger. Expected property with type 'PropertiesOptional.optionalInteger: Integer?' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Error at PropertiesOptional.optionalLong. Expected property with type 'PropertiesOptional.optionalLong: Long?' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Error at PropertiesOptional.optionalDouble. Expected property with type 'PropertiesOptional.optionalDouble: Double?' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Error at PropertiesOptional.optionalFloat. Expected property with type 'PropertiesOptional.optionalFloat: Float?' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Error at PropertiesOptional.optionalBoolean. Expected property with type 'PropertiesOptional.optionalBoolean: Boolean?' but got '\"PropertiesOptional optionalString 1 ☝\"' with type 'string'.",
+                "Incoming 'PropertiesOptional' has property 'optionalInstant: Instant?' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                "Incoming 'PropertiesOptional' has property 'optionalLocalDate: LocalDate?' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by LocalDate.parse().",
+                "Incoming 'PropertiesOptional' has property 'system: TemporalRange system' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                "Incoming 'PropertiesOptional' has property 'systemFrom: TemporalInstant system from' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                "Incoming 'PropertiesOptional' has property 'systemTo: TemporalInstant system to' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                "Incoming 'PropertiesOptional' has property 'createdOn: Instant createdOn' but got '\"PropertiesOptional optionalString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+                "Error at PropertiesOptional.version. Expected json object but value was string: \"PropertiesOptional requiredString 1 ☝\".");
+
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at PropertiesOptional. Didn't expect to receive value for derived property 'PropertiesOptional.optionalDerived: String?' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.system: TemporalRange' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
@@ -232,19 +301,23 @@ public class RequiredPropertiesValidator_PropertiesOptionalTest extends Abstract
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"PropertiesOptional optionalString 1 ☝\".");
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"PropertiesOptional optionalString 1 ☝\".",
+                "Warning at PropertiesOptional. Didn't expect to receive value for version association end 'PropertiesOptional.version: PropertiesOptionalVersion[1..1]' but value was string: \"PropertiesOptional requiredString 1 ☝\".");
 
-        this.validate(incomingJson, expectedErrors, expectedWarnings);
+        this.validate(incomingJson, null, expectedErrors, expectedWarnings);
     }
 
+    @Nonnull
     @Override
-    protected void performValidation(ObjectNode incomingInstance)
+    protected Klass getKlass()
     {
-        RequiredPropertiesValidator.validate(
-                CoverageExampleDomainModel.PropertiesOptional,
-                incomingInstance,
-                OperationMode.CREATE,
-                this.actualErrors,
-                this.actualWarnings);
+        return CoverageExampleDomainModel.PropertiesOptional;
+    }
+
+    @Nonnull
+    @Override
+    protected OperationMode getMode()
+    {
+        return OperationMode.CREATE;
     }
 }

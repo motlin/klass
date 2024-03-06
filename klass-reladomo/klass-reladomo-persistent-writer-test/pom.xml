@@ -5,20 +5,20 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cool.klass</groupId>
-        <artifactId>klass-serializers</artifactId>
+        <artifactId>klass-reladomo</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-deserializer-json-test</artifactId>
+    <artifactId>klass-reladomo-persistent-writer-test</artifactId>
 
-    <name>Klass Deserializer: JSON Tests</name>
+    <name>Klass Reladomo Persistent Writer Tests</name>
 
     <dependencies>
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-deserializer-json</artifactId>
+            <artifactId>klass-reladomo-persistent-writer</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -32,7 +32,42 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-deserializer-json</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store-reladomo</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-uuid-seed</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-test-rule</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-simulated-sequence</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -83,5 +118,38 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass.xample.coverage</groupId>
+            <artifactId>coverage-example-reladomo-pojos</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-pojos</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <ignoreNonCompile>true</ignoreNonCompile>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>

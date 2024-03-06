@@ -1,4 +1,4 @@
-package cool.klass.deserializer.json.test;
+package cool.klass.reladomo.persistent.writer.test;
 
 import java.io.IOException;
 
@@ -7,10 +7,11 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import cool.klass.deserializer.json.JsonTypeCheckingValidator;
+import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.deserializer.json.OperationMode;
-import cool.klass.deserializer.json.RequiredPropertiesValidator;
+import cool.klass.dropwizard.configuration.uuid.seed.SeedUUIDSupplier;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -21,25 +22,27 @@ import static org.junit.Assert.assertThat;
 
 public abstract class AbstractValidatorTest
 {
-    protected final MutableList<String> actualErrors   = Lists.mutable.empty();
-    protected final MutableList<String> actualWarnings = Lists.mutable.empty();
-
-    private final ObjectMapper objectMapper = AbstractValidatorTest.getObjectMapper();
+    protected final MutableList<String> actualErrors      = Lists.mutable.empty();
+    protected final MutableList<String> actualWarnings    = Lists.mutable.empty();
+    protected final ReladomoDataStore   reladomoDataStore = this.getReladomoDataStore();
+    private final   ObjectMapper        objectMapper      = AbstractValidatorTest.getObjectMapper();
 
     protected final void validate(
             @Nonnull String incomingJson,
+            Object persistentInstance,
             @Nonnull ImmutableList<String> expectedErrors) throws IOException
     {
-        this.validate(incomingJson, expectedErrors, Lists.immutable.empty());
+        this.validate(incomingJson, persistentInstance, expectedErrors, Lists.immutable.empty());
     }
 
     protected final void validate(
             @Nonnull String incomingJson,
+            Object persistentInstance,
             @Nonnull ImmutableList<String> expectedErrors,
             @Nonnull ImmutableList<String> expectedWarnings) throws IOException
     {
         ObjectNode incomingInstance = (ObjectNode) this.objectMapper.readTree(incomingJson);
-        this.performValidation(incomingInstance);
+        this.performValidation(incomingInstance, persistentInstance);
         this.assertErrors(expectedErrors, expectedWarnings);
     }
 
@@ -77,24 +80,19 @@ public abstract class AbstractValidatorTest
         return objectMapper;
     }
 
-    protected final void performValidation(ObjectNode incomingInstance)
-    {
-        JsonTypeCheckingValidator.validate(
-                incomingInstance,
-                this.getKlass(),
-                this.actualErrors);
-
-        RequiredPropertiesValidator.validate(
-                this.getKlass(),
-                incomingInstance,
-                this.getMode(),
-                this.actualErrors,
-                this.actualWarnings);
-    }
+    protected abstract void performValidation(@Nonnull ObjectNode incomingInstance, Object persistentInstance);
 
     @Nonnull
     protected abstract Klass getKlass();
 
     @Nonnull
     protected abstract OperationMode getMode();
+
+    @Nonnull
+    private ReladomoDataStore getReladomoDataStore()
+    {
+        String           seed         = IncomingCreateDataModelValidator.class.getSimpleName();
+        SeedUUIDSupplier uuidSupplier = new SeedUUIDSupplier(seed);
+        return new ReladomoDataStore(uuidSupplier);
+    }
 }

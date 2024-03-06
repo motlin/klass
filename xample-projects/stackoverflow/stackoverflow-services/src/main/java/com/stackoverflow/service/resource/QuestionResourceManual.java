@@ -166,7 +166,8 @@ public class QuestionResourceManual
                 StackOverflowDomainModel.Question,
                 persistentInstance,
                 incomingInstance,
-                errors);
+                errors,
+                warnings);
         if (errors.notEmpty())
         {
             Response response = Response

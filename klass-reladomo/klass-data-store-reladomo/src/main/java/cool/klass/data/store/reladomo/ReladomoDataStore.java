@@ -38,6 +38,7 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -96,13 +97,17 @@ public class ReladomoDataStore implements DataStore
     @Override
     public Object findByKey(@Nonnull Klass klass, @Nonnull ImmutableList<Object> keys)
     {
-        RelatedFinder<?>                finder        = this.getRelatedFinder(klass);
         ImmutableList<DataTypeProperty> keyProperties = klass.getKeyProperties();
         if (keyProperties.size() != keys.size())
         {
-            throw new AssertionError();
+            String error = String.format(
+                    "Expected keys for properties %s but got the wrong number of keys %s",
+                    keyProperties,
+                    keys);
+            throw new IllegalArgumentException(error);
         }
 
+        RelatedFinder<?>                finder        = this.getRelatedFinder(klass);
         ImmutableList<Operation> operations = keyProperties.collectWithIndex((keyProperty, index) ->
                 this.getOperation(finder, keyProperty, keys.get(index)));
 
@@ -115,10 +120,17 @@ public class ReladomoDataStore implements DataStore
             @Nonnull DataTypeProperty keyProperty,
             Object key)
     {
+        this.assertObjectMatchesType(keyProperty, key);
+
         Attribute        attribute = finder.getAttributeByName(keyProperty.getName());
         OperationVisitor visitor   = new OperationVisitor(attribute, key);
         keyProperty.visit(visitor);
         return visitor.getResult();
+    }
+
+    private void assertObjectMatchesType(DataTypeProperty property, Object object)
+    {
+        property.visit(new AssertObjectMatchesDataTypePropertyVisitor(object));
     }
 
     @Nonnull

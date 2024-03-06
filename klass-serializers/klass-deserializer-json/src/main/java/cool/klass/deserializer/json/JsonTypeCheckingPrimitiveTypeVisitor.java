@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -15,10 +17,15 @@ import org.eclipse.collections.api.stack.MutableStack;
 
 public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {
+    @Nonnull
     private final Classifier           classifier;
+    @Nonnull
     private final PrimitiveProperty    primitiveProperty;
+    @Nonnull
     private final JsonNode             jsonDataTypeValue;
+    @Nonnull
     private final MutableStack<String> contextStack;
+    @Nonnull
     private final MutableList<String>  errors;
 
     public JsonTypeCheckingPrimitiveTypeVisitor(
@@ -28,11 +35,11 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
             MutableStack<String> contextStack,
             MutableList<String> errors)
     {
-        this.classifier = Objects.requireNonNull(classifier);
+        this.classifier        = Objects.requireNonNull(classifier);
         this.primitiveProperty = Objects.requireNonNull(primitiveProperty);
         this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.errors = Objects.requireNonNull(errors);
+        this.contextStack      = Objects.requireNonNull(contextStack);
+        this.errors            = Objects.requireNonNull(errors);
     }
 
     private void emitTypeError()

@@ -3,6 +3,7 @@ package cool.klass.reladomo.persistent.writer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -11,10 +12,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonDataTypeValueVisitor;
+import cool.klass.deserializer.json.JsonValueVisitor;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MapIterable;
@@ -29,21 +32,32 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class IncomingUpdateDataModelValidator
 {
-    private final DataStore            dataStore;
-    private final Klass                klass;
-    private final Object               persistentInstance;
-    private final ObjectNode           objectNode;
-    private final MutableList<String>  errors;
-    private final MutableStack<String> contextStack;
-    private final boolean              isRoot;
+    @Nonnull
+    protected final DataStore                dataStore;
+    @Nonnull
+    protected final Klass                    klass;
+    protected final Object                   persistentInstance;
+    @Nonnull
+    protected final ObjectNode               objectNode;
+    @Nonnull
+    protected final MutableList<String>      errors;
+    @Nonnull
+    protected final MutableList<String>      warnings;
+    @Nonnull
+    protected final MutableStack<String>     contextStack;
+    @Nonnull
+    protected final Optional<AssociationEnd> pathHere;
+    protected final boolean                  isRoot;
 
     public IncomingUpdateDataModelValidator(
-            DataStore dataStore,
-            Klass klass,
-            Object persistentInstance,
-            ObjectNode objectNode,
-            MutableList<String> errors,
-            MutableStack<String> contextStack,
+            @Nonnull DataStore dataStore,
+            @Nonnull Klass klass,
+            @Nonnull Object persistentInstance,
+            @Nonnull ObjectNode objectNode,
+            @Nonnull MutableList<String> errors,
+            @Nonnull MutableList<String> warnings,
+            @Nonnull MutableStack<String> contextStack,
+            @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
         this.dataStore = Objects.requireNonNull(dataStore);
@@ -51,16 +65,19 @@ public class IncomingUpdateDataModelValidator
         this.persistentInstance = Objects.requireNonNull(persistentInstance);
         this.objectNode = Objects.requireNonNull(objectNode);
         this.errors = Objects.requireNonNull(errors);
+        this.warnings = Objects.requireNonNull(warnings);
         this.contextStack = Objects.requireNonNull(contextStack);
+        this.pathHere = Objects.requireNonNull(pathHere);
         this.isRoot = isRoot;
     }
 
     public static void validate(
-            DataStore dataStore,
-            Klass klass,
-            Object persistentInstance,
-            ObjectNode objectNode,
-            MutableList<String> errors)
+            @Nonnull DataStore dataStore,
+            @Nonnull Klass klass,
+            @Nonnull Object persistentInstance,
+            @Nonnull ObjectNode objectNode,
+            @Nonnull MutableList<String> errors,
+            @Nonnull MutableList<String> warnings)
     {
         IncomingUpdateDataModelValidator validator = new IncomingUpdateDataModelValidator(
                 dataStore,
@@ -68,7 +85,9 @@ public class IncomingUpdateDataModelValidator
                 persistentInstance,
                 objectNode,
                 errors,
+                warnings,
                 Stacks.mutable.empty(),
+                Optional.empty(),
                 true);
         validator.validate();
     }
@@ -81,10 +100,8 @@ public class IncomingUpdateDataModelValidator
         }
         try
         {
-            this.handleDataTypeProperties();
-            this.klass.getAssociationEnds()
-                    .select(AssociationEnd::isOwned)
-                    .each(this::handleAssociationEnd);
+            this.handleDataTypePropertiesInsideProjection();
+            this.handleAssociationEnds();
         }
         finally
         {
@@ -95,8 +112,90 @@ public class IncomingUpdateDataModelValidator
         }
     }
 
-    public void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    //region DataTypeProperties
+    private void handleDataTypePropertiesInsideProjection()
     {
+        ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
+        for (DataTypeProperty dataTypeProperty : dataTypeProperties)
+        {
+            this.handleDataTypePropertyInsideProjection(dataTypeProperty);
+        }
+    }
+
+    private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        if (dataTypeProperty.isTemporal() || dataTypeProperty.isAudit())
+        {
+            this.checkPropertyMatchesIfPresent(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isVersion())
+        {
+            this.checkPropertyMatchesIfPresent(dataTypeProperty);
+        }
+    }
+
+    private void checkPropertyMatchesIfPresent(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.contextStack.push(dataTypeProperty.getName());
+
+        try
+        {
+            this.checkPropertyMatches(dataTypeProperty);
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    private void checkPropertyMatches(@Nonnull DataTypeProperty property)
+    {
+        JsonNode jsonDataTypeValue = this.objectNode.path(property.getName());
+        if (jsonDataTypeValue.isMissingNode())
+        {
+            return;
+        }
+
+        Object persistentValue = this.dataStore.getDataTypeProperty(this.persistentInstance, property);
+        PropertyVisitor visitor = new JsonValueVisitor(
+                jsonDataTypeValue,
+                persistentValue,
+                this.contextStack,
+                this.errors);
+        property.visit(visitor);
+    }
+
+    public String getContextString()
+    {
+        return this.contextStack
+                .toList()
+                .asReversed()
+                .makeString(".");
+    }
+    //endregion
+
+    //region AssociationEnds
+    private void handleAssociationEnds()
+    {
+        for (AssociationEnd associationEnd : this.klass.getAssociationEnds())
+        {
+            this.handleAssociationEnd(associationEnd);
+        }
+    }
+
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    {
+        if (this.isBackward(associationEnd))
+        {
+            return;
+        }
+
+        if (associationEnd.isVersion())
+        {
+            this.handleVersionAssociationEnd(associationEnd);
+            return;
+        }
+
         Multiplicity multiplicity = associationEnd.getMultiplicity();
 
         JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
@@ -114,6 +213,105 @@ public class IncomingUpdateDataModelValidator
         {
             this.handleToMany(associationEnd, jsonNode);
         }
+    }
+
+    private void handleVersionAssociationEnd(AssociationEnd associationEnd)
+    {
+        this.contextStack.push(associationEnd.getName());
+        try
+        {
+            JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+
+            if (this.persistentInstance == null)
+            {
+                this.handleWarnIfPresent(associationEnd, "version");
+                return;
+            }
+
+            if (jsonNode.isMissingNode() || jsonNode.isNull())
+            {
+                if (this.klass.getKeyProperties().noneSatisfy(DataTypeProperty::isID))
+                {
+                    this.handleErrorIfAbsent(associationEnd, "version");
+                }
+                return;
+            }
+
+            Object childPersistentInstance = this.dataStore.getToOne(
+                    this.persistentInstance,
+                    associationEnd);
+            if (!(jsonNode instanceof ObjectNode))
+            {
+                return;
+            }
+
+            ObjectNode objectNode = (ObjectNode) jsonNode;
+            this.handleAssociationEnd(associationEnd, objectNode, childPersistentInstance);
+        }
+        finally
+        {
+            this.contextStack.pop();
+        }
+    }
+
+    private void handleErrorIfAbsent(AssociationEnd associationEnd, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(associationEnd.getName());
+        if (!jsonNode.isMissingNode() && !jsonNode.isNull())
+        {
+            return;
+        }
+
+        String error = String.format(
+                "Error at %s. Expected value for %s property '%s.%s: %s[%s]' but value was %s.",
+                this.getContextString(),
+                propertyKind,
+                associationEnd.getOwningClassifier().getName(),
+                associationEnd.getName(),
+                associationEnd.getType().toString(),
+                associationEnd.getMultiplicity().getPrettyName(),
+                jsonNode.getNodeType().toString().toLowerCase());
+        this.errors.add(error);
+    }
+
+    private void handleWarnIfPresent(AssociationEnd property, String propertyKind)
+    {
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode())
+        {
+            return;
+        }
+
+        if (jsonNode.isNull())
+        {
+            String warning = String.format(
+                    "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was null.",
+                    this.getContextString(),
+                    propertyKind,
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.getMultiplicity().getPrettyName());
+            this.warnings.add(warning);
+            return;
+        }
+
+        String warning = String.format(
+                "Warning at %s. Didn't expect to receive value for %s association end '%s.%s: %s[%s]' but value was %s: %s.",
+                this.getContextString(),
+                propertyKind,
+                property.getOwningClassifier().getName(),
+                property.getName(),
+                property.getType().toString(),
+                property.getMultiplicity().getPrettyName(),
+                jsonNode.getNodeType().toString().toLowerCase(),
+                jsonNode);
+        this.warnings.add(warning);
+    }
+
+    private boolean isBackward(AssociationEnd associationEnd)
+    {
+        return this.pathHere.equals(Optional.of(associationEnd.getOpposite()));
     }
 
     public void handleToOne(
@@ -203,7 +401,8 @@ public class IncomingUpdateDataModelValidator
 
     @Nonnull
     private MapIterable<ImmutableList<Object>, Object> getPersistentChildInstancesByKey(
-            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey, @Nonnull AssociationEnd associationEnd)
+            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey,
+            @Nonnull AssociationEnd associationEnd)
     {
         List<Object> persistentChildInstances = this.dataStore.getToMany(this.persistentInstance, associationEnd);
         MutableList<Object> nonTerminatedPersistentChildInstances = ListAdapter.adapt(persistentChildInstances)
@@ -294,116 +493,12 @@ public class IncomingUpdateDataModelValidator
                 persistentInstance,
                 objectNode,
                 this.errors,
+                this.warnings,
                 this.contextStack,
+                // Yeah?
+                Optional.of(associationEnd),
                 false);
         validator.validate();
-    }
-
-    private void handleDataTypeProperties()
-    {
-        ImmutableList<DataTypeProperty> plainProperties = this.klass.getDataTypeProperties()
-                .reject(DataTypeProperty::isID)
-                .reject(DataTypeProperty::isKey)
-                .reject(DataTypeProperty::isTemporal)
-                .reject(DataTypeProperty::isAudit)
-                .reject(DataTypeProperty::isForeignKey);
-
-        this.handleIdProperties(this.klass.getDataTypeProperties().select(DataTypeProperty::isID));
-        this.checkPresentPropertiesMatch(this.klass.getDataTypeProperties().select(DataTypeProperty::isTemporal));
-        this.checkPresentPropertiesMatch(this.klass.getDataTypeProperties().select(DataTypeProperty::isAudit));
-        this.checkRequiredPropertiesPresent(plainProperties);
-    }
-
-    private void handleIdProperties(@Nonnull ImmutableList<DataTypeProperty> idProperties)
-    {
-        this.checkPresentPropertiesMatch(idProperties);
-        if (!this.isRoot)
-        {
-            this.checkRequiredPropertiesPresent(idProperties);
-        }
-    }
-
-    private void checkPresentPropertiesMatch(@Nonnull ImmutableList<DataTypeProperty> properties)
-    {
-        for (DataTypeProperty dataTypeProperty : properties)
-        {
-            this.contextStack.push(dataTypeProperty.getName());
-
-            try
-            {
-                JsonNode jsonNode = this.objectNode.path(dataTypeProperty.getName());
-                if (!jsonNode.isMissingNode() && !jsonNode.isNull())
-                {
-                    this.checkPresentPropertyMatches(dataTypeProperty);
-                }
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
-        }
-    }
-
-    private void checkPresentPropertyMatches(@Nonnull DataTypeProperty property)
-    {
-        Object persistentValue = this.dataStore.getDataTypeProperty(this.persistentInstance, property);
-        Object incomingValue   = JsonDataTypeValueVisitor.extractDataTypePropertyFromJson(property, this.objectNode);
-        if (!persistentValue.equals(incomingValue))
-        {
-            // TODO: Clarify that the value is allowed to be absent, but if present, it must match?
-            String error = String.format(
-                    "Error at %s. Mismatched value for property '%s.%s: %s%s'. Expected absent value or %s but value was %s.",
-                    this.getContextString(),
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType().toString(),
-                    property.isOptional() ? "?" : "",
-                    persistentValue,
-                    incomingValue);
-            this.errors.add(error);
-        }
-    }
-
-    private void checkRequiredPropertiesPresent(@Nonnull ImmutableList<DataTypeProperty> plainProperties)
-    {
-        for (DataTypeProperty property : plainProperties)
-        {
-            this.contextStack.push(property.getName());
-
-            try
-            {
-                this.handlePlainProperty(property);
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
-        }
-    }
-
-    private void handlePlainProperty(@Nonnull DataTypeProperty property)
-    {
-        JsonNode jsonNode = this.objectNode.path(property.getName());
-        if (jsonNode.isMissingNode() || jsonNode.isNull())
-        {
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
-                    this.getContextString(),
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType().toString(),
-                    property.isOptional() ? "?" : "",
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
-        }
-    }
-
-    public String getContextString()
-    {
-        return this.contextStack
-                .toList()
-                .asReversed()
-                .makeString(".");
     }
 
     @Nonnull

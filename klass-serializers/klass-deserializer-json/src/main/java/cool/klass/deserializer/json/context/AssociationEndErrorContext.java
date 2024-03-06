@@ -1,32 +1,27 @@
-package cool.klass.reladomo.persistent.writer.context;
+package cool.klass.deserializer.json.context;
 
 import java.util.Objects;
 
-import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 
-public class KlassErrorContext implements ErrorContext
+public class AssociationEndErrorContext implements ErrorContext
 {
-    private final Klass                 klass;
+    private final AssociationEnd        associationEnd;
     private final ImmutableList<Object> keys;
 
-    public KlassErrorContext(Klass klass, ImmutableList<Object> keys)
+    public AssociationEndErrorContext(AssociationEnd associationEnd, ImmutableList<Object> keys)
     {
-        this.klass = Objects.requireNonNull(klass);
+        this.associationEnd = Objects.requireNonNull(associationEnd);
         this.keys = Objects.requireNonNull(keys);
-    }
-
-    public Klass getKlass()
-    {
-        return this.klass;
     }
 
     @Override
     public String toString()
     {
-        ImmutableList<DataTypeProperty> keyProperties = this.klass.getKeyProperties();
+        ImmutableList<DataTypeProperty> keyProperties = this.associationEnd.getType().getKeyProperties();
         if (keyProperties.size() != this.keys.size())
         {
             throw new AssertionError();
@@ -35,12 +30,14 @@ public class KlassErrorContext implements ErrorContext
         String keysContext = keyProperties
                 .asLazy()
                 .zip(this.keys)
-                .collect(KlassErrorContext::toString)
+                .collect(AssociationEndErrorContext::toString)
                 .makeString();
 
+        String format = this.associationEnd.getMultiplicity().isToMany() ? "%s[%s]" : "%s{%s}";
+
         return String.format(
-                "%s{%s}",
-                this.klass.getName(),
+                format,
+                this.associationEnd.getName(),
                 keysContext);
     }
 

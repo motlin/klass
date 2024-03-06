@@ -1,27 +1,32 @@
-package cool.klass.reladomo.persistent.writer.context;
+package cool.klass.deserializer.json.context;
 
 import java.util.Objects;
 
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.Pair;
 
-public class AssociationEndErrorContext implements ErrorContext
+public class KlassErrorContext implements ErrorContext
 {
-    private final AssociationEnd        associationEnd;
+    private final Klass                 klass;
     private final ImmutableList<Object> keys;
 
-    public AssociationEndErrorContext(AssociationEnd associationEnd, ImmutableList<Object> keys)
+    public KlassErrorContext(Klass klass, ImmutableList<Object> keys)
     {
-        this.associationEnd = Objects.requireNonNull(associationEnd);
+        this.klass = Objects.requireNonNull(klass);
         this.keys = Objects.requireNonNull(keys);
+    }
+
+    public Klass getKlass()
+    {
+        return this.klass;
     }
 
     @Override
     public String toString()
     {
-        ImmutableList<DataTypeProperty> keyProperties = this.associationEnd.getType().getKeyProperties();
+        ImmutableList<DataTypeProperty> keyProperties = this.klass.getKeyProperties().reject(DataTypeProperty::isID);
         if (keyProperties.size() != this.keys.size())
         {
             throw new AssertionError();
@@ -30,14 +35,12 @@ public class AssociationEndErrorContext implements ErrorContext
         String keysContext = keyProperties
                 .asLazy()
                 .zip(this.keys)
-                .collect(AssociationEndErrorContext::toString)
+                .collect(KlassErrorContext::toString)
                 .makeString();
 
-        String format = this.associationEnd.getMultiplicity().isToMany() ? "%s[%s]" : "%s{%s}";
-
         return String.format(
-                format,
-                this.associationEnd.getName(),
+                "%s{%s}",
+                this.klass.getName(),
                 keysContext);
     }
 

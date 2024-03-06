@@ -1,5 +1,6 @@
 package cool.klass.deserializer.json;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
 
     public JsonDataTypeValueVisitor(JsonNode jsonDataTypeValue)
     {
-        this.jsonDataTypeValue = jsonDataTypeValue;
+        this.jsonDataTypeValue = Objects.requireNonNull(jsonDataTypeValue);
     }
 
     public static boolean dataTypePropertyIsNullInJson(@Nonnull DataTypeProperty dataTypeProperty, @Nonnull ObjectNode incomingJson)
@@ -75,14 +76,14 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
     }
 
     @Override
-    public void visitAssociationEnd(AssociationEnd associationEnd)
+    public void visitAssociationEnd(@Nonnull AssociationEnd associationEnd)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitAssociationEnd() not implemented yet");
     }
 
     @Override
-    public void visitParameterizedProperty(ParameterizedProperty parameterizedProperty)
+    public void visitParameterizedProperty(@Nonnull ParameterizedProperty parameterizedProperty)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitParameterizedProperty() not implemented yet");
