@@ -44,9 +44,8 @@ public class GraphQLQueryRuntimeWiringGenerator
     @Override
     protected String getPackageSourceCode(@Nonnull String fullyQualifiedPackage)
     {
-        ImmutableList<Klass> concreteClasses = this.domainModel
+        ImmutableList<Klass> classes = this.domainModel
                 .getClasses()
-                .reject(Klass::isAbstract)
                 .select(each -> each.getPackageName().equals(fullyQualifiedPackage));
 
         //language=JAVA
@@ -61,9 +60,9 @@ public class GraphQLQueryRuntimeWiringGenerator
                 + "import cool.klass.graphql.type.runtime.wiring.provider.GraphQLTypeRuntimeWiringProvider;\n"
                 + "import cool.klass.model.meta.domain.api.DomainModel;\n"
                 + "import cool.klass.reladomo.graphql.deep.fetcher.GraphQLDeepFetcher;\n"
-                + concreteClasses.collect(this::getFinderImport).makeString("")
-                + concreteClasses.collect(this::getAllFetcherImport).makeString("")
-                + concreteClasses.collect(this::getKeyFetcherImport).makeString("")
+                + classes.collect(this::getFinderImport).makeString("")
+                + classes.collect(this::getAllFetcherImport).makeString("")
+                + classes.collect(this::getKeyFetcherImport).makeString("")
                 + "import graphql.schema.idl.TypeRuntimeWiring.Builder;\n"
                 + "\n"
                 + "/**\n"
@@ -87,13 +86,13 @@ public class GraphQLQueryRuntimeWiringGenerator
                 + "        Builder builder = new Builder();\n"
                 + "        builder.typeName(\"Query\");\n"
                 + "\n"
-                + this.getAllDataFetchersSourceCode(concreteClasses).makeString("")
+                + classes.collect(this::getAllDataFetcherSourceCode).makeString("")
                 + "\n"
-                + this.getByKeyDataFetchersSourceCode(concreteClasses).makeString("")
+                + classes.collect(this::getByKeyDataFetcherSourceCode).makeString("")
                 + "\n"
-                + this.getByOperationDataFetchersSourceCode(concreteClasses).makeString("")
+                + classes.collect(this::getByOperationDataFetcherSourceCode).makeString("")
                 + "\n"
-                + this.getByFinderDataFetchersSourceCode(concreteClasses).makeString("")
+                + classes.collect(this::getByFinderDataFetcherSourceCode).makeString("")
                 + "\n"
                 + "        return builder;\n"
                 + "    }\n"
@@ -115,13 +114,6 @@ public class GraphQLQueryRuntimeWiringGenerator
     private String getKeyFetcherImport(Klass klass)
     {
         return "import " + klass.getPackageName() + ".graphql.data.fetcher.key." + klass.getName() + "ByKeyDataFetcher;\n";
-    }
-
-    private ImmutableList<String> getAllDataFetchersSourceCode(ImmutableList<Klass> classes)
-    {
-        return classes
-                .reject(Klass::isAbstract)
-                .collect(this::getAllDataFetcherSourceCode);
     }
 
     private String getAllDataFetcherSourceCode(Classifier classifier)
@@ -159,27 +151,6 @@ public class GraphQLQueryRuntimeWiringGenerator
         return index != 0
                 ? CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, eachSplit)
                 : eachSplit;
-    }
-
-    private ImmutableList<String> getByKeyDataFetchersSourceCode(ImmutableList<Klass> classes)
-    {
-        return classes
-                .reject(Klass::isAbstract)
-                .collect(this::getByKeyDataFetcherSourceCode);
-    }
-
-    private ImmutableList<String> getByOperationDataFetchersSourceCode(ImmutableList<Klass> classes)
-    {
-        return classes
-                .reject(Klass::isAbstract)
-                .collect(this::getByOperationDataFetcherSourceCode);
-    }
-
-    private ImmutableList<String> getByFinderDataFetchersSourceCode(ImmutableList<Klass> classes)
-    {
-        return classes
-                .reject(Klass::isAbstract)
-                .collect(this::getByFinderDataFetcherSourceCode);
     }
 
     private String getByKeyDataFetcherSourceCode(Classifier classifier)

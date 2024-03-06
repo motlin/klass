@@ -31,12 +31,10 @@ public class GraphQLDataFetcherGenerator
 
     public void writeDataFetcherFiles(@Nonnull Path outputPath)
     {
-        ImmutableList<Klass> concreteClasses = this.domainModel
-                .getClasses()
-                .reject(Klass::isAbstract);
+        ImmutableList<Klass> classes = this.domainModel.getClasses();
 
-        concreteClasses.forEachWith(this::writeAllDataFetcherFile, outputPath);
-        concreteClasses.forEachWith(this::writeDataFetcherByKeyFile, outputPath);
+        classes.forEachWith(this::writeAllDataFetcherFile, outputPath);
+        classes.forEachWith(this::writeDataFetcherByKeyFile, outputPath);
     }
 
     private void writeAllDataFetcherFile(@Nonnull Klass klass, @Nonnull Path outputPath)
