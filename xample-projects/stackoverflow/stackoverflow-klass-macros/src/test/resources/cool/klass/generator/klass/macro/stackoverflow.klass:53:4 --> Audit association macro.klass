@@ -1,0 +1,18 @@
+package com.stackoverflow
+
+association QuestionHasCreatedBy
+{
+    questionCreatedBy: Question[0..*];
+    createdBy: User[1..1] createdBy final;
+
+    relationship this.createdById == User.userId
+}
+
+association QuestionHasLastUpdatedBy
+{
+    questionLastUpdatedBy: Question[0..*];
+    lastUpdatedBy: User[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.userId
+}
+

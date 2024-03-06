@@ -1,0 +1,9 @@
+package com.stackoverflow
+
+association AnswerHasVersion
+{
+    answer: Answer[1..1];
+    version: AnswerVersion[1..1] owned version;
+
+    relationship this.id == AnswerVersion.id
+}

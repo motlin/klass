@@ -107,6 +107,7 @@
         <module>stackoverflow-graphql-schema</module>
         <module>stackoverflow-json-views</module>
         <module>stackoverflow-klass-html</module>
+        <module>stackoverflow-klass-macros</module>
         <module>stackoverflow-klass-projections</module>
         <module>stackoverflow-klass-services</module>
         <!--<module>stackoverflow-meta-model-json</module>-->

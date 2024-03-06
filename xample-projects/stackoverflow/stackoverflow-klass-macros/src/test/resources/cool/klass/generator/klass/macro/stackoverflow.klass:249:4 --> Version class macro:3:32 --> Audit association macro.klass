@@ -1,0 +1,18 @@
+package com.stackoverflow
+
+association TagVersionHasCreatedBy
+{
+    tagVersionCreatedBy: TagVersion[0..*];
+    createdBy: User[1..1] createdBy final;
+
+    relationship this.createdById == User.userId
+}
+
+association TagVersionHasLastUpdatedBy
+{
+    tagVersionLastUpdatedBy: TagVersion[0..*];
+    lastUpdatedBy: User[1..1] lastUpdatedBy;
+
+    relationship this.lastUpdatedById == User.userId
+}
+

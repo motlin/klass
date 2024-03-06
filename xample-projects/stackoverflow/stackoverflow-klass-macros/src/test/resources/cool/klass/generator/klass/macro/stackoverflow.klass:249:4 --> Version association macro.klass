@@ -1,0 +1,9 @@
+package com.stackoverflow
+
+association TagHasVersion
+{
+    tag: Tag[1..1];
+    version: TagVersion[1..1] owned version;
+
+    relationship this.name == TagVersion.name
+}
