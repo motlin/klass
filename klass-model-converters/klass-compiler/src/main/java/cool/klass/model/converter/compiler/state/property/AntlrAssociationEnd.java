@@ -30,7 +30,7 @@ import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrAssociationEnd
-        extends AntlrReferenceTypeProperty<AntlrClass>
+        extends AntlrReferenceProperty<AntlrClass>
         implements AntlrClassTypeOwner
 {
     @Nullable

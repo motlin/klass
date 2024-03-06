@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.state.projection.AntlrProjectionParen
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionProjectionReference;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjectionReferenceProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -103,7 +103,7 @@ public class ProjectionPhase
         AntlrClassifier classifierState = classifierReferenceContext == null
                 ? projectionParentState.getClassifier()
                 : this.compilerState.getDomainModelState().getClassifierByName(classifierReferenceContext.getText());
-        AntlrReferenceTypeProperty<?> referenceTypeProperty = classifierState.getReferenceTypePropertyByName(name);
+        AntlrReferenceProperty<?> referenceProperty = classifierState.getReferencePropertyByName(name);
 
         AntlrProjectionReferenceProperty projectionReferencePropertyState = new AntlrProjectionReferenceProperty(
                 ctx,
@@ -111,9 +111,9 @@ public class ProjectionPhase
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
-                referenceTypeProperty.getType(),
+                referenceProperty.getType(),
                 projectionParentState,
-                referenceTypeProperty);
+                referenceProperty);
 
         projectionParentState.enterAntlrProjectionMember(projectionReferencePropertyState);
 
@@ -143,7 +143,7 @@ public class ProjectionPhase
         AntlrClassifier classifierState = classifierReferenceContext == null
                 ? projectionParentState.getClassifier()
                 : this.compilerState.getDomainModelState().getClassByName(classifierReferenceContext.getText());
-        AntlrReferenceTypeProperty<?> referenceTypeProperty = classifierState.getReferenceTypePropertyByName(name);
+        AntlrReferenceProperty<?> referenceProperty = classifierState.getReferencePropertyByName(name);
 
         AntlrProjection projectionState = this.compilerState.getDomainModelState().getProjectionByName(projectionName);
 
@@ -153,9 +153,9 @@ public class ProjectionPhase
                 nameContext,
                 name,
                 projectionParentState.getNumChildren() + 1,
-                referenceTypeProperty.getType(),
+                referenceProperty.getType(),
                 projectionParentState,
-                referenceTypeProperty,
+                referenceProperty,
                 projectionState);
 
         projectionParentState.enterAntlrProjectionMember(projectionProjectionReferenceState);

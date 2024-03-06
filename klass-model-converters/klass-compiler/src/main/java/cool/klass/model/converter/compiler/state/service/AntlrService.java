@@ -68,7 +68,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     @Nonnull
     private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState = Optional.empty();
     @Nonnull
-    private Optional<AntlrOrderBy>                   orderByState = Optional.empty();
+    private Optional<AntlrOrderBy>                   orderByState                   = Optional.empty();
     private ServiceBuilder                           elementBuilder;
 
     public AntlrService(
@@ -190,7 +190,10 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         }
         else
         {
-            this.serviceProjectionDispatchState.ifPresent(projectionDispatch -> this.reportPresentProjection(projectionDispatch, compilerErrorHolder));
+            this.serviceProjectionDispatchState
+                    .ifPresent(projectionDispatch -> this.reportPresentProjection(
+                            projectionDispatch,
+                            compilerErrorHolder));
         }
     }
 

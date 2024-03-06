@@ -12,7 +12,7 @@ import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
@@ -48,13 +48,13 @@ public class AntlrProjectionProjectionReference
             AntlrProjection.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrClassifier               classifier;
+    private final AntlrClassifier           classifier;
     @Nonnull
-    private final AntlrProjectionParent         antlrProjectionParent;
+    private final AntlrProjectionParent     antlrProjectionParent;
     @Nonnull
-    private final AntlrReferenceTypeProperty<?> referenceProperty;
+    private final AntlrReferenceProperty<?> referenceProperty;
     @Nonnull
-    private final AntlrProjection               referencedProjectionState;
+    private final AntlrProjection           referencedProjectionState;
 
     private ProjectionProjectionReferenceBuilder projectionProjectionReferenceBuilder;
 
@@ -66,7 +66,7 @@ public class AntlrProjectionProjectionReference
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
-            @Nonnull AntlrReferenceTypeProperty<?> referenceProperty,
+            @Nonnull AntlrReferenceProperty<?> referenceProperty,
             @Nonnull AntlrProjection referencedProjectionState)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);

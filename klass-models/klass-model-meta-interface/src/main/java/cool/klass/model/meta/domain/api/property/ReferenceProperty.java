@@ -23,7 +23,7 @@ public interface ReferenceProperty
     @Override
     default boolean isDerived()
     {
-        // TODO: ReferenceType derived properties
+        // TODO: derived ReferenceProperties
         return false;
     }
 

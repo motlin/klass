@@ -11,7 +11,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
@@ -49,12 +49,10 @@ public class AntlrProjectionReferenceProperty
             AntlrAssociationEnd.NOT_FOUND);
 
     @Nonnull
-    private final AntlrProjectionParent antlrProjectionParent;
-
+    private final AntlrProjectionParent              antlrProjectionParent;
     @Nonnull
-    private final AntlrReferenceTypeProperty<?> referenceTypeProperty;
-
-    private ProjectionReferencePropertyBuilder projectionReferencePropertyBuilder;
+    private final AntlrReferenceProperty<?>          referenceProperty;
+    private       ProjectionReferencePropertyBuilder projectionReferencePropertyBuilder;
 
     public AntlrProjectionReferenceProperty(
             @Nonnull ProjectionReferencePropertyContext elementContext,
@@ -64,11 +62,11 @@ public class AntlrProjectionReferenceProperty
             int ordinal,
             @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
-            @Nonnull AntlrReferenceTypeProperty<?> referenceTypeProperty)
+            @Nonnull AntlrReferenceProperty<?> referenceProperty)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal, classifier);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
-        this.referenceTypeProperty = Objects.requireNonNull(referenceTypeProperty);
+        this.referenceProperty     = Objects.requireNonNull(referenceProperty);
     }
 
     @Nonnull
@@ -88,7 +86,7 @@ public class AntlrProjectionReferenceProperty
                 this.name,
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
-                this.referenceTypeProperty.getElementBuilder());
+                this.referenceProperty.getElementBuilder());
 
         ImmutableList<ProjectionChildBuilder> projectionMemberBuilders = this.children
                 .collect(AntlrProjectionChild::build)
@@ -144,7 +142,7 @@ public class AntlrProjectionReferenceProperty
             return;
         }
 
-        if (this.referenceTypeProperty == AntlrAssociationEnd.NOT_FOUND)
+        if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
             String message = String.format("Not found: '%s'.", this.name);
             compilerErrorHolder.add("ERR_PAE_NFD", message, this);

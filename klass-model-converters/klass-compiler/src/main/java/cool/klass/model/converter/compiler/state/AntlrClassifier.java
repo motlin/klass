@@ -14,7 +14,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSig
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -46,9 +46,9 @@ public abstract class AntlrClassifier
             "klass.meta")
     {
         @Override
-        public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+        public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
         {
-            return AntlrReferenceTypeProperty.AMBIGUOUS;
+            return AntlrReferenceProperty.AMBIGUOUS;
         }
 
         @Override
@@ -69,9 +69,9 @@ public abstract class AntlrClassifier
             "klass.meta")
     {
         @Override
-        public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+        public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
         {
-            return AntlrReferenceTypeProperty.NOT_FOUND;
+            return AntlrReferenceProperty.NOT_FOUND;
         }
 
         @Override
@@ -89,12 +89,12 @@ public abstract class AntlrClassifier
     protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    protected final MutableList<AntlrReferenceTypeProperty<?>>               referenceTypePropertyStates   =
+    protected final MutableList<AntlrReferenceProperty<?>>               referencePropertyStates   =
             Lists.mutable.empty();
-    protected final MutableOrderedMap<String, AntlrReferenceTypeProperty<?>> referenceTypePropertiesByName =
+    protected final MutableOrderedMap<String, AntlrReferenceProperty<?>> referencePropertiesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceTypeProperty<?>> referenceTypePropertiesByContext =
+    protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceProperty<?>> referencePropertiesByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected final MutableList<AntlrClassifierModifier>  classifierModifierStates = Lists.mutable.empty();
@@ -120,7 +120,7 @@ public abstract class AntlrClassifier
         super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
     }
 
-    public abstract AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name);
+    public abstract AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name);
 
     public abstract AntlrDataTypeProperty<?> getDataTypePropertyByName(String name);
 
@@ -238,10 +238,10 @@ public abstract class AntlrClassifier
         return this.associationEndSignaturesByContext.get(ctx);
     }
 
-    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByContext(@Nonnull ParserRuleContext ctx)
+    public AntlrReferenceProperty<?> getReferencePropertyByContext(@Nonnull ParserRuleContext ctx)
     {
         Objects.requireNonNull(ctx);
-        return this.referenceTypePropertiesByContext.get(ctx);
+        return this.referencePropertiesByContext.get(ctx);
     }
 
     public void enterAssociationEndSignature(@Nonnull AntlrAssociationEndSignature associationEndSignatureState)
@@ -261,13 +261,13 @@ public abstract class AntlrClassifier
             throw new AssertionError();
         }
 
-        this.referenceTypePropertyStates.add(associationEndSignatureState);
-        this.referenceTypePropertiesByName.compute(
+        this.referencePropertyStates.add(associationEndSignatureState);
+        this.referencePropertiesByName.compute(
                 associationEndSignatureState.getName(),
                 (name, builder) -> builder == null
                         ? associationEndSignatureState
                         : AntlrAssociationEndSignature.AMBIGUOUS);
-        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
                 associationEndSignatureState.getElementContext(),
                 associationEndSignatureState);
         if (duplicate2 != null)

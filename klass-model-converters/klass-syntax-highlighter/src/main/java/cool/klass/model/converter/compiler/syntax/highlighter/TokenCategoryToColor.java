@@ -160,9 +160,9 @@ public final class TokenCategoryToColor
             {
                 return colorScheme.getEnumerationPropertyName();
             }
-            case REFERENCE_TYPE_PROPERTY_NAME:
+            case REFERENCE_PROPERTY_NAME:
             {
-                return colorScheme.getReferenceTypePropertyName();
+                return colorScheme.getReferencePropertyName();
             }
             case PARAMETERIZED_PROPERTY_NAME:
             {

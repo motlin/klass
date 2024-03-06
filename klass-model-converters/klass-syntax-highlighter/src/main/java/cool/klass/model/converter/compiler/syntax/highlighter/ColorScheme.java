@@ -140,19 +140,19 @@ public interface ColorScheme
         return this.getDataTypePropertyName();
     }
 
-    default Color getReferenceTypePropertyName()
+    default Color getReferencePropertyName()
     {
         return this.getPropertyName();
     }
 
     default Color getParameterizedPropertyName()
     {
-        return this.getReferenceTypePropertyName();
+        return this.getReferencePropertyName();
     }
 
     default Color getAssociationEndName()
     {
-        return this.getReferenceTypePropertyName();
+        return this.getReferencePropertyName();
     }
 
     default Color getEnumerationReference()

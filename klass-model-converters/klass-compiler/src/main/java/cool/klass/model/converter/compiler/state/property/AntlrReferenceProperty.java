@@ -18,13 +18,12 @@ import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferenceProp
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-// TODO: Rename "ReferenceType" to just "Reference"
-public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
+public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         extends AntlrProperty
         implements AntlrOrderByOwner
 {
     @Nullable
-    public static final AntlrReferenceTypeProperty AMBIGUOUS = new AntlrReferenceTypeProperty(
+    public static final AntlrReferenceProperty AMBIGUOUS = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
@@ -85,7 +84,7 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
     };
 
     @Nullable
-    public static final AntlrReferenceTypeProperty NOT_FOUND = new AntlrReferenceTypeProperty(
+    public static final AntlrReferenceProperty NOT_FOUND = new AntlrReferenceProperty(
             new ParserRuleContext(null, -1),
             Optional.empty(),
             AbstractElement.NO_CONTEXT,
@@ -148,7 +147,7 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
     @Nonnull
     protected Optional<AntlrOrderBy> orderByState = Optional.empty();
 
-    protected AntlrReferenceTypeProperty(
+    protected AntlrReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,

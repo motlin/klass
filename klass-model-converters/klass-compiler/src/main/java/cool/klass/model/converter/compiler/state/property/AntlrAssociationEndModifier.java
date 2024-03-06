@@ -24,7 +24,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
             -1,
             AntlrAssociationEnd.AMBIGUOUS);
 
-    private final AntlrReferenceTypeProperty<?> surroundingElement;
+    private final AntlrReferenceProperty<?>     surroundingElement;
     private       AssociationEndModifierBuilder elementBuilder;
 
     public AntlrAssociationEndModifier(
@@ -33,7 +33,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrReferenceTypeProperty<?> surroundingElement)
+            @Nonnull AntlrReferenceProperty<?> surroundingElement)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.surroundingElement = Objects.requireNonNull(surroundingElement);

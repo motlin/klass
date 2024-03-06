@@ -15,7 +15,7 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
@@ -181,16 +181,16 @@ public class AntlrClass
                 + this.associationEndSignatureStates.size();
     }
 
-    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+    public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
-        AntlrReferenceTypeProperty<?> declaredProperty = this.referenceTypePropertiesByName.get(name);
+        AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
         if (declaredProperty != null)
         {
             return declaredProperty;
         }
 
-        Optional<AntlrReferenceTypeProperty<?>> superClassProperty = this.superClassState
-                .map(superClass -> superClass.getReferenceTypePropertyByName(name));
+        Optional<AntlrReferenceProperty<?>> superClassProperty = this.superClassState
+                .map(superClass -> superClass.getReferencePropertyByName(name));
         if (superClassProperty.isPresent())
         {
             return superClassProperty.get();
@@ -198,7 +198,7 @@ public class AntlrClass
 
         return this.interfaceStates
                 .asLazy()
-                .collectWith(AntlrInterface::getReferenceTypePropertyByName, name)
+                .collectWith(AntlrInterface::getReferencePropertyByName, name)
                 .detect(Objects::nonNull);
     }
 
@@ -211,13 +211,13 @@ public class AntlrClass
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
 
-        this.referenceTypePropertyStates.add(antlrAssociationEnd);
-        this.referenceTypePropertiesByName.compute(
+        this.referencePropertyStates.add(antlrAssociationEnd);
+        this.referencePropertiesByName.compute(
                 antlrAssociationEnd.getName(),
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
-        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
                 antlrAssociationEnd.getElementContext(),
                 antlrAssociationEnd);
         if (duplicate2 != null)
@@ -243,13 +243,13 @@ public class AntlrClass
             throw new AssertionError();
         }
 
-        this.referenceTypePropertyStates.add(parameterizedPropertyState);
-        this.referenceTypePropertiesByName.compute(
+        this.referencePropertyStates.add(parameterizedPropertyState);
+        this.referencePropertiesByName.compute(
                 parameterizedPropertyState.getName(),
                 (name, builder) -> builder == null
                         ? parameterizedPropertyState
                         : AntlrParameterizedProperty.AMBIGUOUS);
-        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+        AntlrReferenceProperty duplicate2 = this.referencePropertiesByContext.put(
                 parameterizedPropertyState.getElementContext(),
                 parameterizedPropertyState);
         if (duplicate2 != null)

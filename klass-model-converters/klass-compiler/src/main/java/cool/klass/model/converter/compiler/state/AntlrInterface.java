@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
-import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceProperty;
 import cool.klass.model.meta.domain.ClassifierModifierImpl.ClassifierModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
@@ -135,9 +135,9 @@ public class AntlrInterface extends AntlrClassifier
         return Objects.requireNonNull(this.interfaceBuilder);
     }
 
-    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+    public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
-        AntlrReferenceTypeProperty<?> declaredProperty = this.referenceTypePropertiesByName.get(name);
+        AntlrReferenceProperty<?> declaredProperty = this.referencePropertiesByName.get(name);
         if (declaredProperty != null)
         {
             return declaredProperty;
@@ -145,7 +145,7 @@ public class AntlrInterface extends AntlrClassifier
 
         return this.interfaceStates
                 .asLazy()
-                .collectWith(AntlrInterface::getReferenceTypePropertyByName, name)
+                .collectWith(AntlrInterface::getReferencePropertyByName, name)
                 .detect(Objects::nonNull);
     }
 

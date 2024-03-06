@@ -26,7 +26,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
 public class AntlrParameterizedProperty
-        extends AntlrReferenceTypeProperty<AntlrClass>
+        extends AntlrReferenceProperty<AntlrClass>
         implements AntlrParameterOwner, AntlrClassTypeOwner
 {
     @Nullable
