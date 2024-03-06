@@ -9,9 +9,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import io.liftwizard.reladomo.test.rule.ReladomoTestRuleBuilder;
 import org.eclipse.collections.api.factory.Maps;
-import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,17 +42,7 @@ public class Update_FinalPropertiesTest
     public void validate_mutate_final()
             throws IOException
     {
-        //language=JSON5
-        String incomingJson = """
-                {
-                  "id": 1,
-                  "data": "FinalProperties data 1 ☝"
-                }
-                """;
-
-        ImmutableList<String> expectedErrors = Lists.immutable.empty();
-
-        this.validate(incomingJson, this.persistentInstance, expectedErrors);
+        this.validate("validate_mutate_final", this.persistentInstance);
     }
 
     @Nonnull

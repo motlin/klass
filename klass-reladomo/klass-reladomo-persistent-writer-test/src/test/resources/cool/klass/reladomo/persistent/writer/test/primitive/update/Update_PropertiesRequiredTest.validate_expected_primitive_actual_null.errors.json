@@ -1,0 +1,11 @@
+[
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredString: String' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredInteger: Integer' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredLong: Long' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredDouble: Double' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredFloat: Float' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredBoolean: Boolean' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredInstant: Instant' but value was null.",
+  "Error at PropertiesRequired. Expected value for required property 'PropertiesRequired.requiredLocalDate: LocalDate' but value was null.",
+  "Error at PropertiesRequired. Expected value for version property 'PropertiesRequired.version: PropertiesRequiredVersion[1..1]' but value was null."
+]

@@ -12,7 +12,7 @@ public abstract class AbstractUpdateValidatorTest
         extends AbstractValidatorTest
 {
     @Override
-    protected final void performValidation(@Nonnull ObjectNode incomingInstance, Object persistentInstance)
+    protected final void validate(@Nonnull ObjectNode incomingInstance, Object persistentInstance)
     {
         JsonTypeCheckingValidator.validate(
                 incomingInstance,

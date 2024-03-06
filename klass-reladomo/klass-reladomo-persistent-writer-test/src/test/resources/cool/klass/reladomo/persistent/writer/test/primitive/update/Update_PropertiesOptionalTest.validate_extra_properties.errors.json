@@ -1,0 +1,4 @@
+[
+  "Error at PropertiesOptional.system. Mismatched value for temporal property 'PropertiesOptional.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
+  "Error at PropertiesOptional.version.system. Mismatched value for temporal property 'PropertiesOptionalVersion.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'."
+]

@@ -1,0 +1,17 @@
+[
+  "Error at PropertiesRequired.propertiesRequiredId. Expected property with type 'PropertiesRequired.propertiesRequiredId: Long' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Error at PropertiesRequired.requiredInteger. Expected property with type 'PropertiesRequired.requiredInteger: Integer' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Error at PropertiesRequired.requiredLong. Expected property with type 'PropertiesRequired.requiredLong: Long' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Error at PropertiesRequired.requiredDouble. Expected property with type 'PropertiesRequired.requiredDouble: Double' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Error at PropertiesRequired.requiredFloat. Expected property with type 'PropertiesRequired.requiredFloat: Float' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Error at PropertiesRequired.requiredBoolean. Expected property with type 'PropertiesRequired.requiredBoolean: Boolean' but got '\"PropertiesRequired requiredString 1 ☝\"' with type 'string'.",
+  "Incoming 'PropertiesRequired' has property 'requiredInstant: Instant' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+  "Incoming 'PropertiesRequired' has property 'requiredLocalDate: LocalDate' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by LocalDate.parse().",
+  "Incoming 'PropertiesRequired' has property 'system: TemporalRange? system' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+  "Incoming 'PropertiesRequired' has property 'systemFrom: TemporalInstant? system from' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+  "Incoming 'PropertiesRequired' has property 'systemTo: TemporalInstant? system to' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+  "Incoming 'PropertiesRequired' has property 'createdOn: Instant createdOn final' but got '\"PropertiesRequired requiredString 1 ☝\"'. Could not be parsed by java.time.format.DateTimeFormatter.ISO_INSTANT which expects a String like '1999-12-31T23:59:59Z'",
+  "Error at PropertiesRequired.version. Expected json object but value was string: \"PropertiesRequired requiredString 1 ☝\".",
+  "Error at PropertiesRequired.createdById. Mismatched value for audit property 'PropertiesRequired.createdById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'.",
+  "Error at PropertiesRequired.lastUpdatedById. Mismatched value for audit property 'PropertiesRequired.lastUpdatedById: String'. Expected absent value or 'test user 1' but value was 'PropertiesRequired requiredString 1 ☝'."
+]
