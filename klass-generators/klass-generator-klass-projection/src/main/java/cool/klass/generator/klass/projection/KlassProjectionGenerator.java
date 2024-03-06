@@ -13,6 +13,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.tuple.Pair;
@@ -91,17 +92,24 @@ public class KlassProjectionGenerator
 
     private static String getSourceCode(Classifier classifier)
     {
-        String projectionBodySourceCode = classifier
+        String dataTypePropertiesSourceCode = classifier
                 .getDataTypeProperties()
                 .reject(DataTypeProperty::isForeignKey)
                 .reject(DataTypeProperty::isPrivate)
                 .collect(KlassProjectionGenerator::getSourceCode)
                 .makeString("");
 
+        String referencePropertiesSourceCode = classifier
+                .getProperties()
+                .selectInstancesOf(ReferenceProperty.class)
+                .collect(KlassProjectionGenerator::getSourceCode)
+                .makeString("");
+
         return ""
                 + "projection " + classifier.getName() + "Projection on " + classifier.getName() + "\n"
                 + "{\n"
-                + projectionBodySourceCode
+                + dataTypePropertiesSourceCode
+                + referencePropertiesSourceCode
                 + "}\n";
     }
 
@@ -112,6 +120,11 @@ public class KlassProjectionGenerator
                 dataTypeProperty.getName(),
                 dataTypeProperty.getOwningClassifier().getName(),
                 dataTypeProperty.getName());
+    }
+
+    private static String getSourceCode(ReferenceProperty referenceProperty)
+    {
+        return String.format("%s: %sProjection,", referenceProperty.getName(), referenceProperty.getType().getName());
     }
 
     private void printStringToFile(@Nonnull Path path, String contents)
