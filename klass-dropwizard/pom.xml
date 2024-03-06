@@ -30,7 +30,6 @@
     </dependencyManagement>
 
     <modules>
-        <module>klass-dropwizard-application</module>
         <module>klass-dropwizard-bundles</module>
         <module>klass-dropwizard-configuration-factories</module>
         <module>klass-dropwizard-configuration</module>
