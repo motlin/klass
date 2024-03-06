@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.liftwizard</groupId>
         <artifactId>liftwizard-parent-build</artifactId>
-        <version>0.16.0</version>
+        <version>0.17.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,7 +44,7 @@
         <checkstyle.suppressions>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions>
         <checkstyle.cache>${project.build.directory}/checkstyle-cache</checkstyle.cache>
 
-        <liftwizard.version>0.16.0</liftwizard.version>
+        <liftwizard.version>0.17.0</liftwizard.version>
     </properties>
 
     <dependencyManagement>
@@ -117,7 +117,7 @@
                                 <failOnWarning>true</failOnWarning>
                                 <ignoredUnusedDeclaredDependencies>
                                     <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service-annotations</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo-jsonview:jar</ignoredUnusedDeclaredDependency>
