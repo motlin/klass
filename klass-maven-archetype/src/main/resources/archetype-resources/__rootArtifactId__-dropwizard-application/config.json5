@@ -95,7 +95,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:tcp://localhost:9092/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:tcp://localhost:9092/${rootArtifactId}-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -108,7 +108,7 @@
       "readOnlyByDefault": false,
       "user": "sa",
       "password": "",
-      "url": "jdbc:p6spy:h2:file:./target/h2db/\${rootArtifactId}-h2",
+      "url": "jdbc:p6spy:h2:file:./target/h2db/${rootArtifactId}-h2",
       "properties": {
         "charSet": "UTF-8"
       },
@@ -131,19 +131,19 @@
       "connectionManagerName": "h2-mem",
       "dataSourceName": "h2-mem",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "${rootArtifactId}-h2"
     },
     {
       "connectionManagerName": "h2-tcp",
       "dataSourceName": "h2-tcp",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "${rootArtifactId}-h2"
     },
     {
       "connectionManagerName": "h2-file",
       "dataSourceName": "h2-file",
       "databaseType": "H2",
-      "schemaName": "\${rootArtifactId}-h2"
+      "schemaName": "${rootArtifactId}-h2"
     }
   ],
   "jerseyHttpLogging": {
