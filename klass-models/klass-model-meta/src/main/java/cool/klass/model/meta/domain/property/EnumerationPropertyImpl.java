@@ -42,24 +42,6 @@ public final class EnumerationPropertyImpl
                 isOptional);
     }
 
-    @Override
-    public boolean isTemporalRange()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isTemporalInstant()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isTemporal()
-    {
-        return false;
-    }
-
     public static final class EnumerationPropertyBuilder
             extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
     {
