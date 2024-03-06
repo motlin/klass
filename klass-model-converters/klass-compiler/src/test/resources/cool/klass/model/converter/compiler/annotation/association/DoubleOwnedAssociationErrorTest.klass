@@ -1,14 +1,19 @@
 package dummy
 
-class DoubleOwnedClass
+class ExampleClass1
+{
+    id: Long key;
+}
+
+class ExampleClass2
 {
     id: Long key;
 }
 
 association DoubleOwnedAssociation
 {
-    source: DoubleOwnedClass[1..1] owned;
-    target: DoubleOwnedClass[1..1] owned;
+    source: ExampleClass1[1..1] owned;
+    target: ExampleClass2[1..1] owned;
 
-    relationship this.id == DoubleOwnedClass.id
+    relationship this.id == ExampleClass2.id
 }
