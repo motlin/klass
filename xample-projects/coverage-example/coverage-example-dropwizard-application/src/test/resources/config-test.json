@@ -66,7 +66,9 @@
     }
   ],
   "h2"                : {
-    "enabled": true
+    "enabled": true,
+    "webPort": 8085,
+    "tcpPort": 9095
   },
   "dataSources"       : [
     {
@@ -88,7 +90,7 @@
       "readOnlyByDefault"     : false,
       "user"                  : "sa",
       "password"              : "",
-      "url"                   : "jdbc:p6spy:h2:tcp://localhost:9092/liftwizard-app-h2",
+      "url"                   : "jdbc:p6spy:h2:tcp://localhost:9095/liftwizard-app-h2",
       "properties"            : {
         "charSet": "UTF-8"
       },
