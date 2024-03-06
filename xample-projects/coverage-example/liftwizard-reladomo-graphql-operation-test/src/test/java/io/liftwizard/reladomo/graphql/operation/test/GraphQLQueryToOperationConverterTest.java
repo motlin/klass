@@ -31,7 +31,6 @@ import io.liftwizard.graphql.scalar.temporal.GraphQLTemporalScalar;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.impl.utility.Iterate;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -275,7 +274,6 @@ public class GraphQLQueryToOperationConverterTest
                 "{ propertiesOptionalByFinder(operation: { optionalInteger: { abs: { eq: 1 } } }) { propertiesOptionalId } }");
     }
 
-    @Ignore("Until https://github.com/goldmansachs/reladomo/pull/226 is released")
     @Test
     public void instantDerivedAttributes()
     {

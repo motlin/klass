@@ -25,7 +25,6 @@ import org.eclipse.collections.impl.factory.primitive.DoubleSets;
 import org.eclipse.collections.impl.factory.primitive.FloatSets;
 import org.eclipse.collections.impl.factory.primitive.IntSets;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -329,7 +328,6 @@ public class ReladomoOperationCompilerTest
         this.assertCompiles("abs(this.optionalInteger) = 1", FINDER.optionalInteger().absoluteValue().eq(1));
     }
 
-    @Ignore("Until https://github.com/goldmansachs/reladomo/pull/226 is released")
     @Test
     public void instantDerivedAttributes()
     {
