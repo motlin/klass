@@ -6,7 +6,7 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationPropertyContext, Enumeration>
+public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 {
     // TODO: Check that it's not NOT_FOUND
     private final AntlrEnumeration antlrEnumeration;
@@ -24,6 +24,12 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationP
     {
         super(context, nameContext, name, isOptional, modifiers, owningClassState);
         this.antlrEnumeration = antlrEnumeration;
+    }
+
+    @Override
+    public boolean isTemporal()
+    {
+        return false;
     }
 
     @Override

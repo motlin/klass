@@ -7,7 +7,7 @@ enumeration badEnumeration
 
 class badClass
 {
-    BadPrimitiveProperty: String
+    BadPrimitiveProperty  : String
     BadEnumerationProperty: badEnumeration
 
     BadParameterizedProperty(BadParameter: String[1..1]): badClass[1..1]
@@ -15,9 +15,15 @@ class badClass
         this.BadPrimitiveProperty == BadParameter
     }
 
-    badTemporalProperty: TemporalRange
-    badTemporalFrom    : TemporalInstant
-    badTemporalTo      : TemporalInstant
+    badTemporalProperty   : TemporalRange
+    badTemporalFrom       : TemporalInstant
+    badTemporalTo         : TemporalInstant
+    valid                 : String
+    validFrom             : String
+    validTo               : String
+    system                : String
+    systemFrom            : String
+    systemTo              : String
 }
 
 association badAssociation

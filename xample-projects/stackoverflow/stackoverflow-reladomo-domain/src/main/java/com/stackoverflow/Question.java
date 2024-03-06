@@ -2,6 +2,8 @@ package com.stackoverflow;
 
 import java.sql.Timestamp;
 
+import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
+
 public class Question extends QuestionAbstract
 {
     public Question(Timestamp system)
@@ -13,6 +15,6 @@ public class Question extends QuestionAbstract
 
     public Question()
     {
-        this(com.gs.fw.common.mithra.util.DefaultInfinityTimestamp.getDefaultInfinity());
+        this(DefaultInfinityTimestamp.getDefaultInfinity());
     }
 }

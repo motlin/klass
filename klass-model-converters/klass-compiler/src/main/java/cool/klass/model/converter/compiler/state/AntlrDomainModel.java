@@ -7,10 +7,12 @@ import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.DomainModel.DomainModelBuilder;
 import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
@@ -19,6 +21,13 @@ public class AntlrDomainModel
     private final MutableList<AntlrEnumeration> enumerationStates = Lists.mutable.empty();
     private final MutableList<AntlrClass>       classStates       = Lists.mutable.empty();
     private final MutableList<AntlrAssociation> associationStates = Lists.mutable.empty();
+
+    private final MutableOrderedMap<EnumerationDeclarationContext, AntlrEnumeration> enumerationsByContext = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
+    private final MutableOrderedMap<ClassDeclarationContext, AntlrClass>             classesByContext      = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
+    private final MutableOrderedMap<AssociationDeclarationContext, AntlrAssociation> associationsByContext = OrderedMapAdapter.adapt(
+            new LinkedHashMap<>());
 
     private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -39,6 +48,12 @@ public class AntlrDomainModel
                 (name, builder) -> builder == null
                         ? enumerationState
                         : AntlrEnumeration.AMBIGUOUS);
+
+        AntlrEnumeration duplicate = this.enumerationsByContext.put(enumerationState.getContext(), enumerationState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public void enterClassDeclaration(AntlrClass classState)
@@ -49,6 +64,12 @@ public class AntlrDomainModel
                 (name, builder) -> builder == null
                         ? classState
                         : AntlrClass.AMBIGUOUS);
+
+        AntlrClass duplicate = this.classesByContext.put(classState.getContext(), classState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public void enterAssociationDeclaration(AntlrAssociation associationState)
@@ -59,6 +80,12 @@ public class AntlrDomainModel
                 (name, builder) -> builder == null
                         ? associationState
                         : AntlrAssociation.AMBIGUOUS);
+
+        AntlrAssociation duplicate = this.associationsByContext.put(associationState.getContext(), associationState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public AntlrEnumeration getEnumerationByName(String enumerationName)
@@ -71,34 +98,14 @@ public class AntlrDomainModel
         return this.classesByName.getIfAbsentValue(className, AntlrClass.NOT_FOUND);
     }
 
-    public ImmutableList<AntlrEnumeration> getEnumerationStates()
+    public AntlrEnumeration getEnumerationByContext(EnumerationDeclarationContext context)
     {
-        return this.enumerationStates.toImmutable();
+        return this.enumerationsByContext.get(context);
     }
 
-    public ImmutableList<AntlrClass> getClassStates()
+    public AntlrClass getClassByContext(ClassDeclarationContext context)
     {
-        return this.classStates.toImmutable();
-    }
-
-    public ImmutableList<AntlrAssociation> getAssociationStates()
-    {
-        return this.associationStates.toImmutable();
-    }
-
-    public OrderedMap<String, AntlrEnumeration> getEnumerationsByName()
-    {
-        return this.enumerationsByName;
-    }
-
-    public OrderedMap<String, AntlrClass> getClassesByName()
-    {
-        return this.classesByName;
-    }
-
-    public OrderedMap<String, AntlrAssociation> getAssociationsByName()
-    {
-        return this.associationsByName;
+        return this.classesByContext.get(context);
     }
 
     public void reportErrors()

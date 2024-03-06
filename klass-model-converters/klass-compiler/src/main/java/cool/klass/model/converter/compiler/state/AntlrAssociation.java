@@ -16,11 +16,12 @@ public class AntlrAssociation
             null,
             new AssociationDeclarationContext(null, -1));
 
-    private final String                        packageName;
+    private final String packageName;
+
     private final AssociationDeclarationContext context;
+    private final String                        name;
 
     private final MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
-    private final String                           name;
 
     private AssociationBuilder associationBuilder;
 
@@ -86,5 +87,10 @@ public class AntlrAssociation
 
         this.associationBuilder.setAssociationEnds(associationEndBuilders);
         return this.associationBuilder;
+    }
+
+    public AssociationDeclarationContext getContext()
+    {
+        return this.context;
     }
 }

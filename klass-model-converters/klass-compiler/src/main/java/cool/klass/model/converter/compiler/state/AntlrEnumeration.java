@@ -128,4 +128,9 @@ public class AntlrEnumeration
     {
         return this.enumerationBuilder;
     }
+
+    public EnumerationDeclarationContext getContext()
+    {
+        return this.context;
+    }
 }

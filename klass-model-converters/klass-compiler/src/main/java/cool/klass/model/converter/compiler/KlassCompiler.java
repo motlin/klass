@@ -6,6 +6,7 @@ import java.util.Set;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
 import cool.klass.model.converter.compiler.phase.ClassPhase;
+import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.DeclarationsByNamePhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.ResolveTypeErrorsPhase;
@@ -68,10 +69,15 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 domainModelState);
 
+        ClassTemporalPropertyInferencePhase phase9 = new ClassTemporalPropertyInferencePhase(
+                this.compilerErrorHolder,
+                compilationUnitsByContext,
+                domainModelState);
+
         // TODO: Phase for inference on classes?
         // Like adding temporal and audit properties, and version types and version associations
 
-        KlassListener phase9 = new AssociationPhase(
+        KlassListener phase10 = new AssociationPhase(
                 this.compilerErrorHolder,
                 compilationUnitsByContext,
                 domainModelState);
@@ -92,6 +98,7 @@ public class KlassCompiler
         this.executeCompilerPhase(compilationUnits, phase7);
         this.executeCompilerPhase(compilationUnits, phase8);
         this.executeCompilerPhase(compilationUnits, phase9);
+        this.executeCompilerPhase(compilationUnits, phase10);
 
         domainModelState.reportErrors();
 

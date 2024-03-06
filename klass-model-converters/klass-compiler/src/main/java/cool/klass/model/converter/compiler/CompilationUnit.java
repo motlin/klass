@@ -3,6 +3,7 @@ package cool.klass.model.converter.compiler;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -16,6 +17,8 @@ import org.antlr.v4.runtime.TokenStream;
 
 public final class CompilationUnit
 {
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
+
     private final String[] lines;
     private final CharStream charStream;
     private final TokenStream tokenStream;
@@ -35,12 +38,12 @@ public final class CompilationUnit
 
     public static CompilationUnit getCompilationUnit(String classpathLocation)
     {
-        String sourceCodeText = CompilationUnit.slurp(classpathLocation);
-        String[] lines = sourceCodeText.split("\\r?\\n");
-        ThrowingErrorListener errorListener = new ThrowingErrorListener(classpathLocation, lines);
-        CodePointCharStream charStream = CharStreams.fromString(sourceCodeText, classpathLocation);
-        CommonTokenStream tokenStream = CompilationUnit.getTokenStream(charStream, errorListener);
-        KlassParser parser = CompilationUnit.getParser(errorListener, tokenStream);
+        String                 sourceCodeText         = CompilationUnit.slurp(classpathLocation);
+        String[]               lines                  = NEWLINE_PATTERN.split(sourceCodeText);
+        ThrowingErrorListener  errorListener          = new ThrowingErrorListener(classpathLocation, lines);
+        CodePointCharStream    charStream             = CharStreams.fromString(sourceCodeText, classpathLocation);
+        CommonTokenStream      tokenStream            = CompilationUnit.getTokenStream(charStream, errorListener);
+        KlassParser            parser                 = CompilationUnit.getParser(errorListener, tokenStream);
         CompilationUnitContext compilationUnitContext = parser.compilationUnit();
         return new CompilationUnit(
                 lines,

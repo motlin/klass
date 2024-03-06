@@ -7,6 +7,7 @@ package com.stackoverflow
 // There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable
 user User
     read
+    systemTemporal
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
@@ -118,7 +119,10 @@ association QuestionHasAnswer
 }
 
 class Answer
+    systemTemporal
     versioned
+    audited
+    optimisticallyLocked
 {
     key id                     : ID
     body                       : String

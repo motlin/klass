@@ -5,14 +5,14 @@ import cool.klass.model.meta.domain.DataTypeProperty.DataTypePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AntlrDataTypeProperty<C extends ParserRuleContext, T extends DataType> extends AntlrProperty<C, T>
+public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrProperty<T>
 {
     protected final boolean                              isOptional;
     protected final ImmutableList<AntlrPropertyModifier> modifiers;
     protected final AntlrClass                           owningClassState;
 
     protected AntlrDataTypeProperty(
-            C context,
+            ParserRuleContext context,
             ParserRuleContext nameContext,
             String name,
             boolean isOptional,
@@ -29,6 +29,8 @@ public abstract class AntlrDataTypeProperty<C extends ParserRuleContext, T exten
     {
         return this.modifiers.anySatisfy(AntlrPropertyModifier::isKey);
     }
+
+    public abstract boolean isTemporal();
 
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();

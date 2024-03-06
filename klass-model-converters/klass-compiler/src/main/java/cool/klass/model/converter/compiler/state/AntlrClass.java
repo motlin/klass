@@ -28,8 +28,8 @@ public class AntlrClass
     private final ClassDeclarationContext context;
     private final String                  name;
 
-    private final MutableList<AntlrDataTypeProperty<?, ?>>               dataTypePropertyStates   = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrDataTypeProperty<?, ?>> dataTypePropertiesByName = OrderedMapAdapter.adapt(
+    private final MutableList<AntlrDataTypeProperty<?>>               dataTypePropertyStates   = Lists.mutable.empty();
+    private final MutableOrderedMap<String, AntlrDataTypeProperty<?>> dataTypePropertiesByName = OrderedMapAdapter.adapt(
             new LinkedHashMap<>());
 
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
@@ -49,7 +49,12 @@ public class AntlrClass
         return this.name;
     }
 
-    public void enterDataTypeProperty(AntlrDataTypeProperty<?, ?> antlrDataTypeProperty)
+    public MutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
+    {
+        return this.dataTypePropertyStates;
+    }
+
+    public void enterDataTypeProperty(AntlrDataTypeProperty<?> antlrDataTypeProperty)
     {
         this.dataTypePropertyStates.add(antlrDataTypeProperty);
         this.dataTypePropertiesByName.compute(
@@ -137,5 +142,10 @@ public class AntlrClass
     public KlassBuilder getKlassBuilder()
     {
         return this.klassBuilder;
+    }
+
+    public ClassDeclarationContext getContext()
+    {
+        return this.context;
     }
 }

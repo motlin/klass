@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitivePropertyContext, PrimitiveType>
+public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 {
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
@@ -25,7 +25,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitivePrope
     private PrimitivePropertyBuilder primitivePropertyBuilder;
 
     public AntlrPrimitiveProperty(
-            PrimitivePropertyContext context,
+            ParserRuleContext context,
             ParserRuleContext nameContext,
             String name,
             boolean isOptional,
@@ -35,6 +35,12 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitivePrope
     {
         super(context, nameContext, name, isOptional, modifiers, owningClassState);
         this.primitiveTypeBuilder = primitiveTypeBuilder;
+    }
+
+    @Override
+    public boolean isTemporal()
+    {
+        return this.primitiveTypeBuilder.getPrimitiveType().isTemporal();
     }
 
     @Override
