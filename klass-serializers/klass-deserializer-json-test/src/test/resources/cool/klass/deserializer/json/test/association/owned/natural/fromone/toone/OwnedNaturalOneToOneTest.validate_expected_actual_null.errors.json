@@ -1,0 +1,5 @@
+[
+  "Error at OwnedNaturalOneToOneSource. Expected value for required property 'OwnedNaturalOneToOneSource.value: String' but value was null.",
+  "Error at OwnedNaturalOneToOneSource.target. Expected value for required property 'OwnedNaturalOneToOneTarget.key: String' but value was null.",
+  "Error at OwnedNaturalOneToOneSource.target. Expected value for required property 'OwnedNaturalOneToOneTarget.value: String' but value was null."
+]

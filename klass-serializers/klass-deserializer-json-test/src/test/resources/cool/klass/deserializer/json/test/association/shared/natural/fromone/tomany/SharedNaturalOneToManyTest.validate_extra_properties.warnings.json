@@ -1,0 +1,7 @@
+[
+  "Warning at SharedNaturalOneToManySource. Didn't expect to receive value for root key property 'SharedNaturalOneToManySource.key: String' but value was string: \"key\".",
+  "Warning at SharedNaturalOneToManySource.targets[0]. Didn't expect to receive value for foreign key property 'SharedNaturalOneToManyTarget.sourceKey: String' but value was string: \"key\".",
+  "Warning at SharedNaturalOneToManySource.targets[0]. Didn't expect to receive value for outside projection property 'SharedNaturalOneToManyTarget.value: String' but value was string: \"value 1\".",
+  "Warning at SharedNaturalOneToManySource.targets[1]. Didn't expect to receive value for foreign key property 'SharedNaturalOneToManyTarget.sourceKey: String' but value was string: \"key\".",
+  "Warning at SharedNaturalOneToManySource.targets[1]. Didn't expect to receive value for outside projection property 'SharedNaturalOneToManyTarget.value: String' but value was string: \"value 2\"."
+]

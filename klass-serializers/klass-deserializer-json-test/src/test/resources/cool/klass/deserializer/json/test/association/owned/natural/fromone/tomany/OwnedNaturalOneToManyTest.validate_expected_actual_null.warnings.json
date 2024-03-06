@@ -1,0 +1,4 @@
+[
+  "Warning at OwnedNaturalOneToManySource. Didn't expect to receive value for root key property 'OwnedNaturalOneToManySource.key: String' but value was null.",
+  "Warning at OwnedNaturalOneToManySource.targets[0]. Didn't expect to receive value for foreign key property 'OwnedNaturalOneToManyTarget.sourceKey: String' but value was null."
+]

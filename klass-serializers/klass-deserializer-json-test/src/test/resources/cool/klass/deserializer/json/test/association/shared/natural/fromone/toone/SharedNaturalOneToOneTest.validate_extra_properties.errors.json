@@ -1,0 +1,3 @@
+[
+  "Error at SharedNaturalOneToOneSource.targetKey. No such property 'SharedNaturalOneToOneSource.targetKey' but got \"key\". Expected properties: key, value, target."
+]

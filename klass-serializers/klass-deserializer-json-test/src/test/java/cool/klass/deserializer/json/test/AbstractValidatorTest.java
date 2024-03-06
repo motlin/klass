@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
@@ -14,16 +15,25 @@ import cool.klass.deserializer.json.RequiredPropertiesValidator;
 import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
-import org.apache.commons.text.StringEscapeUtils;
-import org.eclipse.collections.api.list.ImmutableList;
+import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.Rule;
+import org.junit.rules.TestRule;
 
 public abstract class AbstractValidatorTest
 {
+    @Rule
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
+
+    @Rule
+    public final TestRule logMarkerTestRule = new LogMarkerTestRule();
+
+    @Rule
+    public final JsonMatchRule jsonMatchRule = new JsonMatchRule();
+
     protected final MutableList<String> actualErrors   = Lists.mutable.empty();
     protected final MutableList<String> actualWarnings = Lists.mutable.empty();
 
@@ -32,43 +42,29 @@ public abstract class AbstractValidatorTest
     protected final DomainModel domainModel = AbstractValidatorTest.getDomainModel(this.objectMapper);
 
     protected final void validate(
-            @Nonnull String incomingJson,
-            @Nonnull ImmutableList<String> expectedErrors) throws IOException
+            String testName) throws IOException
     {
-        this.validate(incomingJson, expectedErrors, Lists.immutable.empty());
-    }
+        String incomingJsonName = this.getClass().getSimpleName() + '.' + testName + ".json5";
+        String incomingJson     = FileMatchRule.slurp(incomingJsonName, this.getClass());
 
-    protected final void validate(
-            @Nonnull String incomingJson,
-            @Nonnull ImmutableList<String> expectedErrors,
-            @Nonnull ImmutableList<String> expectedWarnings) throws IOException
-    {
         ObjectNode incomingInstance = (ObjectNode) this.objectMapper.readTree(incomingJson);
         this.performValidation(incomingInstance);
-        this.assertErrors(expectedErrors, expectedWarnings);
+        this.assertErrors(testName);
     }
 
     protected final void assertErrors(
-            @Nonnull ImmutableList<String> expectedErrors,
-            @Nonnull ImmutableList<String> expectedWarnings)
+            String testName)
+            throws JsonProcessingException
     {
-        assertThat(
-                this.actualErrors
-                        .asLazy()
-                        .collect(StringEscapeUtils::escapeJava)
-                        .collect(each -> '"' + each + '"')
-                        .makeString("\n", ",\n", "\n"),
-                this.actualErrors,
-                is(expectedErrors));
+        this.jsonMatchRule.assertFileContents(
+                this.getClass().getSimpleName() + '.' + testName + ".errors.json",
+                this.objectMapper.writeValueAsString(this.actualErrors),
+                this.getClass());
 
-        assertThat(
-                this.actualWarnings
-                        .asLazy()
-                        .collect(StringEscapeUtils::escapeJava)
-                        .collect(each -> '"' + each + '"')
-                        .makeString("\n", ",\n", "\n"),
-                this.actualWarnings,
-                is(expectedWarnings));
+        this.jsonMatchRule.assertFileContents(
+                this.getClass().getSimpleName() + '.' + testName + ".warnings.json",
+                this.objectMapper.writeValueAsString(this.actualWarnings),
+                this.getClass());
     }
 
     @Nonnull

@@ -1,0 +1,4 @@
+[
+  "Error at SharedNaturalOneToOneSource.targetKey. No such property 'SharedNaturalOneToOneSource.targetKey' but got null. Expected properties: key, value, target.",
+  "Error at SharedNaturalOneToOneSource. Expected value for required property 'SharedNaturalOneToOneSource.value: String' but value was null."
+]

@@ -1,0 +1,3 @@
+[
+  "Error at SharedNaturalManyToOneSource.target.sourceKey. No such property 'SharedNaturalManyToOneTarget.sourceKey' but got \"key\". Expected properties: key, value, sources."
+]
