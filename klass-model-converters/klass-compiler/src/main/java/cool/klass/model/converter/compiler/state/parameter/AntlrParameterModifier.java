@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
-import cool.klass.model.meta.domain.AbstractNamedElement.NamedElementBuilder;
 import cool.klass.model.meta.domain.property.AbstractModifier.ModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 

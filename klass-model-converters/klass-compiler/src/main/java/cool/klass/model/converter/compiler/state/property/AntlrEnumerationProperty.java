@@ -94,8 +94,6 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             throw new IllegalStateException();
         }
 
-
-
         this.elementBuilder = new EnumerationPropertyBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),

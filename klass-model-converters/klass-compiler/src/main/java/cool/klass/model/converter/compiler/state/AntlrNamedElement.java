@@ -93,9 +93,9 @@ public abstract class AntlrNamedElement extends AntlrElement
             int ordinal)
     {
         super(elementContext, compilationUnit);
-        this.name = Objects.requireNonNull(name);
+        this.name        = Objects.requireNonNull(name);
         this.nameContext = Objects.requireNonNull(nameContext);
-        this.ordinal = ordinal;
+        this.ordinal     = ordinal;
     }
 
     @Nonnull

@@ -36,31 +36,32 @@ import org.fusesource.jansi.AnsiConsole;
 
 public class KlassCompiler
 {
-    public static final ImmutableList<Function<CompilerState, KlassListener>> COMPILER_PHASE_BUILDERS = Lists.immutable.with(
-            TopLevelElementsPhase::new,
-            EnumerationsPhase::new,
-            ClassifierPhase::new,
-            PropertyPhase::new,
-            InheritancePhase::new,
-            ClassTemporalPropertyInferencePhase::new,
-            VersionClassInferencePhase::new,
-            ClassAuditPropertyInferencePhase::new,
-            AssociationPhase::new,
-            VersionAssociationInferencePhase::new,
-            ParameterizedPropertyPhase::new,
-            RelationshipPhase::new,
-            ProjectionDeclarationPhase::new,
-            ProjectionPhase::new,
-            ServicePhase::new,
-            ServiceMultiplicityPhase::new,
-            ServiceMultiplicityInferencePhase::new,
-            UrlParameterPhase::new,
-            ServiceCriteriaPhase::new,
-            ServiceCriteraInferencePhase::new,
-            VariableResolutionPhase::new,
-            OrderByPhase::new,
-            OrderByDirectionPhase::new,
-            OrderByDirectionInferencePhase::new);
+    public static final ImmutableList<Function<CompilerState, KlassListener>> COMPILER_PHASE_BUILDERS =
+            Lists.immutable.with(
+                    TopLevelElementsPhase::new,
+                    EnumerationsPhase::new,
+                    ClassifierPhase::new,
+                    PropertyPhase::new,
+                    InheritancePhase::new,
+                    ClassTemporalPropertyInferencePhase::new,
+                    VersionClassInferencePhase::new,
+                    ClassAuditPropertyInferencePhase::new,
+                    AssociationPhase::new,
+                    VersionAssociationInferencePhase::new,
+                    ParameterizedPropertyPhase::new,
+                    RelationshipPhase::new,
+                    ProjectionDeclarationPhase::new,
+                    ProjectionPhase::new,
+                    ServicePhase::new,
+                    ServiceMultiplicityPhase::new,
+                    ServiceMultiplicityInferencePhase::new,
+                    UrlParameterPhase::new,
+                    ServiceCriteriaPhase::new,
+                    ServiceCriteraInferencePhase::new,
+                    VariableResolutionPhase::new,
+                    OrderByPhase::new,
+                    OrderByDirectionPhase::new,
+                    OrderByDirectionInferencePhase::new);
 
     private final CompilerState compilerState;
 
@@ -100,7 +101,8 @@ public class KlassCompiler
             }
             catch (RuntimeException e)
             {
-                throw new RuntimeException("Exception in compiler during phase: " + compilerPhase.getClass().getSimpleName(), e);
+                String message = "Exception in compiler during phase: " + compilerPhase.getClass().getSimpleName();
+                throw new RuntimeException(message, e);
             }
         }
         this.compilerState.reportErrors();

@@ -88,7 +88,8 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
             return;
         }
 
-        List<AssociationEndReferenceContext> associationEndReferenceContexts = this.getElementContext().associationEndReference();
+        List<AssociationEndReferenceContext> associationEndReferenceContexts =
+                this.getElementContext().associationEndReference();
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(
                 compilerErrorHolder,
                 associationEndReferenceContexts);

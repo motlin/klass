@@ -2202,7 +2202,8 @@ public class KlassCompilerErrorTest
         {
             ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
             ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
-            ImmutableList<String>            compilerErrorStrings    = compilerErrors.collect(RootCompilerError::toString);
+            ImmutableList<String>            compilerErrorStrings    =
+                    compilerErrors.collect(RootCompilerError::toString);
 
             String string = compilerErrorStrings.collect(this::compilerErrorSourceCode).makeString("\n", "", "");
             assertThat(
@@ -2622,8 +2623,6 @@ public class KlassCompilerErrorTest
 
         this.assertCompilerErrors(sourceCodeText, errors);
     }
-
-
 
     @Test
     public void userIdWithoutUser()
@@ -3910,7 +3909,7 @@ public class KlassCompilerErrorTest
                 + "}\n";
         //</editor-fold>
 
-        String error =  ""
+        String error = ""
                 + "[33m════════════════════════════════════════[m [35mERR_ONE_END[m [33m════════════════════════════════════════[m\n"
                 + "[31mReference type properties (single association ends in classifiers) are not yet supported but found 'DummyClass.associationEndSignature'.[m\n"
                 + "\n"

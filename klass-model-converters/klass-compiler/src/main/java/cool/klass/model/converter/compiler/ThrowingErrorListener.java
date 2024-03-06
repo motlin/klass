@@ -15,7 +15,7 @@ public class ThrowingErrorListener extends BaseErrorListener
     public ThrowingErrorListener(String sourceName, String[] lines)
     {
         this.sourceName = sourceName;
-        this.lines = lines;
+        this.lines      = lines;
     }
 
     @Override

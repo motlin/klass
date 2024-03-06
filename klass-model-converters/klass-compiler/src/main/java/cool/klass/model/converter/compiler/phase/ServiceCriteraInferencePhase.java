@@ -39,8 +39,8 @@ public class ServiceCriteraInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrService       serviceState       = this.compilerState.getCompilerWalkState().getServiceState();
-        ParseTreeListener  compilerPhase      = new ServiceCriteriaPhase(this.compilerState);
+        AntlrService      serviceState  = this.compilerState.getCompilerWalkState().getServiceState();
+        ParseTreeListener compilerPhase = new ServiceCriteriaPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 serviceState,

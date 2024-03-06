@@ -38,8 +38,8 @@ public class ServiceMultiplicityInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
-        AntlrService       serviceState       = this.compilerState.getCompilerWalkState().getServiceState();
-        ParseTreeListener  compilerPhase      = new ServiceMultiplicityPhase(this.compilerState);
+        AntlrService      serviceState  = this.compilerState.getCompilerWalkState().getServiceState();
+        ParseTreeListener compilerPhase = new ServiceMultiplicityPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
                 serviceState,

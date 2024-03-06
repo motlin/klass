@@ -19,7 +19,6 @@ import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
-import org.antlr.v4.runtime.misc.Interval;
 import org.eclipse.collections.api.block.function.Function;
 
 public final class CompilationUnit
@@ -59,14 +58,6 @@ public final class CompilationUnit
         {
             throw new AssertionError(sourceName);
         }
-
-        Interval sourceInterval = this.parserContext.getSourceInterval();
-        String   text           = tokenStream.getText(sourceInterval);
-
-        int      startIndex     = parserRuleContext.getStart().getStartIndex();
-        int      stopIndex      = parserRuleContext.getStop().getStopIndex();
-        Interval interval       = new Interval(startIndex, stopIndex);
-        String   text2          = charStream.getText(interval);
     }
 
     @Nonnull

@@ -20,7 +20,7 @@ public class CompilerInputState
 
     public CompilerInputState(@Nonnull MutableList<CompilationUnit> compilationUnits)
     {
-        this.compilationUnits = compilationUnits;
+        this.compilationUnits          = compilationUnits;
         this.compilationUnitsByContext = compilationUnits.groupByUniqueKey(
                 CompilationUnit::getParserContext,
                 MapAdapter.adapt(new IdentityHashMap<>()));

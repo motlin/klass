@@ -299,8 +299,10 @@ public class AntlrClass extends AntlrClassifier
         Optional<AntlrAssociationEnd> versionedAssociationEnd =
                 this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersioned);
 
-        Optional<AssociationEndBuilder> versionAssociationEndBuilder   = versionAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
-        Optional<AssociationEndBuilder> versionedAssociationEndBuilder = versionedAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
+        Optional<AssociationEndBuilder> versionAssociationEndBuilder   =
+                versionAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
+        Optional<AssociationEndBuilder> versionedAssociationEndBuilder =
+                versionedAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
 
         this.klassBuilder.setVersionPropertyBuilder(versionAssociationEndBuilder);
         this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
@@ -382,7 +384,8 @@ public class AntlrClass extends AntlrClassifier
 
     private void reportVersionErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        MutableList<AntlrAssociationEnd> versionAssociationEnds = this.associationEndStates.select(AntlrAssociationEnd::isVersion);
+        MutableList<AntlrAssociationEnd> versionAssociationEnds =
+                this.associationEndStates.select(AntlrAssociationEnd::isVersion);
         if (versionAssociationEnds.size() > 1)
         {
             for (AntlrAssociationEnd antlrAssociationEnd : versionAssociationEnds)
@@ -391,7 +394,8 @@ public class AntlrClass extends AntlrClassifier
             }
         }
 
-        MutableList<AntlrAssociationEnd> versionedAssociationEnds = this.associationEndStates.select(AntlrAssociationEnd::isVersioned);
+        MutableList<AntlrAssociationEnd> versionedAssociationEnds =
+                this.associationEndStates.select(AntlrAssociationEnd::isVersioned);
         if (versionedAssociationEnds.size() > 1)
         {
             for (AntlrAssociationEnd versionedAssociationEnd : versionedAssociationEnds)

@@ -66,9 +66,9 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
             @Nonnull AntlrProjection referencedProjectionState)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.klass = Objects.requireNonNull(klass);
-        this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
-        this.associationEnd = Objects.requireNonNull(associationEnd);
+        this.klass                     = Objects.requireNonNull(klass);
+        this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
+        this.associationEnd            = Objects.requireNonNull(associationEnd);
         this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
     }
 

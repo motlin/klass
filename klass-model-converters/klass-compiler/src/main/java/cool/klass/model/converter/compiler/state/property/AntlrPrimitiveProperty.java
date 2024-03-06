@@ -160,7 +160,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         for (AntlrDataTypePropertyModifier idModifier : idModifiers)
         {
             ParserRuleContext offendingToken = idModifier.getElementContext();
-            String message = "Properties with the 'id' modifier must also have the 'key' modifier.";
+            String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
             compilerErrorHolder.add("ERR_NKY_IDP", message, this, offendingToken);
         }
     }

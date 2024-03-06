@@ -35,14 +35,14 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrEnumeration>     enumerationStates     = Lists.mutable.empty();
-    private final MutableList<AntlrClassifier>      classifierStates      = Lists.mutable.empty();
-    private final MutableList<AntlrInterface>       interfaceStates       = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           classStates           = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           userClassStates       = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation>     associationStates     = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>      projectionStates      = Lists.mutable.empty();
-    private final MutableList<AntlrServiceGroup>    serviceGroupStates    = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>  enumerationStates  = Lists.mutable.empty();
+    private final MutableList<AntlrClassifier>   classifierStates   = Lists.mutable.empty();
+    private final MutableList<AntlrInterface>    interfaceStates    = Lists.mutable.empty();
+    private final MutableList<AntlrClass>        classStates        = Lists.mutable.empty();
+    private final MutableList<AntlrClass>        userClassStates    = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>  associationStates  = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>   projectionStates   = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup> serviceGroupStates = Lists.mutable.empty();
 
     private final MutableOrderedMap<TopLevelDeclarationContext, AntlrTopLevelElement> topLevelElementsByContext        =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -64,12 +64,18 @@ public class AntlrDomainModel
     private final MutableOrderedMap<ServiceGroupDeclarationContext, AntlrServiceGroup> serviceGroupsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<String, AntlrClassifier>  classifiersByName  = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<String, AntlrInterface>   interfacesByName   = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<String, AntlrClass>       classesByName      = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<String, AntlrAssociation> associationsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<String, AntlrProjection>  projectionsByName  = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrEnumeration> enumerationsByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrClassifier>  classifiersByName  =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrInterface>   interfacesByName   =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrClass>       classesByName      =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrAssociation> associationsByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<String, AntlrProjection>  projectionsByName  =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     // TODO: Or instead of embedding services inside classes, turn them into named elements. The name of the group can become the name of the resource. The group could have a base url.
     private final MutableOrderedMap<AntlrClass, AntlrServiceGroup> serviceGroupsByClass =

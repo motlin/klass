@@ -25,7 +25,6 @@ import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidat
 import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImpl.MinPropertyValidationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.list.MutableList;
@@ -38,10 +37,10 @@ import org.eclipse.collections.impl.utility.Iterate;
 public abstract class AntlrDataTypeProperty<T extends DataType>
         extends AntlrProperty<T>
 {
-    protected final boolean                              isOptional;
+    protected final boolean isOptional;
 
     @Nonnull
-    protected final AntlrClassifier                      owningClassifierState;
+    protected final AntlrClassifier owningClassifierState;
 
     protected final MutableList<AntlrMinLengthPropertyValidation> minLengthValidationStates = Lists.mutable.empty();
     protected final MutableList<AntlrMaxLengthPropertyValidation> maxLengthValidationStates = Lists.mutable.empty();
@@ -61,7 +60,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             boolean isOptional)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.isOptional = isOptional;
+        this.isOptional            = isOptional;
         this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
@@ -86,7 +85,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     {
         return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isUserId);
     }
-
 
     public boolean isAudit()
     {
@@ -213,7 +211,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
         // TODO: ☑ Check for nullable key properties
     }
-
 
     private void reportDuplicateValidations(@Nonnull CompilerErrorState compilerErrorHolder)
     {

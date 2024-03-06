@@ -787,7 +787,8 @@ public class KlassCompilerTest
         }
         else if (compilationResult instanceof DomainModelCompilationResult)
         {
-            DomainModelCompilationResult domainModelCompilationResult = (DomainModelCompilationResult) compilationResult;
+            DomainModelCompilationResult domainModelCompilationResult =
+                    (DomainModelCompilationResult) compilationResult;
             DomainModel                  domainModel                  = domainModelCompilationResult.getDomainModel();
             assertThat(domainModel, notNullValue());
         }

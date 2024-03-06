@@ -60,7 +60,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     {
         super.enterUrlConstant(ctx);
 
-        AntlrUrl        urlState               = this.compilerState.getCompilerWalkState().getUrlState();
+        AntlrUrl urlState = this.compilerState.getCompilerWalkState().getUrlState();
         AntlrUrlConstant antlrUrlConstant = new AntlrUrlConstant(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
@@ -97,7 +97,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     @Override
     public void exitPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
-        this.parameterState = null;
+        this.parameterState         = null;
         this.multiplicityOwnerState = null;
 
         super.exitPrimitiveParameterDeclaration(ctx);
@@ -123,7 +123,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
     @Override
     public void exitEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
-        this.parameterState = null;
+        this.parameterState         = null;
         this.multiplicityOwnerState = null;
 
         super.exitEnumerationParameterDeclaration(ctx);
@@ -160,7 +160,7 @@ public class UrlParameterPhase extends AbstractCompilerPhase
                 ? urlState.getNumQueryParameters() + 1
                 : urlState.getNumPathSegments() + 1;
 
-        this.parameterState = new AntlrParameter(
+        this.parameterState         = new AntlrParameter(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifierContext,

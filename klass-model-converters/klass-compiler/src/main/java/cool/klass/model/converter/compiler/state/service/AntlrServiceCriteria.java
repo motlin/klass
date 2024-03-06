@@ -32,7 +32,7 @@ public class AntlrServiceCriteria extends AntlrElement
     {
         super(elementContext, compilationUnit);
         this.serviceCriteriaKeyword = Objects.requireNonNull(serviceCriteriaKeyword);
-        this.serviceState = Objects.requireNonNull(serviceState);
+        this.serviceState           = Objects.requireNonNull(serviceState);
     }
 
     @Override

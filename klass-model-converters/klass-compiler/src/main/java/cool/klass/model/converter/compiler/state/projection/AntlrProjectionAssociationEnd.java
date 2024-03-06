@@ -64,7 +64,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal, klass);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
-        this.associationEnd = Objects.requireNonNull(associationEnd);
+        this.associationEnd        = Objects.requireNonNull(associationEnd);
     }
 
     @Nonnull

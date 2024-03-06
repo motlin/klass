@@ -29,7 +29,7 @@ public abstract class AntlrPackageableElement extends AntlrNamedElement
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.packageContext = Objects.requireNonNull(packageContext);
-        this.packageName = Objects.requireNonNull(packageName);
+        this.packageName    = Objects.requireNonNull(packageName);
     }
 
     @Nonnull

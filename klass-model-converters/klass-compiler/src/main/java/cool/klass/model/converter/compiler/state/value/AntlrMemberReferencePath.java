@@ -37,8 +37,8 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
             @Nonnull IAntlrElement expressionValueOwner)
     {
         super(elementContext, compilationUnit, expressionValueOwner);
-        this.classState = Objects.requireNonNull(classState);
-        this.associationEndStates = Objects.requireNonNull(associationEndStates);
+        this.classState            = Objects.requireNonNull(classState);
+        this.associationEndStates  = Objects.requireNonNull(associationEndStates);
         this.dataTypePropertyState = Objects.requireNonNull(dataTypePropertyState);
     }
 

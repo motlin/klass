@@ -12,7 +12,7 @@ public class SourceContext
     public SourceContext(CompilationUnit compilationUnit, ParserRuleContext elementContext)
     {
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
-        this.elementContext = Objects.requireNonNull(elementContext);
+        this.elementContext  = Objects.requireNonNull(elementContext);
     }
 
     public CompilationUnit getCompilationUnit()

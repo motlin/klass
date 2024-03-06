@@ -11,7 +11,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
-import cool.klass.model.meta.domain.order.OrderByDirectionDeclarationImpl.OrderByDirectionDeclarationBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -85,7 +84,7 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         {
             throw new IllegalStateException();
         }
-        ThisMemberReferencePathBuilder     thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
+        ThisMemberReferencePathBuilder thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,

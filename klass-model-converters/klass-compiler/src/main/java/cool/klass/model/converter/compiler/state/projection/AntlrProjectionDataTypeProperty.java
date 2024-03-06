@@ -55,9 +55,9 @@ public class AntlrProjectionDataTypeProperty
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.antlrProjectionParent = Objects.requireNonNull(antlrProjectionParent);
-        this.headerText = Objects.requireNonNull(headerText);
-        this.headerContext = Objects.requireNonNull(headerContext);
-        this.dataTypeProperty = Objects.requireNonNull(dataTypeProperty);
+        this.headerText            = Objects.requireNonNull(headerText);
+        this.headerContext         = Objects.requireNonNull(headerContext);
+        this.dataTypeProperty      = Objects.requireNonNull(dataTypeProperty);
     }
 
     @Nonnull

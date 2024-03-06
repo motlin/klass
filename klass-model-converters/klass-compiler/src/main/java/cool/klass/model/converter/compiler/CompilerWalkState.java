@@ -47,7 +47,6 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceOrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
@@ -109,9 +108,9 @@ public class CompilerWalkState
     @Nullable
     private AntlrClassifierTypeOwner classifierTypeOwnerState;
     @Nullable
-    private AntlrClassTypeOwner classTypeOwnerState;
+    private AntlrClassTypeOwner      classTypeOwnerState;
     @Nullable
-    private AntlrModifierOwner  modifierOwnerState;
+    private AntlrModifierOwner       modifierOwnerState;
 
     public CompilerWalkState(AntlrDomainModel domainModelState)
     {

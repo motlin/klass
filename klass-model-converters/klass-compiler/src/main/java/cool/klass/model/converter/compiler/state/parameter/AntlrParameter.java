@@ -49,15 +49,15 @@ public final class AntlrParameter
             AntlrParameterizedProperty.AMBIGUOUS);
 
     @Nonnull
-    private final IAntlrElement     parameterOwner;
+    private final IAntlrElement parameterOwner;
     @Nonnull
-    private final AntlrType         typeState;
+    private final AntlrType     typeState;
 
     // TODO: Factor modifiers into type checking
     private final MutableList<AntlrParameterModifier> parameterModifiers = Lists.mutable.empty();
 
     @Nullable
-    private  AntlrMultiplicity multiplicityState;
+    private AntlrMultiplicity multiplicityState;
 
     @Nullable
     private ParameterBuilder elementBuilder;
@@ -72,7 +72,7 @@ public final class AntlrParameter
             @Nonnull IAntlrElement parameterOwner)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.typeState = Objects.requireNonNull(typeState);
+        this.typeState      = Objects.requireNonNull(typeState);
         this.parameterOwner = Objects.requireNonNull(parameterOwner);
     }
 
@@ -128,7 +128,8 @@ public final class AntlrParameter
             return;
         }
 
-        EnumerationReferenceContext offendingToken = ((EnumerationParameterDeclarationContext) this.getElementContext()).enumerationReference();
+        EnumerationReferenceContext offendingToken =
+                ((EnumerationParameterDeclarationContext) this.getElementContext()).enumerationReference();
         String message = String.format(
                 "Cannot find enumeration '%s'.",
                 offendingToken.getText());

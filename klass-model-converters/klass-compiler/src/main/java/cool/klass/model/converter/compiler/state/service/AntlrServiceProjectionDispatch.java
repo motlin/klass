@@ -32,7 +32,7 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
     {
         super(elementContext, compilationUnit);
         this.serviceState = Objects.requireNonNull(serviceState);
-        this.projection = Objects.requireNonNull(projection);
+        this.projection   = Objects.requireNonNull(projection);
     }
 
     @Override
