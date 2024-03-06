@@ -49,14 +49,14 @@ public class RequiredPropertiesValidator
             @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
-        this.klass = Objects.requireNonNull(klass);
-        this.objectNode = Objects.requireNonNull(objectNode);
+        this.klass         = Objects.requireNonNull(klass);
+        this.objectNode    = Objects.requireNonNull(objectNode);
         this.operationMode = Objects.requireNonNull(operationMode);
-        this.errors = Objects.requireNonNull(errors);
-        this.warnings = Objects.requireNonNull(warnings);
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.pathHere = Objects.requireNonNull(pathHere);
-        this.isRoot = isRoot;
+        this.errors        = Objects.requireNonNull(errors);
+        this.warnings      = Objects.requireNonNull(warnings);
+        this.contextStack  = Objects.requireNonNull(contextStack);
+        this.pathHere      = Objects.requireNonNull(pathHere);
+        this.isRoot        = isRoot;
     }
 
     public static void validate(
@@ -436,15 +436,21 @@ public class RequiredPropertiesValidator
                 return;
             }
 
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
-                    this.getContextString(),
-                    associationEnd.getOwningClassifier().getName(),
-                    associationEnd.getName(),
-                    associationEnd.getType(),
-                    associationEnd.getMultiplicity().getPrettyName(),
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
+            if (this.operationMode == OperationMode.CREATE
+                    || this.operationMode == OperationMode.REPLACE
+                    || this.operationMode == OperationMode.PATCH && jsonNode.isNull())
+            {
+                String error = String.format(
+                        "Error at %s. Expected value for required property '%s.%s: %s[%s]' but value was %s.",
+                        this.getContextString(),
+                        associationEnd.getOwningClassifier().getName(),
+                        associationEnd.getName(),
+                        associationEnd.getType(),
+                        associationEnd.getMultiplicity().getPrettyName(),
+                        jsonNode.getNodeType().toString().toLowerCase());
+                this.errors.add(error);
+                return;
+            }
         }
 
         if (multiplicity.isToOne())
