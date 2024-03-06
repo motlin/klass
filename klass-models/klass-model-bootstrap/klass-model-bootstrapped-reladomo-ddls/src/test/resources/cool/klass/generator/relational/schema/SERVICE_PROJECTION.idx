@@ -1,4 +1,4 @@
-alter table SERVICE_PROJECTION add constraint SERVICE_PROJECTION_PK primary key (name, id);
+alter table SERVICE_PROJECTION add constraint SERVICE_PROJECTION_PK primary key (id);
 
 create index SERVICE_PROJECTION_IDX_KLASS on SERVICE_PROJECTION(class_name);
 

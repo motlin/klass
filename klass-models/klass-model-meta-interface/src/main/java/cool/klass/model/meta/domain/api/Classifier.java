@@ -118,10 +118,15 @@ public interface Classifier
     {
         // TODO: Factor in depth of declaration
 
-        return this.getInterfaces()
+        ImmutableList<DataTypeProperty> inheritedDataTypeProperties = this.getInterfaces()
                 .flatCollect(Classifier::getDataTypeProperties)
-                .distinctBy(NamedElement::getName)
                 .toImmutable();
+
+        return this
+                .getDeclaredDataTypeProperties()
+                .newWithAll(inheritedDataTypeProperties)
+                .distinctBy(NamedElement::getName)
+                .newWithoutAll(this.getDeclaredDataTypeProperties());
     }
 
     @Nonnull

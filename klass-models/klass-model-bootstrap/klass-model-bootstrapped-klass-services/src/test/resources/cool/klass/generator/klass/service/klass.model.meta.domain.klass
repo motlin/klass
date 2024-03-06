@@ -240,11 +240,11 @@ service ClassifierModifier
 
 service EnumerationParameter
 {
-    /enumerationParameter/{name: String[1..1]}/{id: Long[1..1]}
+    /enumerationParameter/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : EnumerationParameterProjection;
         }
     /enumerationParameter
@@ -258,11 +258,11 @@ service EnumerationParameter
 
 service PrimitiveParameter
 {
-    /primitiveParameter/{name: String[1..1]}/{id: Long[1..1]}
+    /primitiveParameter/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : PrimitiveParameterProjection;
         }
     /primitiveParameter
@@ -600,11 +600,11 @@ service ParameterizedPropertyParameter
 
 service ServiceProjection
 {
-    /serviceProjection/{name: String[1..1]}/{id: Long[1..1]}
+    /serviceProjection/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : ServiceProjectionProjection;
         }
     /serviceProjection
@@ -618,11 +618,11 @@ service ServiceProjection
 
 service ProjectionReferenceProperty
 {
-    /projectionReferenceProperty/{name: String[1..1]}/{id: Long[1..1]}
+    /projectionReferenceProperty/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : ProjectionReferencePropertyProjection;
         }
     /projectionReferenceProperty
@@ -636,11 +636,11 @@ service ProjectionReferenceProperty
 
 service ProjectionProjectionReference
 {
-    /projectionProjectionReference/{name: String[1..1]}/{id: Long[1..1]}
+    /projectionProjectionReference/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : ProjectionProjectionReferenceProjection;
         }
     /projectionProjectionReference
@@ -654,11 +654,11 @@ service ProjectionProjectionReference
 
 service ProjectionDataTypeProperty
 {
-    /projectionDataTypeProperty/{name: String[1..1]}/{id: Long[1..1]}
+    /projectionDataTypeProperty/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.name == name && this.id == id;
+            criteria    : this.id == id;
             projection  : ProjectionDataTypePropertyProjection;
         }
     /projectionDataTypeProperty

@@ -190,7 +190,6 @@ class AbstractVote
     systemTemporal
     audited
 {
-    direction              : VoteDirection;
 }
 
 // TODO Model AnswerVote
@@ -204,7 +203,6 @@ class QuestionVote
 {
     questionId             : Long key;
     createdById            : String key createdBy userId final;
-    direction              : VoteDirection;
 }
 
 association QuestionHasVotes

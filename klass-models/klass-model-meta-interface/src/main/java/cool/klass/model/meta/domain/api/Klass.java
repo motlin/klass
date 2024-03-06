@@ -36,13 +36,20 @@ public interface Klass
     @Override
     default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
     {
+        ImmutableList<DataTypeProperty> interfaceProperties = this.getInterfaces()
+                .flatCollect(Classifier::getDataTypeProperties)
+                .toImmutable();
+
         ImmutableList<DataTypeProperty> superClassProperties = this.getSuperClass()
                 .map(Classifier::getDataTypeProperties)
                 .orElseGet(Lists.immutable::empty);
 
-        ImmutableList<DataTypeProperty> interfaceProperties = Classifier.super.getInheritedDataTypeProperties();
-
-        return superClassProperties.newWithAll(interfaceProperties).distinctBy(NamedElement::getName);
+        return this
+                .getDeclaredDataTypeProperties()
+                .newWithAll(superClassProperties)
+                .newWithAll(interfaceProperties)
+                .distinctBy(NamedElement::getName)
+                .newWithoutAll(this.getDeclaredDataTypeProperties());
     }
 
     // TODO: Replace with an implementation that preserves order

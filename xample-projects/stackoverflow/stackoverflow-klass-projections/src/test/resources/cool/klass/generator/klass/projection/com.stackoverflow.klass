@@ -22,7 +22,7 @@ projection DocumentProjection on Document
 
 projection QuestionProjection on Question
 {
-    id: "Document id",
+    id: "Question id",
     systemFrom: "Question systemFrom",
     systemTo: "Question systemTo",
     createdOn: "Question createdOn",
@@ -40,7 +40,7 @@ projection QuestionProjection on Question
 
 projection AnswerProjection on Answer
 {
-    id: "Document id",
+    id: "Answer id",
     systemFrom: "Answer systemFrom",
     systemTo: "Answer systemTo",
     createdOn: "Answer createdOn",

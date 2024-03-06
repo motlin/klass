@@ -1,2 +1,2 @@
-alter table PROJECTION_REFERENCE_PROPERTY add constraint PROJECTION_REFERENCE_PROPERTY_PK primary key (name, id);
+alter table PROJECTION_REFERENCE_PROPERTY add constraint PROJECTION_REFERENCE_PROPERTY_PK primary key (id);
 
