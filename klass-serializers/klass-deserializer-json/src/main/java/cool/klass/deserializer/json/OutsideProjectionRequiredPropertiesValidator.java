@@ -85,6 +85,17 @@ public class OutsideProjectionRequiredPropertiesValidator
     }
 
     @Override
+    protected void handleAssociationEndOutsideProjection(AssociationEnd associationEnd)
+    {
+        if (!associationEnd.isRequired())
+        {
+            return;
+        }
+
+        this.handleWarnIfPresent(associationEnd, "outside projection");
+    }
+
+    @Override
     protected void handlePlainAssociationEnd(
             @Nonnull AssociationEnd associationEnd,
             @Nonnull ObjectNode objectNode,
