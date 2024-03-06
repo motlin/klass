@@ -9,6 +9,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Association;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Interface;
@@ -74,7 +75,7 @@ public class UmlNomnomlGenerator
                 .resolve("uml")
                 .resolve("nomnoml");
         outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + ".nomnoml";
+        String fileName = this.applicationName + ".noml";
         return outputDirectory.resolve(fileName);
     }
 
@@ -120,29 +121,65 @@ public class UmlNomnomlGenerator
         @Override
         public void visitInterface(Interface anInterface)
         {
-            this.visitClassifier(anInterface);
+            String classGeneralizationSourceCode = "";
+            this.sourceCode = this.getClassifierSourceCode(anInterface, classGeneralizationSourceCode);
         }
 
         @Override
         public void visitKlass(Klass klass)
         {
-            this.visitClassifier(klass);
+            String classGeneralizationSourceCode = this.getClassGeneralizationSourceCode(klass);
+            this.sourceCode = this.getClassifierSourceCode(klass, classGeneralizationSourceCode);
         }
 
-        public void visitClassifier(cool.klass.model.meta.domain.api.Classifier classifier)
+        private String getClassifierSourceCode(Classifier classifier, String classGeneralizationSourceCode)
         {
-            String propertiesSourceCode = classifier
+            String interfaceGeneralizationsSourceCode = this.getInterfaceGeneralizationsSourceCode(classifier);
+
+            String propertiesSourceCode = this.getClassifierPropertiesSourceCode(classifier);
+
+            return ""
+                    + "[ " + classifier.getName() + " |\n"
+                    + propertiesSourceCode + "\n"
+                    + "]\n"
+                    + interfaceGeneralizationsSourceCode
+                    + classGeneralizationSourceCode
+                    + "\n";
+        }
+
+        private String getClassGeneralizationSourceCode(Klass klass)
+        {
+            return klass.getSuperClass()
+                    .map(superClass -> this.getGeneralizationSourceCode(superClass, klass))
+                    .orElse("");
+        }
+
+        private String getInterfaceGeneralizationsSourceCode(Classifier classifier)
+        {
+            return classifier
+                    .getInterfaces()
+                    .collectWith(this::getImplementationSourceCode, classifier)
+                    .makeString();
+        }
+
+        private String getClassifierPropertiesSourceCode(Classifier classifier)
+        {
+            return classifier
                     .getDataTypeProperties()
                     .reject(DataTypeProperty::isPrivate)
                     .reject(DataTypeProperty::isTemporalRange)
                     .collect(this::getPropertySourceCode)
                     .makeString(";\n");
+        }
 
-            this.sourceCode = ""
-                    + "[ " + classifier.getName() + " |\n"
-                    + propertiesSourceCode + "\n"
-                    + "]\n"
-                    + "\n";
+        private String getGeneralizationSourceCode(Klass superClass, Klass klass)
+        {
+            return String.format("[%s] -:> [%s]\n", klass.getName(), superClass.getName());
+        }
+
+        private String getImplementationSourceCode(Interface anInterface, Classifier classifier)
+        {
+            return String.format("[%s] --:> [%s]\n", classifier.getName(), anInterface.getName());
         }
 
         @Override
