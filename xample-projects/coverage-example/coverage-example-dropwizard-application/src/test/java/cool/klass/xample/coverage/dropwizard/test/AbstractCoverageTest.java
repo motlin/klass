@@ -32,7 +32,7 @@ public abstract class AbstractCoverageTest
             ResourceHelpers.resourceFilePath("config-test.json5"));
 
     protected final TestRule reladomoLoadDataTestRule = new ReladomoLoadDataTestRule();
-    protected final TestRule logMarkerTestRule = new LogMarkerTestRule();
+    protected final TestRule logMarkerTestRule        = new LogMarkerTestRule();
 
     @Rule
     public final TestRule rule = RuleChain
