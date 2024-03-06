@@ -37,18 +37,6 @@
                 <dependencies>
 
                     <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomogen</artifactId>
-                        <version>17.1.4</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomo-gen-util</artifactId>
-                        <version>17.1.4</version>
-                    </dependency>
-
-                    <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
                         <version>${project.version}</version>
