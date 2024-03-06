@@ -16,7 +16,6 @@
     <name>Klass Dropwizard Data Store Configuration Factories (Module Group)</name>
 
     <modules>
-
         <module>klass-dropwizard-configuration-data-store</module>
         <module>klass-dropwizard-configuration-data-store-reladomo</module>
     </modules>
