@@ -32,7 +32,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
             new ParserRuleContext(),
             "ambiguous association",
             -1,
-            null)
+            new ParserRuleContext(),
+            "klass.meta")
     {
         @Override
         public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
@@ -57,9 +58,10 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
@@ -228,7 +230,8 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrTo
                             this.getTargetEnd().getMultiplicity().getElementContext()));
         }
 
-        if (this.getSourceEnd().getType() == AntlrClass.NOT_FOUND || this.getTargetEnd().getType() == AntlrClass.NOT_FOUND)
+        if (this.getSourceEnd().getType() == AntlrClass.NOT_FOUND
+                || this.getTargetEnd().getType() == AntlrClass.NOT_FOUND)
         {
             this.getSourceEnd().reportTypeNotFound(compilerErrorHolder);
             this.getTargetEnd().reportTypeNotFound(compilerErrorHolder);

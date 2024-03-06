@@ -52,6 +52,7 @@ public class ClassPhase extends AbstractDomainModelCompilerPhase
                 ctx.identifier(),
                 ctx.identifier().getText(),
                 this.domainModelState.getNumTopLevelElements() + 1,
+                this.packageContext,
                 this.packageName,
                 classOrUserKeyword.equals("user"));
     }

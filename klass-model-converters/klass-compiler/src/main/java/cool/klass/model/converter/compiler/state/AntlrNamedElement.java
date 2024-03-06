@@ -14,7 +14,6 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public abstract class AntlrNamedElement extends AntlrElement
 {
-    // TODO: Check package names too for all packageable elements
     protected static final Pattern PACKAGE_NAME_PATTERN  = Pattern.compile("^[a-z]+(\\.[a-z][a-z0-9]*)*$");
     protected static final Pattern TYPE_NAME_PATTERN     = Pattern.compile("^[A-Z][a-zA-Z0-9]*$");
     protected static final Pattern MEMBER_NAME_PATTERN   = Pattern.compile("^[a-z][a-zA-Z0-9]*$");

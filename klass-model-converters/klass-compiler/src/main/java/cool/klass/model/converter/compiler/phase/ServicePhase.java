@@ -84,6 +84,7 @@ public class ServicePhase extends AbstractDomainModelCompilerPhase
                 classNameContext,
                 className,
                 this.domainModelState.getNumTopLevelElements() + 1,
+                this.packageContext,
                 this.packageName,
                 this.domainModelState.getClassByName(className));
     }

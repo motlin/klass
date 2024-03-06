@@ -35,9 +35,11 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     protected final CompilerErrorHolder                            compilerErrorHolder;
 
     @Nullable
-    protected String          packageName;
+    protected PackageNameContext packageContext;
     @Nullable
-    protected CompilationUnit currentCompilationUnit;
+    protected String             packageName;
+    @Nullable
+    protected CompilationUnit    currentCompilationUnit;
 
     protected boolean isInference;
 
@@ -78,6 +80,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     public void exitCompilationUnit(CompilationUnitContext ctx)
     {
         this.currentCompilationUnit = null;
+        this.packageContext = null;
         this.packageName = null;
     }
 
@@ -85,6 +88,7 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     public void enterPackageDeclaration(@Nonnull PackageDeclarationContext ctx)
     {
         PackageNameContext packageNameContext = ctx.packageName();
+        this.packageContext = packageNameContext;
         this.packageName = packageNameContext.getText();
     }
 

@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.grammar.KlassListener;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -28,6 +29,14 @@ public class CompilerError implements Comparable<CompilerError>
         this.message = Objects.requireNonNull(message);
         this.offendingContexts = offendingContexts;
         this.parserRuleContexts = parserRuleContexts;
+        if (offendingContexts.isEmpty())
+        {
+            throw new AssertionError();
+        }
+        if (!offendingContexts.noneSatisfy(offendingContext -> offendingContext.getStart() == null))
+        {
+            throw new AssertionError();
+        }
     }
 
     @Nonnull
@@ -95,7 +104,13 @@ public class CompilerError implements Comparable<CompilerError>
 
     private String getSourceName()
     {
-        return this.getOffendingToken().getInputStream().getSourceName();
+        Token offendingToken = this.getOffendingToken();
+        if (offendingToken == null)
+        {
+            throw new AssertionError();
+        }
+        CharStream inputStream = offendingToken.getInputStream();
+        return inputStream.getSourceName();
     }
 
     private int getLine()

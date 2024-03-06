@@ -36,7 +36,8 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             new ParserRuleContext(),
             "ambiguous service group",
             -1,
-            null,
+            new ParserRuleContext(),
+            "klass.meta",
             AntlrClass.AMBIGUOUS);
 
     @Nonnull
@@ -55,10 +56,11 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            ParserRuleContext packageContext,
             String packageName,
             @Nonnull AntlrClass klass)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
         this.klass = Objects.requireNonNull(klass);
     }
 

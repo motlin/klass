@@ -40,6 +40,7 @@ public class EnumerationsPhase extends AbstractDomainModelCompilerPhase
                 identifier,
                 identifier.getText(),
                 this.domainModelState.getNumTopLevelElements() + 1,
+                this.packageContext,
                 this.packageName);
     }
 

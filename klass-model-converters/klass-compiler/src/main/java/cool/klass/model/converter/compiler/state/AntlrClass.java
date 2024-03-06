@@ -38,7 +38,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             new ParserRuleContext(),
             "ambiguous class",
             -1,
-            null,
+            new ParserRuleContext(),
+            "klass.meta",
             false)
     {
         @Override
@@ -70,7 +71,8 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             new ParserRuleContext(),
             "not found class",
             -1,
-            null,
+            new ParserRuleContext(),
+            "klass.meta",
             false)
     {
         @Override
@@ -126,10 +128,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            ParserRuleContext packageContext,
             String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
         this.isUser = isUser;
     }
 

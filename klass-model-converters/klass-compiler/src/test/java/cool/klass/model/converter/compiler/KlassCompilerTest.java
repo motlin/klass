@@ -884,6 +884,22 @@ public class KlassCompilerTest
         // TODO: Package name still needs an error
         String[] errors = {
                 ""
+                        + "File: example.klass Line: 1 Char: 9 Error: ERR_PKG_PAT: Package name must match pattern ^[a-z]+(\\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.\n"
+                        + "package BADPACKAGE\n"
+                        + "        ^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 1 Char: 9 Error: ERR_PKG_PAT: Package name must match pattern ^[a-z]+(\\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.\n"
+                        + "package BADPACKAGE\n"
+                        + "        ^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 1 Char: 9 Error: ERR_PKG_PAT: Package name must match pattern ^[a-z]+(\\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.\n"
+                        + "package BADPACKAGE\n"
+                        + "        ^^^^^^^^^^\n",
+                ""
+                        + "File: example.klass Line: 1 Char: 9 Error: ERR_PKG_PAT: Package name must match pattern ^[a-z]+(\\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.\n"
+                        + "package BADPACKAGE\n"
+                        + "        ^^^^^^^^^^\n",
+                ""
                         + "File: example.klass Line: 3 Char: 13 Error: ERR_NME_PAT: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badEnumeration'.\n"
                         + "package BADPACKAGE\n"
                         + "enumeration badEnumeration\n"

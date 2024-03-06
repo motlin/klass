@@ -27,7 +27,9 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             true,
             new ParserRuleContext(),
             "ambiguous enumeration",
-            -1, null);
+            -1,
+            new ParserRuleContext(),
+            "klass.meta");
 
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
@@ -37,7 +39,8 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             new ParserRuleContext(),
             "not found enumeration",
             -1,
-            null);
+            new ParserRuleContext(),
+            "klass.meta");
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName = OrderedMapAdapter.adapt(
@@ -52,9 +55,10 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
+            ParserRuleContext packageContext,
             String packageName)
     {
-        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageName);
+        super(elementContext, compilationUnit, inferred, nameContext, name, ordinal, packageContext, packageName);
     }
 
     public int getNumLiterals()
