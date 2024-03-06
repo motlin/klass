@@ -5,10 +5,12 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
+import com.gs.reladomo.serial.jackson.JacksonReladomoModule;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -53,6 +55,9 @@ public final class ObjectMapperConfig
 
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
+        objectMapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        objectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+
         objectMapper.configure(Feature.ALLOW_COMMENTS, true);
         objectMapper.configure(Feature.ALLOW_YAML_COMMENTS, true);
         objectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
@@ -62,5 +67,7 @@ public final class ObjectMapperConfig
         objectMapper.setSerializationInclusion(include);
 
         objectMapper.registerModule(new EclipseCollectionsModule());
+        // TODO: Dynamically discover and load Jackson modules to break dependencies
+        objectMapper.registerModule(new JacksonReladomoModule());
     }
 }
