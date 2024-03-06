@@ -6,6 +6,7 @@ import cool.klass.model.meta.domain.EnumerationImpl;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifierBuilder;
@@ -51,6 +52,16 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
     public boolean isTemporal()
     {
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+                "%s: %s %s",
+                this.getName(),
+                this.getType().toString(),
+                this.getPropertyModifiers().collect(NamedElement::getName).makeString(" "));
     }
 
     public static final class EnumerationPropertyBuilder extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>

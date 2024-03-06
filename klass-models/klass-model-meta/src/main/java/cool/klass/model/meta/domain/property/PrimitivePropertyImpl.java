@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.KlassImpl;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
@@ -34,6 +35,19 @@ public final class PrimitivePropertyImpl
                 primitiveType,
                 owningKlass,
                 isOptional);
+    }
+
+    @Override
+    public String toString()
+    {
+        String propertyModifiersString = this.getPropertyModifiers().isEmpty()
+                ? ""
+                : this.getPropertyModifiers().collect(NamedElement::getName).makeString(" ", " ", "");
+        return String.format(
+                "%s: %s%s",
+                this.getName(),
+                this.getType().toString(),
+                propertyModifiersString);
     }
 
     public static final class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
