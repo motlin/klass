@@ -14,28 +14,18 @@
 
     <modules>
         <module>klass-bom</module>
-        <module>klass-models</module>
-        <module>klass-model-converters</module>
-        <module>klass-generators</module>
-        <module>klass-generator-plugins</module>
-        <module>klass-reladomo</module>
-        <module>klass-serializers</module>
-        <module>klass-test-modules</module>
         <module>klass-data-store</module>
         <module>klass-dropwizard</module>
+        <module>klass-generator-plugins</module>
+        <module>klass-generators</module>
         <module>klass-graphql</module>
-        <module>klass-serialization-jackson</module>
-        <module>klass-servlet</module>
-        <module>xample-projects</module>
         <module>klass-maven-archetype</module>
-        <module>klass-utility</module>
-        <module>klass-clock</module>
-        <module>klass-auth</module>
-        <module>klass-bundle</module>
-        <module>klass-config</module>
-        <module>klass-jackson</module>
-        <module>klass-logging</module>
-        <module>klass-uuid</module>
+        <module>klass-model-converters</module>
+        <module>klass-models</module>
+        <module>klass-serialization-jackson</module>
+        <module>klass-serializers</module>
+        <module>klass-test-modules</module>
+        <module>xample-projects</module>
     </modules>
 
     <properties>

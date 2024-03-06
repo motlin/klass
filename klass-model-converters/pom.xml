@@ -27,6 +27,14 @@
         <dependencies>
 
             <dependency>
+                <groupId>com.liftwizard</groupId>
+                <artifactId>liftwizard-bom</artifactId>
+                <version>0.1.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-bom</artifactId>
                 <version>${project.version}</version>

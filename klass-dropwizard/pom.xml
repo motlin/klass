@@ -19,9 +19,9 @@
         <dependencies>
 
             <dependency>
-                <groupId>cool.klass</groupId>
-                <artifactId>klass-bom</artifactId>
-                <version>${project.version}</version>
+                <groupId>com.liftwizard</groupId>
+                <artifactId>liftwizard-bom</artifactId>
+                <version>0.1.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -34,7 +34,5 @@
         <module>klass-dropwizard-bundles</module>
         <module>klass-dropwizard-configuration-factories</module>
         <module>klass-dropwizard-configuration</module>
-        <module>klass-dropwizard-healthchecks</module>
-        <module>klass-dropwizard-tasks</module>
     </modules>
 </project>
