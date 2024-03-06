@@ -8,12 +8,12 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 public class ThrowingErrorListener extends BaseErrorListener
 {
-    private final String classpathLocation;
+    private final String sourceName;
     private final String[] lines;
 
-    public ThrowingErrorListener(String classpathLocation, String[] lines)
+    public ThrowingErrorListener(String sourceName, String[] lines)
     {
-        this.classpathLocation = classpathLocation;
+        this.sourceName = sourceName;
         this.lines = lines;
     }
 
@@ -27,8 +27,14 @@ public class ThrowingErrorListener extends BaseErrorListener
             RecognitionException e)
     {
         String sourceLine = this.lines[line - 1];
-        String error = String.format("%s[%d:%d] %s%n%s", this.classpathLocation, line, charPositionInLine, msg, sourceLine);
-        String s = RecognitionExceptionUtil.formatVerbose(e);
+        String error      = String.format(
+                "%s[%d:%d] %s%n%s",
+                this.sourceName,
+                line,
+                charPositionInLine,
+                msg,
+                sourceLine);
+        String s          = RecognitionExceptionUtil.formatVerbose(e);
         throw new ParseCancellationException(error);
     }
 }

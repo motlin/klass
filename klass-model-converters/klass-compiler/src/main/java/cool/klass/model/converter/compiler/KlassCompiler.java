@@ -22,6 +22,7 @@ import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 
@@ -37,8 +38,18 @@ public class KlassCompiler
     public DomainModel compile(Set<String> classpathLocations)
     {
         MutableSet<CompilationUnit> compilationUnits =
-                SetAdapter.adapt(classpathLocations).collect(CompilationUnit::getCompilationUnit);
+                SetAdapter.adapt(classpathLocations).collect(CompilationUnit::createFromClasspathLocation);
 
+        return this.compile(compilationUnits);
+    }
+
+    public DomainModel compile(CompilationUnit... compilationUnits)
+    {
+        return this.compile(Sets.mutable.with(compilationUnits));
+    }
+
+    public DomainModel compile(MutableSet<CompilationUnit> compilationUnits)
+    {
         MapIterable<CompilationUnitContext, CompilationUnit> compilationUnitsByContext =
                 compilationUnits.groupByUniqueKey(
                         CompilationUnit::getCompilationUnitContext,

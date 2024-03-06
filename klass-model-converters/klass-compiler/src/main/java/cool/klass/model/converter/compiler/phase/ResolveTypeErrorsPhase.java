@@ -58,7 +58,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    ctx,
                     this.associationDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }
@@ -90,7 +89,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find enumeration '%s'", reference.getText()),
                     reference,
-                    ctx,
                     this.classDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }
@@ -123,7 +121,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    ctx,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }
     }
@@ -140,7 +137,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    ctx,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }
     }
@@ -155,7 +151,6 @@ public class ResolveTypeErrorsPhase extends AbstractCompilerPhase
             this.error(
                     String.format("Cannot find class '%s'", reference.getText()),
                     reference,
-                    ctx,
                     this.classDeclarationContext,
                     this.currentCompilationUnit.getCompilationUnitContext());
         }

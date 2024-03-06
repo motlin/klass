@@ -24,7 +24,7 @@ public final class CompilationUnit
     private final TokenStream            tokenStream;
     private final CompilationUnitContext compilationUnitContext;
 
-    public CompilationUnit(
+    private CompilationUnit(
             String[] lines,
             CharStream charStream,
             TokenStream tokenStream,
@@ -36,12 +36,24 @@ public final class CompilationUnit
         this.compilationUnitContext = Objects.requireNonNull(compilationUnitContext);
     }
 
-    public static CompilationUnit getCompilationUnit(String classpathLocation)
+    public static CompilationUnit createFromClasspathLocation(String classpathLocation)
     {
-        String                 sourceCodeText         = CompilationUnit.slurp(classpathLocation);
+        String sourceCodeText = CompilationUnit.slurp(classpathLocation);
+        return CompilationUnit.createFromText(classpathLocation, sourceCodeText);
+    }
+
+    private static String slurp(String classpathLocation)
+    {
+        InputStream inputStream = KlassCompiler.class.getClassLoader().getResourceAsStream(classpathLocation);
+        Objects.requireNonNull(inputStream);
+        return CompilationUnit.slurp(inputStream);
+    }
+
+    public static CompilationUnit createFromText(String sourceName, String sourceCodeText)
+    {
         String[]               lines                  = NEWLINE_PATTERN.split(sourceCodeText);
-        ANTLRErrorListener     errorListener          = new ThrowingErrorListener(classpathLocation, lines);
-        CodePointCharStream    charStream             = CharStreams.fromString(sourceCodeText, classpathLocation);
+        ANTLRErrorListener     errorListener          = new ThrowingErrorListener(sourceName, lines);
+        CodePointCharStream    charStream             = CharStreams.fromString(sourceCodeText, sourceName);
         CommonTokenStream      tokenStream            = CompilationUnit.getTokenStream(charStream, errorListener);
         KlassParser            parser                 = CompilationUnit.getParser(errorListener, tokenStream);
         CompilationUnitContext compilationUnitContext = parser.compilationUnit();
@@ -52,11 +64,12 @@ public final class CompilationUnit
                 compilationUnitContext);
     }
 
-    private static String slurp(String classpathLocation)
+    private static String slurp(InputStream inputStream)
     {
-        InputStream inputStream = KlassCompiler.class.getClassLoader().getResourceAsStream(classpathLocation);
-        Objects.requireNonNull(inputStream);
-        return CompilationUnit.slurp(inputStream);
+        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
+        {
+            return scanner.hasNext() ? scanner.next() : "";
+        }
     }
 
     private static CommonTokenStream getTokenStream(
@@ -74,14 +87,6 @@ public final class CompilationUnit
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
         return parser;
-    }
-
-    private static String slurp(InputStream inputStream)
-    {
-        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A"))
-        {
-            return scanner.hasNext() ? scanner.next() : "";
-        }
     }
 
     public String[] getLines()

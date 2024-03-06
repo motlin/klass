@@ -148,13 +148,6 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void exitCompilationUnit(CompilationUnitContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitCompilationUnit() not implemented yet");
-    }
-
-    @Override
     public void enterPackageDeclaration(PackageDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
