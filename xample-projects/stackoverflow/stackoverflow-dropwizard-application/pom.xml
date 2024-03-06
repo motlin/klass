@@ -244,7 +244,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard</artifactId>
+            <artifactId>klass-dropwizard-application</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

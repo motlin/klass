@@ -32,6 +32,8 @@
         <module>klass-maven-archetype</module>
         <module>klass-jackson-response</module>
         <module>klass-dropwizard-auth</module>
+        <module>klass-dropwizard-application</module>
+        <module>klass-dropwizard</module>
     </modules>
 
     <properties>
