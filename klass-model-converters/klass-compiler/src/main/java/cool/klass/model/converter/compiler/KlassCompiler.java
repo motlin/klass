@@ -109,9 +109,20 @@ public class KlassCompiler
         ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
         for (CompilationUnit compilationUnit : immutableCompilationUnits)
         {
-            this.compilerState.withCompilationUnit(
-                    compilationUnit,
-                    () -> parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext()));
+            try
+            {
+                this.compilerState.withCompilationUnit(
+                        compilationUnit,
+                        () -> parseTreeWalker.walk(compilerPhase, compilationUnit.getParserContext()));
+            }
+            catch (RuntimeException e)
+            {
+                String message = "Exception in compiler during phase: %s for compilation unit: %s".formatted(
+
+                        compilerPhase.getClass().getSimpleName(),
+                        compilationUnit.getFullPathSourceName());
+                throw new RuntimeException(message, e);
+            }
         }
 
         Stopwatch stopped = stopwatch.stop();
@@ -127,15 +138,7 @@ public class KlassCompiler
                 COMPILER_PHASE_BUILDERS.collectWith(Function::apply, this.compilerState);
         for (KlassListener compilerPhase : compilerPhases)
         {
-            try
-            {
-                this.executeCompilerPhase(compilerPhase);
-            }
-            catch (RuntimeException e)
-            {
-                String message = "Exception in compiler during phase: " + compilerPhase.getClass().getSimpleName();
-                throw new RuntimeException(message, e);
-            }
+            this.executeCompilerPhase(compilerPhase);
         }
 
         CompilerInputState                compilerInputState        = this.compilerState.getCompilerInput();
