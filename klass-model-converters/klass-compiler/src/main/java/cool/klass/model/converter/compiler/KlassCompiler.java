@@ -47,7 +47,6 @@ import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMapIterable;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
-import org.fusesource.jansi.AnsiConsole;
 
 public class KlassCompiler
 {
@@ -90,9 +89,6 @@ public class KlassCompiler
 
     public KlassCompiler(ImmutableList<CompilationUnit> compilationUnits)
     {
-        // TODO: Move ansi stuff to ansi module or to application run
-        AnsiConsole.systemInstall();
-
         this.compilerState = new CompilerState(compilationUnits);
     }
 
