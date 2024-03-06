@@ -35,7 +35,7 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     public void visitAnd(@Nonnull AndCriteria andCriteria)
     {
         andCriteria.getLeft().visit(this);
-        this.stringBuilder.append(".and(");
+        this.stringBuilder.append("\n                .and(");
         andCriteria.getRight().visit(this);
         this.stringBuilder.append(")");
     }
@@ -44,7 +44,7 @@ public class OperationCriteriaVisitor implements CriteriaVisitor
     public void visitOr(@Nonnull OrCriteria orCriteria)
     {
         orCriteria.getLeft().visit(this);
-        this.stringBuilder.append(".or(");
+        this.stringBuilder.append("\n                .or(");
         orCriteria.getRight().visit(this);
         this.stringBuilder.append(")");
     }
