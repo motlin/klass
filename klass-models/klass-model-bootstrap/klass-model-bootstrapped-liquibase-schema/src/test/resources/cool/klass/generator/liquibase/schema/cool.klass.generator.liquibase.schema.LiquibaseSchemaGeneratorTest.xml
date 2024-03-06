@@ -38,16 +38,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-2-ENUMERATION_LITERAL_FK_ENUMERATION">
-        <addForeignKeyConstraint
-                constraintName="ENUMERATION_LITERAL_FK_ENUMERATION"
-                baseTableName="ENUMERATION_LITERAL"
-                baseColumnNames="ENUMERATION_NAME"
-                referencedTableName="ENUMERATION"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-3-CLASSIFIER">
         <createTable tableName="CLASSIFIER">
             <column name="NAME" type="varchar(256)">
@@ -92,34 +82,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-5-CLASSIFIER_INTERFACE_MAPPING_IDX_SUPER_INTERFACE">
-        <createIndex
-                indexName="CLASSIFIER_INTERFACE_MAPPING_IDX_SUPER_INTERFACE"
-                tableName="CLASSIFIER_INTERFACE_MAPPING">
-            <column name="INTERFACE_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-5-CLASSIFIER_INTERFACE_MAPPING_FK_SUB_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="CLASSIFIER_INTERFACE_MAPPING_FK_SUB_CLASSIFIER"
-                baseTableName="CLASSIFIER_INTERFACE_MAPPING"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-5-CLASSIFIER_INTERFACE_MAPPING_FK_SUPER_INTERFACE">
-        <addForeignKeyConstraint
-                constraintName="CLASSIFIER_INTERFACE_MAPPING_FK_SUPER_INTERFACE"
-                baseTableName="CLASSIFIER_INTERFACE_MAPPING"
-                baseColumnNames="INTERFACE_NAME"
-                referencedTableName="INTERFACE"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-6-KLASS">
         <createTable tableName="KLASS">
             <column name="NAME" type="varchar(256)">
@@ -142,14 +104,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-6-KLASS_IDX_SUPER_CLASS">
-        <createIndex
-                indexName="KLASS_IDX_SUPER_CLASS"
-                tableName="KLASS">
-            <column name="SUPER_CLASS_NAME" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-7-DATA_TYPE_PROPERTY">
         <createTable tableName="DATA_TYPE_PROPERTY">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
@@ -168,36 +122,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="DATA_TYPE_PROPERTY"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-7-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="PRIMITIVE_PROPERTY"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-7-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER"
-                baseTableName="ENUMERATION_PROPERTY"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-8-PRIMITIVE_PROPERTY">
@@ -246,24 +170,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-9-ENUMERATION_PROPERTY_IDX_ENUMERATION">
-        <createIndex
-                indexName="ENUMERATION_PROPERTY_IDX_ENUMERATION"
-                tableName="ENUMERATION_PROPERTY">
-            <column name="ENUMERATION_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_ENUMERATION">
-        <addForeignKeyConstraint
-                constraintName="ENUMERATION_PROPERTY_FK_ENUMERATION"
-                baseTableName="ENUMERATION_PROPERTY"
-                baseColumnNames="ENUMERATION_NAME"
-                referencedTableName="ENUMERATION"
-                referencedColumnNames="NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-10-MIN_LENGTH_PROPERTY_VALIDATION">
@@ -350,16 +256,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-14-PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY"
-                baseTableName="PROPERTY_MODIFIER"
-                baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
-                referencedTableName="DATA_TYPE_PROPERTY"
-                referencedColumnNames="CLASSIFIER_NAME, NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-15-CLASSIFIER_MODIFIER">
         <createTable tableName="CLASSIFIER_MODIFIER">
             <column name="CLASSIFIER_NAME" type="varchar(256)">
@@ -374,16 +270,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-15-CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER">
-        <addForeignKeyConstraint
-                constraintName="CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER"
-                baseTableName="CLASSIFIER_MODIFIER"
-                baseColumnNames="CLASSIFIER_NAME"
-                referencedTableName="CLASSIFIER"
-                referencedColumnNames="NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-16-PARAMETER">
@@ -428,24 +314,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-17-ENUMERATION_PARAMETER_IDX_ENUMERATION">
-        <createIndex
-                indexName="ENUMERATION_PARAMETER_IDX_ENUMERATION"
-                tableName="ENUMERATION_PARAMETER">
-            <column name="ENUMERATION_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-17-ENUMERATION_PARAMETER_FK_ENUMERATION">
-        <addForeignKeyConstraint
-                constraintName="ENUMERATION_PARAMETER_FK_ENUMERATION"
-                baseTableName="ENUMERATION_PARAMETER"
-                baseColumnNames="ENUMERATION_NAME"
-                referencedTableName="ENUMERATION"
-                referencedColumnNames="NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-18-PRIMITIVE_PARAMETER">
@@ -508,24 +376,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-22-VARIABLE_REFERENCE_IDX_PARAMETER">
-        <createIndex
-                indexName="VARIABLE_REFERENCE_IDX_PARAMETER"
-                tableName="VARIABLE_REFERENCE">
-            <column name="PARAMETER_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-22-VARIABLE_REFERENCE_FK_PARAMETER">
-        <addForeignKeyConstraint
-                constraintName="VARIABLE_REFERENCE_FK_PARAMETER"
-                baseTableName="VARIABLE_REFERENCE"
-                baseColumnNames="PARAMETER_ID"
-                referencedTableName="PARAMETER"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-23-MEMBER_REFERENCE_PATH">
         <createTable tableName="MEMBER_REFERENCE_PATH">
             <column name="ID" type="bigint">
@@ -544,43 +394,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-23-MEMBER_REFERENCE_PATH_IDX_KLASS">
-        <createIndex
-                indexName="MEMBER_REFERENCE_PATH_IDX_KLASS"
-                tableName="MEMBER_REFERENCE_PATH">
-            <column name="CLASS_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-23-MEMBER_REFERENCE_PATH_IDX_DATA_TYPE_PROPERTY">
-        <createIndex
-                indexName="MEMBER_REFERENCE_PATH_IDX_DATA_TYPE_PROPERTY"
-                tableName="MEMBER_REFERENCE_PATH">
-            <column name="PROPERTY_CLASS_NAME" />
-            <column name="PROPERTY_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-23-MEMBER_REFERENCE_PATH_FK_KLASS">
-        <addForeignKeyConstraint
-                constraintName="MEMBER_REFERENCE_PATH_FK_KLASS"
-                baseTableName="MEMBER_REFERENCE_PATH"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-23-MEMBER_REFERENCE_PATH_FK_DATA_TYPE_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="MEMBER_REFERENCE_PATH_FK_DATA_TYPE_PROPERTY"
-                baseTableName="MEMBER_REFERENCE_PATH"
-                baseColumnNames="PROPERTY_CLASS_NAME, PROPERTY_NAME"
-                referencedTableName="DATA_TYPE_PROPERTY"
-                referencedColumnNames="CLASSIFIER_NAME, NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-24-CRITERIA">
@@ -613,42 +426,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-26-BINARY_CRITERIA_IDX_LEFT">
-        <createIndex
-                indexName="BINARY_CRITERIA_IDX_LEFT"
-                tableName="BINARY_CRITERIA">
-            <column name="LEFT_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-26-BINARY_CRITERIA_IDX_RIGHT">
-        <createIndex
-                indexName="BINARY_CRITERIA_IDX_RIGHT"
-                tableName="BINARY_CRITERIA">
-            <column name="RIGHT_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-26-BINARY_CRITERIA_FK_LEFT">
-        <addForeignKeyConstraint
-                constraintName="BINARY_CRITERIA_FK_LEFT"
-                baseTableName="BINARY_CRITERIA"
-                baseColumnNames="LEFT_ID"
-                referencedTableName="CRITERIA"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-26-BINARY_CRITERIA_FK_RIGHT">
-        <addForeignKeyConstraint
-                constraintName="BINARY_CRITERIA_FK_RIGHT"
-                baseTableName="BINARY_CRITERIA"
-                baseColumnNames="RIGHT_ID"
-                referencedTableName="CRITERIA"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-27-AND_CRITERIA">
@@ -703,42 +480,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-29-OPERATOR_CRITERIA_IDX_SOURCE_EXPRESSION_VALUE">
-        <createIndex
-                indexName="OPERATOR_CRITERIA_IDX_SOURCE_EXPRESSION_VALUE"
-                tableName="OPERATOR_CRITERIA">
-            <column name="SOURCE_EXPRESSION_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-29-OPERATOR_CRITERIA_IDX_TARGET_EXPRESSION_VALUE">
-        <createIndex
-                indexName="OPERATOR_CRITERIA_IDX_TARGET_EXPRESSION_VALUE"
-                tableName="OPERATOR_CRITERIA">
-            <column name="TARGET_EXPRESSION_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-29-OPERATOR_CRITERIA_FK_SOURCE_EXPRESSION_VALUE">
-        <addForeignKeyConstraint
-                constraintName="OPERATOR_CRITERIA_FK_SOURCE_EXPRESSION_VALUE"
-                baseTableName="OPERATOR_CRITERIA"
-                baseColumnNames="SOURCE_EXPRESSION_ID"
-                referencedTableName="EXPRESSION_VALUE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-29-OPERATOR_CRITERIA_FK_TARGET_EXPRESSION_VALUE">
-        <addForeignKeyConstraint
-                constraintName="OPERATOR_CRITERIA_FK_TARGET_EXPRESSION_VALUE"
-                baseTableName="OPERATOR_CRITERIA"
-                baseColumnNames="TARGET_EXPRESSION_ID"
-                referencedTableName="EXPRESSION_VALUE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-30-EDGE_POINT_CRITERIA">
         <createTable tableName="EDGE_POINT_CRITERIA">
             <column name="ID" type="bigint">
@@ -749,24 +490,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-30-EDGE_POINT_CRITERIA_IDX_MEMBER_REFERENCE_PATH">
-        <createIndex
-                indexName="EDGE_POINT_CRITERIA_IDX_MEMBER_REFERENCE_PATH"
-                tableName="EDGE_POINT_CRITERIA">
-            <column name="MEMBER_REFERENCE_PATH_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-30-EDGE_POINT_CRITERIA_FK_MEMBER_REFERENCE_PATH">
-        <addForeignKeyConstraint
-                constraintName="EDGE_POINT_CRITERIA_FK_MEMBER_REFERENCE_PATH"
-                baseTableName="EDGE_POINT_CRITERIA"
-                baseColumnNames="MEMBER_REFERENCE_PATH_ID"
-                referencedTableName="MEMBER_REFERENCE_PATH"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-31-ASSOCIATION">
@@ -787,24 +510,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-31-ASSOCIATION_IDX_CRITERIA">
-        <createIndex
-                indexName="ASSOCIATION_IDX_CRITERIA"
-                tableName="ASSOCIATION">
-            <column name="CRITERIA_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-31-ASSOCIATION_FK_CRITERIA">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_FK_CRITERIA"
-                baseTableName="ASSOCIATION"
-                baseColumnNames="CRITERIA_ID"
-                referencedTableName="CRITERIA"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-32-ASSOCIATION_END">
@@ -839,52 +544,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-32-ASSOCIATION_END_IDX_OWNING_ASSOCIATION">
-        <createIndex
-                indexName="ASSOCIATION_END_IDX_OWNING_ASSOCIATION"
-                tableName="ASSOCIATION_END">
-            <column name="ASSOCIATION_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-32-ASSOCIATION_END_IDX_RESULT_TYPE">
-        <createIndex
-                indexName="ASSOCIATION_END_IDX_RESULT_TYPE"
-                tableName="ASSOCIATION_END">
-            <column name="RESULT_TYPE_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_OWNING_CLASS">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_FK_OWNING_CLASS"
-                baseTableName="ASSOCIATION_END"
-                baseColumnNames="OWNING_CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_OWNING_ASSOCIATION">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_FK_OWNING_ASSOCIATION"
-                baseTableName="ASSOCIATION_END"
-                baseColumnNames="ASSOCIATION_NAME"
-                referencedTableName="ASSOCIATION"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_RESULT_TYPE">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_FK_RESULT_TYPE"
-                baseTableName="ASSOCIATION_END"
-                baseColumnNames="RESULT_TYPE_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-33-ASSOCIATION_END_MODIFIER">
         <createTable tableName="ASSOCIATION_END_MODIFIER">
             <column name="OWNING_CLASS_NAME" type="varchar(256)">
@@ -905,16 +564,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-33-ASSOCIATION_END_MODIFIER_FK_ASSOCIATION_END">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_MODIFIER_FK_ASSOCIATION_END"
-                baseTableName="ASSOCIATION_END_MODIFIER"
-                baseColumnNames="OWNING_CLASS_NAME, ASSOCIATION_END_NAME"
-                referencedTableName="ASSOCIATION_END"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING">
         <createTable tableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING">
             <column name="MEMBER_REFERENCE_PATH_ID" type="bigint">
@@ -929,35 +578,6 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_PK" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX_ASSOCIATION_END">
-        <createIndex
-                indexName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX_ASSOCIATION_END"
-                tableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING">
-            <column name="ASSOCIATION_OWNING_CLASS_NAME" />
-            <column name="ASSOCIATION_END_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_MEMBER_REFERENCE_PATH">
-        <addForeignKeyConstraint
-                constraintName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_MEMBER_REFERENCE_PATH"
-                baseTableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING"
-                baseColumnNames="MEMBER_REFERENCE_PATH_ID"
-                referencedTableName="MEMBER_REFERENCE_PATH"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_ASSOCIATION_END">
-        <addForeignKeyConstraint
-                constraintName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_ASSOCIATION_END"
-                baseTableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING"
-                baseColumnNames="ASSOCIATION_OWNING_CLASS_NAME, ASSOCIATION_END_NAME"
-                referencedTableName="ASSOCIATION_END"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-35-THIS_MEMBER_REFERENCE_PATH">
@@ -1024,34 +644,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-37-PARAMETERIZED_PROPERTY_IDX_RESULT_TYPE">
-        <createIndex
-                indexName="PARAMETERIZED_PROPERTY_IDX_RESULT_TYPE"
-                tableName="PARAMETERIZED_PROPERTY">
-            <column name="RESULT_TYPE_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-37-PARAMETERIZED_PROPERTY_FK_OWNING_CLASS">
-        <addForeignKeyConstraint
-                constraintName="PARAMETERIZED_PROPERTY_FK_OWNING_CLASS"
-                baseTableName="PARAMETERIZED_PROPERTY"
-                baseColumnNames="OWNING_CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-37-PARAMETERIZED_PROPERTY_FK_RESULT_TYPE">
-        <addForeignKeyConstraint
-                constraintName="PARAMETERIZED_PROPERTY_FK_RESULT_TYPE"
-                baseTableName="PARAMETERIZED_PROPERTY"
-                baseColumnNames="RESULT_TYPE_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-38-ASSOCIATION_END_ORDER_BY">
         <createTable tableName="ASSOCIATION_END_ORDER_BY">
             <column name="ASSOCIATION_END_CLASS_NAME" type="varchar(256)">
@@ -1072,34 +664,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-38-ASSOCIATION_END_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH">
-        <createIndex
-                indexName="ASSOCIATION_END_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH"
-                tableName="ASSOCIATION_END_ORDER_BY">
-            <column name="THIS_MEMBER_REFERENCE_PATH_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-38-ASSOCIATION_END_ORDER_BY_FK_ASSOCIATION_END">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_ORDER_BY_FK_ASSOCIATION_END"
-                baseTableName="ASSOCIATION_END_ORDER_BY"
-                baseColumnNames="ASSOCIATION_END_CLASS_NAME, ASSOCIATION_END_NAME"
-                referencedTableName="ASSOCIATION_END"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-38-ASSOCIATION_END_ORDER_BY_FK_THIS_MEMBER_REFERENCE_PATH">
-        <addForeignKeyConstraint
-                constraintName="ASSOCIATION_END_ORDER_BY_FK_THIS_MEMBER_REFERENCE_PATH"
-                baseTableName="ASSOCIATION_END_ORDER_BY"
-                baseColumnNames="THIS_MEMBER_REFERENCE_PATH_ID"
-                referencedTableName="THIS_MEMBER_REFERENCE_PATH"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-39-PARAMETERIZED_PROPERTY_ORDERING">
         <createTable tableName="PARAMETERIZED_PROPERTY_ORDERING">
             <column name="OWNING_CLASS_NAME" type="varchar(256)">
@@ -1114,16 +678,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-39-PARAMETERIZED_PROPERTY_ORDERING_FK_PARAMETERIZED_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="PARAMETERIZED_PROPERTY_ORDERING_FK_PARAMETERIZED_PROPERTY"
-                baseTableName="PARAMETERIZED_PROPERTY_ORDERING"
-                baseColumnNames="OWNING_CLASS_NAME, NAME"
-                referencedTableName="PARAMETERIZED_PROPERTY"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-40-PARAMETERIZED_PROPERTY_PARAMETER">
@@ -1146,16 +700,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-40-PARAMETERIZED_PROPERTY_PARAMETER_FK_PARAMETERIZED_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="PARAMETERIZED_PROPERTY_PARAMETER_FK_PARAMETERIZED_PROPERTY"
-                baseTableName="PARAMETERIZED_PROPERTY_PARAMETER"
-                baseColumnNames="CLASSIFIER_NAME, PARAMETERIZED_PROPERTY_NAME"
-                referencedTableName="PARAMETERIZED_PROPERTY"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-41-PROJECTION_ELEMENT">
         <createTable tableName="PROJECTION_ELEMENT">
             <column name="ID" type="bigint">
@@ -1172,14 +716,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-41-PROJECTION_ELEMENT_IDX_PARENT">
-        <createIndex
-                indexName="PROJECTION_ELEMENT_IDX_PARENT"
-                tableName="PROJECTION_ELEMENT">
-            <column name="PARENT_ID" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-42-ROOT_PROJECTION">
@@ -1204,24 +740,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-42-ROOT_PROJECTION_IDX_KLASS">
-        <createIndex
-                indexName="ROOT_PROJECTION_IDX_KLASS"
-                tableName="ROOT_PROJECTION">
-            <column name="CLASS_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-42-ROOT_PROJECTION_FK_KLASS">
-        <addForeignKeyConstraint
-                constraintName="ROOT_PROJECTION_FK_KLASS"
-                baseTableName="ROOT_PROJECTION"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-43-NAMED_PROJECTION">
         <createTable tableName="NAMED_PROJECTION">
             <column name="NAME" type="varchar(256)">
@@ -1240,24 +758,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-43-NAMED_PROJECTION_IDX_ROOT_PROJECTION">
-        <createIndex
-                indexName="NAMED_PROJECTION_IDX_ROOT_PROJECTION"
-                tableName="NAMED_PROJECTION">
-            <column name="PROJECTION_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-43-NAMED_PROJECTION_FK_ROOT_PROJECTION">
-        <addForeignKeyConstraint
-                constraintName="NAMED_PROJECTION_FK_ROOT_PROJECTION"
-                baseTableName="NAMED_PROJECTION"
-                baseColumnNames="PROJECTION_ID"
-                referencedTableName="ROOT_PROJECTION"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-44-PROJECTION_WITH_ASSOCIATION_END">
@@ -1284,25 +784,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-44-PROJECTION_WITH_ASSOCIATION_END_IDX_ASSOCIATION_END">
-        <createIndex
-                indexName="PROJECTION_WITH_ASSOCIATION_END_IDX_ASSOCIATION_END"
-                tableName="PROJECTION_WITH_ASSOCIATION_END">
-            <column name="ASSOCIATION_END_CLASS" />
-            <column name="ASSOCIATION_END_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-44-PROJECTION_WITH_ASSOCIATION_END_FK_ASSOCIATION_END">
-        <addForeignKeyConstraint
-                constraintName="PROJECTION_WITH_ASSOCIATION_END_FK_ASSOCIATION_END"
-                baseTableName="PROJECTION_WITH_ASSOCIATION_END"
-                baseColumnNames="ASSOCIATION_END_CLASS, ASSOCIATION_END_NAME"
-                referencedTableName="ASSOCIATION_END"
-                referencedColumnNames="OWNING_CLASS_NAME, NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-45-PROJECTION_REFERENCE_PROPERTY">
@@ -1361,24 +842,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-46-PROJECTION_PROJECTION_REFERENCE_IDX_PROJECTION">
-        <createIndex
-                indexName="PROJECTION_PROJECTION_REFERENCE_IDX_PROJECTION"
-                tableName="PROJECTION_PROJECTION_REFERENCE">
-            <column name="PROJECTION_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-46-PROJECTION_PROJECTION_REFERENCE_FK_PROJECTION">
-        <addForeignKeyConstraint
-                constraintName="PROJECTION_PROJECTION_REFERENCE_FK_PROJECTION"
-                baseTableName="PROJECTION_PROJECTION_REFERENCE"
-                baseColumnNames="PROJECTION_NAME"
-                referencedTableName="NAMED_PROJECTION"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-47-PROJECTION_DATA_TYPE_PROPERTY">
         <createTable tableName="PROJECTION_DATA_TYPE_PROPERTY">
             <column name="ID" type="bigint">
@@ -1405,25 +868,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-47-PROJECTION_DATA_TYPE_PROPERTY_IDX_DATA_TYPE_PROPERTY">
-        <createIndex
-                indexName="PROJECTION_DATA_TYPE_PROPERTY_IDX_DATA_TYPE_PROPERTY"
-                tableName="PROJECTION_DATA_TYPE_PROPERTY">
-            <column name="PROPERTY_CLASSIFIER_NAME" />
-            <column name="PROPERTY_NAME" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-47-PROJECTION_DATA_TYPE_PROPERTY_FK_DATA_TYPE_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="PROJECTION_DATA_TYPE_PROPERTY_FK_DATA_TYPE_PROPERTY"
-                baseTableName="PROJECTION_DATA_TYPE_PROPERTY"
-                baseColumnNames="PROPERTY_CLASSIFIER_NAME, PROPERTY_NAME"
-                referencedTableName="DATA_TYPE_PROPERTY"
-                referencedColumnNames="CLASSIFIER_NAME, NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-48-SERVICE_GROUP">
         <createTable tableName="SERVICE_GROUP">
             <column name="CLASS_NAME" type="varchar(256)">
@@ -1444,16 +888,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-foreign-key-48-SERVICE_GROUP_FK_OWNING_CLASS">
-        <addForeignKeyConstraint
-                constraintName="SERVICE_GROUP_FK_OWNING_CLASS"
-                baseTableName="SERVICE_GROUP"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="KLASS"
-                referencedColumnNames="NAME"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-49-URL">
         <createTable tableName="URL">
             <column name="CLASS_NAME" type="varchar(256)">
@@ -1464,16 +898,6 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="URL_PK" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-49-URL_FK_SERVICE_GROUP">
-        <addForeignKeyConstraint
-                constraintName="URL_FK_SERVICE_GROUP"
-                baseTableName="URL"
-                baseColumnNames="CLASS_NAME"
-                referencedTableName="SERVICE_GROUP"
-                referencedColumnNames="CLASS_NAME"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-50-URL_PARAMETER">
@@ -1494,34 +918,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-50-URL_PARAMETER_IDX_PARAMETER">
-        <createIndex
-                indexName="URL_PARAMETER_IDX_PARAMETER"
-                tableName="URL_PARAMETER">
-            <column name="PARAMETER_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-50-URL_PARAMETER_FK_URL">
-        <addForeignKeyConstraint
-                constraintName="URL_PARAMETER_FK_URL"
-                baseTableName="URL_PARAMETER"
-                baseColumnNames="URL_CLASS_NAME, URL_STRING"
-                referencedTableName="URL"
-                referencedColumnNames="CLASS_NAME, URL"
-        />
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-50-URL_PARAMETER_FK_PARAMETER">
-        <addForeignKeyConstraint
-                constraintName="URL_PARAMETER_FK_PARAMETER"
-                baseTableName="URL_PARAMETER"
-                baseColumnNames="PARAMETER_ID"
-                referencedTableName="PARAMETER"
-                referencedColumnNames="ID"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-51-SERVICE">
@@ -1554,44 +950,428 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_PROJECTION">
-        <createIndex
-                indexName="SERVICE_IDX_PROJECTION"
-                tableName="SERVICE">
-            <column name="PROJECTION_NAME" />
-        </createIndex>
+    <changeSet author="Klass" id="initial-table-52-SERVICE_ORDER_BY">
+        <createTable tableName="SERVICE_ORDER_BY">
+            <column name="SERVICE_CLASS_NAME" type="varchar(256)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
+            </column>
+
+            <column name="SERVICE_URL_STRING" type="varchar(8192)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
+            </column>
+
+            <column name="SERVICE_VERB" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
+            </column>
+
+            <column name="THIS_MEMBER_REFERENCE_PATH_ID" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
+            </column>
+
+            <column name="ORDER_BY_DIRECTION" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_QUERY_CRITERIA">
-        <createIndex
-                indexName="SERVICE_IDX_QUERY_CRITERIA"
-                tableName="SERVICE">
-            <column name="QUERY_CRITERIA_ID" />
-        </createIndex>
+    <changeSet author="Klass" id="initial-foreign-key-2-ENUMERATION_LITERAL_FK_ENUMERATION">
+        <addForeignKeyConstraint
+                constraintName="ENUMERATION_LITERAL_FK_ENUMERATION"
+                baseTableName="ENUMERATION_LITERAL"
+                baseColumnNames="ENUMERATION_NAME"
+                referencedTableName="ENUMERATION"
+                referencedColumnNames="NAME"
+        />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_AUTHORIZE_CRITERIA">
-        <createIndex
-                indexName="SERVICE_IDX_AUTHORIZE_CRITERIA"
-                tableName="SERVICE">
-            <column name="AUTHORIZE_CRITERIA_ID" />
-        </createIndex>
+    <changeSet author="Klass" id="initial-foreign-key-5-CLASSIFIER_INTERFACE_MAPPING_FK_SUB_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="CLASSIFIER_INTERFACE_MAPPING_FK_SUB_CLASSIFIER"
+                baseTableName="CLASSIFIER_INTERFACE_MAPPING"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_VALIDATE_CRITERIA">
-        <createIndex
-                indexName="SERVICE_IDX_VALIDATE_CRITERIA"
-                tableName="SERVICE">
-            <column name="VALIDATE_CRITERIA_ID" />
-        </createIndex>
+    <changeSet author="Klass" id="initial-foreign-key-5-CLASSIFIER_INTERFACE_MAPPING_FK_SUPER_INTERFACE">
+        <addForeignKeyConstraint
+                constraintName="CLASSIFIER_INTERFACE_MAPPING_FK_SUPER_INTERFACE"
+                baseTableName="CLASSIFIER_INTERFACE_MAPPING"
+                baseColumnNames="INTERFACE_NAME"
+                referencedTableName="INTERFACE"
+                referencedColumnNames="NAME"
+        />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_CONFLICT_CRITERIA">
-        <createIndex
-                indexName="SERVICE_IDX_CONFLICT_CRITERIA"
-                tableName="SERVICE">
-            <column name="CONFLICT_CRITERIA_ID" />
-        </createIndex>
+    <changeSet author="Klass" id="initial-foreign-key-7-DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="DATA_TYPE_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="DATA_TYPE_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-7-PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="PRIMITIVE_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="PRIMITIVE_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-7-ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER"
+                baseTableName="ENUMERATION_PROPERTY"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-9-ENUMERATION_PROPERTY_FK_ENUMERATION">
+        <addForeignKeyConstraint
+                constraintName="ENUMERATION_PROPERTY_FK_ENUMERATION"
+                baseTableName="ENUMERATION_PROPERTY"
+                baseColumnNames="ENUMERATION_NAME"
+                referencedTableName="ENUMERATION"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-14-PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="PROPERTY_MODIFIER_FK_DATA_TYPE_PROPERTY"
+                baseTableName="PROPERTY_MODIFIER"
+                baseColumnNames="CLASSIFIER_NAME, PROPERTY_NAME"
+                referencedTableName="DATA_TYPE_PROPERTY"
+                referencedColumnNames="CLASSIFIER_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-15-CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER">
+        <addForeignKeyConstraint
+                constraintName="CLASSIFIER_MODIFIER_FK_OWNING_CLASSIFIER"
+                baseTableName="CLASSIFIER_MODIFIER"
+                baseColumnNames="CLASSIFIER_NAME"
+                referencedTableName="CLASSIFIER"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-17-ENUMERATION_PARAMETER_FK_ENUMERATION">
+        <addForeignKeyConstraint
+                constraintName="ENUMERATION_PARAMETER_FK_ENUMERATION"
+                baseTableName="ENUMERATION_PARAMETER"
+                baseColumnNames="ENUMERATION_NAME"
+                referencedTableName="ENUMERATION"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-22-VARIABLE_REFERENCE_FK_PARAMETER">
+        <addForeignKeyConstraint
+                constraintName="VARIABLE_REFERENCE_FK_PARAMETER"
+                baseTableName="VARIABLE_REFERENCE"
+                baseColumnNames="PARAMETER_ID"
+                referencedTableName="PARAMETER"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-23-MEMBER_REFERENCE_PATH_FK_KLASS">
+        <addForeignKeyConstraint
+                constraintName="MEMBER_REFERENCE_PATH_FK_KLASS"
+                baseTableName="MEMBER_REFERENCE_PATH"
+                baseColumnNames="CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-23-MEMBER_REFERENCE_PATH_FK_DATA_TYPE_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="MEMBER_REFERENCE_PATH_FK_DATA_TYPE_PROPERTY"
+                baseTableName="MEMBER_REFERENCE_PATH"
+                baseColumnNames="PROPERTY_CLASS_NAME, PROPERTY_NAME"
+                referencedTableName="DATA_TYPE_PROPERTY"
+                referencedColumnNames="CLASSIFIER_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-26-BINARY_CRITERIA_FK_LEFT">
+        <addForeignKeyConstraint
+                constraintName="BINARY_CRITERIA_FK_LEFT"
+                baseTableName="BINARY_CRITERIA"
+                baseColumnNames="LEFT_ID"
+                referencedTableName="CRITERIA"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-26-BINARY_CRITERIA_FK_RIGHT">
+        <addForeignKeyConstraint
+                constraintName="BINARY_CRITERIA_FK_RIGHT"
+                baseTableName="BINARY_CRITERIA"
+                baseColumnNames="RIGHT_ID"
+                referencedTableName="CRITERIA"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-29-OPERATOR_CRITERIA_FK_SOURCE_EXPRESSION_VALUE">
+        <addForeignKeyConstraint
+                constraintName="OPERATOR_CRITERIA_FK_SOURCE_EXPRESSION_VALUE"
+                baseTableName="OPERATOR_CRITERIA"
+                baseColumnNames="SOURCE_EXPRESSION_ID"
+                referencedTableName="EXPRESSION_VALUE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-29-OPERATOR_CRITERIA_FK_TARGET_EXPRESSION_VALUE">
+        <addForeignKeyConstraint
+                constraintName="OPERATOR_CRITERIA_FK_TARGET_EXPRESSION_VALUE"
+                baseTableName="OPERATOR_CRITERIA"
+                baseColumnNames="TARGET_EXPRESSION_ID"
+                referencedTableName="EXPRESSION_VALUE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-30-EDGE_POINT_CRITERIA_FK_MEMBER_REFERENCE_PATH">
+        <addForeignKeyConstraint
+                constraintName="EDGE_POINT_CRITERIA_FK_MEMBER_REFERENCE_PATH"
+                baseTableName="EDGE_POINT_CRITERIA"
+                baseColumnNames="MEMBER_REFERENCE_PATH_ID"
+                referencedTableName="MEMBER_REFERENCE_PATH"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-31-ASSOCIATION_FK_CRITERIA">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_FK_CRITERIA"
+                baseTableName="ASSOCIATION"
+                baseColumnNames="CRITERIA_ID"
+                referencedTableName="CRITERIA"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_OWNING_CLASS">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_FK_OWNING_CLASS"
+                baseTableName="ASSOCIATION_END"
+                baseColumnNames="OWNING_CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_OWNING_ASSOCIATION">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_FK_OWNING_ASSOCIATION"
+                baseTableName="ASSOCIATION_END"
+                baseColumnNames="ASSOCIATION_NAME"
+                referencedTableName="ASSOCIATION"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-32-ASSOCIATION_END_FK_RESULT_TYPE">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_FK_RESULT_TYPE"
+                baseTableName="ASSOCIATION_END"
+                baseColumnNames="RESULT_TYPE_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-33-ASSOCIATION_END_MODIFIER_FK_ASSOCIATION_END">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_MODIFIER_FK_ASSOCIATION_END"
+                baseTableName="ASSOCIATION_END_MODIFIER"
+                baseColumnNames="OWNING_CLASS_NAME, ASSOCIATION_END_NAME"
+                referencedTableName="ASSOCIATION_END"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_MEMBER_REFERENCE_PATH">
+        <addForeignKeyConstraint
+                constraintName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_MEMBER_REFERENCE_PATH"
+                baseTableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING"
+                baseColumnNames="MEMBER_REFERENCE_PATH_ID"
+                referencedTableName="MEMBER_REFERENCE_PATH"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_ASSOCIATION_END">
+        <addForeignKeyConstraint
+                constraintName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_FK_ASSOCIATION_END"
+                baseTableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING"
+                baseColumnNames="ASSOCIATION_OWNING_CLASS_NAME, ASSOCIATION_END_NAME"
+                referencedTableName="ASSOCIATION_END"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-37-PARAMETERIZED_PROPERTY_FK_OWNING_CLASS">
+        <addForeignKeyConstraint
+                constraintName="PARAMETERIZED_PROPERTY_FK_OWNING_CLASS"
+                baseTableName="PARAMETERIZED_PROPERTY"
+                baseColumnNames="OWNING_CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-37-PARAMETERIZED_PROPERTY_FK_RESULT_TYPE">
+        <addForeignKeyConstraint
+                constraintName="PARAMETERIZED_PROPERTY_FK_RESULT_TYPE"
+                baseTableName="PARAMETERIZED_PROPERTY"
+                baseColumnNames="RESULT_TYPE_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-38-ASSOCIATION_END_ORDER_BY_FK_ASSOCIATION_END">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_ORDER_BY_FK_ASSOCIATION_END"
+                baseTableName="ASSOCIATION_END_ORDER_BY"
+                baseColumnNames="ASSOCIATION_END_CLASS_NAME, ASSOCIATION_END_NAME"
+                referencedTableName="ASSOCIATION_END"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-38-ASSOCIATION_END_ORDER_BY_FK_THIS_MEMBER_REFERENCE_PATH">
+        <addForeignKeyConstraint
+                constraintName="ASSOCIATION_END_ORDER_BY_FK_THIS_MEMBER_REFERENCE_PATH"
+                baseTableName="ASSOCIATION_END_ORDER_BY"
+                baseColumnNames="THIS_MEMBER_REFERENCE_PATH_ID"
+                referencedTableName="THIS_MEMBER_REFERENCE_PATH"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-39-PARAMETERIZED_PROPERTY_ORDERING_FK_PARAMETERIZED_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="PARAMETERIZED_PROPERTY_ORDERING_FK_PARAMETERIZED_PROPERTY"
+                baseTableName="PARAMETERIZED_PROPERTY_ORDERING"
+                baseColumnNames="OWNING_CLASS_NAME, NAME"
+                referencedTableName="PARAMETERIZED_PROPERTY"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-40-PARAMETERIZED_PROPERTY_PARAMETER_FK_PARAMETERIZED_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="PARAMETERIZED_PROPERTY_PARAMETER_FK_PARAMETERIZED_PROPERTY"
+                baseTableName="PARAMETERIZED_PROPERTY_PARAMETER"
+                baseColumnNames="CLASSIFIER_NAME, PARAMETERIZED_PROPERTY_NAME"
+                referencedTableName="PARAMETERIZED_PROPERTY"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-42-ROOT_PROJECTION_FK_KLASS">
+        <addForeignKeyConstraint
+                constraintName="ROOT_PROJECTION_FK_KLASS"
+                baseTableName="ROOT_PROJECTION"
+                baseColumnNames="CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-43-NAMED_PROJECTION_FK_ROOT_PROJECTION">
+        <addForeignKeyConstraint
+                constraintName="NAMED_PROJECTION_FK_ROOT_PROJECTION"
+                baseTableName="NAMED_PROJECTION"
+                baseColumnNames="PROJECTION_ID"
+                referencedTableName="ROOT_PROJECTION"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-44-PROJECTION_WITH_ASSOCIATION_END_FK_ASSOCIATION_END">
+        <addForeignKeyConstraint
+                constraintName="PROJECTION_WITH_ASSOCIATION_END_FK_ASSOCIATION_END"
+                baseTableName="PROJECTION_WITH_ASSOCIATION_END"
+                baseColumnNames="ASSOCIATION_END_CLASS, ASSOCIATION_END_NAME"
+                referencedTableName="ASSOCIATION_END"
+                referencedColumnNames="OWNING_CLASS_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-46-PROJECTION_PROJECTION_REFERENCE_FK_PROJECTION">
+        <addForeignKeyConstraint
+                constraintName="PROJECTION_PROJECTION_REFERENCE_FK_PROJECTION"
+                baseTableName="PROJECTION_PROJECTION_REFERENCE"
+                baseColumnNames="PROJECTION_NAME"
+                referencedTableName="NAMED_PROJECTION"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-47-PROJECTION_DATA_TYPE_PROPERTY_FK_DATA_TYPE_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="PROJECTION_DATA_TYPE_PROPERTY_FK_DATA_TYPE_PROPERTY"
+                baseTableName="PROJECTION_DATA_TYPE_PROPERTY"
+                baseColumnNames="PROPERTY_CLASSIFIER_NAME, PROPERTY_NAME"
+                referencedTableName="DATA_TYPE_PROPERTY"
+                referencedColumnNames="CLASSIFIER_NAME, NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-48-SERVICE_GROUP_FK_OWNING_CLASS">
+        <addForeignKeyConstraint
+                constraintName="SERVICE_GROUP_FK_OWNING_CLASS"
+                baseTableName="SERVICE_GROUP"
+                baseColumnNames="CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-49-URL_FK_SERVICE_GROUP">
+        <addForeignKeyConstraint
+                constraintName="URL_FK_SERVICE_GROUP"
+                baseTableName="URL"
+                baseColumnNames="CLASS_NAME"
+                referencedTableName="SERVICE_GROUP"
+                referencedColumnNames="CLASS_NAME"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-50-URL_PARAMETER_FK_URL">
+        <addForeignKeyConstraint
+                constraintName="URL_PARAMETER_FK_URL"
+                baseTableName="URL_PARAMETER"
+                baseColumnNames="URL_CLASS_NAME, URL_STRING"
+                referencedTableName="URL"
+                referencedColumnNames="CLASS_NAME, URL"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-50-URL_PARAMETER_FK_PARAMETER">
+        <addForeignKeyConstraint
+                constraintName="URL_PARAMETER_FK_PARAMETER"
+                baseTableName="URL_PARAMETER"
+                baseColumnNames="PARAMETER_ID"
+                referencedTableName="PARAMETER"
+                referencedColumnNames="ID"
+        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-foreign-key-51-SERVICE_FK_URL">
@@ -1654,38 +1434,6 @@
         />
     </changeSet>
 
-    <changeSet author="Klass" id="initial-table-52-SERVICE_ORDER_BY">
-        <createTable tableName="SERVICE_ORDER_BY">
-            <column name="SERVICE_CLASS_NAME" type="varchar(256)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
-            </column>
-
-            <column name="SERVICE_URL_STRING" type="varchar(8192)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
-            </column>
-
-            <column name="SERVICE_VERB" type="varchar(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
-            </column>
-
-            <column name="THIS_MEMBER_REFERENCE_PATH_ID" type="bigint">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_ORDER_BY_PK" />
-            </column>
-
-            <column name="ORDER_BY_DIRECTION" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-52-SERVICE_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH">
-        <createIndex
-                indexName="SERVICE_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH"
-                tableName="SERVICE_ORDER_BY">
-            <column name="THIS_MEMBER_REFERENCE_PATH_ID" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-foreign-key-52-SERVICE_ORDER_BY_FK_SERVICE">
         <addForeignKeyConstraint
                 constraintName="SERVICE_ORDER_BY_FK_SERVICE"
@@ -1704,6 +1452,258 @@
                 referencedTableName="THIS_MEMBER_REFERENCE_PATH"
                 referencedColumnNames="ID"
         />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-5-CLASSIFIER_INTERFACE_MAPPING_IDX_SUPER_INTERFACE">
+        <createIndex
+                indexName="CLASSIFIER_INTERFACE_MAPPING_IDX_SUPER_INTERFACE"
+                tableName="CLASSIFIER_INTERFACE_MAPPING">
+            <column name="INTERFACE_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-6-KLASS_IDX_SUPER_CLASS">
+        <createIndex
+                indexName="KLASS_IDX_SUPER_CLASS"
+                tableName="KLASS">
+            <column name="SUPER_CLASS_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-9-ENUMERATION_PROPERTY_IDX_ENUMERATION">
+        <createIndex
+                indexName="ENUMERATION_PROPERTY_IDX_ENUMERATION"
+                tableName="ENUMERATION_PROPERTY">
+            <column name="ENUMERATION_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-17-ENUMERATION_PARAMETER_IDX_ENUMERATION">
+        <createIndex
+                indexName="ENUMERATION_PARAMETER_IDX_ENUMERATION"
+                tableName="ENUMERATION_PARAMETER">
+            <column name="ENUMERATION_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-22-VARIABLE_REFERENCE_IDX_PARAMETER">
+        <createIndex
+                indexName="VARIABLE_REFERENCE_IDX_PARAMETER"
+                tableName="VARIABLE_REFERENCE">
+            <column name="PARAMETER_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-23-MEMBER_REFERENCE_PATH_IDX_KLASS">
+        <createIndex
+                indexName="MEMBER_REFERENCE_PATH_IDX_KLASS"
+                tableName="MEMBER_REFERENCE_PATH">
+            <column name="CLASS_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-23-MEMBER_REFERENCE_PATH_IDX_DATA_TYPE_PROPERTY">
+        <createIndex
+                indexName="MEMBER_REFERENCE_PATH_IDX_DATA_TYPE_PROPERTY"
+                tableName="MEMBER_REFERENCE_PATH">
+            <column name="PROPERTY_CLASS_NAME" />
+            <column name="PROPERTY_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-26-BINARY_CRITERIA_IDX_LEFT">
+        <createIndex
+                indexName="BINARY_CRITERIA_IDX_LEFT"
+                tableName="BINARY_CRITERIA">
+            <column name="LEFT_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-26-BINARY_CRITERIA_IDX_RIGHT">
+        <createIndex
+                indexName="BINARY_CRITERIA_IDX_RIGHT"
+                tableName="BINARY_CRITERIA">
+            <column name="RIGHT_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-29-OPERATOR_CRITERIA_IDX_SOURCE_EXPRESSION_VALUE">
+        <createIndex
+                indexName="OPERATOR_CRITERIA_IDX_SOURCE_EXPRESSION_VALUE"
+                tableName="OPERATOR_CRITERIA">
+            <column name="SOURCE_EXPRESSION_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-29-OPERATOR_CRITERIA_IDX_TARGET_EXPRESSION_VALUE">
+        <createIndex
+                indexName="OPERATOR_CRITERIA_IDX_TARGET_EXPRESSION_VALUE"
+                tableName="OPERATOR_CRITERIA">
+            <column name="TARGET_EXPRESSION_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-30-EDGE_POINT_CRITERIA_IDX_MEMBER_REFERENCE_PATH">
+        <createIndex
+                indexName="EDGE_POINT_CRITERIA_IDX_MEMBER_REFERENCE_PATH"
+                tableName="EDGE_POINT_CRITERIA">
+            <column name="MEMBER_REFERENCE_PATH_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-31-ASSOCIATION_IDX_CRITERIA">
+        <createIndex
+                indexName="ASSOCIATION_IDX_CRITERIA"
+                tableName="ASSOCIATION">
+            <column name="CRITERIA_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-32-ASSOCIATION_END_IDX_OWNING_ASSOCIATION">
+        <createIndex
+                indexName="ASSOCIATION_END_IDX_OWNING_ASSOCIATION"
+                tableName="ASSOCIATION_END">
+            <column name="ASSOCIATION_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-32-ASSOCIATION_END_IDX_RESULT_TYPE">
+        <createIndex
+                indexName="ASSOCIATION_END_IDX_RESULT_TYPE"
+                tableName="ASSOCIATION_END">
+            <column name="RESULT_TYPE_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-34-MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX_ASSOCIATION_END">
+        <createIndex
+                indexName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING_IDX_ASSOCIATION_END"
+                tableName="MEMBER_REFERENCE_PATH_ASSOCIATION_END_MAPPING">
+            <column name="ASSOCIATION_OWNING_CLASS_NAME" />
+            <column name="ASSOCIATION_END_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-37-PARAMETERIZED_PROPERTY_IDX_RESULT_TYPE">
+        <createIndex
+                indexName="PARAMETERIZED_PROPERTY_IDX_RESULT_TYPE"
+                tableName="PARAMETERIZED_PROPERTY">
+            <column name="RESULT_TYPE_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-38-ASSOCIATION_END_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH">
+        <createIndex
+                indexName="ASSOCIATION_END_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH"
+                tableName="ASSOCIATION_END_ORDER_BY">
+            <column name="THIS_MEMBER_REFERENCE_PATH_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-41-PROJECTION_ELEMENT_IDX_PARENT">
+        <createIndex
+                indexName="PROJECTION_ELEMENT_IDX_PARENT"
+                tableName="PROJECTION_ELEMENT">
+            <column name="PARENT_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-42-ROOT_PROJECTION_IDX_KLASS">
+        <createIndex
+                indexName="ROOT_PROJECTION_IDX_KLASS"
+                tableName="ROOT_PROJECTION">
+            <column name="CLASS_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-43-NAMED_PROJECTION_IDX_ROOT_PROJECTION">
+        <createIndex
+                indexName="NAMED_PROJECTION_IDX_ROOT_PROJECTION"
+                tableName="NAMED_PROJECTION">
+            <column name="PROJECTION_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-44-PROJECTION_WITH_ASSOCIATION_END_IDX_ASSOCIATION_END">
+        <createIndex
+                indexName="PROJECTION_WITH_ASSOCIATION_END_IDX_ASSOCIATION_END"
+                tableName="PROJECTION_WITH_ASSOCIATION_END">
+            <column name="ASSOCIATION_END_CLASS" />
+            <column name="ASSOCIATION_END_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-46-PROJECTION_PROJECTION_REFERENCE_IDX_PROJECTION">
+        <createIndex
+                indexName="PROJECTION_PROJECTION_REFERENCE_IDX_PROJECTION"
+                tableName="PROJECTION_PROJECTION_REFERENCE">
+            <column name="PROJECTION_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-47-PROJECTION_DATA_TYPE_PROPERTY_IDX_DATA_TYPE_PROPERTY">
+        <createIndex
+                indexName="PROJECTION_DATA_TYPE_PROPERTY_IDX_DATA_TYPE_PROPERTY"
+                tableName="PROJECTION_DATA_TYPE_PROPERTY">
+            <column name="PROPERTY_CLASSIFIER_NAME" />
+            <column name="PROPERTY_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-50-URL_PARAMETER_IDX_PARAMETER">
+        <createIndex
+                indexName="URL_PARAMETER_IDX_PARAMETER"
+                tableName="URL_PARAMETER">
+            <column name="PARAMETER_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_PROJECTION">
+        <createIndex
+                indexName="SERVICE_IDX_PROJECTION"
+                tableName="SERVICE">
+            <column name="PROJECTION_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_QUERY_CRITERIA">
+        <createIndex
+                indexName="SERVICE_IDX_QUERY_CRITERIA"
+                tableName="SERVICE">
+            <column name="QUERY_CRITERIA_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_AUTHORIZE_CRITERIA">
+        <createIndex
+                indexName="SERVICE_IDX_AUTHORIZE_CRITERIA"
+                tableName="SERVICE">
+            <column name="AUTHORIZE_CRITERIA_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_VALIDATE_CRITERIA">
+        <createIndex
+                indexName="SERVICE_IDX_VALIDATE_CRITERIA"
+                tableName="SERVICE">
+            <column name="VALIDATE_CRITERIA_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-51-SERVICE_IDX_CONFLICT_CRITERIA">
+        <createIndex
+                indexName="SERVICE_IDX_CONFLICT_CRITERIA"
+                tableName="SERVICE">
+            <column name="CONFLICT_CRITERIA_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-52-SERVICE_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH">
+        <createIndex
+                indexName="SERVICE_ORDER_BY_IDX_THIS_MEMBER_REFERENCE_PATH"
+                tableName="SERVICE_ORDER_BY">
+            <column name="THIS_MEMBER_REFERENCE_PATH_ID" />
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

@@ -86,24 +86,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_CREATED_BY">
-        <createIndex
-                indexName="PROPERTIES_REQUIRED_IDX_CREATED_BY"
-                tableName="PROPERTIES_REQUIRED">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY"
-                tableName="PROPERTIES_REQUIRED">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-3-PROPERTIES_OPTIONAL">
         <createTable tableName="PROPERTIES_OPTIONAL">
             <column name="PROPERTIES_OPTIONAL_ID" type="bigint">
@@ -146,24 +128,6 @@
 
             <column name="OPTIONAL_LOCAL_DATE" type="date" />
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_CREATED_BY">
-        <createIndex
-                indexName="PROPERTIES_OPTIONAL_IDX_CREATED_BY"
-                tableName="PROPERTIES_OPTIONAL">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY"
-                tableName="PROPERTIES_OPTIONAL">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-4-EVERY_TYPE_KEY_PROPERTY">
@@ -222,24 +186,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY">
-        <createIndex
-                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY"
-                tableName="EVERY_TYPE_KEY_PROPERTY">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY"
-                tableName="EVERY_TYPE_KEY_PROPERTY">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-5-EVERY_TYPE_FOREIGN_KEY_PROPERTY">
         <createTable tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
             <column name="ID" type="bigint">
@@ -292,22 +238,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-5-EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY">
-        <createIndex
-                indexName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY"
-                tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
-            <column name="FOREIGN_KEY_STRING" />
-            <column name="FOREIGN_KEY_INTEGER" />
-            <column name="FOREIGN_KEY_LONG" />
-            <column name="FOREIGN_KEY_DOUBLE" />
-            <column name="FOREIGN_KEY_FLOAT" />
-            <column name="FOREIGN_KEY_BOOLEAN" />
-            <column name="FOREIGN_KEY_INSTANT" />
-            <column name="FOREIGN_KEY_LOCAL_DATE" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-6-FINAL_PROPERTIES">
         <createTable tableName="FINAL_PROPERTIES">
             <column name="ID" type="bigint">
@@ -348,24 +278,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
-                tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
-            <column name="SOURCE_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
-                baseTableName="OWNED_NATURAL_ONE_TO_MANY_TARGET"
-                baseColumnNames="SOURCE_KEY"
-                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
-                referencedColumnNames="KEY"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-9-OWNED_NATURAL_ONE_TO_ONE_SOURCE">
         <createTable tableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE">
             <column name="KEY" type="varchar(255)">
@@ -394,24 +306,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
-                tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
-            <column name="SOURCE_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
-                baseTableName="OWNED_NATURAL_ONE_TO_ONE_TARGET"
-                baseColumnNames="SOURCE_KEY"
-                referencedTableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE"
-                referencedColumnNames="KEY"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-11-OWNED_NATURAL_ONE_TO_MANY_SELF">
         <createTable tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
             <column name="KEY" type="varchar(255)">
@@ -424,14 +318,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-11-OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
-                tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
-            <column name="SOURCE_KEY" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-12-OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE">
@@ -462,24 +348,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
-                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
-            <column name="SOURCE_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
-                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET"
-                baseColumnNames="SOURCE_ID"
-                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-14-OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE">
         <createTable tableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE">
             <column name="ID" type="bigint">
@@ -508,24 +376,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
-                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
-            <column name="SOURCE_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
-                baseTableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET"
-                baseColumnNames="SOURCE_ID"
-                referencedTableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
         <createTable tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
             <column name="ID" type="bigint">
@@ -538,14 +388,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
-        <createIndex
-                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
-                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
-            <column name="SOURCE_ID" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-17-SHARED_NATURAL_MANY_TO_ONE_TARGET">
@@ -576,24 +418,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET">
-        <createIndex
-                indexName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET"
-                tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
-            <column name="TARGET_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET">
-        <addForeignKeyConstraint
-                constraintName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET"
-                baseTableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE"
-                baseColumnNames="TARGET_KEY"
-                referencedTableName="SHARED_NATURAL_MANY_TO_ONE_TARGET"
-                referencedColumnNames="KEY"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-19-SHARED_NATURAL_ONE_TO_MANY_SOURCE">
         <createTable tableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE">
             <column name="KEY" type="varchar(255)">
@@ -620,24 +444,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
-                tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
-            <column name="SOURCE_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
-                baseTableName="SHARED_NATURAL_ONE_TO_MANY_TARGET"
-                baseColumnNames="SOURCE_KEY"
-                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
-                referencedColumnNames="KEY"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-21-SHARED_NATURAL_ONE_TO_ONE_SOURCE">
@@ -668,24 +474,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
-                tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
-            <column name="SOURCE_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
-                baseTableName="SHARED_NATURAL_ONE_TO_ONE_TARGET"
-                baseColumnNames="SOURCE_KEY"
-                referencedTableName="SHARED_NATURAL_ONE_TO_ONE_SOURCE"
-                referencedColumnNames="KEY"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-23-SHARED_NATURAL_ONE_TO_MANY_SELF">
         <createTable tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
             <column name="KEY" type="varchar(255)">
@@ -698,14 +486,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-23-SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
-                tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
-            <column name="SOURCE_KEY" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-24-SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE">
@@ -736,24 +516,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
-                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
-            <column name="SOURCE_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
-                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET"
-                baseColumnNames="SOURCE_ID"
-                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-26-SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE">
         <createTable tableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE">
             <column name="ID" type="bigint">
@@ -782,24 +544,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
-                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
-            <column name="SOURCE_ID" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
-        <addForeignKeyConstraint
-                constraintName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
-                baseTableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET"
-                baseColumnNames="SOURCE_ID"
-                referencedTableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE"
-                referencedColumnNames="ID"
-        />
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
         <createTable tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
             <column name="ID" type="bigint">
@@ -812,14 +556,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
-        <createIndex
-                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
-                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
-            <column name="SOURCE_ID" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-29-CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY">
@@ -840,24 +576,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-30-CLASS_WITH_DERIVED_PROPERTY_IDX_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY">
-        <createIndex
-                indexName="CLASS_WITH_DERIVED_PROPERTY_IDX_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
-                tableName="CLASS_WITH_DERIVED_PROPERTY">
-            <column name="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY_KEY" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-foreign-key-30-CLASS_WITH_DERIVED_PROPERTY_FK_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY">
-        <addForeignKeyConstraint
-                constraintName="CLASS_WITH_DERIVED_PROPERTY_FK_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
-                baseTableName="CLASS_WITH_DERIVED_PROPERTY"
-                baseColumnNames="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY_KEY"
-                referencedTableName="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
-                referencedColumnNames="KEY"
-        />
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-31-PROPERTIES_REQUIRED_VERSION">
@@ -892,24 +610,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="Klass" id="initial-indices-31-PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY">
-        <createIndex
-                indexName="PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY"
-                tableName="PROPERTIES_REQUIRED_VERSION">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-31-PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY"
-                tableName="PROPERTIES_REQUIRED_VERSION">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
     <changeSet author="Klass" id="initial-table-32-PROPERTIES_OPTIONAL_VERSION">
         <createTable tableName="PROPERTIES_OPTIONAL_VERSION">
             <column name="PROPERTIES_OPTIONAL_ID" type="bigint">
@@ -940,24 +640,6 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-32-PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY">
-        <createIndex
-                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY"
-                tableName="PROPERTIES_OPTIONAL_VERSION">
-            <column name="CREATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
-    </changeSet>
-
-    <changeSet author="Klass" id="initial-indices-32-PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY">
-        <createIndex
-                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY"
-                tableName="PROPERTIES_OPTIONAL_VERSION">
-            <column name="LAST_UPDATED_BY_ID" />
-            <column name="SYSTEM_TO" />
-        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-table-33-EVERY_TYPE_KEY_PROPERTY_VERSION">
@@ -1018,6 +700,324 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
+                baseTableName="OWNED_NATURAL_ONE_TO_MANY_TARGET"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="OWNED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
+                baseTableName="OWNED_NATURAL_ONE_TO_ONE_TARGET"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET">
+        <addForeignKeyConstraint
+                constraintName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_TARGET"
+                baseTableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE"
+                baseColumnNames="TARGET_KEY"
+                referencedTableName="SHARED_NATURAL_MANY_TO_ONE_TARGET"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_SOURCE"
+                baseTableName="SHARED_NATURAL_ONE_TO_MANY_TARGET"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SHARED_NATURAL_ONE_TO_ONE_TARGET_FK_SOURCE"
+                baseTableName="SHARED_NATURAL_ONE_TO_ONE_TARGET"
+                baseColumnNames="SOURCE_KEY"
+                referencedTableName="SHARED_NATURAL_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_SOURCE"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE">
+        <addForeignKeyConstraint
+                constraintName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_FK_SOURCE"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET"
+                baseColumnNames="SOURCE_ID"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE"
+                referencedColumnNames="ID"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-foreign-key-30-CLASS_WITH_DERIVED_PROPERTY_FK_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY">
+        <addForeignKeyConstraint
+                constraintName="CLASS_WITH_DERIVED_PROPERTY_FK_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
+                baseTableName="CLASS_WITH_DERIVED_PROPERTY"
+                baseColumnNames="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY_KEY"
+                referencedTableName="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
+                referencedColumnNames="KEY"
+        />
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_IDX_CREATED_BY"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-2-PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_IDX_CREATED_BY"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-3-PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_CREATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-4-EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX_LAST_UPDATED_BY"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-5-EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY">
+        <createIndex
+                indexName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX_EVERY_TYPE_KEY_PROPERTY"
+                tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+            <column name="FOREIGN_KEY_STRING" />
+            <column name="FOREIGN_KEY_INTEGER" />
+            <column name="FOREIGN_KEY_LONG" />
+            <column name="FOREIGN_KEY_DOUBLE" />
+            <column name="FOREIGN_KEY_FLOAT" />
+            <column name="FOREIGN_KEY_BOOLEAN" />
+            <column name="FOREIGN_KEY_INSTANT" />
+            <column name="FOREIGN_KEY_LOCAL_DATE" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-8-OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-10-OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-11-OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-13-OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-15-OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-16-OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-18-SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET">
+        <createIndex
+                indexName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX_TARGET"
+                tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+            <column name="TARGET_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-20-SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-22-SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-23-SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_NATURAL_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-25-SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-27-SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-28-SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE">
+        <createIndex
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX_SOURCE"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-30-CLASS_WITH_DERIVED_PROPERTY_IDX_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY">
+        <createIndex
+                indexName="CLASS_WITH_DERIVED_PROPERTY_IDX_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY"
+                tableName="CLASS_WITH_DERIVED_PROPERTY">
+            <column name="CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY_KEY" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-31-PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX_CREATED_BY"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-31-PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-32-PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_CREATED_BY"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-32-PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY">
+        <createIndex
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX_LAST_UPDATED_BY"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
     </changeSet>
 
     <changeSet author="Klass" id="initial-indices-33-EVERY_TYPE_KEY_PROPERTY_VERSION_IDX_CREATED_BY">
