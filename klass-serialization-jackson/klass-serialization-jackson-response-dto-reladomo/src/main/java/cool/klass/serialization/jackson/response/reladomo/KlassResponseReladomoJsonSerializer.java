@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.projection.Projection;
+import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import cool.klass.serialization.jackson.response.KlassResponse;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 
@@ -38,11 +40,30 @@ public class KlassResponseReladomoJsonSerializer
             @Nonnull JsonGenerator jsonGenerator,
             @Nonnull SerializerProvider serializerProvider) throws IOException
     {
-        jsonGenerator.writeStartObject();
+        Class<?> activeViewClass = serializerProvider.getActiveView();
+        Objects.requireNonNull(
+                activeViewClass,
+                "Could not find json serializer for KlassResponse. Usually this is caused by a missing @JsonView() annotation.");
 
+        if (!KlassJsonView.class.isAssignableFrom(activeViewClass))
+        {
+            throw new IllegalStateException(activeViewClass.getCanonicalName());
+        }
+
+        KlassJsonView klassJsonView  = this.instantiate(activeViewClass);
+        String     projectionName = klassJsonView.getProjectionName();
+        Projection projection     = this.domainModel.getProjectionByName(projectionName);
+
+        KlassResponseMetadata metadata = klassResponse.getMetadata();
+        Projection metadataProjection = metadata.getProjection();
+        if (!metadataProjection.equals(projection))
+        {
+            throw new AssertionError("Expected " + metadataProjection + ", got " + projection);
+        }
+
+        jsonGenerator.writeStartObject();
         try
         {
-            KlassResponseMetadata metadata = klassResponse.getMetadata();
             jsonGenerator.writeObjectField("_metadata", metadata);
             this.serializeData(klassResponse, jsonGenerator, serializerProvider);
         }
@@ -126,5 +147,18 @@ public class KlassResponseReladomoJsonSerializer
                 this.domainModel,
                 this.dataStore,
                 metadata);
+    }
+
+    @Nonnull
+    private KlassJsonView instantiate(@Nonnull Class<?> activeViewClass)
+    {
+        try
+        {
+            return activeViewClass.asSubclass(KlassJsonView.class).newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }
