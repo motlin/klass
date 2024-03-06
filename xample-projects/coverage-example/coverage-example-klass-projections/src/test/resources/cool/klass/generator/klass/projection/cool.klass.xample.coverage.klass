@@ -232,6 +232,33 @@ projection SharedSyntheticOneToManySelfProjection on SharedSyntheticOneToManySel
     target: SharedSyntheticOneToManySelfProjection,
 }
 
+projection ClassOwningClassWithDerivedPropertyProjection on ClassOwningClassWithDerivedProperty
+{
+    key: "ClassOwningClassWithDerivedProperty key",
+    classWithDerivedProperties: ClassWithDerivedPropertyProjection,
+}
+
+projection ClassWithDerivedPropertyProjection on ClassWithDerivedProperty
+{
+    key: "ClassWithDerivedProperty key",
+    derivedRequiredString: "ClassWithDerivedProperty derivedRequiredString",
+    derivedRequiredInteger: "ClassWithDerivedProperty derivedRequiredInteger",
+    derivedRequiredLong: "ClassWithDerivedProperty derivedRequiredLong",
+    derivedRequiredDouble: "ClassWithDerivedProperty derivedRequiredDouble",
+    derivedRequiredFloat: "ClassWithDerivedProperty derivedRequiredFloat",
+    derivedRequiredBoolean: "ClassWithDerivedProperty derivedRequiredBoolean",
+    derivedRequiredInstant: "ClassWithDerivedProperty derivedRequiredInstant",
+    derivedRequiredLocalDate: "ClassWithDerivedProperty derivedRequiredLocalDate",
+    derivedOptionalString: "ClassWithDerivedProperty derivedOptionalString",
+    derivedOptionalInteger: "ClassWithDerivedProperty derivedOptionalInteger",
+    derivedOptionalLong: "ClassWithDerivedProperty derivedOptionalLong",
+    derivedOptionalDouble: "ClassWithDerivedProperty derivedOptionalDouble",
+    derivedOptionalFloat: "ClassWithDerivedProperty derivedOptionalFloat",
+    derivedOptionalBoolean: "ClassWithDerivedProperty derivedOptionalBoolean",
+    derivedOptionalInstant: "ClassWithDerivedProperty derivedOptionalInstant",
+    derivedOptionalLocalDate: "ClassWithDerivedProperty derivedOptionalLocalDate",
+}
+
 projection PropertiesRequiredVersionProjection on PropertiesRequiredVersion
 {
     systemFrom: "PropertiesRequiredVersion systemFrom",

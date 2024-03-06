@@ -508,6 +508,42 @@ service SharedSyntheticOneToManySelf
         }
 }
 
+service ClassOwningClassWithDerivedProperty
+{
+    /classOwningClassWithDerivedProperty/{key: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.key == key;
+            projection  : ClassOwningClassWithDerivedPropertyProjection;
+        }
+    /classOwningClassWithDerivedProperty
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ClassOwningClassWithDerivedPropertyProjection;
+        }
+}
+
+service ClassWithDerivedProperty
+{
+    /classWithDerivedProperty/{key: String[1..1]}
+        GET
+        {
+            multiplicity: one;
+            criteria    : this.key == key;
+            projection  : ClassWithDerivedPropertyProjection;
+        }
+    /classWithDerivedProperty
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
+            projection  : ClassWithDerivedPropertyProjection;
+        }
+}
+
 service PropertiesRequiredVersion
 {
     /propertiesRequiredVersion/{propertiesRequiredId: Long[1..1]}

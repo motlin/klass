@@ -1,0 +1,4 @@
+alter table CLASS_WITH_DERIVED_PROPERTY add constraint CLASS_WITH_DERIVED_PROPERTY_PK primary key (key);
+
+create index CLASS_WITH_DERIVED_PROPERTY_IDX_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY on CLASS_WITH_DERIVED_PROPERTY(class_owning_class_with_derived_property_key);
+

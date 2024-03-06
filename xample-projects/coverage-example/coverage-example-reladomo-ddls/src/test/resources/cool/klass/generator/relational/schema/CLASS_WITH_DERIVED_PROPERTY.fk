@@ -1,0 +1,7 @@
+alter table CLASS_WITH_DERIVED_PROPERTY add constraint CLASS_WITH_DERIVED_PROPERTY_FK_CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY foreign key (
+    class_owning_class_with_derived_property_key
+)
+references CLASS_OWNING_CLASS_WITH_DERIVED_PROPERTY(
+    key
+);
+

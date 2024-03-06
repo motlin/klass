@@ -556,3 +556,54 @@ association SelfSharedSyntheticOneToMany
 
     relationship this.id == SharedSyntheticOneToManySelf.sourceId
 }
+
+class ClassOwningClassWithDerivedProperty
+{
+    key: String key;
+}
+
+class ClassWithDerivedProperty
+{
+    key: String key;
+    classOwningClassWithDerivedPropertyKey: String private;
+    derivedRequiredString: String derived;
+    derivedRequiredInteger: Integer derived;
+    derivedRequiredLong: Long derived;
+    derivedRequiredDouble: Double derived;
+    derivedRequiredFloat: Float derived;
+    derivedRequiredBoolean: Boolean derived;
+    derivedRequiredInstant: Instant derived;
+    derivedRequiredLocalDate: LocalDate derived;
+    derivedOptionalString: String? derived;
+    derivedOptionalInteger: Integer? derived;
+    derivedOptionalLong: Long? derived;
+    derivedOptionalDouble: Double? derived;
+    derivedOptionalFloat: Float? derived;
+    derivedOptionalBoolean: Boolean? derived;
+    derivedOptionalInstant: Instant? derived;
+    derivedOptionalLocalDate: LocalDate? derived;
+}
+
+association ClassHasClassesWithDerivedProperty
+{
+    classOwningClassWithDerivedProperty: ClassOwningClassWithDerivedProperty[1..1];
+    classWithDerivedProperties: ClassWithDerivedProperty[0..*] owned
+        orderBy: this.derivedRequiredString ascending,
+        this.derivedRequiredInteger ascending,
+        this.derivedRequiredLong ascending,
+        this.derivedRequiredDouble ascending,
+        this.derivedRequiredFloat ascending,
+        this.derivedRequiredBoolean ascending,
+        this.derivedRequiredInstant ascending,
+        this.derivedRequiredLocalDate ascending,
+        this.derivedOptionalString ascending,
+        this.derivedOptionalInteger ascending,
+        this.derivedOptionalLong ascending,
+        this.derivedOptionalDouble ascending,
+        this.derivedOptionalFloat ascending,
+        this.derivedOptionalBoolean ascending,
+        this.derivedOptionalInstant ascending,
+        this.derivedOptionalLocalDate ascending;
+
+    relationship this.key == ClassWithDerivedProperty.classOwningClassWithDerivedPropertyKey
+}
