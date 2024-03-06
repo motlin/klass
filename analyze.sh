@@ -31,16 +31,19 @@ COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
 
 echoSay "[[volm 0.10]] Beginning build of commit: $COMMIT_MESSAGE" &
 
-$MAVEN clean            --threads 2C
-$MAVEN install          --threads 2C -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip=true --activate-profiles 'dev'
-EXIT_CODE=$?
+$MAVEN  clean            --threads 2C
+EXIT_CODE_CLEAN=$?
 
-if [ $EXIT_CODE -ne 0 ]; then
-	./mvnw install -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip=true --activate-profiles 'dev'
-    echoSay "Build failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
+$MAVEN dependency:analyze --threads 2C
+EXIT_CODE_CHECKSTYLE=$?
+
+if [ $EXIT_CODE_CLEAN -ne 0 ] || [ $EXIT_CODE_CHECKSTYLE -ne 0 ]; then
+    ./mvnw dependency:analyze
+    EXIT_CODE=$?
+    echoSay "Checkstyle failed on commit: '$COMMIT_MESSAGE' with exit code: $EXIT_CODE"
     exit 1
 fi
 
 checkLocalModification
-echoSay "[[volm 0.10]] Build succeeded on commit: '$COMMIT_MESSAGE'"
+echoSay "[[volm 0.10]] Checkstyle succeeded on commit: '$COMMIT_MESSAGE'"
 exit 0
