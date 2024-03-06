@@ -458,7 +458,7 @@
             <dependency>
                 <groupId>com.goldmansachs.reladomo</groupId>
                 <artifactId>reladomo-serial</artifactId>
-                <version>17.0.2</version>
+                <version>17.1.1</version>
             </dependency>
 
             <dependency>
