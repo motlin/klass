@@ -69,37 +69,6 @@ public class CompilerState
                 this.compilerInput.runInPlaceCompilerMacro(compilationUnit, Lists.immutable.with(listeners)));
     }
 
-    public void runNonRootCompilerMacro(
-            @Nonnull AntlrElement macroElement,
-            @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
-            @Nonnull String sourceCodeText,
-            @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule,
-            ParseTreeListener... listeners)
-    {
-        Objects.requireNonNull(macroElement);
-
-        CompilationUnit compilationUnit = CompilationUnit.getMacroCompilationUnit(
-                this.compilerInput.getCompilationUnits().size(),
-                macroElement,
-                macroExpansionCompilerPhase,
-                sourceCodeText,
-                parserRule);
-
-        CompilerWalkState oldCompilerWalk = this.compilerWalk;
-        CompilerWalkState newCompilerWalk = oldCompilerWalk.withCompilationUnit(compilationUnit);
-        this.macroCompilerWalks.put(compilationUnit, newCompilerWalk);
-
-        this.compilerWalk = newCompilerWalk;
-        try
-        {
-            this.compilerInput.runCompilerMacro(compilationUnit, Lists.immutable.with(listeners));
-        }
-        finally
-        {
-            this.compilerWalk = oldCompilerWalk;
-        }
-    }
-
     public void runRootCompilerMacro(
             @Nonnull AntlrElement macroElement,
             @Nonnull AbstractCompilerPhase macroExpansionCompilerPhase,
