@@ -56,7 +56,7 @@ public class MetaResourceManualTest
     @Test
     public void metaProjection()
     {
-        this.assertUrlReturns("metaProjection", "/meta/projection/ProjectionElementSummaryProjection");
+        this.assertUrlReturns("metaProjection", "/meta/projection/ProjectionElementProjection");
     }
 
     @Test
