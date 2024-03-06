@@ -5,6 +5,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
@@ -18,45 +19,8 @@ public class StackOverflowGraphQLTest
     {
         Client client = this.getClient("graphqlSmokeTest");
 
-        //language=GraphQL
-        String query = """
-                query {
-                    question(id: 1) {
-                        id
-                        systemFrom
-                        systemTo
-                        createdBy {
-                            userId
-                        }
-                        createdOn
-                        lastUpdatedBy {
-                            userId
-                        }
-                        body
-                        title
-                        status
-                        deleted
-                        tags {
-                            tag {
-                                name
-                                systemFrom
-                                systemTo
-                                createdBy {
-                                    userId
-                                }
-                                createdOn
-                                lastUpdatedBy {
-                                    userId
-                                }
-                                description
-                            }
-                        },
-                        version {
-                            number,
-                        },
-                    }
-                }
-                """;
+        String queryName = this.getClass().getSimpleName() + ".smokeTest.graphql";
+        String query     = FileMatchRule.slurp(queryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")

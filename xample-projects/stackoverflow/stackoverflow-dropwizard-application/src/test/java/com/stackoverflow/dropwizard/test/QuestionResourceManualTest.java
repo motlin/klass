@@ -110,7 +110,7 @@ public class QuestionResourceManualTest
         Client client = this.getClient("post_invalid_data");
 
         String invalidJson = FileMatchRule.slurp(
-                this.getClass().getSimpleName() + ".invalid_data.json",
+                this.getClass().getSimpleName() + ".invalid_data.json5",
                 this.getClass());
 
         Response response = client
@@ -132,7 +132,7 @@ public class QuestionResourceManualTest
         //<editor-fold desc="POST valid json, status: CREATED">
         {
             String validJson = FileMatchRule.slurp(
-                    this.getClass().getSimpleName() + ".create_data.json",
+                    this.getClass().getSimpleName() + ".create_data.json5",
                     this.getClass());
 
             Response response = client
@@ -171,7 +171,7 @@ public class QuestionResourceManualTest
         Client client = this.getClient("put_invalid_id");
 
         String json = FileMatchRule.slurp(
-                this.getClass().getSimpleName() + ".invalid_id_data.json",
+                this.getClass().getSimpleName() + ".invalid_id_data.json5",
                 this.getClass());
 
         Response response = client
@@ -194,7 +194,7 @@ public class QuestionResourceManualTest
         Client client = this.getClient("put_conflict");
 
         String validJson = FileMatchRule.slurp(
-                this.getClass().getSimpleName() + ".valid_versioned_put_data.json",
+                this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                 this.getClass());
 
         Response response = client
@@ -220,7 +220,7 @@ public class QuestionResourceManualTest
         //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
             String validJson = FileMatchRule.slurp(
-                    this.getClass().getSimpleName() + ".valid_versioned_put_data.json",
+                    this.getClass().getSimpleName() + ".valid_versioned_put_data.json5",
                     this.getClass());
 
             Response response = client
@@ -254,36 +254,8 @@ public class QuestionResourceManualTest
     {
         Client client = this.getClient("put_unchanged");
 
-        //language=JSON
-        String json = """
-                {
-                  "id": 1,
-                  "title": "test title 1",
-                  "body": "test body 1",
-                  "status": "Open",
-                  "deleted": false,
-                  "systemFrom": "1999-12-31T23:59:59.999Z",
-                  "systemTo": null,
-                  "createdById": "test user 1",
-                  "createdOn": "1999-12-31T23:59:59.999Z",
-                  "lastUpdatedById": "test user 1",
-                  "tags": [
-                    {
-                      "tag": {
-                        "name": "test tag 1"
-                      }
-                    },
-                    {
-                      "tag": {
-                        "name": "test tag 2"
-                      }
-                    }
-                  ],
-                  "version": {
-                    "number": 2
-                  }
-                }
-                """;
+        String jsonName = this.getClass().getSimpleName() + ".put_unchanged.json5";
+        String json     = FileMatchRule.slurp(jsonName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/api/manual/question/{id}")

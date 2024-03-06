@@ -15,6 +15,15 @@
     <name>${app.name} Application</name>
 
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/inputresources</directory>
+            </testResource>
+        </testResources>
+
         <plugins>
 
             <plugin>

@@ -14,6 +14,17 @@
 
     <name>Klass Generator: Reladomo Concrete Classes</name>
 
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/inputresources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
     <dependencies>
 
         <dependency>
@@ -72,8 +83,21 @@
         </dependency>
 
         <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-match-file</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-compiler</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -92,13 +116,6 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-source-code-meta-interface</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

@@ -5,6 +5,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.impl.factory.Maps;
 import org.junit.Test;
 
@@ -16,65 +17,15 @@ public class CoverageExampleGraphQLTest
     {
         Client client = this.getClient("graphqlSmokeTest");
 
-        //language=GraphQL
-        String query = """
-                query {
-                  everyTypeKeyProperties {
-                    keyString
-                    keyInteger
-                    keyLong
-                    keyDouble
-                    keyFloat
-                    keyBoolean
-                    keyInstant
-                    keyLocalDate
-                    everyTypeForeignKeyProperties {
-                      id
-                      foreignKeyString
-                      foreignKeyInteger
-                      foreignKeyLong
-                      foreignKeyDouble
-                      foreignKeyFloat
-                      foreignKeyBoolean
-                      foreignKeyInstant
-                      foreignKeyLocalDate
-                      data
-                    }
-                    version {
-                      number
-                    }
-                  }
-                  propertiesOptionals {
-                    propertiesOptionalId
-                    optionalLong
-                    optionalInteger
-                    optionalDouble
-                    optionalFloat
-                    optionalString
-                    optionalBoolean
-                    systemFrom
-                    systemTo
-                    lastUpdatedBy {
-                      userId
-                      email
-                    }
-                    createdOn
-                    createdBy {
-                      userId
-                      email
-                    }
-                    version {
-                      number
-                    }
-                  }
-                }
-                """;
+        String graphqlQueryName = this.getClass().getSimpleName() + ".graphqlSmokeTest.graphql";
+
+        String graphqlQuery     = FileMatchRule.slurp(graphqlQueryName, this.getClass());
 
         Response response = client
                 .target("http://localhost:{port}/graphql")
                 .resolveTemplate("port", this.appRule.getLocalPort())
                 .request()
-                .post(Entity.json(Maps.mutable.with("query", query)));
+                .post(Entity.json(Maps.mutable.with("query", graphqlQuery)));
 
         this.assertResponse("graphqlSmokeTest", Status.OK, response);
     }
