@@ -7,6 +7,10 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import com.gs.fw.common.mithra.MithraList;
+import com.gs.fw.common.mithra.finder.Operation;
+import com.gs.fw.common.mithra.finder.RelatedFinder;
+import com.gs.fw.finder.TransactionalDomainList;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.ClassModifier;
@@ -45,25 +49,79 @@ import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
+import klass.model.meta.domain.AssociationEndFinder;
+import klass.model.meta.domain.AssociationEndModifierFinder;
 import klass.model.meta.domain.AssociationEndOrderBy;
+import klass.model.meta.domain.AssociationFinder;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
+import klass.model.meta.domain.ClassifierInterfaceMappingFinder;
+import klass.model.meta.domain.ClassifierModifierFinder;
 import klass.model.meta.domain.ElementAbstract;
+import klass.model.meta.domain.EnumerationFinder;
+import klass.model.meta.domain.EnumerationLiteralFinder;
 import klass.model.meta.domain.EnumerationParameter;
+import klass.model.meta.domain.EnumerationPropertyFinder;
+import klass.model.meta.domain.InterfaceFinder;
+import klass.model.meta.domain.KlassFinder;
 import klass.model.meta.domain.MaxLengthPropertyValidation;
+import klass.model.meta.domain.MaxLengthPropertyValidationFinder;
 import klass.model.meta.domain.MaxPropertyValidation;
+import klass.model.meta.domain.MaxPropertyValidationFinder;
 import klass.model.meta.domain.MinLengthPropertyValidation;
+import klass.model.meta.domain.MinLengthPropertyValidationFinder;
 import klass.model.meta.domain.MinPropertyValidation;
+import klass.model.meta.domain.MinPropertyValidationFinder;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.PackageableElementAbstract;
 import klass.model.meta.domain.PrimitiveParameter;
+import klass.model.meta.domain.PrimitivePropertyFinder;
+import klass.model.meta.domain.ProjectionAssociationEndFinder;
+import klass.model.meta.domain.ProjectionDataTypePropertyFinder;
+import klass.model.meta.domain.ProjectionProjectionReferenceFinder;
 import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
+import klass.model.meta.domain.PropertyModifierFinder;
+import klass.model.meta.domain.ServiceFinder;
+import klass.model.meta.domain.ServiceGroupFinder;
+import klass.model.meta.domain.ServiceProjectionFinder;
+import klass.model.meta.domain.ThisMemberReferencePathFinder;
+import klass.model.meta.domain.UrlFinder;
 import klass.model.meta.domain.UrlParameter;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 
 public class KlassBootstrapWriter
 {
+    // TODO: Implement Purge on DataStore and break the dependency on Reladomo
+    private static final ImmutableList<RelatedFinder<?>> BOOTSTRAP_FINDERS = Lists.immutable.with(
+            EnumerationFinder.getFinderInstance(),
+            EnumerationLiteralFinder.getFinderInstance(),
+            InterfaceFinder.getFinderInstance(),
+            KlassFinder.getFinderInstance(),
+            AssociationFinder.getFinderInstance(),
+            ServiceProjectionFinder.getFinderInstance(),
+            ServiceProjectionFinder.getFinderInstance(),
+            ProjectionAssociationEndFinder.getFinderInstance(),
+            ProjectionProjectionReferenceFinder.getFinderInstance(),
+            ProjectionDataTypePropertyFinder.getFinderInstance(),
+            ServiceGroupFinder.getFinderInstance(),
+            UrlFinder.getFinderInstance(),
+            ServiceFinder.getFinderInstance(),
+            PrimitivePropertyFinder.getFinderInstance(),
+            EnumerationPropertyFinder.getFinderInstance(),
+            PropertyModifierFinder.getFinderInstance(),
+            ClassifierModifierFinder.getFinderInstance(),
+            AssociationEndFinder.getFinderInstance(),
+            AssociationEndModifierFinder.getFinderInstance(),
+            ThisMemberReferencePathFinder.getFinderInstance(),
+            MinLengthPropertyValidationFinder.getFinderInstance(),
+            MaxLengthPropertyValidationFinder.getFinderInstance(),
+            MinPropertyValidationFinder.getFinderInstance(),
+            MaxPropertyValidationFinder.getFinderInstance(),
+            ClassifierInterfaceMappingFinder.getFinderInstance());
+
     private final DomainModel domainModel;
     private final DataStore   dataStore;
 
@@ -80,12 +138,22 @@ public class KlassBootstrapWriter
 
     private void bootstrapMetaModelInTransaction()
     {
+        BOOTSTRAP_FINDERS.each(this::deleteAll);
+
         this.domainModel.getEnumerations().each(this::handleEnumeration);
         this.domainModel.getInterfaces().each(this::handleInterface);
         this.domainModel.getClasses().each(this::handleClass);
         this.domainModel.getAssociations().each(this::handleAssociation);
         this.domainModel.getProjections().each(this::handleProjection);
         this.domainModel.getServiceGroups().each(this::handleServiceGroup);
+    }
+
+    private void deleteAll(RelatedFinder<?> finder)
+    {
+        Operation                  operation               = finder.all();
+        MithraList<?>              mithraList              = finder.findMany(operation);
+        TransactionalDomainList<?> transactionalDomainList = (TransactionalDomainList<?>) mithraList;
+        transactionalDomainList.deleteAll();
     }
 
     private void handleEnumeration(@Nonnull Enumeration enumeration)
@@ -142,7 +210,9 @@ public class KlassBootstrapWriter
 
     private void handleAssociation(@Nonnull Association association)
     {
-        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(Maps.immutable.empty(), association.getCriteria());
+        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(
+                Maps.immutable.empty(),
+                association.getCriteria());
 
         klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
@@ -210,8 +280,13 @@ public class KlassBootstrapWriter
                         bootstrappedProjectionWithAssociationEnd,
                         projectionWithAssociationEnd);
                 bootstrappedProjectionWithAssociationEnd.setParentId(bootstrappedProjectionParent.getId());
-                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionWithAssociationEnd.getProperty().getOwningClassifier().getName());
-                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionWithAssociationEnd.getProperty().getName());
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndClass(projectionWithAssociationEnd
+                        .getProperty()
+                        .getOwningClassifier()
+                        .getName());
+                bootstrappedProjectionWithAssociationEnd.setAssociationEndName(projectionWithAssociationEnd
+                        .getProperty()
+                        .getName());
             }
 
             @Override
@@ -220,14 +295,19 @@ public class KlassBootstrapWriter
                 klass.model.meta.domain.ProjectionDataTypeProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionDataTypeProperty();
                 KlassBootstrapWriter.handleNamedElement(bootstrappedProjection, projectionDataTypeProperty);
                 bootstrappedProjection.setParentId(bootstrappedProjectionParent.getId());
-                bootstrappedProjection.setPropertyClassifierName(projectionDataTypeProperty.getProperty().getOwningClassifier().getName());
+                bootstrappedProjection.setPropertyClassifierName(projectionDataTypeProperty
+                        .getProperty()
+                        .getOwningClassifier()
+                        .getName());
                 bootstrappedProjection.setPropertyName(projectionDataTypeProperty.getProperty().getName());
                 bootstrappedProjection.insert();
             }
         });
     }
 
-    private void handleProjectionChildren(@Nonnull ProjectionParent projectionParent, @Nonnull klass.model.meta.domain.ProjectionElement bootstrappedProjection)
+    private void handleProjectionChildren(
+            @Nonnull ProjectionParent projectionParent,
+            @Nonnull klass.model.meta.domain.ProjectionElement bootstrappedProjection)
     {
         for (ProjectionChild projectionChild : projectionParent.getChildren())
         {
@@ -325,7 +405,8 @@ public class KlassBootstrapWriter
     {
         Optional<klass.model.meta.domain.Criteria> optionalBootstrappedQueryCriteria = service.getQueryCriteria()
                 .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
-        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedAuthorizeCriteria = service.getAuthorizeCriteria()
+        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedAuthorizeCriteria = service
+                .getAuthorizeCriteria()
                 .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
         Optional<klass.model.meta.domain.Criteria> optionalBootstrappedValidateCriteria = service.getValidateCriteria()
                 .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
@@ -379,11 +460,6 @@ public class KlassBootstrapWriter
 
                 this.handlePropertyModifiers(classifier, dataTypeProperty);
                 this.handleValidations(classifier, dataTypeProperty);
-
-                // TODO: dataTypeProperty.getMinLengthPropertyValidation();
-                // TODO: dataTypeProperty.getMaxLengthPropertyValidation();
-                // TODO: dataTypeProperty.getMinPropertyValidation();
-                // TODO: dataTypeProperty.getMaxPropertyValidation();
             }
             else
             {
@@ -517,7 +593,10 @@ public class KlassBootstrapWriter
             associationEndOrderBy.setAssociationEndClassName(associationEnd.getOwningClassifier().getName());
             associationEndOrderBy.setAssociationEndName(associationEnd.getName());
             associationEndOrderBy.setThisMemberReferencePathId(bootstrappedThisMemberReferencePath.getId());
-            associationEndOrderBy.setOrderByDirection(orderByMemberReferencePath.getOrderByDirectionDeclaration().getOrderByDirection().getPrettyName());
+            associationEndOrderBy.setOrderByDirection(orderByMemberReferencePath
+                    .getOrderByDirectionDeclaration()
+                    .getOrderByDirection()
+                    .getPrettyName());
             associationEndOrderBy.insert();
         }
     }
@@ -527,7 +606,10 @@ public class KlassBootstrapWriter
     {
         klass.model.meta.domain.ThisMemberReferencePath bootstrappedThisMemberReferencePath = new klass.model.meta.domain.ThisMemberReferencePath();
         bootstrappedThisMemberReferencePath.setClassName(thisMemberReferencePath.getKlass().getName());
-        bootstrappedThisMemberReferencePath.setPropertyClassName(thisMemberReferencePath.getProperty().getOwningClassifier().getName());
+        bootstrappedThisMemberReferencePath.setPropertyClassName(thisMemberReferencePath
+                .getProperty()
+                .getOwningClassifier()
+                .getName());
         bootstrappedThisMemberReferencePath.setPropertyName(thisMemberReferencePath.getProperty().getName());
         if (thisMemberReferencePath.getAssociationEnds().notEmpty())
         {
