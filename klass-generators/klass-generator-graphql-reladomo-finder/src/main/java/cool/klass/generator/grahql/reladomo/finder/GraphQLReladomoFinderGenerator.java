@@ -74,8 +74,11 @@ public class GraphQLReladomoFinderGenerator
         return ""
                 + "input " + classifierName + "Finder {\n"
                 + "    AND: [" + classifierName + "Finder!]\n"
-                + "    OR: [" + classifierName + "Finder!]\n"
-                + classifier.getProperties().collect(this::getSourceCode).makeString()
+                + "    OR:  [" + classifierName + "Finder!]\n"
+                + "    exists            : Empty\n"
+                + "    notExists         : " + classifierName + "Finder\n"
+                + "    recursiveNotExists: " + classifierName + "Finder\n"
+                + classifier.getProperties().collect(this::getSourceCode).makeString("")
                 + "}\n"
                 + "\n";
     }
