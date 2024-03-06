@@ -423,3 +423,6 @@ a {
 .klass-square-bracket-right {
     color: var(--klass-color-square-bracket-right, var(--klass-color-square-brackets, var(--klass-color-paired-punctuation, var(--klass-color-punctuation, --color-foreground))));
 }
+.klass-url-constant {
+    color: var(--klass-color-url-constant, var(--klass-color-identifier, --color-foreground));
+}
