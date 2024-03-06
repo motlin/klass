@@ -104,6 +104,7 @@ public class ServiceResourceGenerator
                 + "import javax.annotation.Generated;\n"
                 + "import javax.ws.rs.*;\n"
                 + "import javax.ws.rs.core.*;\n"
+                + "import javax.ws.rs.core.Response.Status;\n"
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
@@ -133,6 +134,7 @@ public class ServiceResourceGenerator
                 + "        this.domainModel = domainModel;\n"
                 + "    }\n"
                 + "\n"
+                + ""
                 + serviceMethodsSourceCode
                 + "\n"
                 + "    private List<ReladomoJsonTree> applyProjection(\n"
@@ -209,7 +211,7 @@ public class ServiceResourceGenerator
 
         String authorizePredicateSourceCode = this.checkPredicate(service.getAuthorizeCriteria(), "authorize", "isAuthorized", "ForbiddenException()");
         String validatePredicateSourceCode  = this.checkPredicate(service.getValidateCriteria(), "validate", "isValidated", "BadRequestException()");
-        String conflictPredicateSourceCode  = this.checkPredicate(service.getConflictCriteria(), "conflict", "hasConflict", "ClientErrorException(Response.Status.CONFLICT)");
+        String conflictPredicateSourceCode  = this.checkPredicate(service.getConflictCriteria(), "conflict", "hasConflict", "ClientErrorException(Status.CONFLICT)");
 
         String executeOperationSourceCode = this.getExecuteOperationSourceCode(
                 service.getQueryCriteria(),
@@ -276,7 +278,7 @@ public class ServiceResourceGenerator
             return ""
                     + "        if (result.isEmpty())\n"
                     + "        {\n"
-                    + "            throw new NotFoundException();\n"
+                    + "            throw new ClientErrorException(\"Url valid, data not found.\", Status.GONE);\n"
                     + "        }\n"
                     + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
                     + "\n"

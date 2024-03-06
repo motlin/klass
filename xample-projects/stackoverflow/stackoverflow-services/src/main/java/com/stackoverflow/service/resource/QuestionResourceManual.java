@@ -5,9 +5,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
@@ -68,7 +69,7 @@ public class QuestionResourceManual
 
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
@@ -99,7 +100,7 @@ public class QuestionResourceManual
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
@@ -128,7 +129,7 @@ public class QuestionResourceManual
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
@@ -163,7 +164,7 @@ public class QuestionResourceManual
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
@@ -197,7 +198,7 @@ public class QuestionResourceManual
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
@@ -226,7 +227,7 @@ public class QuestionResourceManual
         boolean hasConflict  = !result.asEcList().allSatisfy(conflictOperation::matches);
         if (result.isEmpty())
         {
-            throw new NotFoundException();
+            throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
         MithraObject mithraObject = Iterate.getOnly(result);
 
