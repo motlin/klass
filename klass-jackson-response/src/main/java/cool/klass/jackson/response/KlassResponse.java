@@ -1,8 +1,10 @@
 package cool.klass.jackson.response;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,14 +15,19 @@ public class KlassResponse
 {
     @Nonnull
     private final KlassResponseMetadata metadata;
-    @Nonnull
+    @Nullable
     private final Object                data;
 
     @JsonCreator
-    public KlassResponse(@Nonnull Object data, @Nonnull KlassResponseMetadata metadata)
+    public KlassResponse(@Nonnull KlassResponseMetadata metadata, Object data)
     {
         this.metadata = Objects.requireNonNull(metadata);
-        this.data = Objects.requireNonNull(data);
+        this.data = data;
+
+        if (metadata.getMultiplicity().isToMany() && !(data instanceof List))
+        {
+            throw new IllegalStateException(metadata.getCriteria().toString());
+        }
     }
 
     @Nonnull
@@ -30,7 +37,7 @@ public class KlassResponse
         return this.metadata;
     }
 
-    @Nonnull
+    @Nullable
     @JsonProperty("_data")
     public Object getData()
     {

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.gs.fw.common.mithra.MithraManager;
 import com.gs.fw.common.mithra.MithraManagerProvider;
-import com.gs.fw.common.mithra.MithraObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +23,13 @@ public final class ReladomoConfig
         throw new AssertionError("Suppress default constructor for noninstantiability");
     }
 
-    public static void addSerializer(
+    public static <T> void addSerializer(
             @Nonnull ObjectMapper objectMapper,
-            @Nonnull JsonSerializer<MithraObject> jsonSerializer)
+            @Nonnull Class<T> klass,
+            @Nonnull JsonSerializer<T> jsonSerializer)
     {
         SimpleModule module = new SimpleModule();
-        module.addSerializer(MithraObject.class, jsonSerializer);
+        module.addSerializer(klass, jsonSerializer);
         objectMapper.registerModule(module);
     }
 

@@ -6,12 +6,14 @@ import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraManagerProvider;
+import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactory;
 import cool.klass.dropwizard.configuration.reladomo.ReladomoFactoryProvider;
-import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.jackson.response.KlassResponse;
 import cool.klass.reladomo.configuration.ReladomoConfig;
+import cool.klass.serializer.json.KlassResponseReladomoJsonSerializer;
 import cool.klass.serializer.json.ReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -41,16 +43,19 @@ public class ReladomoBundle implements PrioritizedBundle<ReladomoFactoryProvider
         LOGGER.info("Running {}.", ReladomoBundle.class.getSimpleName());
 
         DataStore       dataStore       = configuration.getDataStoreFactory().createDataStore();
-        DomainModel     domainModel     = configuration.getDomainModelFactory().createDomainModel();
         ReladomoFactory reladomoFactory = configuration.getReladomoFactory();
 
-        ReladomoJsonSerializer reladomoJsonSerializer     = new ReladomoJsonSerializer(domainModel, dataStore);
-        Duration               transactionTimeout         = reladomoFactory.getTransactionTimeout();
-        int                    transactionTimeoutSeconds  = Math.toIntExact(transactionTimeout.toSeconds());
-        List<String>           runtimeConfigurationPaths  = reladomoFactory.getRuntimeConfigurationPaths();
-        boolean                enableRetrieveCountMetrics = reladomoFactory.isEnableRetrieveCountMetrics();
+        ReladomoJsonSerializer              serializer1 = new ReladomoJsonSerializer(dataStore);
+        KlassResponseReladomoJsonSerializer serializer2 = new KlassResponseReladomoJsonSerializer(dataStore);
 
-        ReladomoConfig.addSerializer(environment.getObjectMapper(), reladomoJsonSerializer);
+        Duration     transactionTimeout         = reladomoFactory.getTransactionTimeout();
+        int          transactionTimeoutSeconds  = Math.toIntExact(transactionTimeout.toSeconds());
+        List<String> runtimeConfigurationPaths  = reladomoFactory.getRuntimeConfigurationPaths();
+        boolean      enableRetrieveCountMetrics = reladomoFactory.isEnableRetrieveCountMetrics();
+
+        // TODO: Split the two serializers into two modules
+        ReladomoConfig.addSerializer(environment.getObjectMapper(), MithraObject.class, serializer1);
+        ReladomoConfig.addSerializer(environment.getObjectMapper(), KlassResponse.class, serializer2);
         ReladomoConfig.setTransactionTimeout(transactionTimeoutSeconds);
         // Notification should be configured here. Refer to notification/Notification.html under reladomo-javadoc.jar.
         ReladomoConfig.loadRuntimeConfigurations(runtimeConfigurationPaths);
