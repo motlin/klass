@@ -228,7 +228,13 @@
                                         </excludes>
                                     </bannedDependencies>
                                     <banDuplicatePomDependencyVersions />
-                                    <requireUpperBoundDeps />
+                                    <requireUpperBoundDeps>
+                                        <excludes>
+                                            <!--Deliberately downgraded reflections to get around error where it logs thousands of not found classes-->
+                                            <exclude>org.reflections:reflections</exclude>
+                                        </excludes>
+                                    </requireUpperBoundDeps>
+
                                 </rules>
                             </configuration>
                             <goals>
@@ -476,7 +482,13 @@
             <dependency>
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
-                <version>0.9.11</version>
+                <version>0.9.10</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.findbugs</groupId>
+                        <artifactId>annotations</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -887,7 +899,13 @@
                                         </bannedDependencies>
                                         <banDuplicatePomDependencyVersions />
                                         <reactorModuleConvergence />
-                                        <requireUpperBoundDeps />
+                                        <requireUpperBoundDeps>
+                                            <excludes>
+                                                <!--Deliberately downgraded reflections to get around error where it logs thousands of not found classes-->
+                                                <exclude>org.reflections:reflections</exclude>
+                                            </excludes>
+                                        </requireUpperBoundDeps>
+
                                     </rules>
                                 </configuration>
                                 <goals>
