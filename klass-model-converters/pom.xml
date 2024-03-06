@@ -19,6 +19,7 @@
     <modules>
         <module>klass-bootstrap-writer</module>
         <module>klass-compiler</module>
+        <module>klass-compiler-tests</module>
         <module>klass-grammar</module>
         <module>klass-syntax-highlighter-ansi</module>
         <module>klass-token-categories</module>
