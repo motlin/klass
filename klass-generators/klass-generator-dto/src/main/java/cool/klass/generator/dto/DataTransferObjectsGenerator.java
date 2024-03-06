@@ -112,14 +112,12 @@ public class DataTransferObjectsGenerator
         String dataFieldsSourceCode = dataTypeProperties.collect(this::getDataField).makeString("")
                 + (dataTypeProperties.isEmpty() ? "" : "\n");
 
-        String dataGettersSettersSourceCode = dataTypeProperties.collect(this::getDataGetterSetter).makeString("\n");
+        String dataGettersSettersSourceCode = dataTypeProperties.collect(this::getDataGetterSetter).makeString("");
 
         ImmutableList<AssociationEnd> associationEnds = klass.getAssociationEnds();
-        String referenceFieldsSourceCode = associationEnds.collect(this::getReferenceField).makeString("")
-                + (associationEnds.isEmpty() ? "" : "\n");
+        String referenceFieldsSourceCode = associationEnds.collect(this::getReferenceField).makeString("");
 
-        String referenceGettersSettersSourceCode = associationEnds.collect(this::getReferenceGetterSetter).makeString(
-                "\n");
+        String referenceGettersSettersSourceCode = associationEnds.collect(this::getReferenceGetterSetter).makeString("");
 
         boolean hasConstraints = dataTypeProperties
                 .asLazy()
@@ -190,9 +188,10 @@ public class DataTransferObjectsGenerator
     {
         //language=JAVA
         return ""
+                + "\n"
                 + "    public " + type + " get" + uppercaseName + "()\n"
                 + "    {\n"
-                + "        return " + name + ";\n"
+                + "        return this." + name + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    public void set" + uppercaseName + "(" + type + " " + name + ")\n"
