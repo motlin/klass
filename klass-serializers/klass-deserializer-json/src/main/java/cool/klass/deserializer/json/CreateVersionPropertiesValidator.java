@@ -134,7 +134,14 @@ public class CreateVersionPropertiesValidator
         }
         else if (dataTypeProperty.isCreatedBy() || dataTypeProperty.isLastUpdatedBy())
         {
-            this.handleWarnIfPresent(dataTypeProperty, "audit");
+            if (dataTypeProperty.isPrivate())
+            {
+                this.handleErrorIfPresent(dataTypeProperty, "audit");
+            }
+            else
+            {
+                this.handleWarnIfPresent(dataTypeProperty, "audit");
+            }
         }
         else if (dataTypeProperty.isCreatedOn())
         {
@@ -142,7 +149,18 @@ public class CreateVersionPropertiesValidator
         }
         else if (dataTypeProperty.isForeignKey())
         {
-            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            if (dataTypeProperty.isPrivate())
+            {
+                this.handleErrorIfPresent(dataTypeProperty, "foreign key");
+            }
+            else
+            {
+                this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            }
+        }
+        else if (dataTypeProperty.isPrivate())
+        {
+            this.handleErrorIfPresent(dataTypeProperty, "private");
         }
         else if (dataTypeProperty.isVersion())
         {
