@@ -43,71 +43,6 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-reladomo-plugin</artifactId>
-                <version>${klass.version}</version>
-
-                <configuration>
-                    <rootPackageName>${app.rootPackageName}</rootPackageName>
-                    <klassSourcePackages>
-                        <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
-                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
-                    </klassSourcePackages>
-                </configuration>
-
-                <executions>
-
-                    <execution>
-                        <id>generate-production-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
-                            </outputDirectory>
-                            <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-tcp</connectionManagerName>
-                            <isTest>false</isTest>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>generate-fully-cached-runtime-configuration</id>
-                        <goals>
-                            <goal>generate-reladomo-runtime-configuration</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/generated-resources/reladomo-runtime-configuration
-                            </outputDirectory>
-                            <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
-                            <connectionManagerName>h2-tcp</connectionManagerName>
-                            <isTest>false</isTest>
-                            <cacheType>full</cacheType>
-                        </configuration>
-                    </execution>
-
-                </executions>
-
-                <dependencies>
-
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>cool.klass</groupId>
-                        <artifactId>klass-model-bootstrapped-meta</artifactId>
-                        <version>${klass.version}</version>
-                    </dependency>
-
-                </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-dropwizard-plugin</artifactId>
                 <version>${klass.version}</version>
                 <configuration>
@@ -177,9 +112,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-meta</artifactId>
-            <version>${klass.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-reladomo-runtime-configuration</artifactId>
+            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -235,12 +170,6 @@
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->
-        <dependency>
-            <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!--region Liftwizard bundles -->
         <dependency>
             <groupId>io.liftwizard</groupId>
@@ -301,12 +230,24 @@
             <artifactId>liftwizard-bundle-logging-config</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-logging-http</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard config-->
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-filter-requesturl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-filter-janino</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -331,6 +272,19 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-graphql-scalar-temporal</artifactId>
+            <version>${liftwizard.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -352,6 +306,12 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-data-store</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-meta-interface</artifactId>
             <version>${klass.version}</version>
         </dependency>
 
@@ -405,12 +365,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-interface</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -420,6 +374,13 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-meta</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
