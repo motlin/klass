@@ -19,6 +19,6 @@ jobs:
           distribution: corretto
           java-version: 21
 
-      - run: ./mvnw verify
+      - run: ./mvnw verify --activate-profiles 'dev'
         env:
           MAVEN_OPTS: "-Xmx1g"
