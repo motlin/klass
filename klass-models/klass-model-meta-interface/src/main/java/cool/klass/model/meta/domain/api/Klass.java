@@ -95,7 +95,7 @@ public interface Klass
                 .map(superClass -> superClass.getAssociationEndByName(name))
                 .orElse(null);
 
-        return null;
+        return superClassAssociationEnd;
     }
 
     // TODO: Replace with an implementation that preserves order
