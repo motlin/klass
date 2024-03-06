@@ -59,6 +59,12 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
     }
 
     @Nonnull
+    public AntlrDataTypeProperty<?> getDataTypeProperty()
+    {
+        return this.dataTypeProperty;
+    }
+
+    @Nonnull
     @Override
     public ProjectionElementBuilder build()
     {

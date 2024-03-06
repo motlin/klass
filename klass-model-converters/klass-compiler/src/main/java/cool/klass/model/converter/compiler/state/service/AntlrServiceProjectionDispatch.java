@@ -33,6 +33,12 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
         this.projection = Objects.requireNonNull(projection);
     }
 
+    @Nonnull
+    public AntlrProjection getProjection()
+    {
+        return this.projection;
+    }
+
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         if (this.projection == AntlrProjection.NOT_FOUND)

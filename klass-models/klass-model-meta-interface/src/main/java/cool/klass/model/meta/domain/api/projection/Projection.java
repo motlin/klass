@@ -1,8 +1,5 @@
 package cool.klass.model.meta.domain.api.projection;
 
-import javax.annotation.Nonnull;
-
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
 
 public interface Projection extends PackageableElement, ProjectionParent
@@ -18,7 +15,4 @@ public interface Projection extends PackageableElement, ProjectionParent
     {
         listener.exitProjection(this);
     }
-
-    @Nonnull
-    Klass getKlass();
 }

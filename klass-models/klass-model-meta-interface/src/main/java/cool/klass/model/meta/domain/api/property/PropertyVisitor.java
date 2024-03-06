@@ -4,9 +4,9 @@ public interface PropertyVisitor
 {
     void visitPrimitiveProperty(PrimitiveProperty primitiveProperty);
 
-    void visitEnumerationProperty(EnumerationProperty primitiveProperty);
+    void visitEnumerationProperty(EnumerationProperty enumerationProperty);
 
-    void visitAssociationEnd(AssociationEnd primitiveProperty);
+    void visitAssociationEnd(AssociationEnd associationEnd);
 
     void visitParameterizedProperty(ParameterizedProperty parameterizedProperty);
 }

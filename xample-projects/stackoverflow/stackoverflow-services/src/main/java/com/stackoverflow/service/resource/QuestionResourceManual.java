@@ -1,13 +1,15 @@
 package com.stackoverflow.service.resource;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
@@ -21,26 +23,29 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import com.gs.fw.common.mithra.list.merge.TopLevelMergeOptions;
+import cool.klass.deserializer.json.IncomingDataModelValidator;
+import cool.klass.deserializer.json.IncomingDataProjectionValidator;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.serializer.json.ReladomoJsonTree;
-import com.stackoverflow.Answer;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
+import com.stackoverflow.QuestionVersion;
 import com.stackoverflow.QuestionVersionFinder;
-import com.stackoverflow.dto.QuestionDTO;
 import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.LongSets;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
 import org.eclipse.collections.impl.utility.Iterate;
@@ -99,8 +104,20 @@ public class QuestionResourceManual
     public void method1(
             @PathParam("id") Long id,
             @QueryParam("version") Optional<Integer> optionalVersion,
-            @NotNull @Valid QuestionDTO body)
+            @NotNull ObjectNode objectNode)
     {
+        MutableList<String> errors = Lists.mutable.empty();
+        IncomingDataModelValidator.validate(objectNode, StackOverflowDomainModel.Question, errors);
+        IncomingDataProjectionValidator.validate(objectNode, StackOverflowDomainModel.QuestionWriteProjection, errors);
+        if (errors.notEmpty())
+        {
+            Response response = Response
+                    .status(Status.BAD_REQUEST)
+                    .entity(errors)
+                    .build();
+            throw new BadRequestException("Incoming data failed validation.", response);
+        }
+
         // Question
 
         // this.id == id
@@ -131,10 +148,24 @@ public class QuestionResourceManual
             throw new InternalServerErrorException("TODO");
         }
 
+        Question databaseQuestion = result.get(0);
+
         // Validate incoming json
-        Question question = new Question();
-        question.setTitle(body.getTitle());
-        question.setBody(body.getBody());
+        Question incomingQuestion = new Question();
+        incomingQuestion.setId(id);
+
+        incomingQuestion.setTitle(objectNode.get("title").textValue());
+        incomingQuestion.setBody(objectNode.get("body").textValue());
+        incomingQuestion.setStatus(objectNode.get("status").textValue());
+        incomingQuestion.setDeleted(objectNode.get("deleted").booleanValue());
+
+        incomingQuestion.setCreatedById("TODO");
+        incomingQuestion.setCreatedOn(Timestamp.from(Instant.now()));
+        incomingQuestion.setLastUpdatedById("TODO");
+
+        QuestionVersion questionVersion  = databaseQuestion.getVersion().getDetachedCopy();
+        questionVersion.setNumber(questionVersion.getNumber() + 1);
+        incomingQuestion.setVersion(questionVersion);
 
         // AnswerList answers = new AnswerList();
         // for (JsonNode answerJsonNode : body.get("answers"))
@@ -143,24 +174,16 @@ public class QuestionResourceManual
         // }
         // question.setAnswers(answers);
 
-        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-
         // TODO: Version number stuff
         TopLevelMergeOptions<Question> mergeOptions = new TopLevelMergeOptions<>(QuestionFinder.getFinderInstance());
+        mergeOptions.navigateTo(QuestionFinder.version());
         // TODO: Test dependent relationships (Projito?)
         // mergeOptions.navigateTo(AnswerFinder.question());
 
         QuestionList questions = new QuestionList();
-        questions.add(question);
+        questions.add(incomingQuestion);
 
         result.merge(questions, mergeOptions);
-    }
-
-    private Answer convertJsonNode(JsonNode answerJsonNode)
-    {
-        Answer answer = new Answer();
-        answer.setBody(answerJsonNode.get("body").textValue());
-        return answer;
     }
 
     @Timed
@@ -175,13 +198,13 @@ public class QuestionResourceManual
     {
         // Question
 
-        String    userPrincipalName  = securityContext.getUserPrincipal().getName();
+        String userPrincipalName = securityContext.getUserPrincipal().getName();
         // this.id == id
-        Operation queryOperation     = QuestionFinder.id().eq(id);
+        Operation queryOperation = QuestionFinder.id().eq(id);
         // this.createdById == user
         Operation authorizeOperation = QuestionFinder.createdById().eq(userPrincipalName);
         // this.version.number == version
-        Operation conflictOperation  = QuestionFinder.version().number().eq(version);
+        Operation conflictOperation = QuestionFinder.version().number().eq(version);
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionWriteProjection
@@ -217,7 +240,9 @@ public class QuestionResourceManual
         // Question
 
         // this.id in ids
-        Operation queryOperation     = QuestionFinder.id().in(SetAdapter.adapt(ids).collectLong(x -> x, LongSets.mutable.empty()));
+        Operation queryOperation = QuestionFinder.id().in(SetAdapter.adapt(ids).collectLong(
+                x -> x,
+                LongSets.mutable.empty()));
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
@@ -238,7 +263,7 @@ public class QuestionResourceManual
         // Question
 
         // this.id in (1, 2)
-        Operation queryOperation     = QuestionFinder.id().in(LongSets.immutable.with(1, 2));
+        Operation queryOperation = QuestionFinder.id().in(LongSets.immutable.with(1, 2));
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
@@ -323,8 +348,20 @@ public class QuestionResourceManual
     @POST
     @Path("/api/question")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonTree method5()
+    public ReladomoJsonTree method5(ObjectNode objectNode)
     {
+        MutableList<String> errors = Lists.mutable.empty();
+        IncomingDataModelValidator.validate(objectNode, StackOverflowDomainModel.Question, errors);
+        IncomingDataProjectionValidator.validate(objectNode, StackOverflowDomainModel.QuestionWriteProjection, errors);
+        if (errors.notEmpty())
+        {
+            Response response = Response
+                    .status(Status.BAD_REQUEST)
+                    .entity(errors)
+                    .build();
+            throw new BadRequestException("Incoming data failed validation.", response);
+        }
+
         Operation queryOperation     = QuestionFinder.all();
         Operation authorizeOperation = QuestionFinder.all();
         Operation validateOperation  = QuestionFinder.all();
@@ -356,7 +393,7 @@ public class QuestionResourceManual
         // Question
 
         // this.title startsWith "Why do"
-        Operation queryOperation     = QuestionFinder.title().startsWith("Why do");
+        Operation queryOperation = QuestionFinder.title().startsWith("Why do");
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionReadProjection
@@ -376,7 +413,7 @@ public class QuestionResourceManual
         // Question
 
         // this.createdById == userId
-        Operation queryOperation     = QuestionFinder.createdById().eq(userId);
+        Operation queryOperation = QuestionFinder.createdById().eq(userId);
 
         QuestionList result = QuestionFinder.findMany(queryOperation);
         // Deep fetch using projection QuestionWriteProjection

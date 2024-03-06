@@ -2,6 +2,7 @@ package cool.klass.model.meta.domain.api.projection;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 
 public interface ProjectionAssociationEnd extends ProjectionParent
@@ -20,4 +21,11 @@ public interface ProjectionAssociationEnd extends ProjectionParent
 
     @Nonnull
     AssociationEnd getAssociationEnd();
+
+    @Nonnull
+    @Override
+    default Klass getKlass()
+    {
+        return this.getAssociationEnd().getOwningKlass();
+    }
 }

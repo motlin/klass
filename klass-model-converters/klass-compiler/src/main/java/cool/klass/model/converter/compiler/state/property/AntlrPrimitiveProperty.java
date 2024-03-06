@@ -82,7 +82,8 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             throw new IllegalStateException();
         }
 
-        ImmutableList<PropertyModifierBuilder> propertyModifierBuilders = this.propertyModifierStates.collect(AntlrPropertyModifier::build);
+        ImmutableList<PropertyModifierBuilder> propertyModifierBuilders =
+                this.propertyModifierStates.collect(AntlrPropertyModifier::build);
 
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,

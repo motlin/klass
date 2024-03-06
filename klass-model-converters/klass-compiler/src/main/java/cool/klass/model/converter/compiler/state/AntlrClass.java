@@ -209,7 +209,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                 this.packageName,
                 classModifierBuilders,
                 this.isUser,
-                this.hasTransientModifier());
+                this.isTransient());
 
         ImmutableList<DataTypePropertyBuilder<?, ?>> dataTypePropertyBuilders = this.dataTypePropertyStates
                 .<DataTypePropertyBuilder<?, ?>>collect(AntlrDataTypeProperty::build)
@@ -219,9 +219,14 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         return this.klassBuilder;
     }
 
-    private boolean hasTransientModifier()
+    public boolean isTransient()
     {
         return this.classModifierStates.anySatisfy(AntlrClassModifier::isTransient);
+    }
+
+    public boolean isOptimisticallyLocked()
+    {
+        return this.classModifierStates.anySatisfy(AntlrClassModifier::isOptimisticallyLocked);
     }
 
     public void build2()
@@ -406,6 +411,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
         return this.associationEndsByName.getIfAbsentValue(name, AntlrAssociationEnd.NOT_FOUND);
+    }
+
+    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
+    {
+        return this.associationEndStates.asUnmodifiable();
     }
 
     @Nonnull

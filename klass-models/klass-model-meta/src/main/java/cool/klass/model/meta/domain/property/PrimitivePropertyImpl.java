@@ -43,24 +43,6 @@ public final class PrimitivePropertyImpl extends AbstractDataTypeProperty<Primit
     }
 
     @Override
-    public boolean isTemporalRange()
-    {
-        return this.type.isTemporalRange();
-    }
-
-    @Override
-    public boolean isTemporalInstant()
-    {
-        return this.type.isTemporalInstant();
-    }
-
-    @Override
-    public boolean isTemporal()
-    {
-        return this.type.isTemporal();
-    }
-
-    @Override
     public boolean isID()
     {
         return this.isID;

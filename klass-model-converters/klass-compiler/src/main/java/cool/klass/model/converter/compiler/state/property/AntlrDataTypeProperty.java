@@ -18,7 +18,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     protected final boolean                              isOptional;
     @Nonnull
     protected final ImmutableList<AntlrPropertyModifier> propertyModifierStates;
-
+    @Nonnull
     protected final AntlrClass                           owningClassState;
 
     protected AntlrDataTypeProperty(
@@ -35,7 +35,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         super(elementContext, compilationUnit, inferred, nameContext, name, ordinal);
         this.isOptional = isOptional;
         this.propertyModifierStates = Objects.requireNonNull(propertyModifierStates);
-        this.owningClassState = owningClassState;
+        this.owningClassState = Objects.requireNonNull(owningClassState);
     }
 
     public boolean isKey()
@@ -46,6 +46,16 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     public boolean isID()
     {
         return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isID);
+    }
+
+    public boolean isAudit()
+    {
+        return this.propertyModifierStates.anySatisfy(AntlrPropertyModifier::isAudit);
+    }
+
+    public boolean isOptional()
+    {
+        return this.isOptional;
     }
 
     public abstract boolean isTemporal();

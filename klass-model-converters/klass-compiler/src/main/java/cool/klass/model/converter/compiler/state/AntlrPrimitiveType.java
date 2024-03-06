@@ -41,7 +41,7 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     private static final ImmutableMap<PrimitiveType, AntlrPrimitiveType> BY_TYPE = PRIMITIVE_TYPES.groupByUniqueKey(
             AntlrPrimitiveType::getPrimitiveType);
 
-    private final PrimitiveType        primitiveType;
+    private final PrimitiveType primitiveType;
 
     private AntlrPrimitiveType(PrimitiveType primitiveType)
     {
@@ -70,5 +70,10 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     public PrimitiveType getTypeGetter()
     {
         return this.primitiveType;
+    }
+
+    public boolean isTemporal()
+    {
+        return this == TEMPORAL_INSTANT || this == TEMPORAL_RANGE;
     }
 }

@@ -31,6 +31,11 @@ public class AntlrClassModifier extends AntlrNamedElement
         return this.name.equals("transient");
     }
 
+    public boolean isOptimisticallyLocked()
+    {
+        return this.name.equals("optimisticallyLocked");
+    }
+
     public ClassModifierBuilder build()
     {
         return new ClassModifierBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);

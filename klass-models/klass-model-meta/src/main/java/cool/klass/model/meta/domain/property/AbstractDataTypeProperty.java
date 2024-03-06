@@ -59,15 +59,6 @@ public abstract class AbstractDataTypeProperty<T extends DataType> extends Abstr
         return this.optional;
     }
 
-    @Override
-    public abstract boolean isTemporalRange();
-
-    @Override
-    public abstract boolean isTemporalInstant();
-
-    @Override
-    public abstract boolean isTemporal();
-
     public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter> extends PropertyBuilder<T, TG>
     {
         protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;

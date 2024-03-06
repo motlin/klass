@@ -37,6 +37,11 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
         this.klass = Objects.requireNonNull(klass);
     }
 
+    public MutableList<AntlrProjectionElement> getChildren()
+    {
+        return this.children.asUnmodifiable();
+    }
+
     @Nonnull
     public AntlrClass getKlass()
     {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.stackoverflow</groupId>
         <artifactId>stackoverflow</artifactId>
@@ -25,12 +25,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${app.artifactId}-dtos</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>${app.artifactId}-meta-model-constants</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -44,6 +38,12 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-serializer-json</artifactId>
+            <version>${klass.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-deserializer-json</artifactId>
             <version>${klass.version}</version>
         </dependency>
 

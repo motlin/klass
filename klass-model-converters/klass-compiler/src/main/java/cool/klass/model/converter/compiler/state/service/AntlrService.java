@@ -9,10 +9,16 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
+import cool.klass.model.converter.compiler.state.projection.AntlrProjectionDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrProperty;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
@@ -28,6 +34,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
+import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
@@ -147,10 +154,12 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         // TODO: reportErrors: Find url parameters which are unused by any criteria
 
+        reportInvalidProjection(compilerErrorHolder);
+
         Verb                  verb                 = this.verbState.getVerb();
         ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
 
-        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteriaState: this.serviceCriteriaStates)
         {
             if (allowedCriteriaTypes == null)
             {
@@ -160,6 +169,62 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
             ImmutableList<ParserRuleContext> parserRuleContexts = this.getParserRuleContexts();
             serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder, parserRuleContexts);
+        }
+    }
+
+    private void reportInvalidProjection(CompilerErrorHolder compilerErrorHolder)
+    {
+        Verb verb = this.verbState.getVerb();
+
+        if (verb == Verb.POST || verb == Verb.PUT)
+        {
+            AntlrProjection                       projection             = this.serviceProjectionDispatchState.getProjection();
+            AntlrClass                            klass                  = projection.getKlass();
+            MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = klass.getDataTypePropertyStates();
+            MutableList<AntlrDataTypeProperty<?>> requiredProperties = dataTypePropertyStates
+                    .asLazy()
+                    .reject(AntlrDataTypeProperty::isOptional)
+                    .reject(AntlrDataTypeProperty::isKey)
+                    .reject(AntlrDataTypeProperty::isID)
+                    .reject(AntlrDataTypeProperty::isTemporal)
+                    .reject(AntlrDataTypeProperty::isAudit)
+                    .toList();
+
+            MutableList<AntlrDataTypeProperty<?>> includedProperties = projection.getChildren()
+                    .selectInstancesOf(AntlrProjectionDataTypeProperty.class)
+                    .collect(AntlrProjectionDataTypeProperty::getDataTypeProperty);
+
+            MutableList<AntlrDataTypeProperty<?>> missingProperties = requiredProperties.reject(includedProperties::contains);
+
+            if (missingProperties.notEmpty())
+            {
+                String message = String.format(
+                        "ERR_PRJ_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
+                        projection.getName(),
+                        missingProperties.collect(AntlrProperty::getName).makeString());
+
+                compilerErrorHolder.add(
+                        message,
+                        this.serviceProjectionDispatchState.getElementContext().projectionReference(),
+                        this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
+            }
+
+            // TODO: Do this after changing the versionClass to versionAssociationEnd
+            if (klass.isOptimisticallyLocked())
+            {
+            }
+            else
+            {
+            }
+
+            // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
+            // Include version associationEnds iff the service is optimistically locked
+            MutableList<AntlrAssociationEnd> associationEndStates = klass.getAssociationEndStates();
+
+            PartitionMutableList<AntlrAssociationEnd> partition = associationEndStates.partition(AntlrAssociationEnd::isOwned);
+
+            MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
+            MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
         }
     }
 
@@ -212,7 +277,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                 verb,
                 serviceMultiplicity);
 
-        for (AntlrServiceCriteria serviceCriteriaState : this.serviceCriteriaStates)
+        for (AntlrServiceCriteria serviceCriteriaState: this.serviceCriteriaStates)
         {
             String          serviceCriteriaKeyword = serviceCriteriaState.getServiceCriteriaKeyword();
             AntlrCriteria   criteriaState          = serviceCriteriaState.getCriteria();

@@ -14,14 +14,13 @@ import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
-import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.json.JSONException;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -42,7 +41,6 @@ public class QuestionResourceManualTest
     public final ReladomoTestRule reladomoTestRule = new ReladomoTestRule(
             "reladomo-runtime-configuration/TestReladomoRuntimeConfiguration.xml");
 
-    @Ignore
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put() throws JSONException
@@ -54,6 +52,7 @@ public class QuestionResourceManualTest
                 .using(jerseyClientConfiguration)
                 .build("test client");
 
+        //<editor-fold desc="GET id: 1, status: ok">
         {
             Response response = client.target(
                     String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
@@ -61,82 +60,128 @@ public class QuestionResourceManualTest
                     .request()
                     .get();
 
-            assertThat(response.getStatusInfo(), is(Status.OK));
-            response.bufferEntity();
+            this.assertResponseStatus(response, Status.OK);
+
             String jsonResponse = response.readEntity(String.class);
-            String expected     = "{\n"
-                    + "  \"id\" : 1,\n"
-                    + "  \"title\" : \"test title 1\",\n"
-                    + "  \"body\" : \"test body 1\",\n"
-                    + "  \"status\" : \"Open\",\n"
-                    + "  \"deleted\" : false,\n"
-                    + "  \"systemFrom\" : \"1999-12-31T23:59:59.999Z\",\n"
-                    + "  \"systemTo\" : null,\n"
-                    + "  \"createdById\" : \"test user 1\",\n"
-                    + "  \"createdOn\" : \"2000-01-01T04:59:59.999Z\",\n"
-                    + "  \"lastUpdatedById\" : \"test user 1\",\n"
-                    + "  \"answers\" : [ ],\n"
-                    + "  \"version\" : {\n"
-                    + "    \"number\" : 2\n"
+            //language=JSON
+            String expected = ""
+                    + "{\n"
+                    + "  \"id\": 1,\n"
+                    + "  \"title\": \"test title 1\",\n"
+                    + "  \"body\": \"test body 1\",\n"
+                    + "  \"status\": \"Open\",\n"
+                    + "  \"deleted\": false,\n"
+                    + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
+                    + "  \"systemTo\": null,\n"
+                    + "  \"createdById\": \"test user 1\",\n"
+                    + "  \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                    + "  \"lastUpdatedById\": \"test user 1\",\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 2\n"
                     + "  }\n"
-                    + "}";
+                    + "}\n";
             JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
         }
+        //</editor-fold>
 
-        //language=JSON
-        String json = ""
-                + "{\n"
-                + "  \"title\" : \"edited title 1\",\n"
-                + "  \"body\" : \"edited body 1\",\n"
-                + "  \"status\" : \"Open\",\n"
-                + "  \"deleted\" : false,\n"
-                + "  \"answers\" : [ ],\n"
-                + "  \"version\" : {\n"
-                + "    \"number\" : 2\n"
-                + "  }\n"
-                + "}\n";
+        //<editor-fold desc="POST invalid json, status: BAD_REQUEST">
         {
+            //language=JSON
+            String invalidJson = "{\n"
+                    + "  \"title\": 1,\n"
+                    + "  \"status\": \"Invalid Choice\",\n"
+                    + "  \"deleted\": [],\n"
+                    + "  \"extra\": \"extra\",\n"
+                    + "  \"answers\": [\n"
+                    + "    {\n"
+                    + "      \"body\": 2,\n"
+                    + "      \"nestedExtra\": \"nestedExtra\",\n"
+                    + "      \"nestedExtraNull\": null\n"
+                    + "    }\n"
+                    + "  ],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 20000000000\n"
+                    + "  }\n"
+                    + "}\n";
+
+            Response response = client.target(
+                    String.format("http://localhost:%d/manual/api/question/", RULE.getLocalPort()))
+                    .request()
+                    .post(Entity.json(invalidJson));
+
+            this.assertResponseStatus(response, Status.BAD_REQUEST);
+
+            List<String> errors = response.readEntity(new GenericType<List<String>>() {});
+            assertThat(
+                    ListAdapter.adapt(errors).makeString("\n"),
+                    errors,
+                    is(Lists.immutable.with(
+                            "Error at Question.title. Expected property with type 'Question.title: String' but got '1' with type 'number'.",
+                            "Error at Question.status. Expected enumerated property with type 'Question.status: Status' but got \"Invalid Choice\" with type 'string'. Expected one of \"Open\", \"On hold\", \"Closed\".",
+                            "Error at Question.deleted. Expected property with type 'Question.deleted: Boolean' but got '[]' with type 'array'.",
+                            "Error at Question.extra. No such property 'extra' on type Question but got \"extra\". Expected properties: id, title, body, status, deleted, system, systemFrom, systemTo, createdById, createdOn, lastUpdatedById, answers, version.",
+                            "Error at Question.answers[0].body. Expected property with type 'Answer.body: String' but got '2' with type 'number'.",
+                            "Error at Question.answers[0].nestedExtra. No such property 'nestedExtra' on type Answer but got \"nestedExtra\". Expected properties: id, body, deleted, questionId, system, systemFrom, systemTo, question, version.",
+                            "Error at Question.answers[0].nestedExtraNull. No such property 'nestedExtraNull' on type Answer but got null. Expected properties: id, body, deleted, questionId, system, systemFrom, systemTo, question, version.",
+                            "Error at Question.version.number. Expected property with type 'QuestionVersion.number: Integer' but got '20000000000' with type 'number'.",
+                            "Error at Question.body. Expected enumerated property with type 'Question.body: String' but value was missing.")));
+        }
+        //</editor-fold>
+
+        //<editor-fold desc="PUT id: 1, version: 1, status: CONFLICT">
+        {
+            //language=JSON
+            String validJson = ""
+                    + "{\n"
+                    + "  \"title\": \"edited title 1\",\n"
+                    + "  \"body\": \"edited body 1\",\n"
+                    + "  \"status\": \"Open\",\n"
+                    + "  \"deleted\": false,\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 2\n"
+                    + "  }\n"
+                    + "}\n";
+
             Response response = client.target(
                     String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
                     .resolveTemplate("id", 1)
                     .queryParam("version", "1")
                     .request()
-                    .put(Entity.json(json));
+                    .put(Entity.json(validJson));
 
-            response.bufferEntity();
-            ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
-            assertThat(
-                    validationErrorMessage,
-                    is(new ValidationErrorMessage(com.google.common.collect.ImmutableList.of(
-                            "systemFrom may not be null",
-                            "createdById may not be null",
-                            "createdOn may not be null",
-                            "systemTo may not be null",
-                            "lastUpdatedById may not be null",
-                            "system may not be null"))));
-
-            assertThat(response.getStatusInfo(), is(Status.CONFLICT));
-            assertThat(response.getStatusInfo().getReasonPhrase(), is(""));
-            assertThat(response.getStatusInfo().getFamily(), is(""));
+            this.assertResponseStatus(response, Status.CONFLICT);
         }
+        //</editor-fold>
 
+        //<editor-fold desc="PUT id: 1, version: 2, status: NO_CONTENT">
         {
+            //language=JSON
+            String validJson = ""
+                    + "{\n"
+                    + "  \"title\": \"edited title 1\",\n"
+                    + "  \"body\": \"edited body 1\",\n"
+                    + "  \"status\": \"On hold\",\n"
+                    + "  \"deleted\": true,\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 2\n"
+                    + "  }\n"
+                    + "}\n";
+
             Response response = client.target(
                     String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
-                    .put(Entity.json(json));
+                    .put(Entity.json(validJson));
 
-            assertThat(response.getStatusInfo().getStatusCode(), is(422));
-            assertThat(response.getStatusInfo().getReasonPhrase(), is(""));
-            assertThat(response.getStatusInfo().getFamily(), is(""));
-
-            response.bufferEntity();
-            List<String> errors = response.readEntity(new GenericType<List<String>>() {});
-            assertThat(errors, is(Lists.immutable.with("asf")));
+            this.assertResponseStatus(response, Status.NO_CONTENT);
         }
+        //</editor-fold>
 
+        //<editor-fold desc="GET id: 1, status: OK">
         {
             Response response = client.target(
                     String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
@@ -144,26 +189,35 @@ public class QuestionResourceManualTest
                     .request()
                     .get();
 
-            assertThat(response.getStatusInfo(), is(Status.OK));
-            response.bufferEntity();
+            this.assertResponseStatus(response, Status.OK);
+
             String jsonResponse = response.readEntity(String.class);
-            String expected     = "{\n"
-                    + "  \"id\" : 1,\n"
-                    + "  \"title\" : \"test title 1\",\n"
-                    + "  \"body\" : \"test body 1\",\n"
-                    + "  \"status\" : \"Open\",\n"
-                    + "  \"deleted\" : false,\n"
-                    + "  \"systemFrom\" : \"1999-12-31T23:59:59.999Z\",\n"
-                    + "  \"systemTo\" : null,\n"
-                    + "  \"createdById\" : \"test user 1\",\n"
-                    + "  \"createdOn\" : \"2000-01-01T04:59:59.999Z\",\n"
-                    + "  \"lastUpdatedById\" : \"test user 1\",\n"
-                    + "  \"answers\" : [ ],\n"
-                    + "  \"version\" : {\n"
-                    + "    \"number\" : 2\n"
+            //language=JSON
+            String expected = ""
+                    + "{\n"
+                    + "  \"id\": 1,\n"
+                    + "  \"title\": \"edited title 1\",\n"
+                    + "  \"body\": \"edited body 1\",\n"
+                    + "  \"status\": \"On hold\",\n"
+                    + "  \"deleted\": true,\n"
+                    // TODO: Synchronize systemFrom and createdOn
+                    + "  \"systemTo\": null,\n"
+                    + "  \"createdById\": \"TODO\",\n"
+                    + "  \"lastUpdatedById\": \"TODO\",\n"
+                    + "  \"answers\": [],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 3\n"
                     + "  }\n"
-                    + "}";
-            JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);
+                    + "}\n";
+            JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
         }
+        //</editor-fold>
+    }
+
+    public void assertResponseStatus(Response response, Status status)
+    {
+        response.bufferEntity();
+        String entityAsString = response.readEntity(String.class);
+        assertThat(entityAsString, response.getStatusInfo(), is(status));
     }
 }

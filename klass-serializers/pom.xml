@@ -18,6 +18,7 @@
 
     <modules>
         <module>klass-serializer-json</module>
+        <module>klass-deserializer-json</module>
     </modules>
 
 </project>

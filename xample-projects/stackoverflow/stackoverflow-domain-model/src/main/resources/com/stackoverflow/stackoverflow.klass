@@ -208,8 +208,12 @@ projection QuestionReadProjection on Question
 
 projection QuestionWriteProjection on Question
 {
-    title: "Question title",
-    body : "Question body",
+    title  : "Question title",
+    body   : "Question body",
+    // TODO: Status property should default to OPEN, and default properties shouldn't be required in write projections.
+    status : "Question status",
+    // TODO: Deleted property should default to false, and default properties shouldn't be required in write projections.
+    deleted: "Question is deleted",
 }
 
 // TODO: Type inference on projection paramters

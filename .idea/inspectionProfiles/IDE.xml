@@ -959,33 +959,33 @@
       <replaceConfiguration name="List to MutableList" text="java.util.List&lt;$type$&gt; $list$ = $mutableList$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.list.MutableList&lt;$type$&gt; $list$ = $mutableList$;">
         <constraint name="type" within="" contains="" />
         <constraint name="list" within="" contains="" />
-        <constraint name="mutableList" nameOfExprType="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableList" nameOfExprType="MutableList" expressionTypes="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Set to MutableSet" text="java.util.Set&lt;$type$&gt; $set$ = $mutableSet$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.set.MutableSet&lt;$type$&gt; $set$ = $mutableSet$;">
         <constraint name="type" within="" contains="" />
         <constraint name="set" within="" contains="" />
-        <constraint name="mutableSet" nameOfExprType="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableSet" nameOfExprType="MutableSet" expressionTypes="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Map to MutableMap" text="java.util.Map&lt;$key$, $value$&gt; $map$ = $mutableMap$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.map.MutableMap&lt;$key$, $value$&gt; $map$ = $mutableMap$;">
         <constraint name="key" within="" contains="" />
         <constraint name="value" within="" contains="" />
         <constraint name="map" within="" contains="" />
-        <constraint name="mutableMap" nameOfExprType="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableMap" nameOfExprType="MutableMap" expressionTypes="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="List to MutableList 2" text="java.util.List $list$ = $mutableList$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.list.MutableList $list$ = $mutableList$;">
         <constraint name="list" within="" contains="" />
-        <constraint name="mutableList" nameOfExprType="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableList" nameOfExprType="MutableList" expressionTypes="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Set to MutableSet 2" text="java.util.Set $set$ = $mutableSet$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.set.MutableSet $set$ = $mutableSet$;">
         <constraint name="set" within="" contains="" />
-        <constraint name="mutableSet" nameOfExprType="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableSet" nameOfExprType="MutableSet" expressionTypes="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Map to MutableMap 2" text="java.util.Map $map$ = $mutableMap$;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.api.map.MutableMap $map$ = $mutableMap$;">
         <constraint name="map" within="" contains="" />
-        <constraint name="mutableMap" nameOfExprType="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="mutableMap" nameOfExprType="MutableMap" expressionTypes="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Iterate.notEmpty()" text="$collection$ != null &amp;&amp; !$collection$.isEmpty()" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.Iterate.notEmpty($collection$)">
-        <constraint name="collection" nameOfExprType="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="collection" nameOfExprType="Collection" expressionTypes="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Iterate.getFirst() 1" text="$collection$.iterator().next()" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.Iterate.getFirst($collection$)">
         <constraint name="collection" within="" contains="" />
@@ -994,86 +994,86 @@
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertTrue to assertFalse" text="Assert.assertTrue($string$, !$expr$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="junit.framework.Assert.assertFalse($string$, $expr$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="expr" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Size of Collection 1" text="Assert.assertTrue($string$, $collection$.size() == $size$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertSize($string$, $size$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
         <constraint name="size" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Size of Collection 2" text="Assert.assertEquals($string$, $size$, $collection$.size())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertSize($string$, $size$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="size" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Size of Collection 3" text="Assert.assertTrue($string$, $size$ == $collection$.size())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertSize($string$, $size$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="size" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 1" text="Assert.assertEquals($string$, new ArrayList(), $collection$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 2" text="Assert.assertEquals($string$, $collection$, new ArrayList())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 3" text="Assert.assertEquals($string$, FastList.newList(), $collection$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 4" text="Assert.assertEquals($string$, $collection$, FastList.newList())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 5" text="Assert.assertEquals($string$, UnifiedSet.newSet(), $collection$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 6" text="Assert.assertEquals($string$, $collection$, UnifiedSet.newSet())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 7" text="Assert.assertEquals($string$, UnifiedMap.newMap(), $collection$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 8" text="Assert.assertEquals($string$, $collection$, UnifiedMap.newMap())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 9" text="Assert.assertTrue($string$, $collection$.isEmpty())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertEmpty 10" text="Verify.assertSize($string$, 0, $collection$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEmpty($string$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertInstanceOf" text="Assert.assertTrue($string$, $expr$ instanceof $class$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertInstanceOf($string$, $expr$, $class$.class)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="expr" within="" contains="" />
         <constraint name="class" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertContains" text="Assert.assertTrue($string$, $collection$.contains($obj$))" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertContains($string$, $obj$, $collection$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="collection" within="" contains="" />
         <constraint name="obj" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="equals and hashCode 1" text="Assert.assertEquals($string$, $left$.hashCode(), $right$.hashCode())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEqualsAndHashCode($string$, $left$, $right$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="left" within="" contains="" />
         <constraint name="right" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="equals and hashCode 2" text="Assert.assertTrue($string$, $left$.hashCode() == $right$.hashCode())" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertEqualsAndHashCode($string$, $left$, $right$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="left" within="" contains="" />
         <constraint name="right" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertNotEquals" text="Assert.assertFalse($string$, $left$.equals($right$))" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertNotEquals($string$, $left$, $right$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="left" within="" contains="" />
         <constraint name="right" within="" contains="" />
       </replaceConfiguration>
@@ -1083,19 +1083,19 @@
         <constraint name="obj" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertItemAtIndex 1" text="Assert.assertEquals($string$, $item$, $list$.get($index$))" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertItemAtIndex($string$, $item$, $index$, $list$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="item" within="" contains="" />
-        <constraint name="list" nameOfExprType="List" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="list" nameOfExprType="List" expressionTypes="List" exprTypeWithinHierarchy="true" within="" contains="" />
         <constraint name="index" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertItemAtIndex 2" text="Assert.assertEquals($string$, $list$.get($index$), $item$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertItemAtIndex($string$, $item$, $index$, $list$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
-        <constraint name="list" nameOfExprType="List" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
+        <constraint name="list" nameOfExprType="List" expressionTypes="List" exprTypeWithinHierarchy="true" within="" contains="" />
         <constraint name="index" within="" contains="" />
         <constraint name="item" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertItemAtIndex 3" text="Assert.assertEquals($string$, $item$, $array$[$index$])" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertItemAtIndex($string$, $item$, $index$, $array$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="item" within="" contains="" />
         <constraint name="array" nameOfExprType="Object\[\]" expressionTypes="Object[]" within="" contains="" />
         <constraint name="index" within="" contains="" />
@@ -1107,14 +1107,14 @@
         <constraint name="item" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertContainsAll 1" text="Assert.assertContains($string$, $expr1$, $coll$);&#10;assertContains($string$, $expr2$, $coll$);" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertContainsAll($string$, $coll$, $expr1$, $expr2$);">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="expr1" within="" contains="" />
-        <constraint name="coll" nameOfExprType="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="coll" nameOfExprType="Collection" expressionTypes="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
         <constraint name="expr2" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertContainsAll 2" text="Assert.assertContainsAll($string$, $coll$, $expr$);&#10;assertContains($string$, $expr2$, $coll$);" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertContainsAll($string$, $coll$, $expr$, $expr2$);">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
-        <constraint name="coll" nameOfExprType="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
+        <constraint name="coll" nameOfExprType="Collection" expressionTypes="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
         <constraint name="expr" maxCount="2147483647" within="" contains="" />
         <constraint name="expr2" within="" contains="" />
       </replaceConfiguration>
@@ -1208,12 +1208,12 @@
         <constraint name="method" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertNotEquals 2" text="Assert.assertTrue($string$, $left$ != $right$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertNotEquals($string$, $left$, $right$)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="left" within="" contains="" />
         <constraint name="right" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="assertInstanceOf 2" text="Assert.assertTrue($string$, $class$.class.isInstance($expr$))" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertInstanceOf($string$, $expr$, $class$.class)">
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
         <constraint name="expr" within="" contains="" />
         <constraint name="class" within="" contains="" />
       </replaceConfiguration>
@@ -1267,46 +1267,46 @@
         <constraint name="object" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Iterate.isEmpty()" text="$collection$ == null || $collection$.isEmpty()" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.Iterate.isEmpty($collection$)">
-        <constraint name="collection" nameOfExprType="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="collection" nameOfExprType="Collection" expressionTypes="Collection" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Unmodifiable Collection" text="java.util.Collections.unmodifiableCollection($coll$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$coll$.asUnmodifiable()">
-        <constraint name="coll" nameOfExprType="MutableCollection" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="coll" nameOfExprType="MutableCollection" expressionTypes="MutableCollection" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="UnmodifiableList" text="java.util.Collections.unmodifiableList($coll$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$coll$.asUnmodifiable()">
-        <constraint name="coll" nameOfExprType="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="coll" nameOfExprType="MutableList" expressionTypes="MutableList" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Unmodifiable Set" text="java.util.Collections.unmodifiableSet($coll$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$coll$.asUnmodifiable()">
-        <constraint name="coll" nameOfExprType="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="coll" nameOfExprType="MutableSet" expressionTypes="MutableSet" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Unmodifiable Map" text="java.util.Collections.unmodifiableMap($map$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$map$.asUnmodifiable()">
-        <constraint name="map" nameOfExprType="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="map" nameOfExprType="MutableMap" expressionTypes="MutableMap" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Verify.assertNotNull" text="Assert.assertTrue($string$, $expr$ != null)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.test.Verify.assertNotNull($string$, $expr$)">
         <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
         <constraint name="expr" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="not Iterate.notEmpty()" text="!Iterate.notEmpty($iterable$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.Iterate.isEmpty($iterable$)">
-        <constraint name="iterable" nameOfExprType="Iterable" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="iterable" nameOfExprType="Iterable" expressionTypes="Iterable" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="!Iterate.isEmpty() to notEmpty()" text="!Iterate.isEmpty($iterable$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.Iterate.notEmpty($iterable$)">
-        <constraint name="iterable" nameOfExprType="Iterable" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="iterable" nameOfExprType="Iterable" expressionTypes="Iterable" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="not MapIterate.notEmpty()" text="!MapIterate.notEmpty($map$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.MapIterate.isEmpty($map$)">
-        <constraint name="map" nameOfExprType="Map" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="map" nameOfExprType="Map" expressionTypes="Map" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="!Map.isEmpty() to notEmpty()" text="!MapIterate.isEmpty($map$)" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="org.eclipse.collections.impl.utility.MapIterate.notEmpty($map$)">
-        <constraint name="map" nameOfExprType="Map" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="map" nameOfExprType="Map" expressionTypes="Map" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="!isEmpty() to notEmpty()" text="!$richIterable$.isEmpty()" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$richIterable$.notEmpty()">
-        <constraint name="richIterable" script="&quot;&quot;" nameOfExprType="RichIterable" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="richIterable" script="&quot;&quot;" nameOfExprType="RichIterable" expressionTypes="RichIterable" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="!notEmpty() to isEmpty()" text="!$richIterable$.notEmpty()" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$richIterable$.isEmpty()">
-        <constraint name="richIterable" script="&quot;&quot;" nameOfExprType="RichIterable" exprTypeWithinHierarchy="true" within="" contains="" />
+        <constraint name="richIterable" script="&quot;&quot;" nameOfExprType="RichIterable" expressionTypes="RichIterable" exprTypeWithinHierarchy="true" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="Verify.assertThrows() 1" text="try&#10;{&#10;    $statements$;&#10;    Assert.fail($string$);&#10;}&#10;catch ($Exception$ e)&#10;{&#10;}" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="Verify.assertThrows($Exception$.class, new Runnable()&#10;{&#10;    public void run()&#10;    {&#10;        $statements$;&#10;    }&#10;});&#10;">
         <constraint name="statements" maxCount="2147483647" within="" contains="" />
         <constraint name="Exception" regexp="Exception" withinHierarchy="true" within="" contains="" />
-        <constraint name="string" nameOfExprType="String" minCount="0" within="" contains="" />
+        <constraint name="string" nameOfExprType="String" expressionTypes="String" minCount="0" within="" contains="" />
       </replaceConfiguration>
       <replaceConfiguration name="newBagWith 1" text="$Coll$&lt;$type$&gt; $coll$ = HashBag.&lt;$type$&gt;newBag();&#10;$coll$.add($expr$);&#10;" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="false" shortenFQN="true" replacement="$Coll$&lt;$type$&gt; $coll$ = HashBag.&lt;$type$&gt;newBagWith($expr$);">
         <constraint name="Coll" script="&quot;&quot;" regexp="Collection" withinHierarchy="true" within="" contains="" />
