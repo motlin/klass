@@ -2,8 +2,6 @@ package cool.klass.model.meta.domain.api.projection;
 
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
-
 import cool.klass.model.meta.domain.api.NamedElement;
 import org.eclipse.collections.api.list.ImmutableList;
 
