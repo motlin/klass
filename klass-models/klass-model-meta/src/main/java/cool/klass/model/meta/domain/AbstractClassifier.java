@@ -15,7 +15,9 @@ import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePr
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AbstractClassifier extends AbstractPackageableElement implements TopLevelElement, Classifier
+public abstract class AbstractClassifier
+        extends AbstractPackageableElement
+        implements TopLevelElement, Classifier
 {
     private ImmutableList<DataTypeProperty> dataTypeProperties;
     private ImmutableList<ClassModifier>    classModifiers;
@@ -79,9 +81,6 @@ public abstract class AbstractClassifier extends AbstractPackageableElement impl
         }
         this.interfaces = Objects.requireNonNull(interfaces);
     }
-
-    @Override
-    public abstract String getSourceCodeWithInference();
 
     public abstract static class ClassifierBuilder<BuiltElement extends AbstractClassifier>
             extends PackageableElementBuilder<BuiltElement>

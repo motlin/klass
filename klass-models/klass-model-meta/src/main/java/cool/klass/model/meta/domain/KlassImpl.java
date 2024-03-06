@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
@@ -120,34 +119,6 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         this.superClass = Objects.requireNonNull(superClass);
     }
 
-    @Override
-    public String getSourceCodeWithInference()
-    {
-        String sourceCode = this.getSourceCode();
-        if (this.isInferred())
-        {
-            return sourceCode;
-        }
-
-        String modifiersSourceCode = this.getClassModifiers()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-
-        String propertiesSourceCode = this.getProperties()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-
-        String result = ""
-                + (this.isUser ? "user" : "class") + ' ' + this.getName() + '\n'
-                + modifiersSourceCode
-                + "{\n"
-                + propertiesSourceCode
-                + "}\n";
-        return result;
-    }
-
     public static final class KlassBuilder extends ClassifierBuilder<KlassImpl>
     {
         private final InheritanceType inheritanceType;
@@ -225,7 +196,7 @@ public final class KlassImpl extends AbstractClassifier implements Klass
                     this.isTransient);
         }
 
-        public void setSuperClassBuilder(Optional<KlassBuilder> superClassBuilder)
+        public void setSuperClassBuilder(@Nonnull Optional<KlassBuilder> superClassBuilder)
         {
             this.superClassBuilder = superClassBuilder;
         }

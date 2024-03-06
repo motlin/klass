@@ -37,6 +37,8 @@ public interface Klass extends Classifier
     }
 
     // TODO: Replace with an implementation that preserves order
+    @Nonnull
+    @Override
     default ImmutableList<Property> getProperties()
     {
         return Lists.immutable.<Property>empty()
@@ -110,5 +112,42 @@ public interface Klass extends Classifier
     default boolean isTransient()
     {
         return this.getClassModifiers().anySatisfy(ClassModifier::isTransient);
+    }
+
+    @Override
+    default String getSourceCodeWithInference()
+    {
+        String sourceCode = this.getSourceCode();
+        if (this.isInferred())
+        {
+            return sourceCode;
+        }
+
+        return ""
+                + (this.isUser() ? "user" : "class") + ' ' + this.getName() + '\n'
+                + this.getAbstractSourceCode()
+                + this.getExtendsSourceCode()
+                + this.getImplementsSourceCode()
+                + this.getModifiersSourceCode()
+                + "{\n"
+                + this.getPropertiesSourceCode()
+                + "}\n";
+    }
+
+    @Nonnull
+    default String getAbstractSourceCode()
+    {
+        return this.getInheritanceType() == InheritanceType.NONE
+                    ? ""
+                    : "    abstract(" + this.getInheritanceType().getPrettyName() + ")\n";
+    }
+
+    @Nonnull
+    default String getExtendsSourceCode()
+    {
+        return this.getSuperClass()
+                    .map(NamedElement::getName)
+                    .map(klassName -> "    extends " + klassName + "\n")
+                    .orElse("");
     }
 }

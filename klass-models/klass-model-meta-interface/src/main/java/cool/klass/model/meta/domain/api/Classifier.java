@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.Property;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.MutableSet;
 
@@ -36,6 +37,9 @@ public interface Classifier extends Type, PackageableElement
 
     @Nonnull
     ImmutableList<ClassModifier> getDeclaredClassModifiers();
+
+    @Nonnull
+    ImmutableList<Property> getProperties();
 
     @Nonnull
     default ImmutableList<DataTypeProperty> getDataTypeProperties()
@@ -74,5 +78,29 @@ public interface Classifier extends Type, PackageableElement
     default boolean isSystemTemporal()
     {
         return this.getDataTypeProperties().anySatisfy(DataTypeProperty::isSystemTemporal);
+    }
+
+    @Nonnull
+    default String getImplementsSourceCode()
+    {
+        return this.getInterfaces().isEmpty()
+                    ? ""
+                    : "    implements " + this.getInterfaces().collect(NamedElement::getName).makeString() + "\n";
+    }
+
+    default String getPropertiesSourceCode()
+    {
+        return this.getProperties()
+                    .collect(Element::getSourceCode)
+                    .collect(each -> "    " + each + '\n')
+                    .makeString("");
+    }
+
+    default String getModifiersSourceCode()
+    {
+        return this.getClassModifiers()
+                    .collect(Element::getSourceCode)
+                    .collect(each -> "    " + each + '\n')
+                    .makeString("");
     }
 }

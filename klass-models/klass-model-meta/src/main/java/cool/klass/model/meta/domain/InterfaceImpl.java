@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -19,34 +18,6 @@ public final class InterfaceImpl extends AbstractClassifier implements Interface
             @Nonnull String packageName)
     {
         super(elementContext, inferred, nameContext, name, ordinal, packageName);
-    }
-
-    @Override
-    public String getSourceCodeWithInference()
-    {
-        String sourceCode = this.getSourceCode();
-        if (this.isInferred())
-        {
-            return sourceCode;
-        }
-
-        String modifiersSourceCode = this.getClassModifiers()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-
-        String propertiesSourceCode = this.getProperties()
-                .collect(Element::getSourceCode)
-                .collect(each -> "    " + each + '\n')
-                .makeString("");
-
-        String result = ""
-                + "interface" + ' ' + this.getName() + '\n'
-                + modifiersSourceCode
-                + "{\n"
-                + propertiesSourceCode
-                + "}\n";
-        return result;
     }
 
     public static final class InterfaceBuilder extends ClassifierBuilder<InterfaceImpl>
