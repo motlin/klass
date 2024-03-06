@@ -96,7 +96,7 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    protected static KlassLexer getKlassLexer(ANTLRErrorListener errorListener, CodePointCharStream charStream)
+    private static KlassLexer getKlassLexer(@Nonnull ANTLRErrorListener errorListener, CodePointCharStream charStream)
     {
         KlassLexer lexer = new KlassLexer(charStream);
         lexer.addErrorListener(errorListener);
@@ -146,13 +146,12 @@ public final class CompilationUnit
     @Override
     public String toString()
     {
+        // TODO: Remove charStream field if this assertion never fails
+        if (!this.sourceName.equals(this.charStream.getSourceName()))
+        {
+            throw new AssertionError(this.sourceName + ", " + this.charStream.getSourceName());
+        }
         return this.charStream.getSourceName();
-    }
-
-    @Nonnull
-    public CharStream getCharStream()
-    {
-        return this.charStream;
     }
 
     @Nonnull
