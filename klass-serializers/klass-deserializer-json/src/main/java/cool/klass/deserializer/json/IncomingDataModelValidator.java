@@ -2,6 +2,8 @@ package cool.klass.deserializer.json;
 
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -51,7 +53,7 @@ public final class IncomingDataModelValidator
         this.validateIncomingData(this.objectNode, this.klass);
     }
 
-    private void validateIncomingData(ObjectNode objectNode, Klass klass)
+    private void validateIncomingData(ObjectNode objectNode, @Nonnull Klass klass)
     {
         objectNode.fields().forEachRemaining(entry ->
         {
@@ -70,7 +72,7 @@ public final class IncomingDataModelValidator
         });
     }
 
-    public void handleMissingProperty(Klass klass, String fieldName, JsonNode jsonNode)
+    public void handleMissingProperty(@Nonnull Klass klass, String fieldName, JsonNode jsonNode)
     {
         this.contextStack.push(fieldName);
 
@@ -119,7 +121,7 @@ public final class IncomingDataModelValidator
         }
 
         @Override
-        public void visitPrimitiveProperty(PrimitiveProperty primitiveProperty)
+        public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
         {
             this.visitPropertyWithContext(() -> this.handlePrimitiveProperty(primitiveProperty));
         }
@@ -136,12 +138,12 @@ public final class IncomingDataModelValidator
         }
 
         @Override
-        public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
+        public void visitEnumerationProperty(@Nonnull EnumerationProperty enumerationProperty)
         {
             this.visitPropertyWithContext(() -> this.handleEnumerationProperty(enumerationProperty));
         }
 
-        public void handleEnumerationProperty(EnumerationProperty enumerationProperty)
+        public void handleEnumerationProperty(@Nonnull EnumerationProperty enumerationProperty)
         {
             if (!this.jsonNode.isTextual())
             {
@@ -233,7 +235,7 @@ public final class IncomingDataModelValidator
             }
         }
 
-        public void handleToOneAssociationEnd(AssociationEnd associationEnd)
+        public void handleToOneAssociationEnd(@Nonnull AssociationEnd associationEnd)
         {
             if (this.jsonNode.isObject())
             {

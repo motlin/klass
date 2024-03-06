@@ -77,6 +77,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
         return (AssociationEndContext) super.getElementContext();
     }
 
+    @Nonnull
     @Override
     public AssociationEndBuilder build()
     {
@@ -176,7 +177,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
                 this.owningAssociationState.getElementContext());
     }
 
-    public void reportDuplicateVersionProperty(CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
+    public void reportDuplicateVersionProperty(@Nonnull CompilerErrorHolder compilerErrorHolder, @Nonnull AntlrClass antlrClass)
     {
         AntlrAssociationEndModifier versionModifier = this.associationEndModifierStates.detect(
                 AntlrAssociationEndModifier::isVersion);
@@ -189,7 +190,7 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
                 this.owningAssociationState.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
     }
 
-    public void reportDuplicateVersionedProperty(CompilerErrorHolder compilerErrorHolder, AntlrClass antlrClass)
+    public void reportDuplicateVersionedProperty(@Nonnull CompilerErrorHolder compilerErrorHolder, @Nonnull AntlrClass antlrClass)
     {
         String message = String.format(
                 "ERR_VER_END: Multiple versioned properties on '%s'.",

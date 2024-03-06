@@ -1,5 +1,7 @@
 package cool.klass.generator.service;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.projection.BaseProjectionListener;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -20,7 +22,7 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
     }
 
     @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
     {
         if (this.isLeaf(projectionAssociationEnd))
         {

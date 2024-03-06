@@ -10,8 +10,10 @@ import org.eclipse.collections.impl.factory.Lists;
 
 public interface AntlrProjectionElement
 {
+    @Nonnull
     ProjectionElementBuilder build();
 
+    @Nonnull
     default MutableList<ParserRuleContext> getParserRuleContexts()
     {
         MutableList<ParserRuleContext> result = Lists.mutable.empty();
@@ -25,7 +27,7 @@ public interface AntlrProjectionElement
     @Nonnull
     String getName();
 
-    void reportDuplicateMemberName(CompilerErrorHolder compilerErrorHolder);
+    void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder);
 
-    void reportErrors(CompilerErrorHolder compilerErrorHolder);
+    void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder);
 }

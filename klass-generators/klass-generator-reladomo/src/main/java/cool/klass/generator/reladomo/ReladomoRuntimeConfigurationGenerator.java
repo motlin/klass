@@ -59,6 +59,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         this.printStringToFile(path, xmlString);
     }
 
+    @Nonnull
     public MithraRuntime generateMithraRuntime()
     {
         return this.getMithraRuntime(
@@ -69,7 +70,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     @Nonnull
     public MithraRuntime getMithraRuntime(
             String connectionManagerFullyQualifiedName,
-            ImmutableList<PropertyType> propertyTypes)
+            @Nonnull ImmutableList<PropertyType> propertyTypes)
     {
         MithraRuntime mithraRuntime = new MithraRuntime();
         mithraRuntime.setConnectionManagers(this.getConnectionManagerTypes(
@@ -88,7 +89,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
 
     private MutableList<ConnectionManagerType> getConnectionManagerTypes(
             String connectionManagerFullyQualifiedName,
-            ImmutableList<PropertyType> propertyTypes)
+            @Nonnull ImmutableList<PropertyType> propertyTypes)
     {
         ConnectionManagerType connectionManagerType = this.getConnectionManager(
                 connectionManagerFullyQualifiedName,
@@ -105,6 +106,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         return pureObjectsType;
     }
 
+    @Nonnull
     public PropertyType getPropertyType(String name, String value)
     {
         PropertyType propertyType = new PropertyType();
@@ -113,6 +115,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         return propertyType;
     }
 
+    @Nonnull
     private ConnectionManagerType getConnectionManager(
             String connectionManagerFullyQualifiedName,
             ImmutableList<PropertyType> propertyTypes)
@@ -151,6 +154,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
                 .collectWith(this::getMithraObjectConfigurationType, CacheType.PARTIAL);
     }
 
+    @Nonnull
     private MithraObjectConfigurationType getObjectSequenceObjectConfigurationType()
     {
         return this.getMithraObjectConfigurationType(
@@ -158,6 +162,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
                 CacheType.NONE);
     }
 
+    @Nonnull
     private MithraObjectConfigurationType getMithraObjectConfigurationType(
             String fullyQualifiedClassName,
             CacheType cacheType)
@@ -168,6 +173,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
         return mithraObjectConfigurationType;
     }
 
+    @Nonnull
     private MithraPureObjectConfigurationType getMithraPureObjectConfigurationType(String fullyQualifiedClassName)
     {
         MithraPureObjectConfigurationType mithraPureObjectConfigurationType = new MithraPureObjectConfigurationType();

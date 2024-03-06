@@ -92,6 +92,7 @@ public class JavaConstantsMetaModelGenerator
         }
     }
 
+    @Nonnull
     private String getDomainModelSourceCode()
     {
         String imports = this.domainModel
@@ -304,7 +305,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     public Path getOutputPath(
             @Nonnull Path outputPath,
-            PackageableElement packageableElement)
+            @Nonnull PackageableElement packageableElement)
     {
         String packageRelativePath = packageableElement.getPackageName()
                 .replaceAll("\\.", "/");
@@ -320,7 +321,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     public Path getOutputPath(
             @Nonnull Path outputPath,
-            Projection projection)
+            @Nonnull Projection projection)
     {
         String packageRelativePath = projection.getPackageName()
                 .replaceAll("\\.", "/");
@@ -657,6 +658,7 @@ public class JavaConstantsMetaModelGenerator
                 .makeString("\n");
     }
 
+    @Nonnull
     private String getDataTypePropertySourceCode(DataTypeProperty dataTypeProperty)
     {
         if (dataTypeProperty instanceof PrimitiveProperty)
@@ -1072,7 +1074,7 @@ public class JavaConstantsMetaModelGenerator
                 + "            return " + associationEnd.isOwned() + ";\n"
                 + "        }\n"
                 + "\n"
-                + "        @Override\n"
+                + "        @Nonnull@Override\n"
                 + "        public AssociationEnd getOpposite()\n"
                 + "        {\n"
                 + "            throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
@@ -1142,6 +1144,7 @@ public class JavaConstantsMetaModelGenerator
                 name);
     }
 
+    @Nonnull
     private String getAssociationEndConstantSourceCode(AssociationEnd associationEnd, String sideName)
     {
         String name          = associationEnd.getName();
@@ -1280,6 +1283,7 @@ public class JavaConstantsMetaModelGenerator
                 .replaceAll("(?m)^", "    ");
     }
 
+    @Nonnull
     private String getProjectionChildSourceCode(ProjectionElement projectionElement)
     {
         if (projectionElement instanceof ProjectionDataTypeProperty)

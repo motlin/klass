@@ -24,23 +24,11 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     }
 
     @Nonnull
-    @Override
-    public ParserRuleContext getNameContext()
-    {
-        return this.nameContext;
-    }
-
-    @Nonnull
-    @Override
-    public String getName()
-    {
-        return this.name;
-    }
-
-    @Nonnull
     public abstract AntlrType getType();
 
+    @Nonnull
     public abstract PropertyBuilder<T, ?> build();
 
+    @Nonnull
     protected abstract AntlrClass getOwningClassState();
 }

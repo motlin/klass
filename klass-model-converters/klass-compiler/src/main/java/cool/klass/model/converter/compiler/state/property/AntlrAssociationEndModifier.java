@@ -32,6 +32,7 @@ public class AntlrAssociationEndModifier extends AntlrNamedElement
         return this.name.equals("version");
     }
 
+    @Nonnull
     public AssociationEndModifierBuilder build()
     {
         return new AssociationEndModifierBuilder(

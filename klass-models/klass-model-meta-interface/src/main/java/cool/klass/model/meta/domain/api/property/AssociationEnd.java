@@ -8,7 +8,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 public interface AssociationEnd extends ReferenceProperty
 {
     @Override
-    default void visit(PropertyVisitor visitor)
+    default void visit(@Nonnull PropertyVisitor visitor)
     {
         visitor.visitAssociationEnd(this);
     }
@@ -18,6 +18,7 @@ public interface AssociationEnd extends ReferenceProperty
 
     boolean isOwned();
 
+    @Nonnull
     AssociationEnd getOpposite();
 
     @Nonnull

@@ -112,8 +112,9 @@ public class CriteriaVisitor extends KlassBaseVisitor<AntlrCriteria>
                 + ".visitCriteriaExpressionGroup() not implemented yet");
     }
 
+    @Nonnull
     @Override
-    public AntlrCriteria visitCriteriaAll(CriteriaAllContext ctx)
+    public AntlrCriteria visitCriteriaAll(@Nonnull CriteriaAllContext ctx)
     {
         return new AllAntlrCriteria(ctx, this.compilationUnit, false, this.criteriaOwner);
     }

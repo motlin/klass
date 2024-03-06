@@ -36,6 +36,7 @@ public final class UrlConstantImpl extends AbstractNamedElement implements Abstr
             super(elementContext, inferred, nameContext, name, ordinal);
         }
 
+        @Nonnull
         @Override
         public UrlConstantImpl build()
         {

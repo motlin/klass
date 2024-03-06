@@ -487,7 +487,7 @@ public class ErrorUnderlineListener extends BaseErrorListener
     }
 
     @Override
-    public void enterAssociationEndModifier(AssociationEndModifierContext ctx)
+    public void enterAssociationEndModifier(@Nonnull AssociationEndModifierContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

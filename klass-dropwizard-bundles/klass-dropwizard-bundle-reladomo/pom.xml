@@ -27,6 +27,9 @@
             <artifactId>dropwizard-core</artifactId>
         </dependency>
 
+        <dependency>
+        </dependency>
+
     </dependencies>
 
 </project>

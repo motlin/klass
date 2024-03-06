@@ -15,13 +15,13 @@ public interface ProjectionDataTypeProperty extends ProjectionElement
     }
 
     @Override
-    default void enter(ProjectionListener listener)
+    default void enter(@Nonnull ProjectionListener listener)
     {
         listener.enterProjectionDataTypeProperty(this);
     }
 
     @Override
-    default void exit(ProjectionListener listener)
+    default void exit(@Nonnull ProjectionListener listener)
     {
         listener.exitProjectionDataTypeProperty(this);
     }

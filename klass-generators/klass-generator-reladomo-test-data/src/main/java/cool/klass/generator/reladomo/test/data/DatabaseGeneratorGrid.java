@@ -3,6 +3,8 @@ package cool.klass.generator.reladomo.test.data;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -23,7 +25,7 @@ public class DatabaseGeneratorGrid
         this.delimiter = delimiter;
     }
 
-    public void addValue(String value)
+    public void addValue(@Nonnull String value)
     {
         DatabaseGeneratorColumn databaseGeneratorColumn = this.columns.get(this.currentColumn);
         databaseGeneratorColumn.addValue(value);
@@ -41,7 +43,7 @@ public class DatabaseGeneratorGrid
         this.currentRow++;
     }
 
-    public void print(BufferedWriter writer) throws IOException
+    public void print(@Nonnull BufferedWriter writer) throws IOException
     {
         int numRows = this.currentRow;
         for (int rowIndex = 0; rowIndex < numRows; rowIndex++)

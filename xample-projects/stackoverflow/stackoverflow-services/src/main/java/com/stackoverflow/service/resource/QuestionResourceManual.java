@@ -103,8 +103,8 @@ public class QuestionResourceManual
     @Produces(MediaType.APPLICATION_JSON)
     public void method1(
             @PathParam("id") Long id,
-            @QueryParam("version") Optional<Integer> optionalVersion,
-            @NotNull ObjectNode objectNode)
+            @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
+            @Nonnull @NotNull ObjectNode objectNode)
     {
         MutableList<String> errors = Lists.mutable.empty();
         IncomingDataModelValidator.validate(objectNode, StackOverflowDomainModel.Question, errors);
@@ -186,6 +186,7 @@ public class QuestionResourceManual
         result.merge(questions, mergeOptions);
     }
 
+    @Nonnull
     @Timed
     @ExceptionMetered
     @DELETE
@@ -194,7 +195,7 @@ public class QuestionResourceManual
     public ReladomoJsonTree method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
-            @Context SecurityContext securityContext)
+            @Nonnull @Context SecurityContext securityContext)
     {
         // Question
 
@@ -235,7 +236,7 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/in") // ?{ids}
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonTree> method3(@QueryParam("ids") Set<Long> ids)
+    public List<ReladomoJsonTree> method3(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         // Question
 
@@ -423,7 +424,7 @@ public class QuestionResourceManual
 
     private List<ReladomoJsonTree> applyProjection(
             MutableList<? extends MithraObject> mithraObjects,
-            Projection projection)
+            @Nonnull Projection projection)
     {
         return mithraObjects.<ReladomoJsonTree>collect(mithraObject -> new ReladomoJsonTree(
                 mithraObject,

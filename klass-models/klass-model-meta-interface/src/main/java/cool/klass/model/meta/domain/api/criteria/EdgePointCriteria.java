@@ -10,7 +10,7 @@ public interface EdgePointCriteria extends Criteria
     MemberReferencePath getMemberExpressionValue();
 
     @Override
-    default void visit(CriteriaVisitor visitor)
+    default void visit(@Nonnull CriteriaVisitor visitor)
     {
         visitor.visitEdgePoint(this);
     }

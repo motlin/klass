@@ -172,7 +172,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         }
     }
 
-    private void reportInvalidProjection(CompilerErrorHolder compilerErrorHolder)
+    private void reportInvalidProjection(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         Verb verb = this.verbState.getVerb();
 

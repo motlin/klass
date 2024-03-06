@@ -23,11 +23,11 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
     protected       AntlrClass             owningClassState;
 
     public AntlrReferenceTypeProperty(
-            ParserRuleContext elementContext,
+            @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
-            ParserRuleContext nameContext,
-            String name,
+            @Nonnull ParserRuleContext nameContext,
+            @Nonnull String name,
             int ordinal,
             @Nonnull AntlrClass type,
             AntlrMultiplicity multiplicityState)
@@ -44,6 +44,7 @@ public abstract class AntlrReferenceTypeProperty extends AntlrProperty<KlassImpl
         return this.type;
     }
 
+    @Nonnull
     @Override
     public AntlrClass getOwningClassState()
     {

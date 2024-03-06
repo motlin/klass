@@ -2,6 +2,7 @@ package com.stackoverflow.dropwizard.test;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
@@ -214,7 +215,7 @@ public class QuestionResourceManualTest
         //</editor-fold>
     }
 
-    public void assertResponseStatus(Response response, Status status)
+    public void assertResponseStatus(@Nonnull Response response, Status status)
     {
         response.bufferEntity();
         String entityAsString = response.readEntity(String.class);

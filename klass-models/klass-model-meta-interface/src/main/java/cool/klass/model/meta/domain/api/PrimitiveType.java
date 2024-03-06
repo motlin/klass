@@ -249,7 +249,7 @@ public enum PrimitiveType implements DataType, DataTypeGetter
         return this.getPrettyName();
     }
 
-    public abstract void visit(PrimitiveTypeVisitor visitor);
+    public abstract void visit(@Nonnull PrimitiveTypeVisitor visitor);
 
     public boolean isTemporal()
     {
@@ -271,6 +271,7 @@ public enum PrimitiveType implements DataType, DataTypeGetter
         return this.isNumeric;
     }
 
+    @Nonnull
     @Override
     public PrimitiveType getType()
     {

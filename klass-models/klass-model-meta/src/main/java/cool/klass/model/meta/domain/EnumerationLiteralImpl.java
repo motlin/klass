@@ -41,6 +41,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
         @Nonnull
         private final EnumerationBuilder enumerationBuilder;
 
+        @Nullable
         private EnumerationLiteralImpl enumerationLiteral;
 
         public EnumerationLiteralBuilder(
@@ -57,6 +58,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 
+        @Nonnull
         public EnumerationLiteralImpl build()
         {
             if (this.enumerationLiteral != null)

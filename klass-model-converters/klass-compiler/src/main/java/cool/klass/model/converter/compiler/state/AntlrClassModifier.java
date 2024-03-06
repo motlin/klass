@@ -36,6 +36,7 @@ public class AntlrClassModifier extends AntlrNamedElement
         return this.name.equals("optimisticallyLocked");
     }
 
+    @Nonnull
     public ClassModifierBuilder build()
     {
         return new ClassModifierBuilder(this.elementContext, this.inferred, this.nameContext, this.name, this.ordinal);

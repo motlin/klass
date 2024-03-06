@@ -380,7 +380,7 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
     {
         this.numProjectionAssociationEnds++;
 

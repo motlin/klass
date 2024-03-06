@@ -54,10 +54,14 @@ public class OrderByPhase extends AbstractCompilerPhase
     @Nullable
     private AntlrClass classState;
 
+    @Nullable
     private AntlrOrderByOwner orderByOwnerState;
 
+    @Nullable
     private AntlrClass             thisContext;
+    @Nonnull
     private Optional<AntlrOrderBy> orderByState = Optional.empty();
+    @Nullable
     private AntlrService           serviceState;
 
     public OrderByPhase(
@@ -87,7 +91,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
+    public void enterOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
     {
         if (this.orderByOwnerState == null)
         {
@@ -110,7 +114,7 @@ public class OrderByPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+    public void enterOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
     {
         if (this.orderByOwnerState == null)
         {
@@ -121,7 +125,7 @@ public class OrderByPhase extends AbstractCompilerPhase
         this.orderByState.get().enterOrderByMemberReferencePath(orderByMemberReferencePathState);
     }
 
-    private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(OrderByMemberReferencePathContext orderByMemberReferencePathContext)
+    private AntlrOrderByMemberReferencePath convertOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext orderByMemberReferencePathContext)
     {
         AntlrThisMemberReferencePath thisMemberReferencePath = this.getAntlrThisMemberReferencePath(
                 orderByMemberReferencePathContext);

@@ -60,9 +60,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
 
     public abstract boolean isTemporal();
 
+    @Nonnull
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();
 
+    @Nonnull
     @Override
     protected AntlrClass getOwningClassState()
     {

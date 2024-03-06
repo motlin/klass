@@ -2,6 +2,8 @@ package cool.klass.generator.service;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Multiplicity;
@@ -34,7 +36,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue)
+    public void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = typeMemberExpressionValue.getAssociationEnds();
 
@@ -54,7 +56,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue)
+    public void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue)
     {
         ImmutableList<AssociationEnd> associationEnds = thisMemberExpressionValue.getAssociationEnds();
 
@@ -74,7 +76,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitVariableReference(VariableReference variableReference)
+    public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
         UrlParameter urlParameter = variableReference.getUrlParameter();
         DataType     dataType     = urlParameter.getType();
@@ -96,13 +98,13 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitIntegerLiteral(IntegerLiteralValue integerLiteralValue)
+    public void visitIntegerLiteral(@Nonnull IntegerLiteralValue integerLiteralValue)
     {
         this.stringBuilder.append(integerLiteralValue.getValue());
     }
 
     @Override
-    public void visitStringLiteral(StringLiteralValue stringLiteralValue)
+    public void visitStringLiteral(@Nonnull StringLiteralValue stringLiteralValue)
     {
         this.stringBuilder.append('"');
         this.stringBuilder.append(stringLiteralValue.getValue());
@@ -110,7 +112,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitLiteralList(LiteralListValue literalListValue)
+    public void visitLiteralList(@Nonnull LiteralListValue literalListValue)
     {
         Type type = literalListValue.getType();
         this.stringBuilder.append(this.getType(type));
@@ -130,7 +132,7 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     }
 
     @Override
-    public void visitUserLiteral(UserLiteral userLiteral)
+    public void visitUserLiteral(@Nonnull UserLiteral userLiteral)
     {
         this.stringBuilder.append("userPrincipalName");
     }

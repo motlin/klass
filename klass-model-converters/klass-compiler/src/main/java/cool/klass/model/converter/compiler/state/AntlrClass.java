@@ -57,7 +57,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
 
         @Override
-        public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterParameterizedProperty() not implemented yet");
@@ -90,7 +90,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         }
 
         @Override
-        public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+        public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterParameterizedProperty() not implemented yet");
@@ -164,7 +164,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
                         : AntlrAssociationEnd.AMBIGUOUS);
     }
 
-    public void enterParameterizedProperty(AntlrParameterizedProperty parameterizedPropertyState)
+    public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
     {
         this.parameterizedPropertyStates.add(parameterizedPropertyState);
         this.parameterizedPropertiesByName.compute(

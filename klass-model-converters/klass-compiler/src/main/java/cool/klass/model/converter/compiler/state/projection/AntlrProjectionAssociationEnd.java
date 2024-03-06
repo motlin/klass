@@ -67,6 +67,7 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
+    @Nonnull
     @Override
     public ProjectionAssociationEndBuilder build()
     {

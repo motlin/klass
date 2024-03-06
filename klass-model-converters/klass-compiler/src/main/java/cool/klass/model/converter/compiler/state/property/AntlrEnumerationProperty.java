@@ -74,6 +74,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
         return false;
     }
 
+    @Nonnull
     @Override
     public EnumerationPropertyBuilder build()
     {

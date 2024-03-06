@@ -49,6 +49,7 @@ public class AntlrPropertyModifier extends AntlrNamedElement
         return this.name.equals("version");
     }
 
+    @Nonnull
     public PropertyModifierBuilder build()
     {
         return new PropertyModifierBuilder(

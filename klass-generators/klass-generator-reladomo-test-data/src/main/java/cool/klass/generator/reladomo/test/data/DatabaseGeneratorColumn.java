@@ -1,5 +1,7 @@
 package cool.klass.generator.reladomo.test.data;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -15,7 +17,7 @@ public class DatabaseGeneratorColumn
         this.primitiveType = primitiveType;
     }
 
-    public void addValue(String value)
+    public void addValue(@Nonnull String value)
     {
         this.maxWidth = Math.max(this.maxWidth, value.length());
         this.values.add(value);

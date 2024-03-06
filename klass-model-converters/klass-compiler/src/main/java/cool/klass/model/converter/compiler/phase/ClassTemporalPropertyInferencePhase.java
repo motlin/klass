@@ -88,7 +88,7 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     }
 
     private AntlrPrimitiveProperty property(
-            AntlrClass classState,
+            @Nonnull AntlrClass classState,
             @Nonnull ClassModifierContext ctx,
             @Nonnull String name,
             @Nonnull PrimitiveType primitiveType)

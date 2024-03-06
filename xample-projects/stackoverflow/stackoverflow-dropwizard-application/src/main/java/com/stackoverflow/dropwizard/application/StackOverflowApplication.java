@@ -18,7 +18,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     }
 
     @Override
-    public void initialize(Bootstrap<StackOverflowConfiguration> bootstrap)
+    public void initialize(@Nonnull Bootstrap<StackOverflowConfiguration> bootstrap)
     {
         super.initialize(bootstrap);
 

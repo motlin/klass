@@ -46,12 +46,13 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         return this.ordinal;
     }
 
-    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: ❗️ Redo context stack for error reporting
         this.thisMemberReferencePathState.reportErrors(compilerErrorHolder, Lists.immutable.empty());
     }
 
+    @Nonnull
     public OrderByMemberReferencePathBuilder build()
     {
         ThisMemberReferencePathBuilder     thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();

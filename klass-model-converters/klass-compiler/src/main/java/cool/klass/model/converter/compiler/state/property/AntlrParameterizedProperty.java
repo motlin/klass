@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -66,6 +67,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     private final MutableList<AntlrEnumerationParameter>               enumerationParameterStates       = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationParameter> enumerationParameterStatesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    @Nullable
     private       ParameterizedPropertyBuilder                         parameterizedPropertyBuilder;
     private       AntlrCriteria                                        criteriaState;
 
@@ -91,6 +93,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
         return (ParameterizedPropertyContext) super.getElementContext();
     }
 
+    @Nonnull
     @Override
     public ParameterizedPropertyBuilder build()
     {
@@ -127,7 +130,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     }
 
     @Override
-    public void enterPrimitiveParameterDeclaration(AntlrPrimitiveParameter primitiveParameterState)
+    public void enterPrimitiveParameterDeclaration(@Nonnull AntlrPrimitiveParameter primitiveParameterState)
     {
         this.primitiveParameterStates.add(primitiveParameterState);
         this.primitiveParameterStatesByName.compute(
@@ -138,7 +141,7 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     }
 
     @Override
-    public void enterEnumerationParameterDeclaration(AntlrEnumerationParameter enumerationParameterState)
+    public void enterEnumerationParameterDeclaration(@Nonnull AntlrEnumerationParameter enumerationParameterState)
     {
         this.enumerationParameterStates.add(enumerationParameterState);
         this.enumerationParameterStatesByName.compute(

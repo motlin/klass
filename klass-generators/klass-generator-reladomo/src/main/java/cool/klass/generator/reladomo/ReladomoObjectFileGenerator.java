@@ -67,7 +67,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 
     private void convertAndMarshall(
             @Nonnull Klass klass,
-            MithraGeneratorMarshaller mithraGeneratorMarshaller,
+            @Nonnull MithraGeneratorMarshaller mithraGeneratorMarshaller,
             StringBuilder stringBuilder) throws IOException
     {
         if (klass.isTransient())
@@ -83,7 +83,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private MithraPureObject convertToMithraPureObject(Klass klass)
+    private MithraPureObject convertToMithraPureObject(@Nonnull Klass klass)
     {
         MithraPureObject mithraPureObject = new MithraPureObject();
 
@@ -109,7 +109,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private MithraObject convertToMithraObject(Klass klass)
+    private MithraObject convertToMithraObject(@Nonnull Klass klass)
     {
         MithraObject mithraObject = new MithraObject();
         this.convertCommonObject(klass, mithraObject);
@@ -134,7 +134,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
         return mithraObject;
     }
 
-    private void convertCommonObject(Klass klass, MithraCommonObjectType mithraCommonObject)
+    private void convertCommonObject(Klass klass, @Nonnull MithraCommonObjectType mithraCommonObject)
     {
         ObjectType objectType = new ObjectType();
         objectType.with("transactional", mithraCommonObject);
@@ -251,7 +251,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AsOfAttributeType convertToAsOfAttributeType(DataTypeProperty dataTypeProperty)
+    private AsOfAttributeType convertToAsOfAttributeType(@Nonnull DataTypeProperty dataTypeProperty)
     {
         AsOfAttributeType asOfAttributeType = new AsOfAttributeType();
         this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
@@ -300,7 +300,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AsOfAttributePureType convertToAsOfAttributePureType(DataTypeProperty dataTypeProperty)
+    private AsOfAttributePureType convertToAsOfAttributePureType(@Nonnull DataTypeProperty dataTypeProperty)
     {
         AsOfAttributePureType asOfAttributeType = new AsOfAttributePureType();
         this.convertToAsOfAttributeType(dataTypeProperty, asOfAttributeType);
@@ -308,7 +308,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AttributeType convertToAttributeType(DataTypeProperty dataTypeProperty)
+    private AttributeType convertToAttributeType(@Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributeType attributeType = new AttributeType();
         this.convertToAttributeType(dataTypeProperty, attributeType);
@@ -343,7 +343,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
     }
 
     @Nonnull
-    private AttributePureType convertToAttributePureType(DataTypeProperty dataTypeProperty)
+    private AttributePureType convertToAttributePureType(@Nonnull DataTypeProperty dataTypeProperty)
     {
         AttributePureType attributeType = new AttributePureType();
         this.convertToAttributeType(dataTypeProperty, attributeType);

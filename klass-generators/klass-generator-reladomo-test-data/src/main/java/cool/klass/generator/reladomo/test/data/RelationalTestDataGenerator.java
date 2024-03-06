@@ -2,6 +2,8 @@ package cool.klass.generator.reladomo.test.data;
 
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.util.dbextractor.MithraTestDataRowFormatter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
@@ -25,6 +27,7 @@ public class RelationalTestDataGenerator
                 .makeString("");
     }
 
+    @Nonnull
     private String convertClass(Klass klass)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()

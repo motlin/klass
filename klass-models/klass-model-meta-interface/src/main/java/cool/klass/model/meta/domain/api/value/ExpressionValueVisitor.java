@@ -1,5 +1,7 @@
 package cool.klass.model.meta.domain.api.value;
 
+import javax.annotation.Nonnull;
+
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
@@ -7,17 +9,17 @@ import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 
 public interface ExpressionValueVisitor
 {
-    void visitTypeMember(TypeMemberReferencePath typeMemberExpressionValue);
+    void visitTypeMember(@Nonnull TypeMemberReferencePath typeMemberExpressionValue);
 
-    void visitThisMember(ThisMemberReferencePath thisMemberExpressionValue);
+    void visitThisMember(@Nonnull ThisMemberReferencePath thisMemberExpressionValue);
 
-    void visitVariableReference(VariableReference variableReference);
+    void visitVariableReference(@Nonnull VariableReference variableReference);
 
-    void visitIntegerLiteral(IntegerLiteralValue integerLiteralValue);
+    void visitIntegerLiteral(@Nonnull IntegerLiteralValue integerLiteralValue);
 
-    void visitStringLiteral(StringLiteralValue stringLiteralValue);
+    void visitStringLiteral(@Nonnull StringLiteralValue stringLiteralValue);
 
-    void visitLiteralList(LiteralListValue literalListValue);
+    void visitLiteralList(@Nonnull LiteralListValue literalListValue);
 
-    void visitUserLiteral(UserLiteral userLiteral);
+    void visitUserLiteral(@Nonnull UserLiteral userLiteral);
 }

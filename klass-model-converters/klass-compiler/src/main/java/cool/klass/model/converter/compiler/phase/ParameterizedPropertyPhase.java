@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.phase;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
@@ -40,11 +41,15 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 {
     private final AntlrDomainModel           domainModelState;
+    @Nullable
     private       AntlrParameterizedProperty parameterizedPropertyState;
     // TODO: Make better use of these Owner interfaces in shared compiler phases
+    @Nullable
     private       AntlrCriteriaOwner         criteriaOwnerState;
+    @Nullable
     private       AntlrParameterOwner        parameterOwnerState;
 
+    @Nullable
     private AntlrClass thisReference;
 
     public ParameterizedPropertyPhase(
@@ -72,7 +77,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
+    public void enterParameterizedProperty(@Nonnull ParameterizedPropertyContext ctx)
     {
         IdentifierContext     identifier            = ctx.identifier();
         ClassTypeContext      classTypeContext      = ctx.classType();
@@ -120,7 +125,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
 
     // TODO: Should probably be moved to its own phase for consistency
     @Override
-    public void enterRelationship(RelationshipContext ctx)
+    public void enterRelationship(@Nonnull RelationshipContext ctx)
     {
         if (this.parameterizedPropertyState == null)
         {
@@ -137,7 +142,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterPrimitiveParameterDeclaration(PrimitiveParameterDeclarationContext ctx)
+    public void enterPrimitiveParameterDeclaration(@Nonnull PrimitiveParameterDeclarationContext ctx)
     {
         if (this.parameterizedPropertyState == null)
         {
@@ -176,7 +181,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterEnumerationParameterDeclaration(EnumerationParameterDeclarationContext ctx)
+    public void enterEnumerationParameterDeclaration(@Nonnull EnumerationParameterDeclarationContext ctx)
     {
         if (this.parameterizedPropertyState == null)
         {

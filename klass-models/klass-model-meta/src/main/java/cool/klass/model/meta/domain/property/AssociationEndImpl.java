@@ -72,6 +72,7 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         return this.owned;
     }
 
+    @Nonnull
     @Override
     public AssociationEnd getOpposite()
     {

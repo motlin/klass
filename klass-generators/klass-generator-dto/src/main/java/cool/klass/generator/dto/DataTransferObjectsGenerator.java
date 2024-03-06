@@ -55,7 +55,7 @@ public class DataTransferObjectsGenerator
     @Nonnull
     public Path getDtoOutputPath(
             @Nonnull Path outputPath,
-            PackageableElement packageableElement)
+            @Nonnull PackageableElement packageableElement)
     {
         String packageRelativePath = packageableElement.getPackageName()
                 .replaceAll("\\.", "/");
@@ -213,7 +213,7 @@ public class DataTransferObjectsGenerator
         return "List<" + toOneType + ">";
     }
 
-    private String getDataField(DataTypeProperty dataTypeProperty)
+    private String getDataField(@Nonnull DataTypeProperty dataTypeProperty)
     {
         String   annotation = getAnnotation(dataTypeProperty);
         String   type       = this.getType(dataTypeProperty.getType());

@@ -36,7 +36,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
             null)
     {
         @Override
-        public void enterAssociationEnd(AntlrAssociationEnd associationEndState)
+        public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".enterAssociationEnd() not implemented yet");
@@ -77,7 +77,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements AntlrCr
         return this.associationEndsByContext.get(ctx);
     }
 
-    public void enterAssociationEnd(AntlrAssociationEnd associationEndState)
+    public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
     {
         AntlrAssociationEnd duplicate = this.associationEndsByContext.put(
                 associationEndState.getElementContext(),

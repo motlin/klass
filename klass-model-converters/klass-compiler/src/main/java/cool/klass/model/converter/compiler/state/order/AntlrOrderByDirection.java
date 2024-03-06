@@ -28,7 +28,7 @@ public class AntlrOrderByDirection extends AntlrElement
     }
 
     @Nonnull
-    private OrderByDirection getOrderByDirection(OrderByDirectionContext orderByDirectionContext)
+    private OrderByDirection getOrderByDirection(@Nullable OrderByDirectionContext orderByDirectionContext)
     {
         if (orderByDirectionContext == null)
         {
@@ -50,11 +50,13 @@ public class AntlrOrderByDirection extends AntlrElement
         throw new AssertionError(text);
     }
 
+    @Nonnull
     public OrderByDirection getOrderByDirection()
     {
         return this.orderByDirection;
     }
 
+    @Nonnull
     public OrderByDirectionDeclarationBuilder build()
     {
         return new OrderByDirectionDeclarationBuilder(this.elementContext, this.inferred, this.orderByDirection);

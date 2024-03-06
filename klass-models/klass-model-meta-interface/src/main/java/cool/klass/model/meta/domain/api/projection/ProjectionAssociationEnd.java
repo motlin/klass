@@ -8,13 +8,13 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 public interface ProjectionAssociationEnd extends ProjectionParent
 {
     @Override
-    default void enter(ProjectionListener listener)
+    default void enter(@Nonnull ProjectionListener listener)
     {
         listener.enterProjectionAssociationEnd(this);
     }
 
     @Override
-    default void exit(ProjectionListener listener)
+    default void exit(@Nonnull ProjectionListener listener)
     {
         listener.exitProjectionAssociationEnd(this);
     }

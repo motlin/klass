@@ -1,5 +1,7 @@
 package cool.klass.reladomo.test.rule;
 
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.test.ConnectionManagerForTests;
 import com.gs.fw.common.mithra.test.MithraTestResource;
 import org.junit.rules.TestRule;
@@ -21,8 +23,9 @@ public class ReladomoTestRule implements TestRule
         this.testDataFileNames = testDataFileNames;
     }
 
+    @Nonnull
     @Override
-    public Statement apply(Statement base, Description description)
+    public Statement apply(@Nonnull Statement base, @Nonnull Description description)
     {
         ReladomoTestFile reladomoTestFileAnnotation = description.getAnnotation(ReladomoTestFile.class);
         String[] testDataFileNames = reladomoTestFileAnnotation == null

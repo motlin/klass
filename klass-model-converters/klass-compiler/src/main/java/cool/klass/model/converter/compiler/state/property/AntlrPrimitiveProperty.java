@@ -74,6 +74,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         return this.antlrPrimitiveType.isTemporal();
     }
 
+    @Nonnull
     @Override
     public PrimitivePropertyBuilder build()
     {

@@ -71,5 +71,6 @@ public abstract class AntlrParameter extends AntlrNamedElement
     @Nonnull
     public abstract AntlrType getType();
 
+    @Nonnull
     public abstract ParameterBuilder build();
 }

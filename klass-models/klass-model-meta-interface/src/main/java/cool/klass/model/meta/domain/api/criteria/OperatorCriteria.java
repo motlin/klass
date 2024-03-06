@@ -17,7 +17,7 @@ public interface OperatorCriteria extends Criteria
     ExpressionValue getTargetValue();
 
     @Override
-    default void visit(CriteriaVisitor visitor)
+    default void visit(@Nonnull CriteriaVisitor visitor)
     {
         visitor.visitOperator(this);
     }

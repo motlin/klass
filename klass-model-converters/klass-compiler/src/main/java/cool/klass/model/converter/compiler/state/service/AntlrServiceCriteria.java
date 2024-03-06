@@ -21,7 +21,6 @@ public class AntlrServiceCriteria extends AntlrElement implements AntlrCriteriaO
     @Nonnull
     private final AntlrService serviceState;
 
-    @Nonnull
     private AntlrCriteria antlrCriteria;
 
     public AntlrServiceCriteria(

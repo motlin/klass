@@ -154,7 +154,7 @@ public class AntlrUrl extends AntlrElement
         }
     }
 
-    private void reportParameterErrors(CompilerErrorHolder compilerErrorHolder)
+    private void reportParameterErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         for (AntlrUrlParameter urlParameterState : this.urlParameterStates)
         {
