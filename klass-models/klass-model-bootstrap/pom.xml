@@ -55,14 +55,19 @@
     </build>
 
     <modules>
+        <module>klass-model-bootstrapped-domain-model</module>
         <module>klass-model-bootstrapped-dropwizard-application</module>
         <module>klass-model-bootstrapped-dtos</module>
+        <module>klass-model-bootstrapped-graphql-fragment</module>
+        <module>klass-model-bootstrapped-graphql-reladomo-finder</module>
+        <module>klass-model-bootstrapped-graphql-schema</module>
+        <module>klass-model-bootstrapped-graphql-schema-query</module>
         <module>klass-model-bootstrapped-json-views</module>
         <module>klass-model-bootstrapped-klass-macros</module>
         <module>klass-model-bootstrapped-klass-projections</module>
+        <module>klass-model-bootstrapped-klass-services</module>
         <!--<module>klass-model-bootstrapped-meta-model-json</module>-->
-        <module>klass-model-bootstrapped-domain-model</module>
-        <module>klass-model-bootstrapped-liquibase</module>
+        <module>klass-model-bootstrapped-liquibase-schema</module>
         <module>klass-model-bootstrapped-reladomo-ddls</module>
         <module>klass-model-bootstrapped-reladomo-definitions</module>
         <module>klass-model-bootstrapped-reladomo-pojos</module>

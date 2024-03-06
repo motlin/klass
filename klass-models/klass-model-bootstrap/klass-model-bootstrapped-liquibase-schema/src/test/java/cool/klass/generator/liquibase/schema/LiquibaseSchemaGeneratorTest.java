@@ -12,9 +12,10 @@ import org.junit.rules.TestRule;
 
 public class LiquibaseSchemaGeneratorTest
 {
-    public static final String        FULLY_QUALIFIED_PACKAGE = "klass.model.meta.domain";
+    public static final String FULLY_QUALIFIED_PACKAGE = "klass.model.meta.domain";
+
     @Rule
-    public final        FileMatchRule fileMatchRule           = new FileMatchRule(this.getClass());
+    public final FileMatchRule fileMatchRule = new FileMatchRule(this.getClass());
 
     @Rule
     public final TestRule logMarkerTestRule = new LogMarkerTestRule();

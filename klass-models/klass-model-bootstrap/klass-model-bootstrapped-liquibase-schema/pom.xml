@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -8,9 +9,10 @@
         <artifactId>klass-model-bootstrap</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-model-bootstrapped-liquibase</artifactId>
+    <artifactId>klass-model-bootstrapped-liquibase-schema</artifactId>
 
     <name>${app.name} Liquibase Schema</name>
 
@@ -57,6 +59,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-model-source-code-meta-interface</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-compiler</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -65,13 +74,6 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-loader-compiler</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-source-code-meta-interface</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -99,24 +101,35 @@
         <plugins>
 
             <plugin>
-                <groupId>io.liftwizard</groupId>
-                <artifactId>liftwizard-generator-reladomo-database-plugin</artifactId>
-                <version>${liftwizard.version}</version>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-liquibase-schema-plugin</artifactId>
+                <version>${klass.version}</version>
+
+                <configuration>
+                    <klassSourcePackages>
+                        <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
+                    </klassSourcePackages>
+                </configuration>
+
                 <executions>
                     <execution>
-                        <id>generate-reladomo-database</id>
+                        <id>generate-liquibase-schema</id>
                         <goals>
-                            <goal>generate-reladomo-database</goal>
+                            <goal>generate-liquibase-schema</goal>
                         </goals>
                     </execution>
                 </executions>
+
                 <dependencies>
+
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-reladomo-definitions</artifactId>
+                        <artifactId>${app.artifactId}-domain-model</artifactId>
                         <version>${project.version}</version>
                     </dependency>
+
                 </dependencies>
+
             </plugin>
 
         </plugins>
