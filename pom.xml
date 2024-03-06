@@ -356,7 +356,7 @@
                 <plugin>
                     <groupId>de.qaware.maven</groupId>
                     <artifactId>go-offline-maven-plugin</artifactId>
-                    <version>1.2.1</version>
+                    <version>1.2.2</version>
                     <configuration>
                         <dynamicDependencies>
                             <DynamicDependency>
