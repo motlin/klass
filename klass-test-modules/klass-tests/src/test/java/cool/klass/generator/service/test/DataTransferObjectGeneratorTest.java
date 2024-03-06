@@ -46,7 +46,7 @@ public class DataTransferObjectGeneratorTest
         String expectedSourceCode = ""
                 + "package com.stackoverflow.dto;\n"
                 + "\n"
-                + "import java.time.Instant;\n"
+                + "import java.time.*;\n"
                 + "import java.util.*;\n"
                 + "\n"
                 + "import javax.annotation.*;\n"

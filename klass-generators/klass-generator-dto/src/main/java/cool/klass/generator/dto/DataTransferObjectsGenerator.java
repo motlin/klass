@@ -136,7 +136,7 @@ public class DataTransferObjectsGenerator
         String sourceCode = ""
                 + "package " + packageName + ";\n"
                 + "\n"
-                + "import java.time.Instant;\n"
+                + "import java.time.*;\n"
                 + "import java.util.*;\n"
                 + "\n"
                 + "import javax.annotation.*;\n"
@@ -237,12 +237,17 @@ public class DataTransferObjectsGenerator
     @Nonnull
     private String getAnnotation(DataTypeProperty dataTypeProperty)
     {
+        return isNullable(dataTypeProperty) ? "" : "    @NotNull\n";
+    }
+
+    private boolean isNullable(DataTypeProperty dataTypeProperty)
+    {
         if (dataTypeProperty.isTemporal())
         {
-            return "";
+            return true;
         }
         ImmutableList<PropertyModifier> propertyModifiers = dataTypeProperty.getPropertyModifiers();
-        return dataTypeProperty.isOptional() || dataTypeProperty.isKey() ? "" : "    @NotNull\n";
+        return dataTypeProperty.isOptional() || dataTypeProperty.isKey();
     }
 
     private String getReferenceField(AssociationEnd associationEnd)
