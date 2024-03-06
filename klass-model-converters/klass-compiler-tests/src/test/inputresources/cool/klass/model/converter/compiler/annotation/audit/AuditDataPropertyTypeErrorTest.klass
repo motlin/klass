@@ -27,7 +27,7 @@ class DummyClass2
     createdById    : String createdBy;
     createdOn      : Instant createdOn;
     lastUpdatedById: String lastUpdatedBy final;
-    system         : TemporalRange?;
+    system         : TemporalRange? private;
     systemFrom     : TemporalInstant? from;
     systemTo       : TemporalInstant? to;
 }
@@ -35,7 +35,7 @@ class DummyClass2
 class DummyClass3
 {
     id             : Long id key;
-    system         : TemporalRange system;
+    system         : TemporalRange system private;
     systemFrom     : TemporalInstant system from;
     systemTo       : TemporalInstant system to;
 }

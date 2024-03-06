@@ -56,7 +56,7 @@ class Question
     id                     : Long key id;
 
     // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system                 : TemporalRange? system;
+    system                 : TemporalRange? system private;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
     systemFrom             : TemporalInstant? system from;

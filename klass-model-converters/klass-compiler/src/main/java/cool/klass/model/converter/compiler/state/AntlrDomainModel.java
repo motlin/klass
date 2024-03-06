@@ -564,8 +564,9 @@ public class AntlrDomainModel
             for (AntlrDataTypeProperty<?> dataTypeProperty : classifierState.getDataTypeProperties())
             {
                 ImmutableList<AntlrDataTypeProperty<?>> overriddenProperties = dataTypeProperty.getOverriddenProperties();
-                if (dataTypeProperty.isPrivate() && overriddenProperties.noneSatisfy(
-                        dataTypePropertiesReferencedByCriteria::contains))
+                if (dataTypeProperty.isPrivate()
+                        && dataTypeProperty.getType() != AntlrPrimitiveType.TEMPORAL_RANGE
+                        && overriddenProperties.noneSatisfy(dataTypePropertiesReferencedByCriteria::contains))
                 {
                     dataTypeProperty.reportUnreferencedPrivateProperty(compilerAnnotationState);
                 }

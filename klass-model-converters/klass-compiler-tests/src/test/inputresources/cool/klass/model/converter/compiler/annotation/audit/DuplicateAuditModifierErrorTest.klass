@@ -8,8 +8,8 @@ user User systemTemporal versioned
 class DummyClass systemTemporal versioned audited
 {
     id             : Long id key;
-    system         : TemporalRange?   system system;
-    range          : TemporalRange? system valid;
+    system         : TemporalRange?   system system private;
+    range          : TemporalRange? system valid private;
     systemFromTo   : TemporalInstant? system from to;
     systemFrom     : TemporalInstant? system from from;
     systemTo       : TemporalInstant? system to;

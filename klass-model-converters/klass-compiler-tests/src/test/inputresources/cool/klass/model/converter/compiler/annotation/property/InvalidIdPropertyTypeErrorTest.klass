@@ -47,7 +47,7 @@ class TemporalInstantId
 
 class TemporalRangeId
 {
-    temporalRangeId: TemporalRange? id key;
+    temporalRangeId: TemporalRange? id key private;
 }
 
 enumeration ExampleEnumeration

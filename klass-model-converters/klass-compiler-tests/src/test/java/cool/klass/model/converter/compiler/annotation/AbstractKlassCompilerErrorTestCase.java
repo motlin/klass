@@ -122,10 +122,15 @@ public abstract class AbstractKlassCompilerErrorTestCase
 
     private ImmutableList<Object> getAnnotationKey(RootCompilerAnnotation rootCompilerAnnotation)
     {
-        return Lists.immutable.with(
-                rootCompilerAnnotation.getFilenameWithoutDirectory(),
-                rootCompilerAnnotation.getLine(),
-                rootCompilerAnnotation.getCharPositionInLine(),
-                rootCompilerAnnotation.getAnnotationCode());
+        String filenameWithoutDirectory = rootCompilerAnnotation.getFilenameWithoutDirectory();
+        int    line                     = rootCompilerAnnotation.getLine();
+        int    charPositionInLine       = rootCompilerAnnotation.getCharPositionInLine();
+        String annotationCode           = rootCompilerAnnotation.getAnnotationCode();
+        ImmutableList<Object> result = Lists.immutable.with(
+                filenameWithoutDirectory,
+                line,
+                charPositionInLine,
+                annotationCode);
+        return result;
     }
 }

@@ -12,8 +12,8 @@ class DummyClass
     versioned
 {
     id              : Long id key;
-    system1         : TemporalRange? system;
-    system2         : TemporalRange? system;
+    system1         : TemporalRange? system private;
+    system2         : TemporalRange? system private;
     systemFrom1     : TemporalInstant? system from;
     systemFrom2     : TemporalInstant? system from;
     systemTo1       : TemporalInstant? system to;

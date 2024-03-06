@@ -3,7 +3,7 @@ package com.errors
 class DummyClass systemTemporal versioned audited
 {
     id             : Long id key;
-    system         : TemporalRange?   system;
+    system         : TemporalRange?   system private;
     systemFrom     : TemporalInstant? system from;
     systemTo       : TemporalInstant? system to;
     createdById    : String createdBy userId final private maximumLength(256);

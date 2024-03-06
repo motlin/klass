@@ -124,6 +124,7 @@ public class AntlrPrimitiveProperty
         super.reportErrors(compilerAnnotationHolder);
 
         this.reportInvalidTemporalMultiplicity(compilerAnnotationHolder);
+        this.reportInvalidTemporalVisibility(compilerAnnotationHolder);
         this.reportInvalidStringValidations(compilerAnnotationHolder);
         this.reportInvalidNumericValidations(compilerAnnotationHolder);
     }
@@ -236,6 +237,25 @@ public class AntlrPrimitiveProperty
                 "Primitive properties with type %s may not be required.",
                 primitiveType.getPrettyName());
         compilerAnnotationHolder.add("ERR_REQ_TMP", message, this, this.nameContext);
+    }
+
+    private void reportInvalidTemporalVisibility(CompilerAnnotationState compilerAnnotationHolder)
+    {
+        PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
+        if (primitiveType != PrimitiveType.TEMPORAL_RANGE)
+        {
+            return;
+        }
+
+        if (this.isPrivate())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Primitive properties with type %s must be private.",
+                primitiveType.getPrettyName());
+        compilerAnnotationHolder.add("ERR_REQ_PRV", message, this, this.nameContext);
     }
 
     private void reportInvalidStringValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)

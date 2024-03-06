@@ -60,7 +60,7 @@ public class ClassTemporalPropertyInferencePhase
         {
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
             {
-                stringBuilder.append("    system    : TemporalRange?   system;\n");
+                stringBuilder.append("    system    : TemporalRange?   system private;\n");
             }
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
             {
