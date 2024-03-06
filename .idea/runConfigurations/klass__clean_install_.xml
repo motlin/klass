@@ -19,6 +19,7 @@
             <map>
               <entry key="run-demo" value="false" />
               <entry key="reladomo-bug" value="false" />
+              <entry key="shade" value="false" />
             </map>
           </option>
           <option name="resolveToWorkspace" value="false" />
