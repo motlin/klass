@@ -18,11 +18,13 @@ import cool.klass.model.meta.domain.api.property.validation.MaxLengthPropertyVal
 import cool.klass.model.meta.domain.api.property.validation.MaxPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinLengthPropertyValidation;
 import cool.klass.model.meta.domain.api.property.validation.MinPropertyValidation;
+import cool.klass.model.meta.domain.api.property.validation.PropertyValidation;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.api.source.property.DataTypePropertyWithSourceCode;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
+import cool.klass.model.meta.domain.property.validation.AbstractPropertyValidation.PropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImpl.MaxPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
@@ -60,6 +62,8 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     private Optional<MinPropertyValidation>       minPropertyValidation       = Optional.empty();
     @Nonnull
     private Optional<MaxPropertyValidation>       maxPropertyValidation       = Optional.empty();
+
+    private ImmutableList<PropertyValidation> propertyValidations;
 
     protected AbstractDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -151,6 +155,15 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
         this.maxPropertyValidation = Objects.requireNonNull(maxPropertyValidations);
     }
 
+    private void setPropertyValidations(ImmutableList<PropertyValidation> propertyValidations)
+    {
+        if (this.propertyValidations != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.propertyValidations = Objects.requireNonNull(propertyValidations);
+    }
+
     @Override
     public boolean isOptional()
     {
@@ -222,6 +235,7 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
         private Optional<MaxLengthPropertyValidationBuilder> maxLengthPropertyValidationBuilder;
         private Optional<MinPropertyValidationBuilder>       minPropertyValidationBuilder;
         private Optional<MaxPropertyValidationBuilder>       maxPropertyValidationBuilder;
+        private ImmutableList<PropertyValidationBuilder<?>>  propertyValidationBuilders;
 
         protected DataTypePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -282,6 +296,11 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             this.maxPropertyValidationBuilder = Objects.requireNonNull(maxPropertyValidationBuilder);
         }
 
+        public void setPropertyValidationBuilders(ImmutableList<PropertyValidationBuilder<?>> propertyValidationBuilders)
+        {
+            this.propertyValidationBuilders = Objects.requireNonNull(propertyValidationBuilders);
+        }
+
         public void setModifierBuilders(ImmutableList<ModifierBuilder> modifierBuilders)
         {
             this.modifierBuilders = modifierBuilders;
@@ -305,10 +324,14 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
             Optional<MaxPropertyValidation> maxPropertyValidation =
                     this.maxPropertyValidationBuilder.map(ElementBuilder::build);
 
+            ImmutableList<PropertyValidation> propertyValidations = this.propertyValidationBuilders.collect(
+                    (PropertyValidationBuilder<?> propertyValidationBuilder) -> propertyValidationBuilder.getElement());
+
             property.setMinLengthPropertyValidation(minLengthPropertyValidation);
             property.setMaxLengthPropertyValidation(maxLengthPropertyValidation);
             property.setMinPropertyValidation(minPropertyValidation);
             property.setMaxPropertyValidation(maxPropertyValidation);
+            property.setPropertyValidations(propertyValidations);
         }
 
         public final void build2()

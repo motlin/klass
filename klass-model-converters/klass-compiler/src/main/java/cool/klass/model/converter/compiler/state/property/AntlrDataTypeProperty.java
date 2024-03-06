@@ -24,6 +24,7 @@ import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.validation.AbstractPropertyValidation.PropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidationImpl.MaxLengthPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImpl.MaxPropertyValidationBuilder;
 import cool.klass.model.meta.domain.property.validation.MinLengthPropertyValidationImpl.MinLengthPropertyValidationBuilder;
@@ -184,6 +185,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     @Nonnull
     protected final AntlrClassifier owningClassifierState;
 
+    protected final MutableList<AbstractAntlrPropertyValidation>  validationStates          = Lists.mutable.empty();
     protected final MutableList<AntlrMinLengthPropertyValidation> minLengthValidationStates = Lists.mutable.empty();
     protected final MutableList<AntlrMaxLengthPropertyValidation> maxLengthValidationStates = Lists.mutable.empty();
     protected final MutableList<AntlrMinPropertyValidation>       minValidationStates       = Lists.mutable.empty();
@@ -324,22 +326,51 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public void addMinLengthValidationState(AntlrMinLengthPropertyValidation minLengthValidationState)
     {
+        this.validationStates.add(minLengthValidationState);
         this.minLengthValidationStates.add(minLengthValidationState);
     }
 
     public void addMaxLengthValidationState(AntlrMaxLengthPropertyValidation maxLengthValidationState)
     {
+        this.validationStates.add(maxLengthValidationState);
         this.maxLengthValidationStates.add(maxLengthValidationState);
     }
 
     public void addMinValidationState(AntlrMinPropertyValidation minValidationState)
     {
+        this.validationStates.add(minValidationState);
         this.minValidationStates.add(minValidationState);
     }
 
     public void addMaxValidationState(AntlrMaxPropertyValidation maxValidationState)
     {
+        this.validationStates.add(maxValidationState);
         this.maxValidationStates.add(maxValidationState);
+    }
+
+    public ListIterable<AbstractAntlrPropertyValidation> getValidationStates()
+    {
+        return this.validationStates;
+    }
+
+    public ListIterable<AntlrMinLengthPropertyValidation> getMinLengthValidationStates()
+    {
+        return this.minLengthValidationStates;
+    }
+
+    public ListIterable<AntlrMaxLengthPropertyValidation> getMaxLengthValidationStates()
+    {
+        return this.maxLengthValidationStates;
+    }
+
+    public ListIterable<AntlrMinPropertyValidation> getMinValidationStates()
+    {
+        return this.minValidationStates;
+    }
+
+    public ListIterable<AntlrMaxPropertyValidation> getMaxValidationStates()
+    {
+        return this.maxValidationStates;
     }
 
     @Nonnull
@@ -365,10 +396,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 .collect(AntlrMaxPropertyValidation::build)
                 .detectOptional(x -> true);
 
+        MutableList<PropertyValidationBuilder<?>> propertyValidationBuilders = this.validationStates.collect(
+                AbstractAntlrPropertyValidation::getElementBuilder);
+
         this.getElementBuilder().setMinLengthPropertyValidationBuilder(minLengthPropertyValidationBuilders);
         this.getElementBuilder().setMaxLengthPropertyValidationBuilder(maxLengthPropertyValidationBuilders);
         this.getElementBuilder().setMinPropertyValidationBuilder(minPropertyValidationBuilders);
         this.getElementBuilder().setMaxPropertyValidationBuilder(maxPropertyValidationBuilders);
+        this.getElementBuilder().setPropertyValidationBuilders(propertyValidationBuilders.toImmutable());
     }
 
     public void build2()

@@ -36,11 +36,11 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
         return Optional.of(this.owningPropertyState);
     }
 
-    public abstract PropertyValidationBuilder build();
+    public abstract PropertyValidationBuilder<?> build();
 
     @Override
     @Nonnull
-    public abstract PropertyValidationBuilder getElementBuilder();
+    public abstract PropertyValidationBuilder<?> getElementBuilder();
 
     public void reportInvalidType(
             @Nonnull CompilerErrorState compilerErrorHolder,
