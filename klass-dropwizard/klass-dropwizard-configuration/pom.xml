@@ -17,12 +17,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-config-clock</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>klass-dropwizard-configuration-data-store</artifactId>
             <version>${project.version}</version>
@@ -32,6 +26,29 @@
             <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-domain-model-loader</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-sample-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -77,12 +94,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-sample-data</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-clock-fixed</artifactId>
             <version>0.1.0</version>
@@ -92,18 +103,6 @@
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid</artifactId>
             <version>0.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-domain-model-loader-compiler</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>

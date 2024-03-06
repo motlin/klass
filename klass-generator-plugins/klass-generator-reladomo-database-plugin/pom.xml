@@ -22,14 +22,14 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.goldmansachs.reladomo</groupId>
-            <artifactId>reladomo-gen-util</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-maven-reladomo-logger</artifactId>
             <version>0.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.goldmansachs.reladomo</groupId>
+            <artifactId>reladomo-gen-util</artifactId>
         </dependency>
 
         <dependency>

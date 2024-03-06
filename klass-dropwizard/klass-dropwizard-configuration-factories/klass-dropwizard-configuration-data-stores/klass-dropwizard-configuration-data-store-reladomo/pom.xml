@@ -29,6 +29,12 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-data-store-reladomo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid</artifactId>
             <version>0.1.0</version>
@@ -38,12 +44,6 @@
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid-seed</artifactId>
             <version>0.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-data-store-reladomo</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>

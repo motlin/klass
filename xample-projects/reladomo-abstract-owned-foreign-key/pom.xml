@@ -35,7 +35,7 @@
 
             <dependency>
                 <groupId>com.liftwizard</groupId>
-                <artifactId>liftwizard-bom</artifactId>
+                <artifactId>liftwizard-dependencies</artifactId>
                 <version>0.1.0</version>
                 <type>pom</type>
                 <scope>import</scope>

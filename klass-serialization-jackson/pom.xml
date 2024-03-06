@@ -23,19 +23,4 @@
         <module>klass-serialization-jackson-model-data-property</module>
         <module>klass-serialization-jackson-jsonview-reladomo</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <dependency>
-                <groupId>com.liftwizard</groupId>
-                <artifactId>liftwizard-bom</artifactId>
-                <version>0.1.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
 </project>

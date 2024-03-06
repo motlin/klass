@@ -43,6 +43,41 @@
         </dependency>
 
         <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-reladomo-ddls-workaround</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-model-bootstrapped-meta</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-logging-config</artifactId>
             <version>0.1.0</version>
@@ -85,34 +120,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-jsonview</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-reladomo-response</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-reladomo-ddls-workaround</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <version>0.1.0</version>
@@ -120,15 +127,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-bootstrapped-meta</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
+            <version>1.4.0</version>
         </dependency>
 
         <dependency>
