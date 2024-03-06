@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.MithraObject;
 import cool.klass.data.store.DataStore;
+import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
 import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
@@ -16,7 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AutoService(PrioritizedBundle.class)
-public class ReladomoJsonViewBundle implements PrioritizedBundle<DataStoreFactoryProvider>
+public class ReladomoJsonViewBundle
+        implements PrioritizedBundle<Object>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoJsonViewBundle.class);
 
@@ -32,11 +34,16 @@ public class ReladomoJsonViewBundle implements PrioritizedBundle<DataStoreFactor
     }
 
     @Override
-    public void run(@Nonnull DataStoreFactoryProvider configuration, @Nonnull Environment environment)
+    public void run(@Nonnull Object configuration, @Nonnull Environment environment)
     {
+        DataStoreFactoryProvider dataStoreFactoryProvider = this.safeCastConfiguration(
+                DataStoreFactoryProvider.class,
+                configuration);
+
         LOGGER.info("Running {}.", ReladomoJsonViewBundle.class.getSimpleName());
 
-        DataStore                    dataStore  = configuration.getDataStoreFactory().createDataStore();
+        DataStoreFactory dataStoreFactory       = dataStoreFactoryProvider.getDataStoreFactory();
+        DataStore dataStore                     = dataStoreFactory.createDataStore();
         JsonSerializer<MithraObject> serializer = new ReladomoJsonViewSerializer(dataStore);
 
         SimpleModule module = new SimpleModule();
