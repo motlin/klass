@@ -1,6 +1,9 @@
 package com.errors
 
 user User
+    systemTemporal
+    versioned
+    audited
 {
-    userId: Instant key userId;
+    userId          : Instant key userId;
 }

@@ -1,17 +1,17 @@
-[33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
-[31mError: Association end 'Dummy.parent2' has multiplicity [0..1] but foreign key 'Dummy.parentId' is required.[m
+[33m════════════════════════════════════════[m [35mERR_OWN_ONE[m [33m════════════════════════════════════════[m
+[31mError: Association end 'Dummy.parent2' is owned, but is on the to-one end of a many-to-one association.[m
 
-At (ManyOwnsOneAssociationErrorTest.klass:6)
+At (ManyOwnsOneAssociationErrorTest.klass:20)
 
-[39m1║ [35mpackage [39mdummy
-[39m3║ [35mclass [39mDummy
-[39m4║ [36m{
-[39m6║     [39mparentId[36m: [35mLong [33mprivate[36m;
-[39m ║ [31m    ^^^^^^^^
-[39m7║ [36m}
+[39m 1║ [35mpackage [39mdummy
+[39m17║ [35massociation [39mDummyAssociation2
+[39m18║ [36m{
+[39m20║     [39mparent2[36m: [39mDummy[36m[[34m0[36m..[34m1[36m] [33mowned[36m;
+[39m  ║ [31m                  ^^^^^^ ^^^^^
+[39m23║ [36m}
 [m
-[36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:6[m
+[36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:20[m
 [36mFile:      [mManyOwnsOneAssociationErrorTest.klass[m
-[36mLine:      [m6[m
-[36mCharacter: [m5
+[36mLine:      [m20[m
+[36mCharacter: [m26
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m

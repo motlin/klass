@@ -7,7 +7,7 @@ enumeration DummyEnumeration
 
 user User systemTemporal versioned
 {
-    id: Long id key userId;
+    id: DummyEnumeration key userId;
 }
 
 class DummyClass systemTemporal versioned audited
@@ -16,18 +16,7 @@ class DummyClass systemTemporal versioned audited
     system         : DummyEnumeration system;
     systemFrom     : DummyEnumeration system from;
     systemTo       : DummyEnumeration system to;
-    createdById    : DummyEnumeration createdBy;
-    createdOn      : DummyEnumeration createdOn;
-    lastUpdatedById: DummyEnumeration lastUpdatedBy;
-}
-
-class DummyClass2 systemTemporal versioned audited
-{
-    id             : Long id key;
-    system         : Long? system;
-    systemFrom     : Long? system from;
-    systemTo       : Long? system to;
-    createdById    : Long private createdBy;
-    createdOn      : Long createdOn;
-    lastUpdatedById: Long private lastUpdatedBy;
+    createdById    : DummyEnumeration createdBy userId final private;
+    createdOn      : DummyEnumeration createdOn final;
+    lastUpdatedById: DummyEnumeration lastUpdatedBy userId private;
 }

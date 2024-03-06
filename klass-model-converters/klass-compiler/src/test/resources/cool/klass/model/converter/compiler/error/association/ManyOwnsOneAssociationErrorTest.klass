@@ -3,7 +3,7 @@ package dummy
 class Dummy
 {
     id: Long id key;
-    parentId: Long private;
+    parentId: Long? private;
 }
 
 association DummyAssociation

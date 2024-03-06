@@ -1,17 +1,16 @@
-[33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m
-[31mError: Duplicate userId property: 'User1.userId1'.[m
+[33m════════════════════════════════════════[m [35mERR_DUP_USR[m [33m════════════════════════════════════════[m
+[31mError: Only one 'user' class is allowed. Found 'User2'.[m
 
-At (DuplicateUserClassErrorTest.klass:5)
+At (DuplicateUserClassErrorTest.klass:8)
 
-[39m1║ [35mpackage [39mcom[36m.[39merrors
-[39m3║ [35muser [39mUser1
-[39m4║ [36m{
-[39m5║     [39muserId1[36m: [35mString [33mkey [33muserId[36m;
-[39m ║ [31m    ^^^^^^^
-[39m7║ [36m}
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m 8║ [35muser [39mUser2
+[39m  ║ [31m     ^^^^^
+[39m 9║ [36m{
+[39m11║ [36m}
 [m
-[36mLocation:  [mDuplicateUserClassErrorTest.klass:5[m
+[36mLocation:  [mDuplicateUserClassErrorTest.klass:8[m
 [36mFile:      [mDuplicateUserClassErrorTest.klass[m
-[36mLine:      [m5[m
-[36mCharacter: [m5
+[36mLine:      [m8[m
+[36mCharacter: [m6
 [33m═════════════════════════════════════════════════════════════════════════════════════════════[m
