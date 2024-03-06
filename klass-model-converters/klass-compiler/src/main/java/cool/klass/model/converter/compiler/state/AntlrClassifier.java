@@ -316,6 +316,11 @@ public abstract class AntlrClassifier
         }
     }
 
+    public MutableList<AntlrModifier> getDeclaredModifiers()
+    {
+        return this.declaredModifiers.asUnmodifiable();
+    }
+
     public AntlrModifier getDeclaredModifierByContext(@Nonnull ParserRuleContext modifierContext)
     {
         Objects.requireNonNull(modifierContext);

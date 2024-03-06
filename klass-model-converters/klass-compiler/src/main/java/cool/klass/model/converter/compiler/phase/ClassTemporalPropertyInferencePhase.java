@@ -3,12 +3,15 @@ package cool.klass.model.converter.compiler.phase;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.grammar.KlassParser;
-import cool.klass.model.meta.grammar.KlassParser.ClassifierModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 
 public class ClassTemporalPropertyInferencePhase
         extends AbstractCompilerPhase
@@ -26,21 +29,32 @@ public class ClassTemporalPropertyInferencePhase
     }
 
     @Override
-    public void enterClassifierModifier(@Nonnull ClassifierModifierContext ctx)
+    public void exitInterfaceBody(InterfaceBodyContext ctx)
     {
-        super.enterClassifierModifier(ctx);
+        this.runCompilerMacro();
+        super.exitInterfaceBody(ctx);
+    }
 
-        ImmutableList<AntlrDataTypeProperty<?>> allDataTypeProperties = this.compilerState
-                .getCompilerWalk()
-                .getClassifier()
-                .getAllDataTypeProperties();
+    @Override
+    public void exitClassBody(ClassBodyContext ctx)
+    {
+        this.runCompilerMacro();
+        super.exitClassBody(ctx);
+    }
 
-        StringBuilder stringBuilder = new StringBuilder();
+    private void runCompilerMacro()
+    {
+        AntlrClassifier                         classifier            = this.compilerState.getCompilerWalk().getClassifier();
+        MutableList<AntlrModifier>              declaredModifiers     = classifier.getDeclaredModifiers();
+        ImmutableList<AntlrDataTypeProperty<?>> allDataTypeProperties = classifier.getAllDataTypeProperties();
 
-        String modifierText = ctx.getText();
-        if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
+        MutableList<AntlrModifier> validTemporalModifiers  = declaredModifiers.select(modifier -> modifier.is("validTemporal") || modifier.is("bitemporal"));
+        MutableList<AntlrModifier> systemTemporalModifiers = declaredModifiers.select(modifier -> modifier.is("systemTemporal") || modifier.is("bitemporal"));
+
+        if (validTemporalModifiers.size() == 1)
         {
-            StringBuilder sourceCodeText = new StringBuilder();
+            AntlrModifier validTemporalModifier = validTemporalModifiers.getOnly();
+            StringBuilder sourceCodeText        = new StringBuilder();
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
             {
                 sourceCodeText.append("    valid    : TemporalRange?   valid private;\n");
@@ -53,12 +67,13 @@ public class ClassTemporalPropertyInferencePhase
             {
                 sourceCodeText.append("    validTo  : TemporalInstant? valid to;\n");
             }
-            this.runCompilerMacro(sourceCodeText.toString());
+            this.runCompilerMacro(sourceCodeText.toString(), validTemporalModifier);
         }
 
-        if ("systemTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
+        if (systemTemporalModifiers.size() == 1)
         {
-            StringBuilder sourceCodeText = new StringBuilder();
+            AntlrModifier systemTemporalModifier = systemTemporalModifiers.getOnly();
+            StringBuilder sourceCodeText         = new StringBuilder();
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
             {
                 sourceCodeText.append("    system    : TemporalRange?   system private;\n");
@@ -71,24 +86,20 @@ public class ClassTemporalPropertyInferencePhase
             {
                 sourceCodeText.append("    systemTo  : TemporalInstant? system to;\n");
             }
-            this.runCompilerMacro(sourceCodeText.toString());
+            this.runCompilerMacro(sourceCodeText.toString(), systemTemporalModifier);
         }
-
-        this.runCompilerMacro(stringBuilder.toString());
     }
 
-    private void runCompilerMacro(@Nonnull String sourceCodeText)
+    private void runCompilerMacro(@Nonnull String sourceCodeText, AntlrModifier macroElement)
     {
         if (sourceCodeText.isEmpty())
         {
             return;
         }
-        AntlrModifier classifierModifierState =
-                this.compilerState.getCompilerWalk().getClassifierModifier();
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
 
         this.compilerState.runNonRootCompilerMacro(
-                classifierModifierState,
+                macroElement,
                 this,
                 sourceCodeText,
                 KlassParser::classBody,
