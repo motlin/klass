@@ -30,5 +30,6 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-clock-incrementing</module>
     </modules>
 </project>
