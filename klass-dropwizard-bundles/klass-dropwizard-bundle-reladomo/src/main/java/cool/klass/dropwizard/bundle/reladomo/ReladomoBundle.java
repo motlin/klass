@@ -3,6 +3,7 @@ package cool.klass.dropwizard.bundle.reladomo;
 import java.util.Objects;
 
 import com.google.auto.service.AutoService;
+import com.gs.fw.common.mithra.MithraManagerProvider;
 import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.bundle.api.DataBundle;
 import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
@@ -37,10 +38,17 @@ public class ReladomoBundle implements DataBundle
     }
 
     @Override
-    public void run(@Nonnull Environment environment)
+    public void run(Environment environment)
     {
         ReladomoConfig.configure(
                 environment.getObjectMapper(),
                 new ReladomoJsonSerializer(this.domainModel, this.dataStore));
+
+        environment.metrics().gauge(
+                "Reladomo database retrieve count",
+                () -> () -> MithraManagerProvider.getMithraManager().getDatabaseRetrieveCount());
+        environment.metrics().gauge(
+                "Reladomo remote retrieve count",
+                () -> () -> MithraManagerProvider.getMithraManager().getRemoteRetrieveCount());
     }
 }
