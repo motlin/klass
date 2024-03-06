@@ -107,7 +107,8 @@ public class DataTransferObjectsGenerator
         String packageName = klass.getPackageName() + ".dto";
 
         ImmutableList<DataTypeProperty> dataTypeProperties = klass.getDataTypeProperties()
-                .select(each -> each.getOwningClassifier() == klass || each.getOwningClassifier() instanceof Interface);
+                .select(each -> each.getOwningClassifier() == klass || each.getOwningClassifier() instanceof Interface)
+                .reject(DataTypeProperty::isPrivate);
         String dataFieldsSourceCode = dataTypeProperties.collect(this::getDataField).makeString("")
                 + (dataTypeProperties.isEmpty() ? "" : "\n");
 

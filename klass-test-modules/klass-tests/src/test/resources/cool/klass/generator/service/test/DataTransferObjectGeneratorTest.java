@@ -11,15 +11,10 @@ import javax.validation.constraints.*;
 public class QuestionDTO
 {
     private Long id;
-    private Instant system;
     private Instant systemFrom;
     private Instant systemTo;
     @NotNull
-    private String createdById;
-    @NotNull
     private Instant createdOn;
-    @NotNull
-    private String lastUpdatedById;
     @NotNull
     private String body;
     @NotNull
@@ -46,16 +41,6 @@ public class QuestionDTO
         this.id = id;
     }
 
-    public Instant getSystem()
-    {
-        return this.system;
-    }
-
-    public void setSystem(Instant system)
-    {
-        this.system = system;
-    }
-
     public Instant getSystemFrom()
     {
         return this.systemFrom;
@@ -76,16 +61,6 @@ public class QuestionDTO
         this.systemTo = systemTo;
     }
 
-    public String getCreatedById()
-    {
-        return this.createdById;
-    }
-
-    public void setCreatedById(String createdById)
-    {
-        this.createdById = createdById;
-    }
-
     public Instant getCreatedOn()
     {
         return this.createdOn;
@@ -94,16 +69,6 @@ public class QuestionDTO
     public void setCreatedOn(Instant createdOn)
     {
         this.createdOn = createdOn;
-    }
-
-    public String getLastUpdatedById()
-    {
-        return this.lastUpdatedById;
-    }
-
-    public void setLastUpdatedById(String lastUpdatedById)
-    {
-        this.lastUpdatedById = lastUpdatedById;
     }
 
     public String getBody()
