@@ -20,7 +20,9 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractCoverageTest
 {
@@ -53,6 +55,12 @@ public abstract class AbstractCoverageTest
                 .build(clientName);
     }
 
+    protected void assertEmptyResponse(Status expectedStatus, Response actualResponse)
+    {
+        assertFalse(actualResponse.hasEntity());
+        assertThat(actualResponse.getStatusInfo(), is(expectedStatus));
+    }
+
     protected void assertResponse(String testName, Status expectedStatus, Response actualResponse)
     {
         this.assertResponseStatus(actualResponse, expectedStatus);
@@ -65,6 +73,7 @@ public abstract class AbstractCoverageTest
 
     protected void assertResponseStatus(@Nonnull Response response, Status status)
     {
+        assertTrue(response.hasEntity());
         response.bufferEntity();
         String entityAsString = response.readEntity(String.class);
         assertThat(entityAsString, response.getStatusInfo(), is(status));

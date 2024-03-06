@@ -72,7 +72,7 @@ public class PropertiesRequiredTest
                 .request()
                 .put(Entity.json(json));
 
-        this.assertResponse("putFirst1", Status.NO_CONTENT, putResponse);
+        this.assertEmptyResponse(Status.NO_CONTENT, putResponse);
 
         Response getResponse = client
                 .target("http://localhost:{port}/api/propertiesRequired/{id}")

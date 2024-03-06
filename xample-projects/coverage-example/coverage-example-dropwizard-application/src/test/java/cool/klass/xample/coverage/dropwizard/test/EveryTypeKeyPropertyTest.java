@@ -130,7 +130,7 @@ public class EveryTypeKeyPropertyTest
                     .request()
                     .put(Entity.json(json));
 
-            this.assertResponse("put2", Status.NO_CONTENT, response);
+            this.assertEmptyResponse(Status.NO_CONTENT, response);
         }
 
         Response response = client
