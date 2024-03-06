@@ -170,7 +170,7 @@ public class IncomingCreateDataModelValidator
                     this.getContextString(),
                     property.getOwningClassifier().getName(),
                     property.getName(),
-                    property.getType().toString(),
+                    property.getType(),
                     property.isOptional() ? "?" : "",
                     jsonNode.getNodeType().toString().toLowerCase());
             this.errors.add(error);

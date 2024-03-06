@@ -287,7 +287,7 @@ public class IncomingUpdateDataModelValidator
                 propertyKind,
                 associationEnd.getOwningClassifier().getName(),
                 associationEnd.getName(),
-                associationEnd.getType().toString(),
+                associationEnd.getType(),
                 associationEnd.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase());
         this.errors.add(error);
@@ -309,7 +309,7 @@ public class IncomingUpdateDataModelValidator
                     propertyKind,
                     property.getOwningClassifier().getName(),
                     property.getName(),
-                    property.getType().toString(),
+                    property.getType(),
                     property.getMultiplicity().getPrettyName());
             this.warnings.add(warning);
             return;
@@ -321,7 +321,7 @@ public class IncomingUpdateDataModelValidator
                 propertyKind,
                 property.getOwningClassifier().getName(),
                 property.getName(),
-                property.getType().toString(),
+                property.getType(),
                 property.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase(),
                 jsonNode);

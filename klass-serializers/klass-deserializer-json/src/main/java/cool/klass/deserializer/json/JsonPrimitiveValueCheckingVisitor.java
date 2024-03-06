@@ -207,7 +207,7 @@ public class JsonPrimitiveValueCheckingVisitor implements PrimitiveTypeVisitor
                 this.getContextString(),
                 this.primitiveProperty.getOwningClassifier().getName(),
                 this.primitiveProperty.getName(),
-                this.primitiveProperty.getType().toString(),
+                this.primitiveProperty.getType(),
                 this.primitiveProperty.isOptional() ? "?" : "",
                 this.persistentValue,
                 incomingValue);

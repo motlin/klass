@@ -204,7 +204,7 @@ public class RequiredPropertiesValidator
                     propertyKind,
                     property.getOwningClassifier().getName(),
                     property.getName(),
-                    property.getType().toString(),
+                    property.getType(),
                     property.isOptional() ? "?" : "");
             this.warnings.add(warning);
             return;
@@ -216,7 +216,7 @@ public class RequiredPropertiesValidator
                 propertyKind,
                 property.getOwningClassifier().getName(),
                 property.getName(),
-                property.getType().toString(),
+                property.getType(),
                 property.isOptional() ? "?" : "",
                 jsonNode.getNodeType().toString().toLowerCase(),
                 jsonNode);
@@ -239,7 +239,7 @@ public class RequiredPropertiesValidator
                     propertyKind,
                     property.getOwningClassifier().getName(),
                     property.getName(),
-                    property.getType().toString(),
+                    property.getType(),
                     property.getMultiplicity().getPrettyName());
             this.warnings.add(warning);
             return;
@@ -251,7 +251,7 @@ public class RequiredPropertiesValidator
                 propertyKind,
                 property.getOwningClassifier().getName(),
                 property.getName(),
-                property.getType().toString(),
+                property.getType(),
                 property.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase(),
                 jsonNode);
@@ -273,7 +273,7 @@ public class RequiredPropertiesValidator
                     this.getContextString(),
                     property.getOwningClassifier().getName(),
                     property.getName(),
-                    property.getType().toString(),
+                    property.getType(),
                     property.isOptional() ? "?" : "",
                     jsonNode.getNodeType().toString().toLowerCase());
             this.errors.add(error);
@@ -328,7 +328,7 @@ public class RequiredPropertiesValidator
                 propertyKind,
                 associationEnd.getOwningClassifier().getName(),
                 associationEnd.getName(),
-                associationEnd.getType().toString(),
+                associationEnd.getType(),
                 associationEnd.getMultiplicity().getPrettyName(),
                 jsonNode.getNodeType().toString().toLowerCase());
         this.errors.add(error);
@@ -366,7 +366,7 @@ public class RequiredPropertiesValidator
                     this.getContextString(),
                     associationEnd.getOwningClassifier().getName(),
                     associationEnd.getName(),
-                    associationEnd.getType().toString(),
+                    associationEnd.getType(),
                     associationEnd.getMultiplicity().getPrettyName(),
                     jsonNode.getNodeType().toString().toLowerCase());
             this.errors.add(error);
