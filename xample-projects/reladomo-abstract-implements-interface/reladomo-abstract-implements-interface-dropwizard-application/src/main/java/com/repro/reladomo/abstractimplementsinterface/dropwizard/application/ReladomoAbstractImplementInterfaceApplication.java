@@ -6,9 +6,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.dropwizard.bundle.bootstrap.writer.BootstrapWriterBundle;
 import cool.klass.dropwizard.bundle.test.data.SampleDataGeneratorBundle;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigRenderOptions;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -48,13 +45,5 @@ public class ReladomoAbstractImplementInterfaceApplication extends AbstractRelad
             @Nonnull Environment environment)
     {
         super.run(configuration, environment);
-
-        Config config      = ConfigFactory.load();
-        Config klassConfig = config.getConfig("klass");
-        ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                .setJson(false)
-                .setOriginComments(false);
-        String render = klassConfig.root().render(configRenderOptions);
-        LOGGER.info("Klass HOCON configuration:\n{}", render);
     }
 }
