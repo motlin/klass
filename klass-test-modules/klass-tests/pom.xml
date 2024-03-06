@@ -46,13 +46,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-test-constants</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
