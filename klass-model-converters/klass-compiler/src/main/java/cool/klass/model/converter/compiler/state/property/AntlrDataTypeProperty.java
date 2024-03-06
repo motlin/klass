@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -712,22 +713,27 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             }
         }
 
-        // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
+        if (this.isCreatedBy() && this.isLastUpdatedBy())
+        {
+            return;
+        }
+
         if (this.isCreatedBy())
         {
             AntlrModifier modifier = this
                     .getModifiers()
                     .detect(AntlrModifier::isCreatedBy);
-            if (this.getName().equals("createdBy"))
+            if (!this.getName().equals("createdById"))
             {
                 String message = String.format(
                         "Expected createdBy property '%s' to be named 'createdById'.",
                         this);
                 compilerAnnotationHolder.add(
-                        "ERR_CRT_NAM",
+                        "WRN_CRT_NAM",
                         message,
                         this,
-                        Lists.immutable.with(modifier.getElementContext()));
+                        Lists.immutable.with(this.getNameContext(), modifier.getElementContext()),
+                        AnnotationSeverity.WARNING);
             }
         }
 
@@ -736,16 +742,17 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             AntlrModifier modifier = this
                     .getModifiers()
                     .detect(AntlrModifier::isLastUpdatedBy);
-            if (this.getName().equals("lastUpdatedBy"))
+            if (!this.getName().equals("lastUpdatedById"))
             {
                 String message = String.format(
                         "Expected lastUpdatedBy property '%s' to be named 'lastUpdatedById'.",
                         this);
                 compilerAnnotationHolder.add(
-                        "ERR_LUB_NAM",
+                        "WRN_LUB_NAM",
                         message,
                         this,
-                        Lists.immutable.with(modifier.getElementContext()));
+                        Lists.immutable.with(this.getNameContext(), modifier.getElementContext()),
+                        AnnotationSeverity.WARNING);
             }
         }
     }
