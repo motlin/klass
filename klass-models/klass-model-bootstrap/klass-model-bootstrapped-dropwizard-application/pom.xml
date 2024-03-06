@@ -458,13 +458,6 @@
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-model-meta-json-pojo</artifactId>
-            <version>${klass.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <!--endregion-->
 
         <!--region Compile dependencies -->
