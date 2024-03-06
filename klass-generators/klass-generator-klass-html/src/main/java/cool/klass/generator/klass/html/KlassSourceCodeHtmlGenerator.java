@@ -22,14 +22,14 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class KlassHtmlGenerator
+public class KlassSourceCodeHtmlGenerator
 {
     public static final Converter<String, String> CONVERTER =
             CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_HYPHEN);
 
     private final ImmutableList<SourceCode> sourceCodes;
 
-    public KlassHtmlGenerator(ImmutableList<SourceCode> sourceCodes)
+    public KlassSourceCodeHtmlGenerator(ImmutableList<SourceCode> sourceCodes)
     {
         this.sourceCodes = Objects.requireNonNull(sourceCodes);
     }
@@ -39,14 +39,14 @@ public class KlassHtmlGenerator
         this.sourceCodes
                 // TODO: Graft in macros
                 .select(sourceCode -> !sourceCode.getMacroSourceCode().isPresent())
-                .forEachWith(KlassHtmlGenerator::writeHtmlFile, outputPath);
+                .forEachWith(KlassSourceCodeHtmlGenerator::writeHtmlFile, outputPath);
     }
 
     private static void writeHtmlFile(SourceCode sourceCode, Path outputPath)
     {
-        Path   htmlOutputPath = KlassHtmlGenerator.getOutputPath(outputPath, sourceCode);
-        String sourceCodeText = KlassHtmlGenerator.getSourceCode(sourceCode);
-        KlassHtmlGenerator.printStringToFile(htmlOutputPath, sourceCodeText);
+        Path   htmlOutputPath = KlassSourceCodeHtmlGenerator.getOutputPath(outputPath, sourceCode);
+        String sourceCodeText = KlassSourceCodeHtmlGenerator.getSourceCode(sourceCode);
+        KlassSourceCodeHtmlGenerator.printStringToFile(htmlOutputPath, sourceCodeText);
     }
 
     @Nonnull
@@ -54,7 +54,7 @@ public class KlassHtmlGenerator
             @Nonnull Path outputPath,
             @Nonnull SourceCode sourceCode)
     {
-        Path parentPath         = KlassHtmlGenerator.getParentPath(sourceCode);
+        Path parentPath         = KlassSourceCodeHtmlGenerator.getParentPath(sourceCode);
         Path absoluteParentPath = outputPath.resolve(parentPath);
         Objects.requireNonNull(absoluteParentPath);
         File absoluteParentFile = absoluteParentPath.toFile();
@@ -70,8 +70,8 @@ public class KlassHtmlGenerator
     {
         return sourceCode
                 .getMacroSourceCode()
-                .map(KlassHtmlGenerator::getParentPath)
-                .orElseGet(() -> KlassHtmlGenerator.getRootParentPath(sourceCode));
+                .map(KlassSourceCodeHtmlGenerator::getParentPath)
+                .orElseGet(() -> KlassSourceCodeHtmlGenerator.getRootParentPath(sourceCode));
     }
 
     private static Path getRootParentPath(SourceCode sourceCode)
@@ -117,7 +117,7 @@ public class KlassHtmlGenerator
                 + "<pre>\n"
                 + tokens
                     .reject(token -> token.getType() == Token.EOF)
-                    .collectWith(KlassHtmlGenerator::getSourceCode, sourceCode).makeString("")
+                    .collectWith(KlassSourceCodeHtmlGenerator::getSourceCode, sourceCode).makeString("")
                 + "</pre>\n"
                 + "</body>\n"
                 + "</html>\n";
@@ -126,8 +126,8 @@ public class KlassHtmlGenerator
     private static String getSourceCode(Token token, Function<Token, Optional<TokenCategory>> tokenCategorizer)
     {
         Optional<TokenCategory> maybeTokenCategory = tokenCategorizer.apply(token);
-        return maybeTokenCategory.map(tokenCategory -> KlassHtmlGenerator.getSourceCode(token, tokenCategory))
-                .orElseGet(() -> KlassHtmlGenerator.getSourceCodeWithoutCategory(token));
+        return maybeTokenCategory.map(tokenCategory -> KlassSourceCodeHtmlGenerator.getSourceCode(token, tokenCategory))
+                .orElseGet(() -> KlassSourceCodeHtmlGenerator.getSourceCodeWithoutCategory(token));
     }
 
     private static String getSourceCode(Token token, TokenCategory tokenCategory)
