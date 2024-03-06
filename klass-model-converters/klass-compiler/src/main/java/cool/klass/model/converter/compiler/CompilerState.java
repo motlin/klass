@@ -23,12 +23,16 @@ import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceOrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -457,6 +461,70 @@ public class CompilerState
             super.exitClassModifier(ctx);
 
             CompilerState.this.compilerWalkState.asListener().exitClassModifier(ctx);
+        }
+
+        @Override
+        public void enterServiceOrderByDeclaration(ServiceOrderByDeclarationContext ctx)
+        {
+            super.enterServiceOrderByDeclaration(ctx);
+
+            CompilerState.this.compilerWalkState.asListener().enterServiceOrderByDeclaration(ctx);
+        }
+
+        @Override
+        public void exitServiceOrderByDeclaration(ServiceOrderByDeclarationContext ctx)
+        {
+            CompilerState.this.compilerWalkState.asListener().exitServiceOrderByDeclaration(ctx);
+
+            super.exitServiceOrderByDeclaration(ctx);
+        }
+
+        @Override
+        public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
+        {
+            super.enterOrderByDeclaration(ctx);
+
+            CompilerState.this.compilerWalkState.asListener().enterOrderByDeclaration(ctx);
+        }
+
+        @Override
+        public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
+        {
+            CompilerState.this.compilerWalkState.asListener().exitOrderByDeclaration(ctx);
+
+            super.exitOrderByDeclaration(ctx);
+        }
+
+        @Override
+        public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+        {
+            super.enterOrderByMemberReferencePath(ctx);
+
+            CompilerState.this.compilerWalkState.asListener().enterOrderByMemberReferencePath(ctx);
+        }
+
+        @Override
+        public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+        {
+            CompilerState.this.compilerWalkState.asListener().exitOrderByMemberReferencePath(ctx);
+
+            super.exitOrderByMemberReferencePath(ctx);
+        }
+
+        @Override
+        public void enterOrderByDirection(OrderByDirectionContext ctx)
+        {
+            super.enterOrderByDirection(ctx);
+
+            CompilerState.this.compilerWalkState.asListener().enterOrderByDirection(ctx);
+        }
+
+        @Override
+        public void exitOrderByDirection(OrderByDirectionContext ctx)
+        {
+            CompilerState.this.compilerWalkState.asListener().exitOrderByDirection(ctx);
+
+            super.exitOrderByDirection(ctx);
         }
     }
 }

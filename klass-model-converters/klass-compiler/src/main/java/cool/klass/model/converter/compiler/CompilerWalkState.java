@@ -13,6 +13,8 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
+import cool.klass.model.converter.compiler.state.order.AntlrOrderByMemberReferencePath;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
@@ -34,6 +36,8 @@ import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageNameContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterDeclarationContext;
@@ -42,6 +46,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceOrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
@@ -57,33 +62,37 @@ public class CompilerWalkState
     private String packageName;
 
     @Nullable
-    private AntlrTopLevelElement         topLevelDeclarationState;
+    private AntlrTopLevelElement            topLevelDeclarationState;
     @Nullable
-    private AntlrEnumeration             enumerationState;
+    private AntlrEnumeration                enumerationState;
     @Nullable
-    private AntlrClassifier              classifierState;
+    private AntlrClassifier                 classifierState;
     @Nullable
-    private AntlrInterface               interfaceState;
+    private AntlrInterface                  interfaceState;
     @Nullable
-    private AntlrClass                   classState;
+    private AntlrClass                      classState;
     @Nullable
-    private AntlrAssociation             associationState;
+    private AntlrAssociation                associationState;
     @Nullable
-    private AntlrAssociationEnd          associationEndState;
+    private AntlrAssociationEnd             associationEndState;
     @Nullable
-    private AntlrAssociationEndSignature associationEndSignatureState;
+    private AntlrAssociationEndSignature    associationEndSignatureState;
     @Nullable
-    private AntlrParameterizedProperty   parameterizedPropertyState;
+    private AntlrParameterizedProperty      parameterizedPropertyState;
     @Nullable
-    private AntlrParameter               parameterState;
+    private AntlrParameter                  parameterState;
     @Nullable
-    private AntlrProjection              projectionState;
+    private AntlrProjection                 projectionState;
     @Nullable
-    private AntlrServiceGroup            serviceGroupState;
+    private AntlrServiceGroup               serviceGroupState;
     @Nullable
-    private AntlrUrl                     urlState;
+    private AntlrUrl                        urlState;
     @Nullable
-    private AntlrService                 serviceState;
+    private AntlrService                    serviceState;
+    @Nullable
+    private AntlrOrderBy                    orderByState;
+    @Nullable
+    private AntlrOrderByMemberReferencePath orderByMemberReferencePathState;
 
     @Nullable
     private AntlrClassifier    thisReference;
@@ -173,6 +182,18 @@ public class CompilerWalkState
     }
 
     @Nullable
+    public AntlrOrderBy getOrderByState()
+    {
+        return this.orderByState;
+    }
+
+    @Nullable
+    public AntlrOrderByMemberReferencePath getOrderByMemberReferencePathState()
+    {
+        return this.orderByMemberReferencePathState;
+    }
+
+    @Nullable
     public AntlrOrderByOwner getOrderByOwnerState()
     {
         return this.orderByOwnerState;
@@ -239,28 +260,30 @@ public class CompilerWalkState
     {
         // TODO: It's too easy for this list to get out of sync with the declared fields
         CompilerWalkState compilerWalkState = new CompilerWalkState(this.domainModelState);
-        compilerWalkState.currentCompilationUnit     = compilationUnit;
-        compilerWalkState.packageNameContext         = this.packageNameContext;
-        compilerWalkState.packageName                = this.packageName;
-        compilerWalkState.topLevelDeclarationState   = this.topLevelDeclarationState;
-        compilerWalkState.enumerationState           = this.enumerationState;
-        compilerWalkState.classifierState            = this.classifierState;
-        compilerWalkState.interfaceState             = this.interfaceState;
-        compilerWalkState.classState                 = this.classState;
-        compilerWalkState.associationState           = this.associationState;
-        compilerWalkState.associationEndState        = this.associationEndState;
-        compilerWalkState.parameterizedPropertyState = this.parameterizedPropertyState;
-        compilerWalkState.parameterState             = this.parameterState;
-        compilerWalkState.projectionState            = this.projectionState;
-        compilerWalkState.serviceGroupState          = this.serviceGroupState;
-        compilerWalkState.urlState                   = this.urlState;
-        compilerWalkState.serviceState               = this.serviceState;
-        compilerWalkState.thisReference              = this.thisReference;
-        compilerWalkState.orderByOwnerState          = this.orderByOwnerState;
-        compilerWalkState.classModifierState         = this.classModifierState;
-        compilerWalkState.parameterOwnerState        = this.parameterOwnerState;
-        compilerWalkState.classifierTypeOwnerState   = this.classifierTypeOwnerState;
-        compilerWalkState.classTypeOwnerState        = this.classTypeOwnerState;
+        compilerWalkState.currentCompilationUnit          = compilationUnit;
+        compilerWalkState.packageNameContext              = this.packageNameContext;
+        compilerWalkState.packageName                     = this.packageName;
+        compilerWalkState.topLevelDeclarationState        = this.topLevelDeclarationState;
+        compilerWalkState.enumerationState                = this.enumerationState;
+        compilerWalkState.classifierState                 = this.classifierState;
+        compilerWalkState.interfaceState                  = this.interfaceState;
+        compilerWalkState.classState                      = this.classState;
+        compilerWalkState.associationState                = this.associationState;
+        compilerWalkState.associationEndState             = this.associationEndState;
+        compilerWalkState.parameterizedPropertyState      = this.parameterizedPropertyState;
+        compilerWalkState.parameterState                  = this.parameterState;
+        compilerWalkState.projectionState                 = this.projectionState;
+        compilerWalkState.serviceGroupState               = this.serviceGroupState;
+        compilerWalkState.urlState                        = this.urlState;
+        compilerWalkState.serviceState                    = this.serviceState;
+        compilerWalkState.orderByState                    = this.orderByState;
+        compilerWalkState.orderByMemberReferencePathState = this.orderByMemberReferencePathState;
+        compilerWalkState.thisReference                   = this.thisReference;
+        compilerWalkState.orderByOwnerState               = this.orderByOwnerState;
+        compilerWalkState.classModifierState              = this.classModifierState;
+        compilerWalkState.parameterOwnerState             = this.parameterOwnerState;
+        compilerWalkState.classifierTypeOwnerState        = this.classifierTypeOwnerState;
+        compilerWalkState.classTypeOwnerState             = this.classTypeOwnerState;
         return compilerWalkState;
     }
 
@@ -319,6 +342,14 @@ public class CompilerWalkState
             throw new AssertionError();
         }
         if (this.serviceState != null)
+        {
+            throw new AssertionError();
+        }
+        if (this.orderByState != null)
+        {
+            throw new AssertionError();
+        }
+        if (orderByMemberReferencePathState != null)
         {
             throw new AssertionError();
         }
@@ -418,6 +449,14 @@ public class CompilerWalkState
         {
             throw new AssertionError();
         }
+        if (this.orderByState != other.orderByState)
+        {
+            throw new AssertionError();
+        }
+        if (this.orderByMemberReferencePathState != other.orderByMemberReferencePathState)
+        {
+            throw new AssertionError();
+        }
         if (this.thisReference != other.thisReference)
         {
             throw new AssertionError();
@@ -485,7 +524,8 @@ public class CompilerWalkState
             super.enterEnumerationDeclaration(ctx);
 
             CompilerWalkState.assertNull(CompilerWalkState.this.enumerationState);
-            CompilerWalkState.this.enumerationState = CompilerWalkState.this.domainModelState.getEnumerationByContext(ctx);
+            CompilerWalkState.this.enumerationState =
+                    CompilerWalkState.this.domainModelState.getEnumerationByContext(ctx);
         }
 
         @Override
@@ -554,7 +594,8 @@ public class CompilerWalkState
             super.enterAssociationDeclaration(ctx);
 
             CompilerWalkState.assertNull(CompilerWalkState.this.associationState);
-            CompilerWalkState.this.associationState = CompilerWalkState.this.domainModelState.getAssociationByContext(ctx);
+            CompilerWalkState.this.associationState =
+                    CompilerWalkState.this.domainModelState.getAssociationByContext(ctx);
         }
 
         @Override
@@ -736,7 +777,8 @@ public class CompilerWalkState
             CompilerWalkState.assertNull(CompilerWalkState.this.serviceGroupState);
             CompilerWalkState.assertNull(CompilerWalkState.this.thisReference);
 
-            CompilerWalkState.this.serviceGroupState = CompilerWalkState.this.domainModelState.getServiceGroupByContext(ctx);
+            CompilerWalkState.this.serviceGroupState =
+                    CompilerWalkState.this.domainModelState.getServiceGroupByContext(ctx);
             if (CompilerWalkState.this.serviceGroupState == null)
             {
                 return;
@@ -825,6 +867,60 @@ public class CompilerWalkState
             super.exitClassModifier(ctx);
 
             CompilerWalkState.this.classModifierState = null;
+        }
+
+        @Override
+        public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
+        {
+            super.enterOrderByDeclaration(ctx);
+
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByState);
+
+            if (CompilerWalkState.this.orderByOwnerState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.orderByOwnerState.getOrderByState().ifPresent(antlrOrderBy ->
+            {
+                if (antlrOrderBy.getElementContext() != ctx)
+                {
+                    throw new AssertionError();
+                }
+                CompilerWalkState.this.orderByState = antlrOrderBy;
+            });
+        }
+
+        @Override
+        public void exitOrderByDeclaration(OrderByDeclarationContext ctx)
+        {
+            super.exitOrderByDeclaration(ctx);
+
+            CompilerWalkState.this.orderByState = null;
+        }
+
+        @Override
+        public void enterOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+        {
+            super.enterOrderByMemberReferencePath(ctx);
+
+            CompilerWalkState.assertNull(CompilerWalkState.this.orderByMemberReferencePathState);
+
+            if (CompilerWalkState.this.orderByState == null)
+            {
+                return;
+            }
+
+            CompilerWalkState.this.orderByMemberReferencePathState =
+                    Objects.requireNonNull(CompilerWalkState.this.orderByState.getOrderByMemberReferencePath(ctx));
+        }
+
+        @Override
+        public void exitOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+        {
+            super.exitOrderByMemberReferencePath(ctx);
+
+            CompilerWalkState.this.orderByMemberReferencePathState = null;
         }
     }
 }

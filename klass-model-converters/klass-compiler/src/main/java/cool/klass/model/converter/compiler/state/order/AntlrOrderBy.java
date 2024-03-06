@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state.order;
 
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,10 +13,13 @@ import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderByMemberReferencePathBuilder;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrOrderBy extends AntlrElement
 {
@@ -26,7 +30,11 @@ public class AntlrOrderBy extends AntlrElement
 
     @Nonnull
     private final MutableList<AntlrOrderByMemberReferencePath> orderByMemberReferencePathStates = Lists.mutable.empty();
-    private       OrderByBuilder                               elementBuilder;
+
+    @Nonnull
+    private final MutableOrderedMap<ParserRuleContext, AntlrOrderByMemberReferencePath> orderByMemberReferencePathsByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    private OrderByBuilder elementBuilder;
 
     public AntlrOrderBy(
             @Nonnull ParserRuleContext elementContext,
@@ -35,7 +43,7 @@ public class AntlrOrderBy extends AntlrElement
             @Nonnull AntlrOrderByOwner orderByOwnerState)
     {
         super(elementContext, compilationUnit);
-        this.thisContext = Objects.requireNonNull(thisContext);
+        this.thisContext       = Objects.requireNonNull(thisContext);
         this.orderByOwnerState = Objects.requireNonNull(orderByOwnerState);
     }
 
@@ -61,6 +69,19 @@ public class AntlrOrderBy extends AntlrElement
     public void enterOrderByMemberReferencePath(AntlrOrderByMemberReferencePath orderByMemberReferencePathState)
     {
         this.orderByMemberReferencePathStates.add(orderByMemberReferencePathState);
+
+        AntlrOrderByMemberReferencePath duplicate = this.orderByMemberReferencePathsByContext.put(
+                orderByMemberReferencePathState.getElementContext(),
+                orderByMemberReferencePathState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
+    public AntlrOrderByMemberReferencePath getOrderByMemberReferencePath(OrderByMemberReferencePathContext ctx)
+    {
+        return this.orderByMemberReferencePathsByContext.get(ctx);
     }
 
     public void reportErrors(CompilerErrorState compilerErrorHolder)

@@ -8,5 +8,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 
 public interface AntlrOrderByOwner extends IAntlrElement
 {
-    void enterOrderByDeclaration(@Nonnull Optional<AntlrOrderBy> orderByState);
+    void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState);
+
+    @Nonnull
+    Optional<AntlrOrderBy> getOrderByState();
 }

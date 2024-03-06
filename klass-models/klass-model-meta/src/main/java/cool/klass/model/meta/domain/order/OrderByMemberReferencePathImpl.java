@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.Element;
@@ -21,22 +22,21 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
     private final int                             ordinal;
     @Nonnull
     private final ThisMemberReferencePathImpl     thisMemberReferencePath;
-    @Nonnull
-    private final OrderByDirectionDeclarationImpl orderByDirectionDeclaration;
+
+    @Nullable
+    private OrderByDirectionDeclarationImpl orderByDirectionDeclaration;
 
     private OrderByMemberReferencePathImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nonnull OrderByImpl orderBy,
             int ordinal,
-            @Nonnull ThisMemberReferencePathImpl thisMemberReferencePath,
-            @Nonnull OrderByDirectionDeclarationImpl orderByDirectionDeclaration)
+            @Nonnull ThisMemberReferencePathImpl thisMemberReferencePath)
     {
         super(elementContext, macroElement);
         this.orderBy                     = Objects.requireNonNull(orderBy);
         this.ordinal                     = ordinal;
         this.thisMemberReferencePath     = Objects.requireNonNull(thisMemberReferencePath);
-        this.orderByDirectionDeclaration = Objects.requireNonNull(orderByDirectionDeclaration);
     }
 
     @Override
@@ -53,29 +53,38 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
         return this.orderByDirectionDeclaration;
     }
 
+    public void setOrderByDirectionDeclaration(@Nonnull OrderByDirectionDeclarationImpl orderByDirectionDeclaration)
+    {
+        this.orderByDirectionDeclaration = Objects.requireNonNull(orderByDirectionDeclaration);
+    }
+
     public static final class OrderByMemberReferencePathBuilder extends ElementBuilder<OrderByMemberReferencePathImpl>
     {
         @Nonnull
         private final OrderByBuilder                     orderByBuilder;
         private final int                                ordinal;
         @Nonnull
-        private final ThisMemberReferencePathBuilder     thisMemberReferencePathBuilder;
-        @Nonnull
-        private final OrderByDirectionDeclarationBuilder orderByDirectionBuilder;
+        private final ThisMemberReferencePathBuilder thisMemberReferencePathBuilder;
+
+        @Nullable
+        private OrderByDirectionDeclarationBuilder orderByDirectionBuilder;
 
         public OrderByMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull OrderByBuilder orderByBuilder,
                 int ordinal,
-                @Nonnull ThisMemberReferencePathBuilder thisMemberReferencePathBuilder,
-                @Nonnull OrderByDirectionDeclarationBuilder orderByDirectionBuilder)
+                @Nonnull ThisMemberReferencePathBuilder thisMemberReferencePathBuilder)
         {
             super(elementContext, macroElement);
             this.orderByBuilder                 = Objects.requireNonNull(orderByBuilder);
             this.ordinal                        = ordinal;
             this.thisMemberReferencePathBuilder = Objects.requireNonNull(thisMemberReferencePathBuilder);
-            this.orderByDirectionBuilder        = Objects.requireNonNull(orderByDirectionBuilder);
+        }
+
+        public void setOrderByDirectionBuilder(@Nonnull OrderByDirectionDeclarationBuilder orderByDirectionBuilder)
+        {
+            this.orderByDirectionBuilder = Objects.requireNonNull(orderByDirectionBuilder);
         }
 
         @Override
@@ -87,8 +96,13 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
                     this.macroElement.map(ElementBuilder::getElement),
                     this.orderByBuilder.getElement(),
                     this.ordinal,
-                    this.thisMemberReferencePathBuilder.build(),
-                    this.orderByDirectionBuilder.build());
+                    this.thisMemberReferencePathBuilder.build());
+        }
+
+        @Override
+        protected void buildChildren()
+        {
+            this.element.setOrderByDirectionDeclaration(this.orderByDirectionBuilder.build());
         }
     }
 }

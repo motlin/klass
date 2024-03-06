@@ -15,12 +15,16 @@ import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
+import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ServiceOrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 
@@ -285,5 +289,69 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     {
         this.compilerState.asListener().exitClassModifier(ctx);
         super.exitClassModifier(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterServiceOrderByDeclaration(@Nonnull ServiceOrderByDeclarationContext ctx)
+    {
+        super.enterServiceOrderByDeclaration(ctx);
+        this.compilerState.asListener().enterServiceOrderByDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitServiceOrderByDeclaration(@Nonnull ServiceOrderByDeclarationContext ctx)
+    {
+        this.compilerState.asListener().exitServiceOrderByDeclaration(ctx);
+        super.exitServiceOrderByDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
+    {
+        super.enterOrderByDeclaration(ctx);
+        this.compilerState.asListener().enterOrderByDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitOrderByDeclaration(@Nonnull OrderByDeclarationContext ctx)
+    {
+        this.compilerState.asListener().exitOrderByDeclaration(ctx);
+        super.exitOrderByDeclaration(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
+    {
+        super.enterOrderByMemberReferencePath(ctx);
+        this.compilerState.asListener().enterOrderByMemberReferencePath(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitOrderByMemberReferencePath(@Nonnull OrderByMemberReferencePathContext ctx)
+    {
+        this.compilerState.asListener().exitOrderByMemberReferencePath(ctx);
+        super.exitOrderByMemberReferencePath(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterOrderByDirection(@Nonnull OrderByDirectionContext ctx)
+    {
+        super.enterOrderByDirection(ctx);
+        this.compilerState.asListener().enterOrderByDirection(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitOrderByDirection(@Nonnull OrderByDirectionContext ctx)
+    {
+        this.compilerState.asListener().exitOrderByDirection(ctx);
+        super.exitOrderByDirection(ctx);
     }
 }

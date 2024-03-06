@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler.state.property;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -40,13 +39,20 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
     public abstract AntlrMultiplicity getMultiplicity();
 
     @Override
-    public void enterOrderByDeclaration(@Nonnull Optional<AntlrOrderBy> orderByState)
+    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)
     {
         if (this.orderByState.isPresent())
         {
             throw new IllegalStateException();
         }
-        this.orderByState = Objects.requireNonNull(orderByState);
+        this.orderByState = Optional.of(orderByState);
+    }
+
+    @Override
+    @Nonnull
+    public Optional<AntlrOrderBy> getOrderByState()
+    {
+        return this.orderByState;
     }
 
     public void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)

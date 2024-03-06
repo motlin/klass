@@ -10,6 +10,8 @@ import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferenceP
 import cool.klass.model.converter.compiler.phase.ClassifierPhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
 import cool.klass.model.converter.compiler.phase.InheritancePhase;
+import cool.klass.model.converter.compiler.phase.OrderByDirectionInferencePhase;
+import cool.klass.model.converter.compiler.phase.OrderByDirectionPhase;
 import cool.klass.model.converter.compiler.phase.OrderByPhase;
 import cool.klass.model.converter.compiler.phase.ParameterizedPropertyPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionDeclarationPhase;
@@ -56,7 +58,9 @@ public class KlassCompiler
             ServiceCriteriaPhase::new,
             ServiceCriteraInferencePhase::new,
             VariableResolutionPhase::new,
-            OrderByPhase::new);
+            OrderByPhase::new,
+            OrderByDirectionPhase::new,
+            OrderByDirectionInferencePhase::new);
 
     private final CompilerState compilerState;
 

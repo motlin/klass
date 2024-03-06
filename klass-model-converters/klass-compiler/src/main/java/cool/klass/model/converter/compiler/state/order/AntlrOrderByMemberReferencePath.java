@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -18,27 +19,27 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class AntlrOrderByMemberReferencePath extends AntlrElement
 {
     @Nonnull
-    private final AntlrOrderBy                      orderByState;
-    private final int                               ordinal;
+    private final AntlrOrderBy                 orderByState;
+    private final int                          ordinal;
     @Nonnull
-    private final AntlrThisMemberReferencePath      thisMemberReferencePathState;
-    @Nonnull
-    private final AntlrOrderByDirection             orderByDirectionState;
-    private       OrderByMemberReferencePathBuilder elementBuilder;
+    private final AntlrThisMemberReferencePath thisMemberReferencePathState;
+
+    @Nullable
+    private AntlrOrderByDirection orderByDirectionState;
+
+    private OrderByMemberReferencePathBuilder elementBuilder;
 
     public AntlrOrderByMemberReferencePath(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrOrderBy orderByState,
             int ordinal,
-            AntlrThisMemberReferencePath thisMemberReferencePathState,
-            AntlrOrderByDirection orderByDirectionState)
+            @Nonnull AntlrThisMemberReferencePath thisMemberReferencePathState)
     {
         super(elementContext, compilationUnit);
-        this.orderByState = Objects.requireNonNull(orderByState);
-        this.ordinal = ordinal;
+        this.orderByState                 = Objects.requireNonNull(orderByState);
+        this.ordinal                      = ordinal;
         this.thisMemberReferencePathState = Objects.requireNonNull(thisMemberReferencePathState);
-        this.orderByDirectionState = Objects.requireNonNull(orderByDirectionState);
     }
 
     @Override
@@ -60,6 +61,17 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         return this.ordinal;
     }
 
+    public void enterOrderByDirection(@Nonnull AntlrOrderByDirection orderByDirectionState)
+    {
+        this.orderByDirectionState = Objects.requireNonNull(orderByDirectionState);
+    }
+
+    @Nullable
+    public AntlrOrderByDirection getOrderByDirectionState()
+    {
+        return this.orderByDirectionState;
+    }
+
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: ❗️ Redo context stack for error reporting
@@ -74,15 +86,15 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
             throw new IllegalStateException();
         }
         ThisMemberReferencePathBuilder     thisMemberReferencePathBuilder = this.thisMemberReferencePathState.build();
-        OrderByDirectionDeclarationBuilder orderByDirectionBuilder        = this.orderByDirectionState.build();
 
         this.elementBuilder = new OrderByMemberReferencePathBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.orderByState.getElementBuilder(),
                 this.ordinal,
-                thisMemberReferencePathBuilder,
-                orderByDirectionBuilder);
+                thisMemberReferencePathBuilder);
+
+        this.elementBuilder.setOrderByDirectionBuilder(this.orderByDirectionState.build());
         return this.elementBuilder;
     }
 

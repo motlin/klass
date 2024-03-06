@@ -225,9 +225,20 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     }
 
     @Override
-    public void enterOrderByDeclaration(@Nonnull Optional<AntlrOrderBy> orderByState)
+    public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)
     {
-        this.orderByState = Objects.requireNonNull(orderByState);
+        if (this.orderByState.isPresent())
+        {
+            throw new IllegalStateException();
+        }
+        this.orderByState = Optional.of(orderByState);
+    }
+
+    @Override
+    @Nonnull
+    public Optional<AntlrOrderBy> getOrderByState()
+    {
+        return this.orderByState;
     }
 
     public ServiceBuilder build()
