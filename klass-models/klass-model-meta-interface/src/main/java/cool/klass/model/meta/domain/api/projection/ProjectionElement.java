@@ -9,10 +9,6 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public interface ProjectionElement extends NamedElement
 {
-    @Nonnull
-    @Override
-    String getName();
-
     Optional<ProjectionParent> getParent();
 
     ImmutableList<? extends ProjectionChild> getChildren();
