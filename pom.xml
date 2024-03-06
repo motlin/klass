@@ -435,6 +435,7 @@
                                                 cool.klass:klass-generator-reladomo-merge-hooks-plugin,
                                                 cool.klass:klass-generator-reladomo-plugin,
                                                 cool.klass:klass-generator-service-resources-plugin,
+                                                cool.klass:klass-generator-uml-nomnoml-plugin,
                                                 cool.klass:klass-generator-xsd2bean-plugin,
                                                 cool.klass:klass-compiler-plugin
                                             </unCheckedPluginList>
