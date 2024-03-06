@@ -18,11 +18,7 @@
     <modules>
         <module>klass-dropwizard-configuration-data-stores</module>
         <module>klass-dropwizard-configuration-domain-model-loaders</module>
-        <module>klass-dropwizard-configuration-h2</module>
-        <module>klass-dropwizard-configuration-ddl-executor</module>
-        <module>klass-dropwizard-configuration-cors</module>
         <module>klass-dropwizard-configuration-sample-data</module>
-        <module>klass-dropwizard-configuration-enabled</module>
     </modules>
 
 </project>

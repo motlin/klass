@@ -30,5 +30,10 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-dropwizard-configuration-h2</module>
+        <module>klass-dropwizard-configuration-ddl-executor</module>
+        <module>klass-dropwizard-configuration-cors</module>
+        <module>klass-dropwizard-configuration-enabled</module>
+        <module>klass-dropwizard-configuration-factory-json</module>
     </modules>
 </project>
