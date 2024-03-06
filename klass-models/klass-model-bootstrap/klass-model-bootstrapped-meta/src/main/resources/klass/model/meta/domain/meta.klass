@@ -14,11 +14,46 @@ interface NamedElement
     ordinal: Integer;
 }
 
-interface PackageableElement
+interface PackageableElement implements NamedElement
 {
     packageName: String;
 
     // fullyQualifiedName: String = packageName + "." + name;
+}
+
+class Enumeration implements PackageableElement
+{
+    name                          : String key;
+    inferred                      : Boolean;
+    packageName                   : String private;
+    ordinal                       : Integer;
+    sourceCode                    : String maximumLength(100000);
+}
+
+class EnumerationLiteral implements NamedElement
+{
+    enumerationName               : String key;
+    name                          : String key;
+    inferred                      : Boolean;
+    prettyName                    : String?;
+    ordinal                       : Integer;
+}
+
+association EnumerationHasLiterals
+{
+    enumeration: Enumeration[1..1];
+    enumerationLiterals: EnumerationLiteral[1..*]
+        orderBy: this.ordinal;
+
+    relationship this.name == EnumerationLiteral.enumerationName
+}
+
+enumeration InheritanceType
+{
+    TABLE_PER_SUBCLASS("table-per-subclass"),
+    TABLE_FOR_ALL_SUBCLASSES("table-for-all-subclasses"),
+    TABLE_PER_CLASS("table-per-class"),
+    NONE("none"),
 }
 
 // TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
@@ -26,8 +61,8 @@ class Classifier
     abstract(table-per-class)
     implements PackageableElement
 {
-    name: String key;
-    inferred: Boolean;
+    name      : String key;
+    inferred  : Boolean;
     packageName: String;
 
     // TODO: Ordinals should have a syntax and be inferred using macros
@@ -67,6 +102,7 @@ class Klass
     extends Classifier
 {
     superClassName: String? private;
+    inheritanceType: InheritanceType;
 }
 
 association ClassHasSuperClass
@@ -99,65 +135,27 @@ enumeration Multiplicity
     ONE_TO_MANY("1..*"),
 }
 
-class PrimitiveProperty
+class DataTypeProperty
+    abstract(table-per-class)
+    implements NamedElement
 {
-    className                     : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    primitiveType                 : PrimitiveType;
-    optional                      : Boolean;
-    key                           : Boolean;
-    id                            : Boolean;
-    ordinal                       : Integer;
+    classifierName: String key;
+    name      : String key;
+    inferred  : Boolean;
+    optional  : Boolean;
+    key       : Boolean;
+    ordinal   : Integer;
 }
 
-association ClassHasPrimitiveTypeProperties
+class PrimitiveProperty extends DataTypeProperty
 {
-    owningClass: Klass[1..1];
-    primitiveProperties: PrimitiveProperty[0..*] owned
-
-    // TODO: Change the orderBy syntax to orderBy(this.ordinal)
-        orderBy: this.ordinal;
-
-    relationship this.name == PrimitiveProperty.className
+    primitiveType: PrimitiveType;
+    id: Boolean;
 }
 
-class Enumeration
+class EnumerationProperty extends DataTypeProperty
 {
-    name                          : String key;
-    inferred                      : Boolean;
-    packageName                   : String private;
-    ordinal                       : Integer;
-    sourceCode                    : String maximumLength(100000);
-}
-
-class EnumerationLiteral
-{
-    enumerationName               : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    prettyName                    : String?;
-    ordinal                       : Integer;
-}
-
-association EnumerationHasLiterals
-{
-    enumeration: Enumeration[1..1];
-    enumerationLiterals: EnumerationLiteral[1..*]
-        orderBy: this.ordinal;
-
-    relationship this.name == EnumerationLiteral.enumerationName
-}
-
-class EnumerationProperty
-{
-    className                     : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    enumerationName               : String private;
-    optional                      : Boolean;
-    key                           : Boolean;
-    ordinal                       : Integer;
+    enumerationName: String private;
 }
 
 association EnumerationPropertyHasEnumeration
@@ -168,68 +166,111 @@ association EnumerationPropertyHasEnumeration
     relationship this.enumerationName == Enumeration.name
 }
 
-association ClassHasEnumerationProperties
+association ClassifierHasDataTypeTypeProperties
 {
-    owningClass: Klass[1..1];
-    enumerationProperties: EnumerationProperty[0..*]
+    // TODO: Change the orderBy syntax to orderBy(this.ordinal)
+    owningClassifier: Classifier[1..1];
+    dataTypeProperties: DataTypeProperty[0..*] owned
         orderBy: this.ordinal;
 
-    relationship this.name == EnumerationProperty.className
+    relationship this.name == DataTypeProperty.classifierName
 }
 
-class PrimitivePropertyModifier
+association ClassifierHasPrimitiveProperties
 {
-    className                     : String key;
-    propertyName                  : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    ordinal                       : Integer;
-}
-
-class EnumerationPropertyModifier
-{
-    className                     : String key;
-    propertyName                  : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    ordinal                       : Integer;
-}
-
-association PrimitivePropertyHasModifiers
-{
-    primitiveProperty: PrimitiveProperty[1..1];
-    primitivePropertyModifiers: PrimitivePropertyModifier[0..*]
+    owningClassifier: Classifier[1..1];
+    primitiveProperties: PrimitiveProperty[0..*] owned
         orderBy: this.ordinal;
 
-    relationship this.className == PrimitivePropertyModifier.className
-            && this.name == PrimitivePropertyModifier.propertyName
+    relationship this.name == PrimitiveProperty.classifierName
 }
 
-association EnumerationPropertyHasModifiers
+association ClassifierHasEnumerationProperties
 {
-    enumerationProperty: EnumerationProperty[1..1];
-    enumerationPropertyModifiers: EnumerationPropertyModifier[0..*]
+    owningClassifier: Classifier[1..1];
+    enumerationProperties: EnumerationProperty[0..*] owned
         orderBy: this.ordinal;
 
-    relationship this.className == EnumerationPropertyModifier.className
-            && this.name == EnumerationPropertyModifier.propertyName
+    relationship this.name == EnumerationProperty.classifierName
 }
 
-class ClassModifier
+interface PropertyValidation implements Element
 {
-    className                     : String key;
-    name                          : String key;
-    inferred                      : Boolean;
-    ordinal                       : Integer;
 }
 
-association ClassHasModifiers
+interface NumericPropertyValidation implements PropertyValidation
 {
-    owningClass: Klass[1..1];
-    classModifiers: ClassModifier[0..*]
+    number: Integer;
+}
+
+class MinLengthPropertyValidation
+    implements NumericPropertyValidation
+{
+    classifierName: String key;
+    propertyName: String key;
+    number: Integer;
+}
+
+class MaxLengthPropertyValidation
+    implements NumericPropertyValidation
+{
+    classifierName: String key;
+    propertyName: String key;
+    number: Integer;
+}
+
+class MinPropertyValidation
+    implements NumericPropertyValidation
+{
+    classifierName: String key;
+    propertyName: String key;
+    number: Integer;
+}
+
+class MaxPropertyValidation
+    implements NumericPropertyValidation
+{
+    classifierName: String key;
+    propertyName: String key;
+    number        : Integer;
+}
+
+class PropertyModifier
+    implements NamedElement
+{
+    classifierName: String key;
+    propertyName  : String key;
+    name          : String key;
+    inferred      : Boolean;
+    ordinal       : Integer;
+}
+
+association DataTypePropertyHasModifiers
+{
+    dataTypeProperty: DataTypeProperty[1..1];
+    propertyModifiers: PropertyModifier[0..*]
         orderBy: this.ordinal;
 
-    relationship this.name == ClassModifier.className
+    relationship this.classifierName == PropertyModifier.classifierName
+            && this.name == PropertyModifier.propertyName
+}
+
+class ClassifierModifier
+    implements NamedElement
+{
+    classifierName: String key;
+    name: String key;
+    inferred: Boolean;
+    ordinal: Integer;
+}
+
+association ClassifierHasModifiers
+{
+    owningClassifier: Classifier[1..1];
+    classifierModifiers: ClassifierModifier[0..*]
+        orderBy: this.ordinal;
+
+    relationship this.name == ClassifierModifier.classifierName
 }
 
 enumeration AssociationEndDirection
@@ -238,7 +279,7 @@ enumeration AssociationEndDirection
     TARGET("target"),
 }
 
-class Association
+class Association implements PackageableElement
 {
     name                          : String key;
     inferred                      : Boolean;
@@ -259,7 +300,7 @@ class Association
     }
 }
 
-class AssociationEnd
+class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private;
     name                          : String key;
@@ -299,6 +340,7 @@ association AssociationEndHasResultType
 }
 
 class AssociationEndModifier
+    implements NamedElement
 {
     owningClassName               : String key;
     associationEndName            : String key;
@@ -318,6 +360,7 @@ association AssociationEndHasModifiers
 }
 
 class ParameterizedProperty
+    implements NamedElement
 {
     owningClassName               : String key private;
     name                          : String key;
@@ -544,36 +587,73 @@ projection ClassReadProjection on Klass
     packageName          : "Class package name",
     ordinal              : "Class ordinal",
     sourceCode           : "Class source code",
+    sourceCodeWithInference           : "Class source code with inference",
     superClass           :
     {
         name       : "Super Class name",
         packageName: "Super Class package name",
+        superClass           :
+        {
+            name       : "Super Super Class name",
+            packageName: "Super Super Class package name",
+        },
+        // TODO: flat many-to-many, or parameterized property
+        superInterfaces      :
+        {
+            superInterface:
+            {
+                name       : "Super Class Super Interface name",
+                packageName: "Super Class Super Interface package name",
+            },
+        },
     },
     // TODO: flat many-to-many, or parameterized property
     superInterfaces      :
     {
         superInterface:
         {
-            name       : "Class name",
-            packageName: "Class package name",
+            name           : "Super interface name",
+            packageName    : "Super interface package name",
+            superInterfaces:
+            {
+                superInterface:
+                {
+                    name           : "Super Super interface name",
+                    packageName    : "Super Super interface package name",
+                },
+            },
         },
     },
-    classModifiers       :
+    classifierModifiers       :
     {
         name    : "Class modifier name",
         inferred: "Class modifier inferred",
         ordinal : "Class modifier ordinal",
     },
+    dataTypeProperties:
+    {
+        name             : "Property name",
+        inferred         : "Property inferred",
+        optional         : "Property is optional",
+        key              : "Property is key",
+        ordinal          : "Property ordinal",
+        propertyModifiers:
+        {
+            name    : "Property modifier name",
+            inferred: "Property modifier inferred",
+            ordinal : "Property modifier ordinal",
+        },
+    },
     primitiveProperties  :
     {
-        name                      : "Primitive property name",
-        inferred                  : "Primitive property inferred",
-        primitiveType             : "Primitive property type",
-        optional                  : "Primitive property is optional",
-        key                       : "Primitive property is key",
-        id                        : "Primitive property is id",
-        ordinal                   : "Primitive property ordinal",
-        primitivePropertyModifiers:
+        name             : "Primitive property name",
+        inferred         : "Primitive property inferred",
+        primitiveType    : "Primitive property type",
+        optional         : "Primitive property is optional",
+        key              : "Primitive property is key",
+        id               : "Primitive property is id",
+        ordinal          : "Primitive property ordinal",
+        propertyModifiers:
         {
             name    : "Primitive property modifier name",
             inferred: "Primitive property modifier inferred",
@@ -592,7 +672,7 @@ projection ClassReadProjection on Klass
             name    : "Enumeration name",
             inferred: "Enumeration inferred",
         },
-        enumerationPropertyModifiers:
+        propertyModifiers:
         {
             name    : "Enumeration property modifier name",
             inferred: "Enumeration property inferred",
