@@ -1,5 +1,5 @@
 [
-  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was null.",
+  "Error at PropertiesRequired.system. Didn't expect to receive value for temporal range property 'PropertiesRequired.system: TemporalRange?' but value was null.",
   "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was null.",
   "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was null.",
   "Error at PropertiesRequired.requiredString. Expected value for required property 'PropertiesRequired.requiredString: String' but value was null.",

@@ -151,10 +151,6 @@ public class RequiredPropertiesValidator
                 this.handleWarnIfPresent(dataTypeProperty, "foreign key");
             }
         }
-        else if (dataTypeProperty.isPrivate())
-        {
-            this.handleErrorIfPresent(dataTypeProperty, "private");
-        }
         else if (dataTypeProperty.isDerived())
         {
             this.handleWarnIfPresent(dataTypeProperty, "derived");
@@ -173,6 +169,10 @@ public class RequiredPropertiesValidator
         else if (dataTypeProperty.isVersion())
         {
             this.handleVersionProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isPrivate())
+        {
+            this.handleErrorIfPresent(dataTypeProperty, "private");
         }
         else
         {

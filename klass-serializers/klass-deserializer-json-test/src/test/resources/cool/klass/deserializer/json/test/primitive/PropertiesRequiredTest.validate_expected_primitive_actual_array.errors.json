@@ -16,7 +16,7 @@
   "Error at PropertiesRequired.createdOn. Expected property with type 'PropertiesRequired.createdOn: Instant' but got '[]' with type 'array'.",
   "Error at PropertiesRequired.lastUpdatedById. Expected property with type 'PropertiesRequired.lastUpdatedById: String' but got '[]' with type 'array'.",
   "Error at PropertiesRequired.version. Expected json object but value was array: [].",
-  "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was array: [].",
+  "Error at PropertiesRequired.system. Didn't expect to receive value for temporal range property 'PropertiesRequired.system: TemporalRange?' but value was array: [].",
   "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was array: [].",
   "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was array: []."
 ]
