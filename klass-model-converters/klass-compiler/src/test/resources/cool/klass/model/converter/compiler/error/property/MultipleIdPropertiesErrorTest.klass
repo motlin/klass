@@ -5,5 +5,3 @@ class ExampleClass
     id1: Long id key;
     id2: Long id key;
 }
-
-// TODO: ERR_MNY_IDS should be reported on properties, not classes
