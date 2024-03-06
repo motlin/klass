@@ -82,7 +82,7 @@ public class IncomingCreatedByDataModelValidator
 
     private void handleDataTypePropertyInsideProjection(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        if (dataTypeProperty.isTemporal())
+        if (dataTypeProperty.isTemporalInstant())
         {
             this.checkPropertyMatchesIfPresent(dataTypeProperty, "temporal");
             return;

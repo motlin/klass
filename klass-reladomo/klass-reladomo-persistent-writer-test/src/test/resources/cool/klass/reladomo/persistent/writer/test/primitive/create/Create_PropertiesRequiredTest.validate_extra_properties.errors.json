@@ -6,9 +6,5 @@
   "Error at PropertiesRequired.version.createdById. Didn't expect to receive value for audit property 'PropertiesRequiredVersion.createdById: String' but value was string: \"test user 1\".",
   "Error at PropertiesRequired.version.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequiredVersion.lastUpdatedById: String' but value was string: \"test user 1\".",
   "Error at PropertiesRequired.createdBy.system. Didn't expect to receive value for private property 'User.system: TemporalRange?' but value was string: \"1999-12-31T23:59:59.999Z\".",
-  "Error at PropertiesRequired.lastUpdatedBy.system. Didn't expect to receive value for private property 'User.system: TemporalRange?' but value was string: \"1999-12-31T23:59:59.999Z\".",
-  "Error at PropertiesRequired.version.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-  "Error at PropertiesRequired.version.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-  "Error at PropertiesRequired.createdBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'.",
-  "Error at PropertiesRequired.lastUpdatedBy.system. Mismatched value for temporal property 'User.system: TemporalRange?'. Expected absent value or 'null' but value was '1999-12-31T23:59:59.999Z'."
+  "Error at PropertiesRequired.lastUpdatedBy.system. Didn't expect to receive value for private property 'User.system: TemporalRange?' but value was string: \"1999-12-31T23:59:59.999Z\"."
 ]
