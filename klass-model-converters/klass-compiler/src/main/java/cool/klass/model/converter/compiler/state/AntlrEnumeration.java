@@ -103,6 +103,28 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
         compilerErrorHolder.add(message, this.nameContext);
     }
 
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        for (AntlrEnumerationLiteral enumerationLiteralState : this.enumerationLiteralStates)
+        {
+            enumerationLiteralState.reportNameErrors(compilerErrorHolder);
+        }
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_ENM_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
+    }
+
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         this.logDuplicateLiteralNames(compilerErrorHolder);

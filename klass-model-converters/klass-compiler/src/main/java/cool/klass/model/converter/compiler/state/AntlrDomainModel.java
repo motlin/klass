@@ -180,6 +180,7 @@ public class AntlrDomainModel
             {
                 enumerationState.reportDuplicateTopLevelName(compilerErrorHolder);
             }
+            enumerationState.reportNameErrors(compilerErrorHolder);
             enumerationState.reportErrors(compilerErrorHolder);
         }
 
@@ -189,6 +190,7 @@ public class AntlrDomainModel
             {
                 classState.reportDuplicateTopLevelName(compilerErrorHolder);
             }
+            classState.reportNameErrors(compilerErrorHolder);
             classState.reportErrors(compilerErrorHolder);
         }
 
@@ -198,6 +200,7 @@ public class AntlrDomainModel
             {
                 associationState.reportDuplicateTopLevelName(compilerErrorHolder);
             }
+            associationState.reportNameErrors(compilerErrorHolder);
             associationState.reportErrors(compilerErrorHolder);
         }
 
@@ -207,6 +210,7 @@ public class AntlrDomainModel
             {
                 projectionState.reportDuplicateTopLevelName(compilerErrorHolder);
             }
+            projectionState.reportNameErrors(compilerErrorHolder);
             projectionState.reportErrors(compilerErrorHolder);
         }
 
@@ -217,6 +221,7 @@ public class AntlrDomainModel
             {
                 serviceGroupState.reportDuplicateServiceGroupClass(compilerErrorHolder);
             }
+            serviceGroupState.reportNameErrors(compilerErrorHolder);
             serviceGroupState.reportErrors(compilerErrorHolder);
         }
     }

@@ -126,13 +126,9 @@ public class AntlrUrl extends AntlrElement
         }
     }
 
-    public AntlrService getServiceByContext(ServiceDeclarationContext ctx)
-    {
-        return this.servicesByContext.get(ctx);
-    }
-
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
+        this.reportParameterErrors(compilerErrorHolder);
         this.reportDuplicateParameterErrors(compilerErrorHolder);
         this.reportDuplicateVerbErrors(compilerErrorHolder);
         this.reportNoVerbs(compilerErrorHolder);
@@ -140,6 +136,14 @@ public class AntlrUrl extends AntlrElement
         for (AntlrService serviceState : this.serviceStates)
         {
             serviceState.reportErrors(compilerErrorHolder);
+        }
+    }
+
+    private void reportParameterErrors(CompilerErrorHolder compilerErrorHolder)
+    {
+        for (AntlrUrlParameter urlParameterState : this.urlParameterStates)
+        {
+            urlParameterState.reportNameErrors(compilerErrorHolder);
         }
     }
 

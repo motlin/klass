@@ -36,6 +36,7 @@
             <artifactId>eclipse-collections</artifactId>
         </dependency>
 
+        <!--TODO: This dependency is only required if at least one type is temporal-->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>

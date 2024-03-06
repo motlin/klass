@@ -21,8 +21,29 @@ public class AbstractReladomoGenerator
     @Nonnull
     protected String sanitizeXmlString(@Nonnull StringBuilder stringBuilder)
     {
-        // TODO: sanitizeXmlString
-        return stringBuilder.toString();
+        return stringBuilder.toString()
+                .replaceAll("(AsOfAttribute|Attribute|Relationship) name", "$1\n            name")
+                .replaceAll(
+                        "</(Relationship)>",
+                        "\n    </$1>\n")
+                .replaceAll(
+                        "</(MithraObject|DefaultTable)>",
+                        "</$1>\n")
+                .replaceAll(">this", ">\n            this")
+                .replaceAll("></SimulatedSequence>", " />")
+                .replaceAll("\"/>", "\" />")
+                .replaceAll(
+                        " (javaType|nullable|columnName|trim|primaryKey|primaryKeyGeneratorStrategy|fromIsInclusive|toIsInclusive|infinityDate|futureExpiringRowsExist|isProcessingDate|fromColumnName|toColumnName|defaultIfNotSpecified|reverseRelationshipName|relatedObject|relatedIsDependent|cardinality|orderBy|sequenceName|sequenceObjectFactoryName|hasSourceAttribute|batchSize|initialValue|incrementSize)=",
+                        "\n            $1=")
+                .replaceAll(
+                        "<(MithraObject|MithraPureObject) initializePrimitivesToNull=\"true\" objectType=\"transactional\">\n",
+                        ""
+                                + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+                                + "<$1\n"
+                                + "        initializePrimitivesToNull=\"true\"\n"
+                                + "        objectType=\"transactional\"\n"
+                                + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+                                + "        xsi:noNamespaceSchemaLocation=\"https://raw.githubusercontent.com/goldmansachs/reladomo/master/samples/reladomo-sample-simple/src/main/resources/reladomo/models/reladomoobject.xsd\">\n");
     }
 
     protected void printStringToFile(@Nonnull Path path, String contents)

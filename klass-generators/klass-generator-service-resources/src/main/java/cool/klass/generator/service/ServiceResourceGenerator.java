@@ -446,6 +446,8 @@ public class ServiceResourceGenerator
                 return;
             }
             String string = this.stack
+                    .toList()
+                    .asReversed()
                     .collect(each -> each + "()")
                     .makeString(".");
             this.result.add(string);

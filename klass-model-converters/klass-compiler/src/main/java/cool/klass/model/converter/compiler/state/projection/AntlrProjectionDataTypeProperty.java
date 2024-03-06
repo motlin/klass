@@ -111,4 +111,10 @@ public class AntlrProjectionDataTypeProperty extends AntlrNamedElement implement
                     this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
         }
     }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // Intentionally blank. Reference to a named element that gets its name checked.
+    }
 }

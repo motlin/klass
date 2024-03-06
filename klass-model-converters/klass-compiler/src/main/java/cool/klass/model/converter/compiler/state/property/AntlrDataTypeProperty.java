@@ -41,23 +41,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.modifiers.anySatisfy(AntlrPropertyModifier::isKey);
     }
 
-    public boolean isOptional()
-    {
-        return this.isOptional;
-    }
-
     public boolean isID()
     {
         return this.modifiers.anySatisfy(AntlrPropertyModifier::isID);
     }
 
     public abstract boolean isTemporal();
-
-    @Nonnull
-    public ImmutableList<AntlrPropertyModifier> getModifiers()
-    {
-        return this.modifiers;
-    }
 
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();
@@ -71,6 +60,33 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Nonnull
     public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
 
+    @Override
+    public void reportNameErrors(
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder, this.getParserRuleContexts());
+
+        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_DTP_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext,
+                    this.getParserRuleContexts());
+        }
+    }
+
+    @Nonnull
+    protected ParserRuleContext[] getParserRuleContexts()
+    {
+        return this.elementContext instanceof ClassModifierContext
+                ? new ParserRuleContext[]{}
+                : new ParserRuleContext[]{this.getOwningClassState().getElementContext()};
+    }
+
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check for duplicate modifiers
@@ -83,12 +99,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     {
         String message = String.format("ERR_DUP_MEM: Duplicate member: '%s'.", this.name);
 
-        ParserRuleContext[] parserRuleContexts = this.elementContext instanceof ClassModifierContext
-                ? new ParserRuleContext[]{}
-                : new ParserRuleContext[]{this.getOwningClassState().getElementContext()};
         compilerErrorHolder.add(
                 message,
                 this.nameContext,
-                parserRuleContexts);
+                this.getParserRuleContexts());
     }
 }

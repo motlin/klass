@@ -84,14 +84,14 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     private final MutableList<AntlrAssociationEnd>               associationEndStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrAssociationEnd> associationEndsByName = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private MutableList<AntlrClass> versionClasses = Lists.mutable.empty();
-    private AntlrClass              versionedClass;
-
-    private MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
+    private final MutableList<AntlrClass>       versionClasses      = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation> versionAssociations = Lists.mutable.empty();
 
     private final ImmutableList<AntlrClassModifier> classModifiers;
-    private       boolean                           isUser;
 
+    private final boolean isUser;
+
+    private AntlrClass   versionedClass;
     private KlassBuilder klassBuilder;
 
     public AntlrClass(
@@ -158,6 +158,11 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         return this.klassBuilder;
     }
 
+    private boolean hasTransientModifier()
+    {
+        return this.classModifiers.anySatisfy(AntlrClassModifier::isTransient);
+    }
+
     public void build2()
     {
         if (this.klassBuilder == null)
@@ -199,6 +204,43 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
         compilerErrorHolder.add(message, this.nameContext);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (RELADOMO_TYPES.contains(this.name))
+        {
+            String message = String.format(
+                    "ERR_REL_NME: '%s' is a Reladomo type.",
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
+
+        for (AntlrDataTypeProperty<?> dataTypePropertyState : this.dataTypePropertyStates)
+        {
+            dataTypePropertyState.reportNameErrors(compilerErrorHolder);
+        }
+
+        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
+        {
+            associationEndState.reportNameErrors(compilerErrorHolder);
+        }
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_CLS_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
     }
 
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
@@ -279,19 +321,19 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
         compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 
+    @Nonnull
+    @Override
+    public ClassDeclarationContext getElementContext()
+    {
+        return (ClassDeclarationContext) super.getElementContext();
+    }
+
     private ImmutableList<String> getMemberNames()
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
-    }
-
-    @Nonnull
-    @Override
-    public ClassDeclarationContext getElementContext()
-    {
-        return (ClassDeclarationContext) super.getElementContext();
     }
 
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
@@ -334,15 +376,5 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
     public boolean hasVersion()
     {
         return this.versionClasses.notEmpty();
-    }
-
-    public boolean hasVersionedModifier()
-    {
-        return this.classModifiers.anySatisfy(AntlrClassModifier::isVersioned);
-    }
-
-    private boolean hasTransientModifier()
-    {
-        return this.classModifiers.anySatisfy(AntlrClassModifier::isTransient);
     }
 }

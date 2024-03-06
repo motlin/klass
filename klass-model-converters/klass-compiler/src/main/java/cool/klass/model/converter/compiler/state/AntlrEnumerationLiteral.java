@@ -76,6 +76,24 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         return (EnumerationLiteralContext) super.getElementContext();
     }
 
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (!CONSTANT_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_LIT_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext,
+                    this.owningEnumeration.getElementContext());
+        }
+    }
+
     public void reportDuplicateName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_ENM: Duplicate enumeration literal: '%s'.", this.name);

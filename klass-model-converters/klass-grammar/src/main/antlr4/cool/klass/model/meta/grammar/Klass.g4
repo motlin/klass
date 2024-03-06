@@ -105,7 +105,7 @@ multiplicityBody: lowerBound=IntegerLiteral '..' upperBound=(IntegerLiteral | '*
 primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange';
 
 // modifiers
-classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked';
+classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient';
 propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo';
 parameterModifier: 'version' | 'userId' | 'id';
 associationEndModifier: 'owned';
@@ -171,7 +171,7 @@ identifier
 keywordValidAsIdentifier
     : 'package'
     | 'class' | 'enumeration' | 'association' | 'projection' | 'service' | 'user'
-    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'versions'
+    | 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient' | 'versions'
     | 'key' | 'private' | 'owned' | 'userId' | 'id'
     | 'valid' | 'validFrom' | 'validTo' | 'system' | 'systemFrom' | 'systemTo'
     | 'read' | 'write' | 'create' | 'update' | 'delete'
@@ -179,8 +179,13 @@ keywordValidAsIdentifier
     | 'native' | 'version'
     | 'relationship'
     | 'multiplicity' | 'orderBy'
-    // TODO: Split these keywords out, since they're really only ok as enumeration literals
+    | classModifier
+    | propertyModifier
+    | parameterModifier
+    | associationEndModifier
+    // TODO: Split these primitive type keywords out, since they're really only ok as enumeration literals
     | 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 'Instant' | 'LocalDate' | 'TemporalInstant' | 'TemporalRange'
+    | primitiveType
     ;
 
 literal

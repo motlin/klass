@@ -8,7 +8,9 @@ import javax.annotation.Nonnull;
 import com.gs.fw.common.mithra.generator.metamodel.Mithra;
 import com.gs.fw.common.mithra.generator.metamodel.MithraGeneratorMarshaller;
 import com.gs.fw.common.mithra.generator.metamodel.MithraObjectResourceType;
+import com.gs.fw.common.mithra.generator.metamodel.MithraPureObjectResourceType;
 import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.NamedElement;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -36,21 +38,37 @@ public class ReladomoClassListGenerator extends AbstractReladomoGenerator
     @Nonnull
     private Mithra generateObjectResources()
     {
-        ImmutableList<MithraObjectResourceType> mithraObjectResources = this.domainModel
+        ImmutableList<MithraObjectResourceType> objectResources = this.domainModel
                 .getKlasses()
+                .reject(Klass::isTransient)
                 .collect(NamedElement::getName)
-                .collect(this::getMithraObjectResource);
+                .collect(this::getObjectResource);
+
+        ImmutableList<MithraPureObjectResourceType> pureObjectResources = this.domainModel
+                .getKlasses()
+                .select(Klass::isTransient)
+                .collect(NamedElement::getName)
+                .collect(this::getPureObjectResource);
 
         Mithra mithra = new Mithra();
-        mithra.setMithraObjectResources(mithraObjectResources.castToList());
+        mithra.setMithraObjectResources(objectResources.castToList());
+        mithra.setMithraPureObjectResources(pureObjectResources.castToList());
         return mithra;
     }
 
     @Nonnull
-    private MithraObjectResourceType getMithraObjectResource(String className)
+    private MithraObjectResourceType getObjectResource(String className)
     {
-        MithraObjectResourceType mithraObjectResource = new MithraObjectResourceType();
-        mithraObjectResource.setName(className);
-        return mithraObjectResource;
+        MithraObjectResourceType objectResource = new MithraObjectResourceType();
+        objectResource.setName(className);
+        return objectResource;
+    }
+
+    @Nonnull
+    private MithraPureObjectResourceType getPureObjectResource(String className)
+    {
+        MithraPureObjectResourceType pureObjectResource = new MithraPureObjectResourceType();
+        pureObjectResource.setName(className);
+        return pureObjectResource;
     }
 }

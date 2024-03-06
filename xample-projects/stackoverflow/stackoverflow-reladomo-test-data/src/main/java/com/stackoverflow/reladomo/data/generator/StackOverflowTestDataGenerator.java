@@ -8,6 +8,7 @@ import com.stackoverflow.Answer;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionVersion;
 
+// TODO: Code generate this class. Skip transient types.
 public final class StackOverflowTestDataGenerator
 {
     private StackOverflowTestDataGenerator()

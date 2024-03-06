@@ -53,7 +53,6 @@ public class AbstractApplicationGenerator
                 + "import cool.klass.model.meta.domain.DomainModel;\n"
                 + "import cool.klass.model.meta.loader.DomainModelLoader;\n"
                 + "import " + this.packageName + "." + this.applicationName + "Configuration;\n"
-                + "import " + this.rootPackageName + ".service.resource.QuestionResource;\n"
                 + "import " + this.rootPackageName + ".dropwizard.command.*;\n"
                 + "import " + this.rootPackageName + ".service.resource.*;\n"
                 + "import com.typesafe.config.Config;\n"

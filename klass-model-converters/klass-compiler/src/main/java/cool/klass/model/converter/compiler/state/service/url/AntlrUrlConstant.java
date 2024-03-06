@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.meta.domain.service.url.UrlConstant.UrlConstantBuilder;
 import cool.klass.model.meta.domain.service.url.UrlPathSegment.UrlPathSegmentBuilder;
@@ -33,5 +34,12 @@ public class AntlrUrlConstant extends AntlrNamedElement implements AntlrUrlPathS
     public UrlPathSegmentBuilder build()
     {
         return new UrlConstantBuilder(this.elementContext, this.nameContext, this.name);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // TODO: URLs can contain almost anything. The parser is probably already more strict than any error checking that needs to happen here.
+        // https://stackoverflow.com/questions/7109143/what-characters-are-valid-in-a-url
     }
 }

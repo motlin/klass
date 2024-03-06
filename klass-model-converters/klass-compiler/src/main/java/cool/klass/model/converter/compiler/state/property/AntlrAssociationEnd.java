@@ -84,27 +84,6 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.type;
     }
 
-    public AntlrMultiplicity getAntlrMultiplicity()
-    {
-        return this.antlrMultiplicity;
-    }
-
-    @Nonnull
-    public ImmutableList<AntlrAssociationEndModifier> getModifiers()
-    {
-        return this.modifiers;
-    }
-
-    public AntlrAssociationEnd getOpposite()
-    {
-        return this.opposite;
-    }
-
-    public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
-    {
-        this.opposite = Objects.requireNonNull(opposite);
-    }
-
     @Override
     public AssociationEndBuilder build()
     {
@@ -112,6 +91,7 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         {
             throw new IllegalStateException();
         }
+        // TODO: 🔗 Set association end's opposite
         this.associationEndBuilder = new AssociationEndBuilder(
                 this.elementContext,
                 this.nameContext,
@@ -140,10 +120,33 @@ public class AntlrAssociationEnd extends AntlrProperty<Klass>
         return this.modifiers.anySatisfy(AntlrAssociationEndModifier::isOwned);
     }
 
+    public void setOpposite(@Nonnull AntlrAssociationEnd opposite)
+    {
+        this.opposite = Objects.requireNonNull(opposite);
+    }
+
     @Nonnull
     public AssociationEndBuilder getAssociationEndBuilder()
     {
         return Objects.requireNonNull(this.associationEndBuilder);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder, this.owningAssociationState.getElementContext());
+
+        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_END_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext,
+                    this.owningAssociationState.getElementContext());
+        }
     }
 
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)

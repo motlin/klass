@@ -88,10 +88,28 @@ public class AntlrServiceGroup extends AntlrPackageableElement
         // TODO: Not here, but report if there are more than one service group for a class.
     }
 
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_SVC_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
+    }
+
     private void reportDuplicateUrls(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: reportDuplicateUrls
-        HashBagWithHashingStrategy<AntlrUrl> antlrUrls = new HashBagWithHashingStrategy<>(HashingStrategies.fromFunction(AntlrUrl::getNormalizedPathSegments));
+        HashBagWithHashingStrategy<AntlrUrl> antlrUrls = new HashBagWithHashingStrategy<>(HashingStrategies.fromFunction(
+                AntlrUrl::getNormalizedPathSegments));
 
         MutableBag<AntlrUrl> duplicateUrls = antlrUrls.selectByOccurrences(occurrences -> occurrences > 1);
         if (duplicateUrls.notEmpty())

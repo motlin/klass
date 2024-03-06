@@ -132,6 +132,25 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         return this.associationBuilder;
     }
 
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations and a separate name pattern
+
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_ASO_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
+    }
+
     public void reportDuplicateTopLevelName(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
@@ -247,7 +266,7 @@ public class AntlrAssociation extends AntlrPackageableElement implements Criteri
         // TODO: Check for the class they probably meant to point to
         String message = String.format(
                 "ERR_VER_ASSO: Version association points to class which isn't a version '%s'.",
-                versionClass.getName());
+                this.versionClass.getName());
         compilerErrorHolder.add(message, this.getElementContext().versions().classReference());
     }
 }

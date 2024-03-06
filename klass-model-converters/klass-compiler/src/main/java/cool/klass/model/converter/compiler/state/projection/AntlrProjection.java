@@ -79,6 +79,25 @@ public class AntlrProjection extends AntlrProjectionParent
         return this.projectionBuilder;
     }
 
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        // TODO: ⬇ Potentially refine a smaller list of keywords that clash with projections and a separate name pattern
+
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        if (!TYPE_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_PRJ_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
+    }
+
     public void reportErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();

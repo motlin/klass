@@ -65,17 +65,6 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
     }
 
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
-    {
-        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
-
-        compilerErrorHolder.add(
-                message,
-                this.nameContext,
-                this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
-    }
-
-    @Override
     public ProjectionAssociationEndBuilder build()
     {
         if (this.projectionAssociationEndBuilder != null)
@@ -104,10 +93,21 @@ public class AntlrProjectionAssociationEnd extends AntlrProjectionParent impleme
         return this.antlrProjectionParent;
     }
 
-    @Nonnull
-    public ProjectionAssociationEndBuilder getProjectionAssociationEndBuilder()
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
     {
-        return Objects.requireNonNull(this.projectionAssociationEndBuilder);
+        // Intentionally blank. Reference to a named element that gets its name checked.
+    }
+
+    @Override
+    public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        String message = String.format("ERR_DUP_PRJ: Duplicate member: '%s'.", this.name);
+
+        compilerErrorHolder.add(
+                message,
+                this.nameContext,
+                this.getParserRuleContexts().toArray(new ParserRuleContext[]{}));
     }
 
     @Override

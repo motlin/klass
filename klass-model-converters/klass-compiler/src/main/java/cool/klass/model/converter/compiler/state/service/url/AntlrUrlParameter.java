@@ -16,14 +16,14 @@ import org.eclipse.collections.api.list.ImmutableList;
 public abstract class AntlrUrlParameter extends AntlrNamedElement
 {
     @Nonnull
-    protected final AntlrMultiplicity                     multiplicityState;
+    protected final AntlrMultiplicity multiplicityState;
     @Nonnull
-    protected final AntlrUrl                              urlState;
+    protected final AntlrUrl          urlState;
 
     // TODO: Factor modifiers into type checking
-    private final   ImmutableList<AntlrParameterModifier> parameterModifiers;
+    private final ImmutableList<AntlrParameterModifier> parameterModifiers;
 
-    public AntlrUrlParameter(
+    protected AntlrUrlParameter(
             @Nonnull ParserRuleContext elementContext,
             CompilationUnit compilationUnit,
             boolean inferred,
@@ -37,6 +37,24 @@ public abstract class AntlrUrlParameter extends AntlrNamedElement
         this.multiplicityState = Objects.requireNonNull(multiplicityState);
         this.urlState = Objects.requireNonNull(urlState);
         this.parameterModifiers = Objects.requireNonNull(parameterModifiers);
+    }
+
+    @Override
+    public void reportNameErrors(@Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        this.reportKeywordCollision(compilerErrorHolder);
+
+        // TODO: Split out parameter name pattern if necessary
+        if (!MEMBER_NAME_PATTERN.matcher(this.name).matches())
+        {
+            String message = String.format(
+                    "ERR_CLS_NME: Name must match pattern %s but was %s",
+                    CONSTANT_NAME_PATTERN,
+                    this.name);
+            compilerErrorHolder.add(
+                    message,
+                    this.nameContext);
+        }
     }
 
     public void reportDuplicateParameterName(@Nonnull CompilerErrorHolder compilerErrorHolder)
