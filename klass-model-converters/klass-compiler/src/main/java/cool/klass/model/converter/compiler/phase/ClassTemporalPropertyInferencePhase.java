@@ -40,34 +40,38 @@ public class ClassTemporalPropertyInferencePhase
         String modifierText = ctx.getText();
         if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
+            StringBuilder sourceCodeText = new StringBuilder();
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
             {
-                stringBuilder.append("    valid    : TemporalRange?   valid private;\n");
+                sourceCodeText.append("    valid    : TemporalRange?   valid private;\n");
             }
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
             {
-                stringBuilder.append("    validFrom: TemporalInstant? valid from;\n");
+                sourceCodeText.append("    validFrom: TemporalInstant? valid from;\n");
             }
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidTo))
             {
-                stringBuilder.append("    validTo  : TemporalInstant? valid to;\n");
+                sourceCodeText.append("    validTo  : TemporalInstant? valid to;\n");
             }
+            this.runCompilerMacro(sourceCodeText.toString());
         }
 
         if ("systemTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
+            StringBuilder sourceCodeText = new StringBuilder();
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
             {
-                stringBuilder.append("    system    : TemporalRange?   system private;\n");
+                sourceCodeText.append("    system    : TemporalRange?   system private;\n");
             }
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
             {
-                stringBuilder.append("    systemFrom: TemporalInstant? system from;\n");
+                sourceCodeText.append("    systemFrom: TemporalInstant? system from;\n");
             }
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemTo))
             {
-                stringBuilder.append("    systemTo  : TemporalInstant? system to;\n");
+                sourceCodeText.append("    systemTo  : TemporalInstant? system to;\n");
             }
+            this.runCompilerMacro(sourceCodeText.toString());
         }
 
         this.runCompilerMacro(stringBuilder.toString());
