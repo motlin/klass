@@ -52,7 +52,7 @@
 
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.4.1</version>
                     <executions>
                         <execution>
                             <id>enforce</id>
@@ -201,7 +201,7 @@
 
                     <plugin>
                         <artifactId>maven-enforcer-plugin</artifactId>
-                        <version>3.4.0</version>
+                        <version>3.4.1</version>
                         <executions>
                             <execution>
                                 <id>enforce</id>
