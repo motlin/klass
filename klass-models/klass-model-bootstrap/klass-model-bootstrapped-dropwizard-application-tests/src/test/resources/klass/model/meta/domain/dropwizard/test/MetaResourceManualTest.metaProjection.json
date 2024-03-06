@@ -1,16 +1,13 @@
 {
   "name": "ProjectionElementProjection",
-  "ordinal": 124,
   "packageName": "klass.model.meta.domain",
   "rootProjection": {
     "id": 8,
-    "ordinal": 124,
     "name": "ProjectionElementProjection",
     "children": [
       {
         "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "id": 76,
-        "ordinal": 1,
+        "id": 71,
         "name": "id",
         "children": [],
         "dataTypeProperty": {
@@ -19,18 +16,7 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "id": 77,
-        "ordinal": 2,
-        "name": "ordinal",
-        "children": [],
-        "dataTypeProperty": {
-          "name": "ordinal"
-        }
-      },
-      {
-        "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-        "id": 78,
-        "ordinal": 3,
+        "id": 72,
         "name": "name",
         "children": [],
         "dataTypeProperty": {
@@ -39,8 +25,7 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
-        "id": 79,
-        "ordinal": 4,
+        "id": 73,
         "name": "children",
         "children": [],
         "associationEnd": {
@@ -52,14 +37,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 80,
-        "ordinal": 5,
+        "id": 74,
         "name": "classifier",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 81,
-            "ordinal": 1,
+            "id": 75,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -73,14 +56,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 82,
-        "ordinal": 6,
+        "id": 76,
         "name": "associationEnd",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 83,
-            "ordinal": 1,
+            "id": 77,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -94,14 +75,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 84,
-        "ordinal": 7,
+        "id": 78,
         "name": "projection",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 85,
-            "ordinal": 1,
+            "id": 79,
             "name": "name",
             "children": [],
             "dataTypeProperty": {
@@ -115,14 +94,12 @@
       },
       {
         "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
-        "id": 86,
-        "ordinal": 8,
+        "id": 80,
         "name": "dataTypeProperty",
         "children": [
           {
             "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-            "id": 87,
-            "ordinal": 1,
+            "id": 81,
             "name": "name",
             "children": [],
             "dataTypeProperty": {

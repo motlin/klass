@@ -1,7 +1,6 @@
 [
   {
     "name": "PackageableElementResource",
-    "ordinal": 131,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "PackageableElement"
@@ -83,7 +82,6 @@
   },
   {
     "name": "EnumerationResource",
-    "ordinal": 132,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Enumeration"
@@ -165,7 +163,6 @@
   },
   {
     "name": "InterfaceResource",
-    "ordinal": 135,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Interface"
@@ -247,7 +244,6 @@
   },
   {
     "name": "KlassResource",
-    "ordinal": 140,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Klass"
@@ -329,7 +325,6 @@
   },
   {
     "name": "ClassifierResource",
-    "ordinal": 142,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Classifier"
@@ -411,7 +406,6 @@
   },
   {
     "name": "AssociationResource",
-    "ordinal": 157,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "Association"
@@ -493,7 +487,6 @@
   },
   {
     "name": "NamedProjectionResource",
-    "ordinal": 158,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "NamedProjection"
@@ -575,7 +568,6 @@
   },
   {
     "name": "ServiceGroupResource",
-    "ordinal": 160,
     "packageName": "klass.model.meta.domain",
     "owningClass": {
       "name": "ServiceGroup"

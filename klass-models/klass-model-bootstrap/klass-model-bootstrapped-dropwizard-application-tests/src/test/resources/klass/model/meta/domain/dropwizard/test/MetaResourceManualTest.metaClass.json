@@ -1,6 +1,5 @@
 {
   "name": "Classifier",
-  "ordinal": 7,
   "packageName": "klass.model.meta.domain",
   "superInterfaces": [],
   "classifierModifiers": [],

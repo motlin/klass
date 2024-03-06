@@ -889,14 +889,12 @@ association ServiceOrderByHasMemberReferencePath
 projection EnumerationLiteralProjection on EnumerationLiteral
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     prettyName: "EnumerationLiteral prettyName",
 }
 
 projection EnumerationProjection on Enumeration
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     enumerationLiterals: EnumerationLiteralProjection,
 }
@@ -904,7 +902,6 @@ projection EnumerationProjection on Enumeration
 projection PackageableElementProjection on PackageableElement
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     Enumeration.enumerationLiterals: EnumerationLiteralProjection,
     Classifier.superInterfaces: ClassifierInterfaceMappingProjection,
@@ -937,7 +934,6 @@ projection PackageableElementProjection on PackageableElement
 projection ClassifierModifierProjection on ClassifierModifier
 {
     keyword: "ClassifierModifier keyword",
-    ordinal: "ClassifierModifier ordinal",
 }
 
 projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
@@ -950,7 +946,6 @@ projection ClassifierInterfaceMappingProjection on ClassifierInterfaceMapping
 projection ParameterizedPropertyProjection on ParameterizedProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     multiplicity: "ParameterizedProperty multiplicity",
     resultType: {
         name: "NamedElement name",
@@ -969,7 +964,6 @@ projection ParameterizedPropertyOrderingProjection on ParameterizedPropertyOrder
 projection ProjectionElementProjection on ProjectionElement
 {
     id: "ProjectionElement id",
-    ordinal: "NamedElement ordinal",
     name: "ProjectionElement name",
     children: ProjectionElementProjection,
     RootProjection.classifier: {
@@ -989,7 +983,6 @@ projection ProjectionElementProjection on ProjectionElement
 projection NamedProjectionProjection on NamedProjection
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     rootProjection: ProjectionElementProjection,
 }
@@ -997,7 +990,6 @@ projection NamedProjectionProjection on NamedProjection
 projection ServiceGroupProjection on ServiceGroup
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     owningClass: {
         name: "NamedElement name",
@@ -1083,7 +1075,6 @@ service EnumerationResource on Enumeration
 projection InterfaceProjection on Interface
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     classifierModifiers: ClassifierModifierProjection,
@@ -1135,7 +1126,6 @@ projection NumericPropertyValidationProjection on NumericPropertyValidation
 projection DataTypePropertyProjection on DataTypeProperty
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     optional: "DataTypeProperty optional",
     minLengthValidation: NumericPropertyValidationProjection,
     maxLengthValidation: NumericPropertyValidationProjection,
@@ -1153,7 +1143,6 @@ projection DataTypePropertyProjection on DataTypeProperty
 projection KlassProjection on Klass
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     abstractClass: "Klass abstractClass",
     superInterfaces: ClassifierInterfaceMappingProjection,
@@ -1173,7 +1162,6 @@ projection ClassSummaryProjection on Klass
     name                   : "Class name",
     packageName            : "Class package name",
     abstractClass          : "Class abstractClass",
-    ordinal                : "Class ordinal",
     superClass             :
     {
         name           : "Super Class name",
@@ -1216,7 +1204,6 @@ service KlassResource on Klass
 projection ClassifierProjection on Classifier
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     superInterfaces: ClassifierInterfaceMappingProjection,
     classifierModifiers: ClassifierModifierProjection,
@@ -1270,7 +1257,6 @@ projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 projection AssociationEndModifierProjection on AssociationEndModifier
 {
     keyword: "AssociationEndModifier keyword",
-    ordinal: "AssociationEndModifier ordinal",
 }
 
 projection AssociationEndOrderByProjection on AssociationEndOrderBy
@@ -1284,7 +1270,6 @@ projection AssociationEndOrderByProjection on AssociationEndOrderBy
 projection AssociationEndProjection on AssociationEnd
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     direction: "AssociationEnd direction",
     multiplicity: "AssociationEnd multiplicity",
     resultType: {
@@ -1427,7 +1412,6 @@ projection CriteriaSummaryProjection on Criteria
 projection AssociationProjection on Association
 {
     name: "NamedElement name",
-    ordinal: "NamedElement ordinal",
     packageName: "PackageableElement packageName",
     associationEnds: AssociationEndProjection,
     criteria               : CriteriaProjection,

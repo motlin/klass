@@ -1,11 +1,9 @@
 {
   "name": "DataTypePropertyHasModifiers",
-  "ordinal": 33,
   "packageName": "klass.model.meta.domain",
   "associationEnds": [
     {
       "name": "dataTypeProperty",
-      "ordinal": 1,
       "direction": "source",
       "multiplicity": "1..1",
       "resultType": {
@@ -16,7 +14,6 @@
     },
     {
       "name": "propertyModifiers",
-      "ordinal": 2,
       "direction": "target",
       "multiplicity": "0..*",
       "resultType": {

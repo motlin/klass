@@ -1,6 +1,5 @@
 {
   "name": "ServiceGroupResource",
-  "ordinal": 160,
   "packageName": "klass.model.meta.domain",
   "owningClass": {
     "name": "ServiceGroup"

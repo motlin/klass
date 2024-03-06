@@ -1,56 +1,45 @@
 {
   "name": "PrimitiveType",
-  "ordinal": 16,
   "packageName": "klass.model.meta.domain",
   "enumerationLiterals": [
     {
       "name": "INTEGER",
-      "ordinal": 1,
       "prettyName": "Integer"
     },
     {
       "name": "LONG",
-      "ordinal": 2,
       "prettyName": "Long"
     },
     {
       "name": "DOUBLE",
-      "ordinal": 3,
       "prettyName": "Double"
     },
     {
       "name": "FLOAT",
-      "ordinal": 4,
       "prettyName": "Float"
     },
     {
       "name": "BOOLEAN",
-      "ordinal": 5,
       "prettyName": "Boolean"
     },
     {
       "name": "STRING",
-      "ordinal": 6,
       "prettyName": "String"
     },
     {
       "name": "INSTANT",
-      "ordinal": 7,
       "prettyName": "Instant"
     },
     {
       "name": "LOCAL_DATE",
-      "ordinal": 8,
       "prettyName": "LocalDate"
     },
     {
       "name": "TEMPORAL_INSTANT",
-      "ordinal": 9,
       "prettyName": "TemporalInstant"
     },
     {
       "name": "TEMPORAL_RANGE",
-      "ordinal": 10,
       "prettyName": "TemporalRange"
     }
   ]
