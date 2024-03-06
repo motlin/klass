@@ -13,6 +13,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
@@ -219,12 +220,9 @@ public class RequiredPropertiesValidator
             @Nonnull DataTypeProperty dataTypeProperty,
             @Nonnull DataTypeProperty keyProperty)
     {
-        boolean result = dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
-        if (result)
-        {
-            throw new AssertionError("TODO: Is this dead? If so, it's probably because getKeysMatchingThisForeignKey should be getForeignKeysMatchingThisKey.");
-        }
-        return result;
+        return dataTypeProperty
+                .getForeignKeysMatchingThisKey()
+                .containsValue(Lists.immutable.with(keyProperty));
     }
 
     private void handleWarnIfPresent(@Nonnull DataTypeProperty property, String propertyKind)
