@@ -46,4 +46,10 @@ public interface EnumerationProperty extends DataTypeProperty
     {
         return false;
     }
+
+    @Override
+    default boolean isVersion()
+    {
+        return false;
+    }
 }

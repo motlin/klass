@@ -31,4 +31,9 @@ public interface PropertyModifier extends NamedElement
     {
         return AUDIT_PROPERTY_NAMES.contains(this.getName());
     }
+
+    default boolean isVersion()
+    {
+        return this.getName().equals("version");
+    }
 }

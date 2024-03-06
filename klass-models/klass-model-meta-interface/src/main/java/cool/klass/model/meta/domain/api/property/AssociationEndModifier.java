@@ -5,4 +5,9 @@ import cool.klass.model.meta.domain.api.NamedElement;
 public interface AssociationEndModifier extends NamedElement
 {
     AssociationEnd getAssociationEnd();
+
+    default boolean isVersion()
+    {
+        return this.getName().equals("version");
+    }
 }

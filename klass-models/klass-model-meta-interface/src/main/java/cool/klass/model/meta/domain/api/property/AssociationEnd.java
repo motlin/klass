@@ -18,6 +18,11 @@ public interface AssociationEnd extends ReferenceProperty
 
     boolean isOwned();
 
+    default boolean isVersion()
+    {
+        return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isVersion);
+    }
+
     @Nonnull
     default AssociationEnd getOpposite()
     {

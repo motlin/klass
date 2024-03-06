@@ -43,4 +43,6 @@ public interface DataTypeProperty extends Property
     boolean isTemporal();
 
     boolean isForeignKey();
+
+    boolean isVersion();
 }

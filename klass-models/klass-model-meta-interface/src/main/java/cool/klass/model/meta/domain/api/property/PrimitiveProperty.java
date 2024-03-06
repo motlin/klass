@@ -40,6 +40,12 @@ public interface PrimitiveProperty extends DataTypeProperty
     }
 
     @Override
+    default boolean isVersion()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isVersion);
+    }
+
+    @Override
     default boolean isID()
     {
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isID);
