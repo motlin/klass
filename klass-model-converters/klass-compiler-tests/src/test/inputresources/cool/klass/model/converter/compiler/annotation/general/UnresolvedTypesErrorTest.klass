@@ -140,7 +140,7 @@ projection ParentProjection2 on Parent
     children: ChildProjection,
 }
 
-service ClassWithUnresolved
+service ClassWithUnresolvedResource on ClassWithUnresolved
 {
     /unresolved/{unresolvedParameterDeclaration: UnresolvedEnumeration[1..1]}
         GET
@@ -158,7 +158,7 @@ service ClassWithUnresolved
         }
 }
 
-service UnresolvedClass
+service UnresolvedClassResource on UnresolvedClass
 {
     /fake
         GET

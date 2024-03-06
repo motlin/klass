@@ -8,7 +8,7 @@ association AssociationWithForwardReferences
     relationship this.enumerationProperty == ClassWithEnumerationProperty.parentKey
 }
 
-service ClassWithEnumerationProperty
+service ClassWithEnumerationPropertyResource on ClassWithEnumerationProperty
 {
     /url1/{enumerationProperty: ExampleEnumeration[1..1]}
         GET

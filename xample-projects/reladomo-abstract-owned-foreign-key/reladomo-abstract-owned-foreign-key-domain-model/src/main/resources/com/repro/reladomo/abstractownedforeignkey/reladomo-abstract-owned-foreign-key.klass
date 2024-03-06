@@ -20,7 +20,7 @@ projection UserReadProjection on User
     email    : "User email",
 }
 
-service User
+service UserResource on User
 {
     /user/{userId: String[1..1]}
         GET

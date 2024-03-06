@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
@@ -41,16 +42,17 @@ public class ServicePhase
     {
         super.enterServiceGroupDeclaration(ctx);
 
-        IdentifierContext classNameContext = ctx.classReference().identifier();
-        String            className        = classNameContext.getText();
+        IdentifierContext nameContext      = ctx.identifier();
+        String            serviceClassName = ctx.classReference().getText();
+        AntlrClass        klass            = this.compilerState.getDomainModel().getClassByName(serviceClassName);
 
         this.serviceGroup = new AntlrServiceGroup(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
                 this.compilerState.getOrdinal(ctx),
-                classNameContext,
+                nameContext,
                 this.compilerState.getCompilerWalk().getCompilationUnit(),
-                this.compilerState.getDomainModel().getClassByName(className));
+                klass);
     }
 
     @Override

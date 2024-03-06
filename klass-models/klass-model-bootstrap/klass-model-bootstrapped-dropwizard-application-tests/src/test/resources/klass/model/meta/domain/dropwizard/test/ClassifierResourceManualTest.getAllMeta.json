@@ -2018,7 +2018,27 @@
       }
     ],
     "classifierModifiers": [],
-    "dataTypeProperties": []
+    "dataTypeProperties": [
+      {
+        "__typename": "klass.model.meta.domain.PrimitiveProperty",
+        "name": "className",
+        "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null,
+        "optional": false,
+        "ordinal": 1,
+        "propertyModifiers": [
+          {
+            "keyword": "private",
+            "ordinal": 1
+          }
+        ],
+        "minLengthValidation": null,
+        "maxLengthValidation": {
+          "number": 256
+        }
+      }
+    ]
   },
   {
     "__typename": "klass.model.meta.domain.Klass",

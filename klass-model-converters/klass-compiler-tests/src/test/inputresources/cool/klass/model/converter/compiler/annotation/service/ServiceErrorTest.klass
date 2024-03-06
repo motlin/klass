@@ -21,7 +21,7 @@ projection DummyProjection on DummyClass
     id: "Dummy ID",
 }
 
-service DummyClass
+service DummyClassResource on DummyClass
 {
     /dummy/manyPathParam/{id: Long[1..*]}
         GET
@@ -64,7 +64,7 @@ projection StringKeyProjection on StringKeyClass
     key: "Key",
 }
 
-service StringKeyClass
+service StringKeyClassResource on StringKeyClass
 {
     /stringKey
         PUT

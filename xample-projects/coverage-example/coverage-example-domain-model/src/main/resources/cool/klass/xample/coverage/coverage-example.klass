@@ -20,7 +20,7 @@ projection UserReadProjection on User
     email    : "User email",
 }
 
-service User
+service UserResource on User
 {
     /user/{userId: String[1..1]}
         GET
@@ -95,7 +95,7 @@ projection PropertiesRequiredProjection on PropertiesRequired
     lastUpdatedBy       : UserProjection,
 }
 
-service PropertiesRequired
+service PropertiesRequiredResource on PropertiesRequired
 {
     /propertiesRequired/{propertiesRequiredId: Long[1..1]}
         GET
@@ -162,7 +162,7 @@ projection PropertiesOptionalProjection on PropertiesOptional
     lastUpdatedBy       : UserProjection,
 }
 
-service PropertiesOptional
+service PropertiesOptionalResource on PropertiesOptional
 {
     /propertiesOptional/{propertiesOptionalId: Long[1..1]}
         GET
@@ -257,7 +257,7 @@ projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
     },
 }
 
-service EveryTypeKeyProperty
+service EveryTypeKeyPropertyResource on EveryTypeKeyProperty
 {
     /everyTypeKeyProperty
         GET
@@ -311,7 +311,7 @@ projection FinalPropertiesProjection on FinalProperties
     data: "FinalProperties data",
 }
 
-service FinalProperties
+service FinalPropertiesResource on FinalProperties
 {
     /finalProperties/{id: Long[1..1]}
         GET

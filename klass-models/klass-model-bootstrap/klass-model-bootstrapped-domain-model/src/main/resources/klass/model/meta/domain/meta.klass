@@ -727,14 +727,15 @@ association ProjectionProjectionReferenceHasProjection
 class ServiceGroup
     implements PackageableElement
 {
+    className                     : String private maximumLength(256);
 }
 
 association ServiceGroupHasClass
 {
-    serviceGroup                  : ServiceGroup[0..1];
+    serviceGroups                 : ServiceGroup[0..*];
     owningClass                   : Klass[1..1];
 
-    relationship this.name == Klass.name
+    relationship this.className == Klass.name
 }
 
 class Url
@@ -779,7 +780,7 @@ association ServiceGroupHasUrls
     serviceGroup                  : ServiceGroup[1..1];
     urls                          : Url[1..*] owned;
 
-    relationship this.name == Url.className
+    relationship this.className == Url.className
 }
 
 enumeration ServiceMultiplicity
@@ -907,7 +908,7 @@ projection EnumerationSummaryProjection on Enumeration
     },
 }
 
-service Enumeration
+service EnumerationResource on Enumeration
 {
     /meta/enumeration/{enumerationName: String[1..1]}
         GET
@@ -974,7 +975,7 @@ projection InterfaceSummaryProjection on Interface
     dataTypeProperties: DataTypePropertyProjection,
 }
 
-service Interface
+service InterfaceResource on Interface
 {
     /meta/interface/{interfaceName: String[1..1]}
         GET
@@ -1104,7 +1105,7 @@ projection ClassSummaryProjection on Klass
     dataTypeProperties: DataTypePropertyProjection,
 }
 
-service Klass
+service KlassResource on Klass
 {
     /meta/class/{className: String[1..1]}
         GET
@@ -1154,7 +1155,7 @@ projection ClassifierSummaryProjection on Classifier
     dataTypeProperties: DataTypePropertyProjection,
 }
 
-service Classifier
+service ClassifierResource on Classifier
 {
     /meta/classifier/{classifierName: String[1..1]}
         GET
@@ -1382,7 +1383,7 @@ projection AssociationSummaryProjection on Association
     criteria               : CriteriaSummaryProjection,
 }
 
-service Association
+service AssociationResource on Association
 {
     /meta/association/{associationName: String[1..1]}
         GET
@@ -1430,7 +1431,7 @@ projection NamedProjectionProjection on NamedProjection
     rootProjection: ProjectionElementProjection,
 }
 
-service NamedProjection
+service NamedProjectionResource on NamedProjection
 {
     /meta/projection/{projectionName: String[1..1]}
         GET
@@ -1499,7 +1500,7 @@ projection ServiceGroupSummaryProjection on ServiceGroup
     },
 }
 
-service ServiceGroup
+service ServiceGroupResource on ServiceGroup
 {
     /meta/serviceGroup/{serviceGroupName: String[1..1]}
         GET

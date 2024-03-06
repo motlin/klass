@@ -1,6 +1,6 @@
 [
   {
-    "name": "Enumeration",
+    "name": "EnumerationResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -85,7 +85,7 @@
     ]
   },
   {
-    "name": "Interface",
+    "name": "InterfaceResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -170,7 +170,7 @@
     ]
   },
   {
-    "name": "Klass",
+    "name": "KlassResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -255,7 +255,7 @@
     ]
   },
   {
-    "name": "Classifier",
+    "name": "ClassifierResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -308,7 +308,7 @@
     ]
   },
   {
-    "name": "Association",
+    "name": "AssociationResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -393,7 +393,7 @@
     ]
   },
   {
-    "name": "NamedProjection",
+    "name": "NamedProjectionResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
@@ -478,7 +478,7 @@
     ]
   },
   {
-    "name": "ServiceGroup",
+    "name": "ServiceGroupResource",
     "packageName": "klass.model.meta.domain",
     "urls": [
       {

@@ -1,16 +1,16 @@
 ════════════════════════════════════════ [35mERR_FWD_REF[m ════════════════════════════════════════
-[31mError: Service group 'ClassWithEnumerationProperty' is declared on line 11 and has a forward reference to class 'ClassWithEnumerationProperty' which is declared later in the source file 'ForwardReferenceErrorTest.klass' on line 27.[m
+[31mError: Service group 'ClassWithEnumerationPropertyResource' is declared on line 11 and has a forward reference to class 'ClassWithEnumerationProperty' which is declared later in the source file 'ForwardReferenceErrorTest.klass' on line 27.[m
 
 At (ForwardReferenceErrorTest.klass:11)
 
 [39m 1║ [35mpackage [39mdummy
-[39m11║ [35mservice [39mClassWithEnumerationProperty
-[39m  ║ [31m        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m11║ [35mservice ClassWithEnumerationPropertyResource on [39mClassWithEnumerationProperty
+[39m  ║ [31m                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 [39m12║ [36m{
 [39m20║ [36m}
 [m
 [36mLocation:  [mForwardReferenceErrorTest.klass:11[m
 [36mFile:      [mForwardReferenceErrorTest.klass[m
 [36mLine:      [m11[m
-[36mCharacter: [m9
+[36mCharacter: [m49
 ═════════════════════════════════════════════════════════════════════════════════════════════

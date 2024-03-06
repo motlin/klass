@@ -14,7 +14,7 @@ projection ExampleProjection on Class1
 {
 }
 
-service Class2
+service Class2Resource on Class2
 {
     /example
         GET

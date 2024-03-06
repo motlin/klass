@@ -462,25 +462,18 @@ public class AntlrDomainModel
 
     private void reportDuplicateTopLevelNames(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
-        ImmutableList<String> topLevelNames = this.getTopLevelNames();
+        ImmutableList<String> topLevelNames = this.topLevelElements
+                .collect(AntlrTopLevelElement::getName)
+                .toImmutable();
 
         ImmutableBag<String> duplicateTopLevelNames = topLevelNames
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
 
-        this.topLevelElementsByContext
-                .toSortedListBy(AntlrTopLevelElement::getOrdinal)
+        this.topLevelElements
                 .select(topLevelElement -> duplicateTopLevelNames.contains(topLevelElement.getName()))
                 .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationHolder);
-    }
-
-    private ImmutableList<String> getTopLevelNames()
-    {
-        return this.topLevelElements
-                .reject(AntlrServiceGroup.class::isInstance)
-                .collect(AntlrTopLevelElement::getName)
-                .toImmutable();
     }
 
     private ImmutableBag<AntlrClass> getDuplicateServiceGroupClasses()

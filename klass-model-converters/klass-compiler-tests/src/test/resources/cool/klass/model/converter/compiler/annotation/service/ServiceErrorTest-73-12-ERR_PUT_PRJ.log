@@ -4,7 +4,7 @@
 At (ServiceErrorTest.klass:73)
 
 [39m 1║ [35mpackage [39mdummy
-[39m67║ [35mservice [39mStringKeyClass
+[39m67║ [35mservice StringKeyClassResource on [39mStringKeyClass
 [39m68║ [36m{
 [39m69║     [36m/[39mstringKey
 [39m70║         [32mPUT

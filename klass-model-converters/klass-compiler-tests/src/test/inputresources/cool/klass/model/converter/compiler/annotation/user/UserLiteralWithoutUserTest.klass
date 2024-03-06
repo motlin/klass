@@ -9,7 +9,7 @@ class Question
     createdById: String final;
 }
 
-service Question
+service QuestionResource on Question
 {
     /question/{id: Long[1..1]}
         DELETE

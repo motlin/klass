@@ -45,7 +45,7 @@ projection badProjection on badClass
     BadPrimitiveProperty: "Header",
 }
 
-service badClass
+service badClassResource on badClass
 {
     /bad/{BadParameter: String[1..1]}
         GET

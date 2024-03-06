@@ -1,0 +1,7 @@
+alter table SERVICE_GROUP add constraint SERVICE_GROUP_FK_OWNING_CLASS foreign key (
+    class_name
+)
+references KLASS(
+    name
+);
+

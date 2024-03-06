@@ -4,7 +4,7 @@
 At (ServiceErrorTest.klass:53)
 
 [39m 1║ [35mpackage [39mdummy
-[39m24║ [35mservice [39mDummyClass
+[39m24║ [35mservice DummyClassResource on [39mDummyClass
 [39m25║ [36m{
 [39m47║     [36m/[39mdummies
 [39m48║         [32mGET

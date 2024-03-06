@@ -712,6 +712,10 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="SERVICE_GROUP_PK" />
             </column>
 
+            <column name="CLASS_NAME" type="varchar(256)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="ORDINAL" type="int">
                 <constraints nullable="false" />
             </column>
@@ -1148,13 +1152,23 @@
         />
     </changeSet>
 
+    <changeSet author="Klass" id="initial-foreign-key-48-SERVICE_GROUP_FK_OWNING_CLASS">
+        <addForeignKeyConstraint
+                constraintName="SERVICE_GROUP_FK_OWNING_CLASS"
+                baseTableName="SERVICE_GROUP"
+                baseColumnNames="CLASS_NAME"
+                referencedTableName="KLASS"
+                referencedColumnNames="NAME"
+        />
+    </changeSet>
+
     <changeSet author="Klass" id="initial-foreign-key-49-URL_FK_SERVICE_GROUP">
         <addForeignKeyConstraint
                 constraintName="URL_FK_SERVICE_GROUP"
                 baseTableName="URL"
                 baseColumnNames="CLASS_NAME"
                 referencedTableName="SERVICE_GROUP"
-                referencedColumnNames="NAME"
+                referencedColumnNames="CLASS_NAME"
         />
     </changeSet>
 
@@ -1451,6 +1465,14 @@
                 tableName="PROJECTION_DATA_TYPE_PROPERTY">
             <column name="PROPERTY_CLASSIFIER_NAME" />
             <column name="PROPERTY_NAME" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="Klass" id="initial-indices-48-SERVICE_GROUP_IDX_OWNING_CLASS">
+        <createIndex
+                indexName="SERVICE_GROUP_IDX_OWNING_CLASS"
+                tableName="SERVICE_GROUP">
+            <column name="CLASS_NAME" />
         </createIndex>
     </changeSet>
 

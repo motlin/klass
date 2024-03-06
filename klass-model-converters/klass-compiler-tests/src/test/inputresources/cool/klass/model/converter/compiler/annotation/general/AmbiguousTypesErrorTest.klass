@@ -174,7 +174,7 @@ projection ProjectionWithGoodClass2 on GoodClass
     children: AmbiguousProjection,
 }
 
-service GoodClass
+service GoodClassResource on GoodClass
 {
     /url1/{parameterAmbiguousType: AmbiguousEnumeration[1..1]}
         GET
@@ -199,7 +199,7 @@ service GoodClass
         }
 }
 
-service AmbiguousClass
+service AmbiguousClassResource on AmbiguousClass
 {
     /fake
         GET

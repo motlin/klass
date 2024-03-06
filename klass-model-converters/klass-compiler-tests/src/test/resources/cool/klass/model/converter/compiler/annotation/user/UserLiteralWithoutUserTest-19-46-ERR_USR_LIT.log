@@ -4,7 +4,7 @@
 At (UserLiteralWithoutUserTest.klass:19)
 
 [39m 1║ [35mpackage [39mcom[36m.[39mstackoverflow
-[39m12║ [35mservice [39mQuestion
+[39m12║ [35mservice QuestionResource on [39mQuestion
 [39m13║ [36m{
 [39m14║     [36m/[39mquestion[36m/[36m{[39mid[36m: [35mLong[36m[[34m1[36m..[34m1[36m][36m}
 [39m15║         [32mDELETE

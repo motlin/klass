@@ -839,6 +839,7 @@ public class KlassBootstrapWriter
     {
         klass.model.meta.domain.ServiceGroup bootstrappedServiceGroup = new klass.model.meta.domain.ServiceGroup();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedServiceGroup, serviceGroup);
+        bootstrappedServiceGroup.setClassName(serviceGroup.getKlass().getName());
         return bootstrappedServiceGroup;
     }
 

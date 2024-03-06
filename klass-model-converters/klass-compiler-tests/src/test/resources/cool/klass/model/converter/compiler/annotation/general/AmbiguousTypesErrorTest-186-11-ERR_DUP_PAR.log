@@ -4,7 +4,7 @@
 At (AmbiguousTypesErrorTest.klass:186)
 
 [39m  1║ [35mpackage [39mdummy
-[39m177║ [35mservice [39mGoodClass
+[39m177║ [35mservice GoodClassResource on [39mGoodClass
 [39m178║ [36m{
 [39m186║     [36m/[39murl2[36m/[36m{[39mambiguousParameter[36m: [35mString[36m[[34m1[36m..[34m1[36m][36m}[36m/[36m{[39mambiguousParameter[36m: [35mString[36m[[34m1[36m..[34m1[36m][36m}
 [39m   ║ [31m           ^^^^^^^^^^^^^^^^^^

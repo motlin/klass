@@ -4,13 +4,13 @@
 At (UnresolvedTypesErrorTest.klass:161)
 
 [39m  1║ [35mpackage [39mdummy
-[39m161║ [35mservice [39mUnresolvedClass
-[39m   ║ [31m        ^^^^^^^^^^^^^^^
+[39m161║ [35mservice UnresolvedClassResource on [39mUnresolvedClass
+[39m   ║ [31m                                   ^^^^^^^^^^^^^^^
 [39m162║ [36m{
 [39m170║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:161[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
 [36mLine:      [m161[m
-[36mCharacter: [m9
+[36mCharacter: [m36
 ═════════════════════════════════════════════════════════════════════════════════════════════

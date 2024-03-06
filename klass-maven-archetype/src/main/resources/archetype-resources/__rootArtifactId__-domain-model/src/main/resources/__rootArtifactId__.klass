@@ -20,7 +20,7 @@ projection UserReadProjection on User
     email    : "User email",
 }
 
-service User
+service UserResource on User
 {
     /user/{userId: String[1..1]}
         GET
@@ -72,7 +72,7 @@ projection DeleteMeExampleTypeProjection on DeleteMeExampleType
     },
 }
 
-service DeleteMeExampleType
+service DeleteMeExampleTypeResource on DeleteMeExampleType
 {
     /deleteMeExampleType/{id: Long[1..1]}
         GET

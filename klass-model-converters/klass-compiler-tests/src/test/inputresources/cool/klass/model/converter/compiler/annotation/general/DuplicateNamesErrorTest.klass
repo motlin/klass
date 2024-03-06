@@ -50,7 +50,7 @@ projection DuplicateTopLevelElement on DuplicateTopLevelElement
     },
 }
 
-service DuplicateTopLevelElement
+service DuplicateTopLevelElementResource on DuplicateTopLevelElement
 {
     /duplicate/duplicate/{duplicate: String[1..1]}/{duplicate: String[1..1]}
         GET

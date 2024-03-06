@@ -122,7 +122,8 @@ public class AbstractApplicationGenerator
     private String getResourceImport(ServiceGroup serviceGroup)
     {
         return String.format(
-                "import %s.service.resource.%sResource;\n",
+                "import %s.service.resource.%s"
+                        + ";\n",
                 serviceGroup.getPackageName(),
                 serviceGroup.getName());
     }
@@ -130,8 +131,8 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(domainModel, dataStore, clock));\n",
-                serviceGroup.getKlass().getName());
+                "        environment.jersey().register(new %s(domainModel, dataStore, clock));\n",
+                serviceGroup.getName());
     }
 
     private void printStringToFile(@Nonnull Path path, String contents) throws FileNotFoundException

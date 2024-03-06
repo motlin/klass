@@ -62,6 +62,6 @@ public class MetaResourceManualTest
     @Test
     public void metaServiceGroup()
     {
-        this.assertUrlReturns("metaServiceGroup", "/meta/serviceGroup/ServiceGroup");
+        this.assertUrlReturns("metaServiceGroup", "/meta/serviceGroup/ServiceGroupResource");
     }
 }

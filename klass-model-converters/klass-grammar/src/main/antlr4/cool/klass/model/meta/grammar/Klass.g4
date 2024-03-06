@@ -70,7 +70,7 @@ projectionParameterizedProperty: (classifierReference '.')? identifier argumentL
 header: StringLiteral;
 
 // service
-serviceGroupDeclaration: 'service' classReference serviceGroupDeclarationBody;
+serviceGroupDeclaration: 'service' identifier 'on' classReference serviceGroupDeclarationBody;
 serviceGroupDeclarationBody : '{' urlDeclaration* '}' ;
 // url
 urlDeclaration: url serviceDeclaration+;

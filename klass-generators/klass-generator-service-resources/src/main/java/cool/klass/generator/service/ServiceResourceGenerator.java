@@ -102,8 +102,8 @@ public class ServiceResourceGenerator
     public String getServiceGroupSourceCode(@Nonnull ServiceGroup serviceGroup)
     {
         Klass  klass               = serviceGroup.getKlass();
-        String packageName         = klass.getPackageName() + ".service.resource";
-        String serviceResourceName = klass.getName() + "Resource";
+        String packageName         = serviceGroup.getPackageName() + ".service.resource";
+        String serviceResourceName = serviceGroup.getName();
 
         String serviceMethodsSourceCode = serviceGroup
                 .getUrls()

@@ -47,7 +47,7 @@ public final class KlassServiceSourceCodeGenerator
         ListIterable<String> criteria      = getCriteria(klass);
 
         return ""
-                + "service " + className + "\n"
+                + "service " + className + "Resource on " + className + "\n"
                 + "{\n"
                 + "    /" + lowercaseName + urlPaths.makeString("") + "\n"
                 + "        GET\n"

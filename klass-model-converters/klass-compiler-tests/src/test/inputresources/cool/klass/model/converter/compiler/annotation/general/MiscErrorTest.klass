@@ -89,7 +89,7 @@ projection ProjectionWithInvalidParameterType(invalidParameter: Integer[1..1]) o
     },
 }
 
-service ExampleClass
+service ExampleClassResource on ExampleClass
 {
     /example/{invalidParameter: Boolean[1..1]}
         GET
@@ -138,7 +138,7 @@ projection EmptyProjection on ExampleClass
 {
 }
 
-service ExampleClass
+service ExampleClassResource on ExampleClass
 {
     // empty
 }

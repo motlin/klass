@@ -35,7 +35,7 @@ public class AntlrProjection
             AMBIGUOUS_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.AMBIGUOUS,
             AntlrClassifier.AMBIGUOUS,
-            null)
+            "ambiguous")
     {
         @Override
         public String toString()
@@ -53,7 +53,7 @@ public class AntlrProjection
             NOT_FOUND_IDENTIFIER_CONTEXT,
             AntlrCompilationUnit.NOT_FOUND,
             AntlrClassifier.NOT_FOUND,
-            null)
+            "not found")
     {
         @Override
         public String toString()
@@ -80,7 +80,7 @@ public class AntlrProjection
     {
         super(elementContext, compilationUnit, ordinal, nameContext, classifier);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
-        this.packageName          = packageName;
+        this.packageName          = Objects.requireNonNull(packageName);
     }
 
     @Nonnull

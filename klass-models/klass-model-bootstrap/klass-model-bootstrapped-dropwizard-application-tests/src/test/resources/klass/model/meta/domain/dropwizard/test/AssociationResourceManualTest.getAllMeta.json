@@ -2414,8 +2414,8 @@
     "name": "ServiceGroupHasClass",
     "associationEnds": [
       {
-        "name": "serviceGroup",
-        "multiplicity": "0..1",
+        "name": "serviceGroups",
+        "multiplicity": "0..*",
         "resultType": {
           "name": "ServiceGroup"
         },
@@ -2442,7 +2442,7 @@
         },
         "associationEnds": [],
         "dataTypeProperty": {
-          "name": "name"
+          "name": "className"
         }
       },
       "targetExpressionValue": {
@@ -2621,7 +2621,7 @@
         },
         "associationEnds": [],
         "dataTypeProperty": {
-          "name": "name"
+          "name": "className"
         }
       },
       "targetExpressionValue": {
