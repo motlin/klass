@@ -821,7 +821,7 @@ class Service
 association UrlHasServices
 {
     url: Url[1..1];
-    services                      : Service[1..*];
+    services                      : Service[1..*] owned;
 
     relationship this.className == Service.className
             && this.url == Service.urlString
