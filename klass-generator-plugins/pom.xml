@@ -42,6 +42,7 @@
         <module>klass-generator-graphql-schema-plugin</module>
         <module>klass-generator-graphql-schema-query-plugin</module>
         <module>klass-generator-json-view-plugin</module>
+        <module>klass-generator-klass-html-plugin</module>
         <module>klass-generator-klass-projection-plugin</module>
         <module>klass-generator-klass-service-plugin</module>
         <module>klass-generator-klass-with-inference-plugin</module>

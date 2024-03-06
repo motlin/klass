@@ -4,22 +4,24 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.source.SourceCode;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class AbstractCompilationResult
+public abstract class AbstractCompilationResult
         implements CompilationResult
 {
     @Nonnull
-    private final ImmutableList<CompilationUnit> compilationUnits;
+    private final ImmutableList<SourceCode> sourceCodes;
 
-    public AbstractCompilationResult(@Nonnull ImmutableList<CompilationUnit> compilationUnits)
+    protected AbstractCompilationResult(@Nonnull ImmutableList<SourceCode> sourceCodes)
     {
-        this.compilationUnits = Objects.requireNonNull(compilationUnits);
+        this.sourceCodes = Objects.requireNonNull(sourceCodes);
     }
 
     @Override
-    public ImmutableList<CompilationUnit> getCompilationUnits()
+    @Nonnull
+    public ImmutableList<SourceCode> getSourceCodes()
     {
-        return this.compilationUnits;
+        return this.sourceCodes;
     }
 }

@@ -308,4 +308,9 @@ public class AntlrAssociation
         // Error covered elsewhere: 1-to-1 symmetrical association
         return null;
     }
+
+    public boolean isManyToMany()
+    {
+        return this.getSourceEnd().isToMany() && this.getTargetEnd().isToMany();
+    }
 }

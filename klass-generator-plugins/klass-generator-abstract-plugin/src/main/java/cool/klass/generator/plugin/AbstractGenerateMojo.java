@@ -43,6 +43,34 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
     @Nonnull
     protected DomainModel getDomainModel() throws MojoExecutionException
     {
+        CompilationResult compilationResult = this.getCompilationResult();
+
+        this.handleErrorsCompilationResult(compilationResult);
+
+        if (compilationResult instanceof DomainModelCompilationResult)
+        {
+            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
+        }
+
+        throw new AssertionError(compilationResult.getClass().getSimpleName());
+    }
+
+    protected void handleErrorsCompilationResult(CompilationResult compilationResult) throws MojoExecutionException
+    {
+        if (compilationResult instanceof ErrorsCompilationResult)
+        {
+            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
+            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
+            for (RootCompilerError compilerError : compilerErrors)
+            {
+                this.getLog().warn(compilerError.toString());
+            }
+            throw new MojoExecutionException("There were compiler errors.");
+        }
+    }
+
+    protected CompilationResult getCompilationResult() throws MojoExecutionException
+    {
         if (this.klassSourcePackages.isEmpty())
         {
             String message = ""
@@ -72,27 +100,9 @@ public abstract class AbstractGenerateMojo extends AbstractMojo
         MutableList<CompilationUnit> compilationUnits = Lists.mutable.withAll(klassLocations)
                 .collectWith(CompilationUnit::createFromClasspathLocation, classLoader);
 
-        CompilerState     compilerState     = new CompilerState(compilationUnits);
-        KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
-        CompilationResult compilationResult = klassCompiler.compile();
-
-        if (compilationResult instanceof ErrorsCompilationResult)
-        {
-            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
-            for (RootCompilerError compilerError : compilerErrors)
-            {
-                this.getLog().warn(compilerError.toString());
-            }
-            throw new MojoExecutionException("There were compiler errors.");
-        }
-
-        if (compilationResult instanceof DomainModelCompilationResult)
-        {
-            return ((DomainModelCompilationResult) compilationResult).getDomainModel();
-        }
-
-        throw new AssertionError(compilationResult.getClass().getSimpleName());
+        CompilerState compilerState = new CompilerState(compilationUnits);
+        KlassCompiler klassCompiler = new KlassCompiler(compilerState);
+        return klassCompiler.compile();
     }
 
     @Nonnull

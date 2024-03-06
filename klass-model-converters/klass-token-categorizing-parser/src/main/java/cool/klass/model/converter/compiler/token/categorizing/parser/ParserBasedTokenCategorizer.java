@@ -16,7 +16,11 @@ import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassOrUserContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
+import cool.klass.model.meta.grammar.KlassParser.CriteriaNativeContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationParameterDeclarationContext;
@@ -32,6 +36,7 @@ import cool.klass.model.meta.grammar.KlassParser.InvalidParameterDeclarationCont
 import cool.klass.model.meta.grammar.KlassParser.MemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.NativeLiteralContext;
+import cool.klass.model.meta.grammar.KlassParser.NullLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
@@ -295,6 +300,14 @@ public class ParserBasedTokenCategorizer
     }
 
     @Override
+    public void enterDataTypePropertyValidation(DataTypePropertyValidationContext ctx)
+    {
+        this.put(
+                ctx.getStart(),
+                TokenCategory.VALIDATION_MODIFIER);
+    }
+
+    @Override
     public void enterPrimitiveProperty(PrimitivePropertyContext ctx)
     {
         this.put(
@@ -505,6 +518,14 @@ public class ParserBasedTokenCategorizer
     }
 
     @Override
+    public void enterNullLiteral(NullLiteralContext ctx)
+    {
+        this.put(
+                ctx.getStart(),
+                TokenCategory.KEYWORD);
+    }
+
+    @Override
     public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
         this.put(
@@ -534,6 +555,30 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.getStart(),
                 TokenCategory.KEYWORD_SERVICE_CRITERIA);
+    }
+
+    @Override
+    public void enterCriteriaEdgePoint(CriteriaEdgePointContext ctx)
+    {
+        this.put(
+                ctx.KEYWORD_EQUALS_EDGE_POINT().getSymbol(),
+                TokenCategory.KEYWORD);
+    }
+
+    @Override
+    public void enterCriteriaNative(CriteriaNativeContext ctx)
+    {
+        this.put(
+                ctx.KEYWORD_NATIVE().getSymbol(),
+                TokenCategory.KEYWORD);
+    }
+
+    @Override
+    public void enterCriteriaAll(CriteriaAllContext ctx)
+    {
+        this.put(
+                ctx.KEYWORD_ALL().getSymbol(),
+                TokenCategory.KEYWORD);
     }
 
     @Override

@@ -14,7 +14,8 @@ import cool.klass.model.meta.grammar.KlassVisitor;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.collections.api.list.MutableList;
 
-public class RelationshipPhase extends AbstractCompilerPhase
+public class RelationshipPhase
+        extends AbstractCompilerPhase
 {
     public RelationshipPhase(@Nonnull CompilerState compilerState)
     {
@@ -38,6 +39,11 @@ public class RelationshipPhase extends AbstractCompilerPhase
 
         MutableList<AntlrAssociationEnd> associationEndStates = associationState.getAssociationEndStates();
         if (associationEndStates.size() != 2)
+        {
+            return;
+        }
+
+        if (associationState.isManyToMany())
         {
             return;
         }

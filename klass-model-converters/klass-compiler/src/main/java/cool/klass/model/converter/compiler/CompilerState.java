@@ -12,6 +12,8 @@ import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.meta.domain.DomainModelImpl.DomainModelBuilder;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.SourceCode;
+import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassListener;
 import cool.klass.model.meta.grammar.KlassParser;
@@ -136,13 +138,17 @@ public class CompilerState
     @Nonnull
     public CompilationResult getCompilationResult()
     {
-        ImmutableList<CompilationUnit> compilationUnits = this.compilerInputState.getCompilationUnits().toImmutable();
+        ImmutableList<SourceCodeBuilder> sourceCodeBuilders = this.compilerInputState
+                .getCompilationUnits()
+                .collect(CompilationUnit::build)
+                .toImmutable();
+        ImmutableList<SourceCode>        sourceCodes    = sourceCodeBuilders.collect(SourceCodeBuilder::build);
         ImmutableList<RootCompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
         if (compilerErrors.notEmpty())
         {
-            return new ErrorsCompilationResult(compilationUnits, compilerErrors);
+            return new ErrorsCompilationResult(sourceCodes, compilerErrors);
         }
-        return new DomainModelCompilationResult(compilationUnits, this.buildDomainModel());
+        return new DomainModelCompilationResult(sourceCodes, this.buildDomainModel());
     }
 
     @Nonnull
@@ -223,14 +229,16 @@ public class CompilerState
         return new ListenerView();
     }
 
-    public class ListenerView extends KlassBaseListener
+    public class ListenerView
+            extends KlassBaseListener
     {
         @Override
         public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
             super.enterCompilationUnit(ctx);
 
-            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(ctx);
+            CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(
+                    ctx);
             CompilerState.this.compilerWalkState.enterCompilationUnit(currentCompilationUnit);
         }
 

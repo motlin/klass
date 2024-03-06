@@ -10,39 +10,48 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrElement;
-import cool.klass.model.meta.domain.MacroSourceCode.MacroSourceCodeBuilder;
-import cool.klass.model.meta.domain.RootSourceCode.RootSourceCodeBuilder;
+import cool.klass.model.converter.compiler.token.categories.TokenCategory;
+import cool.klass.model.converter.compiler.token.categorizing.lexer.LexerBasedTokenCategorizer;
+import cool.klass.model.converter.compiler.token.categorizing.parser.ParserBasedTokenCategorizer;
+import cool.klass.model.meta.domain.SourceCodeImpl.SourceCodeBuilderImpl;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.grammar.KlassLexer;
 import cool.klass.model.meta.grammar.KlassParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.block.function.Function;
+import org.eclipse.collections.api.map.MapIterable;
 
 public final class CompilationUnit
 {
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
     @Nonnull
-    private final Optional<AntlrElement> macroElement;
+    private final Optional<AntlrElement>            macroElement;
     @Nonnull
-    private final String                 sourceName;
+    private final String                            sourceName;
     @Nonnull
-    private final String                 sourceCodeText;
+    private final String                            sourceCodeText;
     @Nonnull
-    private final String[]               lines;
+    private final String[]                          lines;
     @Nonnull
-    private final CharStream             charStream;
+    private final CharStream                        charStream;
     @Nonnull
-    private final TokenStream            tokenStream;
+    private final BufferedTokenStream               tokenStream;
     @Nonnull
-    private final ParserRuleContext      parserContext;
-    private       SourceCodeBuilder      sourceCodeBuilder;
+    private final ParserRuleContext                 parserContext;
+    @Nonnull
+    private final MapIterable<Token, TokenCategory> tokenCategoriesFromLexer;
+    @Nonnull
+    private final MapIterable<Token, TokenCategory> tokenCategoriesFromParser;
+
+    private SourceCodeBuilder sourceCodeBuilder;
 
     private CompilationUnit(
             @Nonnull Optional<AntlrElement> macroElement,
@@ -50,7 +59,7 @@ public final class CompilationUnit
             @Nonnull String sourceCodeText,
             @Nonnull String[] lines,
             @Nonnull CharStream charStream,
-            @Nonnull TokenStream tokenStream,
+            @Nonnull BufferedTokenStream tokenStream,
             @Nonnull ParserRuleContext parserRuleContext)
     {
         this.macroElement   = Objects.requireNonNull(macroElement);
@@ -65,6 +74,9 @@ public final class CompilationUnit
         {
             throw new AssertionError(sourceName);
         }
+
+        this.tokenCategoriesFromLexer  = LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(tokenStream);
+        this.tokenCategoriesFromParser = ParserBasedTokenCategorizer.findTokenCategoriesFromParser(this.parserContext);
     }
 
     @Nonnull
@@ -190,7 +202,7 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    public TokenStream getTokenStream()
+    public BufferedTokenStream getTokenStream()
     {
         return this.tokenStream;
     }
@@ -204,27 +216,24 @@ public final class CompilationUnit
     {
         if (this.sourceCodeBuilder == null)
         {
-            this.sourceCodeBuilder = this.macroElement
+            Optional<SourceCodeBuilder> macroSourceCodeBuilder = this.macroElement
                     .flatMap(AntlrElement::getCompilationUnit)
-                    .map(CompilationUnit::build)
-                    .<SourceCodeBuilder>map(this::getMacroSourceCodeBuilder)
-                    .orElseGet(this::getRootSourceCodeBuilder);
+                    .map(CompilationUnit::build);
+
+            this.sourceCodeBuilder = getSourceCodeBuilder(macroSourceCodeBuilder);
         }
         return this.sourceCodeBuilder;
     }
 
-    private MacroSourceCodeBuilder getMacroSourceCodeBuilder(SourceCodeBuilder macroSourceCodeBuilder)
+    private SourceCodeBuilder getSourceCodeBuilder(Optional<SourceCodeBuilder> macroSourceCodeBuilder)
     {
-        return new MacroSourceCodeBuilder(
+        return new SourceCodeBuilderImpl(
                 this.sourceName,
                 this.sourceCodeText,
                 this.tokenStream,
                 this.parserContext,
-                macroSourceCodeBuilder);
-    }
-
-    private RootSourceCodeBuilder getRootSourceCodeBuilder()
-    {
-        return new RootSourceCodeBuilder(this.sourceName, this.sourceCodeText, this.tokenStream, this.parserContext);
+                macroSourceCodeBuilder,
+                this.tokenCategoriesFromLexer,
+                this.tokenCategoriesFromParser);
     }
 }

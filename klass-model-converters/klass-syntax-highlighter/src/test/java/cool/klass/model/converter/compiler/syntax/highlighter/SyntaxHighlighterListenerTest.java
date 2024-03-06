@@ -44,6 +44,7 @@ public class SyntaxHighlighterListenerTest
         CodePointCharStream charStream     = CharStreams.fromString(sourceCodeText, sourceName);
         KlassLexer          lexer          = new KlassLexer(charStream);
         CommonTokenStream   tokenStream    = new CommonTokenStream(lexer);
+
         MapIterable<Token, TokenCategory> tokenCategoriesFromLexer =
                 LexerBasedTokenCategorizer.findTokenCategoriesFromLexer(tokenStream);
 

@@ -243,33 +243,35 @@ literal
 	|	nullLiteral
 	;
 
-integerLiteral: IntegerLiteral;
-floatingPointLiteral: FloatingPointLiteral;
-booleanLiteral: BooleanLiteral;
-characterLiteral: CharacterLiteral;
-stringLiteral: StringLiteral;
-nullLiteral: LITERAL_NULL;
+integerLiteral       : IntegerLiteral;
+floatingPointLiteral : FloatingPointLiteral;
+booleanLiteral       : BooleanLiteral;
+characterLiteral     : CharacterLiteral;
+stringLiteral        : StringLiteral;
+nullLiteral          : LITERAL_NULL;
 
 // Lexer rules
-KEYWORD_PACKAGE      : 'package';
-KEYWORD_ENUMERATION  : 'enumeration';
-KEYWORD_INTERFACE    : 'interface';
-KEYWORD_CLASS        : 'class';
-KEYWORD_ASSOCIATION  : 'association';
-KEYWORD_PROJECTION   : 'projection';
-KEYWORD_SERVICE      : 'service';
-KEYWORD_USER         : 'user';
-KEYWORD_NATIVE       : 'native';
-KEYWORD_RELATIONSHIP : 'relationship';
-KEYWORD_MULTIPLICITY : 'multiplicity';
-KEYWORD_ORDER_BY     : 'orderBy';
-KEYWORD_ASCENDING    : 'ascending';
-KEYWORD_DESCENDING   : 'descending';
-KEYWORD_CRITERIA     : 'criteria';
-KEYWORD_ON           : 'on';
-KEYWORD_ABSTRACT     : 'abstract';
-KEYWORD_EXTENDS      : 'extends';
-KEYWORD_IMPLEMENTS   : 'implements';
+KEYWORD_PACKAGE           : 'package';
+KEYWORD_ENUMERATION       : 'enumeration';
+KEYWORD_INTERFACE         : 'interface';
+KEYWORD_CLASS             : 'class';
+KEYWORD_ASSOCIATION       : 'association';
+KEYWORD_PROJECTION        : 'projection';
+KEYWORD_SERVICE           : 'service';
+KEYWORD_USER              : 'user';
+KEYWORD_NATIVE            : 'native';
+KEYWORD_RELATIONSHIP      : 'relationship';
+KEYWORD_MULTIPLICITY      : 'multiplicity';
+KEYWORD_ORDER_BY          : 'orderBy';
+KEYWORD_ASCENDING         : 'ascending';
+KEYWORD_DESCENDING        : 'descending';
+KEYWORD_CRITERIA          : 'criteria';
+KEYWORD_ON                : 'on';
+KEYWORD_ABSTRACT          : 'abstract';
+KEYWORD_EXTENDS           : 'extends';
+KEYWORD_IMPLEMENTS        : 'implements';
+KEYWORD_ALL               : 'all';
+KEYWORD_EQUALS_EDGE_POINT : 'equalsEdgePoint';
 
 KEYWORD_TABLE_PER_SUBCLASS       : 'table-per-subclass';
 KEYWORD_TABLE_FOR_ALL_SUBCLASSES : 'table-for-all-subclasses';
