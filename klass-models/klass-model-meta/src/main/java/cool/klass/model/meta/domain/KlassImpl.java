@@ -17,16 +17,18 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 
 public final class KlassImpl
         extends AbstractClassifier
         implements KlassWithSourceCode
 {
     private final InheritanceType inheritanceType;
-    private final boolean         isUser;
-    private final boolean         isTransient;
+    private final boolean isUser;
+    private final boolean isTransient;
 
-    private ImmutableList<AssociationEnd> associationEnds;
+    private ImmutableList<AssociationEnd>        associationEnds;
+    private ImmutableMap<String, AssociationEnd> associationEndsByName;
 
     @Nonnull
     private Optional<AssociationEnd> versionProperty   = Optional.empty();
@@ -119,6 +121,13 @@ public final class KlassImpl
             throw new IllegalStateException();
         }
         this.associationEnds = Objects.requireNonNull(associationEnds);
+        this.associationEndsByName = this.associationEnds.groupByUniqueKey(AssociationEnd::getName);
+    }
+
+    @Override
+    public Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName)
+    {
+        return Optional.ofNullable(this.associationEndsByName.get(associationEndName));
     }
 
     @Override

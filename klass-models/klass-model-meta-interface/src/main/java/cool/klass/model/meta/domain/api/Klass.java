@@ -72,6 +72,8 @@ public interface Klass
 
     ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
 
+    Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName);
+
     default ImmutableList<AssociationEnd> getAssociationEnds()
     {
         ImmutableList<AssociationEnd> inheritedAssociationEnds = this.getSuperClass()
@@ -277,11 +279,5 @@ public interface Klass
         return this.getDataTypeProperties()
                 .select(DataTypeProperty::isSystem)
                 .detectOptional(DataTypeProperty::isTo);
-    }
-
-    default Optional<AssociationEnd> getDeclaredAssociationEndByName(String associationEndName)
-    {
-        return this.getDeclaredAssociationEnds()
-                .detectOptional(each -> each.getName().equals(associationEndName));
     }
 }
