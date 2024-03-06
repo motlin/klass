@@ -3,74 +3,74 @@ fragment ServiceGroupFragment on ServiceGroup {
     ordinal
     packageName
     owningClass {
-        name
+      name
     }
     urls {
-        ...UrlFragment
+      ...UrlFragment
     }
 }
 
 fragment UrlFragment on Url {
-    url
-    parameters {
-        ...UrlParameterFragment
-    }
-    services {
-        ...ServiceFragment
-    }
+  url
+  parameters {
+    ...UrlParameterFragment
+  }
+  services {
+    ...ServiceFragment
+  }
 }
 
 fragment UrlParameterFragment on UrlParameter {
-    type
-    parameter {
-        ...ParameterFragment
-    }
+  type
+  parameter {
+    ...ParameterFragment
+  }
 }
 
 fragment ParameterFragment on Parameter {
-    __typename
-    id
-    ordinal
-    name
-    multiplicity
-    ... on EnumerationParameter {
-        enumeration {
-            name
-        }
+  __typename
+  id
+  ordinal
+  name
+  multiplicity
+  ... on EnumerationParameter {
+    enumeration {
+      name
     }
-    ... on PrimitiveParameter {
-        primitiveType
-    }
+  }
+  ... on PrimitiveParameter {
+    primitiveType
+  }
 }
 
 fragment ServiceFragment on Service {
-    verb
-    serviceMultiplicity
-    projection {
-        name
-    }
-    queryCriteria {
-        id
-    }
-    authorizeCriteria {
-        id
-    }
-    validateCriteria {
-        id
-    }
-    conflictCriteria {
-        id
-    }
-    orderBys {
-        ...ServiceOrderByFragment
-    }
+  verb
+  serviceMultiplicity
+  projection {
+    name
+  }
+  queryCriteria {
+    id
+  }
+  authorizeCriteria {
+    id
+  }
+  validateCriteria {
+    id
+  }
+  conflictCriteria {
+    id
+  }
+  orderBys {
+    ...ServiceOrderByFragment
+  }
 }
 
 fragment ServiceOrderByFragment on ServiceOrderBy {
-    orderByDirection
-    thisMemberReferencePath {
-        id
-    }
+  orderByDirection
+  thisMemberReferencePath {
+    id
+  }
 }
 
 query {
