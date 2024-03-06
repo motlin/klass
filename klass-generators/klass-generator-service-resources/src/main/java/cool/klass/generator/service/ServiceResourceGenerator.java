@@ -16,10 +16,7 @@ import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.DomainModel;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.criteria.Criteria;
-import cool.klass.model.meta.domain.projection.BaseProjectionListener;
 import cool.klass.model.meta.domain.projection.Projection;
-import cool.klass.model.meta.domain.projection.ProjectionAssociationEnd;
-import cool.klass.model.meta.domain.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.projection.ProjectionWalker;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
@@ -32,10 +29,6 @@ import cool.klass.model.meta.domain.service.url.UrlPathParameter;
 import cool.klass.model.meta.domain.service.url.UrlPathSegment;
 import cool.klass.model.meta.domain.service.url.UrlQueryParameter;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.stack.MutableStack;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.Stacks;
 
 public class ServiceResourceGenerator
 {
@@ -420,43 +413,5 @@ public class ServiceResourceGenerator
             return "QueryParam";
         }
         throw new AssertionError();
-    }
-
-    private static final class DeepFetchProjectionListener extends BaseProjectionListener
-    {
-        private final MutableStack<String> stack  = Stacks.mutable.empty();
-        private final MutableList<String>  result = Lists.mutable.empty();
-
-        @Override
-        public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
-        {
-            this.stack.push(projectionAssociationEnd.getAssociationEnd().getName());
-        }
-
-        @Override
-        public void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
-        {
-            this.stack.pop();
-        }
-
-        @Override
-        public void exitProjectionDataTypeProperty(ProjectionDataTypeProperty projectionDataTypeProperty)
-        {
-            if (this.stack.isEmpty())
-            {
-                return;
-            }
-            String string = this.stack
-                    .toList()
-                    .asReversed()
-                    .collect(each -> each + "()")
-                    .makeString(".");
-            this.result.add(string);
-        }
-
-        public ImmutableList<String> getResult()
-        {
-            return this.result.distinct().toImmutable();
-        }
     }
 }
