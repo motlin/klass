@@ -68,6 +68,28 @@ public abstract class PersistentSynchronizer
         });
     }
 
+    // TODO: Get rid of this
+    public void synchronizeWithoutStartingTransaction(
+            @Nonnull Klass klass,
+            Object persistentInstance,
+            @Nonnull ObjectNode incomingJson)
+    {
+        if (this.inTransaction)
+        {
+            throw new AssertionError();
+        }
+
+        this.inTransaction = true;
+        try
+        {
+            this.synchronizeInTransaction(klass, Optional.empty(), persistentInstance, incomingJson);
+        }
+        finally
+        {
+            this.inTransaction = false;
+        };
+    }
+
     protected void synchronizeInTransaction(
             @Nonnull Klass klass,
             @Nonnull Optional<AssociationEnd> pathHere,
