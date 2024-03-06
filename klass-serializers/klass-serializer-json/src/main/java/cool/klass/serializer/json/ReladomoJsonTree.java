@@ -1,9 +1,6 @@
 package cool.klass.serializer.json;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -14,10 +11,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.gs.fw.common.mithra.MithraList;
 import com.gs.fw.common.mithra.MithraObject;
-import com.gs.fw.common.mithra.attribute.Attribute;
-import com.gs.fw.common.mithra.attribute.TimestampAttribute;
 import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
+import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.Multiplicity;
@@ -29,20 +25,20 @@ import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+// TODO: Refactor this to use DataStore
 public class ReladomoJsonTree implements JsonSerializable
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoJsonTree.class);
-
+    private final DataStore                        dataStore;
     private final MithraObject                     mithraObject;
     private final ImmutableList<ProjectionElement> projectionElements;
 
     public ReladomoJsonTree(
+            DataStore dataStore,
             MithraObject mithraObject,
             @Nonnull ImmutableList<ProjectionElement> projectionElements)
     {
+        this.dataStore = dataStore;
         this.mithraObject = Objects.requireNonNull(mithraObject);
         this.projectionElements = Objects.requireNonNull(projectionElements);
         if (projectionElements.isEmpty())
@@ -51,7 +47,7 @@ public class ReladomoJsonTree implements JsonSerializable
         }
     }
 
-    public static void serialize(
+    public void serialize(
             JsonGenerator jsonGenerator,
             MithraObject mithraObject,
             @Nonnull ImmutableList<ProjectionElement> projectionElements) throws IOException
@@ -66,15 +62,14 @@ public class ReladomoJsonTree implements JsonSerializable
             {
                 if (projectionElement instanceof ProjectionDataTypeProperty)
                 {
-                    handleProjectionPrimitiveMember(
+                    this.handleProjectionPrimitiveMember(
                             jsonGenerator,
                             mithraObject,
-                            finder,
                             (ProjectionDataTypeProperty) projectionElement);
                 }
                 else if (projectionElement instanceof ProjectionAssociationEnd)
                 {
-                    handleProjectionAssociationEnd(
+                    this.handleProjectionAssociationEnd(
                             jsonGenerator,
                             mithraObject,
                             finder,
@@ -86,28 +81,22 @@ public class ReladomoJsonTree implements JsonSerializable
                 }
             }
         }
-        catch (RuntimeException e)
-        {
-            LOGGER.info("", e);
-            throw e;
-        }
         finally
         {
             jsonGenerator.writeEndObject();
         }
     }
 
-    public static void handleProjectionPrimitiveMember(
+    public void handleProjectionPrimitiveMember(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            @Nonnull RelatedFinder<?> finder,
             ProjectionDataTypeProperty projectionPrimitiveMember) throws IOException
     {
         DataTypeProperty property     = projectionPrimitiveMember.getProperty();
-        String                      propertyName = property.getName();
-        DataType                    dataType     = property.getType();
+        String           propertyName = property.getName();
+        DataType         dataType     = property.getType();
 
-        Object dataTypeValue = ReladomoJsonTree.getDataTypeValue(mithraObject, finder, property);
+        Object dataTypeValue = this.dataStore.getDataTypeProperty(mithraObject, property);
         if (dataTypeValue == null)
         {
             jsonGenerator.writeNullField(propertyName);
@@ -125,7 +114,7 @@ public class ReladomoJsonTree implements JsonSerializable
         }
     }
 
-    public static void handleProjectionAssociationEnd(
+    public void handleProjectionAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
             RelatedFinder<?> finder,
@@ -154,7 +143,7 @@ public class ReladomoJsonTree implements JsonSerializable
             try
             {
                 mithraList.forEachWithCursor(eachChildValue ->
-                        recurse(jsonGenerator, children, (MithraObject) eachChildValue));
+                        this.recurse(jsonGenerator, children, (MithraObject) eachChildValue));
             }
             finally
             {
@@ -164,18 +153,18 @@ public class ReladomoJsonTree implements JsonSerializable
         else
         {
             jsonGenerator.writeFieldName(associationEndName);
-            recurse(jsonGenerator, children, (MithraObject) value);
+            this.recurse(jsonGenerator, children, (MithraObject) value);
         }
     }
 
-    public static boolean recurse(
+    public boolean recurse(
             @Nonnull JsonGenerator jsonGenerator,
             @Nonnull ImmutableList<ProjectionElement> children,
             @Nonnull MithraObject eachChildValue)
     {
         try
         {
-            ReladomoJsonTree.serialize(jsonGenerator, eachChildValue, children);
+            this.serialize(jsonGenerator, eachChildValue, children);
         }
         catch (IOException e)
         {
@@ -184,59 +173,12 @@ public class ReladomoJsonTree implements JsonSerializable
         return true;
     }
 
-    // TODO: Move this generic serialization logic to an abstract Reladomo serializer
-    public static Object getDataTypeValue(
-            MithraObject mithraObject,
-            RelatedFinder<?> finder,
-            DataTypeProperty dataTypeProperty)
-    {
-        Attribute attribute = finder.getAttributeByName(dataTypeProperty.getName());
-
-        if (attribute == null)
-        {
-            throw new AssertionError(
-                    "Domain model and generated code are out of sync. Try rerunning a full clean build.");
-        }
-
-        if (dataTypeProperty.isOptional() && attribute.isAttributeNull(mithraObject))
-        {
-            return null;
-        }
-
-        Object  result     = attribute.valueOf(mithraObject);
-        boolean isTemporal = dataTypeProperty.isTemporal();
-        if (isTemporal || dataTypeProperty.getType() == PrimitiveType.INSTANT)
-        {
-            Instant            instant            = ((Date) result).toInstant();
-            TimestampAttribute<?> timestampAttribute = (TimestampAttribute<?>) attribute;
-            if (isTemporal)
-            {
-                Timestamp infinity        = timestampAttribute.getAsOfAttributeInfinity();
-                Instant   infinityInstant = infinity.toInstant();
-                if (instant.equals(infinityInstant))
-                {
-                    return null;
-                }
-            }
-
-            // TODO: Consider handling here the case where validTo == systemTo + 1 day, but really means infinity
-            // TODO: Alternately, just enable future dated rows to turn off this optimization
-
-            return instant.toString();
-        }
-        if (dataTypeProperty.getType() == PrimitiveType.LOCAL_DATE)
-        {
-            return ((java.sql.Date) result).toLocalDate();
-        }
-        return result;
-    }
-
     @Override
     public void serialize(@Nonnull JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
     {
         try
         {
-            ReladomoJsonTree.serialize(jsonGenerator, this.mithraObject, this.projectionElements);
+            this.serialize(jsonGenerator, this.mithraObject, this.projectionElements);
         }
         catch (IOException e)
         {

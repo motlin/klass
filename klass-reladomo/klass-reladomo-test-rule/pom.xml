@@ -23,8 +23,6 @@
         <dependency>
             <groupId>com.goldmansachs.reladomo</groupId>
             <artifactId>reladomo-test-util</artifactId>
-            <version>17.0.2</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

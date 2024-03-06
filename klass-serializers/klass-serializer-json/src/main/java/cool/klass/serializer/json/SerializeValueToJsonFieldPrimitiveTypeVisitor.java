@@ -61,7 +61,7 @@ public class SerializeValueToJsonFieldPrimitiveTypeVisitor implements PrimitiveT
     @Override
     public void visitInstant() throws IOException
     {
-        this.visitString();
+        this.jsonGenerator.writeStringField(this.propertyName, this.value.toString());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SerializeValueToJsonFieldPrimitiveTypeVisitor implements PrimitiveT
     @Override
     public void visitTemporalInstant() throws IOException
     {
-        this.visitString();
+        this.jsonGenerator.writeStringField(this.propertyName, this.value.toString());
     }
 
     @Override

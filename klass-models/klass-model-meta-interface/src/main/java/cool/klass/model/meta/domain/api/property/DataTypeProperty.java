@@ -18,6 +18,7 @@ public interface DataTypeProperty extends Property
     @Nonnull
     ImmutableList<PropertyModifier> getPropertyModifiers();
 
+    // TODO: Should this be a Map, rather than multimap?
     ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey();
 
     ImmutableListMultimap<AssociationEnd, DataTypeProperty> getForeignKeysMatchingThisKey();
@@ -32,6 +33,21 @@ public interface DataTypeProperty extends Property
     default boolean isAudit()
     {
         return this.getPropertyModifiers().anySatisfy(PropertyModifier::isAudit);
+    }
+
+    default boolean isSystem()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isSystem);
+    }
+
+    default boolean isFrom()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isFrom);
+    }
+
+    default boolean isTo()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isTo);
     }
 
     boolean isOptional();

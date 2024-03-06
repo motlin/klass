@@ -199,36 +199,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         if (verb == Verb.POST || verb == Verb.PUT)
         {
-            AntlrClass klass = projection.getKlass();
-
-            MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = klass.getDataTypePropertyStates();
-            MutableList<AntlrDataTypeProperty<?>> requiredProperties = dataTypePropertyStates
-                    .asLazy()
-                    .reject(AntlrDataTypeProperty::isOptional)
-                    .reject(AntlrDataTypeProperty::isKey)
-                    .reject(AntlrDataTypeProperty::isID)
-                    .reject(AntlrDataTypeProperty::isTemporal)
-                    .reject(AntlrDataTypeProperty::isAudit)
-                    .toList();
-
-            MutableList<AntlrDataTypeProperty<?>> includedProperties = projection.getChildren()
-                    .selectInstancesOf(AntlrProjectionDataTypeProperty.class)
-                    .collect(AntlrProjectionDataTypeProperty::getDataTypeProperty);
-
-            MutableList<AntlrDataTypeProperty<?>> missingProperties = requiredProperties.reject(includedProperties::contains);
-
-            if (missingProperties.notEmpty())
-            {
-                String message = String.format(
-                        "ERR_PRJ_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
-                        projection.getName(),
-                        missingProperties.collect(AntlrProperty::getName).makeString());
-
-                compilerErrorHolder.add(
-                        message,
-                        this,
-                        this.serviceProjectionDispatchState.getElementContext().projectionReference());
-            }
+            // TODO: Totally redo write projections
+            // reportInvalidWriteProjection(projection, compilerErrorHolder);
 
             // TODO: Do this after changing the versionClass to versionAssociationEnd
             /*
@@ -242,12 +214,46 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
             // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
             // Include version associationEnds iff the service is optimistically locked
-            MutableList<AntlrAssociationEnd> associationEndStates = klass.getAssociationEndStates();
+            MutableList<AntlrAssociationEnd> associationEndStates = projection.getKlass().getAssociationEndStates();
 
             PartitionMutableList<AntlrAssociationEnd> partition = associationEndStates.partition(AntlrAssociationEnd::isOwned);
 
             MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
             MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
+        }
+    }
+
+    private void reportInvalidWriteProjection(
+            AntlrProjection projection,
+            @Nonnull CompilerErrorHolder compilerErrorHolder)
+    {
+        MutableList<AntlrDataTypeProperty<?>> requiredProperties = projection.getKlass()
+                .getDataTypePropertyStates()
+                .asLazy()
+                .reject(AntlrDataTypeProperty::isOptional)
+                .reject(AntlrDataTypeProperty::isKey)
+                .reject(AntlrDataTypeProperty::isID)
+                .reject(AntlrDataTypeProperty::isTemporal)
+                .reject(AntlrDataTypeProperty::isAudit)
+                .toList();
+
+        MutableList<AntlrDataTypeProperty<?>> includedProperties = projection.getChildren()
+                .selectInstancesOf(AntlrProjectionDataTypeProperty.class)
+                .collect(AntlrProjectionDataTypeProperty::getDataTypeProperty);
+
+        MutableList<AntlrDataTypeProperty<?>> missingProperties = requiredProperties.reject(includedProperties::contains);
+
+        if (missingProperties.notEmpty())
+        {
+            String message = String.format(
+                    "ERR_PRJ_DTP: Expected write projection '%s' to contain all required properties but was missing %s.",
+                    projection.getName(),
+                    missingProperties.collect(AntlrProperty::getName).makeString());
+
+            compilerErrorHolder.add(
+                    message,
+                    this,
+                    this.serviceProjectionDispatchState.getElementContext().projectionReference());
         }
     }
 

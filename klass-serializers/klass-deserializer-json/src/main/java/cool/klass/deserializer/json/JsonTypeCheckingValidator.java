@@ -23,7 +23,7 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Stacks;
 
-public final class IncomingDataModelValidator
+public final class JsonTypeCheckingValidator
 {
     private final ObjectNode objectNode;
     private final Klass      klass;
@@ -31,7 +31,7 @@ public final class IncomingDataModelValidator
     private final MutableStack<String> contextStack = Stacks.mutable.empty();
     private final MutableList<String>  errors;
 
-    public IncomingDataModelValidator(ObjectNode objectNode, Klass klass, MutableList<String> errors)
+    public JsonTypeCheckingValidator(ObjectNode objectNode, Klass klass, MutableList<String> errors)
     {
         this.objectNode = objectNode;
         this.klass = klass;
@@ -40,7 +40,7 @@ public final class IncomingDataModelValidator
 
     public static void validate(ObjectNode objectNode, Klass klass, MutableList<String> errors)
     {
-        IncomingDataModelValidator incomingDataValidator = new IncomingDataModelValidator(
+        JsonTypeCheckingValidator incomingDataValidator = new JsonTypeCheckingValidator(
                 objectNode,
                 klass,
                 errors);
@@ -68,7 +68,10 @@ public final class IncomingDataModelValidator
             }
 
             Property property = optionalProperty.get();
-            property.visit(new IncomingDataValidatorPropertyVisitor(fieldName, jsonNode));
+            PropertyVisitor visitor = new JsonTypeCheckingPropertyVisitor(
+                    fieldName,
+                    jsonNode);
+            property.visit(visitor);
         });
     }
 
@@ -93,12 +96,12 @@ public final class IncomingDataModelValidator
         }
     }
 
-    private final class IncomingDataValidatorPropertyVisitor implements PropertyVisitor
+    private final class JsonTypeCheckingPropertyVisitor implements PropertyVisitor
     {
         private final String   fieldName;
         private final JsonNode jsonNode;
 
-        private IncomingDataValidatorPropertyVisitor(
+        private JsonTypeCheckingPropertyVisitor(
                 String fieldName,
                 JsonNode jsonNode)
         {
@@ -108,7 +111,7 @@ public final class IncomingDataModelValidator
 
         private void visitPropertyWithContext(Runnable runnable)
         {
-            IncomingDataModelValidator.this.contextStack.push(this.fieldName);
+            JsonTypeCheckingValidator.this.contextStack.push(this.fieldName);
 
             try
             {
@@ -116,7 +119,7 @@ public final class IncomingDataModelValidator
             }
             finally
             {
-                IncomingDataModelValidator.this.contextStack.pop();
+                JsonTypeCheckingValidator.this.contextStack.pop();
             }
         }
 
@@ -129,12 +132,12 @@ public final class IncomingDataModelValidator
         public void handlePrimitiveProperty(PrimitiveProperty primitiveProperty)
         {
             PrimitiveType primitiveType = primitiveProperty.getType();
-            primitiveType.visit(new ValidateIncomingPrimitiveTypeVisitor(
+            primitiveType.visit(new JsonTypeCheckingPrimitiveTypeVisitor(
                     primitiveProperty.getOwningKlass(),
                     primitiveProperty,
                     this.jsonNode,
-                    IncomingDataModelValidator.this.contextStack,
-                    IncomingDataModelValidator.this.errors));
+                    JsonTypeCheckingValidator.this.contextStack,
+                    JsonTypeCheckingValidator.this.errors));
         }
 
         @Override
@@ -149,14 +152,14 @@ public final class IncomingDataModelValidator
             {
                 String error = String.format(
                         "Error at %s. Expected enumerated property with type '%s.%s: %s%s' but got %s with type '%s'.",
-                        IncomingDataModelValidator.this.getContextString(),
+                        JsonTypeCheckingValidator.this.getContextString(),
                         enumerationProperty.getOwningKlass().getName(),
                         enumerationProperty.getName(),
                         enumerationProperty.getType().getName(),
                         enumerationProperty.isOptional() ? "?" : "",
                         this.jsonNode,
                         this.jsonNode.getNodeType().toString().toLowerCase());
-                IncomingDataModelValidator.this.errors.add(error);
+                JsonTypeCheckingValidator.this.errors.add(error);
             }
 
             String textValue = this.jsonNode.textValue();
@@ -173,7 +176,7 @@ public final class IncomingDataModelValidator
 
                 String error = String.format(
                         "Error at %s. Expected enumerated property with type '%s.%s: %s%s' but got %s with type '%s'. Expected one of %s.",
-                        IncomingDataModelValidator.this.getContextString(),
+                        JsonTypeCheckingValidator.this.getContextString(),
                         enumerationProperty.getOwningKlass().getName(),
                         enumerationProperty.getName(),
                         enumerationProperty.getType().getName(),
@@ -181,7 +184,7 @@ public final class IncomingDataModelValidator
                         this.jsonNode,
                         this.jsonNode.getNodeType().toString().toLowerCase(),
                         quotedPrettyNames.makeString());
-                IncomingDataModelValidator.this.errors.add(error);
+                JsonTypeCheckingValidator.this.errors.add(error);
             }
         }
 
@@ -197,19 +200,19 @@ public final class IncomingDataModelValidator
 
             if (!this.jsonNode.isArray())
             {
-                IncomingDataModelValidator.this.contextStack.push(this.fieldName);
+                JsonTypeCheckingValidator.this.contextStack.push(this.fieldName);
 
                 try
                 {
                     String error = String.format(
                             "Error at %s. Expected json array but value was %s.",
-                            IncomingDataModelValidator.this.getContextString(),
+                            JsonTypeCheckingValidator.this.getContextString(),
                             this.jsonNode.getNodeType().toString().toLowerCase());
-                    IncomingDataModelValidator.this.errors.add(error);
+                    JsonTypeCheckingValidator.this.errors.add(error);
                 }
                 finally
                 {
-                    IncomingDataModelValidator.this.contextStack.pop();
+                    JsonTypeCheckingValidator.this.contextStack.pop();
                 }
                 return;
             }
@@ -217,14 +220,14 @@ public final class IncomingDataModelValidator
             for (int index = 0; index < this.jsonNode.size(); index++)
             {
                 String contextString = String.format("%s[%d]", this.fieldName, index);
-                IncomingDataModelValidator.this.contextStack.push(contextString);
+                JsonTypeCheckingValidator.this.contextStack.push(contextString);
 
                 try
                 {
                     JsonNode jsonNode = this.jsonNode.get(index);
                     if (jsonNode instanceof ObjectNode)
                     {
-                        IncomingDataModelValidator.this.validateIncomingData(
+                        JsonTypeCheckingValidator.this.validateIncomingData(
                                 (ObjectNode) jsonNode,
                                 associationEnd.getType());
                     }
@@ -232,14 +235,14 @@ public final class IncomingDataModelValidator
                     {
                         String error = String.format(
                                 "Error at %s. Expected json object but value was %s.",
-                                IncomingDataModelValidator.this.getContextString(),
+                                JsonTypeCheckingValidator.this.getContextString(),
                                 jsonNode.getNodeType().toString().toLowerCase());
-                        IncomingDataModelValidator.this.errors.add(error);
+                        JsonTypeCheckingValidator.this.errors.add(error);
                     }
                 }
                 finally
                 {
-                    IncomingDataModelValidator.this.contextStack.pop();
+                    JsonTypeCheckingValidator.this.contextStack.pop();
                 }
             }
         }
@@ -248,15 +251,15 @@ public final class IncomingDataModelValidator
         {
             if (this.jsonNode.isObject())
             {
-                IncomingDataModelValidator.this.validateIncomingData((ObjectNode) this.jsonNode, associationEnd.getType());
+                JsonTypeCheckingValidator.this.validateIncomingData((ObjectNode) this.jsonNode, associationEnd.getType());
             }
             else
             {
                 String error = String.format(
                         "Error at %s. Expected json object but value was %s.",
-                        IncomingDataModelValidator.this.getContextString(),
+                        JsonTypeCheckingValidator.this.getContextString(),
                         this.jsonNode.getNodeType().toString().toLowerCase());
-                IncomingDataModelValidator.this.errors.add(error);
+                JsonTypeCheckingValidator.this.errors.add(error);
             }
         }
 

@@ -16,7 +16,7 @@ import org.apache.maven.project.MavenProject;
 @Mojo(name = "generate-abstract-application", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
 {
-    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/service-resources")
+    @Parameter(property = "outputDirectory", defaultValue = "${project.build.directory}/generated-sources/abstract-application")
     private File outputDirectory;
 
     @Parameter(property = "applicationName", required = true, readonly = true)

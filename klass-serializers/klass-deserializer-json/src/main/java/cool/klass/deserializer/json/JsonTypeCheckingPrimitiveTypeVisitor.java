@@ -8,11 +8,12 @@ import java.util.Objects;
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
+import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 
-public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
+public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisitor
 {
     private final Klass                klass;
     private final PrimitiveProperty    primitiveProperty;
@@ -20,7 +21,7 @@ public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisito
     private final MutableStack<String> contextStack;
     private final MutableList<String>  errors;
 
-    public ValidateIncomingPrimitiveTypeVisitor(
+    public JsonTypeCheckingPrimitiveTypeVisitor(
             Klass klass,
             PrimitiveProperty primitiveProperty,
             JsonNode jsonNode,
@@ -48,6 +49,8 @@ public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisito
                 this.jsonNode.getNodeType().toString().toLowerCase());
         this.errors.add(error);
     }
+
+    // TODO: Test nullable primitives
 
     @Override
     public void visitString()
@@ -94,7 +97,8 @@ public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         if (!this.jsonNode.isDouble()
                 && !this.jsonNode.isFloat()
                 && !this.jsonNode.isInt()
-                && !this.jsonNode.isLong() || this.jsonNode.doubleValue() != this.jsonNode.floatValue())
+                && !this.jsonNode.isLong()
+                || this.jsonNode.doubleValue() != this.jsonNode.floatValue())
         {
             this.emitTypeError();
         }
@@ -158,9 +162,18 @@ public class ValidateIncomingPrimitiveTypeVisitor implements PrimitiveTypeVisito
 
     private void visitTemporal()
     {
+        if (this.jsonNode.isNull()
+                && this.primitiveProperty.isTemporalInstant()
+                && this.primitiveProperty.getPropertyModifiers().anySatisfy(PropertyModifier::isTo))
+        {
+            // TODO: Other validations might make this one unreachable
+            return;
+        }
+
         if (!this.jsonNode.isTextual())
         {
             this.emitTypeError();
+            return;
         }
 
         String text = this.jsonNode.textValue();

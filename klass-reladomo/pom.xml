@@ -23,6 +23,8 @@
         <module>klass-reladomo-ddl-executor</module>
         <module>klass-reladomo-configuration</module>
         <module>klass-reladomo-test-rule</module>
+        <module>klass-reladomo-persistent-writer</module>
+        <module>klass-data-store-reladomo</module>
     </modules>
 
 </project>

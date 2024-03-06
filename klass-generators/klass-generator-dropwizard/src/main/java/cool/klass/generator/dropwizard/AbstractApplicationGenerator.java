@@ -58,6 +58,8 @@ public class AbstractApplicationGenerator
                 + "import javax.annotation.Generated;\n"
                 + "import javax.annotation.Nonnull;\n"
                 + "\n"
+                + "import cool.klass.data.store.DataStore;\n"
+                + "import cool.klass.data.store.reladomo.ReladomoDataStore;\n"
                 + "import cool.klass.dropwizard.bundle.httplogging.HttpLoggingBundle;\n"
                 + "import cool.klass.dropwizard.bundle.objectmapper.ObjectMapperBundle;\n"
                 + "import cool.klass.dropwizard.bundle.reladomo.ReladomoBundle;\n"
@@ -88,6 +90,7 @@ public class AbstractApplicationGenerator
                 + "    private static final Logger LOGGER = LoggerFactory.getLogger(Abstract" + this.applicationName + "Application.class);\n"
                 + "    \n"
                 + "    protected DomainModel domainModel;\n"
+                + "    protected DataStore   dataStore;\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
@@ -125,8 +128,11 @@ public class AbstractApplicationGenerator
                 + "            LOGGER.info(\"Klass configuration:\\n{}\", render);\n"
                 + "        }\n"
                 + "\n"
+                + "        // TODO: Choose data store from configuration\n"
+                + "        this.dataStore = new ReladomoDataStore();\n"
                 + "        this.domainModel = this.getDomainModel(klassConfig);\n"
                 + "\n"
+                + ""
                 + this.getRegisterResourcesSourceCode()
                 + "    }\n"
                 + "\n"
@@ -153,7 +159,7 @@ public class AbstractApplicationGenerator
     private String getRegisterResourceSourceCode(ServiceGroup serviceGroup)
     {
         return String.format(
-                "        environment.jersey().register(new %sResource(this.domainModel));\n",
+                "        environment.jersey().register(new %sResource(this.dataStore));\n",
                 serviceGroup.getKlass().getName());
     }
 

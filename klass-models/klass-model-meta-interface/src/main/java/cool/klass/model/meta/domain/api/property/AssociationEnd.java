@@ -16,11 +16,20 @@ public interface AssociationEnd extends ReferenceProperty
     @Nonnull
     ImmutableList<AssociationEndModifier> getAssociationEndModifiers();
 
-    boolean isOwned();
+    // TODO: Delete overrides
+    default boolean isOwned()
+    {
+        return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isOwned);
+    }
 
     default boolean isVersion()
     {
         return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isVersion);
+    }
+
+    default boolean isFinal()
+    {
+        return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isFinal);
     }
 
     @Nonnull

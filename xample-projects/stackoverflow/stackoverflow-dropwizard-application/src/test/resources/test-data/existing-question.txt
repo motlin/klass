@@ -12,6 +12,7 @@ class com.stackoverflow.Tag
 name        , description             , systemFrom               , systemTo
 "test tag 1", "test tag 1 description", "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.000"
 "test tag 2", "test tag 2 description", "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.000"
+"test tag 3", "test tag 3 description", "1999-12-31 23:59:59.999", "9999-12-01 23:59:00.000"
 
 class com.stackoverflow.QuestionTagMapping
 questionId, tagName     , systemFrom               , systemTo

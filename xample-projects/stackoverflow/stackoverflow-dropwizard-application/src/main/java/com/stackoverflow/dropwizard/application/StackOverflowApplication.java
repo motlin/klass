@@ -4,6 +4,7 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.Bundle;
@@ -38,7 +39,7 @@ public class StackOverflowApplication extends AbstractStackOverflowApplication
     {
         super.run(configuration, environment);
 
-        environment.jersey().register(new QuestionResourceManual(this.domainModel));
+        environment.jersey().register(new QuestionResourceManual(new ReladomoDataStore()));
 
         // TODO: Move up to generated superclass
         KlassBootstrapWriter klassBootstrapWriter = new KlassBootstrapWriter(this.domainModel);

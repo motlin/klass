@@ -24,6 +24,7 @@
         <module>klass-serializers</module>
         <module>klass-dropwizard-bundles</module>
         <module>klass-test-modules</module>
+        <module>klass-data-store</module>
     </modules>
 
     <properties>
@@ -47,6 +48,12 @@
                 <version>1.3.9</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.goldmansachs.reladomo</groupId>
+                <artifactId>reladomo-test-util</artifactId>
+                <version>${reladomo.version}</version>
             </dependency>
 
             <dependency>

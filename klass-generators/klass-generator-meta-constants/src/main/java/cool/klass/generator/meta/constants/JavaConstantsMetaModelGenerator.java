@@ -931,8 +931,9 @@ public class JavaConstantsMetaModelGenerator
                 + "        @Override\n"
                 + "        public ImmutableListMultimap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey()\n"
                 + "        {\n"
-                + "            throw new UnsupportedOperationException(this.getClass().getSimpleName()\n"
-                + "                    + \".getKeysMatchingThisForeignKey() not implemented yet\");\n"
+                + "            MutableListMultimap<AssociationEnd, DataTypeProperty> result = Multimaps.mutable.list.empty();\n"
+                + this.getKeysMatchingThisForeignKey(enumerationProperty)
+                + "            return result.toImmutable();\n"
                 + "        }\n"
                 + "\n"
                 + "        @Override\n"

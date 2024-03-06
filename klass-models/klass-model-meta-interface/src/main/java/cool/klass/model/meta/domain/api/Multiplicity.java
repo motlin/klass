@@ -41,4 +41,9 @@ public enum Multiplicity
     {
         return this == ZERO_TO_MANY || this == ONE_TO_MANY;
     }
+
+    public boolean isRequired()
+    {
+        return this == ONE_TO_ONE || this == ONE_TO_MANY;
+    }
 }

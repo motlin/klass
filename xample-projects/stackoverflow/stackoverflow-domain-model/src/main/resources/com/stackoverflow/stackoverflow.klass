@@ -209,7 +209,7 @@ association QuestionHasTagMappings
 association TagHasQuestionMappings
 {
     tag: Tag[1..1] final;
-    questions: QuestionTagMapping[0..*] owned
+    questions: QuestionTagMapping[0..*]
         orderBy: this.questionId;
 
     relationship this.name == QuestionTagMapping.tagName
@@ -250,28 +250,11 @@ projection QuestionReadProjection on Question
     },
 }
 
+// TODO: Totally redo write projections. It doesn't make sense for them to contain dataTypeProperties
 projection QuestionWriteProjection on Question
 {
-    title  : "Question title",
-    body   : "Question body",
-
-    // TODO: Status property should default to OPEN, and default properties shouldn't be required in write projections.
-    status : "Question status",
-
-    // TODO: Deleted property should default to false, and default properties shouldn't be required in write projections.
-    deleted: "Question is deleted",
-
-    tags   :
+    tags:
     {
-        tag:
-        {
-            name: "Tag name",
-        },
-    },
-
-    version        :
-    {
-        number: "Question version number",
     },
 }
 
