@@ -888,28 +888,17 @@ association ServiceOrderByHasMemberReferencePath
 
 projection EnumerationLiteralProjection on EnumerationLiteral
 {
-    name                   : "Enumeration literal name",
-    ordinal                : "Enumeration literal ordinal",
-    prettyName             : "Enumeration literal pretty name",
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    prettyName: "EnumerationLiteral prettyName",
 }
 
 projection EnumerationProjection on Enumeration
 {
-    name                   : "Enumeration name",
-    packageName            : "Enumeration package name",
-    ordinal                : "Enumeration ordinal",
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
     enumerationLiterals: EnumerationLiteralProjection,
-}
-
-projection EnumerationSummaryProjection on Enumeration
-{
-    name               : "Enumeration name",
-    packageName        : "Enumeration package name",
-    enumerationLiterals:
-    {
-        name      : "Enumeration literal name",
-        prettyName: "Enumeration literal pretty name",
-    },
 }
 
 projection PackageableElementProjection on PackageableElement
@@ -1081,43 +1070,23 @@ service EnumerationResource on Enumeration
             criteria    : this.name == name;
             projection  : EnumerationProjection;
         }
-    /meta/enumeration/{enumerationName: String[1..1]}/summary
-        GET
-        {
-            multiplicity: one;
-            criteria    : this.name == enumerationName;
-            projection  : EnumerationSummaryProjection;
-        }
     /meta/enumeration
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : EnumerationSummaryProjection;
+            projection  : EnumerationProjection;
             orderBy     : this.ordinal ascending;
         }
 }
 
 projection InterfaceProjection on Interface
 {
-    name                   : "Interface name",
-    packageName            : "Interface package name",
-    ordinal                : "Interface ordinal",
-
-    // TODO: flat many-to-many, or parameterized property
-    superInterfaces        :
-    {
-        superInterface:
-        {
-            name           : "Super interface name",
-            packageName    : "Super interface package name",
-        },
-    },
-    classifierModifiers    :
-    {
-        keyword: "Interface modifier keyword",
-        ordinal: "Interface modifier ordinal",
-    },
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    superInterfaces: ClassifierInterfaceMappingProjection,
+    classifierModifiers: ClassifierModifierProjection,
     dataTypeProperties: DataTypePropertyProjection,
 }
 
@@ -1158,82 +1127,45 @@ service InterfaceResource on Interface
         }
 }
 
+projection NumericPropertyValidationProjection on NumericPropertyValidation
+{
+    number: "NumericPropertyValidation number",
+}
+
 projection DataTypePropertyProjection on DataTypeProperty
 {
-    name                           : "Property name",
-    PrimitiveProperty.primitiveType: "Property primitive type",
-    optional                       : "Property is optional",
-    ordinal                        : "Property ordinal",
-    EnumerationProperty.enumeration:
-    {
-        name    : "Property Enumeration name",
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    optional: "DataTypeProperty optional",
+    minLengthValidation: NumericPropertyValidationProjection,
+    maxLengthValidation: NumericPropertyValidationProjection,
+    propertyModifiers: {
+        keyword: "PropertyModifier keyword",
     },
-    propertyModifiers              :
-    {
-        keyword: "Property modifier keyword",
-        ordinal: "Property modifier ordinal",
-    },
-    minLengthValidation            :
-    {
-        number: "Property min length validation number",
-    },
-    maxLengthValidation            :
-    {
-        number: "Property max length validation number",
-    },
-    PrimitiveProperty.minValidation:
-    {
-        number: "Property min validation number",
-    },
-    PrimitiveProperty.maxValidation:
-    {
-        number: "Property max validation number",
+    PrimitiveProperty.primitiveType: "PrimitiveProperty primitiveType",
+    PrimitiveProperty.minValidation: NumericPropertyValidationProjection,
+    PrimitiveProperty.maxValidation: NumericPropertyValidationProjection,
+    EnumerationProperty.enumeration: {
+        NamedElement.name: "NamedElement name",
     },
 }
 
 projection KlassProjection on Klass
 {
-    name                   : "Class name",
-    packageName            : "Class package name",
-    abstractClass          : "Class abstractClass",
-    ordinal                : "Class ordinal",
-    superClass             :
-    {
-        name           : "Super Class name",
-        packageName    : "Super Class package name",
-        superClass     :
-        {
-            name       : "Super Super Class name",
-            packageName: "Super Super Class package name",
-        },
-
-        // TODO: flat many-to-many, or parameterized property
-        superInterfaces:
-        {
-            superInterface:
-            {
-                name       : "Super Class Super Interface name",
-                packageName: "Super Class Super Interface package name",
-            },
-        },
-    },
-
-    // TODO: flat many-to-many, or parameterized property
-    superInterfaces        :
-    {
-        superInterface:
-        {
-            name           : "Super interface name",
-            packageName    : "Super interface package name",
-        },
-    },
-    classifierModifiers    :
-    {
-        keyword: "Classifier modifier keyword",
-        ordinal: "Classifier modifier ordinal",
-    },
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    abstractClass: "Klass abstractClass",
+    superInterfaces: ClassifierInterfaceMappingProjection,
+    classifierModifiers: ClassifierModifierProjection,
     dataTypeProperties: DataTypePropertyProjection,
-    associationEnds        : AssociationEndProjection,
+    superClass: {
+        name: "NamedElement name",
+    },
+    associationEnds: {
+        name: "NamedElement name",
+    },
+    parameterizedProperties: ParameterizedPropertyProjection,
 }
 
 projection ClassSummaryProjection on Klass
@@ -1320,50 +1252,46 @@ service ClassifierResource on Classifier
 
 projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 {
-    id               : "ExpressionValue id",
-    klass            :
-    {
-        name       : "NamedElement name",
-        packageName: "PackageableElement packageName",
+    id: "ExpressionValue id",
+    klass: {
+        name: "NamedElement name",
     },
     associationEnds  : MemberReferencePathAssociationEndMappingProjection,
     dataTypeProperty :
     {
         owningClassifier:
         {
-            packageName: "PackageableElement packageName",
             name       : "NamedElement name",
         },
-        name            : "Property name",
+        name: "NamedElement name",
+    },
+}
+
+projection AssociationEndModifierProjection on AssociationEndModifier
+{
+    keyword: "AssociationEndModifier keyword",
+    ordinal: "AssociationEndModifier ordinal",
+}
+
+projection AssociationEndOrderByProjection on AssociationEndOrderBy
+{
+    orderByDirection: "AssociationEndOrderBy orderByDirection",
+    thisMemberReferencePath: {
+        id: "ExpressionValue id",
     },
 }
 
 projection AssociationEndProjection on AssociationEnd
 {
-    name                   : "Association end name",
-    ordinal                : "Association end ordinal",
-    direction              : "Association end direction",
-    multiplicity           : "Association end multiplicity",
-    owningClass            :
-    {
-        packageName: "Association end owning class package name",
-        name       : "Association end owning class name",
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    direction: "AssociationEnd direction",
+    multiplicity: "AssociationEnd multiplicity",
+    resultType: {
+        name: "NamedElement name",
     },
-    resultType             :
-    {
-        packageName: "Association end result class package name",
-        name       : "Association end result class name",
-    },
-    associationEndModifiers:
-    {
-        keyword: "Association end modifier keyword",
-        ordinal: "Association end modifier ordinal",
-    },
-    orderBys:
-    {
-        orderByDirection: "AssociationEndOrderBy orderByDirection",
-        thisMemberReferencePath: ThisMemberReferencePathProjection,
-    },
+    associationEndModifiers: AssociationEndModifierProjection,
+    orderBys: AssociationEndOrderByProjection,
 }
 
 projection MemberReferencePathAssociationEndMappingProjection on MemberReferencePathAssociationEndMapping
@@ -1372,7 +1300,6 @@ projection MemberReferencePathAssociationEndMappingProjection on MemberReference
     {
         owningClass:
         {
-            packageName: "PackageableElement packageName",
             name       : "NamedElement name",
         },
         name            : "NamedElement name",
@@ -1419,30 +1346,22 @@ projection AssociationEndSummaryProjection on AssociationEnd
 
 projection ExpressionValueProjection on ExpressionValue
 {
-    MemberReferencePath.klass           :
-    {
-        name: "MemberReferencePath Class name",
+    id: "ExpressionValue id",
+    VariableReference.parameter: {
+        id: "Parameter id",
+        name: "Parameter name",
     },
-    MemberReferencePath.associationEnds :
+    MemberReferencePath.klass: {
+        name: "NamedElement name",
+    },
+    MemberReferencePath.associationEnds: MemberReferencePathAssociationEndMappingProjection,
+    MemberReferencePath.dataTypeProperty :
     {
-        associationEnd:
+        owningClassifier:
         {
-            name: "MemberReferencePath Association end name",
+            name       : "NamedElement name",
         },
-    },
-    MemberReferencePath.dataTypeProperty:
-    {
-        name: "MemberReferencePath Property name",
-    },
-    VariableReference.parameter         :
-    {
-        name                            : "VariableReference parameter name",
-        EnumerationParameter.enumeration:
-        {
-            name: "VariableReference parameter enumeration name",
-        },
-        PrimitiveParameter.primitiveType: "VariableReference parameter primitive type",
-        multiplicity                    : "VariableReference parameter multiplicity",
+        name: "NamedElement name",
     },
 }
 
@@ -1472,20 +1391,15 @@ projection ExpressionValueSummaryProjection on ExpressionValue
 projection MemberReferencePathProjection on MemberReferencePath
 {
     id: "ExpressionValue id",
-    klass           :
-    {
-        name: "MemberReferencePath Class name",
+    klass: {
+        name: "NamedElement name",
     },
-    associationEnds :
-    {
-        associationEnd:
-        {
-            name: "MemberReferencePath Association end name",
+    associationEnds: MemberReferencePathAssociationEndMappingProjection,
+    dataTypeProperty: {
+        owningClassifier: {
+            name: "NamedElement name",
         },
-    },
-    dataTypeProperty:
-    {
-        name: "MemberReferencePath Property name",
+        name: "NamedElement name",
     },
 }
 
@@ -1494,7 +1408,7 @@ projection CriteriaProjection on Criteria
     id: "Criteria id",
     BinaryCriteria.left                   : CriteriaProjection,
     BinaryCriteria.right                  : CriteriaProjection,
-    OperatorCriteria.operator             : "Criteria operator",
+    OperatorCriteria.operator: "OperatorCriteria operator",
     OperatorCriteria.sourceExpressionValue: ExpressionValueProjection,
     OperatorCriteria.targetExpressionValue: ExpressionValueProjection,
     EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,
@@ -1512,10 +1426,10 @@ projection CriteriaSummaryProjection on Criteria
 
 projection AssociationProjection on Association
 {
-    packageName            : "Association package name",
-    name                   : "Association name",
-    ordinal                : "Association ordinal",
-    associationEnds        : AssociationEndProjection,
+    name: "NamedElement name",
+    ordinal: "NamedElement ordinal",
+    packageName: "PackageableElement packageName",
+    associationEnds: AssociationEndProjection,
     criteria               : CriteriaProjection,
 }
 

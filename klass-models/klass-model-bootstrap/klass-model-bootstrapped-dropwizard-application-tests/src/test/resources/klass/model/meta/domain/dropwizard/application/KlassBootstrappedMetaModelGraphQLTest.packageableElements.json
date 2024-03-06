@@ -3216,7 +3216,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 157
+                  "id": 155
                 }
               }
             ]
@@ -3335,7 +3335,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 158
+                  "id": 156
                 }
               }
             ]
@@ -3449,7 +3449,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 159
+                  "id": 157
                 }
               }
             ]
@@ -3646,7 +3646,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 160
+                  "id": 158
                 }
               }
             ]
@@ -3726,7 +3726,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 161
+                  "id": 159
                 }
               }
             ]
@@ -3840,7 +3840,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 162
+                  "id": 160
                 }
               }
             ]
@@ -4275,7 +4275,7 @@
               {
                 "orderByDirection": "ASCENDING",
                 "thisMemberReferencePath": {
-                  "id": 163
+                  "id": 161
                 }
               }
             ]
@@ -5138,7 +5138,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "EnumerationSummaryProjection",
+        "name": "PackageableElementProjection",
         "ordinal": 119,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5147,7 +5147,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "PackageableElementProjection",
+        "name": "ClassifierModifierProjection",
         "ordinal": 120,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5156,7 +5156,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassifierModifierProjection",
+        "name": "ClassifierInterfaceMappingProjection",
         "ordinal": 121,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5165,7 +5165,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ClassifierInterfaceMappingProjection",
+        "name": "ParameterizedPropertyProjection",
         "ordinal": 122,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5174,7 +5174,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ParameterizedPropertyProjection",
+        "name": "ParameterizedPropertyOrderingProjection",
         "ordinal": 123,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5183,7 +5183,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ParameterizedPropertyOrderingProjection",
+        "name": "ProjectionElementProjection",
         "ordinal": 124,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5192,7 +5192,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ProjectionElementProjection",
+        "name": "NamedProjectionProjection",
         "ordinal": 125,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5201,7 +5201,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "NamedProjectionProjection",
+        "name": "ServiceGroupProjection",
         "ordinal": 126,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5210,7 +5210,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceGroupProjection",
+        "name": "UrlProjection",
         "ordinal": 127,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5219,7 +5219,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "UrlProjection",
+        "name": "UrlParameterProjection",
         "ordinal": 128,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5228,7 +5228,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "UrlParameterProjection",
+        "name": "ServiceProjection",
         "ordinal": 129,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5237,7 +5237,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceProjection",
+        "name": "ServiceOrderByProjection",
         "ordinal": 130,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5246,8 +5246,8 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceOrderByProjection",
-        "ordinal": 131,
+        "name": "InterfaceProjection",
+        "ordinal": 133,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 15
@@ -5255,7 +5255,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "InterfaceProjection",
+        "name": "InterfaceSummaryProjection",
         "ordinal": 134,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5264,8 +5264,8 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "InterfaceSummaryProjection",
-        "ordinal": 135,
+        "name": "NumericPropertyValidationProjection",
+        "ordinal": 136,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 17
@@ -5318,7 +5318,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndProjection",
+        "name": "AssociationEndModifierProjection",
         "ordinal": 144,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5327,7 +5327,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathAssociationEndMappingProjection",
+        "name": "AssociationEndOrderByProjection",
         "ordinal": 145,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5336,7 +5336,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathSummaryProjection",
+        "name": "AssociationEndProjection",
         "ordinal": 146,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5345,7 +5345,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationEndSummaryProjection",
+        "name": "MemberReferencePathAssociationEndMappingProjection",
         "ordinal": 147,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5354,7 +5354,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ExpressionValueProjection",
+        "name": "MemberReferencePathSummaryProjection",
         "ordinal": 148,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5363,7 +5363,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ExpressionValueSummaryProjection",
+        "name": "AssociationEndSummaryProjection",
         "ordinal": 149,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5372,7 +5372,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "MemberReferencePathProjection",
+        "name": "ExpressionValueProjection",
         "ordinal": 150,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5381,7 +5381,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "CriteriaProjection",
+        "name": "ExpressionValueSummaryProjection",
         "ordinal": 151,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5390,7 +5390,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "CriteriaSummaryProjection",
+        "name": "MemberReferencePathProjection",
         "ordinal": 152,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5399,7 +5399,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationProjection",
+        "name": "CriteriaProjection",
         "ordinal": 153,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5408,7 +5408,7 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "AssociationSummaryProjection",
+        "name": "CriteriaSummaryProjection",
         "ordinal": 154,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
@@ -5417,17 +5417,35 @@
       },
       {
         "__typename": "NamedProjection",
-        "name": "ServiceGroupSummaryProjection",
-        "ordinal": 157,
+        "name": "AssociationProjection",
+        "ordinal": 155,
         "packageName": "klass.model.meta.domain",
         "rootProjection": {
           "id": 34
         }
       },
       {
+        "__typename": "NamedProjection",
+        "name": "AssociationSummaryProjection",
+        "ordinal": 156,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 35
+        }
+      },
+      {
+        "__typename": "NamedProjection",
+        "name": "ServiceGroupSummaryProjection",
+        "ordinal": 159,
+        "packageName": "klass.model.meta.domain",
+        "rootProjection": {
+          "id": 36
+        }
+      },
+      {
         "__typename": "ServiceGroup",
         "name": "PackageableElementResource",
-        "ordinal": 132,
+        "ordinal": 131,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "PackageableElement"
@@ -5490,7 +5508,7 @@
       {
         "__typename": "ServiceGroup",
         "name": "EnumerationResource",
-        "ordinal": 133,
+        "ordinal": 132,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Enumeration"
@@ -5504,39 +5522,7 @@
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "EnumerationSummaryProjection"
-                },
-                "queryCriteria": {
-                  "id": 91
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/enumeration/{enumerationName}/summary",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 3,
-                  "ordinal": 3,
-                  "name": "enumerationName",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "EnumerationSummaryProjection"
+                  "name": "EnumerationProjection"
                 },
                 "queryCriteria": {
                   "id": 90
@@ -5585,7 +5571,7 @@
       {
         "__typename": "ServiceGroup",
         "name": "InterfaceResource",
-        "ordinal": 136,
+        "ordinal": 135,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
           "name": "Interface"
@@ -5602,7 +5588,7 @@
                   "name": "InterfaceProjection"
                 },
                 "queryCriteria": {
-                  "id": 93
+                  "id": 92
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5618,7 +5604,7 @@
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 4,
+                  "id": 3,
                   "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
@@ -5634,7 +5620,7 @@
                   "name": "InterfaceProjection"
                 },
                 "queryCriteria": {
-                  "id": 92
+                  "id": 91
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5665,7 +5651,7 @@
                   "name": "KlassProjection"
                 },
                 "queryCriteria": {
-                  "id": 95
+                  "id": 94
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5681,7 +5667,7 @@
                 "type": "PATH",
                 "parameter": {
                   "__typename": "PrimitiveParameter",
-                  "id": 5,
+                  "id": 4,
                   "ordinal": 3,
                   "name": "name",
                   "multiplicity": "ONE_TO_ONE",
@@ -5697,7 +5683,7 @@
                   "name": "KlassProjection"
                 },
                 "queryCriteria": {
-                  "id": 94
+                  "id": 93
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5728,7 +5714,7 @@
                   "name": "ClassifierProjection"
                 },
                 "queryCriteria": {
-                  "id": 97
+                  "id": 96
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5739,6 +5725,69 @@
           },
           {
             "url": "/meta/classifier/{name}",
+            "parameters": [
+              {
+                "type": "PATH",
+                "parameter": {
+                  "__typename": "PrimitiveParameter",
+                  "id": 5,
+                  "ordinal": 3,
+                  "name": "name",
+                  "multiplicity": "ONE_TO_ONE",
+                  "primitiveType": "STRING"
+                }
+              }
+            ],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "ONE",
+                "projection": {
+                  "name": "ClassifierProjection"
+                },
+                "queryCriteria": {
+                  "id": 95
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "__typename": "ServiceGroup",
+        "name": "AssociationResource",
+        "ordinal": 157,
+        "packageName": "klass.model.meta.domain",
+        "owningClass": {
+          "name": "Association"
+        },
+        "urls": [
+          {
+            "url": "/meta/association",
+            "parameters": [],
+            "services": [
+              {
+                "verb": "GET",
+                "serviceMultiplicity": "MANY",
+                "projection": {
+                  "name": "AssociationProjection"
+                },
+                "queryCriteria": {
+                  "id": 98
+                },
+                "authorizeCriteria": null,
+                "validateCriteria": null,
+                "conflictCriteria": null,
+                "orderBys": []
+              }
+            ]
+          },
+          {
+            "url": "/meta/association/{name}",
             "parameters": [
               {
                 "type": "PATH",
@@ -5757,10 +5806,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "ONE",
                 "projection": {
-                  "name": "ClassifierProjection"
+                  "name": "AssociationProjection"
                 },
                 "queryCriteria": {
-                  "id": 96
+                  "id": 97
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5773,25 +5822,25 @@
       },
       {
         "__typename": "ServiceGroup",
-        "name": "AssociationResource",
-        "ordinal": 155,
+        "name": "NamedProjectionResource",
+        "ordinal": 158,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
-          "name": "Association"
+          "name": "NamedProjection"
         },
         "urls": [
           {
-            "url": "/meta/association",
+            "url": "/meta/projection",
             "parameters": [],
             "services": [
               {
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "AssociationProjection"
+                  "name": "NamedProjectionProjection"
                 },
                 "queryCriteria": {
-                  "id": 99
+                  "id": 100
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5801,7 +5850,7 @@
             ]
           },
           {
-            "url": "/meta/association/{name}",
+            "url": "/meta/projection/{name}",
             "parameters": [
               {
                 "type": "PATH",
@@ -5820,10 +5869,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "ONE",
                 "projection": {
-                  "name": "AssociationProjection"
+                  "name": "NamedProjectionProjection"
                 },
                 "queryCriteria": {
-                  "id": 98
+                  "id": 99
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5836,25 +5885,25 @@
       },
       {
         "__typename": "ServiceGroup",
-        "name": "NamedProjectionResource",
-        "ordinal": 156,
+        "name": "ServiceGroupResource",
+        "ordinal": 160,
         "packageName": "klass.model.meta.domain",
         "owningClass": {
-          "name": "NamedProjection"
+          "name": "ServiceGroup"
         },
         "urls": [
           {
-            "url": "/meta/projection",
+            "url": "/meta/serviceGroup",
             "parameters": [],
             "services": [
               {
                 "verb": "GET",
                 "serviceMultiplicity": "MANY",
                 "projection": {
-                  "name": "NamedProjectionProjection"
+                  "name": "ServiceGroupProjection"
                 },
                 "queryCriteria": {
-                  "id": 101
+                  "id": 102
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,
@@ -5864,7 +5913,7 @@
             ]
           },
           {
-            "url": "/meta/projection/{name}",
+            "url": "/meta/serviceGroup/{name}",
             "parameters": [
               {
                 "type": "PATH",
@@ -5883,73 +5932,10 @@
                 "verb": "GET",
                 "serviceMultiplicity": "ONE",
                 "projection": {
-                  "name": "NamedProjectionProjection"
-                },
-                "queryCriteria": {
-                  "id": 100
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "__typename": "ServiceGroup",
-        "name": "ServiceGroupResource",
-        "ordinal": 158,
-        "packageName": "klass.model.meta.domain",
-        "owningClass": {
-          "name": "ServiceGroup"
-        },
-        "urls": [
-          {
-            "url": "/meta/serviceGroup",
-            "parameters": [],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "MANY",
-                "projection": {
                   "name": "ServiceGroupProjection"
                 },
                 "queryCriteria": {
-                  "id": 103
-                },
-                "authorizeCriteria": null,
-                "validateCriteria": null,
-                "conflictCriteria": null,
-                "orderBys": []
-              }
-            ]
-          },
-          {
-            "url": "/meta/serviceGroup/{name}",
-            "parameters": [
-              {
-                "type": "PATH",
-                "parameter": {
-                  "__typename": "PrimitiveParameter",
-                  "id": 9,
-                  "ordinal": 3,
-                  "name": "name",
-                  "multiplicity": "ONE_TO_ONE",
-                  "primitiveType": "STRING"
-                }
-              }
-            ],
-            "services": [
-              {
-                "verb": "GET",
-                "serviceMultiplicity": "ONE",
-                "projection": {
-                  "name": "ServiceGroupProjection"
-                },
-                "queryCriteria": {
-                  "id": 102
+                  "id": 101
                 },
                 "authorizeCriteria": null,
                 "validateCriteria": null,

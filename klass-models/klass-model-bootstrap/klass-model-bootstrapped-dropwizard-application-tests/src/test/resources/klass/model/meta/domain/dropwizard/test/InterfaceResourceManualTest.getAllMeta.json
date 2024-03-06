@@ -1,21 +1,20 @@
 [
   {
     "name": "Element",
-    "packageName": "klass.model.meta.domain",
     "ordinal": 1,
+    "packageName": "klass.model.meta.domain",
     "superInterfaces": [],
     "classifierModifiers": [],
     "dataTypeProperties": []
   },
   {
     "name": "NamedElement",
-    "packageName": "klass.model.meta.domain",
     "ordinal": 2,
+    "packageName": "klass.model.meta.domain",
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "Element",
-          "packageName": "klass.model.meta.domain"
+          "name": "Element"
         }
       }
     ],
@@ -24,45 +23,43 @@
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
         "name": "name",
-        "primitiveType": "String",
-        "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
         "ordinal": 1,
-        "propertyModifiers": [
-          {
-            "keyword": "key",
-            "ordinal": 1
-          }
-        ],
+        "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          }
+        ],
+        "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
         "name": "ordinal",
+        "ordinal": 2,
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
         "primitiveType": "Integer",
         "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
-        "ordinal": 2,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxValidation": null
       }
     ]
   },
   {
     "name": "NumericPropertyValidation",
-    "packageName": "klass.model.meta.domain",
     "ordinal": 23,
+    "packageName": "klass.model.meta.domain",
     "superInterfaces": [
       {
         "superInterface": {
-          "name": "Element",
-          "packageName": "klass.model.meta.domain"
+          "name": "Element"
         }
       }
     ],
@@ -71,52 +68,50 @@
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
         "name": "classifierName",
-        "primitiveType": "String",
-        "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
         "ordinal": 1,
-        "propertyModifiers": [
-          {
-            "keyword": "key",
-            "ordinal": 1
-          }
-        ],
+        "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          }
+        ],
+        "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
         "name": "propertyName",
-        "primitiveType": "String",
-        "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
         "ordinal": 2,
-        "propertyModifiers": [
-          {
-            "keyword": "key",
-            "ordinal": 1
-          }
-        ],
+        "optional": false,
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
-        }
+        },
+        "propertyModifiers": [
+          {
+            "keyword": "key"
+          }
+        ],
+        "primitiveType": "String",
+        "minValidation": null,
+        "maxValidation": null
       },
       {
         "__typename": "klass.model.meta.domain.PrimitiveProperty",
         "name": "number",
+        "ordinal": 3,
+        "optional": false,
+        "minLengthValidation": null,
+        "maxLengthValidation": null,
+        "propertyModifiers": [],
         "primitiveType": "Integer",
         "minValidation": null,
-        "maxValidation": null,
-        "optional": false,
-        "ordinal": 3,
-        "propertyModifiers": [],
-        "minLengthValidation": null,
-        "maxLengthValidation": null
+        "maxValidation": null
       }
     ]
   }

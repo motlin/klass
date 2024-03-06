@@ -1,7 +1,7 @@
 {
   "name": "PrimitiveType",
-  "packageName": "klass.model.meta.domain",
   "ordinal": 16,
+  "packageName": "klass.model.meta.domain",
   "enumerationLiterals": [
     {
       "name": "INTEGER",

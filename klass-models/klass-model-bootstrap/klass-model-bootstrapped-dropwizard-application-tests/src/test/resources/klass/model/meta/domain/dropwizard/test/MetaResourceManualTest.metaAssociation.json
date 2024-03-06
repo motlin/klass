@@ -1,19 +1,14 @@
 {
-  "packageName": "klass.model.meta.domain",
   "name": "DataTypePropertyHasModifiers",
   "ordinal": 33,
+  "packageName": "klass.model.meta.domain",
   "associationEnds": [
     {
       "name": "dataTypeProperty",
       "ordinal": 1,
       "direction": "source",
       "multiplicity": "1..1",
-      "owningClass": {
-        "packageName": "klass.model.meta.domain",
-        "name": "PropertyModifier"
-      },
       "resultType": {
-        "packageName": "klass.model.meta.domain",
         "name": "DataTypeProperty"
       },
       "associationEndModifiers": [],
@@ -24,12 +19,7 @@
       "ordinal": 2,
       "direction": "target",
       "multiplicity": "0..*",
-      "owningClass": {
-        "packageName": "klass.model.meta.domain",
-        "name": "DataTypeProperty"
-      },
       "resultType": {
-        "packageName": "klass.model.meta.domain",
         "name": "PropertyModifier"
       },
       "associationEndModifiers": [],
@@ -37,19 +27,7 @@
         {
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
-            "id": 160,
-            "klass": {
-              "name": "PropertyModifier",
-              "packageName": "klass.model.meta.domain"
-            },
-            "associationEnds": [],
-            "dataTypeProperty": {
-              "owningClassifier": {
-                "packageName": "klass.model.meta.domain",
-                "name": "PropertyModifier"
-              },
-              "name": "ordinal"
-            }
+            "id": 158
           }
         }
       ]
@@ -64,21 +42,29 @@
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
+        "id": 31,
         "klass": {
           "name": "DataTypeProperty"
         },
         "associationEnds": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "DataTypeProperty"
+          },
           "name": "classifierName"
         }
       },
       "targetExpressionValue": {
         "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
+        "id": 32,
         "klass": {
           "name": "PropertyModifier"
         },
         "associationEnds": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PropertyModifier"
+          },
           "name": "classifierName"
         }
       }
@@ -89,21 +75,29 @@
       "operator": "==",
       "sourceExpressionValue": {
         "__typename": "klass.model.meta.domain.ThisMemberReferencePath",
+        "id": 33,
         "klass": {
           "name": "DataTypeProperty"
         },
         "associationEnds": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "NamedElement"
+          },
           "name": "name"
         }
       },
       "targetExpressionValue": {
         "__typename": "klass.model.meta.domain.TypeMemberReferencePath",
+        "id": 34,
         "klass": {
           "name": "PropertyModifier"
         },
         "associationEnds": [],
         "dataTypeProperty": {
+          "owningClassifier": {
+            "name": "PropertyModifier"
+          },
           "name": "propertyName"
         }
       }

@@ -1,196 +1,241 @@
 [
   {
     "name": "PrimitiveType",
+    "ordinal": 16,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "INTEGER",
+        "ordinal": 1,
         "prettyName": "Integer"
       },
       {
         "name": "LONG",
+        "ordinal": 2,
         "prettyName": "Long"
       },
       {
         "name": "DOUBLE",
+        "ordinal": 3,
         "prettyName": "Double"
       },
       {
         "name": "FLOAT",
+        "ordinal": 4,
         "prettyName": "Float"
       },
       {
         "name": "BOOLEAN",
+        "ordinal": 5,
         "prettyName": "Boolean"
       },
       {
         "name": "STRING",
+        "ordinal": 6,
         "prettyName": "String"
       },
       {
         "name": "INSTANT",
+        "ordinal": 7,
         "prettyName": "Instant"
       },
       {
         "name": "LOCAL_DATE",
+        "ordinal": 8,
         "prettyName": "LocalDate"
       },
       {
         "name": "TEMPORAL_INSTANT",
+        "ordinal": 9,
         "prettyName": "TemporalInstant"
       },
       {
         "name": "TEMPORAL_RANGE",
+        "ordinal": 10,
         "prettyName": "TemporalRange"
       }
     ]
   },
   {
     "name": "Multiplicity",
+    "ordinal": 17,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "ZERO_TO_ONE",
+        "ordinal": 1,
         "prettyName": "0..1"
       },
       {
         "name": "ONE_TO_ONE",
+        "ordinal": 2,
         "prettyName": "1..1"
       },
       {
         "name": "ZERO_TO_MANY",
+        "ordinal": 3,
         "prettyName": "0..*"
       },
       {
         "name": "ONE_TO_MANY",
+        "ordinal": 4,
         "prettyName": "1..*"
       }
     ]
   },
   {
     "name": "Operator",
+    "ordinal": 48,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "EQUALS",
+        "ordinal": 1,
         "prettyName": "=="
       },
       {
         "name": "NOT_EQUALS",
+        "ordinal": 2,
         "prettyName": "!="
       },
       {
         "name": "LESS_THAN",
+        "ordinal": 3,
         "prettyName": "<"
       },
       {
         "name": "GREATER_THAN",
+        "ordinal": 4,
         "prettyName": ">"
       },
       {
         "name": "LESS_THAN_EQUAL",
+        "ordinal": 5,
         "prettyName": "<="
       },
       {
         "name": "GREATER_THAN_EQUAL",
+        "ordinal": 6,
         "prettyName": ">="
       },
       {
         "name": "IN",
+        "ordinal": 7,
         "prettyName": "in"
       },
       {
         "name": "CONTAINS",
+        "ordinal": 8,
         "prettyName": "contains"
       },
       {
         "name": "STARTS_WITH",
+        "ordinal": 9,
         "prettyName": "startsWith"
       },
       {
         "name": "ENDS_WITH",
+        "ordinal": 10,
         "prettyName": "endsWith"
       }
     ]
   },
   {
     "name": "AssociationEndDirection",
+    "ordinal": 51,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "SOURCE",
+        "ordinal": 1,
         "prettyName": "source"
       },
       {
         "name": "TARGET",
+        "ordinal": 2,
         "prettyName": "target"
       }
     ]
   },
   {
     "name": "OrderByDirection",
+    "ordinal": 75,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "ASCENDING",
+        "ordinal": 1,
         "prettyName": "ascending"
       },
       {
         "name": "DESCENDING",
+        "ordinal": 2,
         "prettyName": "descending"
       }
     ]
   },
   {
     "name": "UrlParameterType",
+    "ordinal": 100,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "QUERY",
+        "ordinal": 1,
         "prettyName": "query"
       },
       {
         "name": "PATH",
+        "ordinal": 2,
         "prettyName": "path"
       }
     ]
   },
   {
     "name": "ServiceMultiplicity",
+    "ordinal": 105,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "ONE",
+        "ordinal": 1,
         "prettyName": "one"
       },
       {
         "name": "MANY",
+        "ordinal": 2,
         "prettyName": "many"
       }
     ]
   },
   {
     "name": "Verb",
+    "ordinal": 106,
     "packageName": "klass.model.meta.domain",
     "enumerationLiterals": [
       {
         "name": "GET",
+        "ordinal": 1,
         "prettyName": null
       },
       {
         "name": "POST",
+        "ordinal": 2,
         "prettyName": null
       },
       {
         "name": "PUT",
+        "ordinal": 3,
         "prettyName": null
       },
       {
         "name": "PATCH",
+        "ordinal": 4,
         "prettyName": null
       },
       {
         "name": "DELETE",
+        "ordinal": 5,
         "prettyName": null
       }
     ]
