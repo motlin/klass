@@ -8,7 +8,7 @@
         "keyDouble": 1.0123456789,
         "keyFloat": 1.0123457,
         "keyBoolean": true,
-        "keyInstant": "1999-12-31T18:59:00Z",
+        "keyInstant": "1999-12-31T23:59:00Z",
         "keyLocalDate": "1999-12-31",
         "everyTypeForeignKeyProperties": [
           {
@@ -19,7 +19,7 @@
             "foreignKeyDouble": 1.0123456789,
             "foreignKeyFloat": 1.0123457,
             "foreignKeyBoolean": true,
-            "foreignKeyInstant": "1999-12-31T18:59:00Z",
+            "foreignKeyInstant": "1999-12-31T23:59:00Z",
             "foreignKeyLocalDate": "1999-12-31",
             "data": "EveryTypeForeignKeyProperty data 1 ☝"
           }
@@ -35,7 +35,7 @@
         "keyDouble": 2.0123456789,
         "keyFloat": 2.0123456,
         "keyBoolean": false,
-        "keyInstant": "1999-12-31T19:00:00Z",
+        "keyInstant": "2000-01-01T00:00:00Z",
         "keyLocalDate": "2000-01-01",
         "everyTypeForeignKeyProperties": [
           {
@@ -46,7 +46,7 @@
             "foreignKeyDouble": 2.0123456789,
             "foreignKeyFloat": 2.0123456,
             "foreignKeyBoolean": false,
-            "foreignKeyInstant": "1999-12-31T19:00:00Z",
+            "foreignKeyInstant": "2000-01-01T00:00:00Z",
             "foreignKeyLocalDate": "2000-01-01",
             "data": "EveryTypeForeignKeyProperty data 2 ✌"
           }
@@ -71,7 +71,7 @@
           "email": "User email 1 ☝"
         },
         "lastUpdatedById": "User userId 1 ☝",
-        "createdOn": "1999-12-31T18:59:00Z",
+        "createdOn": "1999-12-31T23:59:00Z",
         "createdBy": {
           "email": "User email 1 ☝"
         },
@@ -94,7 +94,7 @@
           "email": null
         },
         "lastUpdatedById": "User userId 2 ✌",
-        "createdOn": "1999-12-31T19:00:00Z",
+        "createdOn": "2000-01-01T00:00:00Z",
         "createdBy": {
           "email": null
         },
