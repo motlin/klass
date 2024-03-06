@@ -33,7 +33,7 @@ public final class DatabaseDdlExecutor
     {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
-                .setUrls(ClasspathHelper.forJavaClassPath());
+                .setUrls(ClasspathHelper.forClassLoader(Thread.currentThread().getContextClassLoader()));
         Reflections        reflections  = new Reflections(configurationBuilder);
         MutableSet<String> ddlLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.ddl")));
         MutableSet<String> idxLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.idx")));
