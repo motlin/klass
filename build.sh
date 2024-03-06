@@ -3,6 +3,8 @@
 set -euxo pipefail
 
 # Remove artifacts we are about to build from local caches
+rm -rf .m2/io/liftwizard/
+rm -rf ~/.m2/repository/io/liftwizard/
 rm -rf .m2/cool/klass/
 rm -rf ~/.m2/repository/cool/klass/
 
