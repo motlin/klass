@@ -28,7 +28,7 @@ public class HttpLoggingBundle implements Bundle
     public void run(@Nonnull Environment environment)
     {
         Config config              = ConfigFactory.load();
-        Config jerseyLoggingConfig = config.getConfig("jersey.logging");
+        Config jerseyLoggingConfig = config.getConfig("klass.jersey.logging");
         String levelString         = jerseyLoggingConfig.getString("level");
         String verbosityString     = jerseyLoggingConfig.getString("verbosity");
         int    maxEntitySize       = jerseyLoggingConfig.getInt("maxEntitySize");

@@ -24,7 +24,7 @@ public final class ReladomoConfig
     public static void configure()
     {
         Config config         = ConfigFactory.load();
-        Config reladomoConfig = config.getConfig("reladomo");
+        Config reladomoConfig = config.getConfig("klass.data.reladomo");
 
         int          transactionTimeoutSeconds = reladomoConfig.getInt("transactionTimeoutSeconds");
         List<String> reladomoRuntimeConfigurationPaths = reladomoConfig.getStringList("reladomoRuntimeConfigurationPaths");

@@ -30,7 +30,7 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
     private H2ConnectionManager()
     {
         Config config                    = ConfigFactory.load();
-        Config h2Config                  = config.getConfig("reladomo.connectionManager.h2");
+        Config h2Config                  = config.getConfig("klass.data.reladomo.connectionManager.h2");
         String driverClassName           = h2Config.getString("driverClassName");
         int    maxWait                   = h2Config.getInt("maxWait");
         String jdbcConnectionString      = h2Config.getString("jdbcConnectionString");

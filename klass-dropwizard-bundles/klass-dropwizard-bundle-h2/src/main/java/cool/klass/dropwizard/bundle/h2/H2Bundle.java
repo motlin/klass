@@ -34,7 +34,7 @@ public class H2Bundle implements Bundle
     public void run(@Nonnull Environment environment)
     {
         Config  config         = ConfigFactory.load();
-        Config  h2BundleConfig = config.getConfig("bundle.h2");
+        Config  h2BundleConfig = config.getConfig("klass.data.h2");
         boolean runEmbedded    = h2BundleConfig.getBoolean("runEmbedded");
 
         if (LOGGER.isDebugEnabled())

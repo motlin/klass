@@ -138,7 +138,7 @@ public class AbstractApplicationGenerator
                 + "\n"
                 + "    public DomainModel getDomainModel(Config klassConfig)\n"
                 + "    {\n"
-                + "        List<String> klassSourcePackages = klassConfig.getStringList(\"klassSourcePackages\");\n"
+                + "        List<String> klassSourcePackages = klassConfig.getStringList(\"domain.sourcePackages\");\n"
                 + "        DomainModelLoader domainModelLoader = new DomainModelLoader(Lists.immutable.withAll(klassSourcePackages));\n"
                 + "        return domainModelLoader.load();\n"
                 + "    }\n"

@@ -27,7 +27,7 @@ public final class ObjectMapperConfig
     public static void configure(@Nonnull ObjectMapper objectMapper)
     {
         Config config             = ConfigFactory.load();
-        Config objectMapperConfig = config.getConfig("jackson.objectmapper");
+        Config objectMapperConfig = config.getConfig("klass.jackson.objectmapper");
 
         if (LOGGER.isDebugEnabled())
         {
