@@ -14,7 +14,6 @@ import cool.klass.model.converter.compiler.error.RootCompilerError;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.test.constants.KlassTestConstants;
-import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Test;
 
@@ -55,7 +54,7 @@ public class DataTransferObjectGeneratorTest
                     domainModel,
                     now);
 
-            Klass  klass           = StackOverflowDomainModel.Question;
+            Klass  klass           = domainModel.getClassByName("Question");
             String klassSourceCode = dataTransferObjectsGenerator.getClassSourceCode(klass);
 
             //<editor-fold desc="expected java code">
