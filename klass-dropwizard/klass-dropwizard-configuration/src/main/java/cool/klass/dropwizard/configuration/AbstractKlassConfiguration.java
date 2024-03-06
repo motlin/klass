@@ -16,6 +16,7 @@ import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactory;
 import cool.klass.dropwizard.configuration.ddl.executor.DdlExecutorFactoryProvider;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
+import cool.klass.dropwizard.configuration.enabled.EnabledFactory;
 import cool.klass.dropwizard.configuration.h2.H2Factory;
 import cool.klass.dropwizard.configuration.h2.H2FactoryProvider;
 import cool.klass.dropwizard.configuration.http.logging.JerseyHttpLoggingFactory;
@@ -29,7 +30,14 @@ import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider
 import io.dropwizard.Configuration;
 
 public class AbstractKlassConfiguration extends Configuration
-        implements JerseyHttpLoggingFactoryProvider, H2FactoryProvider, CorsFactoryProvider, DdlExecutorFactoryProvider, AuthFilterFactoryProvider, ObjectMapperFactoryProvider, ReladomoFactoryProvider, SampleDataFactoryProvider
+        implements JerseyHttpLoggingFactoryProvider,
+        H2FactoryProvider,
+        CorsFactoryProvider,
+        DdlExecutorFactoryProvider,
+        AuthFilterFactoryProvider,
+        ObjectMapperFactoryProvider,
+        ReladomoFactoryProvider,
+        SampleDataFactoryProvider
 {
     private @Valid @NotNull KlassFactory             klassFactory             = new KlassFactory();
     private @Valid @NotNull JerseyHttpLoggingFactory jerseyHttpLoggingFactory = new JerseyHttpLoggingFactory();

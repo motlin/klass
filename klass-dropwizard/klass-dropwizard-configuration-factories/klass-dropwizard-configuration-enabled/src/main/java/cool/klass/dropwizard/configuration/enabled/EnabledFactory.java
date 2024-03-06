@@ -1,4 +1,4 @@
-package cool.klass.dropwizard.configuration;
+package cool.klass.dropwizard.configuration.enabled;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
