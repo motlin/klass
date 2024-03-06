@@ -16,7 +16,6 @@
     <name>Klass Test (Module Group)</name>
 
     <modules>
-        <module>klass-test-constants</module>
         <module>klass-tests</module>
     </modules>
 </project>

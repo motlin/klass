@@ -9,7 +9,6 @@ import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
-import cool.klass.test.constants.KlassTestConstants;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -32,11 +31,13 @@ public class DataTransferObjectGeneratorTest
     @Test
     public void stackOverflow()
     {
+        String sourceCodeText = FileMatchRule.slurp("stackoverflow.klass", this.getClass());
+
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),
                 "example.klass",
-                KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT);
+                sourceCodeText);
         KlassCompiler     compiler          = new KlassCompiler(compilationUnit);
         CompilationResult compilationResult = compiler.compile();
 

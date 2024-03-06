@@ -8,7 +8,6 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
-import cool.klass.test.constants.KlassTestConstants;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.junit.Rule;
@@ -30,7 +29,7 @@ public class KlassSourceCodeHtmlGeneratorTest
     @Test
     public void smokeTest()
     {
-        String sourceCodeText = KlassTestConstants.STACK_OVERFLOW_SOURCE_CODE_TEXT;
+        String              sourceCodeText = FileMatchRule.slurp("stackoverflow.klass", this.getClass());
         CompilationUnit compilationUnit = CompilationUnit.createFromText(
                 0,
                 Optional.empty(),
