@@ -27,6 +27,7 @@
         <module>klass-dropwizard</module>
         <module>klass-jackson-jsonview</module>
         <module>klass-graphql</module>
+        <module>klass-firebase-principal</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
     </modules>
