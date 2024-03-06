@@ -14,6 +14,8 @@
               <option value="install" />
               <option value="checkstyle:check" />
               <option value="-Dmaven.repo.local=.m2" />
+              <option value="--activate-profiles" />
+              <option value="shade,!run-demo" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />

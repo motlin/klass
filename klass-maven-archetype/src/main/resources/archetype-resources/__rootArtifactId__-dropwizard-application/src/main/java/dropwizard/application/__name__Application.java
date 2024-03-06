@@ -4,7 +4,9 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
+import ${package}.dropwizard.bundle.${name}TestDataGeneratorBundle;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -26,6 +28,8 @@ public class ${name}Application extends Abstract${name}Application
         {
             bootstrap.addBundle(bundle);
         }
+
+        bootstrap.addBundle(new ${name}TestDataGeneratorBundle());
 
         // TODO: application initialization
     }

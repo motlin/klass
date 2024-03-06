@@ -19,10 +19,10 @@
         <app.rootPackageName>\${package}</app.rootPackageName>
         <app.name>\${name}</app.name>
 
+        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <mainClass>${app.rootPackageName}.dropwizard.application.${app.name}Application</mainClass>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -308,6 +308,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-bom</artifactId>
@@ -455,91 +456,6 @@
                 <version>\${jackson.version}</version>
             </dependency>
 
-            <dependency>
-                <!--org.apache.maven:maven-plugin-api:3.5.3-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.1.0-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.0.17-->
-
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-plugin-api</artifactId>
-                <version>\${maven-api.version}</version>
-            </dependency>
-
-            <dependency>
-                <!--org.apache.maven:maven-plugin-api:3.5.3-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.1.0-->
-                <!--depends on org.codehaus.plexus:plexus-utils:3.0.17-->
-
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-utils</artifactId>
-                <version>\${plexus-utils.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-artifact</artifactId>
-                <version>\${maven-api.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-core</artifactId>
-                <version>\${maven-api.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-model</artifactId>
-                <version>\${maven-api.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-project</artifactId>
-                <version>\${maven-project.version}</version>
-
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-interpolation</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging-api</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-classworlds</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-component-annotations</artifactId>
-                <version>\${plexus-component-annotations.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.maven.plugin-tools</groupId>
-                <artifactId>maven-plugin-annotations</artifactId>
-                <version>\${maven-plugin-annotations.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
-
 </project>

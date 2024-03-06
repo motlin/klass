@@ -7,7 +7,7 @@ server:
 logging:
   level: INFO
   loggers:
-    ${groupId}: DEBUG
+    ${package}: DEBUG
     com.gs.fw.common.mithra.sqllogs: DEBUG
     com.gs.fw.common.mithra.batch.sqllogs: DEBUG
     com.gs.fw.common.mithra.connectionmanager: INFO
