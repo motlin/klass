@@ -19,6 +19,7 @@ import io.dropwizard.Bundle;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +88,9 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     private void initializeDynamicBundles(@Nonnull Bootstrap<T> bootstrap)
     {
         ServiceLoader<Bundle> bundleServiceLoader = ServiceLoader.load(Bundle.class);
-        for (Bundle bundle : bundleServiceLoader)
+        ImmutableList<Bundle> bundles             = Lists.immutable.withAll(bundleServiceLoader);
+        LOGGER.info("Found Bundles: {}", bundles.makeString());
+        for (Bundle bundle : bundles)
         {
             if (bundle instanceof KlassBundle)
             {
@@ -101,6 +104,8 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     private void initializeDynamicKlassBundles(@Nonnull Bootstrap<T> bootstrap)
     {
         ServiceLoader<KlassBundle> klassBundleServiceLoader = ServiceLoader.load(KlassBundle.class);
+        ImmutableList<KlassBundle> klassBundles             = Lists.immutable.withAll(klassBundleServiceLoader);
+        LOGGER.info("Found KlassBundles: {}", klassBundles.makeString());
         for (KlassBundle klassBundle : klassBundleServiceLoader)
         {
             klassBundle.initialize(this.domainModel, this.dataStore);
