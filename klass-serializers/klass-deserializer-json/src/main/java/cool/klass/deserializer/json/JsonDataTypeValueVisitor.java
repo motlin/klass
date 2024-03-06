@@ -44,7 +44,7 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
             return null;
         }
 
-        JsonDataTypeValueVisitor visitor = new JsonDataTypeValueVisitor(jsonDataTypeValue);
+        var visitor = new JsonDataTypeValueVisitor(jsonDataTypeValue);
         dataTypeProperty.visit(visitor);
         return visitor.getResult();
     }
@@ -57,7 +57,7 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
     @Override
     public void visitPrimitiveProperty(@Nonnull PrimitiveProperty primitiveProperty)
     {
-        JsonPrimitiveTypeValueVisitor visitor = new JsonPrimitiveTypeValueVisitor(this.jsonDataTypeValue);
+        var visitor = new JsonPrimitiveTypeValueVisitor(this.jsonDataTypeValue);
         primitiveProperty.getType().visit(visitor);
         this.result = visitor.getResult();
     }
