@@ -359,6 +359,34 @@ public class ReladomoOperationCompilerTest
         this.assertCompiles(finder, "OwnedNaturalOneToManySource.target { OwnedNaturalOneToManyTarget.source.value = \"value\" } not exists", OwnedNaturalOneToManySourceFinder.target().recursiveNotExists(innerOperation));
     }
 
+    @Test
+    public void conjunctionOperations()
+    {
+        this.assertCompiles(
+                "this.optionalBoolean = true & this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).and(FINDER.optionalInteger().eq(4)));
+
+        this.assertCompiles(
+                "this.optionalBoolean = true && this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).and(FINDER.optionalInteger().eq(4)));
+
+        this.assertCompiles(
+                "this.optionalBoolean = true and this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).and(FINDER.optionalInteger().eq(4)));
+
+        this.assertCompiles(
+                "this.optionalBoolean = true | this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).or(FINDER.optionalInteger().eq(4)));
+
+        this.assertCompiles(
+                "this.optionalBoolean = true || this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).or(FINDER.optionalInteger().eq(4)));
+
+        this.assertCompiles(
+                "this.optionalBoolean = true or this.optionalInteger = 4",
+                FINDER.optionalBoolean().eq(true).or(FINDER.optionalInteger().eq(4)));
+    }
+
     private void assertCompiles(String sourceCodeText, Operation operation)
     {
         this.assertCompiles(FINDER, sourceCodeText, operation);
