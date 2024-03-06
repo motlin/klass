@@ -7,15 +7,15 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class KlassResponse
+public class KlassResponseWithPagination
 {
     @Nonnull
-    private final KlassResponseMetadata metadata;
+    private final Object                              data;
     @Nonnull
-    private final Object                data;
+    private final KlassResponseMetadataWithPagination metadata;
 
     @JsonCreator
-    public KlassResponse(@Nonnull Object data, @Nonnull KlassResponseMetadata metadata)
+    public KlassResponseWithPagination(@Nonnull Object data, @Nonnull KlassResponseMetadataWithPagination metadata)
     {
         this.metadata = Objects.requireNonNull(metadata);
         this.data = Objects.requireNonNull(data);
@@ -23,7 +23,7 @@ public class KlassResponse
 
     @Nonnull
     @JsonProperty("_metadata")
-    public KlassResponseMetadata getMetadata()
+    public KlassResponseMetadataWithPagination getMetadata()
     {
         return this.metadata;
     }

@@ -2,13 +2,13 @@ package cool.klass.jackson.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class KlassMetadata
+public class KlassResponsePagination
 {
     private final int pageNumber;
     private final int numberOfPages;
 
     @JsonCreator
-    public KlassMetadata(int pageNumber, int numberOfPages)
+    public KlassResponsePagination(int pageNumber, int numberOfPages)
     {
         this.pageNumber = pageNumber;
         this.numberOfPages = numberOfPages;
