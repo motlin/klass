@@ -853,6 +853,36 @@ public class ReladomoDataStore
         return result;
     }
 
+    @Override
+    public Object getSubClass(Object persistentInstance, Klass superClass, Klass subClass)
+    {
+        if (!subClass.isStrictSubTypeOf(superClass))
+        {
+            throw new AssertionError("Expected " + subClass + " to be a strict subtype of " + superClass);
+        }
+
+        RelatedFinder<?> finder = this.getRelatedFinder(superClass);
+
+        String relationshipName = UPPER_TO_LOWER_CAMEL.convert(subClass.getName()) + "SubClass";
+
+        AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder.getRelationshipFinderByName(relationshipName);
+
+        if (relationshipFinder == null)
+        {
+            String detailMessage = "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property " + relationshipName;
+            throw new AssertionError(detailMessage);
+        }
+
+        Object result = relationshipFinder.valueOf(persistentInstance);
+        Objects.requireNonNull(
+                result,
+                () -> "Expected result to not be null for superClass: %s, subClass: %s, persistentInstance: %s".formatted(
+                        superClass,
+                        subClass,
+                        persistentInstance));
+        return result;
+    }
+
     private RelatedFinder<?> getRelatedFinder(@Nonnull MithraObject mithraObject)
     {
         return mithraObject.zGetPortal().getFinder();

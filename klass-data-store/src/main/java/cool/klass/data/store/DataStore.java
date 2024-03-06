@@ -63,4 +63,6 @@ public interface DataStore
     Klass getMostSpecificSubclass(Object persistentInstance, Klass klass);
 
     Object getSuperClass(Object persistentInstance, Klass klass);
+
+    Object getSubClass(Object persistentInstance, Klass superClass, Klass subClass);
 }
