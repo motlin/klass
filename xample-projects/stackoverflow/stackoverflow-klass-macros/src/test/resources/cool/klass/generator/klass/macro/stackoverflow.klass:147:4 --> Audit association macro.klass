@@ -15,4 +15,3 @@ association AnswerHasLastUpdatedBy
 
     relationship this.lastUpdatedById == User.userId
 }
-

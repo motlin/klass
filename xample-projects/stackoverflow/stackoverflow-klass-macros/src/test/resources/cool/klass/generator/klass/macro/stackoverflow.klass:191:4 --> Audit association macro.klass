@@ -15,4 +15,3 @@ association QuestionVoteHasLastUpdatedBy
 
     relationship this.lastUpdatedById == User.userId
 }
-

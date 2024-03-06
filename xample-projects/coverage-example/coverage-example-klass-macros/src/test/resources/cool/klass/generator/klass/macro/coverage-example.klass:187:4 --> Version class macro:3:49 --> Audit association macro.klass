@@ -15,4 +15,3 @@ association EveryTypeKeyPropertyVersionHasLastUpdatedBy
 
     relationship this.lastUpdatedById == User.userId
 }
-

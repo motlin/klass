@@ -15,4 +15,3 @@ association PropertiesRequiredHasLastUpdatedBy
 
     relationship this.lastUpdatedById == User.userId
 }
-

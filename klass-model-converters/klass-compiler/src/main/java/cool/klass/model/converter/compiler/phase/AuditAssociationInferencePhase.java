@@ -91,7 +91,7 @@ public class AuditAssociationInferencePhase
 
         StringBuilder stringBuilder = new StringBuilder();
         AntlrClass    klass    = this.compilerState.getCompilerWalk().getKlass();
-        stringBuilder.append("package " + klass.getPackageName() + "\n\n");
+        stringBuilder.append("package " + klass.getPackageName() + "\n");
 
         if (needsCreatedBy)
         {
@@ -156,7 +156,7 @@ public class AuditAssociationInferencePhase
         AntlrDataTypeProperty<?> auditProperty = klass.getAllDataTypeProperties().detect(predicate);
 
         //language=Klass
-        return ""
+        return "\n"
                 + "association " + className + "Has" + suffix + "\n"
                 + "{\n"
                 + "    " + associationEndName + suffix + ": " + className + "[0..*];\n"
@@ -164,7 +164,6 @@ public class AuditAssociationInferencePhase
                 + "\n"
                 + "    relationship this." + auditProperty.getName() + " == " + userClass.getName() + "." + userIdPropertyName
                 + "\n"
-                + "}\n"
-                + "\n";
+                + "}\n";
     }
 }

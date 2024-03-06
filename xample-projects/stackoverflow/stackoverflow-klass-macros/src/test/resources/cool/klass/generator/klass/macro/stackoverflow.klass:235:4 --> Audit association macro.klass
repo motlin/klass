@@ -15,4 +15,3 @@ association TagHasLastUpdatedBy
 
     relationship this.lastUpdatedById == User.userId
 }
-
