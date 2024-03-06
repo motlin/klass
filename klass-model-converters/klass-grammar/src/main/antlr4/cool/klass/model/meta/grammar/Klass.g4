@@ -144,7 +144,7 @@ primitiveType: 'Boolean' | 'Integer' | 'Long' | 'Double' | 'Float' | 'String' | 
 
 // modifiers
 classModifier: 'systemTemporal' | 'validTemporal' | 'bitemporal' | 'versioned' | 'audited' | 'optimisticallyLocked' | 'transient';
-propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version';
+propertyModifier: 'key' | 'private' | 'userId' | 'id' | 'valid' | 'system' | 'from' | 'to' | 'createdBy' | 'createdOn' | 'lastUpdatedBy' | 'version' | 'derived';
 associationEndModifier: 'owned' | 'final' | 'version';
 parameterizedPropertyModifier: 'createdBy' | 'lastUpdatedBy';
 parameterModifier: 'version' | 'userId' | 'id';
@@ -297,6 +297,7 @@ MODIFIER_PROPERTY_TO              : 'to';
 MODIFIER_PROPERTY_CREATED_BY      : 'createdBy';
 MODIFIER_PROPERTY_CREATED_ON      : 'createdOn';
 MODIFIER_PROPERTY_LAST_UPDATED_BY : 'lastUpdatedBy';
+MODIFIER_PROPERTY_DERIVED         : 'derived';
 
 // associationEndModifiers
 MODIFIER_ASSOCIATION_END_OWNED   : 'owned';

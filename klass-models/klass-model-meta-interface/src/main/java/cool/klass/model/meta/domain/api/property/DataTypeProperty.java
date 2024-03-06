@@ -116,4 +116,9 @@ public interface DataTypeProperty extends Property
     boolean isForeignKey();
 
     boolean isVersion();
+
+    default boolean isDerived()
+    {
+        return this.getPropertyModifiers().anySatisfy(PropertyModifier::isDerived);
+    }
 }

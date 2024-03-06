@@ -140,6 +140,7 @@ public class ReladomoObjectFileGenerator extends AbstractReladomoGenerator
 
         ImmutableList<AttributeType> attributeTypes = this.getDataTypeProperties(klass)
                 .reject(DataTypeProperty::isTemporal)
+                .reject(DataTypeProperty::isDerived)
                 .collect(this::convertToAttributeType);
 
         // TODO: Test that private properties are not included in Projections

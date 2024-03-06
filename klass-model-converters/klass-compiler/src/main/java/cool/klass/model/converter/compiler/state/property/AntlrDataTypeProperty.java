@@ -95,6 +95,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.modifierStates.anySatisfy(AntlrPropertyModifier::isAudit);
     }
 
+    public boolean isDerived()
+    {
+        return this.modifierStates.anySatisfy(AntlrPropertyModifier::isDerived);
+    }
+
     public boolean isOptional()
     {
         return this.isOptional;

@@ -71,4 +71,9 @@ public interface PropertyModifier extends NamedElement
     {
         return this.getName().equals("version");
     }
+
+    default boolean isDerived()
+    {
+        return this.getName().equals("derived");
+    }
 }

@@ -63,6 +63,7 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.MODIFIER_PROPERTY_CREATED_BY:
             case KlassLexer.MODIFIER_PROPERTY_CREATED_ON:
             case KlassLexer.MODIFIER_PROPERTY_LAST_UPDATED_BY:
+            case KlassLexer.MODIFIER_PROPERTY_DERIVED:
                 return getStringDim(text, YELLOW);
             case KlassLexer.MODIFIER_ASSOCIATION_END_OWNED:
             case KlassLexer.MODIFIER_ASSOCIATION_END_FINAL:
