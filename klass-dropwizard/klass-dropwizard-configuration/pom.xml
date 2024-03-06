@@ -47,77 +47,77 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-named-data-source-factory</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-clock</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-http</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-h2</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-ddl-executor</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-cors</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-object-mapper</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-reladomo</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-clock-fixed</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-uuid</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-enabled</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-logging-config</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-data-source</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-connection-manager</artifactId>
         </dependency>
 

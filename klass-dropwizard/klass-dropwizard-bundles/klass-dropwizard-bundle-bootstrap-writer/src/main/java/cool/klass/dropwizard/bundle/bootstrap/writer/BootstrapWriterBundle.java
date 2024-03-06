@@ -8,8 +8,8 @@ import cool.klass.dropwizard.configuration.AbstractKlassConfiguration;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
-import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

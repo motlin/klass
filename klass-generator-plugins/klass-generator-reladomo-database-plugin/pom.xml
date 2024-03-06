@@ -22,7 +22,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-maven-reladomo-logger</artifactId>
         </dependency>
 

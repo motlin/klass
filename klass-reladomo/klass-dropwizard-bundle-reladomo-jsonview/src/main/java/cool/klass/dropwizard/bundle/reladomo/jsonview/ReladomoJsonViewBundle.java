@@ -10,8 +10,8 @@ import cool.klass.data.store.DataStore;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.DataStoreFactoryProvider;
 import cool.klass.serialization.jackson.jsonview.reladomo.ReladomoJsonViewSerializer;
-import com.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.prioritized.PrioritizedBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

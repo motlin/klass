@@ -53,7 +53,7 @@ public class AbstractApplicationGenerator
                 + "import javax.annotation.Nonnull;\n"
                 + "\n"
                 + "import cool.klass.data.store.DataStore;\n"
-                + "import com.liftwizard.dropwizard.application.AbstractLiftwizardApplication;\n"
+                + "import io.liftwizard.dropwizard.application.AbstractLiftwizardApplication;\n"
                 + "import " + this.rootPackageName + ".service.resource.*;\n"
                 + "import io.dropwizard.setup.Environment;\n"
                 + "import klass.model.meta.domain.service.resource.*;\n"

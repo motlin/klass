@@ -10,7 +10,7 @@ import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
-import com.liftwizard.junit.rule.match.file.FileMatchRule;
+import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.Rule;
 import org.junit.Test;

@@ -9,7 +9,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
 import cool.klass.model.meta.domain.api.projection.Projection;
-import com.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
+import io.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
 // Priority must be greater than the priority of StructuredArgumentLoggingFilter
 @Provider

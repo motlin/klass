@@ -37,7 +37,7 @@ public class GenerateReladomoRuntimeConfigurationMojo extends AbstractGenerateMo
             property = "connectionManagerClassName",
             required = true,
             readonly = true,
-            defaultValue = "com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder")
+            defaultValue = "io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder")
     private String connectionManagerClassName;
 
     @Parameter(

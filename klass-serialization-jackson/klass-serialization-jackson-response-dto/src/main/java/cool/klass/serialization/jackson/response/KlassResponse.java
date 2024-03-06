@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
+import io.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 
 @JsonPropertyOrder({"_metadata", "_data"})
 public class KlassResponse

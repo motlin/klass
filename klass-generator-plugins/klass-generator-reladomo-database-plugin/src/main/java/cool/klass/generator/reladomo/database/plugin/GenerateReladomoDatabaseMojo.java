@@ -3,7 +3,7 @@ package cool.klass.generator.reladomo.database.plugin;
 import java.io.File;
 
 import com.gs.fw.common.mithra.generator.dbgenerator.CoreMithraDbDefinitionGenerator;
-import com.liftwizard.maven.reladomo.logger.MavenReladomoLogger;
+import io.liftwizard.maven.reladomo.logger.MavenReladomoLogger;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;

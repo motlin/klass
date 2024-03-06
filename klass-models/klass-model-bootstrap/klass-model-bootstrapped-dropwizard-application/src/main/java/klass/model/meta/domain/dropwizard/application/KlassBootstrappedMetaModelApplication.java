@@ -4,13 +4,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.dropwizard.bundle.reladomo.jsonview.ReladomoJsonViewBundle;
 import cool.klass.dropwizard.bundle.reladomo.response.ReladomoResponseBundle;
-import com.liftwizard.dropwizard.bundle.ddl.executor.DdlExecutorBundle;
-import com.liftwizard.dropwizard.bundle.h2.H2Bundle;
-import com.liftwizard.dropwizard.bundle.named.data.source.NamedDataSourceBundle;
-import com.liftwizard.dropwizard.bundle.reladomo.ReladomoBundle;
-import com.liftwizard.dropwizard.bundle.reladomo.connection.manager.ConnectionManagerBundle;
-import com.liftwizard.dropwizard.bundle.reladomo.connection.manager.holder.ConnectionManagerHolderBundle;
 import io.dropwizard.setup.Bootstrap;
+import io.liftwizard.dropwizard.bundle.ddl.executor.DdlExecutorBundle;
+import io.liftwizard.dropwizard.bundle.h2.H2Bundle;
+import io.liftwizard.dropwizard.bundle.named.data.source.NamedDataSourceBundle;
+import io.liftwizard.dropwizard.bundle.reladomo.ReladomoBundle;
+import io.liftwizard.dropwizard.bundle.reladomo.connection.manager.ConnectionManagerBundle;
+import io.liftwizard.dropwizard.bundle.reladomo.connection.manager.holder.ConnectionManagerHolderBundle;
 
 public class KlassBootstrappedMetaModelApplication extends AbstractKlassBootstrappedMetaModelApplication
 {

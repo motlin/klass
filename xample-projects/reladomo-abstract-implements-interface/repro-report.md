@@ -37,7 +37,7 @@ I've put together a small repro.
             columnName="id">
         <SimulatedSequence
             sequenceName="MyAbstractClass"
-            sequenceObjectFactoryName="com.liftwizard.reladomo.simseq.ObjectSequenceObjectFactory"
+            sequenceObjectFactoryName="io.liftwizard.reladomo.simseq.ObjectSequenceObjectFactory"
             hasSourceAttribute="false"
             batchSize="10"
             initialValue="1"

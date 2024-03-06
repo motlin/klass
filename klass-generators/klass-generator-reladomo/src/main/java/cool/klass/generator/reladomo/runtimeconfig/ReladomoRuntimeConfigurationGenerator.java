@@ -176,7 +176,7 @@ public class ReladomoRuntimeConfigurationGenerator extends AbstractReladomoGener
     private static MithraObjectConfigurationType createObjectSequenceObjectConfigurationType()
     {
         return ReladomoRuntimeConfigurationGenerator.createMithraObjectConfigurationType(
-                "com.liftwizard.reladomo.simseq.ObjectSequence",
+                "io.liftwizard.reladomo.simseq.ObjectSequence",
                 CacheType.NONE);
     }
 

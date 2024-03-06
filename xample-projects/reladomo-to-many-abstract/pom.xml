@@ -30,14 +30,14 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.liftwizard</groupId>
+                <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-dependencies</artifactId>
                 <version>0.1.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.liftwizard</groupId>
+                <groupId>io.liftwizard</groupId>
                 <artifactId>liftwizard-bom</artifactId>
                 <version>0.1.0</version>
                 <type>pom</type>

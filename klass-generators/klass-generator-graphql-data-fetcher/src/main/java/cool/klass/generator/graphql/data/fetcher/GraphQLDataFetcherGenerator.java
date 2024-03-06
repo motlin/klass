@@ -114,7 +114,7 @@ public class GraphQLDataFetcherGenerator
         String sourceCode = ""
                 + "package " + this.rootPackageName + ".graphql.data.fetcher.all;\n"
                 + "\n"
-                + "import com.liftwizard.reladomo.graphql.deep.fetcher.GraphQLDeepFetcher;\n"
+                + "import io.liftwizard.reladomo.graphql.deep.fetcher.GraphQLDeepFetcher;\n"
                 + "import " + klass.getPackageName() + "." + klass.getName() + "Finder;\n"
                 + "import " + klass.getPackageName() + "." + klass.getName() + "List;\n"
                 + "import graphql.schema.DataFetcher;\n"

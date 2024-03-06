@@ -9,8 +9,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.liftwizard.reladomo.test.rule.ReladomoTestFile;
-import com.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import com.stackoverflow.dropwizard.application.StackOverflowApplication;
 import com.stackoverflow.dropwizard.application.StackOverflowConfiguration;
 import io.dropwizard.client.JerseyClientBuilder;
@@ -18,6 +16,8 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
+import io.liftwizard.reladomo.test.rule.ReladomoTestFile;
+import io.liftwizard.reladomo.test.rule.ReladomoTestRule;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;

@@ -11,7 +11,7 @@ import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
-import com.liftwizard.dropwizard.configuration.uuid.seed.SeedUUIDSupplier;
+import io.liftwizard.dropwizard.configuration.uuid.seed.SeedUUIDSupplier;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;

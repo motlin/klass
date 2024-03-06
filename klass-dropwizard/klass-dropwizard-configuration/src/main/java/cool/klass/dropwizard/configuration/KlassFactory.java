@@ -8,8 +8,8 @@ import cool.klass.dropwizard.configuration.data.store.DataStoreFactory;
 import cool.klass.dropwizard.configuration.data.store.reladomo.ReladomoDataStoreFactory;
 import cool.klass.dropwizard.configuration.domain.model.loader.DomainModelFactory;
 import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
-import com.liftwizard.dropwizard.configuration.clock.ClockFactory;
-import com.liftwizard.dropwizard.configuration.clock.fixed.FixedClockFactory;
+import io.liftwizard.dropwizard.configuration.clock.ClockFactory;
+import io.liftwizard.dropwizard.configuration.clock.fixed.FixedClockFactory;
 
 public class KlassFactory
 {

@@ -23,7 +23,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-graphql-deep-fetcher</artifactId>
             <version>${liftwizard.version}</version>
         </dependency>

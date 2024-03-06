@@ -7,13 +7,13 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
-import com.liftwizard.junit.rule.match.json.JsonMatchRule;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.dropwizard.util.Duration;
+import io.liftwizard.dropwizard.configuration.reladomo.ReladomoFactory;
+import io.liftwizard.junit.rule.match.json.JsonMatchRule;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelApplication;
 import klass.model.meta.domain.dropwizard.application.KlassBootstrappedMetaModelConfiguration;
 import org.eclipse.collections.impl.utility.Iterate;

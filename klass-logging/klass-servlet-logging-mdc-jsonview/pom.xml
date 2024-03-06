@@ -29,7 +29,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-logging-mdc-closeable</artifactId>
         </dependency>
 

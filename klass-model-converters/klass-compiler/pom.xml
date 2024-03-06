@@ -100,7 +100,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-match-file</artifactId>
             <scope>test</scope>
         </dependency>

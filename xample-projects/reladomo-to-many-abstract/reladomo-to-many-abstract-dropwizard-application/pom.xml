@@ -67,7 +67,7 @@
                             <outputFilename>ReladomoRuntimeConfiguration.xml</outputFilename>
                             <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
-                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                                io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
                             <isTest>false</isTest>
                         </configuration>
@@ -85,7 +85,7 @@
                             <outputFilename>ReladomoRuntimeFullyCachedConfiguration.xml</outputFilename>
                             <connectionManagerName>h2-tcp</connectionManagerName>
                             <connectionManagerClassName>
-                                com.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
+                                io.liftwizard.reladomo.connection.manager.holder.ConnectionManagerHolder
                             </connectionManagerClassName>
                             <isTest>false</isTest>
                             <cacheType>full</cacheType>
@@ -189,7 +189,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-clock</artifactId>
         </dependency>
 
@@ -215,49 +215,49 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-cors</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-object-mapper</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-auth-filter</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-ddl-executor</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-named-data-source</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-connection-manager</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-reladomo</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -277,7 +277,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -289,7 +289,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
         </dependency>
 
@@ -315,13 +315,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-simulated-sequence-ddls</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -351,13 +351,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-connection-manager-holder</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
             <scope>test</scope>
         </dependency>
@@ -370,7 +370,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liftwizard</groupId>
+            <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
             <scope>test</scope>
         </dependency>

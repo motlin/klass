@@ -3,8 +3,8 @@
 <MithraRuntime
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/goldmansachs/reladomo/master/reladomo/src/main/xsd/mithraruntime.xsd">
-    <ConnectionManager className="com.liftwizard.reladomo.connectionmanager.h2.memory.H2InMemoryConnectionManager">
-        <MithraObjectConfiguration className="com.liftwizard.reladomo.simseq.ObjectSequence" cacheType="none" />
+    <ConnectionManager className="io.liftwizard.reladomo.connectionmanager.h2.memory.H2InMemoryConnectionManager">
+        <MithraObjectConfiguration className="io.liftwizard.reladomo.simseq.ObjectSequence" cacheType="none" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.User" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequired" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptional" cacheType="partial" />

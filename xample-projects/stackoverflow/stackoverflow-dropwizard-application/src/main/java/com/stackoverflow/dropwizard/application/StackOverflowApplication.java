@@ -5,11 +5,11 @@ import java.time.Clock;
 import javax.annotation.Nonnull;
 
 import cool.klass.data.store.DataStore;
-import com.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 
 public class StackOverflowApplication
         extends AbstractStackOverflowApplication
