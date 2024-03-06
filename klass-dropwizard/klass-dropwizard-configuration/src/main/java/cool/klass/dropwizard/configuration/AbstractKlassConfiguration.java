@@ -42,18 +42,6 @@ public class AbstractKlassConfiguration extends Configuration
     private @Valid @NotNull SampleDataFactory        sampleDataFactory        = new SampleDataFactory();
     private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
 
-    @JsonProperty("klass")
-    public KlassFactory getKlassFactory()
-    {
-        return this.klassFactory;
-    }
-
-    @JsonProperty
-    public void setKlass(KlassFactory klassFactory)
-    {
-        this.klassFactory = klassFactory;
-    }
-
     @Override
     @JsonIgnore
     public DataStoreFactory getDataStoreFactory()
@@ -68,6 +56,18 @@ public class AbstractKlassConfiguration extends Configuration
         return this.getKlassFactory().getDomainModelFactory();
     }
 
+    @JsonProperty("klass")
+    public KlassFactory getKlassFactory()
+    {
+        return this.klassFactory;
+    }
+
+    @JsonProperty("klass")
+    public void setKlass(KlassFactory klassFactory)
+    {
+        this.klassFactory = klassFactory;
+    }
+
     @Override
     @JsonProperty("jerseyHttpLogging")
     public JerseyHttpLoggingFactory getJerseyHttpLoggingFactory()
@@ -75,7 +75,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.jerseyHttpLoggingFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("jerseyHttpLogging")
     public void setJerseyHttpLogging(JerseyHttpLoggingFactory jerseyHttpLoggingFactory)
     {
         this.jerseyHttpLoggingFactory = jerseyHttpLoggingFactory;
@@ -88,7 +88,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.h2Factory;
     }
 
-    @JsonProperty
+    @JsonProperty("h2")
     public void setH2(H2Factory h2Factory)
     {
         this.h2Factory = h2Factory;
@@ -101,7 +101,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.corsFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("cors")
     public void setCors(CorsFactory corsFactory)
     {
         this.corsFactory = corsFactory;
@@ -114,7 +114,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.ddlExecutorFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("ddlExecutor")
     public void setDdlExecutor(DdlExecutorFactory ddlExecutorFactory)
     {
         this.ddlExecutorFactory = ddlExecutorFactory;
@@ -127,7 +127,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.authFilterFactories;
     }
 
-    @JsonProperty
+    @JsonProperty("authFilters")
     public void setAuthFilters(List<AuthFilterFactory> authFilterFactories)
     {
         this.authFilterFactories = authFilterFactories;
@@ -140,7 +140,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.objectMapperFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("objectMapper")
     public void setObjectMapper(ObjectMapperFactory objectMapperFactory)
     {
         this.objectMapperFactory = objectMapperFactory;
@@ -152,7 +152,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.bootstrapFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("bootstrap")
     public void setBootstrap(EnabledFactory bootstrapFactory)
     {
         this.bootstrapFactory = bootstrapFactory;
@@ -165,7 +165,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.reladomoFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("reladomo")
     public void setReladomo(ReladomoFactory reladomoFactory)
     {
         this.reladomoFactory = reladomoFactory;
@@ -178,7 +178,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.sampleDataFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("sampleData")
     public void setSampleData(SampleDataFactory sampleDataFactory)
     {
         this.sampleDataFactory = sampleDataFactory;
@@ -190,7 +190,7 @@ public class AbstractKlassConfiguration extends Configuration
         return this.configLoggingFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("configLogging")
     public void setConfigLogging(EnabledFactory configLoggingFactory)
     {
         this.configLoggingFactory = configLoggingFactory;

@@ -14,6 +14,7 @@ public class KlassFactory
     private @NotNull @Valid DomainModelFactory domainModelFactory;
     private @NotNull @Valid DataStoreFactory   dataStoreFactory;
 
+    @JsonProperty("clock")
     public ClockFactory getClockFactory()
     {
         return this.clockFactory;
@@ -25,6 +26,7 @@ public class KlassFactory
         this.clockFactory = clockFactory;
     }
 
+    @JsonProperty("domainModel")
     public DomainModelFactory getDomainModelFactory()
     {
         return this.domainModelFactory;
@@ -36,6 +38,7 @@ public class KlassFactory
         this.domainModelFactory = domainModelFactory;
     }
 
+    @JsonProperty("dataStore")
     public DataStoreFactory getDataStoreFactory()
     {
         return this.dataStoreFactory;

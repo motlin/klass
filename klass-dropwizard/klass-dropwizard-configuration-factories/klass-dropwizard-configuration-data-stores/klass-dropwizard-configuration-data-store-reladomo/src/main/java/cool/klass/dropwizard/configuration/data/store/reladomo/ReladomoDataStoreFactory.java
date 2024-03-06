@@ -26,12 +26,13 @@ public class ReladomoDataStoreFactory implements DataStoreFactory
 
     @Nonnull
     @Override
+    @JsonProperty("uuid")
     public UUIDSupplierFactory getUuidFactory()
     {
         return this.uuidFactory;
     }
 
-    @JsonProperty
+    @JsonProperty("uuid")
     public void setUuid(@Nonnull UUIDSupplierFactory uuidFactory)
     {
         this.uuidFactory = uuidFactory;
