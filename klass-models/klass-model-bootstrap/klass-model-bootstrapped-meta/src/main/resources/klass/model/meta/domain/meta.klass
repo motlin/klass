@@ -318,6 +318,7 @@ class AssociationEnd implements NamedElement
     resultTypeName                : String private;
 }
 
+// TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)
 // simplification, ideally we'd model an association as having exactly two ends
 association AssociationHasEnds
 {
@@ -374,7 +375,6 @@ class Criteria
     abstract(table-per-class)
     implements Element
 {
-    // TODO: Criteria can be owned by Services
     id: Long id key;
 }
 
@@ -1079,19 +1079,18 @@ projection AssociationReadProjection on Association
             ordinal : "Association end modifier ordinal",
         },
     },
-/*
-TODO
-    criteria:
+    criteria               :
     {
-        id: "Criteria id",
-        BinaryCriteria.left: {
+        id                  : "Criteria id",
+        BinaryCriteria.left :
+        {
             id: "Criteria left id",
         },
-        BinaryCriteria.right: {
+        BinaryCriteria.right:
+        {
             id: "Criteria right id",
         },
     },
-*/
 }
 
 service Association

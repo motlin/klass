@@ -28,4 +28,11 @@ public interface ProjectionAssociationEnd extends ProjectionParent, ProjectionCh
     {
         return this.getAssociationEnd().getType();
     }
+
+    default boolean isPolymorphic()
+    {
+        Klass projectionParentClass = this.getParent().get().getKlass();
+        Klass propertyOwner         = this.getAssociationEnd().getOwningClassifier();
+        return projectionParentClass.isSuperTypeOf(propertyOwner);
+    }
 }

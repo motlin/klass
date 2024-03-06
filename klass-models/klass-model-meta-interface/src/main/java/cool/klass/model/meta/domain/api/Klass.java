@@ -138,16 +138,60 @@ public interface Klass extends Classifier
     default String getAbstractSourceCode()
     {
         return this.getInheritanceType() == InheritanceType.NONE
-                    ? ""
-                    : "    abstract(" + this.getInheritanceType().getPrettyName() + ")\n";
+                ? ""
+                : "    abstract(" + this.getInheritanceType().getPrettyName() + ")\n";
     }
 
     @Nonnull
     default String getExtendsSourceCode()
     {
         return this.getSuperClass()
-                    .map(NamedElement::getName)
-                    .map(klassName -> "    extends " + klassName + "\n")
-                    .orElse("");
+                .map(NamedElement::getName)
+                .map(klassName -> "    extends " + klassName + "\n")
+                .orElse("");
+    }
+
+    default boolean isSuperTypeOf(Klass klass)
+    {
+        if (this == klass)
+        {
+            return false;
+        }
+
+        Optional<Klass> optionalSuperClass = klass.getSuperClass();
+        if (!optionalSuperClass.isPresent())
+        {
+            return false;
+        }
+
+        Klass superClass = optionalSuperClass.get();
+        if (this == superClass)
+        {
+            return true;
+        }
+
+        return this.isSuperTypeOf(superClass);
+    }
+
+    default boolean isSubTypeOf(Klass klass)
+    {
+        if (this == klass)
+        {
+            return false;
+        }
+
+        Optional<Klass> optionalSuperClass = this.getSuperClass();
+        if (!optionalSuperClass.isPresent())
+        {
+            return false;
+        }
+
+        Klass superClass = optionalSuperClass.get();
+        if (superClass == klass)
+        {
+            return true;
+        }
+
+        return superClass.isSubTypeOf(klass);
     }
 }

@@ -15,14 +15,16 @@ import org.eclipse.collections.impl.factory.Stacks;
 
 public final class DeepFetchProjectionListener extends BaseProjectionListener
 {
-    private final MutableStack<String> stack  = Stacks.mutable.empty();
-    private final MutableList<String>  result = Lists.mutable.empty();
+    private final MutableStack<ProjectionAssociationEnd> associationEndStack = Stacks.mutable.empty();
+
+    private final MutableStack<String> stringStack = Stacks.mutable.empty();
+    private final MutableList<String>  result      = Lists.mutable.empty();
     private       Klass                owningClassifier;
 
     @Override
     public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
     {
-        if (this.stack.isEmpty())
+        if (this.stringStack.isEmpty())
         {
             if (this.owningClassifier != null)
             {
@@ -30,15 +32,17 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
             }
             this.owningClassifier = projectionAssociationEnd.getAssociationEnd().getOwningClassifier();
         }
-        this.stack.push(projectionAssociationEnd.getAssociationEnd().getName());
+        this.associationEndStack.push(projectionAssociationEnd);
+        this.stringStack.push(projectionAssociationEnd.getAssociationEnd().getName());
     }
 
     @Override
     public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
     {
-        if (this.isLeaf(projectionAssociationEnd))
+        // TODO: Figure out how to deep fetch polymorphic projection properties
+        if (this.isLeaf(projectionAssociationEnd) && this.associationEndStack.noneSatisfy(ProjectionAssociationEnd::isPolymorphic))
         {
-            String string = this.stack
+            String string = this.stringStack
                     .toList()
                     .asReversed()
                     .collect(each -> each + "()")
@@ -46,8 +50,9 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
             String navigation = String.format("%sFinder.%s", this.owningClassifier.getName(), string);
             this.result.add(navigation);
         }
-        this.stack.pop();
-        if (this.stack.isEmpty())
+        this.associationEndStack.pop();
+        this.stringStack.pop();
+        if (this.stringStack.isEmpty())
         {
             Objects.requireNonNull(this.owningClassifier);
             this.owningClassifier = null;
