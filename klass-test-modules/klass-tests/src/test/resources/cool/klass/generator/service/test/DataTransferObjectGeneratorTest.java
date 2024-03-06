@@ -10,9 +10,9 @@ import javax.validation.constraints.*;
  */
 public class QuestionDTO
 {
+    private Long id;
     @NotNull
     private String body;
-    private Long id;
     @NotNull
     private String title;
     @NotNull
@@ -36,16 +36,6 @@ public class QuestionDTO
     private UserDTO createdBy;
     private UserDTO lastUpdatedBy;
 
-    public String getBody()
-    {
-        return this.body;
-    }
-
-    public void setBody(String body)
-    {
-        this.body = body;
-    }
-
     public Long getId()
     {
         return this.id;
@@ -54,6 +44,16 @@ public class QuestionDTO
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+    public String getBody()
+    {
+        return this.body;
+    }
+
+    public void setBody(String body)
+    {
+        this.body = body;
     }
 
     public String getTitle()

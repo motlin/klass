@@ -57,14 +57,14 @@ public interface Classifier
     @Nonnull
     default ImmutableList<DataTypeProperty> getDataTypeProperties()
     {
-        Objects.requireNonNull(this.getDeclaredDataTypeProperties());
+        ImmutableList<DataTypeProperty> inheritedDataTypeProperties = this.getInheritedDataTypeProperties();
 
-        MutableSet<String> propertyNames = this.getDeclaredDataTypeProperties().collect(NamedElement::getName).toSet();
+        MutableSet<String> propertyNames = inheritedDataTypeProperties.collect(NamedElement::getName).toSet();
 
-        ImmutableList<DataTypeProperty> inheritedProperties = this.getInheritedDataTypeProperties()
-                .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
+        ImmutableList<DataTypeProperty> declaredDataTypeProperties = this.getDeclaredDataTypeProperties()
+                .reject(declaredProperty -> propertyNames.contains(declaredProperty.getName()));
 
-        return inheritedProperties.newWithAll(this.getDeclaredDataTypeProperties());
+        return inheritedDataTypeProperties.newWithAll(declaredDataTypeProperties);
     }
 
     default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
