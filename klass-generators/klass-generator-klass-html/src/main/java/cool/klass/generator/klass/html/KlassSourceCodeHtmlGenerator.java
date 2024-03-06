@@ -48,31 +48,51 @@ public class KlassSourceCodeHtmlGenerator
         Optional<TokenCategory>         maybeTokenCategory        = domainModel.getTokenCategory(token);
         Optional<ElementWithSourceCode> maybeElementByReference   = domainModel.getElementByReference(token);
         Optional<ElementWithSourceCode> maybeElementByDeclaration = domainModel.getElementByDeclaration(token);
-        String cssClass = maybeTokenCategory
-                .map(Enum::name)
-                .map(CONVERTER::convert)
-                .map(tokenCategory -> " class='klass-" + tokenCategory + "'")
-                .orElse("");
-        String escapedText = StringEscapeUtils.escapeHtml4(token.getText());
-        String anchor = maybeElementByDeclaration
-                .map(value -> "<a id=\""
-                        + KlassSourceCodeHtmlGenerator.getIdForElement(value)
-                        + "\" href=\""
-                        + KlassSourceCodeHtmlGenerator.getLinkForElement(value)
-                        + "\">"
-                        + StringEscapeUtils.escapeHtml4(((NamedElement) value).getName())
-                        + "</a>")
-                .orElse(escapedText);
-        String text = maybeElementByReference
-                .map(element -> "<a href=\""
-                        + KlassSourceCodeHtmlGenerator.getLinkForElement(element)
-                        + "\">"
-                        + escapedText
-                        + "</a>")
-                .orElse("");
 
-        String result = "<span" + cssClass + ">" + anchor + text + "</span>";
-        return result;
+        String escapedText = StringEscapeUtils.escapeHtml4(token.getText());
+
+        if (maybeTokenCategory.isEmpty() && maybeElementByReference.isEmpty() && maybeElementByDeclaration.isEmpty())
+        {
+            return escapedText;
+        }
+
+        if (maybeTokenCategory.isEmpty())
+        {
+            throw new AssertionError(token);
+        }
+
+        TokenCategory tokenCategory = maybeTokenCategory.get();
+
+        if (maybeElementByReference.isEmpty() && maybeElementByDeclaration.isEmpty())
+        {
+            return getSpan(escapedText, tokenCategory);
+        }
+
+        if (maybeElementByDeclaration.isPresent() && maybeElementByReference.isEmpty())
+        {
+            ElementWithSourceCode element = maybeElementByDeclaration.get();
+
+            String idForElement   = KlassSourceCodeHtmlGenerator.getIdForElement(element);
+            String linkForElement = KlassSourceCodeHtmlGenerator.getLinkForElement(element);
+            String escapedName    = StringEscapeUtils.escapeHtml4(((NamedElement) element).getName());
+
+            String declarationAnchor = "<a id=\"%s\" href=\"%s\">%s</a>".formatted(
+                    idForElement,
+                    linkForElement,
+                    escapedName);
+
+            return getSpan(declarationAnchor, tokenCategory);
+        }
+
+        if (maybeElementByDeclaration.isEmpty() && maybeElementByReference.isPresent())
+        {
+            String linkForElement  = KlassSourceCodeHtmlGenerator.getLinkForElement(maybeElementByReference.get());
+            String referenceAnchor = "<a href=\"%s\">%s</a>".formatted(linkForElement, escapedText);
+
+            return getSpan(referenceAnchor, tokenCategory);
+        }
+
+        throw new AssertionError(token);
     }
 
     public static String getSourceCode(
@@ -114,6 +134,14 @@ public class KlassSourceCodeHtmlGenerator
                 + "</pre>\n"
                 + "</body>\n"
                 + "</html>\n";
+    }
+
+    @Nonnull
+    private static String getSpan(String text, TokenCategory tokenCategory)
+    {
+        String tokenCategoryName = tokenCategory.name();
+        String className = CONVERTER.convert(tokenCategoryName);
+        return "<span class='klass-" + className + "'>" + text + "</span>";
     }
 
     private void writeHtmlFile(SourceCode sourceCode, Path outputPath)
