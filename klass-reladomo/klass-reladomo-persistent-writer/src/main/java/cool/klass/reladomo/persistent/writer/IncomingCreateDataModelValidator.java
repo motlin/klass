@@ -11,11 +11,13 @@ import javax.annotation.Nonnull;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.data.store.DataStore;
+import cool.klass.deserializer.json.AssertValuesMatchPropertyVisitor;
 import cool.klass.deserializer.json.JsonDataTypeValueVisitor;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.PropertyVisitor;
 import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -134,11 +136,11 @@ public class IncomingCreateDataModelValidator
         {
             // TODO: inside the projection, only check for matching, and only in update mode
             // this.handleIdProperty(dataTypeProperty);
+            this.handleKeyProperty(dataTypeProperty);
         }
         else if (dataTypeProperty.isKey())
         {
-            // TODO: inside the projection, only check for matching, and only in update mode
-            // this.handleKeyProperty(dataTypeProperty);
+            this.handleKeyProperty(dataTypeProperty);
         }
         else if (dataTypeProperty.isTemporal())
         {
@@ -164,6 +166,41 @@ public class IncomingCreateDataModelValidator
         else if (dataTypeProperty.isVersion())
         {
             this.handleVersionProperty(dataTypeProperty);
+        }
+    }
+
+    private void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        this.contextStack.push(dataTypeProperty.getName());
+
+        try
+        {
+            JsonNode jsonDataTypeValue = this.objectNode.path(dataTypeProperty.getName());
+            if (jsonDataTypeValue.isMissingNode())
+            {
+                return;
+            }
+
+            ImmutableMap<DataTypeProperty, Object> propertyDataFromUrl = this.mutationContext.getPropertyDataFromUrl();
+            if (!propertyDataFromUrl.containsKey(dataTypeProperty))
+            {
+                return;
+            }
+
+            Object propertyData = propertyDataFromUrl.get(dataTypeProperty);
+
+            PropertyVisitor visitor = new AssertValuesMatchPropertyVisitor(
+                    jsonDataTypeValue,
+                    propertyData,
+                    "url parameter key",
+                    this.contextStack,
+                    "Error",
+                    this.errors);
+            dataTypeProperty.visit(visitor);
+        }
+        finally
+        {
+            this.contextStack.pop();
         }
     }
 
