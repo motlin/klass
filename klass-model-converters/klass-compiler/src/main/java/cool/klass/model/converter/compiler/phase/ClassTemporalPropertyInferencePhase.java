@@ -79,6 +79,10 @@ public class ClassTemporalPropertyInferencePhase
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
     {
+        if (sourceCodeText.equals("{\n}\n"))
+        {
+            return;
+        }
         AntlrModifier classifierModifierState =
                 this.compilerState.getCompilerWalkState().getClassifierModifierState();
         ParseTreeListener compilerPhase = new PropertyPhase(this.compilerState);
