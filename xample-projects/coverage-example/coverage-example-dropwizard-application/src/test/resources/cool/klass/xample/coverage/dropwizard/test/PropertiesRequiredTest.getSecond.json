@@ -1,0 +1,12 @@
+{
+  "propertiesRequiredId": 2,
+  "requiredString": "PropertiesRequired requiredString 2 ✌",
+  "requiredInteger": 2,
+  "requiredLong": 200000000000,
+  "requiredDouble": 2.0123456789,
+  "requiredFloat": 2.0123456,
+  "requiredBoolean": false,
+  "requiredInstant": "2000-01-01T00:00:00Z",
+  "requiredLocalDate": "2000-01-01",
+  "requiredDerived": "cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived"
+}

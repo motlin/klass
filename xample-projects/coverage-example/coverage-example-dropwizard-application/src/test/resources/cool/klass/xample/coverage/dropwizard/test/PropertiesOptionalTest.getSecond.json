@@ -1,0 +1,12 @@
+{
+  "propertiesOptionalId": 2,
+  "optionalString": null,
+  "optionalInteger": null,
+  "optionalLong": null,
+  "optionalDouble": null,
+  "optionalFloat": null,
+  "optionalBoolean": null,
+  "optionalInstant": null,
+  "optionalLocalDate": null,
+  "optionalDerived": "cool.klass.xample.coverage.PropertiesOptional.getOptionalDerived"
+}
