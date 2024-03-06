@@ -292,7 +292,7 @@
                 <plugin>
                     <groupId>de.qaware.maven</groupId>
                     <artifactId>go-offline-maven-plugin</artifactId>
-                    <version>1.1.0</version>
+                    <version>1.2.1</version>
                     <configuration>
                         <dynamicDependencies>
                             <DynamicDependency>
@@ -328,13 +328,26 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.9.8</version>
+                <version>2.9.9</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-eclipse-collections</artifactId>
-                <version>2.9.8</version>
+                <version>2.9.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.8</version>
+
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -421,13 +434,13 @@
             <dependency>
                 <groupId>org.eclipse.collections</groupId>
                 <artifactId>eclipse-collections-api</artifactId>
-                <version>10.0.0.M2</version>
+                <version>10.0.0.M3</version>
             </dependency>
 
             <dependency>
                 <groupId>org.eclipse.collections</groupId>
                 <artifactId>eclipse-collections</artifactId>
-                <version>10.0.0.M2</version>
+                <version>10.0.0.M3</version>
             </dependency>
 
             <dependency>
@@ -469,13 +482,13 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>27.1-jre</version>
+                <version>28.0-jre</version>
             </dependency>
 
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>2.10.1</version>
+                <version>2.10.2</version>
             </dependency>
 
             <dependency>
@@ -622,7 +635,7 @@
             <dependency>
                 <groupId>com.graphql-java</groupId>
                 <artifactId>graphql-java</artifactId>
-                <version>12.0</version>
+                <version>13.0</version>
             </dependency>
 
             <dependency>
@@ -634,13 +647,13 @@
             <dependency>
                 <groupId>com.google.auth</groupId>
                 <artifactId>google-auth-library-oauth2-http</artifactId>
-                <version>0.15.0</version>
+                <version>0.16.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.auth</groupId>
                 <artifactId>google-auth-library-credentials</artifactId>
-                <version>0.15.0</version>
+                <version>0.16.1</version>
             </dependency>
 
             <dependency>
@@ -652,55 +665,55 @@
             <dependency>
                 <groupId>com.google.api-client</groupId>
                 <artifactId>google-api-client</artifactId>
-                <version>1.29.0</version>
+                <version>1.30.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.api.grpc</groupId>
                 <artifactId>proto-google-common-protos</artifactId>
-                <version>1.15.0</version>
+                <version>1.16.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.http-client</groupId>
                 <artifactId>google-http-client</artifactId>
-                <version>1.29.1</version>
+                <version>1.30.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.http-client</groupId>
                 <artifactId>google-http-client-jackson2</artifactId>
-                <version>1.29.1</version>
+                <version>1.30.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.oauth-client</groupId>
                 <artifactId>google-oauth-client</artifactId>
-                <version>1.29.0</version>
+                <version>1.30.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
-                <version>3.7.1</version>
+                <version>3.8.0</version>
             </dependency>
 
             <dependency>
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-context</artifactId>
-                <version>1.20.0</version>
+                <version>1.21.0</version>
             </dependency>
 
             <dependency>
                 <groupId>io.opencensus</groupId>
                 <artifactId>opencensus-api</artifactId>
-                <version>0.22.0</version>
+                <version>0.23.0</version>
             </dependency>
 
             <dependency>
                 <groupId>io.opencensus</groupId>
                 <artifactId>opencensus-contrib-http-util</artifactId>
-                <version>0.22.0</version>
+                <version>0.23.0</version>
             </dependency>
 
             <dependency>
