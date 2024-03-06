@@ -43,4 +43,10 @@ public class KlassResponse
     {
         return this.data;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("{\"_metadata\":%s,\"_data\":%s}", this.metadata, this.data);
+    }
 }
