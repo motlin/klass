@@ -18,22 +18,28 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
         threadSafe = true,
         requiresDependencyResolution = ResolutionScope.RUNTIME)
-public class GenerateAbstractApplicationMojo extends AbstractGenerateMojo
+public class GenerateAbstractApplicationMojo
+        extends AbstractGenerateMojo
 {
     @Parameter(
             property = "outputDirectory",
             defaultValue = "${project.build.directory}/generated-sources/abstract-application")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true, readonly = true)
-    private String applicationName;
-
     @Parameter(property = "rootPackageName", required = true, readonly = true)
     private String rootPackageName;
+
+    @Parameter(property = "applicationName", required = true, readonly = true)
+    private String applicationName;
 
     @Override
     public void execute() throws MojoExecutionException
     {
+        if (!this.outputDirectory.exists())
+        {
+            this.outputDirectory.mkdirs();
+        }
+
         DomainModel domainModel = this.getDomainModel();
         Path        outputPath  = this.outputDirectory.toPath();
         try
