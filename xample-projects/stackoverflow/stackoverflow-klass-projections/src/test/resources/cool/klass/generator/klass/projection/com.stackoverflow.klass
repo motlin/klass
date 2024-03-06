@@ -68,9 +68,9 @@ projection AbstractVoteProjection on AbstractVote
 
 projection QuestionVoteProjection on QuestionVote
 {
-    systemFrom: "AbstractVote systemFrom",
-    systemTo: "AbstractVote systemTo",
-    createdOn: "AbstractVote createdOn",
+    systemFrom: "QuestionVote systemFrom",
+    systemTo: "QuestionVote systemTo",
+    createdOn: "QuestionVote createdOn",
     direction: "Vote direction",
     createdBy: UserProjection,
     lastUpdatedBy: UserProjection,

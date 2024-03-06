@@ -201,7 +201,7 @@ class AbstractVote
 // TODO superclass AbstractVote
 // TODO Aggregation for number of upvotes and downvotes
 class QuestionVote
-    extends AbstractVote
+    implements Vote
     systemTemporal
     audited
 {

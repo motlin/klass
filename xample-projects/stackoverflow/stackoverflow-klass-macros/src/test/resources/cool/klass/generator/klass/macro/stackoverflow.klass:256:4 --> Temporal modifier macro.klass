@@ -1,0 +1,5 @@
+{
+    system    : TemporalRange?   system;
+    systemFrom: TemporalInstant? system from;
+    systemTo  : TemporalInstant? system to;
+}

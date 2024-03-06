@@ -60,11 +60,11 @@ service Answer
 
 service QuestionVote
 {
-    /questionVote/{questionId: Long[1..1]}
+    /questionVote/{questionId: Long[1..1]}/{createdById: String[1..1]}
         GET
         {
             multiplicity: one;
-            criteria    : this.questionId == questionId;
+            criteria    : this.questionId == questionId && this.createdById == createdById;
             projection  : QuestionVoteProjection;
         }
     /questionVote

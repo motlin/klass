@@ -1,0 +1,4 @@
+{
+    createdOn      : Instant createdOn final;
+    lastUpdatedById: String lastUpdatedBy userId;
+}
