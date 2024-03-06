@@ -138,6 +138,9 @@
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-compiler</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-configuration-domain-model-loader-constant</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-domain-model</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.stackoverflow:stackoverflow-domain-model</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass.xample.coverage:coverage-example-domain-model</ignoredUnusedDeclaredDependency>
+        
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-connection-manager-holder</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-ddl-executor</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>io.liftwizard:liftwizard-bundle-h2</ignoredUnusedDeclaredDependency>
