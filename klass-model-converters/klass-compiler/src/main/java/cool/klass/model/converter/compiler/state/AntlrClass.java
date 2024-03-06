@@ -236,11 +236,6 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType, An
         return this.classModifierStates.anySatisfy(AntlrClassModifier::isTransient);
     }
 
-    public boolean isOptimisticallyLocked()
-    {
-        return this.classModifierStates.anySatisfy(AntlrClassModifier::isOptimisticallyLocked);
-    }
-
     @Override
     public KlassBuilder getElementBuilder()
     {
