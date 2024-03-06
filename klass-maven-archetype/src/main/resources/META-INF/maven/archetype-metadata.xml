@@ -229,6 +229,19 @@
         </module>
         <!--endregion-->
 
+        <!--region ${rootArtifactId}-liquibase-schema-->
+        <module
+                id="${rootArtifactId}-liquibase-schema"
+                dir="__rootArtifactId__-liquibase-schema"
+                name="${rootArtifactId}-liquibase-schema">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <!--endregion-->
+
         <!--region ${rootArtifactId}-reladomo-ddls-->
         <module
                 id="${rootArtifactId}-reladomo-ddls"
