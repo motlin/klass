@@ -795,7 +795,7 @@ public class RequiredPropertiesValidator
         {
             return OperationMode.PATCH;
         }
-        if ((operationMode == OperationMode.CREATE || operationMode == OperationMode.PATCH) && !associationEnd.isOwned())
+        if ((operationMode == OperationMode.CREATE || operationMode == OperationMode.PATCH || operationMode == OperationMode.REPLACE) && !associationEnd.isOwned())
         {
             return OperationMode.REFERENCE_OUTSIDE_PROJECTION;
         }
