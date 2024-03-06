@@ -8,6 +8,8 @@ COMMAND="Build"
 INCREMENTAL=false
 SERIAL=false
 RECORD=false
+ANALYZE_FLAG=false
+PUSHOVER_FLAG=false
 LIFTWIZARD_FILE_MATCH_RULE_RERECORD=false
 
 while [[ $# -gt 0 ]]; do
@@ -30,12 +32,26 @@ while [[ $# -gt 0 ]]; do
             RECORD=true
             shift
             ;;
+        --analyze)
+            ANALYZE_FLAG=true
+            shift
+            ;;
+        --pushover)
+            PUSHOVER_FLAG=true
+            shift
+            ;;
         *)
             # unknown option
             shift
             ;;
     esac
 done
+
+if [ "$ANALYZE_FLAG" = true ]; then
+    ANALYZE_SKIP=false
+else
+    ANALYZE_SKIP=true
+fi
 
 function echoSay {
     echo "$1"
@@ -50,13 +66,18 @@ function failWithMessage {
         MESSAGE="$COMMAND failed on commit: '$COMMIT_MESSAGE' due to: '$REASON' with exit code: '$EXIT_CODE'"
 
         echoSay "$MESSAGE"
+
         # osascript -e "display notification \"$MESSAGE\" with title \"$COMMAND failed\""
-        curl -s \
-            --form-string "token=$PUSHOVER_TOKEN" \
-            --form-string "user=$PUSHOVER_USER" \
-            --form-string "message=$MESSAGE" \
-            --form-string "title=$COMMAND" \
-            https://api.pushover.net/1/messages.json
+
+        if [ "$PUSHOVER_FLAG" = true ]; then
+            curl -s \
+                --form-string "token=$PUSHOVER_TOKEN" \
+                --form-string "user=$PUSHOVER_USER" \
+                --form-string "message=$MESSAGE" \
+                --form-string "title=$COMMAND" \
+                https://api.pushover.net/1/messages.json
+        fi
+
         exit 1
     fi
 }
@@ -104,22 +125,16 @@ if [ "$INCREMENTAL" != true ]; then
 fi
 
 ALWAYS_RUN_PLUGINS='liftwizard-generator-reladomo-code:*,liftwizard-generator-reladomo-database:*,liftwizard-generator-xsd2bean:*,klass-compiler:*,klass-generator-dropwizard:*,klass-generator-dto:*,klass-generator-graphql-data-fetcher:*'
-$MAVEN install $PARALLELISM -Dmaven.build.cache.alwaysRunPlugins=$ALWAYS_RUN_PLUGINS -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip=true --activate-profiles 'dev'
+$MAVEN verify $PARALLELISM -Dmaven.build.cache.alwaysRunPlugins=$ALWAYS_RUN_PLUGINS -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
     if [ "$SERIAL" != true ]; then
-        ./mvnw install -Dmaven.build.cache.enabled=false -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip=true --activate-profiles 'dev'
+        export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=false
+        ./mvnw verify --resume --fail-fast -Dmaven.build.cache.enabled=false -Dmaven.build.cache.alwaysRunPlugins=$ALWAYS_RUN_PLUGINS -Dcheckstyle.skip -Denforcer.skip -Dmaven.javadoc.skip -Dlicense.skip=true -Dmdep.analyze.skip="$ANALYZE_SKIP" --activate-profiles 'dev'
     fi
-    failWithMessage $EXIT_CODE "$MAVEN install"
+    failWithMessage $EXIT_CODE "$MAVEN verify"
     exit 1
-else
-    ./mvnw install dependency:analyze -DfailOnWarning=true
-    EXIT_CODE=$?
-    if [ $EXIT_CODE -ne 0 ]; then
-        failWithMessage $EXIT_CODE "./mvnw dependency:analyze"
-        exit 1
-    fi
 fi
 
 checkLocalModification
