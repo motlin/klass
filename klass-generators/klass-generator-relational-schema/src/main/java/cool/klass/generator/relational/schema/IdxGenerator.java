@@ -1,7 +1,5 @@
 package cool.klass.generator.relational.schema;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
@@ -82,15 +80,7 @@ public final class IdxGenerator
             return false;
         }
 
-        for (int i = 0; i < list1.size(); i++)
-        {
-            if (!Objects.equals(list1.get(i), list2.get(i)))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return list1.equals(list2.subList(0, list1.size()));
     }
 
     @Nonnull
