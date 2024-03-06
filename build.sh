@@ -3,7 +3,6 @@
 set -uo pipefail
 
 VOICE='Serena (Premium)'
-export LIFTWIZARD_FILE_MATCH_RULE_RERECORD=true
 
 # mvnd is the maven daemon, and is much faster but doesn't work for builds that include maven plugins plus runs of those maven plugins
 # mvnw is the regular maven wrapper.
