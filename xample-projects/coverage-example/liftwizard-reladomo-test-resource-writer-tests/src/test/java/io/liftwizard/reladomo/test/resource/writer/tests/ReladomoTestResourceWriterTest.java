@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.NamedElement;
+import io.liftwizard.junit.rule.liquibase.migrations.LiquibaseTestRule;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.reladomo.test.resource.writer.ReladomoTestResourceWriter;

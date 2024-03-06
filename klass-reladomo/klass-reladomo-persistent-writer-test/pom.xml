@@ -59,6 +59,13 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>cool.klass.xample.coverage</groupId>
+            <artifactId>coverage-example-liquibase-schema</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!--</editor-fold>-->
 
         <!--<editor-fold desc="Liftwizard">-->
@@ -70,13 +77,13 @@
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-test-rule</artifactId>
+            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-reladomo-simulated-sequence</artifactId>
+            <artifactId>liftwizard-liquibase-simulated-sequence</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -89,28 +96,36 @@
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-logging-buffered-appender</artifactId>
-            <version>${liftwizard.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-reladomo-test-rule</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-log-marker</artifactId>
-            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-match-json</artifactId>
-            <version>${liftwizard.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-junit-rule-match-file</artifactId>
-            <version>${liftwizard.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-junit-rule-liquibase-migrations</artifactId>
             <scope>test</scope>
         </dependency>
         <!--</editor-fold>-->

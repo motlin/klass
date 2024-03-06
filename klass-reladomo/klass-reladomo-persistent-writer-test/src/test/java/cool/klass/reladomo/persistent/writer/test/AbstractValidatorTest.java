@@ -15,6 +15,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.reladomo.persistent.writer.IncomingCreateDataModelValidator;
 import io.liftwizard.dropwizard.configuration.uuid.seed.SeedUUIDSupplier;
+import io.liftwizard.junit.rule.liquibase.migrations.LiquibaseTestRule;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
@@ -33,6 +34,10 @@ public abstract class AbstractValidatorTest
 
     @Rule
     public final JsonMatchRule jsonMatchRule = new JsonMatchRule();
+
+    @Rule
+    public final LiquibaseTestRule liquibaseTestRule = new LiquibaseTestRule(
+            "cool/klass/reladomo/persistent/writer/test/migrations.xml");
 
     protected final MutableList<String> actualErrors      = Lists.mutable.empty();
     protected final MutableList<String> actualWarnings    = Lists.mutable.empty();

@@ -24,7 +24,6 @@ public class Update_PropertiesRequiredTest
     public final TestRule reladomoTestRule = new ReladomoTestRuleBuilder()
             .setRuntimeConfigurationPath("reladomo-runtime-configuration/ReladomoRuntimeConfiguration.xml")
             .setTestDataFileNames("test-data/Update_PropertiesRequiredTest.txt")
-            .enableDropCreateTables()
             .build();
 
     private Object persistentInstance;
