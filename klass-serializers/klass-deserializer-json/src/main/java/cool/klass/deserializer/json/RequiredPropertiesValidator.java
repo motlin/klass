@@ -170,6 +170,10 @@ public class RequiredPropertiesValidator
                 this.handleWarnIfPresent(dataTypeProperty, "temporal");
             }
         }
+        else if (dataTypeProperty.isVersion())
+        {
+            this.handleVersionProperty(dataTypeProperty);
+        }
         else
         {
             this.handlePlainProperty(dataTypeProperty);
@@ -347,6 +351,33 @@ public class RequiredPropertiesValidator
         {
             String error = String.format(
                     "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
+                    this.getContextString(),
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType(),
+                    property.isOptional() ? "?" : "",
+                    jsonNode.getNodeType().toString().toLowerCase());
+            this.errors.add(error);
+        }
+    }
+
+    private void handleVersionProperty(DataTypeProperty property)
+    {
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            return;
+        }
+
+        if (!jsonNode.isIntegralNumber())
+        {
+            return;
+        }
+
+        if (jsonNode.asInt() != 1)
+        {
+            String error = String.format(
+                    "Error at %s. Expected value for version property '%s.%s: %s%s' to be 1 during initial creation but value was %s.",
                     this.getContextString(),
                     property.getOwningClassifier().getName(),
                     property.getName(),
