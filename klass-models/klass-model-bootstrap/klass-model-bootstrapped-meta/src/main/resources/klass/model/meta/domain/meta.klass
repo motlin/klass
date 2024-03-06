@@ -459,6 +459,50 @@ class ExpressionValue
     id      : Long key id;
 }
 
+class VariableReference
+    extends ExpressionValue
+{
+    parameterId: Long private;
+}
+
+association VariableReferenceHasParameter
+{
+    variableReference: VariableReference[0..*];
+    parameter: Parameter[1..1];
+
+    relationship this.parameterId == Parameter.id
+}
+
+class Parameter
+    abstract(table-per-class)
+    implements NamedElement
+{
+    // name isn't key
+    name: String;
+    id: Long key id;
+    multiplicity: Multiplicity;
+}
+
+class EnumerationParameter
+    extends Parameter
+{
+    enumerationName: String private;
+}
+
+class PrimitiveParameter
+    extends Parameter
+{
+    primitiveType: PrimitiveType;
+}
+
+association EnumerationParameterHasEnumeration
+{
+    enumerationParameter: EnumerationParameter[0..*];
+    enumeration: Enumeration[1..1];
+
+    relationship this.enumerationName == Enumeration.name
+}
+
 class MemberReferencePath
     abstract(table-per-class)
     extends ExpressionValue
@@ -723,8 +767,8 @@ class ServiceGroup
 
 association ServiceGroupHasClass
 {
-    serviceGroup: ServiceGroup[0..1];
-    owningClass: Klass[1..1];
+    serviceGroup                  : ServiceGroup[0..1];
+    owningClass                   : Klass[1..1];
 
     relationship this.className == Klass.name
 }
@@ -736,10 +780,42 @@ class Url
     url                           : String key;
 }
 
+enumeration UrlParameterType
+{
+    QUERY("query"),
+    PATH("path"),
+}
+
+class UrlParameter
+    implements Element
+{
+    urlClassName                  : String key private;
+    urlString                     : String key private;
+    parameterId                   : Long key private;
+    type                          : UrlParameterType;
+}
+
+association UrlHasUrlParameters
+{
+    url: Url[1..1];
+    parameters                    : UrlParameter[0..*];
+
+    relationship this.className == UrlParameter.urlClassName
+            && this.url == UrlParameter.urlString
+}
+
+association UrlParameterHasParameter
+{
+    urlParameter                  : UrlParameter[0..1];
+    parameter                     : Parameter[1..1];
+
+    relationship this.parameterId == Parameter.id
+ }
+
 association ServiceGroupHasUrls
 {
-    serviceGroup: ServiceGroup[1..1];
-    urls: Url[1..*];
+    serviceGroup                  : ServiceGroup[1..1];
+    urls                          : Url[1..*];
 
     relationship this.className == Url.className
 }
@@ -767,13 +843,16 @@ class Service
     verb                          : Verb key;
     serviceMultiplicity           : ServiceMultiplicity;
     projectionName                : String? private;
-    criteriaId: Long private;
+    queryCriteriaId               : Long? private;
+    authorizeCriteriaId           : Long? private;
+    validateCriteriaId            : Long? private;
+    conflictCriteriaId            : Long? private;
 }
 
 association UrlHasServices
 {
     url: Url[1..1];
-    services: Service[1..*];
+    services                      : Service[1..*];
 
     relationship this.className == Service.className
             && this.url == Service.urlString
@@ -781,18 +860,69 @@ association UrlHasServices
 
 association ServiceHasProjection
 {
-    services                      : Service[0..*];
+    services: Service[0..*];
     projection                    : ServiceProjection[0..1];
 
     relationship this.projectionName == ServiceProjection.name
 }
 
-association ServiceHasCriteria
+association ServiceHasQueryCriteria
 {
-    service                       : Service[0..1];
-    criteria                      : Criteria[1..1];
+    queryService                       : Service[0..1];
+    queryCriteria                 : Criteria[1..1];
 
-    relationship this.criteriaId == Criteria.id
+    relationship this.queryCriteriaId == Criteria.id
+}
+
+association ServiceHasAuthorizeCriteria
+{
+    authorizeService                       : Service[0..1];
+    authorizeCriteria                 : Criteria[1..1];
+
+    relationship this.authorizeCriteriaId == Criteria.id
+}
+
+association ServiceHasValidateCriteria
+{
+    validateService                       : Service[0..1];
+    validateCriteria                 : Criteria[1..1];
+
+    relationship this.validateCriteriaId == Criteria.id
+}
+
+association ServiceHasConflictCriteria
+{
+    conflictService                       : Service[0..1];
+    conflictCriteria                 : Criteria[1..1];
+
+    relationship this.conflictCriteriaId == Criteria.id
+}
+
+class ServiceOrderBy
+{
+    serviceClassName: String key private;
+    serviceUrlString: String key private;
+    serviceVerb: Verb key private;
+    thisMemberReferencePathId     : Long key private;
+    orderByDirection: OrderByDirection;
+}
+
+association ServiceHasOrderBy
+{
+    service                       : Service[1..1];
+    orderBys                      : ServiceOrderBy[0..*];
+
+    relationship this.className == ServiceOrderBy.serviceClassName
+            && this.urlString == ServiceOrderBy.serviceUrlString
+            && this.verb == ServiceOrderBy.serviceVerb
+}
+
+association ServiceOrderByHasMemberReferencePath
+{
+    serviceOrderBy                : ServiceOrderBy[0..1];
+    thisMemberReferencePath       : ThisMemberReferencePath[1..1];
+
+    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
 }
 
 projection EnumerationProjection on Enumeration
@@ -1424,24 +1554,38 @@ projection ExpressionValueProjection on ExpressionValue
     {
         name: "MemberReferencePath Property name",
     },
+    VariableReference.parameter         :
+    {
+        name                            : "VariableReference parameter name",
+        EnumerationParameter.enumeration:
+        {
+            name: "VariableReference parameter enumeration name",
+        },
+        PrimitiveParameter.primitiveType: "VariableReference parameter primitive type",
+        multiplicity                    : "VariableReference parameter multiplicity",
+    },
 }
 
 projection ExpressionValueSummaryProjection on ExpressionValue
 {
     MemberReferencePath.klass           :
     {
-        name       : "MemberReferencePath Class name",
+        name: "MemberReferencePath Class name",
     },
     MemberReferencePath.associationEnds :
     {
         associationEnd:
         {
-            name        : "MemberReferencePath Association end name",
+            name: "MemberReferencePath Association end name",
         },
     },
     MemberReferencePath.dataTypeProperty:
     {
-        name                           : "MemberReferencePath Property name",
+        name: "MemberReferencePath Property name",
+    },
+    VariableReference.parameter         :
+    {
+        name: "VariableReference parameter name",
     },
 }
 
@@ -1554,7 +1698,10 @@ projection ServiceGroupProjection on ServiceGroup
             {
                 name: "ServiceGroup Url Service Projection name",
             },
-            criteria           : CriteriaSummaryProjection,
+            queryCriteria      : CriteriaSummaryProjection,
+            authorizeCriteria      : CriteriaSummaryProjection,
+            validateCriteria      : CriteriaSummaryProjection,
+            conflictCriteria      : CriteriaSummaryProjection,
         },
     },
 }
@@ -1574,7 +1721,7 @@ projection ServiceGroupSummaryProjection on ServiceGroup
             {
                 name: "ServiceGroup Url Service Projection name",
             },
-            criteria           : CriteriaSummaryProjection,
+            queryCriteria      : CriteriaSummaryProjection,
         },
     },
 }

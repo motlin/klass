@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.value.ExpressionValue;
@@ -19,14 +20,22 @@ import cool.klass.model.meta.domain.api.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.UserLiteral;
 import klass.model.meta.domain.MemberReferencePathAbstract;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 
 public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
 {
-    private klass.model.meta.domain.ExpressionValue bootstrappedExpressionValue;
+    private final ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter;
 
-    public static klass.model.meta.domain.ExpressionValue convert(ExpressionValue expressionValue)
+    private klass.model.meta.domain.ExpressionValue                          bootstrappedExpressionValue;
+
+    public BootstrapExpressionValueVisitor(ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
-        BootstrapExpressionValueVisitor visitor = new BootstrapExpressionValueVisitor();
+        this.bootstrappedParametersByParameter = bootstrappedParametersByParameter;
+    }
+
+    public static klass.model.meta.domain.ExpressionValue convert(ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameterId, ExpressionValue expressionValue)
+    {
+        BootstrapExpressionValueVisitor visitor = new BootstrapExpressionValueVisitor(bootstrappedParametersByParameterId);
         expressionValue.visit(visitor);
         return visitor.getResult();
     }
@@ -72,8 +81,14 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
     @Override
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitVariableReference() not implemented yet");
+        Parameter parameter = variableReference.getParameter();
+        klass.model.meta.domain.Parameter bootstrappedParameter = this.bootstrappedParametersByParameter.get(parameter);
+
+        klass.model.meta.domain.VariableReference bootstrappedVariableReference = new klass.model.meta.domain.VariableReference();
+        bootstrappedVariableReference.setParameter(bootstrappedParameter);
+        bootstrappedVariableReference.insert();
+
+        this.bootstrappedExpressionValue = bootstrappedVariableReference;
     }
 
     @Override

@@ -41,6 +41,8 @@ public interface Classifier extends Type, PackageableElement
     @Nonnull
     ImmutableList<Property> getProperties();
 
+    ImmutableList<Property> getDeclaredProperties();
+
     @Nonnull
     default ImmutableList<DataTypeProperty> getDataTypeProperties()
     {
@@ -51,7 +53,7 @@ public interface Classifier extends Type, PackageableElement
         ImmutableList<DataTypeProperty> inheritedProperties = this.getInheritedDataTypeProperties()
                 .reject(inheritedProperty -> propertyNames.contains(inheritedProperty.getName()));
 
-        return this.getDeclaredDataTypeProperties().newWithAll(inheritedProperties);
+        return inheritedProperties.newWithAll(this.getDeclaredDataTypeProperties());
     }
 
     default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
@@ -84,24 +86,24 @@ public interface Classifier extends Type, PackageableElement
     default String getImplementsSourceCode()
     {
         return this.getInterfaces().isEmpty()
-                    ? ""
-                    : "    implements " + this.getInterfaces().collect(NamedElement::getName).makeString() + "\n";
+                ? ""
+                : "    implements " + this.getInterfaces().collect(NamedElement::getName).makeString() + "\n";
     }
 
     default String getPropertiesSourceCode()
     {
-        return this.getProperties()
-                    .collect(Element::getSourceCode)
-                    .collect(each -> "    " + each + '\n')
-                    .makeString("");
+        return this.getDeclaredProperties()
+                .collect(Element::getSourceCode)
+                .collect(each -> "    " + each + '\n')
+                .makeString("");
     }
 
     default String getModifiersSourceCode()
     {
         return this.getClassModifiers()
-                    .collect(Element::getSourceCode)
-                    .collect(each -> "    " + each + '\n')
-                    .makeString("");
+                .collect(Element::getSourceCode)
+                .collect(each -> "    " + each + '\n')
+                .makeString("");
     }
 
     default boolean isStrictSuperTypeOf(Classifier classifier)

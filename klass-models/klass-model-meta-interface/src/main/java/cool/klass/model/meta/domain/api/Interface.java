@@ -18,6 +18,13 @@ public interface Interface extends Classifier
     }
 
     @Override
+    default ImmutableList<Property> getDeclaredProperties()
+    {
+        return Lists.immutable.<Property>empty()
+                .newWithAll(this.getDeclaredDataTypeProperties());
+    }
+
+    @Override
     default String getSourceCodeWithInference()
     {
         String sourceCode = this.getSourceCode();

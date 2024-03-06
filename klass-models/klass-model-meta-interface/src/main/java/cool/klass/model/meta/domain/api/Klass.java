@@ -46,6 +46,14 @@ public interface Klass extends Classifier
                 .newWithAll(this.getAssociationEnds());
     }
 
+    @Override
+    default ImmutableList<Property> getDeclaredProperties()
+    {
+        return Lists.immutable.<Property>empty()
+                .newWithAll(this.getDeclaredDataTypeProperties())
+                .newWithAll(this.getDeclaredAssociationEnds());
+    }
+
     ImmutableList<AssociationEnd> getDeclaredAssociationEnds();
 
     default ImmutableList<AssociationEnd> getAssociationEnds()
@@ -54,9 +62,11 @@ public interface Klass extends Classifier
                 .map(Klass::getAssociationEnds)
                 .orElseGet(Lists.immutable::empty);
 
-        return this.getDeclaredAssociationEnds()
-                .newWithAll(inheritedAssociationEnds)
-                .distinctBy(NamedElement::getName);
+        return inheritedAssociationEnds
+                .newWithAll(this.getDeclaredAssociationEnds())
+                .toReversed()
+                .distinctBy(NamedElement::getName)
+                .toReversed();
     }
 
     // TODO: Override for efficiency?

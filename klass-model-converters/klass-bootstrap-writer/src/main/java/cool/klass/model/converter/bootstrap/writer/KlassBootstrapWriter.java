@@ -1,6 +1,7 @@
 package cool.klass.model.converter.bootstrap.writer;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -10,6 +11,7 @@ import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
+import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
@@ -18,8 +20,10 @@ import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PackageableElement;
+import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
+import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
@@ -43,13 +47,19 @@ import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import klass.model.meta.domain.AssociationEndOrderBy;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
 import klass.model.meta.domain.ElementAbstract;
+import klass.model.meta.domain.EnumerationParameter;
 import klass.model.meta.domain.MaxLengthPropertyValidation;
 import klass.model.meta.domain.MaxPropertyValidation;
 import klass.model.meta.domain.MinLengthPropertyValidation;
 import klass.model.meta.domain.MinPropertyValidation;
 import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.PackageableElementAbstract;
+import klass.model.meta.domain.PrimitiveParameter;
 import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
+import klass.model.meta.domain.UrlParameter;
+import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.impl.factory.Maps;
 
 public class KlassBootstrapWriter
 {
@@ -131,7 +141,7 @@ public class KlassBootstrapWriter
 
     private void handleAssociation(Association association)
     {
-        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(association.getCriteria());
+        klass.model.meta.domain.Criteria bootstrappedCriteria = BootstrapCriteriaVisitor.convert(Maps.immutable.empty(), association.getCriteria());
 
         klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedAssociation, association);
@@ -245,14 +255,81 @@ public class KlassBootstrapWriter
         bootstrappedUrl.setUrl(url.getUrlString());
         bootstrappedUrl.insert();
 
+        MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter = Maps.mutable.empty();
+
+        for (Parameter pathParameter : url.getPathParameters())
+        {
+            this.handleUrlParameter(bootstrappedUrl, pathParameter, "path", bootstrappedParametersByParameter);
+        }
+
+        for (Parameter queryParameter : url.getQueryParameters())
+        {
+            this.handleUrlParameter(bootstrappedUrl, queryParameter, "query", bootstrappedParametersByParameter);
+        }
+
         for (Service service : url.getServices())
         {
-            this.handleService(serviceGroup, url, service);
+            this.handleService(serviceGroup, url, service, bootstrappedParametersByParameter.toImmutable());
         }
     }
 
-    private void handleService(ServiceGroup serviceGroup, Url url, Service service)
+    private void handleUrlParameter(
+            klass.model.meta.domain.Url bootstrappedUrl,
+            Parameter parameter,
+            String urlParameterType,
+            MutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
     {
+        klass.model.meta.domain.Parameter bootstrappedParameter = this.initializeBootstrappedParameter(parameter.getType());
+        handleNamedElement(bootstrappedParameter, parameter);
+        bootstrappedParameter.setMultiplicity(parameter.getMultiplicity().getPrettyName());
+        bootstrappedParameter.insert();
+
+        UrlParameter bootstrappedUrlParameter = new UrlParameter();
+        handleElement(bootstrappedUrlParameter, parameter);
+        bootstrappedUrlParameter.setParameter(bootstrappedParameter);
+        bootstrappedUrlParameter.setUrl(bootstrappedUrl);
+        bootstrappedUrlParameter.setType(urlParameterType);
+        bootstrappedUrlParameter.insert();
+
+        bootstrappedParametersByParameter.put(parameter, bootstrappedParameter);
+    }
+
+    private klass.model.meta.domain.Parameter initializeBootstrappedParameter(DataType dataType)
+    {
+        if (dataType instanceof PrimitiveType)
+        {
+            PrimitiveParameter bootstrappedPrimitiveParameter = new PrimitiveParameter();
+            PrimitiveType      primitiveType                  = (PrimitiveType) dataType;
+            bootstrappedPrimitiveParameter.setPrimitiveType(primitiveType.getPrettyName());
+            return bootstrappedPrimitiveParameter;
+        }
+
+        if (dataType instanceof Enumeration)
+        {
+            EnumerationParameter bootstrappedEnumerationParameter = new EnumerationParameter();
+            Enumeration          enumeration                      = (Enumeration) dataType;
+            bootstrappedEnumerationParameter.setEnumerationName(enumeration.getName());
+            return bootstrappedEnumerationParameter;
+        }
+
+        throw new AssertionError();
+    }
+
+    private void handleService(
+            ServiceGroup serviceGroup,
+            Url url,
+            Service service,
+            ImmutableMap<Parameter, klass.model.meta.domain.Parameter> bootstrappedParametersByParameter)
+    {
+        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedQueryCriteria = service.getQueryCriteria()
+                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
+        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedAuthorizeCriteria = service.getAuthorizeCriteria()
+                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
+        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedValidateCriteria = service.getValidateCriteria()
+                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
+        Optional<klass.model.meta.domain.Criteria> optionalBootstrappedConflictCriteria = service.getConflictCriteria()
+                .map(criteria -> BootstrapCriteriaVisitor.convert(bootstrappedParametersByParameter, criteria));
+
         klass.model.meta.domain.Service bootstrappedService = new klass.model.meta.domain.Service();
         KlassBootstrapWriter.handleElement(bootstrappedService, service);
         bootstrappedService.setClassName(serviceGroup.getKlass().getName());
@@ -261,6 +338,12 @@ public class KlassBootstrapWriter
         bootstrappedService.setServiceMultiplicity(service.getServiceMultiplicity().getPrettyName());
         // TODO: Projections aren't required for write services
         bootstrappedService.setProjectionName(service.getProjectionDispatch().getProjection().getName());
+
+        optionalBootstrappedQueryCriteria.ifPresent(bootstrappedService::setQueryCriteria);
+        optionalBootstrappedAuthorizeCriteria.ifPresent(bootstrappedService::setAuthorizeCriteria);
+        optionalBootstrappedValidateCriteria.ifPresent(bootstrappedService::setValidateCriteria);
+        optionalBootstrappedConflictCriteria.ifPresent(bootstrappedService::setConflictCriteria);
+
         bootstrappedService.insert();
     }
 
