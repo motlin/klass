@@ -235,7 +235,7 @@
         <!--region Liftwizard runtime dependencies -->
         <dependency>
             <groupId>io.liftwizard</groupId>
-            <artifactId>liftwizard-graphql-schema-attribute</artifactId>
+            <artifactId>liftwizard-graphql-reladomo-meta</artifactId>
             <scope>runtime</scope>
         </dependency>
 
