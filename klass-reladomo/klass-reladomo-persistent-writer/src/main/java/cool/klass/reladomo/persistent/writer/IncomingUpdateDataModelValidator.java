@@ -49,6 +49,7 @@ public class IncomingUpdateDataModelValidator
     @Nonnull
     protected final Optional<AssociationEnd> pathHere;
     protected final boolean                  isRoot;
+    protected final boolean                  isInProjection;
 
     public IncomingUpdateDataModelValidator(
             @Nonnull DataStore dataStore,
@@ -59,7 +60,8 @@ public class IncomingUpdateDataModelValidator
             @Nonnull MutableList<String> warnings,
             @Nonnull MutableStack<String> contextStack,
             @Nonnull Optional<AssociationEnd> pathHere,
-            boolean isRoot)
+            boolean isRoot,
+            boolean isInProjection)
     {
         this.dataStore          = Objects.requireNonNull(dataStore);
         this.klass              = Objects.requireNonNull(klass);
@@ -70,6 +72,7 @@ public class IncomingUpdateDataModelValidator
         this.contextStack       = Objects.requireNonNull(contextStack);
         this.pathHere           = Objects.requireNonNull(pathHere);
         this.isRoot             = isRoot;
+        this.isInProjection     = isInProjection;
     }
 
     public static void validate(
@@ -89,6 +92,7 @@ public class IncomingUpdateDataModelValidator
                 warnings,
                 Stacks.mutable.empty(),
                 Optional.empty(),
+                true,
                 true);
         validator.validate();
     }
@@ -245,7 +249,8 @@ public class IncomingUpdateDataModelValidator
                 this.contextStack,
                 // Yeah?
                 Optional.of(associationEnd),
-                false);
+                false,
+                this.isInProjection && associationEnd.isOwned());
         validator.validate();
     }
 
@@ -264,7 +269,7 @@ public class IncomingUpdateDataModelValidator
 
             if (jsonNode.isMissingNode() || jsonNode.isNull())
             {
-                if (this.klass.getKeyProperties().noneSatisfy(DataTypeProperty::isID))
+                if (this.isInProjection && this.klass.getKeyProperties().noneSatisfy(DataTypeProperty::isID))
                 {
                     this.handleErrorIfAbsent(associationEnd, "version");
                 }
