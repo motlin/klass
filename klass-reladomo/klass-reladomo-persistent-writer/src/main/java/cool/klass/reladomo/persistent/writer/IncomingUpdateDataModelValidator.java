@@ -544,7 +544,8 @@ public class IncomingUpdateDataModelValidator
                     IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                             this.dataStore,
                             this.userKlass,
-                            associationEnd.getType(), this.mutationContext,
+                            associationEnd.getType(),
+                            this.mutationContext,
                             (ObjectNode) childJsonNode,
                             this.errors,
                             this.warnings,
