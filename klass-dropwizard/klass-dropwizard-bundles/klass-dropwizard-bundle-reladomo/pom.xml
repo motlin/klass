@@ -54,12 +54,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-jackson-module-meta</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-serialization-jackson-response-dto</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -77,11 +71,6 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-util</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>

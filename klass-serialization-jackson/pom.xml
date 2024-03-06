@@ -20,6 +20,7 @@
         <module>klass-serialization-jackson-config</module>
         <module>klass-serialization-jackson-jsonview</module>
         <module>klass-serialization-jackson-response-dto</module>
+        <module>klass-serialization-jackson-module-meta-model</module>
     </modules>
 
     <dependencyManagement>
