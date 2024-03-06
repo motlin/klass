@@ -42,6 +42,7 @@
         <module>klass-generator-react-prop-type</module>
         <module>klass-generator-reladomo</module>
         <module>klass-generator-service-resources</module>
+        <module>klass-generator-service</module>
         <module>klass-generator-uml-nomnoml</module>
     </modules>
 </project>
