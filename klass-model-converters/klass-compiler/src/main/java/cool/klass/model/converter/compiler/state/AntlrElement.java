@@ -76,6 +76,11 @@ public abstract class AntlrElement
         return this.compilationUnit.flatMap(CompilationUnit::getMacroElement);
     }
 
+    public boolean hasMacro()
+    {
+        return this.getMacroElement().isPresent();
+    }
+
     @Nonnull
     protected Optional<ElementBuilder<?>> getMacroElementBuilder()
     {

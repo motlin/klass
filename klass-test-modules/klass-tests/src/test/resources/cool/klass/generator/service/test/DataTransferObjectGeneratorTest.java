@@ -11,9 +11,9 @@ import javax.validation.constraints.*;
 public class QuestionDTO
 {
     private Long id;
+    private Instant system;
     private Instant systemFrom;
     private Instant systemTo;
-    private Instant system;
     @NotNull
     private String createdById;
     @NotNull
@@ -46,6 +46,16 @@ public class QuestionDTO
         this.id = id;
     }
 
+    public Instant getSystem()
+    {
+        return this.system;
+    }
+
+    public void setSystem(Instant system)
+    {
+        this.system = system;
+    }
+
     public Instant getSystemFrom()
     {
         return this.systemFrom;
@@ -64,16 +74,6 @@ public class QuestionDTO
     public void setSystemTo(Instant systemTo)
     {
         this.systemTo = systemTo;
-    }
-
-    public Instant getSystem()
-    {
-        return this.system;
-    }
-
-    public void setSystem(Instant system)
-    {
-        this.system = system;
     }
 
     public String getCreatedById()

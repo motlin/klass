@@ -19,10 +19,10 @@ class AmbiguousClass {
 class GoodClass
 {
     key: String key;
-    ambiguousDataProperty: GoodEnum;
-    ambiguousDataProperty: GoodEnum;
     goodProperty: AmbiguousEnumeration;
     parentKey: String? private;
+    ambiguousDataProperty: GoodEnum;
+    ambiguousDataProperty: GoodEnum;
 
     goodParameterizedProperty1(): AmbiguousClass[1..1]
     {

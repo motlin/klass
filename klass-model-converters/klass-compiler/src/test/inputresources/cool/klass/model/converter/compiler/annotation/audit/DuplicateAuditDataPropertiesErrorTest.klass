@@ -13,8 +13,8 @@ class DummyClass
     systemTo1       : TemporalInstant? system to;
     systemTo2       : TemporalInstant? system to;
     createdById1    : String createdBy userId final maximumLength(256);
-    lastUpdatedById1: String lastUpdatedBy userId maximumLength(256);
     createdById2    : String createdBy userId final maximumLength(256);
+    lastUpdatedById1: String lastUpdatedBy userId maximumLength(256);
     lastUpdatedById2: String lastUpdatedBy userId maximumLength(256);
 }
 

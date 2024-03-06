@@ -54,6 +54,33 @@ class Question
 {
     // TODO: When copying id to QuestionVersion, id should be Long key but not id.
     id                     : Long key id;
+
+    // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
+    system                 : TemporalRange? system;
+
+    // These two properties are implied by systemTemporal, and are not supposed to actually be declared
+    systemFrom             : TemporalInstant? system from;
+    systemTo               : TemporalInstant? system to;
+
+    // TODO: private properties must not be used in projections
+    // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
+    // They could automatically be part of read projections and not write projections
+    createdById            : String createdBy userId final private;
+
+    // createdOn, or createdDate?
+    createdOn              : Instant createdOn final;
+    lastUpdatedById        : String lastUpdatedBy userId private;
+
+    // createdBy(): User[1..1] createdBy
+    // {
+    //     this.createdById == User.userId
+    // }
+    //
+    // lastUpdatedBy(): User[1..1] lastUpdatedBy
+    // {
+    //     this.lastUpdatedById == User.userId
+    // }
+
     title                  : String;
 
     // TODO: Statemachine
@@ -91,32 +118,6 @@ class Question
         count(this.votes.direction == VoteDirection.DOWN)
     }
     */
-
-    // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system                 : TemporalRange? system;
-
-    // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom             : TemporalInstant? system from;
-    systemTo               : TemporalInstant? system to;
-
-    // TODO: private properties must not be used in projections
-    // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
-    // They could automatically be part of read projections and not write projections
-    createdById            : String createdBy userId final private;
-
-    // createdOn, or createdDate?
-    createdOn              : Instant createdOn final;
-    lastUpdatedById        : String lastUpdatedBy userId private;
-
-    // createdBy(): User[1..1] createdBy
-    // {
-    //     this.createdById == User.userId
-    // }
-    //
-    // lastUpdatedBy(): User[1..1] lastUpdatedBy
-    // {
-    //     this.lastUpdatedById == User.userId
-    // }
 }
 
 // The _Version class is implied by the versioned annotation, and not supposed to actually be declared
@@ -146,10 +147,8 @@ class Answer
     audited
 {
     id                     : Long key id;
+    questionId             : Long private final;
     deleted                : Boolean;
-
-    // TODO: questionId: Long private *final*
-    questionId             : Long private;
 }
 
 // TODO: Error message if versions doesn't point to a version class
@@ -158,8 +157,6 @@ association QuestionHasAnswer
     question               : Question[1..1] final;
     answers                : Answer[0..*]
         orderBy: this.id ascending;
-
-    // ordering by primary key ascending is the default
 }
 
 // The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared

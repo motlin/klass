@@ -1,5 +1,5 @@
 ════════════════════════════════════════ [35mERR_PRP_MOD[m ════════════════════════════════════════
-[31mError: Multiple properties on 'DummyClass' with modifiers [createdBy].[m
+[31mError: Multiple properties on 'DummyClass' with modifiers [lastUpdatedBy].[m
 
 At (DuplicateAuditDataPropertiesErrorTest.klass:17)
 
@@ -9,8 +9,8 @@ At (DuplicateAuditDataPropertiesErrorTest.klass:17)
 [39m 5║     [32mversioned
 [39m 6║     [32maudited
 [39m 7║ [36m{
-[39m17║     [39mcreatedById2    [36m: [35mString [32mcreatedBy [32muserId [32mfinal [32mmaximumLength[36m([34m256[36m)[36m;
-[39m  ║ [31m                             ^^^^^^^^^
+[39m17║     [39mlastUpdatedById1[36m: [35mString [32mlastUpdatedBy [32muserId [32mmaximumLength[36m([34m256[36m)[36m;
+[39m  ║ [31m                             ^^^^^^^^^^^^^
 [39m19║ [36m}
 [m
 [36mLocation:  [mDuplicateAuditDataPropertiesErrorTest.klass:17[m

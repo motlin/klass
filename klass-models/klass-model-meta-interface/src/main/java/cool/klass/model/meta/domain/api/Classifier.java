@@ -77,12 +77,12 @@ public interface Classifier
         ImmutableList<DataTypeProperty> keysAndForeignKeys = foreignKeys.select(DataTypeProperty::isKey);
         ImmutableList<DataTypeProperty> keys = dataTypeProperties.select(DataTypeProperty::isKey).reject(DataTypeProperty::isForeignKey);
         ImmutableList<DataTypeProperty> nonKeyForeignKeys = foreignKeys.reject(DataTypeProperty::isKey).reject(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isLastUpdatedBy);
+        ImmutableList<DataTypeProperty> system = dataTypeProperties.select(DataTypeProperty::isSystemRange);
         ImmutableList<DataTypeProperty> systemFrom = dataTypeProperties.select(DataTypeProperty::isSystemFrom);
         ImmutableList<DataTypeProperty> systemTo = dataTypeProperties.select(DataTypeProperty::isSystemTo);
-        ImmutableList<DataTypeProperty> system = dataTypeProperties.select(DataTypeProperty::isSystemRange);
+        ImmutableList<DataTypeProperty> valid = dataTypeProperties.select(DataTypeProperty::isValidRange);
         ImmutableList<DataTypeProperty> validFrom = dataTypeProperties.select(DataTypeProperty::isValidFrom);
         ImmutableList<DataTypeProperty> validTo = dataTypeProperties.select(DataTypeProperty::isValidTo);
-        ImmutableList<DataTypeProperty> valid = dataTypeProperties.select(DataTypeProperty::isValidRange);
         ImmutableList<DataTypeProperty> createdBy = dataTypeProperties.select(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isKey);
         ImmutableList<DataTypeProperty> createdOn = dataTypeProperties.select(DataTypeProperty::isCreatedOn);
         ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy).reject(DataTypeProperty::isKey);
@@ -91,12 +91,12 @@ public interface Classifier
                 .withAll(keysAndForeignKeys)
                 .newWithAll(keys)
                 .newWithAll(nonKeyForeignKeys)
+                .newWithAll(system)
                 .newWithAll(systemFrom)
                 .newWithAll(systemTo)
-                .newWithAll(system)
+                .newWithAll(valid)
                 .newWithAll(validFrom)
                 .newWithAll(validTo)
-                .newWithAll(valid)
                 .newWithAll(createdBy)
                 .newWithAll(createdOn)
                 .newWithAll(lastUpdatedBy);

@@ -224,9 +224,9 @@ class Parameter
     abstract(table-per-class)
     implements NamedElement
 {
+    id: Long key id;
     // name isn't key
     name: String maximumLength(256);
-    id: Long key id;
     multiplicity: Multiplicity maximumLength(256);
 }
 class EnumerationParameter
@@ -322,9 +322,9 @@ class OperatorCriteria
     extends Criteria
 {
     id  : Long key private;
-    operator: Operator maximumLength(256);
     sourceExpressionId: Long private;
     targetExpressionId: Long private;
+    operator: Operator maximumLength(256);
 }
 class EdgePointCriteria
     extends Criteria
@@ -361,9 +361,9 @@ class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
     associationName               : String maximumLength(256);
+    resultTypeName                : String private maximumLength(256);
     direction                     : AssociationEndDirection maximumLength(256);
     multiplicity                  : Multiplicity maximumLength(256);
-    resultTypeName                : String private maximumLength(256);
 }
 // TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)
 // simplification, ideally we'd model an association as having exactly two ends
@@ -481,8 +481,8 @@ class ParameterizedProperty
     implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
-    multiplicity                  : Multiplicity maximumLength(256);
     resultTypeName                : String private maximumLength(256);
+    multiplicity                  : Multiplicity maximumLength(256);
 }
 association ClassHasParameterizedProperties
 {
@@ -552,11 +552,11 @@ class ProjectionElement
     abstract(table-per-class)
     implements NamedElement
 {
+    id  : Long key id;
+    parentId: Long? private;
     // TODO: Write a test that fails if name is a key
     // name isn't key
     name: String maximumLength(256);
-    id  : Long key id;
-    parentId: Long? private;
 }
 // TODO: Rename to Projection, but clashes with names in generated code.
 class ServiceProjection
@@ -573,7 +573,8 @@ class ProjectionWithAssociationEnd
     extends ProjectionElement
 {
     id  : Long key private;
-    parentId                      : Long private;
+    // TODO: Overriding a property (to make it required) should not create a new column
+    // parentId                      : Long private;
     associationEndClass           : String private maximumLength(256);
     associationEndName: String private maximumLength(256);
 }
@@ -581,24 +582,23 @@ class ProjectionReferenceProperty
     extends ProjectionWithAssociationEnd
 {
     id  : Long key private;
-    parentId                      : Long private;
-    associationEndClass           : String private maximumLength(256);
-    associationEndName: String private maximumLength(256);
+    // TODO: Overriding a property (to make it required) should not create a new column
+    // parentId                      : Long private;
 }
 class ProjectionProjectionReference
     extends ProjectionWithAssociationEnd
 {
     id  : Long key private;
-    parentId                      : Long private;
-    associationEndClass           : String private maximumLength(256);
-    associationEndName: String private maximumLength(256);
     projectionName                  : String private maximumLength(256);
+    // TODO: Overriding a property (to make it required) should not create a new column
+    // parentId                      : Long private;
 }
 class ProjectionDataTypeProperty
     extends ProjectionElement
 {
     id  : Long key private;
-    parentId                      : Long private;
+    // TODO: Overriding a property (to make it required) should not create a new column
+    // parentId                      : Long private;
     propertyClassifierName        : String private maximumLength(256);
     propertyName: String private maximumLength(256);
 }
@@ -702,12 +702,12 @@ class Service
     className                     : String key maximumLength(256);
     urlString                     : String key maximumLength(8192);
     verb                          : Verb key maximumLength(256);
-    serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
     projectionName                : String? private maximumLength(256);
     queryCriteriaId               : Long? private;
     authorizeCriteriaId           : Long? private;
     validateCriteriaId            : Long? private;
     conflictCriteriaId            : Long? private;
+    serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
 }
 association UrlHasServices
 {

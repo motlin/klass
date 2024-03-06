@@ -388,6 +388,7 @@ public abstract class AntlrClassifier
         this.reportInterfaceNotFound(compilerAnnotationHolder);
         this.reportRedundantInterface(compilerAnnotationHolder);
         this.reportCircularInheritance(compilerAnnotationHolder);
+        this.reportPropertyDeclarationOrder(compilerAnnotationHolder);
         this.reportDuplicateAssociationEndSignatureNames(compilerAnnotationHolder);
 
         // TODO: Warn if class is owned by multiple
@@ -527,6 +528,80 @@ public abstract class AntlrClassifier
                 + ".reportCircularInheritance() not implemented yet");
     }
 
+    protected void reportPropertyDeclarationOrder(CompilerAnnotationState compilerAnnotationHolder)
+    {
+        ImmutableList<AntlrDataTypeProperty<?>> dataTypeProperties = this.dataTypePropertyStates.reject(AntlrElement::hasMacro).toImmutable();
+
+        MutableList<AntlrDataTypeProperty<?>> orderedDataTypeProperties = Lists.mutable.empty();
+
+        ImmutableList<AntlrDataTypeProperty<?>> foreignKeys        = dataTypeProperties.select(AntlrDataTypeProperty::isForeignKey);
+
+        ImmutableList<AntlrDataTypeProperty<?>> keysAndForeignKeys = foreignKeys.select(AntlrDataTypeProperty::isKey).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(keysAndForeignKeys);
+        ImmutableList<AntlrDataTypeProperty<?>> keys               = dataTypeProperties.select(AntlrDataTypeProperty::isKey).reject(AntlrDataTypeProperty::isForeignKey).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(keys);
+        ImmutableList<AntlrDataTypeProperty<?>> nonKeyForeignKeys  = foreignKeys.reject(AntlrDataTypeProperty::isKey).reject(AntlrDataTypeProperty::isCreatedBy).reject(AntlrDataTypeProperty::isLastUpdatedBy).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(nonKeyForeignKeys);
+        ImmutableList<AntlrDataTypeProperty<?>> system             = dataTypeProperties.select(AntlrDataTypeProperty::isSystemRange).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(system);
+        ImmutableList<AntlrDataTypeProperty<?>> systemFrom         = dataTypeProperties.select(AntlrDataTypeProperty::isSystemFrom).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(systemFrom);
+        ImmutableList<AntlrDataTypeProperty<?>> systemTo           = dataTypeProperties.select(AntlrDataTypeProperty::isSystemTo).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(systemTo);
+        ImmutableList<AntlrDataTypeProperty<?>> valid              = dataTypeProperties.select(AntlrDataTypeProperty::isValidRange).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(valid);
+        ImmutableList<AntlrDataTypeProperty<?>> validFrom          = dataTypeProperties.select(AntlrDataTypeProperty::isValidFrom).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(validFrom);
+        ImmutableList<AntlrDataTypeProperty<?>> validTo            = dataTypeProperties.select(AntlrDataTypeProperty::isValidTo).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(validTo);
+        ImmutableList<AntlrDataTypeProperty<?>> createdBy          = dataTypeProperties.select(AntlrDataTypeProperty::isCreatedBy).reject(AntlrDataTypeProperty::isKey).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(createdBy);
+        ImmutableList<AntlrDataTypeProperty<?>> createdOn          = dataTypeProperties.select(AntlrDataTypeProperty::isCreatedOn).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(createdOn);
+        ImmutableList<AntlrDataTypeProperty<?>> lastUpdatedBy      = dataTypeProperties.select(AntlrDataTypeProperty::isLastUpdatedBy).reject(AntlrDataTypeProperty::isKey).reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(lastUpdatedBy);
+        ImmutableList<AntlrDataTypeProperty<?>> otherDataTypeProperties = dataTypeProperties.reject(orderedDataTypeProperties::contains);
+        orderedDataTypeProperties.addAllIterable(otherDataTypeProperties);
+
+        if (!orderedDataTypeProperties.equals(orderedDataTypeProperties.distinct()))
+        {
+            throw new AssertionError(orderedDataTypeProperties);
+        }
+
+        if (!dataTypeProperties.equals(orderedDataTypeProperties))
+        {
+            String allAdditionalContext = ""
+                    + this.getContext("keys and foreign keys:     ", keysAndForeignKeys)
+                    + this.getContext("keys:                      ", keys)
+                    + this.getContext("foreign keys but not keys: ", nonKeyForeignKeys)
+                    + this.getContext("system range:              ", system)
+                    + this.getContext("system from:               ", systemFrom)
+                    + this.getContext("system to:                 ", systemTo)
+                    + this.getContext("valid range:               ", valid)
+                    + this.getContext("valid from:                ", validFrom)
+                    + this.getContext("valid to:                  ", validTo)
+                    + this.getContext("created by:                ", createdBy)
+                    + this.getContext("created on:                ", createdOn)
+                    + this.getContext("last updated by:           ", lastUpdatedBy)
+                    + this.getContext("Other:                     ", otherDataTypeProperties);
+
+            String message = String.format(
+                    "The properties of class '%s' are not declared in the correct order. Expected '%s' but found '%s'.%n%s",
+                    this.getName(),
+                    orderedDataTypeProperties.collect(AntlrNamedElement::getName),
+                    dataTypeProperties.collect(AntlrNamedElement::getName),
+                    allAdditionalContext);
+            compilerAnnotationHolder.add("ERR_DTP_ORD", message, this);
+        }
+    }
+
+    @Nonnull
+    private String getContext(String description, ImmutableList<AntlrDataTypeProperty<?>> properties)
+    {
+        return properties.isEmpty() ? "" : description
+                + properties.collect(AntlrNamedElement::getName) + ".\n";
+    }
+
     @OverridingMethodsMustInvokeSuper
     public void reportAuditErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
@@ -607,7 +682,7 @@ public abstract class AntlrClassifier
 
     public ImmutableList<AntlrDataTypeProperty<?>> getKeyProperties()
     {
-        return this.getDataTypeProperties().select(AntlrDataTypeProperty::isKey).toImmutable();
+        return this.getDataTypeProperties().select(AntlrDataTypeProperty::isKey);
     }
 
     public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenDataTypeProperties(String name)

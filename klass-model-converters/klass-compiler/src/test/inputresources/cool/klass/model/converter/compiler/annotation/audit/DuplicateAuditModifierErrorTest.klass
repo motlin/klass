@@ -9,16 +9,15 @@ class DummyClass systemTemporal versioned audited
 {
     id             : Long id key;
     system         : TemporalRange?   system system;
+    range          : TemporalRange? system valid;
+    systemFromTo   : TemporalInstant? system from to;
     systemFrom     : TemporalInstant? system from from;
     systemTo       : TemporalInstant? system to;
     createdById    : String createdBy userId final private maximumLength(256);
     createdOn      : Instant createdOn final;
     lastUpdatedById: String lastUpdatedBy userId private maximumLength(256);
-
-    range          : TemporalRange? system valid;
     from           : TemporalInstant? from;
     to             : TemporalInstant? to;
-    systemFromTo   : TemporalInstant? system from to;
 }
 
 class DummyClass2 systemTemporal versioned audited

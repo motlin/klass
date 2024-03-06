@@ -24,12 +24,12 @@ class DummyClass systemTemporal versioned audited
 class DummyClass2
 {
     id             : Long id key;
-    system         : TemporalRange?;
-    systemFrom     : TemporalInstant? from;
-    systemTo       : TemporalInstant? to;
     createdById    : String createdBy;
     createdOn      : Instant createdOn;
     lastUpdatedById: String lastUpdatedBy final;
+    system         : TemporalRange?;
+    systemFrom     : TemporalInstant? from;
+    systemTo       : TemporalInstant? to;
 }
 
 class DummyClass3

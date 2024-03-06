@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
-import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -170,8 +169,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     protected final MutableList<AntlrMinPropertyValidation>       minValidationStates       = Lists.mutable.empty();
     protected final MutableList<AntlrMaxPropertyValidation>       maxValidationStates       = Lists.mutable.empty();
 
-    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> keyBuildersMatchingThisForeignKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> foreignKeyBuildersMatchingThisKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> keysMatchingThisForeignKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> foreignKeysMatchingThisKey = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrDataTypeProperty(
             @Nonnull ParserRuleContext elementContext,
@@ -279,7 +278,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             AntlrAssociationEnd associationEnd,
             AntlrDataTypeProperty<?> keyProperty)
     {
-        this.keyBuildersMatchingThisForeignKey
+        this.keysMatchingThisForeignKey
                 .computeIfAbsent(associationEnd, k -> Lists.mutable.empty())
                 .add(keyProperty);
     }
@@ -288,7 +287,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             AntlrAssociationEnd associationEnd,
             AntlrDataTypeProperty<?> foreignKeyProperty)
     {
-        this.foreignKeyBuildersMatchingThisKey
+        this.foreignKeysMatchingThisKey
                 .computeIfAbsent(associationEnd, k -> Lists.mutable.empty())
                 .add(foreignKeyProperty);
     }
@@ -391,7 +390,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     public void build2()
     {
         MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> keysMatchingThisForeignKey =
-                this.keyBuildersMatchingThisForeignKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
+                this.keysMatchingThisForeignKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
                         dataTypeProperties
                                 .getOnly().getElementBuilder()));
@@ -399,7 +398,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.getElementBuilder().setKeyBuildersMatchingThisForeignKey(keysMatchingThisForeignKey.asUnmodifiable());
 
         MutableOrderedMap<AssociationEndBuilder, DataTypePropertyBuilder<?, ?, ?>> foreignKeysMatchingThisKey =
-                this.foreignKeyBuildersMatchingThisKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
+                this.foreignKeysMatchingThisKey.collect((associationEnd, dataTypeProperties) -> Tuples.pair(
                         associationEnd.getElementBuilder(),
                         dataTypeProperties
                                 .getOnly().getElementBuilder()));
@@ -418,7 +417,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         this.reportDuplicateValidations(compilerAnnotationHolder);
         this.reportInvalidIdProperties(compilerAnnotationHolder);
         this.reportInvalidForeignKeyProperties(compilerAnnotationHolder);
-        this.reportForeignKeyPropertyOrder(compilerAnnotationHolder);
         this.reportInvalidUserIdProperties(compilerAnnotationHolder);
         this.reportInvalidVersionProperties(compilerAnnotationHolder);
         this.reportInvalidTemporalProperties(compilerAnnotationHolder);
@@ -457,7 +455,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     private void reportInvalidForeignKeyProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.keyBuildersMatchingThisForeignKey.forEach((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
+        this.keysMatchingThisForeignKey.forEach((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
                 compilerAnnotationHolder,
                 associationEnd,
                 keyBuilders));
@@ -508,40 +506,6 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getTypeParserRuleContext(),
                     AnnotationSeverity.WARNING);
         }
-    }
-
-    private void reportForeignKeyPropertyOrder(CompilerAnnotationState compilerAnnotationHolder)
-    {
-        if (!this.isKey())
-        {
-            return;
-        }
-
-        var keysMatchingThisForeignKey = this.getKeysMatchingThisForeignKey();
-        if (this.keyBuildersMatchingThisForeignKey.isEmpty())
-        {
-            return;
-        }
-
-        var nonForeignKeys = this.getOwningClassifierState()
-                .getKeyProperties()
-                .takeWhile(keyProperty -> !keyProperty.equals(this))
-                .select(keyProperty -> keyProperty.getKeysMatchingThisForeignKey().isEmpty());
-
-        if (nonForeignKeys.isEmpty())
-        {
-            return;
-        }
-
-        String format = String.format(
-                "Property '%s' is a foreign key property, so it ought to be declared before the other key properties: %s.",
-                this.getName(),
-                nonForeignKeys.collect(AntlrNamedElement::getName));
-
-        compilerAnnotationHolder.add(
-                "ERR_FKP_ORD",
-                format,
-                this);
     }
 
     private void reportInvalidUserIdProperties(CompilerAnnotationState compilerAnnotationHolder)
@@ -884,6 +848,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     public OrderedMap<AntlrAssociationEnd, MutableList<AntlrDataTypeProperty<?>>> getKeysMatchingThisForeignKey()
     {
-        return Objects.requireNonNull(this.keyBuildersMatchingThisForeignKey);
+        return Objects.requireNonNull(this.keysMatchingThisForeignKey);
+    }
+
+    public boolean isForeignKey()
+    {
+        return this.keysMatchingThisForeignKey.notEmpty();
     }
 }
