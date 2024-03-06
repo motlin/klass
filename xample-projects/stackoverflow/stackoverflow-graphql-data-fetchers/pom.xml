@@ -38,6 +38,11 @@
             <artifactId>reladomo</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-annotation</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
