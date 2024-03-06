@@ -59,7 +59,7 @@ public abstract class AntlrProperty
     public abstract PropertyBuilder<?, ?, ?> getElementBuilder();
 
     @Nonnull
-    protected abstract AntlrClassifier getOwningClassifierState();
+    public abstract AntlrClassifier getOwningClassifierState();
 
     public int getNumModifiers()
     {

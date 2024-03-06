@@ -1,0 +1,13 @@
+package dummy
+
+class ClassWithPrivateProperty
+{
+    id: Long id key;
+    privateString: String private;
+}
+
+projection ProjectionOnPrivateProperty on ClassWithPrivateProperty
+{
+    id           : "id",
+    privateString: "privateString",
+}

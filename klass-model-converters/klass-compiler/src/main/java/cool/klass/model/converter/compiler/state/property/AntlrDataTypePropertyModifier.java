@@ -71,6 +71,11 @@ public class AntlrDataTypePropertyModifier extends AntlrModifier
         return this.name.equals("derived");
     }
 
+    public boolean isPrivate()
+    {
+        return this.name.equals("private");
+    }
+
     @Override
     public boolean isAudit()
     {

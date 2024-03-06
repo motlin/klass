@@ -305,9 +305,7 @@ projection QuestionReadProjection on Question
     deleted        : "Question is deleted",
     systemFrom     : "Question system From",
     systemTo       : "Question system To",
-    createdById    : "Question created by ID",
     createdOn      : "Question created on",
-    lastUpdatedById: "Question last updated by ID",
     answers        :
     {
         id  : "Answer id",

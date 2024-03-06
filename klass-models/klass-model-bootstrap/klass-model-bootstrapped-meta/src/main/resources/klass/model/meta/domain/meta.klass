@@ -135,7 +135,7 @@ class DataTypeProperty
 class PrimitiveProperty
     extends DataTypeProperty
 {
-    primitiveType                 : PrimitiveType private maximumLength(256);
+    primitiveType                 : PrimitiveType maximumLength(256);
     id                            : Boolean;
 }
 
@@ -313,8 +313,8 @@ class AssociationEnd implements NamedElement
 {
     owningClassName               : String key private maximumLength(256);
     associationName               : String maximumLength(256);
-    direction                     : AssociationEndDirection private maximumLength(256);
-    multiplicity                  : Multiplicity private maximumLength(256);
+    direction                     : AssociationEndDirection maximumLength(256);
+    multiplicity                  : Multiplicity maximumLength(256);
     resultTypeName                : String private maximumLength(256);
 }
 
@@ -423,7 +423,7 @@ class OperatorCriteria
     extends Criteria
 {
     id  : Long key private;
-    operator: Operator private maximumLength(256);
+    operator: Operator maximumLength(256);
     sourceExpressionId: Long private;
     targetExpressionId: Long private;
 }
@@ -499,7 +499,7 @@ class Parameter
     // name isn't key
     name: String maximumLength(256);
     id: Long key id;
-    multiplicity: Multiplicity private maximumLength(256);
+    multiplicity: Multiplicity maximumLength(256);
 }
 
 class EnumerationParameter
@@ -513,7 +513,7 @@ class PrimitiveParameter
     extends Parameter
 {
     id  : Long key private;
-    primitiveType: PrimitiveType private maximumLength(256);
+    primitiveType: PrimitiveType maximumLength(256);
 }
 
 association EnumerationParameterHasEnumeration
@@ -633,7 +633,7 @@ class AssociationEndOrderBy
     associationEndClassName: String key private maximumLength(256);
     associationEndName: String key private maximumLength(256);
     thisMemberReferencePathId: Long key private;
-    orderByDirection: OrderByDirection private maximumLength(256);
+    orderByDirection: OrderByDirection maximumLength(256);
 }
 
 association AssociationEndHasOrderBy
@@ -877,8 +877,8 @@ class Service
 {
     className                     : String key maximumLength(256);
     urlString                     : String key maximumLength(8192);
-    verb                          : Verb key private maximumLength(256);
-    serviceMultiplicity           : ServiceMultiplicity private maximumLength(256);
+    verb                          : Verb key maximumLength(256);
+    serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
     projectionName                : String? private maximumLength(256);
     queryCriteriaId               : Long? private;
     authorizeCriteriaId           : Long? private;

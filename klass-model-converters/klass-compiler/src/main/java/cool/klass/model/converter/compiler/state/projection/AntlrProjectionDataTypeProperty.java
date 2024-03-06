@@ -139,6 +139,15 @@ public class AntlrProjectionDataTypeProperty
                     this.name);
             compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
         }
+
+        if (this.dataTypeProperty.isPrivate())
+        {
+            String message = String.format(
+                    "Projection includes private property '%s.%s'.",
+                    this.dataTypeProperty.getOwningClassifierState().getName(),
+                    this.name);
+            compilerErrorHolder.add("ERR_PRJ_PRV", message, this);
+        }
     }
 
     @Override

@@ -69,7 +69,7 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
 
         @Nonnull
         @Override
-        protected AntlrClassifier getOwningClassifierState()
+        public AntlrClassifier getOwningClassifierState()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".getOwningClassifierState() not implemented yet");
@@ -131,7 +131,7 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
 
         @Nonnull
         @Override
-        protected AntlrClassifier getOwningClassifierState()
+        public AntlrClassifier getOwningClassifierState()
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".getOwningClassifierState() not implemented yet");

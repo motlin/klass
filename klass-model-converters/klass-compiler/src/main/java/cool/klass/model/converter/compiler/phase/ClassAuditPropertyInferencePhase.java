@@ -54,9 +54,10 @@ public class ClassAuditPropertyInferencePhase
 
     private void addAuditProperties()
     {
-        this.runCompilerMacro("    createdById    : String private createdBy;\n");
+        // TODO: Make createdById and lastUpdatedById private once one-way reference properties are supported.
+        this.runCompilerMacro("    createdById    : String createdBy;\n");
         this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
-        this.runCompilerMacro("    lastUpdatedById: String private lastUpdatedBy;\n");
+        this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy;\n");
 
         Optional<AntlrClass> userClassOptional = this.compilerState.getDomainModelState().getUserClassState();
         if (!userClassOptional.isPresent())

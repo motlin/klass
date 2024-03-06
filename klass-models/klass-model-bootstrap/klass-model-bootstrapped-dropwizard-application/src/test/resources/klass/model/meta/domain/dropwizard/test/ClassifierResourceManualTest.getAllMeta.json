@@ -410,11 +410,7 @@
         "enumeration": {
           "name": "PrimitiveType"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -778,11 +774,7 @@
         "enumeration": {
           "name": "AssociationEndDirection"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -795,11 +787,7 @@
         "enumeration": {
           "name": "Multiplicity"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -1126,11 +1114,7 @@
         "enumeration": {
           "name": "Operator"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -1384,11 +1368,7 @@
         "enumeration": {
           "name": "Multiplicity"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -1484,11 +1464,7 @@
         "enumeration": {
           "name": "PrimitiveType"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -1870,11 +1846,7 @@
         "enumeration": {
           "name": "OrderByDirection"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256
@@ -2814,9 +2786,6 @@
         "propertyModifiers": [
           {
             "name": "key"
-          },
-          {
-            "name": "private"
           }
         ],
         "minLengthValidation": null,
@@ -2831,11 +2800,7 @@
         "enumeration": {
           "name": "ServiceMultiplicity"
         },
-        "propertyModifiers": [
-          {
-            "name": "private"
-          }
-        ],
+        "propertyModifiers": [],
         "minLengthValidation": null,
         "maxLengthValidation": {
           "number": 256

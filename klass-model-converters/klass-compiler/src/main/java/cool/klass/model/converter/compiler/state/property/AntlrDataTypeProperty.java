@@ -218,6 +218,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isDerived);
     }
 
+    public boolean isPrivate()
+    {
+        return this.getDataTypePropertyModifiers().anySatisfy(AntlrDataTypePropertyModifier::isPrivate);
+    }
+
     public boolean isOptional()
     {
         return this.isOptional;
@@ -363,7 +368,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
 
     @Nonnull
     @Override
-    protected AntlrClassifier getOwningClassifierState()
+    public AntlrClassifier getOwningClassifierState()
     {
         return this.owningClassifierState;
     }
