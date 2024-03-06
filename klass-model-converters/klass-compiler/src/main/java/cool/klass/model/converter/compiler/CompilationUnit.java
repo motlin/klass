@@ -73,7 +73,7 @@ public final class CompilationUnit
     }
 
     @Nonnull
-    private static String slurp(String classpathLocation, @Nonnull ClassLoader classLoader)
+    private static String slurp(@Nonnull String classpathLocation, @Nonnull ClassLoader classLoader)
     {
         InputStream inputStream = classLoader.getResourceAsStream(classpathLocation);
         Objects.requireNonNull(inputStream);

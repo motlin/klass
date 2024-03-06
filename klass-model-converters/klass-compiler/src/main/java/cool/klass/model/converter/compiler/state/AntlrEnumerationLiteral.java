@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(), "ambiguous enumeration literal",
             -1,
             Optional.empty(),
-            null);
+            AntlrEnumeration.AMBIGUOUS);
     @Nonnull
     public static final AntlrEnumerationLiteral NOT_FOUND = new AntlrEnumerationLiteral(
             new ParserRuleContext(),
@@ -28,10 +29,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             new ParserRuleContext(), "not found enumeration literal",
             -1,
             Optional.empty(),
-            null);
+            AntlrEnumeration.NOT_FOUND);
 
     @Nonnull
     private final Optional<String> prettyName;
+    @Nonnull
     private final AntlrEnumeration owningEnumeration;
 
     private EnumerationLiteralBuilder elementBuilder;
@@ -43,11 +45,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
             @Nonnull String name,
             int ordinal,
             @Nonnull Optional<String> prettyName,
-            AntlrEnumeration owningEnumeration)
+            @Nonnull AntlrEnumeration owningEnumeration)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.prettyName = prettyName;
-        this.owningEnumeration = owningEnumeration;
+        this.owningEnumeration = Objects.requireNonNull(owningEnumeration);
     }
 
     @Nonnull
@@ -57,10 +59,11 @@ public class AntlrEnumerationLiteral extends AntlrNamedElement
         return (EnumerationLiteralContext) super.getElementContext();
     }
 
+    @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.owningEnumeration);
+        return Optional.of(this.owningEnumeration);
     }
 
     @Override

@@ -285,7 +285,7 @@ public class CompilerWalkState
         }
     }
 
-    public void assertEquals(CompilerWalkState other)
+    public void assertEquals(@Nonnull CompilerWalkState other)
     {
         if (!Objects.equals(this.domainModelState, other.domainModelState))
         {
@@ -365,6 +365,7 @@ public class CompilerWalkState
         }
     }
 
+    @Nonnull
     public KlassListener asListener()
     {
         return new ListenerView();

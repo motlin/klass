@@ -30,10 +30,11 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     @Override
     public abstract AbstractBinaryCriteriaBuilder<?> build();
 
+    @Nonnull
     @Override
     public abstract AbstractBinaryCriteriaBuilder<?> getElementBuilder();
 
-    public void setLeft(AntlrCriteria left)
+    public void setLeft(@Nonnull AntlrCriteria left)
     {
         if (this.left != null)
         {
@@ -42,7 +43,7 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
         this.left = Objects.requireNonNull(left);
     }
 
-    public void setRight(AntlrCriteria right)
+    public void setRight(@Nonnull AntlrCriteria right)
     {
         if (this.right != null)
         {
@@ -52,7 +53,7 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
@@ -62,7 +63,7 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     }
 
     @Override
-    public final void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
+    public final void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         this.left.resolveServiceVariables(formalParametersByName);
         this.right.resolveServiceVariables(formalParametersByName);

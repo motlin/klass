@@ -46,10 +46,11 @@ public class AntlrAssociationEndModifier extends AntlrModifier
         return (AssociationEndModifierContext) super.getElementContext();
     }
 
+    @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.surroundingElement);
+        return Optional.of(this.surroundingElement);
     }
 
     public boolean isOwned()

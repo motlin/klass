@@ -18,6 +18,7 @@ public interface AntlrTopLevelElement extends IAntlrElement
         return false;
     }
 
+    @Nonnull
     @Override
     default Optional<IAntlrElement> getSurroundingElement()
     {

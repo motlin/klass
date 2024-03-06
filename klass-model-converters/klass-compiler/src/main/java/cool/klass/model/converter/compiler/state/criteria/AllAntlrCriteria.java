@@ -54,13 +54,13 @@ public class AllAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // Intentionally blank
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         // Intentionally blank
     }

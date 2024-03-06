@@ -77,7 +77,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.memberExpressionValue.reportErrors(compilerErrorHolder);
         ListIterable<AntlrType> possibleTypes = this.memberExpressionValue.getPossibleTypes();
@@ -91,7 +91,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         // Intentionally blank
     }

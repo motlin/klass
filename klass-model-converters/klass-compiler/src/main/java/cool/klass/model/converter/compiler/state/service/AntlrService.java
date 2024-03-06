@@ -252,7 +252,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         Optional<ServiceProjectionDispatchBuilder> projectionDispatchBuilder =
                 this.serviceProjectionDispatchState.map(AntlrServiceProjectionDispatch::build);
-        this.elementBuilder.setProjectionDispatch(projectionDispatchBuilder);
+        this.elementBuilder.setProjectionDispatchBuilder(projectionDispatchBuilder);
 
         Optional<OrderByBuilder> orderByBuilder = this.orderByState.map(AntlrOrderBy::build);
         this.elementBuilder.setOrderByBuilder(orderByBuilder);

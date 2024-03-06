@@ -223,7 +223,7 @@ public class PropertyPhase extends AbstractCompilerPhase
     }
 
     @Override
-    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
     {
         super.enterAssociationEndSignature(ctx);
 
@@ -282,6 +282,7 @@ public class PropertyPhase extends AbstractCompilerPhase
         this.associationEndSignatureState.enterAssociationEndModifier(antlrAssociationEndModifier);
     }
 
+    @Nullable
     private AntlrClassifier getClassifierState()
     {
         return this.compilerState.getCompilerWalkState().getClassifierState();

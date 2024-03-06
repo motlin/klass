@@ -440,7 +440,7 @@ public class AntlrClass extends AntlrClassifier
         return this.inheritanceType == InheritanceType.NONE || this.inheritanceType == InheritanceType.TABLE_PER_CLASS;
     }
 
-    public void reportDuplicateUserClass(CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateUserClass(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         IdentifierContext offendingToken = this.getElementContext().classHeader().identifier();
         String message = String.format(
@@ -449,7 +449,7 @@ public class AntlrClass extends AntlrClassifier
         compilerErrorHolder.add("ERR_DUP_USR", message, this, offendingToken);
     }
 
-    public void reportDuplicateUserProperties(CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateUserProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         MutableList<AntlrDataTypeProperty<?>> userIdProperties =
                 this.dataTypePropertyStates.select(AntlrDataTypeProperty::isUserId);

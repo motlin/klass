@@ -47,6 +47,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
         return this.elementBuilder;
     }
 
+    @Nonnull
     @Override
     public AndCriteriaBuilder getElementBuilder()
     {
@@ -54,7 +55,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
@@ -65,7 +66,7 @@ public class AntlrAndCriteria extends AntlrBinaryCriteria
     @Override
     public void addForeignKeys(
             boolean foreignKeysOnThis,
-            AntlrAssociationEnd endWithForeignKeys)
+            @Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
         this.left.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);
         this.right.addForeignKeys(foreignKeysOnThis, endWithForeignKeys);

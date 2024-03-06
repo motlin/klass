@@ -24,7 +24,7 @@ public abstract class AntlrElement implements IAntlrElement
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit)
     {
-        this.elementContext = Objects.requireNonNull(elementContext);
+        this.elementContext  = Objects.requireNonNull(elementContext);
         this.compilationUnit = Objects.requireNonNull(compilationUnit);
     }
 
@@ -35,6 +35,7 @@ public abstract class AntlrElement implements IAntlrElement
         return this.elementContext;
     }
 
+    @Nonnull
     public ElementBuilder<?> getElementBuilder()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -48,6 +49,7 @@ public abstract class AntlrElement implements IAntlrElement
         return this.compilationUnit.flatMap(CompilationUnit::getMacroElement);
     }
 
+    @Nonnull
     protected Optional<ElementBuilder<?>> getMacroElementBuilder()
     {
         return this.getMacroElement().map(AntlrElement::getElementBuilder);
@@ -74,6 +76,7 @@ public abstract class AntlrElement implements IAntlrElement
         return this.compilationUnit;
     }
 
+    @Nonnull
     @Override
     public String getSourceCode()
     {

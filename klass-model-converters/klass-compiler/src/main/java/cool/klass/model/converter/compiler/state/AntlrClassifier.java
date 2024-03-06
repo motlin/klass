@@ -70,6 +70,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".isInterfaceRedundant() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public ImmutableBag<String> getDuplicateMemberNames()
         {
@@ -77,6 +78,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getDuplicateMemberNames() not implemented yet");
         }
 
+        @Nonnull
         @Override
         protected ImmutableList<String> getDeclaredMemberNames()
         {
@@ -92,6 +94,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getTypeGetter() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
         {
@@ -99,6 +102,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getDataTypePropertyByName() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public AntlrClassModifier getClassModifierByName(String name)
         {
@@ -147,6 +151,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".isInterfaceRedundant() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public ImmutableBag<String> getDuplicateMemberNames()
         {
@@ -154,6 +159,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getDuplicateMemberNames() not implemented yet");
         }
 
+        @Nonnull
         @Override
         protected ImmutableList<String> getDeclaredMemberNames()
         {
@@ -169,6 +175,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getTypeGetter() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
         {
@@ -176,6 +183,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                     + ".getDataTypePropertyByName() not implemented yet");
         }
 
+        @Nonnull
         @Override
         public AntlrClassModifier getClassModifierByName(String name)
         {

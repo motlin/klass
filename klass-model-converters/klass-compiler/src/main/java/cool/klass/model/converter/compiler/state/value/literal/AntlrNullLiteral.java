@@ -28,7 +28,7 @@ public class AntlrNullLiteral extends AbstractAntlrLiteralValue
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
     }
 

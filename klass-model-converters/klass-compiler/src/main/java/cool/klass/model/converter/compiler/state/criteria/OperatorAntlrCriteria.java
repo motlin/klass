@@ -108,7 +108,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         this.sourceValue.reportErrors(compilerErrorHolder);
         this.targetValue.reportErrors(compilerErrorHolder);
@@ -118,7 +118,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         this.sourceValue.resolveServiceVariables(formalParametersByName);
         this.targetValue.resolveServiceVariables(formalParametersByName);

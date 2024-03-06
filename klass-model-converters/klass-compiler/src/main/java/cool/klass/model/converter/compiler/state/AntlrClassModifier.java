@@ -38,10 +38,10 @@ public class AntlrClassModifier extends AntlrModifier
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            AntlrClassifier owningClassifierState)
+            @Nonnull AntlrClassifier owningClassifierState)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.owningClassifierState = owningClassifierState;
+        this.owningClassifierState = Objects.requireNonNull(owningClassifierState);
     }
 
     @Nonnull
@@ -55,7 +55,7 @@ public class AntlrClassModifier extends AntlrModifier
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.owningClassifierState);
+        return Optional.of(this.owningClassifierState);
     }
 
     public boolean isTransient()

@@ -202,6 +202,7 @@ public class CompilerState
         return topLevelElementOrdinalByContext;
     }
 
+    @Nonnull
     public KlassListener asListener()
     {
         return new ListenerView();

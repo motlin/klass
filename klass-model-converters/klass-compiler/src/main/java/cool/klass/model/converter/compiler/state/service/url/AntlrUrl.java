@@ -247,7 +247,7 @@ public class AntlrUrl extends AntlrElement
         ImmutableList<ElementBuilder<?>> pathSegments = this.urlPathSegments
                 .<ElementBuilder<?>>collect(this::buildPathSegment)
                 .toImmutable();
-        this.elementBuilder.setPathSegments(pathSegments);
+        this.elementBuilder.setPathSegmentBuilders(pathSegments);
 
         ImmutableList<ParameterBuilder> queryParameterBuilders = this.queryParameters
                 .getParameterStates()

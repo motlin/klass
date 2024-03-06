@@ -46,7 +46,7 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     @OverridingMethodsMustInvokeSuper
     public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
 
-    public void reportDuplicateUserProperty(CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateUserProperty(@Nonnull CompilerErrorState compilerErrorHolder)
     {
         String message = String.format(
                 "Duplicate userId property: '%s.%s'.",

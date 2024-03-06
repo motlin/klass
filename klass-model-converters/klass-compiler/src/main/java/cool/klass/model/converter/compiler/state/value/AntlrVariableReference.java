@@ -74,6 +74,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         }
     }
 
+    @Nonnull
     @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {

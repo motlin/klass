@@ -35,10 +35,11 @@ public abstract class AntlrExpressionValue extends AntlrElement
         return true;
     }
 
+    @Nonnull
     @Override
     public Optional<IAntlrElement> getSurroundingElement()
     {
-        return Optional.ofNullable(this.expressionValueOwner);
+        return Optional.of(this.expressionValueOwner);
     }
 
     @Nonnull
@@ -48,11 +49,12 @@ public abstract class AntlrExpressionValue extends AntlrElement
     @Nonnull
     public abstract AbstractExpressionValueBuilder<?> getElementBuilder();
 
-    public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
+    public abstract void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder);
 
+    @Nonnull
     public abstract ImmutableList<AntlrType> getPossibleTypes();
 
-    public void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName)
+    public void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName)
     {
         // Intentionally blank
     }

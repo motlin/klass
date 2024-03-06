@@ -39,18 +39,22 @@ public interface IAntlrElement
 
     boolean omitParentFromSurroundingElements();
 
+    @Nonnull
     Optional<IAntlrElement> getSurroundingElement();
 
+    @Nonnull
     default ImmutableList<IAntlrElement> getSurroundingElementsIncludingThis()
     {
         return this.gatherSurroundingElements(Lists.mutable.with(this));
     }
 
+    @Nonnull
     default ImmutableList<IAntlrElement> getSurroundingElements()
     {
         return this.gatherSurroundingElements(Lists.mutable.empty());
     }
 
+    @Nonnull
     default ImmutableList<IAntlrElement> gatherSurroundingElements(@Nonnull MutableList<IAntlrElement> result)
     {
         boolean omitParent = this.omitParentFromSurroundingElements();
@@ -72,5 +76,6 @@ public interface IAntlrElement
     @Nonnull
     Optional<CompilationUnit> getCompilationUnit();
 
+    @Nonnull
     String getSourceCode();
 }

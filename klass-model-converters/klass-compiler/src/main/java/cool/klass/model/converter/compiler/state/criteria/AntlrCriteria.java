@@ -47,18 +47,19 @@ public abstract class AntlrCriteria extends AntlrElement
     @Nonnull
     public abstract AbstractCriteriaBuilder<?> build();
 
+    @Nonnull
     @Override
     public abstract AbstractCriteriaBuilder<?> getElementBuilder();
 
-    public abstract void reportErrors(CompilerErrorState compilerErrorHolder);
+    public abstract void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder);
 
-    public abstract void resolveServiceVariables(OrderedMap<String, AntlrParameter> formalParametersByName);
+    public abstract void resolveServiceVariables(@Nonnull OrderedMap<String, AntlrParameter> formalParametersByName);
 
     public abstract void resolveTypes();
 
     public void addForeignKeys(
             boolean foreignKeysOnThis,
-            AntlrAssociationEnd endWithForeignKeys)
+            @Nonnull AntlrAssociationEnd endWithForeignKeys)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".addForeignKeys() not implemented yet");

@@ -31,7 +31,7 @@ public final class AntlrIntegerLiteralValue extends AbstractAntlrLiteralValue
     }
 
     @Override
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
     }
 
