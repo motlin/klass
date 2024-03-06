@@ -288,8 +288,18 @@ public class IncomingCreateDataModelValidator
     {
         if (associationEnd.isOwned())
         {
-            throw new AssertionError(
-                    "Assumption is that all owned association ends are inside projection, all unowned are outside projection");
+            throw new AssertionError("Assumption is that all owned association ends are inside projection, all unowned are outside projection");
+        }
+
+        if (childJsonNode.isMissingNode()
+                || childJsonNode.isNull())
+        {
+            return;
+        }
+
+        if (!associationEnd.hasRealKeys())
+        {
+            return;
         }
 
         String associationEndName = associationEnd.getName();
