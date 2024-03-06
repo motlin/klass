@@ -4,7 +4,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/enumeration",
+        "url": "/meta/enumeration",
         "services": [
           {
             "verb": "GET",
@@ -19,7 +19,7 @@
         ]
       },
       {
-        "url": "/api/meta/enumeration/{enumerationName}",
+        "url": "/meta/enumeration/{enumerationName}",
         "services": [
           {
             "verb": "GET",
@@ -51,7 +51,7 @@
         ]
       },
       {
-        "url": "/api/meta/enumeration/{enumerationName}/summary",
+        "url": "/meta/enumeration/{enumerationName}/summary",
         "services": [
           {
             "verb": "GET",
@@ -89,7 +89,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/interface",
+        "url": "/meta/interface",
         "services": [
           {
             "verb": "GET",
@@ -104,7 +104,7 @@
         ]
       },
       {
-        "url": "/api/meta/interface/{interfaceName}",
+        "url": "/meta/interface/{interfaceName}",
         "services": [
           {
             "verb": "GET",
@@ -136,7 +136,7 @@
         ]
       },
       {
-        "url": "/api/meta/interface/{interfaceName}/summary",
+        "url": "/meta/interface/{interfaceName}/summary",
         "services": [
           {
             "verb": "GET",
@@ -174,7 +174,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/class",
+        "url": "/meta/class",
         "services": [
           {
             "verb": "GET",
@@ -189,7 +189,7 @@
         ]
       },
       {
-        "url": "/api/meta/class/{className}",
+        "url": "/meta/class/{className}",
         "services": [
           {
             "verb": "GET",
@@ -221,7 +221,7 @@
         ]
       },
       {
-        "url": "/api/meta/class/{className}/summary",
+        "url": "/meta/class/{className}/summary",
         "services": [
           {
             "verb": "GET",
@@ -259,7 +259,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/classifier",
+        "url": "/meta/classifier",
         "services": [
           {
             "verb": "GET",
@@ -274,7 +274,7 @@
         ]
       },
       {
-        "url": "/api/meta/classifier/{classifierName}",
+        "url": "/meta/classifier/{classifierName}",
         "services": [
           {
             "verb": "GET",
@@ -312,7 +312,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/association",
+        "url": "/meta/association",
         "services": [
           {
             "verb": "GET",
@@ -327,7 +327,7 @@
         ]
       },
       {
-        "url": "/api/meta/association/{associationName}",
+        "url": "/meta/association/{associationName}",
         "services": [
           {
             "verb": "GET",
@@ -359,7 +359,7 @@
         ]
       },
       {
-        "url": "/api/meta/association/{associationName}/summary",
+        "url": "/meta/association/{associationName}/summary",
         "services": [
           {
             "verb": "GET",
@@ -397,7 +397,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/projection",
+        "url": "/meta/projection",
         "services": [
           {
             "verb": "GET",
@@ -412,7 +412,7 @@
         ]
       },
       {
-        "url": "/api/meta/projection/{projectionName}",
+        "url": "/meta/projection/{projectionName}",
         "services": [
           {
             "verb": "GET",
@@ -444,7 +444,7 @@
         ]
       },
       {
-        "url": "/api/meta/projection/{projectionName}/summary",
+        "url": "/meta/projection/{projectionName}/summary",
         "services": [
           {
             "verb": "GET",
@@ -482,7 +482,7 @@
     "packageName": "klass.model.meta.domain",
     "urls": [
       {
-        "url": "/api/meta/serviceGroup",
+        "url": "/meta/serviceGroup",
         "services": [
           {
             "verb": "GET",
@@ -497,7 +497,7 @@
         ]
       },
       {
-        "url": "/api/meta/serviceGroup/{serviceGroupName}",
+        "url": "/meta/serviceGroup/{serviceGroupName}",
         "services": [
           {
             "verb": "GET",
@@ -529,7 +529,7 @@
         ]
       },
       {
-        "url": "/api/meta/serviceGroup/{serviceGroupName}/summary",
+        "url": "/meta/serviceGroup/{serviceGroupName}/summary",
         "services": [
           {
             "verb": "GET",

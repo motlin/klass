@@ -79,7 +79,7 @@ service QuestionVoteResource
     {
         // service : http;
 
-        url     : /api/question/vote/{questionId: Long[1..1]};
+        url     : /question/vote/{questionId: Long[1..1]};
 
         criteria: this.question.id == questionId && this.createdById == user.userId;
 
@@ -94,7 +94,7 @@ service QuestionVoteResource
     {
         // service : rpc;
 
-        url     : /api/question/vote;
+        url     : /question/vote;
 
         criteria: this.question.id == questionVote.question.id && this.createdById == user.userId;
 
@@ -103,7 +103,7 @@ service QuestionVoteResource
                 || this.systemFrom < this.question.systemFrom);
     }
 
-    /api/question/vote/{questionId: Long[1..1]}
+    /question/vote/{questionId: Long[1..1]}
         PUT
         {
             multiplicity: one;
@@ -124,7 +124,7 @@ The validation criteria uses the global `now`, less 5 minutes in milliseconds, t
 ```klass
 service QuestionVote
 {
-    /api/question/vote/{questionId: Long[1..1]}
+    /question/vote/{questionId: Long[1..1]}
         // PUT ...
         DELETE
         {
@@ -247,7 +247,7 @@ When using a parameterized projection, the service must also be parameterized.
 ```klass
 service Question
 {
-    /api/question/{id: Long[1..1]}/{userId: String[1..1] userId}
+    /question/{id: Long[1..1]}/{userId: String[1..1] userId}
         GET
         {
             format      : json;

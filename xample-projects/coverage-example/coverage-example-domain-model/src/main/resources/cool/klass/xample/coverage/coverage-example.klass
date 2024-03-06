@@ -71,7 +71,7 @@ projection PropertiesRequiredProjection on PropertiesRequired
 
 service PropertiesRequired
 {
-    /api/propertiesRequired/{propertiesRequiredId: Long[1..1]}
+    /propertiesRequired/{propertiesRequiredId: Long[1..1]}
         GET
         {
             multiplicity: one;
@@ -124,7 +124,7 @@ projection PropertiesOptionalProjection on PropertiesOptional
 
 service PropertiesOptional
 {
-    /api/propertiesOptional/{propertiesOptionalId: Long[1..1]}
+    /propertiesOptional/{propertiesOptionalId: Long[1..1]}
         GET
         {
             multiplicity: one;
@@ -221,14 +221,14 @@ projection AllKeyPropertiesProjection on AllKeyProperties
 
 service AllKeyProperties
 {
-    /api/allKeyProperties
+    /allKeyProperties
         GET
         {
             multiplicity: many;
             criteria    : all;
             projection  : AllKeyPropertiesProjection;
         }
-    /api/allKeyProperties
+    /allKeyProperties
         /{keyString   : String[1..1]}
         /{keyInteger  : Integer[1..1]}
         /{keyLong     : Long[1..1]}

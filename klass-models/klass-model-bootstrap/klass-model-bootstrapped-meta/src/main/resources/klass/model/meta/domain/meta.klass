@@ -994,21 +994,21 @@ projection EnumerationSummaryProjection on Enumeration
 
 service Enumeration
 {
-    /api/meta/enumeration/{enumerationName: String[1..1]}
+    /meta/enumeration/{enumerationName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == enumerationName;
             projection  : EnumerationProjection;
         }
-    /api/meta/enumeration/{enumerationName: String[1..1]}/summary
+    /meta/enumeration/{enumerationName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == enumerationName;
             projection  : EnumerationSummaryProjection;
         }
-    /api/meta/enumeration
+    /meta/enumeration
         GET
         {
             multiplicity: many;
@@ -1132,21 +1132,21 @@ projection InterfaceSummaryProjection on Interface
 
 service Interface
 {
-    /api/meta/interface/{interfaceName: String[1..1]}
+    /meta/interface/{interfaceName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == interfaceName;
             projection  : InterfaceProjection;
         }
-    /api/meta/interface/{interfaceName: String[1..1]}/summary
+    /meta/interface/{interfaceName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == interfaceName;
             projection  : InterfaceSummaryProjection;
         }
-    /api/meta/interface
+    /meta/interface
         GET
         {
             multiplicity: many;
@@ -1398,21 +1398,21 @@ projection ClassSummaryProjection on Klass
 
 service Klass
 {
-    /api/meta/class/{className: String[1..1]}
+    /meta/class/{className: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == className;
             projection  : ClassProjection;
         }
-    /api/meta/class/{className: String[1..1]}/summary
+    /meta/class/{className: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == className;
             projection  : ClassSummaryProjection;
         }
-    /api/meta/class
+    /meta/class
         GET
         {
             multiplicity: many;
@@ -1449,14 +1449,14 @@ projection ClassifierSummaryProjection on Classifier
 
 service Classifier
 {
-    /api/meta/classifier/{classifierName: String[1..1]}
+    /meta/classifier/{classifierName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == classifierName;
             projection  : ClassifierSummaryProjection;
         }
-    /api/meta/classifier
+    /meta/classifier
         GET
         {
             multiplicity: many;
@@ -1648,21 +1648,21 @@ projection CriteriaSummaryProjection on Criteria
 
 service Association
 {
-    /api/meta/association/{associationName: String[1..1]}
+    /meta/association/{associationName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == associationName;
             projection  : AssociationProjection;
         }
-    /api/meta/association/{associationName: String[1..1]}/summary
+    /meta/association/{associationName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == associationName;
             projection  : AssociationSummaryProjection;
         }
-    /api/meta/association
+    /meta/association
         GET
         {
             multiplicity: many;
@@ -1696,21 +1696,21 @@ projection ProjectionElementSummaryProjection on ProjectionElement
 
 service ServiceProjection
 {
-    /api/meta/projection/{projectionName: String[1..1]}
+    /meta/projection/{projectionName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == projectionName;
             projection  : ProjectionElementProjection;
         }
-    /api/meta/projection/{projectionName: String[1..1]}/summary
+    /meta/projection/{projectionName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == projectionName;
             projection  : ProjectionElementSummaryProjection;
         }
-    /api/meta/projection
+    /meta/projection
         GET
         {
             multiplicity: many;
@@ -1765,21 +1765,21 @@ projection ServiceGroupSummaryProjection on ServiceGroup
 
 service ServiceGroup
 {
-    /api/meta/serviceGroup/{serviceGroupName: String[1..1]}
+    /meta/serviceGroup/{serviceGroupName: String[1..1]}
         GET
         {
             multiplicity: one;
             criteria    : this.name == serviceGroupName;
             projection  : ServiceGroupProjection;
         }
-    /api/meta/serviceGroup/{serviceGroupName: String[1..1]}/summary
+    /meta/serviceGroup/{serviceGroupName: String[1..1]}/summary
         GET
         {
             multiplicity: one;
             criteria    : this.name == serviceGroupName;
             projection  : ServiceGroupSummaryProjection;
         }
-    /api/meta/serviceGroup
+    /meta/serviceGroup
         GET
         {
             multiplicity: many;

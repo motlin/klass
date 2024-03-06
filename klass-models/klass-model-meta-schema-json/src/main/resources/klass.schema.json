@@ -616,7 +616,7 @@
                   "type": "string",
                   "title": "Url Schema",
                   "examples": [
-                    "/api/meta/enumeration"
+                    "/meta/enumeration"
                   ],
                   "pattern": "^(.*)$"
                 },

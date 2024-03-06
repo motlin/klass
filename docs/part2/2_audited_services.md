@@ -101,7 +101,7 @@ service QuestionResource
     getById(id: Long[1..1]): QuestionReadProjection[0..1]
     {
         operation       : read;
-        url             : /api/question/{id: Long[1..1]}?{version: Integer[0..1] version};
+        url             : /question/{id: Long[1..1]}?{version: Integer[0..1] version};
         criteria        : this.id == id;
         optionalCriteria: this.version.number == version
         format          : json;
@@ -147,7 +147,7 @@ service Question
     getById(id: Long[1..1]): QuestionReadProjection[0..1]
     {
         operation       : read;
-        url             : /api/question/{id: Long[1..1]}?{version: Integer[0..1] version}&{system: TemporalRange[0..1] system};
+        url             : /question/{id: Long[1..1]}?{version: Integer[0..1] version}&{system: TemporalRange[0..1] system};
         criteria        : this.id == id;
         optionalCriteria: this.version.number == version
         optionalCriteria: this.system == system

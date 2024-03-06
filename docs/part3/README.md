@@ -78,7 +78,7 @@ service ClassResource
     getByName(className: String[1..1]): ClassReadProjection[0..1]
     {
         operation: read;
-        url      : /api/meta/class/{className: String[1..1]};
+        url      : /meta/class/{className: String[1..1]};
         criteria : this.name == className;
         format   : json;
     }

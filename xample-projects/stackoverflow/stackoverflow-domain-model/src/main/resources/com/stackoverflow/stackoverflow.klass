@@ -237,7 +237,7 @@ projection QuestionVoteWriteProjection on QuestionVote
 /*
 service QuestionVote
 {
-    /api/question/vote/{questionId: Long[1..1]}
+    /question/vote/{questionId: Long[1..1]}
         PUT
         {
             multiplicity: one;
@@ -351,14 +351,14 @@ service Question
 {
     // TODO: matrix url params
     /*
-        /api/question/{id: Long[1..1]}/{substring: String[1..1]}
+        /question/{id: Long[1..1]}/{substring: String[1..1]}
             GET
             {
                 multiplicity: many
                 criteria    : this.id == id
                 projection  : FilteredAnswersProjection(substring)
             }
-        /api/question/{titleSubstring: String[1..1]}
+        /question/{titleSubstring: String[1..1]}
             GET
             {
                 multiplicity: many
@@ -372,13 +372,13 @@ service Question
     read getById(id: Long[1..1]): QuestionReadProjection[1]
     {
         resource: QuestionResource
-        url     : /api/question/{id: Long[1..1]}
+        url     : /question/{id: Long[1..1]}
         criteria: this.id == id
     }
     */
 
     // TODO: Consider forcing exact type matches. Meaning id's type here would be ID, not Long.
-    /api/question/{id: Long[1..1]}
+    /question/{id: Long[1..1]}
         GET
         {
             multiplicity: one;
@@ -410,7 +410,7 @@ service Question
             authorize   : this.createdById == user;
             projection  : QuestionWriteProjection;
         }
-    /api/question/in?{ids: Long[0..*]}
+    /question/in?{ids: Long[0..*]}
         GET
         {
             multiplicity: many;
@@ -420,7 +420,7 @@ service Question
 
     // TODO: Test urls containing unusual characters like emoji, and %20
     /*
-    /api/question/firstTwo
+    /question/firstTwo
         GET
         {
             // TODO: Warn if multiplicity is one and criteria uses in clause, or anything other than equality on a unique property
@@ -429,7 +429,7 @@ service Question
             projection  : QuestionReadProjection;
         }
     */
-    /api/question
+    /question
         POST
         {
             multiplicity: one;
@@ -446,7 +446,7 @@ service Question
 
     // TODO: Type inference on url parameters
     // TODO: Consider adding a primitive type UserId
-    /api/user/{userId: String[1..1]}/questions
+    /user/{userId: String[1..1]}/questions
         GET
         {
             //?page=1&pageSize=25

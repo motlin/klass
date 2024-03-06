@@ -3,7 +3,7 @@
   "packageName": "klass.model.meta.domain",
   "urls": [
     {
-      "url": "/api/meta/serviceGroup",
+      "url": "/meta/serviceGroup",
       "services": [
         {
           "verb": "GET",
@@ -21,7 +21,7 @@
       ]
     },
     {
-      "url": "/api/meta/serviceGroup/{serviceGroupName}",
+      "url": "/meta/serviceGroup/{serviceGroupName}",
       "services": [
         {
           "verb": "GET",
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "url": "/api/meta/serviceGroup/{serviceGroupName}/summary",
+      "url": "/meta/serviceGroup/{serviceGroupName}/summary",
       "services": [
         {
           "verb": "GET",

@@ -78,7 +78,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/question/{id}") // ?{version}
+    @Path("/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
     public Question method0(
@@ -110,7 +110,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @PUT
-    @Path("/api/question/{id}") // ?{version}
+    @Path("/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
     public void method1(
             @PathParam("id") Long id,
@@ -187,7 +187,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @DELETE
-    @Path("/api/question/{id}") // ?{version}
+    @Path("/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionWriteProjection_JsonView.class)
     public Question method2(
@@ -230,7 +230,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/question/in") // ?{ids}
+    @Path("/question/in") // ?{ids}
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
     public QuestionList method3(@Nonnull @QueryParam("ids") Set<Long> ids)
@@ -254,7 +254,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/question/firstTwo")
+    @Path("/question/firstTwo")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
     public QuestionList method4()
@@ -275,7 +275,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/question/{id}/version/{version}")
+    @Path("/question/{id}/version/{version}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
     public Question method3(
@@ -308,7 +308,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @DELETE
-    @Path("/api/question/{id}?{version}")
+    @Path("/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionWriteProjection_JsonView.class)
     public Question method4(
@@ -339,7 +339,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @POST
-    @Path("/api/question")
+    @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
     public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
     {
@@ -387,7 +387,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/question")
+    @Path("/question")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionReadProjection_JsonView.class)
     public QuestionList method6()
@@ -407,7 +407,7 @@ public class QuestionResourceManual
     @Timed
     @ExceptionMetered
     @GET
-    @Path("/api/user/{userId}/questions")
+    @Path("/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
     @JsonView(QuestionWriteProjection_JsonView.class)
     public QuestionList method7(@PathParam("userId") String userId)

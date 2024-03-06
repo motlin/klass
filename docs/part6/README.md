@@ -61,7 +61,7 @@ The service syntax is deliberately flexible enough to represent both http and rp
 ```klass
 service QuestionResource
 {
-    /api/question/{id: Long[1..1]}
+    /question/{id: Long[1..1]}
         GET
         {
             format      : json;

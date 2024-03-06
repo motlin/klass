@@ -9,7 +9,7 @@ service QuestionResource
 {
     read getById(questionId: Long[1..1] id path): QuestionReadProjection[1]
     {
-        url      : /api/question/{questionId: Long[1..1] id};
+        url      : /question/{questionId: Long[1..1] id};
         criteria : this.id == questionId;
         format   : json;
     }
