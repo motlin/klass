@@ -9,11 +9,7 @@
   "Warning at PropertiesOptional.createdOn. Expected createdOn property 'createdOn' to be absent or to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
   "Warning at PropertiesOptional.version.createdOn. Expected createdOn property 'createdOn' to be absent or to match current transaction time '1999-12-31T23:59:59.999Z' but got '2000-01-01T00:00:00Z'.",
   "Warning at PropertiesOptional.version.createdBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
-  "Warning at PropertiesOptional.version.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
   "Warning at PropertiesOptional.version.lastUpdatedBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
-  "Warning at PropertiesOptional.version.lastUpdatedBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
   "Warning at PropertiesOptional.createdBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
-  "Warning at PropertiesOptional.createdBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'.",
-  "Warning at PropertiesOptional.lastUpdatedBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'.",
-  "Warning at PropertiesOptional.lastUpdatedBy.systemFrom. Mismatched value for temporal property 'User.systemFrom: TemporalInstant?'. Expected absent value or '1999-12-31T23:59:59.999Z' but value was '2000-01-01T00:00:00Z'."
+  "Warning at PropertiesOptional.lastUpdatedBy.userId. Expected audit property 'userId' to match current user 'test user 1' but got 'different user'."
 ]

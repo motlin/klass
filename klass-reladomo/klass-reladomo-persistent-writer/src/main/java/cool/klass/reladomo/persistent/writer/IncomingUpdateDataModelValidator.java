@@ -362,16 +362,17 @@ public class IncomingUpdateDataModelValidator
         try
         {
             // TODO: Support a IncomingLastUpdatedByDataModelValidator which allows the current user to be substituted in for lastUpdatedBy.
-            IncomingCreatedByDataModelValidator validator = new IncomingCreatedByDataModelValidator(
+            IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                     this.dataStore,
                     this.userKlass,
                     associationEnd.getType(),
-                    this.mutationContext, userPersistentInstance,
+                    this.mutationContext,
                     (ObjectNode) jsonNode,
                     this.errors,
                     this.warnings,
                     this.contextStack,
-                    Optional.of(associationEnd));
+                    Optional.of(associationEnd),
+                    false);
             validator.validate();
         }
         finally

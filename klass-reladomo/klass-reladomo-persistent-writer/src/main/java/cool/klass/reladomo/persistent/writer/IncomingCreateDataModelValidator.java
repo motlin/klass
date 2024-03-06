@@ -140,7 +140,14 @@ public class IncomingCreateDataModelValidator
         }
         else if (dataTypeProperty.isKey())
         {
-            this.handleKeyProperty(dataTypeProperty);
+            if (this.klass == this.userKlass)
+            {
+                this.handleAuditProperty(dataTypeProperty);
+            }
+            else
+            {
+                this.handleKeyProperty(dataTypeProperty);
+            }
         }
         else if (dataTypeProperty.isTemporal())
         {
@@ -227,13 +234,13 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            String error = "Error at %s. Expected audit property '%s' to match current user '%s' but got '%s'."
+            String warning = "Warning at %s. Expected audit property '%s' to match current user '%s' but got '%s'."
                     .formatted(
                             this.getContextString(),
                             dataTypeProperty.getName(),
                             maybeUserId.get(),
                             jsonDataTypeValue.asText());
-            this.errors.add(error);
+            this.warnings.add(warning);
         }
         finally
         {
@@ -448,17 +455,17 @@ public class IncomingCreateDataModelValidator
         try
         {
             // TODO: Support a IncomingLastUpdatedByDataModelValidator which allows the current user to be substituted in for lastUpdatedBy.
-            IncomingCreatedByDataModelValidator validator = new IncomingCreatedByDataModelValidator(
+            IncomingCreateDataModelValidator validator = new IncomingCreateDataModelValidator(
                     this.dataStore,
                     this.userKlass,
                     associationEnd.getType(),
                     this.mutationContext,
-                    userPersistentInstance,
                     (ObjectNode) jsonNode,
                     this.errors,
                     this.warnings,
                     this.contextStack,
-                    Optional.of(associationEnd));
+                    Optional.of(associationEnd),
+                    false);
             validator.validate();
         }
         finally
