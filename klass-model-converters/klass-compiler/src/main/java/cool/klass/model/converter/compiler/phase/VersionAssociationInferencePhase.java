@@ -69,7 +69,7 @@ public class VersionAssociationInferencePhase extends AbstractCompilerPhase
         String relationshipKeyClauses = keyProperties
                 .collect(AntlrProperty::getName)
                 .collect(each -> "this." + each + " == " + className + "Version." + each)
-                .makeString("\n        ");
+                .makeString("\n        && ");
 
         String associationEndName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, className);
 

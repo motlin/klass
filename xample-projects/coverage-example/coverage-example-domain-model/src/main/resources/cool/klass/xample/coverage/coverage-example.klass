@@ -39,6 +39,9 @@ service User
 }
 
 class PropertiesRequired
+    systemTemporal
+    versioned
+    audited
 {
     propertiesRequiredId: Long id key;
     requiredString      : String;
@@ -49,6 +52,7 @@ class PropertiesRequired
     requiredBoolean     : Boolean;
     requiredInstant     : Instant;
     requiredLocalDate   : LocalDate;
+    requiredDerived     : String derived;
 }
 
 projection PropertiesRequiredProjection on PropertiesRequired
@@ -62,6 +66,7 @@ projection PropertiesRequiredProjection on PropertiesRequired
     requiredBoolean     : "requiredBoolean",
     requiredInstant     : "requiredInstant",
     requiredLocalDate   : "requiredLocalDate",
+    requiredDerived     : "requiredDerived",
 }
 
 service PropertiesRequired
@@ -87,6 +92,9 @@ service PropertiesRequired
 }
 
 class PropertiesOptional
+    systemTemporal
+    versioned
+    audited
 {
     propertiesOptionalId: Long id key;
     optionalString      : String?;
@@ -97,6 +105,7 @@ class PropertiesOptional
     optionalBoolean     : Boolean?;
     optionalInstant     : Instant?;
     optionalLocalDate   : LocalDate?;
+    optionalDerived     : String? derived;
 }
 
 projection PropertiesOptionalProjection on PropertiesOptional
@@ -110,6 +119,7 @@ projection PropertiesOptionalProjection on PropertiesOptional
     optionalBoolean     : "optionalBoolean",
     optionalInstant     : "optionalInstant",
     optionalLocalDate   : "optionalLocalDate",
+    optionalDerived     : "optionalDerived",
 }
 
 service PropertiesOptional
@@ -135,6 +145,9 @@ service PropertiesOptional
 }
 
 class AllKeyProperties
+    systemTemporal
+    versioned
+    audited
 {
     keyString           : String key;
     keyInteger          : Integer key;
@@ -147,6 +160,7 @@ class AllKeyProperties
 }
 
 class AllForeignKeyProperties
+    systemTemporal
 {
     id                  : Long id key;
     foreignKeyString    : String;
@@ -176,7 +190,6 @@ association AllKeyPropertiesHasAllForeignKeyProperties
 }
 
 // TODO: Reject types that have all auto-generated ids, foreign keys and no data.
-
 projection AllKeyPropertiesProjection on AllKeyProperties
 {
     keyString              : "keyString",
@@ -253,4 +266,255 @@ service AllKeyProperties
                     && this.keyLocalDate == keyLocalDate;
             projection  : AllKeyPropertiesProjection;
         }
+}
+
+class OwnedNaturalOneToManySource
+{
+    key: String key;
+    value: String;
+}
+
+class OwnedNaturalOneToManyTarget
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association OwnedNaturalOneToMany
+{
+    source: OwnedNaturalOneToManySource[1..1];
+    target: OwnedNaturalOneToManyTarget[1..*] owned;
+
+    relationship this.key == OwnedNaturalOneToManyTarget.sourceKey
+}
+
+class OwnedNaturalOneToOneSource
+{
+    key: String key;
+    value: String;
+}
+
+class OwnedNaturalOneToOneTarget
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association OwnedNaturalOneToOne
+{
+    source: OwnedNaturalOneToOneSource[1..1];
+    target: OwnedNaturalOneToOneTarget[1..1] owned;
+
+    relationship this.key == OwnedNaturalOneToOneTarget.sourceKey
+}
+
+class OwnedNaturalOneToManySelf
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association SelfOwnedNaturalOneToMany
+{
+    source: OwnedNaturalOneToManySelf[0..1];
+    target: OwnedNaturalOneToManySelf[0..*] owned;
+
+    relationship this.key == OwnedNaturalOneToManySelf.sourceKey
+}
+
+class OwnedSyntheticOneToManySource
+{
+    id: Long id key;
+    value: String;
+}
+
+class OwnedSyntheticOneToManyTarget
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association OwnedSyntheticOneToMany
+{
+    source: OwnedSyntheticOneToManySource[1..1];
+    target: OwnedSyntheticOneToManyTarget[1..*] owned;
+
+    relationship this.id == OwnedSyntheticOneToManyTarget.sourceId
+}
+
+class OwnedSyntheticOneToOneSource
+{
+    id: Long id key;
+    value: String;
+}
+
+class OwnedSyntheticOneToOneTarget
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association OwnedSyntheticOneToOne
+{
+    source: OwnedSyntheticOneToOneSource[1..1];
+    target: OwnedSyntheticOneToOneTarget[1..1] owned;
+
+    relationship this.id == OwnedSyntheticOneToOneTarget.sourceId
+}
+
+class OwnedSyntheticOneToManySelf
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association SelfOwnedSyntheticOneToMany
+{
+    source: OwnedSyntheticOneToManySelf[0..1];
+    target: OwnedSyntheticOneToManySelf[0..*] owned;
+
+    relationship this.id == OwnedSyntheticOneToManySelf.sourceId
+}
+
+class SharedNaturalManyToOneSource
+{
+    key: String key;
+    targetKey: String private;
+    value: String;
+}
+
+class SharedNaturalManyToOneTarget
+{
+    key: String key;
+    value: String;
+}
+
+// TODO: Add ManyToOneOptional [0..*]-->[0..1]
+
+association SharedNaturalManyToOne
+{
+    source: SharedNaturalManyToOneSource[0..*];
+    target: SharedNaturalManyToOneTarget[1..1];
+
+    relationship this.targetKey == SharedNaturalManyToOneTarget.key
+}
+
+class SharedNaturalOneToManySource
+{
+    key: String key;
+    value: String;
+}
+
+class SharedNaturalOneToManyTarget
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association SharedNaturalOneToMany
+{
+    source: SharedNaturalOneToManySource[1..1];
+    target: SharedNaturalOneToManyTarget[1..*];
+
+    relationship this.key == SharedNaturalOneToManyTarget.sourceKey
+}
+
+class SharedNaturalOneToOneSource
+{
+    key: String key;
+    value: String;
+}
+
+class SharedNaturalOneToOneTarget
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association SharedNaturalOneToOne
+{
+    source: SharedNaturalOneToOneSource[1..1];
+    target: SharedNaturalOneToOneTarget[0..1];
+
+    relationship this.key == SharedNaturalOneToOneTarget.sourceKey
+}
+
+class SharedNaturalOneToManySelf
+{
+    key: String key;
+    sourceKey: String private;
+    value: String;
+}
+
+association SelfSharedNaturalOneToMany
+{
+    source: SharedNaturalOneToManySelf[0..1];
+    target: SharedNaturalOneToManySelf[0..*];
+
+    relationship this.key == SharedNaturalOneToManySelf.sourceKey
+}
+
+class SharedSyntheticOneToManySource
+{
+    id: Long id key;
+    value: String;
+}
+
+class SharedSyntheticOneToManyTarget
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association SharedSyntheticOneToMany
+{
+    source: SharedSyntheticOneToManySource[1..1];
+    target: SharedSyntheticOneToManyTarget[1..*];
+
+    relationship this.id == SharedSyntheticOneToManyTarget.sourceId
+}
+
+class SharedSyntheticOneToOneSource
+{
+    id: Long id key;
+    value: String;
+}
+
+class SharedSyntheticOneToOneTarget
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association SharedSyntheticOneToOne
+{
+    source: SharedSyntheticOneToOneSource[1..1];
+    target: SharedSyntheticOneToOneTarget[0..1];
+
+    relationship this.id == SharedSyntheticOneToOneTarget.sourceId
+}
+
+class SharedSyntheticOneToManySelf
+{
+    id: Long id key;
+    sourceId: Long private;
+    value: String;
+}
+
+association SelfSharedSyntheticOneToMany
+{
+    source: SharedSyntheticOneToManySelf[0..1];
+    target: SharedSyntheticOneToManySelf[0..*];
+
+    relationship this.id == SharedSyntheticOneToManySelf.sourceId
 }
