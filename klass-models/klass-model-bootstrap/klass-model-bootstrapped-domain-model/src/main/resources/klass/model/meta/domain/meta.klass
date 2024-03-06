@@ -31,7 +31,7 @@ class EnumerationLiteral implements NamedElement
 association EnumerationHasLiterals
 {
     enumeration: Enumeration[1..1];
-    enumerationLiterals: EnumerationLiteral[1..*]
+    enumerationLiterals: EnumerationLiteral[1..*] owned
         orderBy: this.ordinal ascending;
 }
 
@@ -494,7 +494,7 @@ class MemberReferencePathAssociationEndMapping
 association MemberReferencePathHasMemberReferencePathAssociationEndMapping
 {
     memberReferencePath: MemberReferencePath[1..1];
-    associationEnds: MemberReferencePathAssociationEndMapping[0..*];
+    associationEnds: MemberReferencePathAssociationEndMapping[0..*] owned;
 }
 
 association MemberReferencePathAssociationEndMappingHasAssociationEnd
@@ -575,7 +575,7 @@ class AssociationEndOrderBy
 association AssociationEndHasOrderBy
 {
     associationEnd: AssociationEnd[1..1];
-    orderBys: AssociationEndOrderBy[0..*];
+    orderBys: AssociationEndOrderBy[0..*] owned;
 
     relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName
             && this.name == AssociationEndOrderBy.associationEndName
@@ -607,7 +607,7 @@ class ParameterizedPropertyOrdering
 association ParameterizedPropertyHasOrdering
 {
     parameterizedProperty: ParameterizedProperty[1..1];
-    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*];
+    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*] owned;
 
     relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
             && this.name == ParameterizedPropertyOrdering.name
@@ -776,7 +776,7 @@ class UrlParameter
 association UrlHasUrlParameters
 {
     url: Url[1..1];
-    parameters                    : UrlParameter[0..*];
+    parameters                    : UrlParameter[0..*] owned;
 
     relationship this.className == UrlParameter.urlClassName
             && this.url == UrlParameter.urlString
@@ -793,7 +793,7 @@ association UrlParameterHasParameter
 association ServiceGroupHasUrls
 {
     serviceGroup                  : ServiceGroup[1..1];
-    urls                          : Url[1..*];
+    urls                          : Url[1..*] owned;
 
     relationship this.className == Url.className
 }
@@ -888,7 +888,7 @@ class ServiceOrderBy
 association ServiceHasOrderBy
 {
     service                       : Service[1..1];
-    orderBys                      : ServiceOrderBy[0..*];
+    orderBys                      : ServiceOrderBy[0..*] owned;
 }
 
 association ServiceOrderByHasMemberReferencePath

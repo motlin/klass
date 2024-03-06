@@ -18,7 +18,11 @@
         "resultType": {
           "name": "EnumerationLiteral"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": [
           {
             "thisMemberReferencePath": {
@@ -1431,7 +1435,11 @@
         "resultType": {
           "name": "MemberReferencePathAssociationEndMapping"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -1802,7 +1810,11 @@
         "resultType": {
           "name": "AssociationEndOrderBy"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -1973,7 +1985,11 @@
         "resultType": {
           "name": "ParameterizedPropertyOrdering"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2465,7 +2481,11 @@
         "resultType": {
           "name": "UrlParameter"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2588,7 +2608,11 @@
         "resultType": {
           "name": "Url"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
@@ -2967,7 +2991,11 @@
         "resultType": {
           "name": "ServiceOrderBy"
         },
-        "associationEndModifiers": [],
+        "associationEndModifiers": [
+          {
+            "keyword": "owned"
+          }
+        ],
         "orderBys": []
       }
     ],
