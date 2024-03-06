@@ -55,7 +55,6 @@
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
             "id": 166,
-            "edgePointCriteria": null,
             "klass": {
               "name": "ClassifierModifier",
               "packageName": "klass.model.meta.domain"
@@ -96,7 +95,6 @@
           "orderByDirection": "ascending",
           "thisMemberReferencePath": {
             "id": 167,
-            "edgePointCriteria": null,
             "klass": {
               "name": "DataTypeProperty",
               "packageName": "klass.model.meta.domain"

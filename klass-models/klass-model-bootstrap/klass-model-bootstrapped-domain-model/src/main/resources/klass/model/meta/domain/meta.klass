@@ -1185,7 +1185,6 @@ service Classifier
 projection ThisMemberReferencePathProjection on ThisMemberReferencePath
 {
     id               : "ExpressionValue id",
-    edgePointCriteria: EdgePointCriteriaProjection,
     klass            :
     {
         name       : "NamedElement name",
@@ -1242,11 +1241,6 @@ projection MemberReferencePathAssociationEndMappingProjection on MemberReference
         },
         name            : "NamedElement name",
     },
-}
-
-projection EdgePointCriteriaProjection on EdgePointCriteria
-{
-    id: "Criteria id",
 }
 
 projection MemberReferencePathSummaryProjection on MemberReferencePath
@@ -1341,6 +1335,7 @@ projection ExpressionValueSummaryProjection on ExpressionValue
 
 projection MemberReferencePathProjection on MemberReferencePath
 {
+    id: "ExpressionValue id",
     klass           :
     {
         name: "MemberReferencePath Class name",
@@ -1360,6 +1355,7 @@ projection MemberReferencePathProjection on MemberReferencePath
 
 projection CriteriaProjection on Criteria
 {
+    id: "Criteria id",
     BinaryCriteria.left                   : CriteriaProjection,
     BinaryCriteria.right                  : CriteriaProjection,
     OperatorCriteria.operator             : "Criteria operator",

@@ -636,14 +636,6 @@
           "children": []
         },
         {
-          "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
-          "name": "edgePointCriteria",
-          "projection": {
-            "name": "EdgePointCriteriaProjection"
-          },
-          "children": []
-        },
-        {
           "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
           "name": "klass",
           "children": [
@@ -831,23 +823,6 @@
               "children": []
             }
           ]
-        }
-      ]
-    }
-  },
-  {
-    "name": "EdgePointCriteriaProjection",
-    "packageName": "klass.model.meta.domain",
-    "rootProjection": {
-      "name": "EdgePointCriteriaProjection",
-      "klass": {
-        "name": "EdgePointCriteria"
-      },
-      "children": [
-        {
-          "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
-          "name": "id",
-          "children": []
         }
       ]
     }
@@ -1121,6 +1096,11 @@
       },
       "children": [
         {
+          "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+          "name": "id",
+          "children": []
+        },
+        {
           "__typename": "klass.model.meta.domain.ProjectionReferenceProperty",
           "name": "klass",
           "children": [
@@ -1171,6 +1151,11 @@
         "name": "Criteria"
       },
       "children": [
+        {
+          "__typename": "klass.model.meta.domain.ProjectionDataTypeProperty",
+          "name": "id",
+          "children": []
+        },
         {
           "__typename": "klass.model.meta.domain.ProjectionProjectionReference",
           "name": "left",
