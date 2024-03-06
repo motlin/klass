@@ -14,47 +14,45 @@ SERIAL=false
 ANALYZE=false
 LIFTWIZARD_RERECORD=false
 
-while [[ $# -gt 0 ]]; do
-    key="$1"
+# Function to print unknown flags and exit
+printUnknownFlagAndExit() {
+    echo "Unknown flag: $1"
+    exit 1
+}
 
-    case $key in
+# Process command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
         --no-daemon)
             MAVEN='./mvnw'
-            shift
             ;;
-        --incremental)
+        --incremental|-i)
             INCREMENTAL=true
-            shift
             ;;
-        --serial)
+        --serial|-s)
             SERIAL=true
-            shift
             ;;
-        --record)
+        --record|-r)
             RECORD=true
-            shift
             ;;
-        --analyze)
+        --analyze|-a)
             ANALYZE=true
-            shift
             ;;
-        --pushover)
+        --pushover|-p)
             PUSHOVER=true
-            shift
             ;;
-        --silent)
+        --silent|--quiet|-q)
             SILENT=true
-            shift
             ;;
         *)
-            # unknown option
-            shift
+            printUnknownFlagAndExit "$1"
             ;;
     esac
+    shift
 done
 
 # Function to check if a flag is set in either environment variable or command line
-function checkFlag {
+checkFlag() {
     key="$1"
     value="${!key:-false}"
     if [ "$value" = true ] || [ "${!key}" = true ]; then
@@ -70,20 +68,19 @@ PUSHOVER=$(checkFlag "PUSHOVER")
 SILENT=$(checkFlag "SILENT")
 ANALYZE_SKIP=$(checkFlag "ANALYZE")
 
-function echoSay {
+echoSay() {
     echo "$1"
     if [ "$SILENT" = false ]; then
         say --voice "$VOICE" "$1" &
     fi
 }
 
-function failWithMessage {
+failWithMessage() {
     EXIT_CODE=$1
     REASON=$2
 
     if [ "$EXIT_CODE" -ne 0 ]; then
         MESSAGE="$COMMAND failed on commit: '$COMMIT_MESSAGE' due to: '$REASON' with exit code: '$EXIT_CODE'"
-
         echoSay "$MESSAGE"
 
         # osascript -e "display notification \"$MESSAGE\" with title \"$COMMAND failed\""
@@ -101,9 +98,12 @@ function failWithMessage {
     fi
 }
 
-function checkLocalModification {
+checkLocalModification() {
     git diff --quiet
     failWithMessage $? "Locally modified files"
+
+	git status --porcelain | (! grep -q '^??')
+    failWithMessage $? "Untracked files"
 }
 
 COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
@@ -136,6 +136,8 @@ if [ "$SERIAL" = true ]; then
 else
     PARALLELISM="--threads 2C --fail-at-end"
 fi
+
+checkLocalModification
 
 echo "Beginning build of commit: $COMMIT_MESSAGE"
 
