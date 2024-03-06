@@ -337,10 +337,6 @@ public abstract class PersistentSynchronizer
             @Nonnull JsonNode incomingChildInstance,
             @Nonnull AssociationEnd associationEnd)
     {
-        if (!(this instanceof PersistentCreator) && !(this instanceof PersistentReplacer))
-        {
-            throw new AssertionError();
-        }
         ImmutableList<Object> keys = this.getKeysFromJsonNode(
                 incomingChildInstance,
                 associationEnd,
