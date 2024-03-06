@@ -35,6 +35,7 @@
         <module>klass-generator-graphql-data-fetcher</module>
         <module>klass-generator-graphql-fragment</module>
         <module>klass-generator-graphql-runtime-wiring</module>
+        <module>klass-generator-graphql-schema-query</module>
         <module>klass-generator-graphql-schema</module>
         <module>klass-generator-json-view</module>
         <module>klass-generator-klass-with-inference</module>
