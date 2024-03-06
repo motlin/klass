@@ -44,7 +44,7 @@ public class ClassTemporalPropertyInferencePhase
         {
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
             {
-                stringBuilder.append("    valid    : TemporalRange?   valid;\n");
+                stringBuilder.append("    valid    : TemporalRange?   valid private;\n");
             }
             if (allDataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
             {
