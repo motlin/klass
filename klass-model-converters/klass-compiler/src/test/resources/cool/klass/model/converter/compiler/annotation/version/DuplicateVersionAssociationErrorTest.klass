@@ -5,10 +5,16 @@ class ExampleClass systemTemporal versioned
     id: Long id key;
 }
 
-association ExampleClassVersionAgain
+class ExampleClass2
+    systemTemporal
 {
-    duplicateExampleClass: ExampleClass[1..1];
-    duplicateExampleClassVersion: ExampleClassVersion[1..1] owned version;
+    id: Long id key;
+}
+
+association ExampleClass2HasVersion
+{
+    exampleClass2: ExampleClass2[1..1];
+    exampleClassVersion: ExampleClassVersion[1..1] owned version;
 
     relationship this.id == ExampleClassVersion.id
 }
