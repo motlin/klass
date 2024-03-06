@@ -186,8 +186,9 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            String error = "Expected audit property '%s' to match current user '%s' but got '%s'."
+            String error = "Error at %s. Expected audit property '%s' to match current user '%s' but got '%s'."
                     .formatted(
+                            this.getContextString(),
                             dataTypeProperty.getName(),
                             maybeUserId.get(),
                             jsonDataTypeValue.asText());
@@ -222,8 +223,9 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            String error = "Expected createdOn property '%s' to match current transaction time '%s' but got '%s'."
+            String error = "Error at %s. Expected createdOn property '%s' to match current transaction time '%s' but got '%s'."
                     .formatted(
+                            this.getContextString(),
                             dataTypeProperty.getName(),
                             this.mutationContext.getTransactionTime(),
                             jsonDataTypeValue.asText());
@@ -257,8 +259,9 @@ public class IncomingCreateDataModelValidator
                 return;
             }
 
-            String error = "Expected version property '%s' to be 1 but got %s."
+            String error = "Error at %s. Expected version property '%s' to be 1 but got %s."
                     .formatted(
+                            this.getContextString(),
                             dataTypeProperty.getName(),
                             jsonDataTypeValue.asText());
             this.errors.add(error);

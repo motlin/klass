@@ -15,6 +15,6 @@
   "Error at PropertiesRequired.system. Didn't expect to receive value for private property 'PropertiesRequired.system: TemporalRange?' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
   "Error at PropertiesRequired.createdById. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
   "Error at PropertiesRequired.lastUpdatedById. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was string: \"PropertiesRequired requiredString 1 ☝\".",
-  "Expected audit property 'createdById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'.",
-  "Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'."
+  "Error at PropertiesRequired.createdById. Expected audit property 'createdById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'.",
+  "Error at PropertiesRequired.lastUpdatedById. Expected audit property 'lastUpdatedById' to match current user 'test user 1' but got 'PropertiesRequired requiredString 1 ☝'."
 ]
