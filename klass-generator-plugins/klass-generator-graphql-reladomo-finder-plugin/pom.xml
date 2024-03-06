@@ -67,7 +67,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <configuration>
-                    <goalPrefix>klass-generator-graphql-schema</goalPrefix>
+                    <goalPrefix>klass-generator-graphql-reladomo-finder</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
