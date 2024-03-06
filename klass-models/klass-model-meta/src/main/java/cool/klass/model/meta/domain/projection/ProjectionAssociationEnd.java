@@ -15,8 +15,6 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
     @Nonnull
     private final AssociationEnd associationEnd;
 
-    private ImmutableList<ProjectionMember> projectionMembers;
-
     private ProjectionAssociationEnd(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
@@ -27,9 +25,10 @@ public final class ProjectionAssociationEnd extends ProjectionParent implements 
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
-    private void setProjectionMembers(@Nonnull ImmutableList<ProjectionMember> projectionMembers)
+    @Nonnull
+    public AssociationEnd getAssociationEnd()
     {
-        this.projectionMembers = Objects.requireNonNull(projectionMembers);
+        return this.associationEnd;
     }
 
     public static final class ProjectionAssociationEndBuilder extends ProjectionParentBuilder implements ProjectionMemberBuilder

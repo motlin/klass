@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cool.klass</groupId>
         <artifactId>klass</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>klass-models</artifactId>
+    <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <name>Klass Models (Module Group)</name>
+    <artifactId>klass-serializers</artifactId>
+
+    <name>Klass Serializers (Module Group)</name>
 
     <modules>
-        <module>klass-model-meta</module>
-        <module>klass-model-loader</module>
+        <module>klass-serializer-json</module>
     </modules>
+
 </project>

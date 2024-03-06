@@ -32,6 +32,18 @@ public final class ProjectionPrimitiveMember extends NamedElement implements Pro
         this.property = Objects.requireNonNull(property);
     }
 
+    @Nonnull
+    public String getHeaderText()
+    {
+        return this.headerText;
+    }
+
+    @Nonnull
+    public DataTypeProperty<?> getProperty()
+    {
+        return this.property;
+    }
+
     public static final class ProjectionPrimitiveMemberBuilder extends NamedElementBuilder implements ProjectionMemberBuilder
     {
         @Nonnull

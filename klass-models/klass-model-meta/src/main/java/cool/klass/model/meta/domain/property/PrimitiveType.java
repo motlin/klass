@@ -22,7 +22,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitID();
+            try
+            {
+                visitor.visitID();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType INTEGER          = new PrimitiveType("Integer")
@@ -30,7 +41,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitInteger();
+            try
+            {
+                visitor.visitInteger();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType LONG             = new PrimitiveType("Long")
@@ -38,7 +60,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitLong();
+            try
+            {
+                visitor.visitLong();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType DOUBLE           = new PrimitiveType("Double")
@@ -46,7 +79,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitDouble();
+            try
+            {
+                visitor.visitDouble();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType FLOAT            = new PrimitiveType("Float")
@@ -54,7 +98,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitFloat();
+            try
+            {
+                visitor.visitFloat();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType BOOLEAN          = new PrimitiveType("Boolean")
@@ -62,7 +117,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitBoolean();
+            try
+            {
+                visitor.visitBoolean();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType STRING           = new PrimitiveType("String")
@@ -70,7 +136,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitString();
+            try
+            {
+                visitor.visitString();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType INSTANT          = new PrimitiveType("Instant")
@@ -78,7 +155,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitInstant();
+            try
+            {
+                visitor.visitInstant();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType LOCAL_DATE       = new PrimitiveType("LocalDate")
@@ -86,7 +174,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitLocalDate();
+            try
+            {
+                visitor.visitLocalDate();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType TEMPORAL_INSTANT = new PrimitiveType("TemporalInstant")
@@ -94,7 +193,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitTemporalInstant();
+            try
+            {
+                visitor.visitTemporalInstant();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
     public static final PrimitiveType TEMPORAL_RANGE   = new PrimitiveType("TemporalRange")
@@ -102,7 +212,18 @@ public abstract class PrimitiveType extends DataType
         @Override
         public void visit(PrimitiveTypeVisitor visitor)
         {
-            visitor.visitTemporalRange();
+            try
+            {
+                visitor.visitTemporalRange();
+            }
+            catch (RuntimeException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     };
 

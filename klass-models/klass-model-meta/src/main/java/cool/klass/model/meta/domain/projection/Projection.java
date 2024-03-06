@@ -17,8 +17,6 @@ public final class Projection extends ProjectionParent
     @Nonnull
     private final Klass  klass;
 
-    private ImmutableList<ProjectionMember> projectionMembers;
-
     private Projection(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
@@ -35,16 +33,6 @@ public final class Projection extends ProjectionParent
     public Klass getKlass()
     {
         return this.klass;
-    }
-
-    public ImmutableList<ProjectionMember> getProjectionMembers()
-    {
-        return Objects.requireNonNull(this.projectionMembers);
-    }
-
-    private void setProjectionMembers(@Nonnull ImmutableList<ProjectionMember> projectionMembers)
-    {
-        this.projectionMembers = Objects.requireNonNull(projectionMembers);
     }
 
     public static final class ProjectionBuilder extends ProjectionParentBuilder

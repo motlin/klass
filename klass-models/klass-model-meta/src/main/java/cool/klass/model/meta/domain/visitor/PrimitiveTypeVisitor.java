@@ -2,25 +2,25 @@ package cool.klass.model.meta.domain.visitor;
 
 public interface PrimitiveTypeVisitor
 {
-    void visitID();
+    void visitID() throws Exception;
 
-    void visitString();
+    void visitString() throws Exception;
 
-    void visitInteger();
+    void visitInteger() throws Exception;
 
-    void visitLong();
+    void visitLong() throws Exception;
 
-    void visitDouble();
+    void visitDouble() throws Exception;
 
-    void visitFloat();
+    void visitFloat() throws Exception;
 
-    void visitBoolean();
+    void visitBoolean() throws Exception;
 
-    void visitInstant();
+    void visitInstant() throws Exception;
 
-    void visitLocalDate();
+    void visitLocalDate() throws Exception;
 
-    void visitTemporalInstant();
+    void visitTemporalInstant() throws Exception;
 
-    void visitTemporalRange();
+    void visitTemporalRange() throws Exception;
 }

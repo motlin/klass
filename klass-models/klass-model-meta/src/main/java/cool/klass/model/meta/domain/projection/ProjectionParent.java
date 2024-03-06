@@ -11,12 +11,24 @@ import org.eclipse.collections.api.list.ImmutableList;
 
 public abstract class ProjectionParent extends NamedElement
 {
+    private ImmutableList<ProjectionMember> projectionMembers;
+
     protected ProjectionParent(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name)
     {
         super(elementContext, nameContext, name);
+    }
+
+    public ImmutableList<ProjectionMember> getProjectionMembers()
+    {
+        return Objects.requireNonNull(this.projectionMembers);
+    }
+
+    protected void setProjectionMembers(@Nonnull ImmutableList<ProjectionMember> projectionMembers)
+    {
+        this.projectionMembers = Objects.requireNonNull(projectionMembers);
     }
 
     public abstract static class ProjectionParentBuilder extends NamedElementBuilder

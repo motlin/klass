@@ -23,6 +23,7 @@
         <module>klass-tests</module>
         <module>klass-dropwizard-bundles</module>
         <module>klass-jackson</module>
+        <module>klass-serializers</module>
     </modules>
 
     <properties>

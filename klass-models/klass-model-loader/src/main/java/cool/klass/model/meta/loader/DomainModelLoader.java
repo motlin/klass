@@ -1,0 +1,52 @@
+package cool.klass.model.meta.loader;
+
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import cool.klass.model.converter.compiler.KlassCompiler;
+import cool.klass.model.converter.compiler.error.CompilerError;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.meta.domain.DomainModel;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class DomainModelLoader
+{
+    private static final Logger LOGGER = LoggerFactory.getLogger(DomainModelLoader.class);
+
+    private final String rootPackageName;
+
+    public DomainModelLoader(String rootPackageName)
+    {
+        this.rootPackageName = rootPackageName;
+    }
+
+    public DomainModel load()
+    {
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .setScanners(new ResourcesScanner())
+                .setUrls(ClasspathHelper.forPackage(this.rootPackageName));
+        Reflections         reflections         = new Reflections(configurationBuilder);
+        Set<String>         klassLocations      = reflections.getResources(Pattern.compile(".*\\.klass"));
+        CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
+        KlassCompiler       klassCompiler       = new KlassCompiler(compilerErrorHolder);
+        DomainModel         domainModel         = klassCompiler.compile(klassLocations);
+
+        if (compilerErrorHolder.hasCompilerErrors())
+        {
+            ImmutableList<CompilerError> compilerErrors = compilerErrorHolder.getCompilerErrors();
+            for (CompilerError compilerError : compilerErrors)
+            {
+                LOGGER.warn(compilerError.toString());
+            }
+            throw new RuntimeException("There were compiler errors.");
+        }
+
+        return domainModel;
+    }
+}

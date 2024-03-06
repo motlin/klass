@@ -65,13 +65,15 @@ class Question
     systemFrom        : TemporalInstant
     systemTo          : TemporalInstant
 
+    // TODO: private properties must not be used in projections
+
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById       : String
+    private createdById       : String
 
     // createdOn, or createdDate?
     createdOn         : Instant
-    lastUpdatedById   : String
+    private lastUpdatedById   : String
 
     createdBy(): User[1..1]
     {
@@ -154,9 +156,17 @@ enumeration VoteDirection
 projection QuestionReadProjection on Question
 {
     // field names are "includes", field values are column headers when serializing to a tabular format
-    title  : "Question title",
-    body   : "Question body",
-    answers:
+    title          : "Question title",
+    body           : "Question body",
+    status         : "Question status",
+    deleted        : "Question is deleted",
+    systemFrom     : "Question System From",
+    systemTo       : "Question System To",
+    createdById    : "Question created by ID",
+    createdOn      : "Question Created on",
+    lastUpdatedById: "Question last updated by ID",
+
+    answers        :
     {
         body: "Answer body",
     },
@@ -207,6 +217,7 @@ service Question
             multiplicity: one
             criteria    : this.id == id
             projection  : QuestionReadProjection
+            // TODO: format: json
         }
     /api/question/in?{ids: Long[0..*]}
         GET

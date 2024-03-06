@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.projection.Projection.ProjectionBuilder;
 import cool.klass.model.meta.domain.service.ServiceGroup;
 import cool.klass.model.meta.domain.service.ServiceGroup.ServiceGroupBuilder;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.map.ImmutableMap;
 
 public final class DomainModel
 {
@@ -26,6 +27,12 @@ public final class DomainModel
     @Nonnull
     private final ImmutableList<ServiceGroup> serviceGroups;
 
+    private final ImmutableMap<String, Enumeration> enumerationsByName;
+    private final ImmutableMap<String, Klass>       klassesByName;
+    private final ImmutableMap<String, Association> associationsByName;
+    private final ImmutableMap<String, Projection>  projectionsByName;
+    private final ImmutableMap<Klass, ServiceGroup> serviceGroupsByKlass;
+
     private DomainModel(
             @Nonnull ImmutableList<Enumeration> enumerations,
             @Nonnull ImmutableList<Klass> klasses,
@@ -38,6 +45,12 @@ public final class DomainModel
         this.associations = Objects.requireNonNull(associations);
         this.projections = Objects.requireNonNull(projections);
         this.serviceGroups = Objects.requireNonNull(serviceGroups);
+
+        this.enumerationsByName = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.klassesByName = this.klasses.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.associationsByName = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.projectionsByName = this.projections.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.serviceGroupsByKlass = this.serviceGroups.groupByUniqueKey(ServiceGroup::getKlass).toImmutable();
     }
 
     @Nonnull
@@ -68,6 +81,26 @@ public final class DomainModel
     public ImmutableList<ServiceGroup> getServiceGroups()
     {
         return this.serviceGroups;
+    }
+
+    public Enumeration getEnumerationByName(String name)
+    {
+        return this.enumerationsByName.get(name);
+    }
+
+    public Klass getKlassByName(String name)
+    {
+        return this.klassesByName.get(name);
+    }
+
+    public Association getAssociationByName(String name)
+    {
+        return this.associationsByName.get(name);
+    }
+
+    public Projection getProjectionByName(String name)
+    {
+        return this.projectionsByName.get(name);
     }
 
     public static final class DomainModelBuilder
@@ -103,7 +136,7 @@ public final class DomainModel
             ImmutableList<Klass>       klasses      = this.klassBuilders.collect(KlassBuilder::build1).toImmutable();
             ImmutableList<Association> associations = this.associationBuilders.collect(AssociationBuilder::build).toImmutable();
             this.klassBuilders.each(KlassBuilder::build2);
-            ImmutableList<Projection> projections = this.projectionBuilders.collect(ProjectionBuilder::build).toImmutable();
+            ImmutableList<Projection>   projections   = this.projectionBuilders.collect(ProjectionBuilder::build).toImmutable();
             ImmutableList<ServiceGroup> serviceGroups = this.serviceGroupBuilders.collect(ServiceGroupBuilder::build).toImmutable();
 
             return new DomainModel(enumerations, klasses, associations, projections, serviceGroups);
