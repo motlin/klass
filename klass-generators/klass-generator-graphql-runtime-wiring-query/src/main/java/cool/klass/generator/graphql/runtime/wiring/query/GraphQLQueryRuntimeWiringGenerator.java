@@ -38,7 +38,9 @@ public class GraphQLQueryRuntimeWiringGenerator
 
     public void writeQueryRuntimeWiringFile(@Nonnull Path outputPath)
     {
-        ImmutableList<Klass> concreteClasses = this.domainModel.getClasses().reject(Klass::isAbstract);
+        ImmutableList<Klass> concreteClasses = this.domainModel
+                .getClasses()
+                .reject(Klass::isAbstract);
 
         //language=JAVA
         String sourceCode = ""
@@ -64,13 +66,13 @@ public class GraphQLQueryRuntimeWiringGenerator
                 + "        Builder builder = new Builder();\n"
                 + "        builder.typeName(\"Query\");\n"
                 + "\n"
-                + this.getAllDataFetchersSourceCode().makeString("")
+                + this.getAllDataFetchersSourceCode(concreteClasses).makeString("")
                 + "\n"
-                + this.getByTagDataFetchersSourceCode().makeString("")
+                + this.getByTagDataFetchersSourceCode(concreteClasses).makeString("")
                 + "\n"
-                + this.getByOperationDataFetchersSourceCode().makeString("")
+                + this.getByOperationDataFetchersSourceCode(concreteClasses).makeString("")
                 + "\n"
-                + this.getByFinderDataFetchersSourceCode().makeString("")
+                + this.getByFinderDataFetchersSourceCode(concreteClasses).makeString("")
                 + "\n"
                 + "        return builder;\n"
                 + "    }\n"
@@ -95,9 +97,9 @@ public class GraphQLQueryRuntimeWiringGenerator
         return "import " + klass.getPackageName() + ".graphql.data.fetcher.key." + klass.getName() + "ByKeyDataFetcher;\n";
     }
 
-    private ImmutableList<String> getAllDataFetchersSourceCode()
+    private ImmutableList<String> getAllDataFetchersSourceCode(ImmutableList<Klass> classes)
     {
-        return this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getAllDataFetcherSourceCode);
+        return classes.reject(Klass::isAbstract).collect(this::getAllDataFetcherSourceCode);
     }
 
     private String getAllDataFetcherSourceCode(Classifier classifier)
@@ -137,23 +139,21 @@ public class GraphQLQueryRuntimeWiringGenerator
                 : eachSplit;
     }
 
-    private ImmutableList<String> getByTagDataFetchersSourceCode()
+    private ImmutableList<String> getByTagDataFetchersSourceCode(ImmutableList<Klass> classes)
     {
-        return this.domainModel.getClasses().reject(Klass::isAbstract).collect(this::getByTagDataFetcherSourceCode);
+        return classes.reject(Klass::isAbstract).collect(this::getByTagDataFetcherSourceCode);
     }
 
-    private ImmutableList<String> getByOperationDataFetchersSourceCode()
+    private ImmutableList<String> getByOperationDataFetchersSourceCode(ImmutableList<Klass> classes)
     {
-        return this.domainModel
-                .getClasses()
+        return classes
                 .reject(Klass::isAbstract)
                 .collect(this::getByOperationDataFetcherSourceCode);
     }
 
-    private ImmutableList<String> getByFinderDataFetchersSourceCode()
+    private ImmutableList<String> getByFinderDataFetchersSourceCode(ImmutableList<Klass> classes)
     {
-        return this.domainModel
-                .getClasses()
+        return classes
                 .reject(Klass::isAbstract)
                 .collect(this::getByFinderDataFetcherSourceCode);
     }
