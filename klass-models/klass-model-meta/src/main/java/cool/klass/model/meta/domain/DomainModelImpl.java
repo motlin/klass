@@ -104,7 +104,7 @@ public final class DomainModelImpl
     @Nonnull
     public ImmutableList<TopLevelElement> getTopLevelElements()
     {
-        return (ImmutableList<TopLevelElement>) (ImmutableList<?>) this.topLevelElements;
+        return this.topLevelElements;
     }
 
     @Override

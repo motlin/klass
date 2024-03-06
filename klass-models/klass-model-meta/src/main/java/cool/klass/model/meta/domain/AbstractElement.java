@@ -48,6 +48,7 @@ public abstract class AbstractElement
         return Objects.requireNonNull(this.sourceCode);
     }
 
+    @Override
     @Nonnull
     public ParserRuleContext getElementContext()
     {

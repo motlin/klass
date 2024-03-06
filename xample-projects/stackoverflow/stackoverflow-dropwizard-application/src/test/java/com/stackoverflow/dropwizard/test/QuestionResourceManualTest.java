@@ -68,7 +68,7 @@ public class QuestionResourceManualTest
     protected void assertQuestion1Unchanged(@Nonnull Client client) throws JSONException
     {
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", this.rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -150,7 +150,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
                 .request()
                 .post(Entity.json(invalidJson));
 
@@ -214,7 +214,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/", rule.getLocalPort()))
                     .request()
                     .post(Entity.json(validJson));
 
@@ -232,7 +232,7 @@ public class QuestionResourceManualTest
         //<editor-fold desc="GET id: 2, status: ok">
         {
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                     .resolveTemplate("id", 2)
                     .request()
                     .get();
@@ -310,7 +310,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()
@@ -341,7 +341,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "1")
                 .request()
@@ -391,7 +391,7 @@ public class QuestionResourceManualTest
                     + "}\n";
 
             Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                            String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                     .resolveTemplate("id", 1)
                     .queryParam("version", "2")
                     .request()
@@ -402,7 +402,7 @@ public class QuestionResourceManualTest
         //</editor-fold>
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .request()
                 .get();
@@ -481,7 +481,7 @@ public class QuestionResourceManualTest
                 + "}\n";
 
         Response response = client.target(
-                String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
+                        String.format("http://localhost:%d/manual/api/question/{id}", rule.getLocalPort()))
                 .resolveTemplate("id", 1)
                 .queryParam("version", "2")
                 .request()

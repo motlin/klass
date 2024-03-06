@@ -2,6 +2,7 @@ package cool.klass.data.store.reladomo;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -304,7 +305,7 @@ public class ReladomoDataStore
 
         if (dataTypeProperty.getType() == PrimitiveType.LOCAL_DATE)
         {
-            return ((java.sql.Date) result).toLocalDate();
+            return ((Date) result).toLocalDate();
         }
 
         if (dataTypeProperty.getType() == PrimitiveType.INSTANT)
@@ -379,7 +380,7 @@ public class ReladomoDataStore
 
         if (dataTypeProperty.getType() == PrimitiveType.LOCAL_DATE)
         {
-            return ((java.sql.Date) result).toLocalDate();
+            return ((Date) result).toLocalDate();
         }
 
         if (dataTypeProperty.getType() == PrimitiveType.INSTANT)

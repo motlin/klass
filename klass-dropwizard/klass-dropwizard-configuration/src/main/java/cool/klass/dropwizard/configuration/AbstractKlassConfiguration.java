@@ -109,9 +109,9 @@ public class AbstractKlassConfiguration
     private @Valid @NotNull SampleDataFactory        sampleDataFactory    = new SampleDataFactory();
     private @Valid @NotNull EnabledFactory           bootstrapFactory     = new EnabledFactory();
 
-    private @Valid @NotNull NamedDataSourceConfiguration   namedDataSourceConfiguration   =
+    private final @Valid @NotNull NamedDataSourceConfiguration   namedDataSourceConfiguration   =
             new NamedDataSourceConfiguration();
-    private @Valid @NotNull ConnectionManagerConfiguration connectionManagerConfiguration =
+    private final @Valid @NotNull ConnectionManagerConfiguration connectionManagerConfiguration =
             new ConnectionManagerConfiguration();
 
     @JsonProperty("klass")
