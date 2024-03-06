@@ -7,6 +7,7 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.meta.grammar.KlassBaseListener;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -153,6 +154,22 @@ public abstract class AbstractCompilerPhase extends KlassBaseListener
     {
         this.compilerState.exitAssociationEnd();
         super.exitAssociationEnd(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        super.enterAssociationEndSignature(ctx);
+        this.compilerState.enterAssociationEndSignature(ctx);
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        this.compilerState.exitAssociationEndSignature();
+        super.exitAssociationEndSignature(ctx);
     }
 
     @Override

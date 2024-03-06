@@ -21,7 +21,7 @@ import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBu
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
-import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -29,7 +29,7 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
+public class AntlrAssociationEnd extends AntlrReferenceTypeProperty<AntlrClass>
 {
     @Nullable
     public static final AntlrAssociationEnd AMBIGUOUS = new AntlrAssociationEnd(
@@ -248,9 +248,9 @@ public class AntlrAssociationEnd extends AntlrReferenceTypeProperty
     }
 
     @Override
-    protected ClassTypeContext getClassType()
+    protected IdentifierContext getTypeIdentifier()
     {
-        return this.getElementContext().classType();
+        return this.getElementContext().classType().classReference().identifier();
     }
 
     @Nonnull

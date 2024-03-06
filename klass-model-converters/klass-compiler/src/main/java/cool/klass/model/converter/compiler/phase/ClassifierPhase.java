@@ -6,14 +6,19 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.CompilerWalkState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassModifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrInterface;
+import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndModifier;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
@@ -25,8 +30,11 @@ import cool.klass.model.converter.compiler.state.property.validation.AntlrMinPro
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.AbstractDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.InheritanceTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
@@ -44,6 +52,9 @@ public class ClassifierPhase extends AbstractCompilerPhase
 {
     @Nullable
     private AntlrDataTypeProperty<?> dataTypePropertyState;
+
+    @Nullable
+    private AntlrAssociationEndSignature associationEndSignatureState;
 
     public ClassifierPhase(CompilerState compilerState)
     {
@@ -164,6 +175,7 @@ public class ClassifierPhase extends AbstractCompilerPhase
     {
         Objects.requireNonNull(this.dataTypePropertyState);
         this.dataTypePropertyState = null;
+        super.exitPrimitiveProperty(ctx);
     }
 
     @Override
@@ -284,5 +296,81 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 context,
                 context.getText(),
                 ordinal + 1);
+    }
+
+    @Nonnull
+    private AntlrPropertyModifier getAntlrAssociationEndModifier(
+            @Nonnull AssociationEndModifierContext context,
+            int ordinal)
+    {
+        return new AntlrPropertyModifier(
+                context,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                context,
+                context.getText(),
+                ordinal + 1);
+    }
+
+    @Override
+    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        super.enterAssociationEndSignature(ctx);
+
+        ClassifierReferenceContext classifierReferenceContext  = ctx.classifierReference();
+        String                     associationEndSignatureName = ctx.identifier().getText();
+
+        String                    classifierName         = classifierReferenceContext.identifier().getText();
+        AntlrDomainModel          domainModelState       = this.compilerState.getDomainModelState();
+        CompilerWalkState         compilerWalkState      = this.compilerState.getCompilerWalkState();
+        AntlrClassifier           resultTypeState        = domainModelState.getClassifierByName(classifierName);
+        Optional<CompilationUnit> currentCompilationUnit = Optional.of(compilerWalkState.getCurrentCompilationUnit());
+        AntlrMultiplicity         multiplicityState      = new AntlrMultiplicity(
+                ctx.multiplicity(),
+                currentCompilationUnit);
+        AntlrClassifier           classifierState        = compilerWalkState.getClassifierState();
+
+        if (associationEndSignatureState != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.associationEndSignatureState = new AntlrAssociationEndSignature(
+                ctx,
+                currentCompilationUnit,
+                ctx.identifier(),
+                associationEndSignatureName,
+                classifierState.getNumMembers() + 1,
+                classifierState,
+                resultTypeState,
+                multiplicityState);
+
+        resultTypeState.enterAssociationEndSignature(this.associationEndSignatureState);
+    }
+
+    @Override
+    public void exitAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        Objects.requireNonNull(this.associationEndSignatureState);
+        this.associationEndSignatureState = null;
+        super.exitAssociationEndSignature(ctx);
+    }
+
+    @Override
+    public void enterAssociationEndModifier(@Nonnull AssociationEndModifierContext ctx)
+    {
+        super.enterAssociationEndModifier(ctx);
+
+        if (this.associationEndSignatureState == null)
+        {
+            return;
+        }
+
+        AntlrAssociationEndModifier antlrAssociationEndModifier = new AntlrAssociationEndModifier(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                ctx,
+                ctx.getText(),
+                this.associationEndSignatureState.getNumModifiers() + 1,
+                this.associationEndSignatureState);
+        this.associationEndSignatureState.enterAssociationEndModifier(antlrAssociationEndModifier);
     }
 }

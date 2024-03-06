@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -78,6 +79,14 @@ public class AssociationPhase extends AbstractCompilerPhase
                 multiplicityState);
 
         this.associationState.enterAssociationEnd(this.associationEndState);
+    }
+
+    @Override
+    public void exitAssociationEnd(AssociationEndContext ctx)
+    {
+        Objects.requireNonNull(this.associationEndState);
+        this.associationEndState = null;
+        super.exitAssociationEnd(ctx);
     }
 
     @Override

@@ -15,6 +15,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
@@ -254,6 +255,16 @@ public class CompilerState
     public void exitAssociationEnd()
     {
         this.compilerWalkState.exitAssociationEnd();
+    }
+
+    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        this.compilerWalkState.enterAssociationEndSignature(ctx);
+    }
+
+    public void exitAssociationEndSignature()
+    {
+        this.compilerWalkState.exitAssociationEndSignature();
     }
 
     public void enterRelationship()

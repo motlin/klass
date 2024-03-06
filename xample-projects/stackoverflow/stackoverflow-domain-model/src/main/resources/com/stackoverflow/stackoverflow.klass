@@ -36,7 +36,7 @@ interface Document
 {
     id             : Long key id;
     body          : String;
-    votes          : Vote[0..*];
+    // votes          : Vote[0..*];
 }
 
 // TODO: Sets of unique properties other than keys

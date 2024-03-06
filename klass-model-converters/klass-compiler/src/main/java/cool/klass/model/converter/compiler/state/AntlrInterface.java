@@ -92,7 +92,8 @@ public class AntlrInterface extends AntlrClassifier
     @Override
     public int getNumMembers()
     {
-        return this.getDataTypeProperties().size();
+        return this.getDataTypeProperties().size()
+                + this.associationEndSignatureStates.size();
     }
 
     public InterfaceBuilder build1()
@@ -283,6 +284,7 @@ public class AntlrInterface extends AntlrClassifier
     {
         MutableList<String> topLevelNames = Lists.mutable.empty();
         this.dataTypePropertyStates.collect(AntlrProperty::getName, topLevelNames);
+        this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 

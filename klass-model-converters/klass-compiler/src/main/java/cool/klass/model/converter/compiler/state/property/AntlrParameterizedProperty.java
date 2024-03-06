@@ -18,12 +18,12 @@ import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
 import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import cool.klass.model.meta.domain.property.ParameterizedPropertyImpl.ParameterizedPropertyBuilder;
-import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
+import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty implements AntlrParameterOwner
+public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty<AntlrClass> implements AntlrParameterOwner
 {
     @Nullable
     public static final AntlrParameterizedProperty AMBIGUOUS = new AntlrParameterizedProperty(
@@ -170,9 +170,9 @@ public class AntlrParameterizedProperty extends AntlrReferenceTypeProperty imple
     }
 
     @Override
-    protected ClassTypeContext getClassType()
+    protected IdentifierContext getTypeIdentifier()
     {
-        return this.getElementContext().classType();
+        return this.getElementContext().classType().classReference().identifier();
     }
 
     @Nonnull

@@ -43,7 +43,7 @@ public final class KlassTestConstants
             + "{\n"
             + "    id             : Long key id;\n"
             + "    body          : String;\n"
-            + "    votes          : Vote[0..*];\n"
+            + "    // votes          : Vote[0..*];\n"
             + "}\n"
             + "\n"
             + "// TODO: Sets of unique properties other than keys\n"

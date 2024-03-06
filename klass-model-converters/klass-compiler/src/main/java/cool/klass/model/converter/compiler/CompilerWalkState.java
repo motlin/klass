@@ -16,12 +16,14 @@ import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
@@ -47,29 +49,31 @@ public class CompilerWalkState
     private String packageName;
 
     @Nullable
-    private AntlrTopLevelElement       topLevelDeclarationState;
+    private AntlrTopLevelElement         topLevelDeclarationState;
     @Nullable
-    private AntlrEnumeration           enumerationState;
+    private AntlrEnumeration             enumerationState;
     @Nullable
-    private AntlrClassifier            classifierState;
+    private AntlrClassifier              classifierState;
     @Nullable
-    private AntlrInterface             interfaceState;
+    private AntlrInterface               interfaceState;
     @Nullable
-    private AntlrClass                 classState;
+    private AntlrClass                   classState;
     @Nullable
-    private AntlrAssociation           associationState;
+    private AntlrAssociation             associationState;
     @Nullable
-    private AntlrAssociationEnd        associationEndState;
+    private AntlrAssociationEnd          associationEndState;
     @Nullable
-    private AntlrParameterizedProperty parameterizedPropertyState;
+    private AntlrAssociationEndSignature associationEndSignatureState;
     @Nullable
-    private AntlrProjection            projectionState;
+    private AntlrParameterizedProperty   parameterizedPropertyState;
     @Nullable
-    private AntlrServiceGroup          serviceGroupState;
+    private AntlrProjection              projectionState;
     @Nullable
-    private AntlrUrl                   urlState;
+    private AntlrServiceGroup            serviceGroupState;
     @Nullable
-    private AntlrService               serviceState;
+    private AntlrUrl                     urlState;
+    @Nullable
+    private AntlrService                 serviceState;
 
     @Nullable
     private AntlrClassifier    thisReference;
@@ -277,7 +281,6 @@ public class CompilerWalkState
             return;
         }
 
-        // super.enterAssociationEnd(ctx);
         this.associationEndState = this.associationState.getAssociationEndByContext(ctx);
         if (this.associationEndState == null)
         {
@@ -292,6 +295,30 @@ public class CompilerWalkState
         this.associationEndState = null;
         this.thisReference       = null;
         this.orderByOwnerState   = null;
+    }
+
+    public void enterAssociationEndSignature(AssociationEndSignatureContext ctx)
+    {
+        CompilerWalkState.assertNull(this.associationEndSignatureState);
+        CompilerWalkState.assertNull(this.orderByOwnerState);
+
+        if (this.classifierState == null)
+        {
+            return;
+        }
+
+        this.associationEndSignatureState = this.classifierState.getAssociationEndSignatureByContext(ctx);
+        if (this.associationEndSignatureState == null)
+        {
+            return;
+        }
+        this.orderByOwnerState = this.associationEndSignatureState;
+    }
+
+    public void exitAssociationEndSignature()
+    {
+        this.associationEndSignatureState = null;
+        this.orderByOwnerState            = null;
     }
 
     public void enterRelationship()

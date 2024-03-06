@@ -8,10 +8,13 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
+import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -27,6 +30,167 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public abstract class AntlrClassifier extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
 {
+    @Nonnull
+    public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
+            new ClassDeclarationContext(null, -1),
+            Optional.empty(),
+            new ParserRuleContext(),
+            "ambiguous class",
+            -1,
+            new ParserRuleContext(),
+            "klass.meta")
+    {
+        @Override
+        public int getNumMembers()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getNumMembers() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ClassifierBuilder<?> getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".reportCircularInheritance() not implemented yet");
+        }
+
+        @Override
+        protected boolean isInterfaceRedundant(
+                int index, AntlrInterface interfaceState)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isInterfaceRedundant() not implemented yet");
+        }
+
+        @Override
+        public ImmutableBag<String> getDuplicateMemberNames()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDuplicateMemberNames() not implemented yet");
+        }
+
+        @Override
+        protected ImmutableList<String> getDeclaredMemberNames()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDeclaredMemberNames() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ClassifierBuilder<?> getTypeGetter()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeGetter() not implemented yet");
+        }
+
+        @Override
+        public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDataTypePropertyByName() not implemented yet");
+        }
+
+        @Override
+        public AntlrClassModifier getClassModifierByName(String name)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getClassModifierByName() not implemented yet");
+        }
+    };
+
+    @Nonnull
+    public static final AntlrClassifier NOT_FOUND = new AntlrClassifier(
+            new ClassDeclarationContext(null, -1),
+            Optional.empty(),
+            new ParserRuleContext(),
+            "not found class",
+            -1,
+            new ParserRuleContext(),
+            "klass.meta")
+    {
+        @Override
+        public int getNumMembers()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getNumMembers() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ClassifierBuilder<?> getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".reportCircularInheritance() not implemented yet");
+        }
+
+        @Override
+        protected boolean isInterfaceRedundant(
+                int index, AntlrInterface interfaceState)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isInterfaceRedundant() not implemented yet");
+        }
+
+        @Override
+        public ImmutableBag<String> getDuplicateMemberNames()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDuplicateMemberNames() not implemented yet");
+        }
+
+        @Override
+        protected ImmutableList<String> getDeclaredMemberNames()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDeclaredMemberNames() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ClassifierBuilder<?> getTypeGetter()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeGetter() not implemented yet");
+        }
+
+        @Override
+        public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getDataTypePropertyByName() not implemented yet");
+        }
+
+        @Override
+        public AntlrClassModifier getClassModifierByName(String name)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getClassModifierByName() not implemented yet");
+        }
+    };
+
+    protected final MutableList<AntlrAssociationEndSignature>                              associationEndSignatureStates     =
+            Lists.mutable.empty();
+    protected final MutableOrderedMap<String, AntlrAssociationEndSignature>                associationEndSignaturesByName    =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
     protected final MutableList<AntlrClassModifier>       classModifierStates    = Lists.mutable.empty();
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
     protected final MutableList<AntlrInterface>           interfaceStates        = Lists.mutable.empty();
@@ -125,6 +289,28 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                         : AntlrPrimitiveProperty.AMBIGUOUS);
     }
 
+    public AntlrAssociationEndSignature getAssociationEndSignatureByContext(AssociationEndSignatureContext ctx)
+    {
+        return this.associationEndSignaturesByContext.get(ctx);
+    }
+
+    public void enterAssociationEndSignature(@Nonnull AntlrAssociationEndSignature associationEndSignatureState)
+    {
+        this.associationEndSignatureStates.add(associationEndSignatureState);
+        this.associationEndSignaturesByName.compute(
+                associationEndSignatureState.getName(),
+                (name, builder) -> builder == null
+                        ? associationEndSignatureState
+                        : AntlrAssociationEndSignature.AMBIGUOUS);
+        AntlrAssociationEndSignature duplicate = this.associationEndSignaturesByContext.put(
+                associationEndSignatureState.getElementContext(),
+                associationEndSignatureState);
+        if (duplicate != null)
+        {
+            throw new AssertionError();
+        }
+    }
+
     public void enterClassModifier(@Nonnull AntlrClassModifier classModifierState)
     {
         this.classModifierStates.add(classModifierState);
@@ -177,6 +363,7 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         this.reportInterfaceNotFound(compilerErrorHolder);
         this.reportRedundantInterface(compilerErrorHolder);
         this.reportCircularInheritance(compilerErrorHolder);
+        this.reportDuplicateAssociationEndSignatureNames(compilerErrorHolder);
 
         // TODO: Warn if class is owned by multiple
         // TODO: Detect ownership cycles
@@ -289,6 +476,20 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             }
 
             visitedInterfaceStates.add(interfaceState);
+        }
+    }
+
+    private void reportDuplicateAssociationEndSignatureNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
+
+        for (AntlrAssociationEndSignature associationEndSignatureState : this.associationEndSignatureStates)
+        {
+            if (duplicateMemberNames.contains(associationEndSignatureState.getName()))
+            {
+                associationEndSignatureState.reportDuplicateMemberName(compilerErrorHolder);
+            }
+            associationEndSignatureState.reportErrors(compilerErrorHolder);
         }
     }
 

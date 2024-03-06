@@ -98,7 +98,7 @@ verb: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 // member
 interfaceMember: dataTypeProperty | parameterizedPropertySignature | associationEndSignature;
-classMember: dataTypeProperty | parameterizedProperty;
+classMember: dataTypeProperty | parameterizedProperty | associationEndSignature;
 dataTypeProperty: primitiveProperty | enumerationProperty;
 primitiveProperty: identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* ';'
     | identifier ':' primitiveType optionalMarker? propertyModifier* dataTypePropertyValidation* {notifyErrorListeners("Missing semi-colon after primitive property declaration.");};
@@ -187,6 +187,7 @@ inOperator: 'in';
 stringOperator: 'contains' | 'startsWith' | 'endsWith';
 
 // Type references
+// TODO: Inline this...
 classType: classReference multiplicity;
 
 // references

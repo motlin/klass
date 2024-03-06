@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndModifierImpl.AssociationEndModifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -23,7 +24,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
             -1,
             AntlrAssociationEnd.AMBIGUOUS);
 
-    private final AntlrAssociationEnd           surroundingElement;
+    private final AntlrReferenceTypeProperty<?> surroundingElement;
     private       AssociationEndModifierBuilder elementBuilder;
 
     public AntlrAssociationEndModifier(
@@ -32,7 +33,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrAssociationEnd surroundingElement)
+            @Nonnull AntlrReferenceTypeProperty<?> surroundingElement)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
         this.surroundingElement = Objects.requireNonNull(surroundingElement);
@@ -75,7 +76,7 @@ public class AntlrAssociationEndModifier extends AntlrModifier
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.surroundingElement.getElementBuilder());
+                (AssociationEndBuilder) this.surroundingElement.getElementBuilder());
         return this.elementBuilder;
     }
 

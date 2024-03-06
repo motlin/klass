@@ -3447,4 +3447,41 @@ public class KlassCompilerErrorTest
         };
         this.assertCompilerErrors(sourceCodeText, errors);
     }
+
+    @Test
+    public void associationEndSignatures()
+    {
+        //<editor-fold desc="source code">
+        //language=Klass
+        String sourceCodeText = ""
+                + "package dummy\n"
+                + "\n"
+                + "class DummyClass\n"
+                + "{\n"
+                + "    id: Long id key;\n"
+                +
+                "    associationEndSignature: DummyClass[0..1];\n"
+                +
+                "}\n";
+        //</editor-fold>
+
+        String error =  ""
+                + "\u001B[33m════════════════════════════════════════\u001B[m \u001B[35mERR_ONE_END\u001B[m \u001B[33m════════════════════════════════════════\u001B[m\n"
+                + "\u001B[31mReference type properties (single association ends in classifiers) are not yet supported but found 'DummyClass.associationEndSignature'.\u001B[m\n"
+                + "\n"
+                + "Error at location. (example.klass:6)\n"
+                + "\u001B[40m\u001B[40;37m1║ \u001B[40;35mpackage \u001B[40;97mdummy\n"
+                + "\u001B[40;37m3║ \u001B[40;35mclass \u001B[40;97mDummyClass\n"
+                + "\u001B[40;37m4║ \u001B[40;36m{\n"
+                + "\u001B[40;37m6║     \u001B[40;97massociationEndSignature\u001B[40;36m: \u001B[40;97mDummyClass\u001B[40;36m[\u001B[40;94m0\u001B[40;36m..\u001B[40;94m1\u001B[40;36m]\u001B[40;36m;\n"
+                + "\u001B[40;37m ║     \u001B[40;91m^^^^^^^^^^^^^^^^^^^^^^^\n"
+                + "\u001B[40;37m7║ \u001B[40;36m}\n"
+                + "\u001B[m\n"
+                + "\u001B[36mLocation:  \u001B[mexample.klass:6\u001B[m\n"
+                + "\u001B[36mFile:      \u001B[mexample.klass\u001B[m\n"
+                + "\u001B[36mLine:      \u001B[m6\u001B[m\n"
+                + "\u001B[36mCharacter: \u001B[m5\u001B[m\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
+    }
 }

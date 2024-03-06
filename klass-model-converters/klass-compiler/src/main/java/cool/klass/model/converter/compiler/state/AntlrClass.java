@@ -172,7 +172,8 @@ public class AntlrClass extends AntlrClassifier
     {
         return this.getDataTypeProperties().size()
                 + this.parameterizedPropertyStates.size()
-                + this.associationEndStates.size();
+                + this.associationEndStates.size()
+                + this.associationEndSignatureStates.size();
     }
 
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
@@ -330,6 +331,7 @@ public class AntlrClass extends AntlrClassifier
         this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
         this.parameterizedPropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
         this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.associationEndSignatureStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
     }
 
     @Override
@@ -604,6 +606,7 @@ public class AntlrClass extends AntlrClassifier
         this.getDataTypeProperties().collect(AntlrProperty::getName, topLevelNames);
         this.parameterizedPropertyStates.collect(AntlrNamedElement::getName, topLevelNames);
         this.associationEndStates.collect(AntlrProperty::getName, topLevelNames);
+        this.associationEndSignatureStates.collect(AntlrProperty::getName, topLevelNames);
         return topLevelNames.toImmutable();
     }
 
