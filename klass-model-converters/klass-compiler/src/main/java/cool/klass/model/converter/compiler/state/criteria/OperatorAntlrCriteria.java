@@ -152,9 +152,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     @Override
     public void addForeignKeys()
     {
-        ImmutableList<IAntlrElement> surroundingElements = this.getSurroundingElements();
-        IAntlrElement                surroundingElement  = surroundingElements.getOnly();
-        AntlrAssociation             association         = (AntlrAssociation) surroundingElement;
+        AntlrAssociation association = this.getSurroundingElement(AntlrAssociation.class).get();
 
         AntlrAssociationEnd sourceEnd = association.getSourceEnd();
         AntlrAssociationEnd targetEnd = association.getTargetEnd();

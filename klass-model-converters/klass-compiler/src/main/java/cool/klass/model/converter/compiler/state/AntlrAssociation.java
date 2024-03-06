@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
@@ -50,7 +49,7 @@ public class AntlrAssociation
     private final MutableOrderedMap<AssociationEndContext, AntlrAssociationEnd> associationEndsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    private AntlrCriteria criteriaState;
+    private AntlrRelationship relationship;
 
     private AssociationBuilder associationBuilder;
 
@@ -64,6 +63,13 @@ public class AntlrAssociation
             @Nonnull String packageName)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+    }
+
+    @Nonnull
+    @Override
+    public AssociationDeclarationContext getElementContext()
+    {
+        return (AssociationDeclarationContext) this.elementContext;
     }
 
     public MutableList<AntlrAssociationEnd> getAssociationEndStates()
@@ -136,7 +142,7 @@ public class AntlrAssociation
             throw new AssertionError(numAssociationEnds);
         }
 
-        AbstractCriteriaBuilder<?> criteriaBuilder = this.criteriaState.build();
+        AbstractCriteriaBuilder<?> criteriaBuilder = this.relationship.getCriteria().build();
 
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
@@ -237,7 +243,7 @@ public class AntlrAssociation
             return;
         }
 
-        if (this.criteriaState == null)
+        if (this.relationship == null)
         {
             // TODO: Editor error matching this one
             String message = String.format(
@@ -247,20 +253,17 @@ public class AntlrAssociation
         }
         else
         {
-            this.criteriaState.reportErrors(compilerErrorHolder);
+            this.relationship.reportErrors(compilerErrorHolder);
         }
     }
 
-    @Nonnull
-    @Override
-    public AssociationDeclarationContext getElementContext()
+    public void setRelationship(@Nonnull AntlrRelationship relationship)
     {
-        return (AssociationDeclarationContext) this.elementContext;
-    }
-
-    public void setCriteria(@Nonnull AntlrCriteria criteria)
-    {
-        this.criteriaState = Objects.requireNonNull(criteria);
+        if (this.relationship != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.relationship = Objects.requireNonNull(relationship);
     }
 
     public AntlrAssociationEnd getSourceEnd()

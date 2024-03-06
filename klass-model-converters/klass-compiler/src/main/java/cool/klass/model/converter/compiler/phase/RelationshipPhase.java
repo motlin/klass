@@ -1,11 +1,14 @@
 package cool.klass.model.converter.compiler.phase;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrRelationship;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
@@ -29,13 +32,19 @@ public class RelationshipPhase
 
         AntlrAssociation associationState = this.compilerState.getCompilerWalkState().getAssociationState();
 
+        AntlrRelationship relationship = new AntlrRelationship(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                associationState);
+        associationState.setRelationship(relationship);
+
         KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
                 this.compilerState,
-                associationState);
+                relationship);
 
         CriteriaExpressionContext criteriaExpressionContext = ctx.criteriaExpression();
         AntlrCriteria             criteriaState             = visitor.visit(criteriaExpressionContext);
-        associationState.setCriteria(criteriaState);
+        relationship.setCriteria(criteriaState);
 
         MutableList<AntlrAssociationEnd> associationEndStates = associationState.getAssociationEndStates();
         if (associationEndStates.size() != 2)
