@@ -72,15 +72,15 @@ import org.eclipse.collections.api.map.MapIterable;
                    })
 public class AbstractKlassConfiguration
         extends Configuration
-        implements JerseyHttpLoggingFactoryProvider,
-        H2FactoryProvider,
+        implements ConfigLoggingFactoryProvider,
         CorsFactoryProvider,
-        DdlExecutorFactoryProvider,
         AuthFilterFactoryProvider,
         ObjectMapperFactoryProvider,
+        JerseyHttpLoggingFactoryProvider,
+        H2FactoryProvider,
+        DdlExecutorFactoryProvider,
         ReladomoFactoryProvider,
         SampleDataFactoryProvider,
-        ConfigLoggingFactoryProvider,
         DataStoreFactoryProvider,
         DomainModelFactoryProvider,
         UUIDSupplierFactoryProvider,
@@ -89,10 +89,10 @@ public class AbstractKlassConfiguration
         ConnectionManagerFactoryProvider
 {
     // General
-    private @Valid @NotNull KlassFactory   klassFactory         = new KlassFactory();
-    private @Valid @NotNull EnabledFactory configLoggingFactory = new EnabledFactory();
+    private @Valid @NotNull KlassFactory klassFactory = new KlassFactory();
 
     // Services
+    private @Valid @NotNull EnabledFactory           configLoggingFactory     = new EnabledFactory();
     private @Valid @NotNull ObjectMapperFactory      objectMapperFactory      = new ObjectMapperFactory();
     private @Valid @NotNull CorsFactory              corsFactory              = new CorsFactory();
     private @Valid @NotNull List<AuthFilterFactory>  authFilterFactories      = Arrays.asList();
@@ -130,7 +130,7 @@ public class AbstractKlassConfiguration
     }
 
     @JsonProperty("configLogging")
-    public void setConfigLogging(EnabledFactory configLoggingFactory)
+    public void setConfigLoggingFactory(EnabledFactory configLoggingFactory)
     {
         this.configLoggingFactory = configLoggingFactory;
     }
@@ -143,35 +143,9 @@ public class AbstractKlassConfiguration
     }
 
     @JsonProperty("objectMapper")
-    public void setObjectMapper(ObjectMapperFactory objectMapperFactory)
+    public void setObjectMapperFactory(ObjectMapperFactory objectMapperFactory)
     {
         this.objectMapperFactory = objectMapperFactory;
-    }
-
-    @Override
-    @JsonProperty("cors")
-    public CorsFactory getCorsFactory()
-    {
-        return this.corsFactory;
-    }
-
-    @JsonProperty("cors")
-    public void setCors(CorsFactory corsFactory)
-    {
-        this.corsFactory = corsFactory;
-    }
-
-    @Override
-    @JsonProperty("authFilters")
-    public List<AuthFilterFactory> getAuthFilterFactories()
-    {
-        return this.authFilterFactories;
-    }
-
-    @JsonProperty("authFilters")
-    public void setAuthFilters(List<AuthFilterFactory> authFilterFactories)
-    {
-        this.authFilterFactories = authFilterFactories;
     }
 
     @Override
@@ -182,7 +156,7 @@ public class AbstractKlassConfiguration
     }
 
     @JsonProperty("jerseyHttpLogging")
-    public void setJerseyHttpLogging(JerseyHttpLoggingFactory jerseyHttpLoggingFactory)
+    public void setJerseyHttpLoggingFactory(JerseyHttpLoggingFactory jerseyHttpLoggingFactory)
     {
         this.jerseyHttpLoggingFactory = jerseyHttpLoggingFactory;
     }
@@ -288,7 +262,8 @@ public class AbstractKlassConfiguration
                 this.connectionManagerConfiguration.getConnectionManagerByName(name);
         return Objects.requireNonNull(
                 sourcelessConnectionManager,
-                () -> String.format("Could not find connection manager with name %s. Valid choices are %s",
+                () -> String.format(
+                        "Could not find connection manager with name %s. Valid choices are %s",
                         name,
                         this.connectionManagerConfiguration.getConnectionManagersByName().keysView()));
     }
@@ -298,6 +273,32 @@ public class AbstractKlassConfiguration
     public ImmutableMap<String, SourcelessConnectionManager> getConnectionManagersByName()
     {
         return this.connectionManagerConfiguration.getConnectionManagersByName();
+    }
+
+    @Override
+    @JsonProperty("cors")
+    public CorsFactory getCorsFactory()
+    {
+        return this.corsFactory;
+    }
+
+    @JsonProperty("cors")
+    public void setCors(CorsFactory corsFactory)
+    {
+        this.corsFactory = corsFactory;
+    }
+
+    @Override
+    @JsonProperty("authFilters")
+    public List<AuthFilterFactory> getAuthFilterFactories()
+    {
+        return this.authFilterFactories;
+    }
+
+    @JsonProperty("authFilters")
+    public void setAuthFilters(List<AuthFilterFactory> authFilterFactories)
+    {
+        this.authFilterFactories = authFilterFactories;
     }
 
     @Override
