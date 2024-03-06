@@ -398,6 +398,9 @@ public class ParserBasedTokenCategorizer
         this.put(
                 ctx.identifier().getStart(),
                 TokenCategory.PROJECTION_NAME);
+        this.put(
+                ctx.classifierReference().identifier().getStart(),
+                TokenCategory.CLASS_REFERENCE);
     }
 
     // TODO: Rename Primitive to Data

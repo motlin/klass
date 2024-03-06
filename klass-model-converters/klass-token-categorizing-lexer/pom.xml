@@ -12,6 +12,8 @@
 
     <artifactId>klass-token-categorizing-lexer</artifactId>
 
+    <name>Klass Token Categorizing Lexer</name>
+
     <dependencies>
 
         <dependency>

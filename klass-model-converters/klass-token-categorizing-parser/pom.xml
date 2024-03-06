@@ -12,6 +12,8 @@
 
     <artifactId>klass-token-categorizing-parser</artifactId>
 
+    <name>Klass Token Categorizing Parser</name>
+
     <dependencies>
 
         <dependency>
