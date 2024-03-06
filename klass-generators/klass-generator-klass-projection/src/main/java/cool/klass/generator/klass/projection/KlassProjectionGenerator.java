@@ -91,10 +91,17 @@ public class KlassProjectionGenerator
 
     private static String getSourceCode(Classifier classifier)
     {
+        String projectionBodySourceCode = classifier
+                .getDataTypeProperties()
+                .reject(DataTypeProperty::isForeignKey)
+                .reject(DataTypeProperty::isPrivate)
+                .collect(KlassProjectionGenerator::getSourceCode)
+                .makeString("");
+
         return ""
                 + "projection " + classifier.getName() + "Projection on " + classifier.getName() + "\n"
                 + "{\n"
-                + classifier.getDataTypeProperties().collect(KlassProjectionGenerator::getSourceCode).makeString("")
+                + projectionBodySourceCode
                 + "}\n";
     }
 
