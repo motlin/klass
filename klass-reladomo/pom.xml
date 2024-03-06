@@ -22,6 +22,7 @@
         <module>klass-reladomo-simulated-sequence-ddls</module>
         <module>klass-reladomo-ddl-executor</module>
         <module>klass-reladomo-configuration</module>
+        <module>klass-reladomo-test-rule</module>
     </modules>
 
 </project>
