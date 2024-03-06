@@ -167,7 +167,7 @@ public abstract class AntlrProperty
                 "%s.%s: %s %s",
                 this.getOwningClassifierState().getName(),
                 this.getName(),
-                this.getType(),
+                this.getType().getName(),
                 this.getModifiers().collect(AntlrNamedElement::getName).makeString(" "));
     }
 }
