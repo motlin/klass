@@ -41,8 +41,8 @@ public final class KlassImpl extends AbstractClassifier implements Klass
     {
         super(elementContext, macroElement, nameContext, name, ordinal, packageName);
         this.inheritanceType = Objects.requireNonNull(inheritanceType);
-        this.isUser = isUser;
-        this.isTransient = isTransient;
+        this.isUser          = isUser;
+        this.isTransient     = isTransient;
     }
 
     @Override
@@ -150,8 +150,8 @@ public final class KlassImpl extends AbstractClassifier implements Klass
         {
             super(elementContext, macroElement, nameContext, name, ordinal, packageName);
             this.inheritanceType = Objects.requireNonNull(inheritanceType);
-            this.isUser = isUser;
-            this.isTransient = isTransient;
+            this.isUser          = isUser;
+            this.isTransient     = isTransient;
         }
 
         public void setVersionPropertyBuilder(@Nonnull Optional<AssociationEndBuilder> versionPropertyBuilder)

@@ -60,15 +60,15 @@ public class IncomingUpdateDataModelValidator
             @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
-        this.dataStore = Objects.requireNonNull(dataStore);
-        this.klass = Objects.requireNonNull(klass);
+        this.dataStore          = Objects.requireNonNull(dataStore);
+        this.klass              = Objects.requireNonNull(klass);
         this.persistentInstance = Objects.requireNonNull(persistentInstance);
-        this.objectNode = Objects.requireNonNull(objectNode);
-        this.errors = Objects.requireNonNull(errors);
-        this.warnings = Objects.requireNonNull(warnings);
-        this.contextStack = Objects.requireNonNull(contextStack);
-        this.pathHere = Objects.requireNonNull(pathHere);
-        this.isRoot = isRoot;
+        this.objectNode         = Objects.requireNonNull(objectNode);
+        this.errors             = Objects.requireNonNull(errors);
+        this.warnings           = Objects.requireNonNull(warnings);
+        this.contextStack       = Objects.requireNonNull(contextStack);
+        this.pathHere           = Objects.requireNonNull(pathHere);
+        this.isRoot             = isRoot;
     }
 
     public static void validate(
@@ -358,9 +358,10 @@ public class IncomingUpdateDataModelValidator
                 incomingInstancesForUpdate,
                 associationEnd);
 
-        MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey = this.getPersistentChildInstancesByKey(
-                incomingChildInstancesByKey,
-                associationEnd);
+        MapIterable<ImmutableList<Object>, Object> persistentChildInstancesByKey =
+                this.getPersistentChildInstancesByKey(
+                        incomingChildInstancesByKey,
+                        associationEnd);
 
         for (int index = 0; index < incomingChildInstances.size(); index++)
         {
@@ -554,7 +555,8 @@ public class IncomingUpdateDataModelValidator
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
@@ -585,7 +587,8 @@ public class IncomingUpdateDataModelValidator
             @Nonnull JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 

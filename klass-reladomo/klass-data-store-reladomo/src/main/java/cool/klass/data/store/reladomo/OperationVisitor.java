@@ -1,5 +1,9 @@
 package cool.klass.data.store.reladomo;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import com.gs.fw.common.mithra.attribute.Attribute;
 import com.gs.fw.common.mithra.attribute.BooleanAttribute;
 import com.gs.fw.common.mithra.attribute.DoubleAttribute;
@@ -19,10 +23,10 @@ public class OperationVisitor implements DataTypePropertyVisitor
     private final Object    key;
     private       Operation result;
 
-    public OperationVisitor(Attribute attribute, Object key)
+    public OperationVisitor(@Nonnull Attribute attribute, @Nonnull Object key)
     {
-        this.attribute = attribute;
-        this.key = key;
+        this.attribute = Objects.requireNonNull(attribute);
+        this.key       = Objects.requireNonNull(key);
     }
 
     public Operation getResult()

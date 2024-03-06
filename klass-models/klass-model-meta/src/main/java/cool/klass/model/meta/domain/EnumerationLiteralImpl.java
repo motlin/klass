@@ -38,7 +38,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
     public static final class EnumerationLiteralBuilder extends NamedElementBuilder<EnumerationLiteralImpl>
     {
         @Nonnull
-        private final Optional<String>             prettyName;
+        private final Optional<String>   prettyName;
         @Nonnull
         private final EnumerationBuilder enumerationBuilder;
 
@@ -52,7 +52,7 @@ public final class EnumerationLiteralImpl extends AbstractTypedElement<Enumerati
                 @Nonnull EnumerationBuilder enumerationBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.prettyName = Objects.requireNonNull(prettyName);
+            this.prettyName         = Objects.requireNonNull(prettyName);
             this.enumerationBuilder = Objects.requireNonNull(enumerationBuilder);
         }
 

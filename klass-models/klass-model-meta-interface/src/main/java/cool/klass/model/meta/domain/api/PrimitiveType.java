@@ -232,13 +232,14 @@ public enum PrimitiveType implements Element, DataType, DataTypeGetter
     @Nonnull
     private final String   prettyName;
     private final boolean  isNumeric;
+    @Nonnull
     private final Class<?> javaClass;
 
-    PrimitiveType(@Nonnull String prettyName, boolean isNumeric, Class<?> javaClass)
+    PrimitiveType(@Nonnull String prettyName, boolean isNumeric, @Nonnull Class<?> javaClass)
     {
-        this.prettyName = prettyName;
-        this.isNumeric = isNumeric;
-        this.javaClass = javaClass;
+        this.prettyName = Objects.requireNonNull(prettyName);
+        this.isNumeric  = isNumeric;
+        this.javaClass  = Objects.requireNonNull(javaClass);
     }
 
     public static PrimitiveType byPrettyName(String name)

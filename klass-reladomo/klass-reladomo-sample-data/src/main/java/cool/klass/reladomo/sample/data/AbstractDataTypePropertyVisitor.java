@@ -28,7 +28,9 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
 
     private static Comparator<DataTypeProperty> getDataTypePropertyComparator()
     {
-        Comparator<DataTypeProperty> byClassifierName = Comparator.comparing(dtp -> dtp.getOwningClassifier().getName());
+        Comparator<DataTypeProperty> byClassifierName = Comparator.comparing(dtp -> dtp
+                .getOwningClassifier()
+                .getName());
         return byClassifierName.thenComparing(NamedElement::getName);
     }
 
@@ -51,7 +53,8 @@ public abstract class AbstractDataTypePropertyVisitor implements DataTypePropert
         // TODO: Something more reliable, or ban shared foreign keys
         if (primitiveProperty.getKeysMatchingThisForeignKey().size() == 1)
         {
-            Pair<AssociationEnd, DataTypeProperty> pair = primitiveProperty.getKeysMatchingThisForeignKey().keyValuePairsView().getOnly();
+            Pair<AssociationEnd, DataTypeProperty> pair =
+                    primitiveProperty.getKeysMatchingThisForeignKey().keyValuePairsView().getOnly();
 
             AssociationEnd   associationEnd = pair.getOne();
             DataTypeProperty keyProperty    = pair.getTwo();

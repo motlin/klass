@@ -40,7 +40,8 @@ public abstract class AbstractProperty<T extends Type> extends AbstractTypedElem
         return this.owningClassifier;
     }
 
-    public abstract static class PropertyBuilder<T extends Type, TG extends TypeGetter, BuiltElement extends AbstractProperty<T>> extends TypedElementBuilder<T, TG, BuiltElement>
+    public abstract static class PropertyBuilder<T extends Type, TG extends TypeGetter, BuiltElement extends AbstractProperty<T>>
+            extends TypedElementBuilder<T, TG, BuiltElement>
     {
         @Nonnull
         protected final ClassifierBuilder<?> owningClassifierBuilder;

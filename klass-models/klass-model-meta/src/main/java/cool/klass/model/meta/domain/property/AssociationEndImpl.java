@@ -48,8 +48,8 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
     {
         super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlass);
         this.owningAssociation = Objects.requireNonNull(owningAssociation);
-        this.multiplicity = Objects.requireNonNull(multiplicity);
-        this.owned = owned;
+        this.multiplicity      = Objects.requireNonNull(multiplicity);
+        this.owned             = owned;
     }
 
     @Nonnull
@@ -130,8 +130,8 @@ public final class AssociationEndImpl extends AbstractProperty<KlassImpl> implem
         {
             super(elementContext, macroElement, nameContext, name, ordinal, type, owningKlassBuilder);
             this.owningAssociation = Objects.requireNonNull(owningAssociation);
-            this.multiplicity = Objects.requireNonNull(multiplicity);
-            this.isOwned = isOwned;
+            this.multiplicity      = Objects.requireNonNull(multiplicity);
+            this.isOwned           = isOwned;
         }
 
         public void setOrderByBuilder(@Nonnull Optional<OrderByBuilder> orderByBuilder)

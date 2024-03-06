@@ -30,7 +30,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
             @Nonnull AbstractExpressionValue targetValue)
     {
         super(elementContext, macroElement);
-        this.operator = Objects.requireNonNull(operator);
+        this.operator    = Objects.requireNonNull(operator);
         this.sourceValue = Objects.requireNonNull(sourceValue);
         this.targetValue = Objects.requireNonNull(targetValue);
     }
@@ -73,7 +73,7 @@ public final class OperatorCriteriaImpl extends AbstractCriteria implements Oper
                 @Nonnull AbstractExpressionValueBuilder<?> targetValue)
         {
             super(elementContext, macroElement);
-            this.operator = Objects.requireNonNull(operator);
+            this.operator    = Objects.requireNonNull(operator);
             this.sourceValue = Objects.requireNonNull(sourceValue);
             this.targetValue = Objects.requireNonNull(targetValue);
         }

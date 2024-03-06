@@ -55,7 +55,7 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         {
             throw new IllegalArgumentException(String.valueOf(associationEnds.size()));
         }
-        this.associationEnds = Objects.requireNonNull(associationEnds);
+        this.associationEnds      = Objects.requireNonNull(associationEnds);
         this.sourceAssociationEnd = associationEnds.get(0);
         this.targetAssociationEnd = associationEnds.get(1);
     }
@@ -72,7 +72,8 @@ public final class AssociationImpl extends AbstractPackageableElement implements
         return this.targetAssociationEnd;
     }
 
-    public static final class AssociationBuilder extends PackageableElementBuilder<AssociationImpl> implements TopLevelElementBuilder
+    public static final class AssociationBuilder extends PackageableElementBuilder<AssociationImpl>
+            implements TopLevelElementBuilder
     {
         @Nonnull
         private final AbstractCriteriaBuilder<?> criteriaBuilder;

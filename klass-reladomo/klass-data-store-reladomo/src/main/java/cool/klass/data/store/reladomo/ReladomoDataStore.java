@@ -60,9 +60,11 @@ public class ReladomoDataStore implements DataStore
     private static final Marker MARKER = MarkerFactory.getMarker("reladomo transaction stats");
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
 
-    private static final Converter<String, String> LOWER_TO_UPPER = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+    private static final Converter<String, String> LOWER_TO_UPPER =
+            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
-    private static final Converter<String, String> UPPER_CAMEL = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
+    private static final Converter<String, String> UPPER_CAMEL =
+            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
     private final Supplier<UUID> uuidSupplier;
     private final int            retryCount;
@@ -555,7 +557,8 @@ public class ReladomoDataStore implements DataStore
                 .getDataTypeProperties();
         for (DataTypeProperty targetDataTypeProperty : targetDataTypeProperties)
         {
-            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = targetDataTypeProperty.getKeysMatchingThisForeignKey();
+            ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                    targetDataTypeProperty.getKeysMatchingThisForeignKey();
 
             ImmutableList<DataTypeProperty> keysInRelatedObject = keysMatchingThisForeignKey.get(associationEnd);
             if (keysInRelatedObject.isEmpty())

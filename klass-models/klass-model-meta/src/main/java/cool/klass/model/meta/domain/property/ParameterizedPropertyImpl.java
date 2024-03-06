@@ -66,7 +66,8 @@ public final class ParameterizedPropertyImpl extends AbstractProperty<KlassImpl>
         this.orderBy = Objects.requireNonNull(orderBy);
     }
 
-    public static final class ParameterizedPropertyBuilder extends PropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
+    public static final class ParameterizedPropertyBuilder
+            extends PropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
     {
         @Nonnull
         private final Multiplicity multiplicity;

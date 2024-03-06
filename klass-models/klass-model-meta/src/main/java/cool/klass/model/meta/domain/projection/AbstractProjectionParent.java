@@ -12,7 +12,8 @@ import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AbstractProjectionParent extends AbstractNamedElement implements AbstractProjectionElement, ProjectionParent
+public abstract class AbstractProjectionParent extends AbstractNamedElement
+        implements AbstractProjectionElement, ProjectionParent
 {
     private ImmutableList<ProjectionChild> children;
 

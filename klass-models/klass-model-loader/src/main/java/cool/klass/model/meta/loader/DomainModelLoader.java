@@ -48,7 +48,7 @@ public class DomainModelLoader
         CompilerState     compilerState     = new CompilerState(compilationUnits);
         KlassCompiler     klassCompiler     = new KlassCompiler(compilerState);
         CompilationResult compilationResult = klassCompiler.compile();
-        DomainModel domainModel = this.handleResult(compilationResult);
+        DomainModel       domainModel       = this.handleResult(compilationResult);
 
         LOGGER.info("Completing domain model compilation.");
 

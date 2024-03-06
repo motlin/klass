@@ -33,9 +33,9 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
             @Nonnull OrderByDirectionDeclarationImpl orderByDirectionDeclaration)
     {
         super(elementContext, macroElement);
-        this.orderBy = Objects.requireNonNull(orderBy);
-        this.ordinal = ordinal;
-        this.thisMemberReferencePath = Objects.requireNonNull(thisMemberReferencePath);
+        this.orderBy                     = Objects.requireNonNull(orderBy);
+        this.ordinal                     = ordinal;
+        this.thisMemberReferencePath     = Objects.requireNonNull(thisMemberReferencePath);
         this.orderByDirectionDeclaration = Objects.requireNonNull(orderByDirectionDeclaration);
     }
 
@@ -72,10 +72,10 @@ public final class OrderByMemberReferencePathImpl extends AbstractElement implem
                 @Nonnull OrderByDirectionDeclarationBuilder orderByDirectionBuilder)
         {
             super(elementContext, macroElement);
-            this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
-            this.ordinal = ordinal;
+            this.orderByBuilder                 = Objects.requireNonNull(orderByBuilder);
+            this.ordinal                        = ordinal;
             this.thisMemberReferencePathBuilder = Objects.requireNonNull(thisMemberReferencePathBuilder);
-            this.orderByDirectionBuilder = Objects.requireNonNull(orderByDirectionBuilder);
+            this.orderByDirectionBuilder        = Objects.requireNonNull(orderByDirectionBuilder);
         }
 
         @Override

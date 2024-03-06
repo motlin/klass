@@ -117,7 +117,7 @@ public class PersistentCreator extends PersistentSynchronizer
             @Nonnull AssociationEnd associationEnd,
             @Nonnull ImmutableList<Object> keys)
     {
-        Klass  versionType  = associationEnd.getType();
+        Klass  versionType     = associationEnd.getType();
         Object versionInstance = this.dataStore.instantiate(versionType, keys);
 
         // TODO: Test where version association end and version property are not named "version"

@@ -38,7 +38,7 @@ public final class ProjectionProjectionReferenceImpl
             @Nonnull AssociationEndImpl associationEnd)
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
-        this.parent = Objects.requireNonNull(parent);
+        this.parent         = Objects.requireNonNull(parent);
         this.associationEnd = Objects.requireNonNull(associationEnd);
     }
 
@@ -91,7 +91,7 @@ public final class ProjectionProjectionReferenceImpl
                 @Nonnull AssociationEndBuilder associationEndBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.parentBuilder = Objects.requireNonNull(parentBuilder);
+            this.parentBuilder         = Objects.requireNonNull(parentBuilder);
             this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
         }
 

@@ -12,7 +12,7 @@ public class DataTypePropertyVisitorAdaptor implements PrimitiveTypeVisitor
             DataTypePropertyVisitor visitor,
             PrimitiveProperty primitiveProperty)
     {
-        this.visitor = visitor;
+        this.visitor           = visitor;
         this.primitiveProperty = primitiveProperty;
     }
 

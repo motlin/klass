@@ -22,8 +22,8 @@ public class ReladomoTestRule implements TestRule
             String... testDataFileNames)
     {
         this.runtimeConfigFilename = Objects.requireNonNull(runtimeConfigFilename);
-        this.testDataFileNames = Objects.requireNonNull(testDataFileNames);
-        this.mithraTestResource = new MithraTestResource(this.runtimeConfigFilename);
+        this.testDataFileNames     = Objects.requireNonNull(testDataFileNames);
+        this.mithraTestResource    = new MithraTestResource(this.runtimeConfigFilename);
         this.mithraTestResource.setTestConnectionsOnTearDown(true);
         this.mithraTestResource.setValidateConnectionManagers(true);
         this.mithraTestResource.setStrictParsingEnabled(true);

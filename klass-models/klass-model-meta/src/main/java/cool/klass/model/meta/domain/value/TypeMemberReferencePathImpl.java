@@ -27,7 +27,8 @@ public final class TypeMemberReferencePathImpl extends AbstractMemberReferencePa
         super(elementContext, macroElement, klass, associationEnds, property);
     }
 
-    public static final class TypeMemberReferencePathBuilder extends AbstractMemberReferencePathBuilder<TypeMemberReferencePathImpl>
+    public static final class TypeMemberReferencePathBuilder
+            extends AbstractMemberReferencePathBuilder<TypeMemberReferencePathImpl>
     {
         public TypeMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,

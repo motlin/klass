@@ -16,9 +16,12 @@ public abstract class AbstractCriteria extends AbstractElement implements Criter
         super(elementContext, macroElement);
     }
 
-    public abstract static class AbstractCriteriaBuilder<BuiltElement extends AbstractCriteria> extends ElementBuilder<BuiltElement>
+    public abstract static class AbstractCriteriaBuilder<BuiltElement extends AbstractCriteria>
+            extends ElementBuilder<BuiltElement>
     {
-        protected AbstractCriteriaBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
+        protected AbstractCriteriaBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull Optional<ElementBuilder<?>> macroElement)
         {
             super(elementContext, macroElement);
         }

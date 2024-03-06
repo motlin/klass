@@ -6,10 +6,10 @@ user User
     read
     systemTemporal
 {
-    userId: String key userId;
-    firstName: String?;
-    lastName: String?;
-    email: String?;
+    userId                 : String key userId;
+    firstName              : String?;
+    lastName               : String?;
+    email                  : String?;
 }
 
 projection UserReadProjection on User
@@ -41,32 +41,32 @@ service User
 class AbstractChapter
     abstract(table-per-class)
 {
-    bookTitle     : String key;
-    chapterNumber : Integer key;
-    text          : String;
+    bookTitle              : String key;
+    chapterNumber          : Integer key;
+    text                   : String;
 }
 
 class ChapterWithQuote
     extends AbstractChapter
 {
-    quote: String;
+    quote                  : String;
 }
 
 class ChapterWithIllustration
     extends AbstractChapter
 {
-    illustrationUrl: String;
+    illustrationUrl        : String;
 }
 
 class Book
 {
-    title: String key;
- }
+    title                  : String key;
+}
 
 association ContainerHasItems
 {
-    book          : Book[1..1];
-    chapters      : AbstractChapter[0..*] owned
+    book                   : Book[1..1];
+    chapters               : AbstractChapter[0..*] owned
         orderBy: this.chapterNumber;
 
     relationship this.title == AbstractChapter.bookTitle

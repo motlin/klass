@@ -4,14 +4,16 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+
 public class MutationContext
 {
     private final Optional<String> userId;
     private final Instant          transactionTime;
 
-    public MutationContext(Optional<String> userId, Instant transactionTime)
+    public MutationContext(@Nonnull Optional<String> userId, @Nonnull Instant transactionTime)
     {
-        this.userId = Objects.requireNonNull(userId);
+        this.userId          = Objects.requireNonNull(userId);
         this.transactionTime = Objects.requireNonNull(transactionTime);
     }
 

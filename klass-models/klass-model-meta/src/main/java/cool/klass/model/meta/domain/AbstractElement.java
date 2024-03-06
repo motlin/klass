@@ -23,7 +23,7 @@ public abstract class AbstractElement implements Element
             @Nonnull Optional<Element> macroElement)
     {
         this.elementContext = Objects.requireNonNull(elementContext);
-        this.macroElement = Objects.requireNonNull(macroElement);
+        this.macroElement   = Objects.requireNonNull(macroElement);
     }
 
     @Nonnull
@@ -65,7 +65,7 @@ public abstract class AbstractElement implements Element
         protected ElementBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
         {
             this.elementContext = Objects.requireNonNull(elementContext);
-            this.macroElement = Objects.requireNonNull(macroElement);
+            this.macroElement   = Objects.requireNonNull(macroElement);
         }
 
         @Nonnull

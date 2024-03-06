@@ -33,9 +33,9 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
             @Nonnull AbstractDataTypeProperty<?> property)
     {
         super(elementContext, macroElement);
-        this.klass = Objects.requireNonNull(klass);
+        this.klass           = Objects.requireNonNull(klass);
         this.associationEnds = Objects.requireNonNull(associationEnds);
-        this.property = Objects.requireNonNull(property);
+        this.property        = Objects.requireNonNull(property);
     }
 
     @Override
@@ -59,14 +59,15 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
         return this.property;
     }
 
-    public abstract static class AbstractMemberReferencePathBuilder<BuiltElement extends AbstractMemberReferencePath> extends AbstractExpressionValueBuilder<BuiltElement>
+    public abstract static class AbstractMemberReferencePathBuilder<BuiltElement extends AbstractMemberReferencePath>
+            extends AbstractExpressionValueBuilder<BuiltElement>
     {
         @Nonnull
         protected final KlassBuilder                         klassBuilder;
         @Nonnull
         protected final ImmutableList<AssociationEndBuilder> associationEndBuilders;
         @Nonnull
-        protected final DataTypePropertyBuilder<?, ?, ?>        propertyBuilder;
+        protected final DataTypePropertyBuilder<?, ?, ?>     propertyBuilder;
 
         protected AbstractMemberReferencePathBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -76,9 +77,9 @@ public abstract class AbstractMemberReferencePath extends AbstractExpressionValu
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, macroElement);
-            this.klassBuilder = Objects.requireNonNull(klassBuilder);
+            this.klassBuilder           = Objects.requireNonNull(klassBuilder);
             this.associationEndBuilders = Objects.requireNonNull(associationEndBuilders);
-            this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
+            this.propertyBuilder        = Objects.requireNonNull(propertyBuilder);
         }
     }
 }

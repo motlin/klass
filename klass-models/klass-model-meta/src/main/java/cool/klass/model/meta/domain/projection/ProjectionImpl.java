@@ -31,7 +31,7 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
-        this.klass = Objects.requireNonNull(klass);
+        this.klass       = Objects.requireNonNull(klass);
     }
 
     @Override
@@ -54,7 +54,9 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
         return this.packageName;
     }
 
-    public static final class ProjectionBuilder extends AbstractProjectionParentBuilder<ProjectionImpl> implements TopLevelElementBuilder
+    public static final class ProjectionBuilder
+            extends AbstractProjectionParentBuilder<ProjectionImpl>
+            implements TopLevelElementBuilder
     {
         @Nonnull
         private final String       packageName;
@@ -71,7 +73,7 @@ public final class ProjectionImpl extends AbstractProjectionParent implements To
                 @Nonnull KlassBuilder klassBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.packageName = Objects.requireNonNull(packageName);
+            this.packageName  = Objects.requireNonNull(packageName);
             this.klassBuilder = Objects.requireNonNull(klassBuilder);
         }
 

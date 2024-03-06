@@ -35,7 +35,8 @@ public abstract class AbstractTypedElement<T extends Type> extends AbstractNamed
         return this.type;
     }
 
-    public abstract static class TypedElementBuilder<T extends Type, TG extends TypeGetter, BuiltElement extends AbstractTypedElement<T>> extends NamedElementBuilder<BuiltElement>
+    public abstract static class TypedElementBuilder<T extends Type, TG extends TypeGetter, BuiltElement extends AbstractTypedElement<T>>
+            extends NamedElementBuilder<BuiltElement>
     {
         @Nonnull
         protected final TG typeBuilder;

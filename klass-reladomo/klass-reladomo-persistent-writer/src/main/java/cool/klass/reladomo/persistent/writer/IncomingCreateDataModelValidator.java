@@ -54,14 +54,14 @@ public class IncomingCreateDataModelValidator
             @Nonnull Optional<AssociationEnd> pathHere,
             boolean isRoot)
     {
-        this.dataStore = Objects.requireNonNull(dataStore);
-        this.klass = Objects.requireNonNull(klass);
-        this.objectNode = Objects.requireNonNull(objectNode);
-        this.errors = Objects.requireNonNull(errors);
-        this.warnings = Objects.requireNonNull(warnings);
+        this.dataStore    = Objects.requireNonNull(dataStore);
+        this.klass        = Objects.requireNonNull(klass);
+        this.objectNode   = Objects.requireNonNull(objectNode);
+        this.errors       = Objects.requireNonNull(errors);
+        this.warnings     = Objects.requireNonNull(warnings);
         this.contextStack = Objects.requireNonNull(contextStack);
-        this.pathHere = Objects.requireNonNull(pathHere);
-        this.isRoot = isRoot;
+        this.pathHere     = Objects.requireNonNull(pathHere);
+        this.isRoot       = isRoot;
     }
 
     public static void validate(
@@ -582,7 +582,8 @@ public class IncomingCreateDataModelValidator
             @Nonnull AssociationEnd associationEnd,
             @Nonnull JsonNode parentJsonNode)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 
@@ -628,7 +629,8 @@ public class IncomingCreateDataModelValidator
             JsonNode jsonNode,
             @Nonnull AssociationEnd associationEnd)
     {
-        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = keyProperty.getKeysMatchingThisForeignKey();
+        ImmutableListMultimap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey =
+                keyProperty.getKeysMatchingThisForeignKey();
 
         AssociationEnd opposite = associationEnd.getOpposite();
 

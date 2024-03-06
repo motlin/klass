@@ -123,7 +123,8 @@ public abstract class AbstractClassifier
         @Override
         protected void buildChildren()
         {
-            ImmutableList<ClassModifier> classModifiers = this.classModifierBuilders.collect(ClassModifierBuilder::build);
+            ImmutableList<ClassModifier> classModifiers =
+                    this.classModifierBuilders.collect(ClassModifierBuilder::build);
             this.element.setClassModifiers(classModifiers);
 
             ImmutableList<DataTypeProperty> dataTypeProperties = this.dataTypePropertyBuilders

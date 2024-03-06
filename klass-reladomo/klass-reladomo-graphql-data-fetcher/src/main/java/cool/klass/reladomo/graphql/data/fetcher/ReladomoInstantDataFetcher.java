@@ -36,7 +36,7 @@ public class ReladomoInstantDataFetcher<Input> implements DataFetcher<Instant>
             return null;
         }
 
-        Timestamp result = this.timestampAttribute.valueOf(persistentInstance);
+        Timestamp     result        = this.timestampAttribute.valueOf(persistentInstance);
         LocalDateTime localDateTime = result.toLocalDateTime();
         return localDateTime.toInstant(ZoneOffset.UTC);
     }

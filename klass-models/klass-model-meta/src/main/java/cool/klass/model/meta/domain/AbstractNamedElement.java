@@ -26,8 +26,8 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
     {
         super(elementContext, macroElement);
         this.nameContext = Objects.requireNonNull(nameContext);
-        this.name = Objects.requireNonNull(name);
-        this.ordinal = ordinal;
+        this.name        = Objects.requireNonNull(name);
+        this.ordinal     = ordinal;
     }
 
     @Override
@@ -67,8 +67,8 @@ public abstract class AbstractNamedElement extends AbstractElement implements Na
         {
             super(elementContext, macroElement);
             this.nameContext = Objects.requireNonNull(nameContext);
-            this.name = Objects.requireNonNull(name);
-            this.ordinal = ordinal;
+            this.name        = Objects.requireNonNull(name);
+            this.ordinal     = ordinal;
         }
     }
 }

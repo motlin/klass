@@ -16,9 +16,12 @@ public abstract class AbstractLiteralValue extends AbstractExpressionValue imple
         super(elementContext, macroElement);
     }
 
-    public abstract static class AbstractLiteralValueBuilder<BuiltElement extends AbstractLiteralValue> extends AbstractExpressionValueBuilder<BuiltElement>
+    public abstract static class AbstractLiteralValueBuilder<BuiltElement extends AbstractLiteralValue>
+            extends AbstractExpressionValueBuilder<BuiltElement>
     {
-        protected AbstractLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement)
+        protected AbstractLiteralValueBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull Optional<ElementBuilder<?>> macroElement)
         {
             super(elementContext, macroElement);
         }

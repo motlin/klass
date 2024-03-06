@@ -23,7 +23,7 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
             @Nonnull AbstractCriteria right)
     {
         super(elementContext, macroElement);
-        this.left = Objects.requireNonNull(left);
+        this.left  = Objects.requireNonNull(left);
         this.right = Objects.requireNonNull(right);
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractBinaryCriteria extends AbstractCriteria implements
                 @Nonnull AbstractCriteriaBuilder<?> right)
         {
             super(elementContext, macroElement);
-            this.left = Objects.requireNonNull(left);
+            this.left  = Objects.requireNonNull(left);
             this.right = Objects.requireNonNull(right);
         }
     }

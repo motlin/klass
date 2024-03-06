@@ -38,7 +38,8 @@ public final class PrimitivePropertyImpl
                 isOptional);
     }
 
-    public static final class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
+    public static final class PrimitivePropertyBuilder
+            extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType, PrimitivePropertyImpl>
     {
         public PrimitivePropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,

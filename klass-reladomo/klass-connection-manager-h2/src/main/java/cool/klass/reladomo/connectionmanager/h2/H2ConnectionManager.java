@@ -41,7 +41,7 @@ public final class H2ConnectionManager implements SourcelessConnectionManager
         int    defaultConnectionPoolSize = h2Config.getInt("defaultConnectionPoolSize");
         String timeZoneName              = h2Config.getString("timeZoneName");
 
-        this.schemaName = h2Config.getString("schemaName");
+        this.schemaName       = h2Config.getString("schemaName");
         this.databaseTimeZone = TimeZone.getTimeZone(timeZoneName);
 
         if (LOGGER.isDebugEnabled())

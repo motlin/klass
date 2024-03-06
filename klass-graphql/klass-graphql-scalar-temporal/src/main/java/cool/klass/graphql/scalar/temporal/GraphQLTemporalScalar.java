@@ -137,7 +137,9 @@ public class GraphQLTemporalScalar extends GraphQLScalarType
                     CoercingParseLiteralException::new).toInstant();
         }
 
-        private static OffsetDateTime parseOffsetDateTime(@Nonnull String s, @Nonnull Function<String, RuntimeException> exceptionMaker)
+        private static OffsetDateTime parseOffsetDateTime(
+                @Nonnull String s,
+                @Nonnull Function<String, RuntimeException> exceptionMaker)
         {
             try
             {

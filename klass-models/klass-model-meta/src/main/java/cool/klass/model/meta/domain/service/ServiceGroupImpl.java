@@ -59,7 +59,9 @@ public final class ServiceGroupImpl extends AbstractPackageableElement implement
         this.urls = Objects.requireNonNull(urls);
     }
 
-    public static final class ServiceGroupBuilder extends PackageableElementBuilder<ServiceGroupImpl> implements TopLevelElementBuilder
+    public static final class ServiceGroupBuilder
+            extends PackageableElementBuilder<ServiceGroupImpl>
+            implements TopLevelElementBuilder
     {
         @Nonnull
         private final KlassBuilder klassBuilder;

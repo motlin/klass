@@ -47,8 +47,8 @@ public final class ServiceImpl extends AbstractElement implements Service
             @Nonnull ServiceMultiplicity serviceMultiplicity)
     {
         super(elementContext, macroElement);
-        this.url = Objects.requireNonNull(url);
-        this.verb = Objects.requireNonNull(verb);
+        this.url                 = Objects.requireNonNull(url);
+        this.verb                = Objects.requireNonNull(verb);
         this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
     }
 
@@ -213,8 +213,8 @@ public final class ServiceImpl extends AbstractElement implements Service
                 @Nonnull ServiceMultiplicity serviceMultiplicity)
         {
             super(elementContext, macroElement);
-            this.urlBuilder = Objects.requireNonNull(urlBuilder);
-            this.verb = Objects.requireNonNull(verb);
+            this.urlBuilder          = Objects.requireNonNull(urlBuilder);
+            this.verb                = Objects.requireNonNull(verb);
             this.serviceMultiplicity = Objects.requireNonNull(serviceMultiplicity);
         }
 
@@ -281,7 +281,8 @@ public final class ServiceImpl extends AbstractElement implements Service
                     this.verb,
                     this.serviceMultiplicity);
 
-            Optional<ServiceProjectionDispatch> projectionDispatch = this.projectionDispatchBuilder.map(ElementBuilder::build);
+            Optional<ServiceProjectionDispatch> projectionDispatch =
+                    this.projectionDispatchBuilder.map(ElementBuilder::build);
             service.setProjectionDispatch(projectionDispatch);
 
             Optional<Criteria> queryCriteria     = this.criteria.map(AbstractCriteriaBuilder::build);

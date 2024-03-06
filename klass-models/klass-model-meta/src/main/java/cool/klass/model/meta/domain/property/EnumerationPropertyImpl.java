@@ -14,7 +14,9 @@ import cool.klass.model.meta.domain.property.PropertyModifierImpl.PropertyModifi
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<EnumerationImpl> implements EnumerationProperty
+public final class EnumerationPropertyImpl
+        extends AbstractDataTypeProperty<EnumerationImpl>
+        implements EnumerationProperty
 {
     private EnumerationPropertyImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -55,7 +57,8 @@ public final class EnumerationPropertyImpl extends AbstractDataTypeProperty<Enum
         return false;
     }
 
-    public static final class EnumerationPropertyBuilder extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
+    public static final class EnumerationPropertyBuilder
+            extends DataTypePropertyBuilder<EnumerationImpl, EnumerationBuilder, EnumerationPropertyImpl>
     {
         public EnumerationPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,

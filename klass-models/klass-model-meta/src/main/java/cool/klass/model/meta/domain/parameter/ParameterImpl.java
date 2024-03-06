@@ -31,7 +31,7 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
         this.multiplicity = Objects.requireNonNull(multiplicity);
-        this.dataType = Objects.requireNonNull(dataType);
+        this.dataType     = Objects.requireNonNull(dataType);
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class ParameterImpl extends AbstractNamedElement implements Paramet
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
             this.dataTypeGetter = Objects.requireNonNull(dataType);
-            this.multiplicity = Objects.requireNonNull(multiplicity);
+            this.multiplicity   = Objects.requireNonNull(multiplicity);
         }
 
         @Override

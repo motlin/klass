@@ -64,20 +64,20 @@ public final class DomainModelImpl implements DomainModel
             @Nonnull ImmutableList<ServiceGroup> serviceGroups)
     {
         this.topLevelElements = Objects.requireNonNull(topLevelElements);
-        this.enumerations = Objects.requireNonNull(enumerations);
-        this.classifiers = Objects.requireNonNull(classifiers);
-        this.interfaces = Objects.requireNonNull(interfaces);
-        this.classes = Objects.requireNonNull(classes);
-        this.associations = Objects.requireNonNull(associations);
-        this.projections = Objects.requireNonNull(projections);
-        this.serviceGroups = Objects.requireNonNull(serviceGroups);
+        this.enumerations     = Objects.requireNonNull(enumerations);
+        this.classifiers      = Objects.requireNonNull(classifiers);
+        this.interfaces       = Objects.requireNonNull(interfaces);
+        this.classes          = Objects.requireNonNull(classes);
+        this.associations     = Objects.requireNonNull(associations);
+        this.projections      = Objects.requireNonNull(projections);
+        this.serviceGroups    = Objects.requireNonNull(serviceGroups);
 
-        this.enumerationsByName = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.classifiersByName = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.interfacesByName = this.interfaces.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.classesByName = this.classes.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.associationsByName = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
-        this.projectionsByName = this.projections.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.enumerationsByName   = this.enumerations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.classifiersByName    = this.classifiers.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.interfacesByName     = this.interfaces.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.classesByName        = this.classes.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.associationsByName   = this.associations.groupByUniqueKey(NamedElement::getName).toImmutable();
+        this.projectionsByName    = this.projections.groupByUniqueKey(NamedElement::getName).toImmutable();
         this.serviceGroupsByKlass = this.serviceGroups.groupByUniqueKey(ServiceGroup::getKlass).toImmutable();
     }
 
@@ -203,13 +203,13 @@ public final class DomainModelImpl implements DomainModel
                 @Nonnull ImmutableList<ServiceGroupBuilder> serviceGroupBuilders)
         {
             this.topLevelElementBuilders = Objects.requireNonNull(topLevelElementBuilders);
-            this.enumerationBuilders = Objects.requireNonNull(enumerationBuilders);
-            this.classifierBuilders = Objects.requireNonNull(classifierBuilders);
-            this.interfaceBuilders = Objects.requireNonNull(interfaceBuilders);
-            this.classBuilders = Objects.requireNonNull(classBuilders);
-            this.associationBuilders = Objects.requireNonNull(associationBuilders);
-            this.projectionBuilders = Objects.requireNonNull(projectionBuilders);
-            this.serviceGroupBuilders = Objects.requireNonNull(serviceGroupBuilders);
+            this.enumerationBuilders     = Objects.requireNonNull(enumerationBuilders);
+            this.classifierBuilders      = Objects.requireNonNull(classifierBuilders);
+            this.interfaceBuilders       = Objects.requireNonNull(interfaceBuilders);
+            this.classBuilders           = Objects.requireNonNull(classBuilders);
+            this.associationBuilders     = Objects.requireNonNull(associationBuilders);
+            this.projectionBuilders      = Objects.requireNonNull(projectionBuilders);
+            this.serviceGroupBuilders    = Objects.requireNonNull(serviceGroupBuilders);
         }
 
         @Nonnull

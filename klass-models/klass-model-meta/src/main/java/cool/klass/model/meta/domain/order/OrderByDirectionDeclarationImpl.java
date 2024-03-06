@@ -35,7 +35,7 @@ public final class OrderByDirectionDeclarationImpl extends AbstractElement imple
     public static final class OrderByDirectionDeclarationBuilder extends ElementBuilder<OrderByDirectionDeclarationImpl>
     {
         @Nonnull
-        private final OrderByDirection                orderByDirection;
+        private final OrderByDirection orderByDirection;
 
         public OrderByDirectionDeclarationBuilder(
                 @Nonnull ParserRuleContext elementContext,

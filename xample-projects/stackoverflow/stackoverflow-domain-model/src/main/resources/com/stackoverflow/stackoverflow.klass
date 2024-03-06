@@ -13,14 +13,14 @@ user User
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
-    userId         : String key userId;
+    userId                 : String key userId;
 
     // TODO: String max lengths
-    firstName      : String?;
-    lastName       : String?;
+    firstName              : String?;
+    lastName: String?;
 
     // TODO: Consider adding primitive types like email address and url
-    email          : String?;
+    email                  : String?;
 
     // TODO: Unique property sets
 }
@@ -34,8 +34,9 @@ enumeration Status
 
 interface Document
 {
-    id             : Long key id;
-    body          : String;
+    id                     : Long key id;
+    body                   : String;
+
     // votes          : Vote[0..*];
 }
 
@@ -54,12 +55,12 @@ class Question
     audited
 {
     // TODO: When copying id to QuestionVersion, id should be Long key but not id.
-    id             : Long key id;
-    title          : String;
+    id                     : Long key id;
+    title                  : String;
 
     // TODO: Statemachine
-    status         : Status;
-    deleted        : Boolean;
+    status                 : Status;
+    deleted: Boolean;
 
     // TODO: Consider type inference on paramterized property parameters based on usage in relationship
     // orderBy natural key ascending is the default
@@ -94,21 +95,20 @@ class Question
     */
 
     // This isn't a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system         : TemporalRange system;
+    system                 : TemporalRange system;
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom     : TemporalInstant system from;
-    systemTo       : TemporalInstant system to;
+    systemFrom             : TemporalInstant system from;
+    systemTo               : TemporalInstant system to;
 
     // TODO: private properties must not be used in projections
-
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById    : String private createdBy;
+    createdById            : String private createdBy;
 
     // createdOn, or createdDate?
-    createdOn      : Instant createdOn;
-    lastUpdatedById: String private lastUpdatedBy;
+    createdOn              : Instant createdOn;
+    lastUpdatedById        : String private lastUpdatedBy;
 
     createdBy(): User[1..1] createdBy
     {
@@ -144,8 +144,8 @@ class QuestionVersion
 // TODO: Error message if versions doesn't point to a version class
 association QuestionHasAnswer
 {
-    question       : Question[1..1] final;
-    answers        : Answer[0..*]
+    question               : Question[1..1] final;
+    answers                : Answer[0..*]
         orderBy: this.id ascending;
 
     // TODO: check that the foreign key (questionId) is required since the to-one relationship end is also required (question: Question[1..1])
@@ -173,16 +173,16 @@ class Answer
     versioned
     audited
 {
-    id             : Long key id;
-    deleted        : Boolean;
+    id                     : Long key id;
+    deleted                : Boolean;
 
     // TODO: questionId: Long private *final*
-    questionId     : Long private;
+    questionId             : Long private;
 }
 
 interface Vote
 {
-    direction      : VoteDirection;
+    direction              : VoteDirection;
 }
 
 class AbstractVote
@@ -191,7 +191,7 @@ class AbstractVote
     systemTemporal
     audited
 {
-    direction      : VoteDirection;
+    direction              : VoteDirection;
 }
 
 // TODO Model AnswerVote
@@ -203,9 +203,9 @@ class QuestionVote
     systemTemporal
     audited
 {
-    questionId     : Long key;
-    createdById    : String key createdBy;
-    direction      : VoteDirection;
+    questionId             : Long key;
+    createdById            : String key createdBy;
+    direction              : VoteDirection;
 }
 
 enumeration VoteDirection
@@ -216,22 +216,23 @@ enumeration VoteDirection
 
 association QuestionHasVotes
 {
-    question       : Question[1..1] final;
-    votes          : QuestionVote[0..*];
+    question               : Question[1..1] final;
+    votes                  : QuestionVote[0..*];
 
     relationship this.id == QuestionVote.questionId
 }
 
 association UserHasQuestionVotes
 {
-    user           : User[1..1] final;
-    votes          : QuestionVote[0..*];
+    user: User[1..1] final;
+    votes                  : QuestionVote[0..*];
 
     relationship this.userId == QuestionVote.createdById
 }
 
 projection QuestionVoteWriteProjection on QuestionVote
 {
+
 }
 
 /*
@@ -264,21 +265,21 @@ class Tag
     versioned
     audited
 {
-    name           : String key;
-    description    : String;
+    name                   : String key;
+    description            : String;
 }
 
 class QuestionTagMapping
     systemTemporal
 {
-    questionId     : Long key private;
-    tagName        : String key private;
+    questionId             : Long key private;
+    tagName                : String key private;
 }
 
 association QuestionHasTagMappings
 {
-    question       : Question[1..1] final;
-    tags           : QuestionTagMapping[0..*] owned
+    question               : Question[1..1] final;
+    tags: QuestionTagMapping[0..*] owned
         orderBy: this.tagName;
 
     relationship this.id == QuestionTagMapping.questionId
@@ -286,8 +287,8 @@ association QuestionHasTagMappings
 
 association TagHasQuestionMappings
 {
-    tag            : Tag[1..1] final;
-    questions      : QuestionTagMapping[0..*]
+    tag                    : Tag[1..1] final;
+    questions              : QuestionTagMapping[0..*]
         orderBy: this.questionId;
 
     relationship this.name == QuestionTagMapping.tagName
@@ -330,6 +331,7 @@ projection QuestionWriteProjection on Question
 {
     tags:
     {
+
     },
 }
 
@@ -435,14 +437,14 @@ service Question
             multiplicity: one;
             projection  : QuestionWriteProjection;
         }
-        /*
-        GET
-        {
-            multiplicity: many;
-            criteria    : this.title startsWith "Why do";
-            projection  : QuestionReadProjection;
-        }
-        */
+    /*
+    GET
+    {
+        multiplicity: many;
+        criteria    : this.title startsWith "Why do";
+        projection  : QuestionReadProjection;
+    }
+    */
 
     // TODO: Type inference on url parameters
     // TODO: Consider adding a primitive type UserId

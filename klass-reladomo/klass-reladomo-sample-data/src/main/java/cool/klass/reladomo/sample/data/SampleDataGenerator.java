@@ -25,14 +25,14 @@ public class SampleDataGenerator
     private final KlassOptionalDataGenerator optionalDataGenerator;
 
     public SampleDataGenerator(
-            DomainModel domainModel,
-            DataStore dataStore,
-            Instant systemTime,
-            ImmutableList<String> skippedPackages)
+            @Nonnull DomainModel domainModel,
+            @Nonnull DataStore dataStore,
+            @Nonnull Instant systemTime,
+            @Nonnull ImmutableList<String> skippedPackages)
     {
-        this.domainModel = Objects.requireNonNull(domainModel);
-        this.dataStore = Objects.requireNonNull(dataStore);
-        this.systemTime = Objects.requireNonNull(systemTime);
+        this.domainModel     = Objects.requireNonNull(domainModel);
+        this.dataStore       = Objects.requireNonNull(dataStore);
+        this.systemTime      = Objects.requireNonNull(systemTime);
         this.skippedPackages = Objects.requireNonNull(skippedPackages);
 
         this.requiredDataGenerator = new KlassRequiredDataGenerator(this.dataStore);

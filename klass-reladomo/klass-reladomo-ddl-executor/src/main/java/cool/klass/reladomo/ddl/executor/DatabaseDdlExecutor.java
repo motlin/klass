@@ -34,7 +34,7 @@ public final class DatabaseDdlExecutor
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
                 .setUrls(ClasspathHelper.forClassLoader(Thread.currentThread().getContextClassLoader()));
-        Reflections        reflections  = new Reflections(configurationBuilder);
+        Reflections reflections = new Reflections(configurationBuilder);
         // TODO: Move these patterns to parameters
         MutableSet<String> ddlLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.ddl")));
         MutableSet<String> idxLocations = SetAdapter.adapt(reflections.getResources(Pattern.compile(".*\\.idx")));

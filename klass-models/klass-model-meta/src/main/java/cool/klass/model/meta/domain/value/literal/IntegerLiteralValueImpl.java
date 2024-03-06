@@ -31,7 +31,10 @@ public final class IntegerLiteralValueImpl extends AbstractLiteralValue implemen
     {
         private final int value;
 
-        public IntegerLiteralValueBuilder(@Nonnull ParserRuleContext elementContext, Optional<ElementBuilder<?>> macroElement, int value)
+        public IntegerLiteralValueBuilder(
+                @Nonnull ParserRuleContext elementContext,
+                @Nonnull Optional<ElementBuilder<?>> macroElement,
+                int value)
         {
             super(elementContext, macroElement);
             this.value = value;

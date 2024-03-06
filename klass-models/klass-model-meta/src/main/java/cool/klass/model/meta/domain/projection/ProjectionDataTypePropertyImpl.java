@@ -40,9 +40,9 @@ public final class ProjectionDataTypePropertyImpl
     {
         super(elementContext, macroElement, nameContext, name, ordinal);
         this.headerContext = Objects.requireNonNull(headerContext);
-        this.headerText = Objects.requireNonNull(headerText);
-        this.parent = Objects.requireNonNull(parent);
-        this.property = Objects.requireNonNull(property);
+        this.headerText    = Objects.requireNonNull(headerText);
+        this.parent        = Objects.requireNonNull(parent);
+        this.property      = Objects.requireNonNull(property);
     }
 
     @Nonnull
@@ -66,7 +66,9 @@ public final class ProjectionDataTypePropertyImpl
         return this.property;
     }
 
-    public static final class ProjectionDataTypePropertyBuilder extends NamedElementBuilder<ProjectionDataTypePropertyImpl> implements ProjectionChildBuilder
+    public static final class ProjectionDataTypePropertyBuilder
+            extends NamedElementBuilder<ProjectionDataTypePropertyImpl>
+            implements ProjectionChildBuilder
     {
         @Nonnull
         private final ParserRuleContext                  headerContext;
@@ -89,9 +91,9 @@ public final class ProjectionDataTypePropertyImpl
                 @Nonnull DataTypePropertyBuilder<?, ?, ?> propertyBuilder)
         {
             super(elementContext, macroElement, nameContext, name, ordinal);
-            this.headerContext = Objects.requireNonNull(headerContext);
-            this.headerText = Objects.requireNonNull(headerText);
-            this.parentBuilder = Objects.requireNonNull(parentBuilder);
+            this.headerContext   = Objects.requireNonNull(headerContext);
+            this.headerText      = Objects.requireNonNull(headerText);
+            this.parentBuilder   = Objects.requireNonNull(parentBuilder);
             this.propertyBuilder = Objects.requireNonNull(propertyBuilder);
         }
 

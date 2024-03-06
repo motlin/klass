@@ -71,7 +71,7 @@ public class QuestionResourceManual
     public QuestionResourceManual(@Nonnull DataStore dataStore, @Nonnull Clock clock)
     {
         this.dataStore = Objects.requireNonNull(dataStore);
-        this.clock = Objects.requireNonNull(clock);
+        this.clock     = Objects.requireNonNull(clock);
     }
 
     @Nonnull
@@ -117,7 +117,7 @@ public class QuestionResourceManual
             @Nonnull @QueryParam("version") Optional<Integer> optionalVersion,
             @Nonnull @NotNull ObjectNode incomingInstance)
     {
-        MutableList<String> errors = Lists.mutable.empty();
+        MutableList<String> errors   = Lists.mutable.empty();
         MutableList<String> warnings = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
@@ -343,7 +343,7 @@ public class QuestionResourceManual
     @Produces(MediaType.APPLICATION_JSON)
     public Response method5(@Nonnull ObjectNode incomingInstance, @Nonnull @Context UriInfo uriInfo)
     {
-        MutableList<String> errors = Lists.mutable.empty();
+        MutableList<String> errors   = Lists.mutable.empty();
         MutableList<String> warnings = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(

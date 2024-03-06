@@ -14,7 +14,10 @@ public final class StringLiteralValueImpl extends AbstractLiteralValue implement
     @Nonnull
     private final String value;
 
-    private StringLiteralValueImpl(@Nonnull ParserRuleContext elementContext, Optional<Element> macroElement, @Nonnull String value)
+    private StringLiteralValueImpl(
+            @Nonnull ParserRuleContext elementContext,
+            @Nonnull Optional<Element> macroElement,
+            @Nonnull String value)
     {
         super(elementContext, macroElement);
         this.value = Objects.requireNonNull(value);

@@ -18,7 +18,7 @@ public class PersistentDeleter
             @Nonnull DataStore dataStore)
     {
         this.mutationContext = Objects.requireNonNull(mutationContext);
-        this.dataStore = Objects.requireNonNull(dataStore);
+        this.dataStore       = Objects.requireNonNull(dataStore);
     }
 
     public void deleteOrTerminate(Klass klass, @Nonnull Object persistentInstance)
