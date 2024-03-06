@@ -1,7 +1,7 @@
 package cool.klass.serialization.jackson.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 
 public class KlassResponsePagination
 {
@@ -44,7 +44,7 @@ public class KlassResponsePagination
                 this.pageNumber);
     }
 
-    public void withMDC(MDCCloseable mdc)
+    public void withMDC(MultiMDCCloseable mdc)
     {
         mdc.put("klass.response.pagination.pageSize", String.valueOf(this.pageSize));
         mdc.put("klass.response.pagination.numberOfPages", String.valueOf(this.numberOfPages));

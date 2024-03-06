@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 
 @JsonPropertyOrder({"_metadata", "_data"})
 public class KlassResponse
@@ -51,7 +51,7 @@ public class KlassResponse
         return String.format("{\"_metadata\":%s,\"_data\":%s}", this.metadata, this.data);
     }
 
-    public void withMDC(MDCCloseable mdc)
+    public void withMDC(MultiMDCCloseable mdc)
     {
         this.metadata.withMDC(mdc);
 

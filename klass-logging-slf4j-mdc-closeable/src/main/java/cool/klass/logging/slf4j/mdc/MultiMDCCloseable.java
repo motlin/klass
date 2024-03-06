@@ -1,12 +1,11 @@
-package cool.klass.logging.context;
+package cool.klass.logging.slf4j.mdc;
 
-import java.io.Closeable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.slf4j.MDC;
 
-public class MDCCloseable implements Closeable
+public class MultiMDCCloseable implements AutoCloseable
 {
     private final Set<String> keys = new LinkedHashSet<>();
 

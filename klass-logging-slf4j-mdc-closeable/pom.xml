@@ -10,9 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-logging-context</artifactId>
+    <artifactId>klass-logging-slf4j-mdc-closeable</artifactId>
 
-    <name>Klass Logger Context</name>
+    <name>Klass Logging: slf4j MultiMDCCloseable</name>
 
     <dependencies>
 

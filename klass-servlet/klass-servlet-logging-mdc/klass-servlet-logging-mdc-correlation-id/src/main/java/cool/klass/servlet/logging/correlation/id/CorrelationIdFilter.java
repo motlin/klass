@@ -15,7 +15,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 
 /**
  * Based on https://raw.githubusercontent.com/cerner/beadledom/master/jaxrs/src/main/java/com/cerner/beadledom/jaxrs/provider/CorrelationIdFilter.java
@@ -50,7 +50,7 @@ public class CorrelationIdFilter implements ContainerRequestFilter, ContainerRes
     {
         String correlationId = this.getCorrelationIdHeader(requestContext);
 
-        MDCCloseable mdc = (MDCCloseable) requestContext.getProperty("mdc");
+        MultiMDCCloseable mdc = (MultiMDCCloseable) requestContext.getProperty("mdc");
         mdc.put(this.mdcName, correlationId);
 
         requestContext.setProperty(this.mdcName, correlationId);

@@ -28,7 +28,7 @@
         <module>klass-servlet</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
-        <module>klass-logging-context</module>
+        <module>klass-logging-slf4j-mdc-closeable</module>
         <module>klass-utility</module>
     </modules>
 

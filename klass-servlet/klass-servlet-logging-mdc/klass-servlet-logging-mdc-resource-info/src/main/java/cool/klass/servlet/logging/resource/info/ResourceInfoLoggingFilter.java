@@ -10,7 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.glassfish.jersey.server.ContainerRequest;
 
@@ -25,7 +25,7 @@ public class ResourceInfoLoggingFilter implements ContainerRequestFilter
     @Override
     public void filter(@Nonnull ContainerRequestContext requestContext)
     {
-        MDCCloseable mdc = (MDCCloseable) requestContext.getProperty("mdc");
+        MultiMDCCloseable mdc = (MultiMDCCloseable) requestContext.getProperty("mdc");
 
         UriInfo uriInfo = requestContext.getUriInfo();
 

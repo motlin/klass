@@ -15,7 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
 
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 import net.logstash.logback.marker.Markers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class StructuredArgumentLoggingFilter implements Filter
     private void initialize(ServletRequest servletRequest)
     {
         servletRequest.setAttribute("structuredArguments", new LinkedHashMap<>());
-        servletRequest.setAttribute("mdc", new MDCCloseable());
+        servletRequest.setAttribute("mdc", new MultiMDCCloseable());
     }
 
     private void log(ServletRequest servletRequest)
@@ -68,7 +68,7 @@ public class StructuredArgumentLoggingFilter implements Filter
 
         LOGGER.info(Markers.appendEntries(structuredArgumentsMap), "structured logging");
 
-        MDCCloseable mdc = (MDCCloseable) servletRequest.getAttribute("mdc");
+        MultiMDCCloseable mdc = (MultiMDCCloseable) servletRequest.getAttribute("mdc");
         mdc.close();
     }
 }

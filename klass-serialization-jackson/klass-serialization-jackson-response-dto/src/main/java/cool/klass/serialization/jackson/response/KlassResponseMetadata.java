@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
 
@@ -111,7 +111,7 @@ public class KlassResponseMetadata
                 this.principal.orElse(null));
     }
 
-    public void withMDC(MDCCloseable mdc)
+    public void withMDC(MultiMDCCloseable mdc)
     {
         mdc.put("klass.response.criteria", this.criteria.orElse(null));
         mdc.put("klass.response.orderBy", this.orderBy.orElse(null));

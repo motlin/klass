@@ -8,7 +8,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
-import cool.klass.logging.context.MDCCloseable;
+import cool.klass.logging.slf4j.mdc.MultiMDCCloseable;
 import cool.klass.model.meta.domain.api.projection.Projection;
 
 // Priority must be greater than the priority of StructuredArgumentLoggingFilter
@@ -26,7 +26,7 @@ public class JsonViewFilter implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext requestContext)
     {
-        MDCCloseable mdc = (MDCCloseable) requestContext.getProperty("mdc");
+        MultiMDCCloseable mdc = (MultiMDCCloseable) requestContext.getProperty("mdc");
 
         mdc.put("klass.jsonView.projectionName", String.valueOf(this.projection));
         mdc.put("klass.jsonView.projectionClass", this.projection.getKlass().getFullyQualifiedName());
