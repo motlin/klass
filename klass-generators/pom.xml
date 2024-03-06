@@ -43,7 +43,6 @@
         <module>klass-generator-klass-html</module>
         <module>klass-generator-klass-projection</module>
         <module>klass-generator-klass-service</module>
-        <module>klass-generator-klass-with-inference</module>
         <module>klass-generator-meta-constants</module>
         <module>klass-generator-meta-json</module>
         <module>klass-generator-react-prop-type</module>
