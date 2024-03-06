@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +51,11 @@ import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
+import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -72,6 +77,10 @@ public class ReladomoDataStore
 
     private final Supplier<UUID> uuidSupplier;
     private final int            retryCount;
+
+    private final MutableOrderedMap<Classifier, RelatedFinder<?>>              memoizedRelatedFinders          = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<Pair<Class<?>, PrimitiveProperty>, Method> memoizedGenerateAndSetIdMethods = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<Property, Method>                          memoizedGetters                 = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     public ReladomoDataStore(@Nonnull Supplier<UUID> uuidSupplier, int retryCount)
     {
@@ -305,8 +314,7 @@ public class ReladomoDataStore
         {
             try
             {
-                String methodName             = "generateAndSet" + LOWER_TO_UPPER_CAMEL.convert(idProperty.getName());
-                Method generateAndSetIdMethod = persistentInstance.getClass().getMethod(methodName);
+                Method generateAndSetIdMethod = getGenerateAndSetIdMethod(persistentInstance.getClass(), idProperty);
                 generateAndSetIdMethod.invoke(persistentInstance);
             }
             catch (ReflectiveOperationException e)
@@ -325,6 +333,21 @@ public class ReladomoDataStore
         {
             throw new AssertionError(idProperty);
         }
+    }
+
+    @Nonnull
+    private Method getGenerateAndSetIdMethod(Class<?> klass, PrimitiveProperty idProperty)
+            throws NoSuchMethodException
+    {
+        Pair<Class<?>, PrimitiveProperty> key = Tuples.pair(klass, idProperty);
+        if (this.memoizedGenerateAndSetIdMethods.containsKey(key))
+        {
+            return this.memoizedGenerateAndSetIdMethods.get(key);
+        }
+        String methodName             = "generateAndSet" + LOWER_TO_UPPER_CAMEL.convert(idProperty.getName());
+        Method generateAndSetIdMethod = klass.getMethod(methodName);
+        this.memoizedGenerateAndSetIdMethods.put(key, generateAndSetIdMethod);
+        return generateAndSetIdMethod;
     }
 
     @Nullable
@@ -492,17 +515,30 @@ public class ReladomoDataStore
     {
         try
         {
-            Classifier owningClassifier   = property.getOwningClassifier();
-            String     fullyQualifiedName = owningClassifier.getFullyQualifiedName();
-            Class<?>   aClass             = Class.forName(fullyQualifiedName);
-            String     methodName         = this.getMethodName(property);
-            Method     method             = aClass.getMethod(methodName);
+            Method method = getMethod(property);
             return method.invoke(persistentInstance);
         }
         catch (ReflectiveOperationException e)
         {
             throw new RuntimeException(e);
         }
+    }
+
+    @Nonnull
+    private Method getMethod(@Nonnull Property property)
+            throws ClassNotFoundException, NoSuchMethodException
+    {
+        if (this.memoizedGetters.containsKey(property))
+        {
+            return this.memoizedGetters.get(property);
+        }
+        Classifier owningClassifier   = property.getOwningClassifier();
+        String     fullyQualifiedName = owningClassifier.getFullyQualifiedName();
+        Class<?>   aClass             = Class.forName(fullyQualifiedName);
+        String     methodName         = this.getMethodName(property);
+        Method     method             = aClass.getMethod(methodName);
+        this.memoizedGetters.put(property, method);
+        return method;
     }
 
     @Nonnull
@@ -825,12 +861,19 @@ public class ReladomoDataStore
     @Nonnull
     public RelatedFinder<?> getRelatedFinder(@Nonnull Classifier classifier)
     {
+        if (this.memoizedRelatedFinders.containsKey(classifier))
+        {
+            return this.memoizedRelatedFinders.get(classifier);
+        }
+
         try
         {
-            String   finderName      = classifier.getFullyQualifiedName() + "Finder";
-            Class<?> finderClass     = Class.forName(finderName);
-            Method   getFinderMethod = finderClass.getMethod("getFinderInstance");
-            return (RelatedFinder<?>) getFinderMethod.invoke(null);
+            String           finderName      = classifier.getFullyQualifiedName() + "Finder";
+            Class<?>         finderClass     = Class.forName(finderName);
+            Method           getFinderMethod = finderClass.getMethod("getFinderInstance");
+            RelatedFinder<?> result          = (RelatedFinder<?>) getFinderMethod.invoke(null);
+            this.memoizedRelatedFinders.put(classifier, result);
+            return result;
         }
         catch (@Nonnull ReflectiveOperationException | IllegalArgumentException | SecurityException e)
         {
