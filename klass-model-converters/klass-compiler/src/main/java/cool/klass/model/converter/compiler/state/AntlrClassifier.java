@@ -130,12 +130,6 @@ public abstract class AntlrClassifier
 
     public abstract AntlrDataTypeProperty<?> getDataTypePropertyByName(String name);
 
-    public int getNumMembers()
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".getNumMembers() not implemented yet");
-    }
-
     @Nonnull
     @Override
     public ClassifierBuilder<?> getElementBuilder()

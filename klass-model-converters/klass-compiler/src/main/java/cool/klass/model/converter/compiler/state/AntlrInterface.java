@@ -92,13 +92,6 @@ public class AntlrInterface
         super(elementContext, compilationUnit, ordinal, nameContext, compilationUnitState);
     }
 
-    @Override
-    public int getNumMembers()
-    {
-        return this.getAllDataTypeProperties().size()
-                + this.declaredAssociationEndSignatures.size();
-    }
-
     public InterfaceBuilder build1()
     {
         if (this.interfaceBuilder != null)

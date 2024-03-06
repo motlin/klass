@@ -208,15 +208,6 @@ public class AntlrClass
     }
 
     @Override
-    public int getNumMembers()
-    {
-        return this.getAllDataTypeProperties().size()
-                + this.declaredParameterizedProperties.size()
-                + this.declaredAssociationEnds.size()
-                + this.declaredAssociationEndSignatures.size();
-    }
-
-    @Override
     public AntlrReferenceProperty<?> getReferencePropertyByName(@Nonnull String name)
     {
         AntlrReferenceProperty<?> declaredProperty = this.declaredReferencePropertiesByName.get(name);
