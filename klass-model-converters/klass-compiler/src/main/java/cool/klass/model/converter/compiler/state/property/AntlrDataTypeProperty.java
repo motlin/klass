@@ -46,6 +46,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
         return this.isOptional;
     }
 
+    public boolean isID()
+    {
+        return this.modifiers.anySatisfy(AntlrPropertyModifier::isID);
+    }
+
     public abstract boolean isTemporal();
 
     @Nonnull
@@ -57,20 +62,21 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();
 
-    @Nonnull
-    public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
-
     @Override
     protected AntlrClass getOwningClassState()
     {
         return this.owningClassState;
     }
 
+    @Nonnull
+    public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
+
     public void reportErrors(CompilerErrorHolder compilerErrorHolder)
     {
         // TODO: Check for duplicate modifiers
         // TODO: Check for nullable key properties
         // TODO: Check that ID properties are key properties
+        // TODO: Only Integer and Long may be ID (no enums either)
     }
 
     public void reportDuplicateMemberName(@Nonnull CompilerErrorHolder compilerErrorHolder)

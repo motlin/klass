@@ -34,6 +34,11 @@ public class AntlrPropertyModifier extends AntlrElement
         return this.name.equals("key");
     }
 
+    public boolean isID()
+    {
+        return this.name.equals("id");
+    }
+
     public boolean isVersionNumber()
     {
         return this.name.equals("version");

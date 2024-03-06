@@ -16,14 +16,6 @@ public class PrimitiveSetVisitor implements PrimitiveTypeVisitor
     }
 
     @Override
-    public void visitID()
-    {
-        this.stringBuilder.append("SetAdapter.adapt(");
-        this.stringBuilder.append(this.parameterName);
-        this.stringBuilder.append(").collectLong(x -> x, LongSets.mutable.empty())");
-    }
-
-    @Override
     public void visitString()
     {
         this.stringBuilder.append(this.parameterName);

@@ -23,12 +23,6 @@ public class SerializeValueToJsonFieldPrimitiveTypeVisitor implements PrimitiveT
     }
 
     @Override
-    public void visitID() throws IOException
-    {
-        this.jsonGenerator.writeNumberField(this.propertyName, (Long) this.value);
-    }
-
-    @Override
     public void visitString() throws IOException
     {
         this.jsonGenerator.writeStringField(this.propertyName, (String) this.value);

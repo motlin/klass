@@ -2,8 +2,6 @@ package cool.klass.model.meta.domain.visitor;
 
 public interface PrimitiveTypeVisitor
 {
-    void visitID() throws Exception;
-
     void visitString() throws Exception;
 
     void visitInteger() throws Exception;

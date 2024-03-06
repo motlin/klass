@@ -20,24 +20,6 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
     }
 
     @Override
-    public void visitID()
-    {
-        this.attributeType.setJavaType("long");
-        // TODO: Infer during compilation that ID properties are key properties, or add an error when they are not.
-        PrimaryKeyGeneratorStrategyType primaryKeyGeneratorStrategyType = new PrimaryKeyGeneratorStrategyType();
-        primaryKeyGeneratorStrategyType.with("SimulatedSequence", this.attributeType);
-        this.attributeType.setPrimaryKeyGeneratorStrategy(primaryKeyGeneratorStrategyType);
-        SimulatedSequenceType simulatedSequence = new SimulatedSequenceType();
-        simulatedSequence.setSequenceName(this.primitiveProperty.getOwningKlass().getName());
-        simulatedSequence.setSequenceObjectFactoryName(ObjectSequenceObjectFactory.class.getCanonicalName());
-        simulatedSequence.setHasSourceAttribute(false);
-        simulatedSequence.setBatchSize(10);
-        simulatedSequence.setInitialValue(1);
-        simulatedSequence.setIncrementSize(1);
-        this.attributeType.setSimulatedSequence(simulatedSequence);
-    }
-
-    @Override
     public void visitString()
     {
         this.attributeType.setJavaType("String");
@@ -54,6 +36,22 @@ public class AttributeTypeVisitor implements PrimitiveTypeVisitor
     public void visitLong()
     {
         this.attributeType.setJavaType("long");
+
+        if (this.primitiveProperty.isID())
+        {
+            // TODO: Infer during compilation that ID properties are key properties, or add an error when they are not.
+            PrimaryKeyGeneratorStrategyType primaryKeyGeneratorStrategyType = new PrimaryKeyGeneratorStrategyType();
+            primaryKeyGeneratorStrategyType.with("SimulatedSequence", this.attributeType);
+            this.attributeType.setPrimaryKeyGeneratorStrategy(primaryKeyGeneratorStrategyType);
+            SimulatedSequenceType simulatedSequence = new SimulatedSequenceType();
+            simulatedSequence.setSequenceName(this.primitiveProperty.getOwningKlass().getName());
+            simulatedSequence.setSequenceObjectFactoryName(ObjectSequenceObjectFactory.class.getCanonicalName());
+            simulatedSequence.setHasSourceAttribute(false);
+            simulatedSequence.setBatchSize(10);
+            simulatedSequence.setInitialValue(1);
+            simulatedSequence.setIncrementSize(1);
+            this.attributeType.setSimulatedSequence(simulatedSequence);
+        }
     }
 
     @Override

@@ -70,7 +70,6 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             throw new IllegalStateException();
         }
 
-        // TODO: Pass through property modifiers?
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
                 this.elementContext,
                 this.nameContext,
@@ -78,7 +77,8 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.antlrPrimitiveType.build(),
                 this.owningClassState.getKlassBuilder(),
                 this.isKey(),
-                this.isOptional);
+                this.isOptional,
+                this.isID());
         return this.primitivePropertyBuilder;
     }
 

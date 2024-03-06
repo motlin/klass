@@ -9,6 +9,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 {
+    private final boolean isID;
+
     private PrimitiveProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull ParserRuleContext nameContext,
@@ -16,7 +18,8 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
             @Nonnull PrimitiveType primitiveType,
             @Nonnull Klass owningKlass,
             boolean isKey,
-            boolean isOptional)
+            boolean isOptional,
+            boolean isID)
     {
         super(
                 elementContext,
@@ -26,6 +29,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 owningKlass,
                 isKey,
                 isOptional);
+        this.isID = isID;
     }
 
     @Override
@@ -46,8 +50,15 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         return this.type.isTemporal();
     }
 
+    public boolean isID()
+    {
+        return this.isID;
+    }
+
     public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveTypeBuilder>
     {
+        private final boolean isID;
+
         private PrimitiveProperty primitiveProperty;
 
         public PrimitivePropertyBuilder(
@@ -57,9 +68,11 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 @Nonnull PrimitiveTypeBuilder primitiveTypeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 boolean isKey,
-                boolean isOptional)
+                boolean isOptional,
+                boolean isID)
         {
             super(elementContext, nameContext, name, primitiveTypeBuilder, owningKlassBuilder, isKey, isOptional);
+            this.isID = isID;
         }
 
         @Override
@@ -76,7 +89,8 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.typeBuilder.getPrimitiveType(),
                     this.owningKlassBuilder.getKlass(),
                     this.isKey,
-                    this.isOptional);
+                    this.isOptional,
+                    this.isID);
             return this.primitiveProperty;
         }
 
