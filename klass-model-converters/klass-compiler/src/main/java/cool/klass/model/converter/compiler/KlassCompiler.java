@@ -128,7 +128,7 @@ public class KlassCompiler
         Stopwatch stopped = stopwatch.stop();
         long sElapsed = stopped.elapsed(TimeUnit.SECONDS);
         long msElapsed = stopped.elapsed(TimeUnit.MILLISECONDS);
-        LOGGER.info("Executed compiler phase {} in {}s {}ms.", compilerPhase, sElapsed, msElapsed);
+        LOGGER.info("Executed compiler phase {} in {}s {}ms.", compilerPhase.getClass().getSimpleName(), sElapsed, msElapsed);
     }
 
     @Nonnull
