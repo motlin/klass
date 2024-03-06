@@ -5,7 +5,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.phase.AssociationPhase;
-import cool.klass.model.converter.compiler.phase.ClassAuditPropertyInferencePhase;
+import cool.klass.model.converter.compiler.phase.AuditPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassTemporalPropertyInferencePhase;
 import cool.klass.model.converter.compiler.phase.ClassifierPhase;
 import cool.klass.model.converter.compiler.phase.EnumerationsPhase;
@@ -47,7 +47,7 @@ public class KlassCompiler
                     ParameterizedPropertyPhase::new,
                     ClassTemporalPropertyInferencePhase::new,
                     VersionClassInferencePhase::new,
-                    ClassAuditPropertyInferencePhase::new,
+                    AuditPropertyInferencePhase::new,
                     AssociationPhase::new,
                     VersionAssociationInferencePhase::new,
                     RelationshipPhase::new,

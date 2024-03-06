@@ -16,10 +16,10 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.block.predicate.Predicate;
 
 // TODO: Only put audit properties onto version types
-public class ClassAuditPropertyInferencePhase
+public class AuditPropertyInferencePhase
         extends AbstractCompilerPhase
 {
-    public ClassAuditPropertyInferencePhase(@Nonnull CompilerState compilerState)
+    public AuditPropertyInferencePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }
@@ -83,15 +83,15 @@ public class ClassAuditPropertyInferencePhase
 
         // TODO: Add validations that audit properties have the right types (String, Instant)
         // TODO: Add validation that any userId is joined to another property that's also userId
-        // TODO: Validate that the return type is the 'user' class for audit parameterized properties
+        // TODO: Validate that the return type is the 'user' class for audit reference properties
 
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro("    createdById    : String createdBy userId private;\n");
+            this.runCompilerMacro("    createdById    : String createdBy userId final private;\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
         {
-            this.runCompilerMacro("    createdOn      : Instant createdOn;\n");
+            this.runCompilerMacro("    createdOn      : Instant createdOn final;\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
