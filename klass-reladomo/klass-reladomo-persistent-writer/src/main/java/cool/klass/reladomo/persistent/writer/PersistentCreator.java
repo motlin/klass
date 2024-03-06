@@ -185,7 +185,7 @@ public class PersistentCreator extends PersistentSynchronizer
                 associationEnd);
         if (childPersistentInstanceWithKey == null)
         {
-            // It's possible to trigger this code path by deleting reference data from tests, like one of the Tags listed in test-data/create-blueprint.txt
+            // It's possible to trigger this code path when there is an id pointing at missing reference data.
             // We also hit this path when including an embedded to-one object that's outside the projection, during creation.
             return false;
         }
