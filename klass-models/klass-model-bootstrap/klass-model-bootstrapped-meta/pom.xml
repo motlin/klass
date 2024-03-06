@@ -27,6 +27,7 @@
                     <klassSourcePackages>
                         <klassSourcePackage>klass.model.meta.domain</klassSourcePackage>
                     </klassSourcePackages>
+                    <logCompilerAnnotations>true</logCompilerAnnotations>
                 </configuration>
                 <executions>
                     <execution>
