@@ -17,7 +17,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>${klass.moduleName}-reladomo-domain</artifactId>
+            <artifactId>${klass.moduleName}-reladomo-pojos</artifactId>
             <version>${project.version}</version>
         </dependency>
 

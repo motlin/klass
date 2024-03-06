@@ -28,7 +28,8 @@
 
     <modules>
         <module>${klass.moduleName}-domain-model</module>
-        <module>${klass.moduleName}-reladomo-domain</module>
+        <module>${klass.moduleName}-reladomo-definitions</module>
+        <module>${klass.moduleName}-reladomo-pojos</module>
         <module>${klass.moduleName}-services</module>
         <module>${klass.moduleName}-dropwizard-application</module>
     </modules>
