@@ -139,6 +139,7 @@ public class AntlrEnumeration
         this.enumerationLiteral.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerAnnotationHolder);
     }
 
+    @Override
     public void reportErrors(CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.logDuplicateLiteralNames(compilerAnnotationHolder);

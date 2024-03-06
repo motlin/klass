@@ -50,6 +50,10 @@ public interface AntlrTopLevelElement
         return true;
     }
 
+    void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder);
+
+    void reportNameErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder);
+
     default void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         String message = String.format("Duplicate top level item name: '%s'.", this.getName());

@@ -346,6 +346,7 @@ public abstract class AntlrClassifier
     }
 
     //<editor-fold desc="Report Compiler Errors">
+    @Override
     @OverridingMethodsMustInvokeSuper
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {

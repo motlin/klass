@@ -102,6 +102,7 @@ public class AntlrServiceGroup
     }
 
     //<editor-fold desc="Report Compiler Errors">
+    @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         this.reportNoUrls(compilerAnnotationHolder);

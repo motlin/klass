@@ -90,7 +90,7 @@ public final class ReladomoProjectionConverter
         {
             var childNode = new ProjectionReferencePropertyReladomoNode(name, projectionReferenceProperty);
             reladomoNode = reladomoNode.computeChild(name, childNode);
-            projectionChildrenToReladomoTree(reladomoNode, projectionReferenceProperty);
+            this.projectionChildrenToReladomoTree(reladomoNode, projectionReferenceProperty);
         }
         else if (projectionChild instanceof ProjectionDataTypeProperty projectionDataTypeProperty)
         {

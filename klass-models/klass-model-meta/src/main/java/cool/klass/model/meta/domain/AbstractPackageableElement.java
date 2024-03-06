@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.meta.domain.api.Element;
+import cool.klass.model.meta.domain.api.TopLevelElement;
 import cool.klass.model.meta.domain.api.source.PackageableElementWithSourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
@@ -15,7 +16,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class AbstractPackageableElement
         extends AbstractIdentifierElement
-        implements PackageableElementWithSourceCode
+        implements PackageableElementWithSourceCode, TopLevelElement
 {
     @Nonnull
     private final String packageName;

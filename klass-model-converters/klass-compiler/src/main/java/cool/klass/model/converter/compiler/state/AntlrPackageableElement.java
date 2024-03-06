@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationHolder;
+import cool.klass.model.meta.domain.AbstractPackageableElement.PackageableElementBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -51,4 +53,13 @@ public abstract class AntlrPackageableElement
     {
         return TYPE_NAME_PATTERN;
     }
+
+    @Nonnull
+    @Override
+    public PackageableElementBuilder<?> getElementBuilder()
+    {
+        return (PackageableElementBuilder<?>) super.getElementBuilder();
+    }
+
+    public abstract void reportErrors(CompilerAnnotationHolder compilerAnnotationHolder);
 }

@@ -201,6 +201,7 @@ public class AntlrAssociation
         return this.associationBuilder;
     }
 
+    @Override
     public void reportErrors(@Nonnull CompilerAnnotationHolder compilerAnnotationHolder)
     {
         int numAssociationEnds = this.associationEnds.size();

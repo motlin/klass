@@ -48,15 +48,16 @@ import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class AntlrDomainModel
 {
-    private final MutableList<AntlrCompilationUnit> compilationUnits = Lists.mutable.empty();
-    private final MutableList<AntlrEnumeration>     enumerations     = Lists.mutable.empty();
-    private final MutableList<AntlrClassifier>      classifiers      = Lists.mutable.empty();
-    private final MutableList<AntlrInterface>       interfaces       = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           klasses          = Lists.mutable.empty();
-    private final MutableList<AntlrClass>           userClasses      = Lists.mutable.empty();
-    private final MutableList<AntlrAssociation>     associations     = Lists.mutable.empty();
-    private final MutableList<AntlrProjection>      projections      = Lists.mutable.empty();
-    private final MutableList<AntlrServiceGroup>    serviceGroups    = Lists.mutable.empty();
+    private final MutableList<AntlrCompilationUnit>    compilationUnits = Lists.mutable.empty();
+    private final MutableList<AntlrTopLevelElement>    topLevelElements = Lists.mutable.empty();
+    private final MutableList<AntlrEnumeration>        enumerations     = Lists.mutable.empty();
+    private final MutableList<AntlrClassifier>         classifiers      = Lists.mutable.empty();
+    private final MutableList<AntlrInterface>          interfaces       = Lists.mutable.empty();
+    private final MutableList<AntlrClass>              klasses          = Lists.mutable.empty();
+    private final MutableList<AntlrClass>              userClasses      = Lists.mutable.empty();
+    private final MutableList<AntlrAssociation>        associations     = Lists.mutable.empty();
+    private final MutableList<AntlrProjection>         projections      = Lists.mutable.empty();
+    private final MutableList<AntlrServiceGroup>       serviceGroups    = Lists.mutable.empty();
 
     private final MutableOrderedMap<CompilationUnitContext, AntlrCompilationUnit> compilationUnitsByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
@@ -131,6 +132,7 @@ public class AntlrDomainModel
 
     public void exitEnumerationDeclaration(@Nonnull AntlrEnumeration enumeration)
     {
+        this.topLevelElements.add(enumeration);
         this.enumerations.add(enumeration);
         this.enumerationsByName.compute(
                 enumeration.getName(),
@@ -160,6 +162,7 @@ public class AntlrDomainModel
 
     public void exitInterfaceDeclaration(@Nonnull AntlrInterface iface)
     {
+        this.topLevelElements.add(iface);
         this.classifiers.add(iface);
         this.interfaces.add(iface);
 
@@ -204,6 +207,7 @@ public class AntlrDomainModel
 
     public void exitClassDeclaration(@Nonnull AntlrClass klass)
     {
+        this.topLevelElements.add(klass);
         this.classifiers.add(klass);
         this.klasses.add(klass);
 
@@ -249,6 +253,7 @@ public class AntlrDomainModel
 
     public void exitAssociationDeclaration(@Nonnull AntlrAssociation association)
     {
+        this.topLevelElements.add(association);
         this.associations.add(association);
         this.associationsByName.compute(
                 association.getName(),
@@ -278,6 +283,7 @@ public class AntlrDomainModel
 
     public void exitProjectionDeclaration(@Nonnull AntlrProjection projection)
     {
+        this.topLevelElements.add(projection);
         this.projections.add(projection);
         this.projectionsByName.compute(
                 projection.getName(),
@@ -307,6 +313,7 @@ public class AntlrDomainModel
 
     public void exitServiceGroupDeclaration(@Nonnull AntlrServiceGroup serviceGroup)
     {
+        this.topLevelElements.add(serviceGroup);
         this.serviceGroups.add(serviceGroup);
         this.serviceGroupsByClass.compute(
                 serviceGroup.getKlass(),
@@ -427,32 +434,18 @@ public class AntlrDomainModel
             compilationUnitState.reportNameErrors(compilerAnnotationHolder);
         }
 
-        for (AntlrEnumeration enumeration : this.enumerations)
+        for (AntlrTopLevelElement topLevelElement : this.topLevelElements)
         {
-            enumeration.reportNameErrors(compilerAnnotationHolder);
-            enumeration.reportErrors(compilerAnnotationHolder);
+            topLevelElement.reportNameErrors(compilerAnnotationHolder);
+            topLevelElement.reportErrors(compilerAnnotationHolder);
         }
 
         for (AntlrClassifier classifier : this.classifiers)
         {
-            classifier.reportNameErrors(compilerAnnotationHolder);
-            classifier.reportErrors(compilerAnnotationHolder);
             if (this.userClasses.isEmpty())
             {
                 classifier.reportAuditErrors(compilerAnnotationHolder);
             }
-        }
-
-        for (AntlrAssociation association : this.associations)
-        {
-            association.reportNameErrors(compilerAnnotationHolder);
-            association.reportErrors(compilerAnnotationHolder);
-        }
-
-        for (AntlrProjection projection : this.projections)
-        {
-            projection.reportNameErrors(compilerAnnotationHolder);
-            projection.reportErrors(compilerAnnotationHolder);
         }
 
         ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
@@ -462,8 +455,6 @@ public class AntlrDomainModel
             {
                 serviceGroup.reportDuplicateServiceGroupClass(compilerAnnotationHolder);
             }
-            serviceGroup.reportNameErrors(compilerAnnotationHolder);
-            serviceGroup.reportErrors(compilerAnnotationHolder);
         }
 
         this.reportUnreferencedPrivateProperties(compilerAnnotationHolder);
@@ -486,12 +477,10 @@ public class AntlrDomainModel
 
     private ImmutableList<String> getTopLevelNames()
     {
-        MutableList<String> topLevelNames = Lists.mutable.empty();
-        this.enumerations.collect(AntlrEnumeration::getName, topLevelNames);
-        this.classifiers.collect(AntlrNamedElement::getName, topLevelNames);
-        this.associations.collect(AntlrAssociation::getName, topLevelNames);
-        this.projections.collect(AntlrProjection::getName, topLevelNames);
-        return topLevelNames.toImmutable();
+        return this.topLevelElements
+                .reject(AntlrServiceGroup.class::isInstance)
+                .collect(AntlrTopLevelElement::getName)
+                .toImmutable();
     }
 
     private ImmutableBag<AntlrClass> getDuplicateServiceGroupClasses()
@@ -617,8 +606,7 @@ public class AntlrDomainModel
                 .collect(AntlrServiceGroup::build)
                 .toImmutable();
 
-        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElementsByContext
-                .toSortedListBy(AntlrTopLevelElement::getOrdinal)
+        ImmutableList<TopLevelElementBuilder> topLevelElementBuilders = this.topLevelElements
                 .collect(AntlrTopLevelElement::getElementBuilder)
                 .toImmutable();
 

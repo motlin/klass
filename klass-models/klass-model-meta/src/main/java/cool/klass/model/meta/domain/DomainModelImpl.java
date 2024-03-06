@@ -85,7 +85,7 @@ public final class DomainModelImpl
     private final ImmutableMap<String, Association>     associationsByName;
     private final ImmutableMap<String, Projection>      projectionsByName;
     private final ImmutableMap<Klass, ServiceGroup>     serviceGroupsByKlass;
-    private final ImmutableMap<String, Classifier> classifiersByName;
+    private final ImmutableMap<String, Classifier>      classifiersByName;
 
     private DomainModelImpl(
             @Nonnull ImmutableList<SourceCode> sourceCodes,
@@ -198,7 +198,7 @@ public final class DomainModelImpl
     @Nonnull
     public ImmutableList<TopLevelElement> getTopLevelElements()
     {
-        return this.topLevelElements;
+        return (ImmutableList<TopLevelElement>) (ImmutableList<?>) this.topLevelElements;
     }
 
     @Override
