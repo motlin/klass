@@ -19,6 +19,12 @@ public class ObjectMapperBundle
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectMapperBundle.class);
 
     @Override
+    public int getPriority()
+    {
+        return -6;
+    }
+
+    @Override
     public void initialize(Bootstrap<?> bootstrap)
     {
     }

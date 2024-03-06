@@ -51,10 +51,16 @@ public class H2Bundle implements PrioritizedBundle<H2FactoryProvider>
         Server tcpServer = this.createTcpServer(h2Factory.getTcpServerArgs());
         environment.lifecycle().manage(new TcpServerShutdownHook(tcpServer));
 
-        Dynamic h2ConsoleServlet = environment.servlets().addServlet(h2Factory.getServletName(), new WebServlet());
-        h2ConsoleServlet.addMapping(h2Factory.getServletUrlMapping());
-        h2ConsoleServlet.setInitParameter("-properties", h2Factory.getPropertiesLocation());
+        String servletName        = h2Factory.getServletName();
+        String servletUrlMapping  = h2Factory.getServletUrlMapping();
+        String propertiesLocation = h2Factory.getPropertiesLocation();
+
+        Dynamic h2ConsoleServlet = environment.servlets().addServlet(servletName, new WebServlet());
+        h2ConsoleServlet.addMapping(servletUrlMapping);
+        h2ConsoleServlet.setInitParameter("-properties", propertiesLocation);
         h2ConsoleServlet.setLoadOnStartup(1);
+
+        // TODO: Add logging about what's happening here
 
         LOGGER.info("Completing {}.", H2Bundle.class.getSimpleName());
     }
@@ -62,11 +68,12 @@ public class H2Bundle implements PrioritizedBundle<H2FactoryProvider>
     @Nonnull
     private Server createTcpServer(List<String> tcpServerArgs)
     {
+        LOGGER.info("Starting H2 TCP Server with args: {}", tcpServerArgs);
         try
         {
             Server server = Server.createTcpServer(tcpServerArgs.toArray(new String[]{}));
             server.start();
-            LOGGER.debug(server.getStatus());
+            LOGGER.info(server.getStatus());
             return server;
         }
         catch (SQLException e)
