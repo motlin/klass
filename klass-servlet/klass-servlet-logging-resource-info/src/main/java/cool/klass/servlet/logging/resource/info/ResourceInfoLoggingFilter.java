@@ -1,4 +1,4 @@
-package cool.klass.servlet.filter.mdc;
+package cool.klass.servlet.logging.resource.info;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Priority;
@@ -18,7 +18,7 @@ import org.slf4j.MDC;
 
 @Provider
 @Priority(Priorities.USER)
-public class ResourceInfoMDCFilter implements ContainerRequestFilter, ContainerResponseFilter
+public class ResourceInfoLoggingFilter implements ContainerRequestFilter, ContainerResponseFilter
 {
     @Context
     private ResourceInfo resourceInfo;
