@@ -20,5 +20,6 @@
         <module>klass-generator-service-resources</module>
         <module>klass-generator-dropwizard</module>
         <module>klass-generator-dto</module>
+        <module>klass-generator-reladomo-test-data</module>
     </modules>
 </project>

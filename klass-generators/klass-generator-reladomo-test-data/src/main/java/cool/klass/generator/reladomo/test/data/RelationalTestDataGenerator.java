@@ -1,0 +1,33 @@
+package cool.klass.generator.reladomo.test.data;
+
+import java.util.function.Function;
+
+import com.gs.fw.common.mithra.util.dbextractor.MithraTestDataRowFormatter;
+import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.Klass;
+
+public class RelationalTestDataGenerator
+{
+    private static final Function<Object, String> FORMATTER = new MithraTestDataRowFormatter()::valueOf;
+    private final        DomainModel              domainModel;
+
+    public RelationalTestDataGenerator(DomainModel domainModel)
+    {
+        this.domainModel = domainModel;
+    }
+
+    public String generate()
+    {
+        return this.domainModel
+                .getKlasses()
+                .asLazy()
+                .collect(this::convertClass)
+                .makeString("");
+    }
+
+    private String convertClass(Klass klass)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".convertClass() not implemented yet");
+    }
+}
