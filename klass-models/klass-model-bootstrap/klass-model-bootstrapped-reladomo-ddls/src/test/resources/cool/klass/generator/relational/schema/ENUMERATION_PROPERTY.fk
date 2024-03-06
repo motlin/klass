@@ -1,24 +1,3 @@
-alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER foreign key (
-    classifier_name
-)
-references CLASSIFIER(
-    name
-);
-
-alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER foreign key (
-    classifier_name
-)
-references CLASSIFIER(
-    name
-);
-
-alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_FK_OWNING_CLASSIFIER foreign key (
-    classifier_name
-)
-references CLASSIFIER(
-    name
-);
-
 alter table ENUMERATION_PROPERTY add constraint ENUMERATION_PROPERTY_FK_ENUMERATION foreign key (
     enumeration_name
 )

@@ -1,6 +1,2 @@
 alter table OR_CRITERIA add constraint OR_CRITERIA_PK primary key (id);
 
-create index OR_CRITERIA_IDX_LEFT on OR_CRITERIA(left_id);
-
-create index OR_CRITERIA_IDX_RIGHT on OR_CRITERIA(right_id);
-

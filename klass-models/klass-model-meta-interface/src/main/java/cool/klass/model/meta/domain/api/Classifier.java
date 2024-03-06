@@ -200,7 +200,7 @@ public interface Classifier
         MutableOrderedMap<AssociationEnd, MutableOrderedMap<DataTypeProperty, DataTypeProperty>> foreignKeyConstraints =
                 OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-        for (DataTypeProperty foreignKey : this.getDataTypeProperties())
+        for (DataTypeProperty foreignKey : this.getDeclaredDataTypeProperties())
         {
             OrderedMap<AssociationEnd, DataTypeProperty> keysMatchingThisForeignKey = foreignKey.getKeysMatchingThisForeignKey();
 
