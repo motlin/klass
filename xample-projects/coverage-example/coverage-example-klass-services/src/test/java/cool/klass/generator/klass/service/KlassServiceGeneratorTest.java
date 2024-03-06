@@ -38,7 +38,7 @@ public class KlassServiceGeneratorTest
                 .toImmutableList();
         for (String packageName : packageNames)
         {
-            String sourceCode                = KlassServiceGenerator.getPackageSourceCode(domainModel, packageName);
+            String sourceCode                = KlassServiceSourceCodeGenerator.getPackageSourceCode(domainModel, packageName);
             String resourceClassPathLocation = packageName + ".klass";
 
             this.fileMatchRule.assertFileContents(
