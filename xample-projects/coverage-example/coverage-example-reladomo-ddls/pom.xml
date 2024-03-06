@@ -18,82 +18,30 @@
         <plugins>
 
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-reladomo-database-plugin</artifactId>
+                <version>${klass.version}</version>
+                <configuration>
+                    <definitionsXmlFile>
+                        ${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml
+                    </definitionsXmlFile>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>generateMithra</id>
-                        <phase>generate-resources</phase>
+                        <id>generate-reladomo-database</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>generate-reladomo-database</goal>
                         </goals>
-                        <configuration>
-                            <tasks>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
-
-                                <taskdef
-                                        name="gen-ddl"
-                                        classname="com.gs.fw.common.mithra.generator.dbgenerator.MithraDbDefinitionGenerator"
-                                        loaderRef="reladomoGenerator">
-                                    <classpath refid="maven.plugin.classpath" />
-                                </taskdef>
-                                <gen-ddl
-                                        xml="${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml"
-                                        generatedDir="${project.build.directory}/generated-db/sql"
-                                        databaseType="postgres" />
-                            </tasks>
-                        </configuration>
                     </execution>
                 </executions>
-
                 <dependencies>
-
-                    <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomogen</artifactId>
-                        <version>${reladomo.version}</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomo-gen-util</artifactId>
-                        <version>${reladomo.version}</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-reladomo-pojos</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-reladomo-definitions</artifactId>
                         <version>${project.version}</version>
+                        <scope>runtime</scope>
                     </dependency>
-
                 </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>add-resource</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>add-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/generated-db/</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>

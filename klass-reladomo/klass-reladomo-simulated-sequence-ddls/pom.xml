@@ -36,36 +36,23 @@
         <plugins>
 
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-reladomo-database-plugin</artifactId>
+                <version>${project.version}</version>
+                <configuration>
+                    <definitionsXmlFile>
+                        ${project.basedir}/../klass-reladomo-simulated-sequence/src/main/reladomo/ObjectSequenceClassList.xml
+                    </definitionsXmlFile>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>generateMithra</id>
-                        <phase>generate-resources</phase>
+                        <id>generate-reladomo-database</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>generate-reladomo-database</goal>
                         </goals>
-                        <configuration>
-                            <tasks>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
-
-                                <taskdef
-                                        name="gen-ddl"
-                                        classname="com.gs.fw.common.mithra.generator.dbgenerator.MithraDbDefinitionGenerator"
-                                        loaderRef="reladomoGenerator">
-                                    <classpath refid="maven.plugin.classpath" />
-                                </taskdef>
-                                <gen-ddl
-                                        xml="${project.basedir}/../klass-reladomo-simulated-sequence/src/main/reladomo/ObjectSequenceClassList.xml"
-                                        generatedDir="${project.build.directory}/generated-db/sql"
-                                        databaseType="postgres" />
-                            </tasks>
-                        </configuration>
                     </execution>
                 </executions>
-
                 <dependencies>
-
                     <dependency>
                         <groupId>com.goldmansachs.reladomo</groupId>
                         <artifactId>reladomogen</artifactId>
@@ -78,29 +65,13 @@
                         <version>17.0.2</version>
                     </dependency>
 
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>klass-reladomo-simulated-sequence</artifactId>
+                        <version>${project.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
                 </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>add-resource</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>add-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/generated-db/</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>

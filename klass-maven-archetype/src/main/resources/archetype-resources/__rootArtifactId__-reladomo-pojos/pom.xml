@@ -54,78 +54,30 @@
         <plugins>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-reladomo-database-plugin</artifactId>
+                <version>${klass.version}</version>
+                <configuration>
+                    <definitionsXmlFile>
+                        ${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml
+                    </definitionsXmlFile>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>generateMithra</id>
-                        <phase>generate-sources</phase>
+                        <id>generate-reladomo-database</id>
                         <goals>
-                            <goal>run</goal>
+                            <goal>generate-reladomo-database</goal>
                         </goals>
-                        <configuration>
-                            <target>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
-
-                                <taskdef
-                                        name="gen-reladomo"
-                                        classpath="plugin_classpath"
-                                        classname="com.gs.fw.common.mithra.generator.MithraGenerator" />
-
-                                <gen-reladomo
-                                        xml="${project.basedir}/../${app.artifactId}-reladomo-definitions/target/generated-resources/reladomo/ReladomoClassList.xml"
-                                        generateEcListMethod="true"
-                                        generatedDir="${project.build.directory}/generated-sources/reladomo"
-                                        nonGeneratedDir="${project.build.sourceDirectory}"
-                                        generateConcreteClasses="true"
-                                />
-                            </target>
-                        </configuration>
                     </execution>
                 </executions>
-
                 <dependencies>
-
-                    <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomogen</artifactId>
-                        <version>${reladomo.version}</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>com.goldmansachs.reladomo</groupId>
-                        <artifactId>reladomo-gen-util</artifactId>
-                        <version>${reladomo.version}</version>
-                    </dependency>
-
                     <dependency>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>${app.artifactId}-reladomo-definitions</artifactId>
                         <version>${project.version}</version>
+                        <scope>runtime</scope>
                     </dependency>
-
                 </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/reladomo/</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
