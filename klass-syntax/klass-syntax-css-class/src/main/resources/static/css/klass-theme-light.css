@@ -2,26 +2,21 @@
     --color-foreground: Black;
     --color-background: White;
 
-    --klass-color-comment: Gray;
-    --klass-color-keyword: Purple;
+    --klass-color-comment: #8C8C8C;
+    --klass-color-keyword: #0033B3;
     --klass-color-identifier: Black;
-    --klass-color-package-name: Maroon;
-    --klass-color-top-level-element-name: Maroon;
-    /* DeepSkyBlue */
-    --klass-color-interface-name: #0080C0;
-    /* DarkBlue */
-    --klass-color-enumeration-literal-name: #000080;
-    /* Chocolate */
-    --klass-color-parameter-name: #b55700;
-    --klass-color-property-name: #5555ff;
-    --klass-color-literal: Blue;
-    --klass-color-string-literal: Green;
-
-    /* DarkBlue */
-    --klass-color-url-constant: #000572;
+    --klass-color-package-name: #AA0000;
+    --klass-color-top-level-element-name: #AA0000;
+    --klass-color-interface-name: #00AAAA;
+    --klass-color-enumeration-literal-name: #871094;
+    --klass-color-parameter-name: #FF8800;
+    --klass-color-property-name: #871094;
+    --klass-color-literal: #1750EB;
+    --klass-color-string-literal: #067D17;
+    --klass-color-url-constant: #00AA00;
 
     /* Silver */
-    --klass-color-semicolon: #cccccc;
+    --klass-color-semicolon: #CCCCCC;
 
     --klass-color-declaration: #EDEBFC;
     --klass-color-reference: #EDEBFC;
