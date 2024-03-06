@@ -71,8 +71,6 @@ public class ClassifierPhase extends AbstractCompilerPhase
                 ctx.classHeader().identifier(),
                 this.compilerState.getOrdinal(ctx),
                 this.compilerState.getCompilerWalkState().getCompilationUnitState(),
-                this.compilerState.getCompilerWalkState().getPackageNameContext(),
-                this.compilerState.getCompilerWalkState().getPackageName(),
                 classOrUserKeyword.equals("user"));
         this.classifierState = this.classState;
     }

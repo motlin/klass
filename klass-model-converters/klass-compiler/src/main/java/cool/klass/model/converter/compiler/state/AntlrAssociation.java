@@ -32,9 +32,7 @@ public class AntlrAssociation
             Optional.empty(),
             new ParserRuleContext(),
             -1,
-            AntlrCompilationUnit.AMBIGUOUS,
-            new ParserRuleContext(),
-            "klass.meta")
+            AntlrCompilationUnit.AMBIGUOUS)
     {
         @Override
         public void enterAssociationEnd(@Nonnull AntlrAssociationEnd associationEndState)
@@ -58,11 +56,9 @@ public class AntlrAssociation
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
-            @Nonnull ParserRuleContext packageContext,
-            @Nonnull String packageName)
+            @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
     }
 
     @Nonnull
@@ -150,7 +146,7 @@ public class AntlrAssociation
                 this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.ordinal,
-                this.packageName,
+                this.getPackageName(),
                 criteriaBuilder);
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates

@@ -15,24 +15,16 @@ public abstract class AntlrPackageableElement
 {
     @Nonnull
     protected final AntlrCompilationUnit compilationUnitState;
-    @Nonnull
-    protected final ParserRuleContext    packageContext;
-    @Nonnull
-    protected final String               packageName;
 
     protected AntlrPackageableElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
-            @Nonnull ParserRuleContext packageContext,
-            @Nonnull String packageName)
+            @Nonnull AntlrCompilationUnit compilationUnitState)
     {
         super(elementContext, compilationUnit, nameContext, ordinal);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
-        this.packageContext       = Objects.requireNonNull(packageContext);
-        this.packageName          = Objects.requireNonNull(packageName);
 
         if (this.compilationUnitState.getElementContext() != this.compilationUnitState.getElementContext())
         {
@@ -50,7 +42,7 @@ public abstract class AntlrPackageableElement
     @Nonnull
     public String getPackageName()
     {
-        return this.packageName;
+        return this.compilationUnitState.getPackage().getName();
     }
 
     @Nonnull

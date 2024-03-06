@@ -49,8 +49,6 @@ public class AntlrClass
             new ParserRuleContext(),
             -1,
             AntlrCompilationUnit.AMBIGUOUS,
-            new ParserRuleContext(),
-            "klass.meta",
             false)
     {
         @Override
@@ -82,8 +80,6 @@ public class AntlrClass
             new ParserRuleContext(),
             -1,
             AntlrCompilationUnit.NOT_FOUND,
-            new ParserRuleContext(),
-            "klass.meta",
             false)
     {
         @Override
@@ -133,11 +129,9 @@ public class AntlrClass
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
             @Nonnull AntlrCompilationUnit compilationUnitState,
-            @Nonnull ParserRuleContext packageContext,
-            @Nonnull String packageName,
             boolean isUser)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
         this.isUser = isUser;
     }
 
@@ -333,7 +327,7 @@ public class AntlrClass
                 this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.ordinal,
-                this.packageName,
+                this.getPackageName(),
                 this.inheritanceType,
                 this.isUser,
                 this.isTransient());

@@ -29,9 +29,7 @@ public class AntlrEnumeration
             Optional.empty(),
             new ParserRuleContext(),
             -1,
-            AntlrCompilationUnit.AMBIGUOUS,
-            new ParserRuleContext(),
-            "klass.meta");
+            AntlrCompilationUnit.AMBIGUOUS);
 
     @Nonnull
     public static final AntlrEnumeration NOT_FOUND = new AntlrEnumeration(
@@ -39,9 +37,7 @@ public class AntlrEnumeration
             Optional.empty(),
             new ParserRuleContext(),
             -1,
-            AntlrCompilationUnit.NOT_FOUND,
-            new ParserRuleContext(),
-            "klass.meta");
+            AntlrCompilationUnit.NOT_FOUND);
 
     private final MutableList<AntlrEnumerationLiteral>               enumerationLiteralStates  = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrEnumerationLiteral> enumerationLiteralsByName =
@@ -55,11 +51,9 @@ public class AntlrEnumeration
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull ParserRuleContext nameContext,
             int ordinal,
-            @Nonnull AntlrCompilationUnit compilationUnitState,
-            @Nonnull ParserRuleContext packageContext,
-            @Nonnull String packageName)
+            @Nonnull AntlrCompilationUnit compilationUnitState)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
     }
 
     public int getNumLiterals()
@@ -90,7 +84,7 @@ public class AntlrEnumeration
                 this.getSourceCodeBuilder(),
                 this.getElementContext().identifier(),
                 this.ordinal,
-                this.packageName);
+                this.getPackageName());
 
         ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::build)
@@ -159,7 +153,7 @@ public class AntlrEnumeration
     @Override
     public String toString()
     {
-        return String.format("%s.%s", this.packageName, this.getName());
+        return String.format("%s.%s", this.getPackageName(), this.getName());
     }
 
     @Override

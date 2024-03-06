@@ -44,9 +44,7 @@ public class AssociationPhase
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 identifier,
                 this.compilerState.getOrdinal(ctx),
-                this.compilerState.getCompilerWalkState().getCompilationUnitState(),
-                this.compilerState.getCompilerWalkState().getPackageNameContext(),
-                this.compilerState.getCompilerWalkState().getPackageName());
+                this.compilerState.getCompilerWalkState().getCompilationUnitState());
     }
 
     @Override

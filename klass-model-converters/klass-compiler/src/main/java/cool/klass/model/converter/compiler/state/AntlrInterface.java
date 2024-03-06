@@ -90,7 +90,7 @@ public class AntlrInterface extends AntlrClassifier
             @Nonnull ParserRuleContext packageContext,
             @Nonnull String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState, packageContext, packageName);
+        super(elementContext, compilationUnit, nameContext, ordinal, compilationUnitState);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class AntlrInterface extends AntlrClassifier
                 this.getSourceCodeBuilder(),
                 this.nameContext,
                 this.ordinal,
-                this.packageName);
+                this.getPackageName());
 
         ImmutableList<ModifierBuilder> classifierModifierBuilders = this.modifierStates
                 .collect(AntlrModifier::build)
