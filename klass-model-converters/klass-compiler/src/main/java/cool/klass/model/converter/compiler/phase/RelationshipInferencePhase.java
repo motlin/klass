@@ -60,19 +60,23 @@ public class RelationshipInferencePhase
         AntlrAssociationEnd sourceEnd = association.getSourceEnd();
         AntlrAssociationEnd targetEnd = association.getTargetEnd();
 
-        if (targetEnd.isToOne() && sourceEnd.isToMany() || sourceEnd.isToOne() && sourceEnd.isOwned())
+        // [_..*] --> [_..1];
+        if (targetEnd.isToOne() && sourceEnd.isToMany())
         {
             this.handleSourceAssociationEnd(inPlaceContext, sourceEnd);
         }
-        else if (sourceEnd.isToOne() && targetEnd.isToMany() || targetEnd.isToOne() && targetEnd.isOwned())
+        // [_..1] owned --> [_..*];
+        else if (sourceEnd.isToOne() && targetEnd.isToMany())
         {
             this.handleTargetAssociationEnd(inPlaceContext, targetEnd);
         }
-        else if (sourceEnd.isToOne() && targetEnd.isToOneRequired())
+        // [0..1] --> [1..1]
+        else if (sourceEnd.isToOneOptional() && targetEnd.isToOneRequired())
         {
             this.handleSourceAssociationEnd(inPlaceContext, sourceEnd);
         }
-        else if (targetEnd.isToOne() && sourceEnd.isToOneRequired())
+        // [1..1] --> [0..1]
+        else if (targetEnd.isToOneOptional() && sourceEnd.isToOneRequired())
         {
             this.handleTargetAssociationEnd(inPlaceContext, targetEnd);
         }
