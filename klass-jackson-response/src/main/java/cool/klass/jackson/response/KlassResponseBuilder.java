@@ -27,6 +27,8 @@ public class KlassResponseBuilder
     private       Optional<? extends Principal>     principal  = Optional.empty();
     @Nonnull
     private       Optional<String>                  criteria   = Optional.empty();
+    @Nonnull
+    private       Optional<String>                  orderBy    = Optional.empty();
 
     public KlassResponseBuilder(
             @Nullable Object data,
@@ -34,9 +36,9 @@ public class KlassResponseBuilder
             @Nonnull Multiplicity multiplicity,
             @Nonnull Instant transactionTimestamp)
     {
-        this.data = data;
-        this.projection = Objects.requireNonNull(projection);
-        this.multiplicity = Objects.requireNonNull(multiplicity);
+        this.data                 = data;
+        this.projection           = Objects.requireNonNull(projection);
+        this.multiplicity         = Objects.requireNonNull(multiplicity);
         this.transactionTimestamp = Objects.requireNonNull(transactionTimestamp);
     }
 
@@ -79,10 +81,17 @@ public class KlassResponseBuilder
         return this;
     }
 
+    public KlassResponseBuilder setOrderBy(@Nonnull String orderBy)
+    {
+        this.orderBy = Optional.of(orderBy);
+        return this;
+    }
+
     public KlassResponse build()
     {
         KlassResponseMetadata metadata = new KlassResponseMetadata(
                 this.criteria,
+                this.orderBy,
                 this.multiplicity,
                 this.projection,
                 this.transactionTimestamp,

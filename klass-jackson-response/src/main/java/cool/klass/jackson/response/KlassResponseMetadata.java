@@ -16,6 +16,8 @@ public class KlassResponseMetadata
     @Nonnull
     private final Optional<String> criteria;
     @Nonnull
+    private final Optional<String> orderBy;
+    @Nonnull
     private final Multiplicity     multiplicity;
     @Nonnull
     private final Projection       projection;
@@ -29,18 +31,20 @@ public class KlassResponseMetadata
 
     public KlassResponseMetadata(
             @Nonnull Optional<String> criteria,
+            @Nonnull Optional<String> orderBy,
             @Nonnull Multiplicity multiplicity,
             @Nonnull Projection projection,
             @Nonnull Instant transactionTimestamp,
             @Nonnull Optional<KlassResponsePagination> pagination,
             @Nonnull Optional<? extends Principal> principal)
     {
-        this.projection = Objects.requireNonNull(projection);
-        this.multiplicity = Objects.requireNonNull(multiplicity);
-        this.pagination = Objects.requireNonNull(pagination);
+        this.projection           = Objects.requireNonNull(projection);
+        this.multiplicity         = Objects.requireNonNull(multiplicity);
+        this.pagination           = Objects.requireNonNull(pagination);
         this.transactionTimestamp = Objects.requireNonNull(transactionTimestamp);
-        this.principal = Objects.requireNonNull(principal);
-        this.criteria = Objects.requireNonNull(criteria);
+        this.principal            = Objects.requireNonNull(principal);
+        this.criteria             = Objects.requireNonNull(criteria);
+        this.orderBy              = Objects.requireNonNull(orderBy);
     }
 
     @JsonProperty
@@ -48,6 +52,13 @@ public class KlassResponseMetadata
     public Optional<String> getCriteria()
     {
         return this.criteria;
+    }
+
+    @JsonProperty
+    @Nonnull
+    public Optional<String> getOrderBy()
+    {
+        return this.orderBy;
     }
 
     @JsonProperty
