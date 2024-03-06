@@ -30,10 +30,10 @@ public abstract class AntlrProperty
         extends AntlrNamedElement
 {
     @Nonnull
-    private final MutableList<AntlrModifier>                          modifierStates     = Lists.mutable.empty();
-    private final MutableOrderedMap<String, AntlrModifier>            modifiersByName    =
+    private final MutableList<AntlrModifier>                            modifierStates     = Lists.mutable.empty();
+    private final MutableOrderedMap<String, MutableList<AntlrModifier>> modifiersByName    =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
-    private final MutableOrderedMap<ParserRuleContext, AntlrModifier> modifiersByContext =
+    private final MutableOrderedMap<ParserRuleContext, AntlrModifier>   modifiersByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected AntlrProperty(
@@ -89,11 +89,7 @@ public abstract class AntlrProperty
     {
         Objects.requireNonNull(modifierState);
         this.modifierStates.add(modifierState);
-        this.modifiersByName.compute(
-                modifierState.getName(),
-                (name, builder) -> builder == null
-                        ? modifierState
-                        : AntlrModifier.AMBIGUOUS);
+        this.modifiersByName.getIfAbsentPut(modifierState.getName(), Lists.mutable::empty).add(modifierState);
 
         AntlrModifier duplicate = this.modifiersByContext.put(
                 modifierState.getElementContext(),
@@ -102,6 +98,12 @@ public abstract class AntlrProperty
         {
             throw new AssertionError();
         }
+    }
+
+    public ImmutableList<AntlrModifier> getModifiersByName(String modifierName)
+    {
+        MutableList<AntlrModifier> result = this.modifiersByName.get(modifierName);
+        return result == null ? Lists.immutable.empty() : result.toImmutable();
     }
 
     @OverridingMethodsMustInvokeSuper
@@ -170,9 +172,7 @@ public abstract class AntlrProperty
             @Nonnull CompilerErrorState compilerErrorHolder,
             ImmutableList<String> modifierStrings)
     {
-        // TODO: Implement getting modifiers by name
-        ImmutableList<AntlrModifier> modifierStates = this.getModifiers()
-                .select(modifier -> modifierStrings.anySatisfy(modifier::is)).toImmutable();
+        ImmutableList<AntlrModifier> modifierStates = modifierStrings.flatCollect(this::getModifiersByName);
 
         String message = String.format(
                 "Multiple properties on '%s' with modifiers %s.",

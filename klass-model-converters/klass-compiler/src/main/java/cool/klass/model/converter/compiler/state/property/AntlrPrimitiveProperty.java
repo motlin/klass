@@ -148,7 +148,7 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)
         {
             String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
@@ -160,7 +160,7 @@ public class AntlrPrimitiveProperty
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
 
-        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)
         {
             String message = String.format(

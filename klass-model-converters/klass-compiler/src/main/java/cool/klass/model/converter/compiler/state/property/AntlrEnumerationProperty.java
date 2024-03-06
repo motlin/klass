@@ -136,7 +136,7 @@ public class AntlrEnumerationProperty
     @Override
     protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        ListIterable<AntlrModifier> idModifiers = this.getModifiers().select(AntlrModifier::isId);
+        ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)
         {
             String message = "Enumeration properties may not be auto-generated ids.";
