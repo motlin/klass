@@ -4,23 +4,23 @@ import java.util.Collection;
 
 import com.gs.fw.finder.Operation;
 
-public class AndCritieraList extends AndCritieraListAbstract
+public class AndCriteriaList extends AndCriteriaListAbstract
 {
-    public AndCritieraList()
+    public AndCriteriaList()
     {
     }
 
-    public AndCritieraList(int initialSize)
+    public AndCriteriaList(int initialSize)
     {
         super(initialSize);
     }
 
-    public AndCritieraList(Collection c)
+    public AndCriteriaList(Collection c)
     {
         super(c);
     }
 
-    public AndCritieraList(Operation operation)
+    public AndCriteriaList(Operation operation)
     {
         super(operation);
     }

@@ -515,7 +515,8 @@ public class MetaResourceManualTest
 
         String jsonResponse = response.readEntity(String.class);
         //language=JSON
-        String expected = "{\n"
+        String expected = ""
+                + "{\n"
                 + "  \"name\": \"ClassifierHasClassifierInterfaceMapping\",\n"
                 + "  \"inferred\": false,\n"
                 + "  \"packageName\": \"klass.model.meta.domain\",\n"
@@ -573,7 +574,8 @@ public class MetaResourceManualTest
                 + "    }\n"
                 + "  ],\n"
                 + "  \"criteria\": {\n"
-                + "    \"id\": 2\n"
+                + "    \"id\": 2,\n"
+                + "    \"operator\": \"==\"\n"
                 + "  }\n"
                 + "}";
         JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT);

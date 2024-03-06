@@ -405,12 +405,12 @@ class BinaryCriteria
     rightId       : Long private;
 }
 
-class AndCritiera
+class AndCriteria
     extends BinaryCriteria
 {
 }
 
-class OrCritiera
+class OrCriteria
     extends BinaryCriteria
 {
 }

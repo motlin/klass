@@ -4,23 +4,23 @@ import java.util.Collection;
 
 import com.gs.fw.finder.Operation;
 
-public class OrCritieraList extends OrCritieraListAbstract
+public class OrCriteriaList extends OrCriteriaListAbstract
 {
-    public OrCritieraList()
+    public OrCriteriaList()
     {
     }
 
-    public OrCritieraList(int initialSize)
+    public OrCriteriaList(int initialSize)
     {
         super(initialSize);
     }
 
-    public OrCritieraList(Collection c)
+    public OrCriteriaList(Collection c)
     {
         super(c);
     }
 
-    public OrCritieraList(Operation operation)
+    public OrCriteriaList(Operation operation)
     {
         super(operation);
     }

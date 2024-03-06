@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.criteria.AllCriteria;
 import cool.klass.model.meta.domain.api.criteria.AndCriteria;
 import cool.klass.model.meta.domain.api.criteria.BinaryCriteria;
@@ -12,6 +13,12 @@ import cool.klass.model.meta.domain.api.criteria.CriteriaVisitor;
 import cool.klass.model.meta.domain.api.criteria.EdgePointCriteria;
 import cool.klass.model.meta.domain.api.criteria.OperatorCriteria;
 import cool.klass.model.meta.domain.api.criteria.OrCriteria;
+import cool.klass.model.meta.domain.api.operator.Operator;
+import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.value.ExpressionValue;
+import cool.klass.model.meta.domain.api.value.MemberReferencePath;
+import org.eclipse.collections.api.list.ImmutableList;
 
 public class BootstrapCriteriaVisitor implements CriteriaVisitor
 {
@@ -56,15 +63,45 @@ public class BootstrapCriteriaVisitor implements CriteriaVisitor
     @Override
     public void visitOperator(@Nonnull OperatorCriteria operatorCriteria)
     {
-        // TODO
-        this.handleCriteria(new klass.model.meta.domain.AllCriteria(), operatorCriteria);
+        klass.model.meta.domain.OperatorCriteria bootstrappedCriteria = new klass.model.meta.domain.OperatorCriteria();
+        KlassBootstrapWriter.handleElement(bootstrappedCriteria, operatorCriteria);
+
+        Operator operator = operatorCriteria.getOperator();
+        bootstrappedCriteria.setOperator(operator.getOperatorText());
+
+        ExpressionValue                         sourceValue             = operatorCriteria.getSourceValue();
+        ExpressionValue                         targetValue             = operatorCriteria.getTargetValue();
+        klass.model.meta.domain.ExpressionValue bootstrappedSourceValue = BootstrapExpressionValueVisitor.convert(
+                sourceValue);
+        klass.model.meta.domain.ExpressionValue bootstrappedTargetValue = BootstrapExpressionValueVisitor.convert(
+                targetValue);
+        // bootstrappedSourceValue.insert();
+        // bootstrappedTargetValue.insert();
+
+        bootstrappedCriteria.insert();
+        this.bootstrappedCriteria = bootstrappedCriteria;
     }
 
     @Override
     public void visitEdgePoint(@Nonnull EdgePointCriteria edgePointCriteria)
     {
-        // TODO
-        this.handleCriteria(new klass.model.meta.domain.AllCriteria(), edgePointCriteria);
+        klass.model.meta.domain.MemberReferencePath bootstrappedMemberReferencePath = new klass.model.meta.domain.MemberReferencePath();
+        bootstrappedMemberReferencePath.insert();
+
+        MemberReferencePath           memberExpressionValue = edgePointCriteria.getMemberExpressionValue();
+        Klass                         klass                 = memberExpressionValue.getKlass();
+        ImmutableList<AssociationEnd> associationEnds       = memberExpressionValue.getAssociationEnds();
+        DataTypeProperty              property              = memberExpressionValue.getProperty();
+
+        bootstrappedMemberReferencePath.setClassName(klass.getName());
+        bootstrappedMemberReferencePath.setPropertyClassName(property.getOwningClassifier().getName());
+        bootstrappedMemberReferencePath.setPropertyName(property.getName());
+
+        klass.model.meta.domain.EdgePointCriteria bootstrappedCriteria = new klass.model.meta.domain.EdgePointCriteria();
+        KlassBootstrapWriter.handleElement(bootstrappedCriteria, edgePointCriteria);
+        bootstrappedCriteria.setMemberReferencePathId(bootstrappedMemberReferencePath.getId());
+        bootstrappedCriteria.insert();
+        this.bootstrappedCriteria = bootstrappedCriteria;
     }
 
     private void handleBinaryCriteria(
