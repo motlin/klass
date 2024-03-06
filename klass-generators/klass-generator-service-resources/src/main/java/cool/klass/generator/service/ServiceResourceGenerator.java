@@ -14,10 +14,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.DomainModel;
+import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.Klass;
+import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.domain.criteria.Criteria;
 import cool.klass.model.meta.domain.projection.Projection;
 import cool.klass.model.meta.domain.projection.ProjectionWalker;
+import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.Service;
 import cool.klass.model.meta.domain.service.ServiceGroup;
 import cool.klass.model.meta.domain.service.ServiceMultiplicity;
@@ -28,6 +31,7 @@ import cool.klass.model.meta.domain.service.url.UrlParameter;
 import cool.klass.model.meta.domain.service.url.UrlPathParameter;
 import cool.klass.model.meta.domain.service.url.UrlPathSegment;
 import cool.klass.model.meta.domain.service.url.UrlQueryParameter;
+import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class ServiceResourceGenerator
@@ -94,7 +98,7 @@ public class ServiceResourceGenerator
                 + "import java.util.List;\n"
                 + "import java.util.Set;\n"
                 + "\n"
-                + "import javax.annotation.Generated;\n"
+                + "import javax.annotation.*;\n"
                 + "import javax.ws.rs.*;\n"
                 + "import javax.ws.rs.core.*;\n"
                 + "import javax.ws.rs.core.Response.Status;\n"
@@ -387,18 +391,36 @@ public class ServiceResourceGenerator
     {
         // TODO: Hibernate validation annotations
 
+        String nullableAnnotation = urlParameter.getMultiplicity() == Multiplicity.ZERO_TO_ONE
+                ? "@Nullable "
+                : "";
+
         DataType parameterType = urlParameter.getType();
         String typeString = urlParameter.getMultiplicity().isToMany()
-                ? "Set<" + parameterType.getName() + ">"
-                : parameterType.getName();
+                ? "Set<" + getType(parameterType) + ">"
+                : getType(parameterType);
 
         return String.format(
-                "%s@%s(\"%s\") %s %s",
+                "%s%s@%s(\"%s\") %s %s",
                 indent,
+                nullableAnnotation,
                 this.getAnnotation(urlParameter),
                 urlParameter.getName(),
                 typeString,
                 urlParameter.getName());
+    }
+
+    private String getType(DataType dataType)
+    {
+        if (dataType instanceof Enumeration)
+        {
+            return ((Enumeration) dataType).getName();
+        }
+        if (dataType instanceof PrimitiveType)
+        {
+            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
+        }
+        throw new AssertionError();
     }
 
     @Nonnull
