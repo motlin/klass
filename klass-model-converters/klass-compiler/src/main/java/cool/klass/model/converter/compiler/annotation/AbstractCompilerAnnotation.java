@@ -96,6 +96,12 @@ public abstract class AbstractCompilerAnnotation
         return this.severity == AnnotationSeverity.WARNING;
     }
 
+    @Nonnull
+    public AnnotationSeverity getSeverity()
+    {
+        return this.severity;
+    }
+
     protected String getContextString()
     {
         ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();

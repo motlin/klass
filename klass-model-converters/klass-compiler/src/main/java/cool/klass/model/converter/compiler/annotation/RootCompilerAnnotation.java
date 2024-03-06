@@ -24,9 +24,10 @@ public class RootCompilerAnnotation
         implements Comparable<RootCompilerAnnotation>
 {
     private static final Comparator<RootCompilerAnnotation> COMPILER_ANNOTATION_COMPARATOR = Comparator
-            .comparingInt((RootCompilerAnnotation each) -> each.getCompilationUnit().getOrdinal())
-            .thenComparing(AbstractCompilerAnnotation::getLine)
-            .thenComparing(AbstractCompilerAnnotation::getCharPositionInLine);
+            .comparing(RootCompilerAnnotation::getSeverity)
+            .thenComparingInt(each -> each.getCompilationUnit().getOrdinal())
+            .thenComparingInt(RootCompilerAnnotation::getLine)
+            .thenComparingInt(RootCompilerAnnotation::getCharPositionInLine);
 
     @Nonnull
     private final String annotationCode;
