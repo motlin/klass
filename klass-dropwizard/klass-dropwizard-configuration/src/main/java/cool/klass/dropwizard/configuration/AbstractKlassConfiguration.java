@@ -2,6 +2,7 @@ package cool.klass.dropwizard.configuration;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -51,8 +52,6 @@ import io.liftwizard.dropwizard.configuration.system.properties.SystemProperties
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactory;
 import io.liftwizard.dropwizard.configuration.uuid.UUIDSupplierFactoryProvider;
 import io.liftwizard.dropwizard.db.NamedDataSourceFactory;
-import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.api.map.MapIterable;
 
 @JsonPropertyOrder({
         "server",
@@ -212,7 +211,7 @@ public class AbstractKlassConfiguration
 
     @Override
     @JsonIgnore
-    public MapIterable<String, ManagedDataSource> getDataSourcesByName()
+    public Map<String, ManagedDataSource> getDataSourcesByName()
     {
         return this.namedDataSourceConfiguration.getDataSourcesByName();
     }
@@ -244,7 +243,7 @@ public class AbstractKlassConfiguration
     }
 
     @Override
-    public void initializeConnectionManagers(@Nonnull MapIterable<String, ManagedDataSource> dataSourcesByName)
+    public void initializeConnectionManagers(@Nonnull Map<String, ManagedDataSource> dataSourcesByName)
     {
         this.connectionManagerConfiguration.initializeConnectionManagers(dataSourcesByName);
     }
@@ -273,12 +272,12 @@ public class AbstractKlassConfiguration
                 () -> String.format(
                         "Could not find connection manager with name %s. Valid choices are %s",
                         name,
-                        this.connectionManagerConfiguration.getConnectionManagersByName().keysView()));
+                        this.connectionManagerConfiguration.getConnectionManagersByName().keySet()));
     }
 
     @JsonIgnore
     @Override
-    public ImmutableMap<String, SourcelessConnectionManager> getConnectionManagersByName()
+    public Map<String, SourcelessConnectionManager> getConnectionManagersByName()
     {
         return this.connectionManagerConfiguration.getConnectionManagersByName();
     }

@@ -1,7 +1,6 @@
 package cool.klass.xample.coverage.dropwizard.application;
 
-import java.util.Optional;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
@@ -49,10 +48,10 @@ public class CoverageExampleApplication
         var mdcLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         var logstashLogger = new StructuredArgumentsLogstashEncoderLogger();
 
-        BiConsumer<StructuredArguments, Optional<String>> structuredLogger = (structuredArguments, maybeBody) ->
+        Consumer<StructuredArguments> structuredLogger = structuredArguments ->
         {
-            mdcLogger.accept(structuredArguments, maybeBody);
-            logstashLogger.accept(structuredArguments, maybeBody);
+            mdcLogger.accept(structuredArguments);
+            logstashLogger.accept(structuredArguments);
         };
 
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
