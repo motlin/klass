@@ -1,0 +1,947 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet author="Klass" id="initial-schema-1">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_PK" />
+            </column>
+            <column name="FOREIGN_KEY_STRING" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_INTEGER" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_LONG" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_DOUBLE" type="DOUBLE(17)">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_FLOAT" type="REAL">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_BOOLEAN" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_INSTANT" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="FOREIGN_KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="DATA" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-2">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="KEY_STRING" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_INTEGER" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_LONG" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_DOUBLE" type="DOUBLE(17)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_FLOAT" type="REAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_BOOLEAN" type="BOOLEAN">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_INSTANT" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-3">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="KEY_STRING" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_INTEGER" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_LONG" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_DOUBLE" type="DOUBLE(17)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_FLOAT" type="REAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_BOOLEAN" type="BOOLEAN">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_INSTANT" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="KEY_LOCAL_DATE" type="date">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+            <column name="NUMBER" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="EVERY_TYPE_KEY_PROPERTY_VERSION_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-4">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="FINAL_PROPERTIES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FINAL_PROPERTIES_PK" />
+            </column>
+            <column name="DATA" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-6">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_SELF_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)" />
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-7">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-8">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_MANY_TARGET_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-9">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_NATURAL_ONE_TO_ONE_SOURCE">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-10">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_NATURAL_ONE_TO_ONE_TARGET_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-11">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT" />
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-12">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-13">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-14">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-15">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-16">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="PROPERTIES_OPTIONAL">
+            <column name="PROPERTIES_OPTIONAL_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_PK" />
+            </column>
+            <column name="OPTIONAL_STRING" type="VARCHAR(255)" />
+            <column name="OPTIONAL_INTEGER" type="INT" />
+            <column name="OPTIONAL_LONG" type="BIGINT" />
+            <column name="OPTIONAL_DOUBLE" type="DOUBLE(17)" />
+            <column name="OPTIONAL_FLOAT" type="REAL" />
+            <column name="OPTIONAL_BOOLEAN" type="BOOLEAN" />
+            <column name="OPTIONAL_INSTANT" type="TIMESTAMP" />
+            <column name="OPTIONAL_LOCAL_DATE" type="date" />
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-17">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="PROPERTIES_OPTIONAL_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_VERSION_PK" />
+            </column>
+            <column name="NUMBER" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_OPTIONAL_VERSION_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-18">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="PROPERTIES_REQUIRED">
+            <column name="PROPERTIES_REQUIRED_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_PK" />
+            </column>
+            <column name="REQUIRED_STRING" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_INTEGER" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_LONG" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_DOUBLE" type="DOUBLE(17)">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_FLOAT" type="REAL">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_BOOLEAN" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_INSTANT" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="REQUIRED_LOCAL_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-19">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="PROPERTIES_REQUIRED_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_VERSION_PK" />
+            </column>
+            <column name="NUMBER" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_ON" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="LAST_UPDATED_BY_ID" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PROPERTIES_REQUIRED_VERSION_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-20">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_PK" />
+            </column>
+            <column name="TARGET_KEY" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-21">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_MANY_TO_ONE_TARGET">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_MANY_TO_ONE_TARGET_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-22">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_SELF_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)" />
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-23">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-24">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_MANY_TARGET_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-25">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="SHARED_NATURAL_ONE_TO_ONE_SOURCE">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-26">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="KEY" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_NATURAL_ONE_TO_ONE_TARGET_PK" />
+            </column>
+            <column name="SOURCE_KEY" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-27">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT" />
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-28">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-29">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-30">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="SHARED_SYNTHETIC_ONE_TO_ONE_SOURCE_PK" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-31">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_PK" />
+            </column>
+            <column name="SOURCE_ID" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-32">
+        <createTable catalogName="COVERAGE-EXAMPLE-H2" schemaName="PUBLIC" tableName="USER">
+            <column name="USER_ID" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="USER_PK" />
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(255)" />
+            <column name="LAST_NAME" type="VARCHAR(255)" />
+            <column name="EMAIL" type="VARCHAR(255)" />
+            <column name="SYSTEM_FROM" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="SYSTEM_TO" type="TIMESTAMP">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="USER_PK" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-33">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="EVERY_TYPE_FOREIGN_KEY_PROPERTY_IDX0"
+                schemaName="PUBLIC"
+                tableName="EVERY_TYPE_FOREIGN_KEY_PROPERTY">
+            <column name="FOREIGN_KEY_BOOLEAN" />
+            <column name="FOREIGN_KEY_DOUBLE" />
+            <column name="FOREIGN_KEY_FLOAT" />
+            <column name="FOREIGN_KEY_INSTANT" />
+            <column name="FOREIGN_KEY_INTEGER" />
+            <column name="FOREIGN_KEY_LOCAL_DATE" />
+            <column name="FOREIGN_KEY_LONG" />
+            <column name="FOREIGN_KEY_STRING" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-34">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX0"
+                schemaName="PUBLIC"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-35">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="EVERY_TYPE_KEY_PROPERTY_IDX1"
+                schemaName="PUBLIC"
+                tableName="EVERY_TYPE_KEY_PROPERTY">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-36">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="EVERY_TYPE_KEY_PROPERTY_VERSION_IDX0"
+                schemaName="PUBLIC"
+                tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-37">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="EVERY_TYPE_KEY_PROPERTY_VERSION_IDX1"
+                schemaName="PUBLIC"
+                tableName="EVERY_TYPE_KEY_PROPERTY_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-38">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_NATURAL_ONE_TO_MANY_SELF_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-39">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_NATURAL_ONE_TO_MANY_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-40">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_NATURAL_ONE_TO_ONE_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-41">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-42">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-43">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="OWNED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-44">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_OPTIONAL_IDX0"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-45">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_OPTIONAL_IDX1"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_OPTIONAL">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-46">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX0"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-47">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_OPTIONAL_VERSION_IDX1"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_OPTIONAL_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-48">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_REQUIRED_IDX0"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-49">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_REQUIRED_IDX1"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_REQUIRED">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-50">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX0"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="CREATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-51">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="PROPERTIES_REQUIRED_VERSION_IDX1"
+                schemaName="PUBLIC"
+                tableName="PROPERTIES_REQUIRED_VERSION">
+            <column name="LAST_UPDATED_BY_ID" />
+            <column name="SYSTEM_TO" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-52">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE">
+            <column name="TARGET_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-53">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_NATURAL_ONE_TO_MANY_SELF_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_SELF">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-54">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_NATURAL_ONE_TO_MANY_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-55">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_NATURAL_ONE_TO_ONE_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_NATURAL_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_KEY" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-56">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-57">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-58">
+        <createIndex catalogName="COVERAGE-EXAMPLE-H2"
+                indexName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET_IDX0"
+                schemaName="PUBLIC"
+                tableName="SHARED_SYNTHETIC_ONE_TO_ONE_TARGET">
+            <column name="SOURCE_ID" />
+        </createIndex>
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-59">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_KEY"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="OWNED_NATURAL_ONE_TO_MANY_SELF"
+                baseTableSchemaName="PUBLIC"
+                constraintName="OWNED_NATURAL_ONE_TO_MANY_SELF_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="KEY"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SELF"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-60">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_KEY"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="OWNED_NATURAL_ONE_TO_MANY_TARGET"
+                baseTableSchemaName="PUBLIC"
+                constraintName="OWNED_NATURAL_ONE_TO_MANY_TARGET_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="KEY"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="OWNED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-61">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_ID"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseTableSchemaName="PUBLIC"
+                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="ID"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SELF"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-62">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_ID"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseTableSchemaName="PUBLIC"
+                constraintName="OWNED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="ID"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="OWNED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-63">
+        <addForeignKeyConstraint baseColumnNames="TARGET_KEY"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="SHARED_NATURAL_MANY_TO_ONE_SOURCE"
+                baseTableSchemaName="PUBLIC"
+                constraintName="SHARED_NATURAL_MANY_TO_ONE_SOURCE_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="KEY"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="SHARED_NATURAL_MANY_TO_ONE_TARGET"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-64">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_KEY"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="SHARED_NATURAL_ONE_TO_MANY_SELF"
+                baseTableSchemaName="PUBLIC"
+                constraintName="SHARED_NATURAL_ONE_TO_MANY_SELF_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="KEY"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SELF"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-65">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_KEY"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="SHARED_NATURAL_ONE_TO_MANY_TARGET"
+                baseTableSchemaName="PUBLIC"
+                constraintName="SHARED_NATURAL_ONE_TO_MANY_TARGET_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="KEY"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="SHARED_NATURAL_ONE_TO_MANY_SOURCE"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-66">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_ID"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+                baseTableSchemaName="PUBLIC"
+                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="ID"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SELF"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+    <changeSet author="Klass" id="initial-schema-67">
+        <addForeignKeyConstraint baseColumnNames="SOURCE_ID"
+                baseTableCatalogName="COVERAGE-EXAMPLE-H2"
+                baseTableName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET"
+                baseTableSchemaName="PUBLIC"
+                constraintName="SHARED_SYNTHETIC_ONE_TO_MANY_TARGET_FK_0"
+                deferrable="false"
+                initiallyDeferred="false"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedColumnNames="ID"
+                referencedTableCatalogName="COVERAGE-EXAMPLE-H2"
+                referencedTableName="SHARED_SYNTHETIC_ONE_TO_MANY_SOURCE"
+                referencedTableSchemaName="PUBLIC"
+                validate="true" />
+    </changeSet>
+</databaseChangeLog>

@@ -11,6 +11,8 @@ import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.service.klass.html.KlassHtmlResource;
 import cool.klass.xample.coverage.graphql.runtime.wiring.CoverageExampleRuntimeWiringBuilder;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
@@ -57,6 +59,15 @@ public class CoverageExampleApplication
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
         bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new CoverageExampleRuntimeWiringBuilder()));
+
+        bootstrap.addBundle(new MigrationsBundle<CoverageExampleConfiguration>()
+        {
+            @Override
+            public DataSourceFactory getDataSourceFactory(CoverageExampleConfiguration configuration)
+            {
+                return configuration.getNamedDataSourcesFactory().getNamedDataSourceFactoryByName("h2-tcp");
+            }
+        });
     }
 
     @Override

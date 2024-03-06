@@ -420,16 +420,16 @@ association SelfOwnedSyntheticOneToMany
     relationship this.id == OwnedSyntheticOneToManySelf.sourceId
 }
 
+class SharedNaturalManyToOneTarget
+{
+    key: String key;
+    value: String;
+}
+
 class SharedNaturalManyToOneSource
 {
     key: String key;
     targetKey: String private;
-    value: String;
-}
-
-class SharedNaturalManyToOneTarget
-{
-    key: String key;
     value: String;
 }
 
