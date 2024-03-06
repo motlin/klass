@@ -22,6 +22,7 @@ public class RequiredPropertiesValidator
     private final ObjectNode           objectNode;
     private final OperationMode        operationMode;
     private final MutableList<String>  errors;
+    private final MutableList<String>  warnings;
     private final MutableStack<String> contextStack;
     private final boolean              isRoot;
 
@@ -30,6 +31,7 @@ public class RequiredPropertiesValidator
             ObjectNode objectNode,
             OperationMode operationMode,
             MutableList<String> errors,
+            MutableList<String> warnings,
             MutableStack<String> contextStack,
             boolean isRoot)
     {
@@ -37,6 +39,7 @@ public class RequiredPropertiesValidator
         this.objectNode = Objects.requireNonNull(objectNode);
         this.operationMode = Objects.requireNonNull(operationMode);
         this.errors = Objects.requireNonNull(errors);
+        this.warnings = Objects.requireNonNull(warnings);
         this.contextStack = Objects.requireNonNull(contextStack);
         this.isRoot = isRoot;
     }
@@ -45,13 +48,15 @@ public class RequiredPropertiesValidator
             @Nonnull Klass klass,
             @Nonnull ObjectNode incomingInstance,
             @Nonnull OperationMode operationMode,
-            @Nonnull MutableList<String> errors)
+            @Nonnull MutableList<String> errors,
+            @Nonnull MutableList<String> warnings)
     {
         RequiredPropertiesValidator validator = new RequiredPropertiesValidator(
                 klass,
                 incomingInstance,
                 operationMode,
                 errors,
+                warnings,
                 Stacks.mutable.empty(),
                 true);
         validator.validate();
@@ -162,7 +167,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    public void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, ObjectNode objectNode)
+    private void handleAssociationEnd(@Nonnull AssociationEnd associationEnd, ObjectNode objectNode)
     {
         OperationMode nextMode = this.getNextMode(this.operationMode, associationEnd);
 
@@ -171,6 +176,7 @@ public class RequiredPropertiesValidator
                 objectNode,
                 nextMode,
                 this.errors,
+                this.warnings,
                 this.contextStack,
                 false);
         validator.validate();
@@ -194,20 +200,46 @@ public class RequiredPropertiesValidator
 
     private void handleDataTypeProperties()
     {
-        ImmutableList<DataTypeProperty> plainProperties = this.klass.getDataTypeProperties()
-                .reject(DataTypeProperty::isID)
-                .reject(DataTypeProperty::isKey)
-                .reject(DataTypeProperty::isTemporal)
-                .reject(DataTypeProperty::isAudit)
-                .reject(DataTypeProperty::isForeignKey);
-
-        // TODO: Handle foreign key properties that are also key properties at the root
-        this.handleIdProperties(this.klass.getDataTypeProperties().select(DataTypeProperty::isID));
-        this.handleKeyProperties(this.klass.getKeyProperties().reject(DataTypeProperty::isID));
-        this.handlePlainProperties(plainProperties);
+        ImmutableList<DataTypeProperty> dataTypeProperties = this.klass.getDataTypeProperties();
+        for (DataTypeProperty dataTypeProperty : dataTypeProperties)
+        {
+            this.handleDataTypeProperty(dataTypeProperty);
+        }
     }
 
-    private void handleIdProperties(ImmutableList<DataTypeProperty> idProperties)
+    private void handleDataTypeProperty(@Nonnull DataTypeProperty dataTypeProperty)
+    {
+        if (dataTypeProperty.isID())
+        {
+            this.handleIdProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isKey())
+        {
+            this.handleKeyProperty(dataTypeProperty);
+        }
+        else if (dataTypeProperty.isDerived())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "derived");
+        }
+        else if (dataTypeProperty.isTemporal())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "temporal");
+        }
+        else if (dataTypeProperty.isAudit())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "audit");
+        }
+        else if (dataTypeProperty.isForeignKey())
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+        }
+        else
+        {
+            this.handlePlainProperty(dataTypeProperty);
+        }
+    }
+
+    private void handleIdProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
         if (this.operationMode == OperationMode.CREATE)
         {
@@ -223,41 +255,93 @@ public class RequiredPropertiesValidator
         return;
     }
 
-    private void handleKeyProperties(@Nonnull ImmutableList<DataTypeProperty> keyProperties)
+    private void handleKeyProperty(@Nonnull DataTypeProperty dataTypeProperty)
     {
-        keyProperties
-                .reject(this::isForeignKeyWithoutOpposite)
-                .each(this::handlePlainProperty);
+        // TODO: Handle foreign key properties that are also key properties at the root
+
+        if (this.isForeignKeyWithOpposite(dataTypeProperty))
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "foreign key");
+            return;
+        }
+
+        if (this.isRoot)
+        {
+            this.handleWarnIfPresent(dataTypeProperty, "root key");
+            return;
+        }
+
+        this.handlePlainProperty(dataTypeProperty);
     }
 
-    private boolean isForeignKeyWithoutOpposite(@Nonnull DataTypeProperty keyProperty)
+    private boolean isForeignKeyWithOpposite(@Nonnull DataTypeProperty keyProperty)
     {
         return keyProperty.getKeysMatchingThisForeignKey()
                 .valuesView()
-                .noneSatisfyWith(this::isOppositeKey, keyProperty);
+                .anySatisfyWith(this::isOppositeKey, keyProperty);
     }
 
     private boolean isOppositeKey(
             @Nonnull DataTypeProperty dataTypeProperty,
-            DataTypeProperty keyProperty)
+            @Nonnull DataTypeProperty keyProperty)
     {
         return dataTypeProperty.getKeysMatchingThisForeignKey().containsValue(keyProperty);
     }
 
-    private void handlePlainProperties(@Nonnull ImmutableList<DataTypeProperty> plainProperties)
+    private void handleWarnIfPresent(DataTypeProperty property, String propertyKind)
     {
-        for (DataTypeProperty property : plainProperties)
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode())
         {
-            this.contextStack.push(property.getName());
+            return;
+        }
 
-            try
-            {
-                this.handlePlainProperty(property);
-            }
-            finally
-            {
-                this.contextStack.pop();
-            }
+        if (jsonNode.isNull())
+        {
+            String warning = String.format(
+                    "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was null.",
+                    this.getContextString(),
+                    propertyKind,
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.isOptional() ? "?" : "");
+            this.warnings.add(warning);
+            return;
+        }
+
+        String warning = String.format(
+                "Warning at %s. Didn't expect to receive value for %s property '%s.%s: %s%s' but value was %s: %s.",
+                this.getContextString(),
+                propertyKind,
+                property.getOwningClassifier().getName(),
+                property.getName(),
+                property.getType().toString(),
+                property.isOptional() ? "?" : "",
+                jsonNode.getNodeType().toString().toLowerCase(),
+                jsonNode);
+        this.warnings.add(warning);
+    }
+
+    private void handlePlainProperty(@Nonnull DataTypeProperty property)
+    {
+        if (!property.isRequired())
+        {
+            return;
+        }
+
+        JsonNode jsonNode = this.objectNode.path(property.getName());
+        if (jsonNode.isMissingNode() || jsonNode.isNull())
+        {
+            String error = String.format(
+                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
+                    this.getContextString(),
+                    property.getOwningClassifier().getName(),
+                    property.getName(),
+                    property.getType().toString(),
+                    property.isOptional() ? "?" : "",
+                    jsonNode.getNodeType().toString().toLowerCase());
+            this.errors.add(error);
         }
     }
 
@@ -281,24 +365,7 @@ public class RequiredPropertiesValidator
         }
     }
 
-    private void handlePlainProperty(@Nonnull DataTypeProperty property)
-    {
-        JsonNode jsonNode = this.objectNode.path(property.getName());
-        if (jsonNode.isMissingNode() || jsonNode.isNull())
-        {
-            String error = String.format(
-                    "Error at %s. Expected value for required property '%s.%s: %s%s' but value was %s.",
-                    this.getContextString(),
-                    property.getOwningClassifier().getName(),
-                    property.getName(),
-                    property.getType().toString(),
-                    property.isOptional() ? "?" : "",
-                    jsonNode.getNodeType().toString().toLowerCase());
-            this.errors.add(error);
-        }
-    }
-
-    public String getContextString()
+    private String getContextString()
     {
         return this.contextStack
                 .toList()

@@ -67,6 +67,11 @@ public final class JsonTypeCheckingValidator
                 return;
             }
 
+            if (jsonNode.isNull())
+            {
+                return;
+            }
+
             Property property = optionalProperty.get();
             PropertyVisitor visitor = new JsonTypeCheckingPropertyVisitor(
                     fieldName,
@@ -205,9 +210,10 @@ public final class JsonTypeCheckingValidator
                 try
                 {
                     String error = String.format(
-                            "Error at %s. Expected json array but value was %s.",
+                            "Error at %s. Expected json array but value was %s: %s.",
                             JsonTypeCheckingValidator.this.getContextString(),
-                            this.jsonNode.getNodeType().toString().toLowerCase());
+                            this.jsonNode.getNodeType().toString().toLowerCase(),
+                            this.jsonNode);
                     JsonTypeCheckingValidator.this.errors.add(error);
                 }
                 finally
@@ -234,9 +240,10 @@ public final class JsonTypeCheckingValidator
                     else
                     {
                         String error = String.format(
-                                "Error at %s. Expected json object but value was %s.",
+                                "Error at %s. Expected json object but value was %s: %s.",
                                 JsonTypeCheckingValidator.this.getContextString(),
-                                jsonNode.getNodeType().toString().toLowerCase());
+                                jsonNode.getNodeType().toString().toLowerCase(),
+                                jsonNode);
                         JsonTypeCheckingValidator.this.errors.add(error);
                     }
                 }
@@ -256,9 +263,10 @@ public final class JsonTypeCheckingValidator
             else
             {
                 String error = String.format(
-                        "Error at %s. Expected json object but value was %s.",
+                        "Error at %s. Expected json object but value was %s: %s.",
                         JsonTypeCheckingValidator.this.getContextString(),
-                        this.jsonNode.getNodeType().toString().toLowerCase());
+                        this.jsonNode.getNodeType().toString().toLowerCase(),
+                        this.jsonNode);
                 JsonTypeCheckingValidator.this.errors.add(error);
             }
         }

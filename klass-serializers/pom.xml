@@ -19,6 +19,7 @@
     <modules>
         <module>klass-serializer-json</module>
         <module>klass-deserializer-json</module>
+        <module>klass-deserializer-json-test</module>
     </modules>
 
     <dependencyManagement>

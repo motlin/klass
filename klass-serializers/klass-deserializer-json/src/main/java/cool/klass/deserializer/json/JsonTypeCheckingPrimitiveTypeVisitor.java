@@ -134,6 +134,7 @@ public class JsonTypeCheckingPrimitiveTypeVisitor implements PrimitiveTypeVisito
         if (!this.jsonDataTypeValue.isTextual())
         {
             this.emitTypeError();
+            return;
         }
 
         String text = this.jsonDataTypeValue.textValue();
