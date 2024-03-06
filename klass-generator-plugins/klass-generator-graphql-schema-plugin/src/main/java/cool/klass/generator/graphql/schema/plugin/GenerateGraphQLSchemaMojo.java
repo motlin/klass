@@ -2,7 +2,6 @@ package cool.klass.generator.graphql.schema.plugin;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.time.Instant;
 
 import cool.klass.generator.grahql.schema.GraphQLSchemaGenerator;
 import cool.klass.generator.plugin.AbstractGenerateMojo;
@@ -47,8 +46,7 @@ public class GenerateGraphQLSchemaMojo extends AbstractGenerateMojo
         GraphQLSchemaGenerator generator = new GraphQLSchemaGenerator(
                 domainModel,
                 this.rootPackageName,
-                this.applicationName,
-                Instant.now());
+                this.applicationName);
         generator.writeSchemaFiles(outputPath);
 
         Resource resource = new Resource();
