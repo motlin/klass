@@ -1,17 +1,19 @@
 [33m════════════════════════════════════════[m [35mERR_ASO_OWN[m [33m════════════════════════════════════════[m
-[31mBoth associations are owned in association 'DoubleVersionAssociation'. At most one end may be owned.[m
+[31mError: Both associations are owned in association 'DoubleVersionAssociation'. At most one end may be owned.[m
 
-Error at location. (DoubleVersionAssociationErrorTest.klass:5)
-[40m[40;37m1║ [40;35mpackage [40;97mdummy
-[40;37m3║ [40;35massociation [40;97mDoubleVersionAssociation
-[40;37m4║ [40;36m{
-[40;37m5║     [40;97msource[40;36m: [40;97mExampleSource[40;36m[[40;94m1[40;36m..[40;94m1[40;36m] [40;33mversion [40;93mowned[40;36m;
-[40;37m ║                                         [40;91m^^^^^
-[40;37m6║     [40;97mtarget[40;36m: [40;97mExampleTarget[40;36m[[40;94m1[40;36m..[40;94m1[40;36m] [40;33mversion [40;93mowned[40;36m;
-[40;37m ║                                         [40;91m^^^^^
-[40;37m9║ [40;36m}
+At (DoubleVersionAssociationErrorTest.klass:5)
+
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35massociation [39mDoubleVersionAssociation
+[39m4║ [36m{
+[39m5║     [39msource[36m: [39mExampleSource[36m[[34m1[36m..[34m1[36m] [33mversion [33mowned[36m;
+[39m ║                                         [31m^^^^^
+[39m6║     [39mtarget[36m: [39mExampleTarget[36m[[34m1[36m..[34m1[36m] [33mversion [33mowned[36m;
+[39m ║                                         [31m^^^^^
+[39m9║ [36m}
 [m
 [36mLocation:  [mDoubleVersionAssociationErrorTest.klass:5[m
 [36mFile:      [mDoubleVersionAssociationErrorTest.klass[m
 [36mLine:      [m5[m
-[36mCharacter: [m41[m
+[36mCharacter: [m41
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

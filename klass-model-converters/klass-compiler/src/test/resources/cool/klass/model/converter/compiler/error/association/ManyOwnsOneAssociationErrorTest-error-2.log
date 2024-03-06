@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_OWN_ONE[m [33m════════════════════════════════════════[m
-[31mAssociation end 'Dummy.parent' is owned, but is on the to-one end of a one-to-many association.[m
+[31mError: Association end 'Dummy.parent' is owned, but is on the to-one end of a one-to-many association.[m
 
-Error at location. (ManyOwnsOneAssociationErrorTest.klass:11)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m 9║ [40;35massociation [40;97mDummyAssociation
-[40;37m10║ [40;36m{
-[40;37m11║     [40;97mparent[40;36m: [40;97mDummy[40;36m[[40;94m0[40;36m..[40;94m1[40;36m] [40;93mowned[40;36m;
-[40;37m  ║                         [40;91m^^^^^
-[40;37m15║ [40;36m}
+At (ManyOwnsOneAssociationErrorTest.klass:11)
+
+[39m 1║ [35mpackage [39mdummy
+[39m 9║ [35massociation [39mDummyAssociation
+[39m10║ [36m{
+[39m11║     [39mparent[36m: [39mDummy[36m[[34m0[36m..[34m1[36m] [33mowned[36m;
+[39m  ║                         [31m^^^^^
+[39m15║ [36m}
 [m
 [36mLocation:  [mManyOwnsOneAssociationErrorTest.klass:11[m
 [36mFile:      [mManyOwnsOneAssociationErrorTest.klass[m
 [36mLine:      [m11[m
-[36mCharacter: [m25[m
+[36mCharacter: [m25
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

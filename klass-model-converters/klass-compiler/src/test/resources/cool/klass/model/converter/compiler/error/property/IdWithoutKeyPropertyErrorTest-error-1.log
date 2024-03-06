@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_NKY_IDP[m [33m════════════════════════════════════════[m
-[31mProperties with the 'id' modifier must also have the 'key' modifier.[m
+[31mError: Properties with the 'id' modifier must also have the 'key' modifier.[m
 
-Error at location. (IdWithoutKeyPropertyErrorTest.klass:10)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m 8║ [40;35mclass [40;97mIntegerId
-[40;37m 9║ [40;36m{
-[40;37m10║     [40;97mintegerId[40;36m: [40;95mInteger [40;33mid[40;36m;
-[40;37m  ║                        [40;91m^^
-[40;37m11║ [40;36m}
+At (IdWithoutKeyPropertyErrorTest.klass:10)
+
+[39m 1║ [35mpackage [39mexample
+[39m 8║ [35mclass [39mIntegerId
+[39m 9║ [36m{
+[39m10║     [39mintegerId[36m: [35mInteger [33mid[36m;
+[39m  ║                        [31m^^
+[39m11║ [36m}
 [m
 [36mLocation:  [mIdWithoutKeyPropertyErrorTest.klass:10[m
 [36mFile:      [mIdWithoutKeyPropertyErrorTest.klass[m
 [36mLine:      [m10[m
-[36mCharacter: [m24[m
+[36mCharacter: [m24
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

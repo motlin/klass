@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_ASO_MUL[m [33m════════════════════════════════════════[m
-[31mReference property 'source: DummyClass[2..3]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].[m
+[31mError: Reference property 'source: DummyClass[2..3]' has invalid multiplicity. Expected one of [0..1], [1..1], [0..*], [1..*].[m
 
-Error at location. (InvalidMultiplicityErrorTest.klass:5)
-[40m[40;37m1║ [40;35mpackage [40;97mdummy
-[40;37m3║ [40;35massociation [40;97mDummyAssociation
-[40;37m4║ [40;36m{
-[40;37m5║     [40;97msource[40;36m: [40;97mDummyClass[40;36m[[40;94m2[40;36m..[40;94m3[40;36m][40;36m;
-[40;37m ║                       [40;91m^^^^^^
-[40;37m9║ [40;36m}
+At (InvalidMultiplicityErrorTest.klass:5)
+
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35massociation [39mDummyAssociation
+[39m4║ [36m{
+[39m5║     [39msource[36m: [39mDummyClass[36m[[34m2[36m..[34m3[36m][36m;
+[39m ║                       [31m^^^^^^
+[39m9║ [36m}
 [m
 [36mLocation:  [mInvalidMultiplicityErrorTest.klass:5[m
 [36mFile:      [mInvalidMultiplicityErrorTest.klass[m
 [36mLine:      [m5[m
-[36mCharacter: [m23[m
+[36mCharacter: [m23
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_EXT_CCT[m [33m════════════════════════════════════════[m
-[31mSuperclass must be abstract 'ConcreteSuperclass'.[m
+[31mError: Superclass must be abstract 'ConcreteSuperclass'.[m
 
-Error at location. (ExtendsFromConcreteClassErrorTest.klass:8)
-[40m[40;37m1║ [40;35mpackage [40;97mexample
-[40;37m8║ [40;35mclass [40;97mConcreteSubclass [40;95mextends [40;97mConcreteSuperclass
-[40;37m ║                                [40;91m^^^^^^^^^^^^^^^^^^
+At (ExtendsFromConcreteClassErrorTest.klass:8)
+
+[39m1║ [35mpackage [39mexample
+[39m8║ [35mclass [39mConcreteSubclass [35mextends [39mConcreteSuperclass
+[39m ║                                [31m^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mExtendsFromConcreteClassErrorTest.klass:8[m
 [36mFile:      [mExtendsFromConcreteClassErrorTest.klass[m
 [36mLine:      [m8[m
-[36mCharacter: [m32[m
+[36mCharacter: [m32
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

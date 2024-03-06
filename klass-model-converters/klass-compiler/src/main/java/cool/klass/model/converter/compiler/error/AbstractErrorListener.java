@@ -11,13 +11,12 @@ import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.MutableList;
 import org.fusesource.jansi.Ansi.Color;
 
-import static org.fusesource.jansi.Ansi.Color.BLACK;
 import static org.fusesource.jansi.Ansi.Color.BLUE;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
+import static org.fusesource.jansi.Ansi.Color.DEFAULT;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.MAGENTA;
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.Color.WHITE;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -112,10 +111,13 @@ public class AbstractErrorListener extends KlassThrowingListener
             case KlassLexer.KEYWORD_TABLE_PER_CLASS:
             case KlassLexer.KEYWORD_TABLE_PER_SUBCLASS:
             case KlassLexer.KEYWORD_TABLE_FOR_ALL_SUBCLASSES:
+            {
+                return getStringBright(text, MAGENTA);
+            }
             case KlassLexer.LITERAL_NULL:
             case KlassLexer.LITERAL_THIS:
             {
-                return getStringBright(text, MAGENTA);
+                return getStringBright(text, GREEN);
             }
             // Primitives
             case KlassLexer.PRIMITIVE_TYPE_BOOLEAN:
@@ -143,7 +145,7 @@ public class AbstractErrorListener extends KlassThrowingListener
             }
             case KlassLexer.Identifier:
             {
-                return getStringBright(text, WHITE);
+                return getStringBright(text, DEFAULT);
             }
             case KlassLexer.PUNCTUATION_LPAREN:
             case KlassLexer.PUNCTUATION_RPAREN:
@@ -184,11 +186,11 @@ public class AbstractErrorListener extends KlassThrowingListener
 
     private static String getStringBright(String text, @Nonnull Color color)
     {
-        return ansi().bg(BLACK).fgBright(color).a(text).toString();
+        return ansi().fg(color).a(text).toString();
     }
 
     private static String getStringDim(String text, @Nonnull Color color)
     {
-        return ansi().bg(BLACK).fg(color).a(text).toString();
+        return ansi().fg(color).a(text).toString();
     }
 }

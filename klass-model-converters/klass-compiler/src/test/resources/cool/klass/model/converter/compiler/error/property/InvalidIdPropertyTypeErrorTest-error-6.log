@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRP_IDP[m [33m════════════════════════════════════════[m
-[31mPrimitive properties with type TemporalRange may not be auto-generated ids. Only types [Integer, Long, String] may be id properties.[m
+[31mError: Primitive properties with type TemporalRange may not be auto-generated ids. Only types [Integer, Long, String] may be id properties.[m
 
-Error at location. (InvalidIdPropertyTypeErrorTest.klass:50)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m48║ [40;35mclass [40;97mTemporalRangeId
-[40;37m49║ [40;36m{
-[40;37m50║     [40;97mtemporalRangeId[40;36m: [40;95mTemporalRange[40;36m? [40;33mid [40;33mkey[40;36m;
-[40;37m  ║                                     [40;91m^^
-[40;37m51║ [40;36m}
+At (InvalidIdPropertyTypeErrorTest.klass:50)
+
+[39m 1║ [35mpackage [39mexample
+[39m48║ [35mclass [39mTemporalRangeId
+[39m49║ [36m{
+[39m50║     [39mtemporalRangeId[36m: [35mTemporalRange[36m? [33mid [33mkey[36m;
+[39m  ║                                     [31m^^
+[39m51║ [36m}
 [m
 [36mLocation:  [mInvalidIdPropertyTypeErrorTest.klass:50[m
 [36mFile:      [mInvalidIdPropertyTypeErrorTest.klass[m
 [36mLine:      [m50[m
-[36mCharacter: [m37[m
+[36mCharacter: [m37
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

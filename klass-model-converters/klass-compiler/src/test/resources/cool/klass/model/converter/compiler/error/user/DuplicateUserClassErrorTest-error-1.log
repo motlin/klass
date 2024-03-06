@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_UID[m [33m════════════════════════════════════════[m
-[31mDuplicate userId property: 'User1.userId1'.[m
+[31mError: Duplicate userId property: 'User1.userId1'.[m
 
-Error at location. (DuplicateUserClassErrorTest.klass:5)
-[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m3║ [40;95muser [40;97mUser1
-[40;37m4║ [40;36m{
-[40;37m5║     [40;97muserId1[40;36m: [40;95mString [40;33mkey [40;33muserId[40;36m;
-[40;37m ║     [40;91m^^^^^^^
-[40;37m7║ [40;36m}
+At (DuplicateUserClassErrorTest.klass:5)
+
+[39m1║ [35mpackage [39mcom[36m.[39merrors
+[39m3║ [35muser [39mUser1
+[39m4║ [36m{
+[39m5║     [39muserId1[36m: [35mString [33mkey [33muserId[36m;
+[39m ║     [31m^^^^^^^
+[39m7║ [36m}
 [m
 [36mLocation:  [mDuplicateUserClassErrorTest.klass:5[m
 [36mFile:      [mDuplicateUserClassErrorTest.klass[m
 [36mLine:      [m5[m
-[36mCharacter: [m5[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

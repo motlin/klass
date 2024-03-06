@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_ENM_PRP[m [33m════════════════════════════════════════[m
-[31mCannot find enumeration 'UnresolvedEnumeration'.[m
+[31mError: Cannot find enumeration 'UnresolvedEnumeration'.[m
 
-Error at location. (UnresolvedTypesErrorTest.klass:10)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m 8║ [40;35mclass [40;97mClassWithUnresolved [40;95mextends [40;97mUnresolvedClass [40;95mimplements [40;97mUnresolvedInterface1[40;36m, [40;97mUnresolvedInterface2
-[40;37m 9║ [40;36m{
-[40;37m10║     [40;97munresolvedEnumerationProperty[40;36m: [40;97mUnresolvedEnumeration [40;33mkey[40;36m;
-[40;37m  ║                                    [40;91m^^^^^^^^^^^^^^^^^^^^^
-[40;37m16║ [40;36m}
+At (UnresolvedTypesErrorTest.klass:10)
+
+[39m 1║ [35mpackage [39mdummy
+[39m 8║ [35mclass [39mClassWithUnresolved [35mextends [39mUnresolvedClass [35mimplements [39mUnresolvedInterface1[36m, [39mUnresolvedInterface2
+[39m 9║ [36m{
+[39m10║     [39munresolvedEnumerationProperty[36m: [39mUnresolvedEnumeration [33mkey[36m;
+[39m  ║                                    [31m^^^^^^^^^^^^^^^^^^^^^
+[39m16║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:10[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
 [36mLine:      [m10[m
-[36mCharacter: [m36[m
+[36mCharacter: [m36
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_TOP[m [33m════════════════════════════════════════[m
-[31mDuplicate top level item name: 'ExampleClassHasVersion'.[m
+[31mError: Duplicate top level item name: 'ExampleClassHasVersion'.[m
 
-Error at location. (DuplicateVersionClassErrorTest.klass:19)
-[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m19║ [40;35massociation [40;97mExampleClassHasVersion
-[40;37m  ║             [40;91m^^^^^^^^^^^^^^^^^^^^^^
+At (DuplicateVersionClassErrorTest.klass:19)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m19║ [35massociation [39mExampleClassHasVersion
+[39m  ║             [31m^^^^^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mDuplicateVersionClassErrorTest.klass:19[m
 [36mFile:      [mDuplicateVersionClassErrorTest.klass[m
 [36mLine:      [m19[m
-[36mCharacter: [m13[m
+[36mCharacter: [m13
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

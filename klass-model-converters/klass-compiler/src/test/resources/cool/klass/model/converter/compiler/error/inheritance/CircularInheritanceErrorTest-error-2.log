@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_IMP_SLF[m [33m════════════════════════════════════════[m
-[31mCircular inheritance 'Interface1'.[m
+[31mError: Circular inheritance 'Interface1'.[m
 
-Error at location. (CircularInheritanceErrorTest.klass:16)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m16║     [40;95mimplements [40;97mInterface1
-[40;37m  ║                [40;91m^^^^^^^^^^
+At (CircularInheritanceErrorTest.klass:16)
+
+[39m 1║ [35mpackage [39mexample
+[39m16║     [35mimplements [39mInterface1
+[39m  ║                [31m^^^^^^^^^^
 [m
 [36mLocation:  [mCircularInheritanceErrorTest.klass:16[m
 [36mFile:      [mCircularInheritanceErrorTest.klass[m
 [36mLine:      [m16[m
-[36mCharacter: [m16[m
+[36mCharacter: [m16
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

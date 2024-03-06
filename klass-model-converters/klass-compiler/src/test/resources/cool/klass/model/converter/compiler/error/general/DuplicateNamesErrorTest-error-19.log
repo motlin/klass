@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_TOP[m [33m════════════════════════════════════════[m
-[31mDuplicate top level item name: 'DuplicateTopLevelElement'.[m
+[31mError: Duplicate top level item name: 'DuplicateTopLevelElement'.[m
 
-Error at location. (DuplicateNamesErrorTest.klass:38)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m38║ [40;35mprojection [40;97mDuplicateTopLevelElement [40;95mon [40;97mDuplicateTopLevelElement
-[40;37m  ║            [40;91m^^^^^^^^^^^^^^^^^^^^^^^^
+At (DuplicateNamesErrorTest.klass:38)
+
+[39m 1║ [35mpackage [39mdummy
+[39m38║ [35mprojection [39mDuplicateTopLevelElement [35mon [39mDuplicateTopLevelElement
+[39m  ║            [31m^^^^^^^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:38[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m
 [36mLine:      [m38[m
-[36mCharacter: [m12[m
+[36mCharacter: [m12
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_VLD_TYP[m [33m════════════════════════════════════════[m
-[31mInvalid validation 'minLength' for type Long.[m
+[31mError: Invalid validation 'minLength' for type Long.[m
 
-Error at location. (InvalidValidationErrorTest.klass:6)
-[40m[40;37m1║ [40;35mpackage [40;97mdummy
-[40;37m3║ [40;35mclass [40;97mDummy
-[40;37m4║ [40;36m{
-[40;37m6║     [40;97mnumber[40;36m: [40;95mLong [40;33mminLength[40;36m([40;94m1[40;36m) [40;33mmaxLength[40;36m([40;94m10[40;36m)[40;36m;
-[40;37m ║                  [40;91m^^^^^^^^^
-[40;37m8║ [40;36m}
+At (InvalidValidationErrorTest.klass:6)
+
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35mclass [39mDummy
+[39m4║ [36m{
+[39m6║     [39mnumber[36m: [35mLong [33mminLength[36m([34m1[36m) [33mmaxLength[36m([34m10[36m)[36m;
+[39m ║                  [31m^^^^^^^^^
+[39m8║ [36m}
 [m
 [36mLocation:  [mInvalidValidationErrorTest.klass:6[m
 [36mFile:      [mInvalidValidationErrorTest.klass[m
 [36mLine:      [m6[m
-[36mCharacter: [m18[m
+[36mCharacter: [m18
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

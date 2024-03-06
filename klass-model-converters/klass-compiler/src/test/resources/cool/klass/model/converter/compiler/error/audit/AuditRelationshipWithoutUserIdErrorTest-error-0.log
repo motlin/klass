@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_OPR_EQL[m [33m════════════════════════════════════════[m
-[31mIncompatible types: 'String' and 'Long'.[m
+[31mError: Incompatible types: 'String' and 'Long'.[m
 
-Error at location. (AuditRelationshipWithoutUserIdErrorTest.klass:19)
-[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m14║ [40;35massociation [40;97mCreatedBy
-[40;37m15║ [40;36m{
-[40;37m19║     [40;95mrelationship [40;95mthis[40;36m.[40;97mcreatedById [40;93m== [40;97mUser[40;36m.[40;97motherProperty
-[40;37m  ║                  [40;91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[40;37m20║ [40;36m}
+At (AuditRelationshipWithoutUserIdErrorTest.klass:19)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m14║ [35massociation [39mCreatedBy
+[39m15║ [36m{
+[39m19║     [35mrelationship [32mthis[36m.[39mcreatedById [33m== [39mUser[36m.[39motherProperty
+[39m  ║                  [31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[39m20║ [36m}
 [m
 [36mLocation:  [mAuditRelationshipWithoutUserIdErrorTest.klass:19[m
 [36mFile:      [mAuditRelationshipWithoutUserIdErrorTest.klass[m
 [36mLine:      [m19[m
-[36mCharacter: [m18[m
+[36mCharacter: [m18
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

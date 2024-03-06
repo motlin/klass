@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_INT[m [33m════════════════════════════════════════[m
-[31mDuplicate interface 'RedundantTopInterface'.[m
+[31mError: Duplicate interface 'RedundantTopInterface'.[m
 
-Error at location. (RedunantImplementsErrorTest.klass:23)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m23║ [40;35minterface [40;97mRedundantExtraInterface [40;95mimplements [40;97mRedundantTopInterface[40;36m, [40;97mRedundantTopInterface
-[40;37m  ║                                                                     [40;91m^^^^^^^^^^^^^^^^^^^^^
+At (RedunantImplementsErrorTest.klass:23)
+
+[39m 1║ [35mpackage [39mexample
+[39m23║ [35minterface [39mRedundantExtraInterface [35mimplements [39mRedundantTopInterface[36m, [39mRedundantTopInterface
+[39m  ║                                                                     [31m^^^^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mRedunantImplementsErrorTest.klass:23[m
 [36mFile:      [mRedunantImplementsErrorTest.klass[m
 [36mLine:      [m23[m
-[36mCharacter: [m69[m
+[36mCharacter: [m69
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

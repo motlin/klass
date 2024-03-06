@@ -44,7 +44,6 @@ import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-import static org.fusesource.jansi.Ansi.Color.BLACK;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
@@ -371,6 +370,6 @@ public class ErrorUnderlineListener
 
         return ansi()
                 .a(whitespaceBuffer.toString())
-                .bg(BLACK).fgBright(this.isRoot ? RED : GREEN).a(caretBuffer.toString()).toString();
+                .fg(this.isRoot ? RED : GREEN).a(caretBuffer.toString()).toString();
     }
 }

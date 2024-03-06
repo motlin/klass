@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_MOD[m [33m════════════════════════════════════════[m
-[31mDuplicate modifier 'key'.[m
+[31mError: Duplicate modifier 'key'.[m
 
-Error at location. (DuplicateDataTypePropertyModifiersErrorTest.klass:5)
-[40m[40;37m1║ [40;35mpackage [40;97mdummy
-[40;37m3║ [40;35mclass [40;97mDummy
-[40;37m4║ [40;36m{
-[40;37m5║     [40;33mid[40;36m: [40;95mLong [40;33mid [40;33mkey [40;33mkey[40;36m;
-[40;37m ║                 [40;91m^^^
-[40;37m6║ [40;36m}
+At (DuplicateDataTypePropertyModifiersErrorTest.klass:5)
+
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35mclass [39mDummy
+[39m4║ [36m{
+[39m5║     [33mid[36m: [35mLong [33mid [33mkey [33mkey[36m;
+[39m ║                 [31m^^^
+[39m6║ [36m}
 [m
 [36mLocation:  [mDuplicateDataTypePropertyModifiersErrorTest.klass:5[m
 [36mFile:      [mDuplicateDataTypePropertyModifiersErrorTest.klass[m
 [36mLine:      [m5[m
-[36mCharacter: [m17[m
+[36mCharacter: [m17
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

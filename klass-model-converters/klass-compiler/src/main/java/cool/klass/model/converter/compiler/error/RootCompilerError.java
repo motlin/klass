@@ -57,10 +57,12 @@ public class RootCompilerError
         String ansi = String.format(
                 ""
                         + "@|yellow ════════════════════════════════════════|@ @|magenta %s|@ @|yellow ════════════════════════════════════════|@\n"
-                        + "@|red %s|@\n"
+                        + "@|red Error: %s|@\n"
                         + "\n"
-                        + "Error at location. %s\n"
-                        + "%s%s%s",
+                        + "At %s\n"
+                        + "\n"
+                        + "%s%s%s\n"
+                        + "@|yellow ═════════════════════════════════════════════════════════════════════════════════════════════|@\n",
                 this.errorCode,
                 this.message,
                 this.getShortLocationString(),

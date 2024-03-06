@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRP_IDP[m [33m════════════════════════════════════════[m
-[31mPrimitive properties with type Double may not be auto-generated ids. Only types [Integer, Long, String] may be id properties.[m
+[31mError: Primitive properties with type Double may not be auto-generated ids. Only types [Integer, Long, String] may be id properties.[m
 
-Error at location. (InvalidIdPropertyTypeErrorTest.klass:20)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m18║ [40;35mclass [40;97mDoubleId
-[40;37m19║ [40;36m{
-[40;37m20║     [40;97mdoubleId        [40;36m: [40;95mDouble [40;33mid [40;33mkey[40;36m;
-[40;37m  ║                              [40;91m^^
-[40;37m21║ [40;36m}
+At (InvalidIdPropertyTypeErrorTest.klass:20)
+
+[39m 1║ [35mpackage [39mexample
+[39m18║ [35mclass [39mDoubleId
+[39m19║ [36m{
+[39m20║     [39mdoubleId        [36m: [35mDouble [33mid [33mkey[36m;
+[39m  ║                              [31m^^
+[39m21║ [36m}
 [m
 [36mLocation:  [mInvalidIdPropertyTypeErrorTest.klass:20[m
 [36mFile:      [mInvalidIdPropertyTypeErrorTest.klass[m
 [36mLine:      [m20[m
-[36mCharacter: [m30[m
+[36mCharacter: [m30
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

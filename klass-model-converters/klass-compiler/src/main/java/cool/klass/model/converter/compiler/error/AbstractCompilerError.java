@@ -14,7 +14,6 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-import static org.fusesource.jansi.Ansi.Color.BLACK;
 import static org.fusesource.jansi.Ansi.Color.CYAN;
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -70,7 +69,7 @@ public abstract class AbstractCompilerError
         String entireContext = contextStrings
                 .collect(contextString -> contextString.toString(lineNumberWidth))
                 .makeString("", "\n", "\n");
-        return ansi().bg(BLACK).a(entireContext).reset().toString();
+        return ansi().a(entireContext).reset().toString();
     }
 
     @Nonnull
@@ -166,7 +165,7 @@ public abstract class AbstractCompilerError
                 .fg(CYAN).a("Location:  ").reset().a(this.getFilenameWithoutDirectory()).a(":").a(this.getLine()).reset().a("\n")
                 .fg(CYAN).a("File:      ").reset().a(this.compilationUnit).reset().a("\n")
                 .fg(CYAN).a("Line:      ").reset().a(this.getLine()).reset().a("\n")
-                .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1).reset().a("\n")
+                .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
                 .toString();
     }
 

@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_USR[m [33m════════════════════════════════════════[m
-[31mOnly one 'user' class is allowed. Found 'User2'.[m
+[31mError: Only one 'user' class is allowed. Found 'User2'.[m
 
-Error at location. (DuplicateUserClassErrorTest.klass:9)
-[40m[40;37m1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m9║ [40;95muser [40;97mUser2
-[40;37m ║      [40;91m^^^^^
+At (DuplicateUserClassErrorTest.klass:9)
+
+[39m1║ [35mpackage [39mcom[36m.[39merrors
+[39m9║ [35muser [39mUser2
+[39m ║      [31m^^^^^
 [m
 [36mLocation:  [mDuplicateUserClassErrorTest.klass:9[m
 [36mFile:      [mDuplicateUserClassErrorTest.klass[m
 [36mLine:      [m9[m
-[36mCharacter: [m6[m
+[36mCharacter: [m6
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

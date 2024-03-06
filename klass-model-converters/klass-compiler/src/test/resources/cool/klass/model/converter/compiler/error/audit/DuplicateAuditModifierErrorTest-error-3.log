@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_MOD[m [33m════════════════════════════════════════[m
-[31mDuplicate modifier 'from'.[m
+[31mError: Duplicate modifier 'from'.[m
 
-Error at location. (DuplicateAuditModifierErrorTest.klass:12)
-[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m 8║ [40;35mclass [40;97mDummyClass [40;33msystemTemporal [40;33mversioned [40;33maudited
-[40;37m 9║ [40;36m{
-[40;37m12║     [40;97msystemFrom     [40;36m: [40;95mTemporalInstant[40;36m? [40;33msystem [40;33mfrom [40;33mfrom[40;36m;
-[40;37m  ║                                                   [40;91m^^^^
-[40;37m25║ [40;36m}
+At (DuplicateAuditModifierErrorTest.klass:12)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m 8║ [35mclass [39mDummyClass [33msystemTemporal [33mversioned [33maudited
+[39m 9║ [36m{
+[39m12║     [39msystemFrom     [36m: [35mTemporalInstant[36m? [33msystem [33mfrom [33mfrom[36m;
+[39m  ║                                                   [31m^^^^
+[39m25║ [36m}
 [m
 [36mLocation:  [mDuplicateAuditModifierErrorTest.klass:12[m
 [36mFile:      [mDuplicateAuditModifierErrorTest.klass[m
 [36mLine:      [m12[m
-[36mCharacter: [m51[m
+[36mCharacter: [m51
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

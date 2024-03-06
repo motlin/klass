@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_MNY_IDS[m [33m════════════════════════════════════════[m
-[31mClass 'ExampleClass' may only have one id property. Found: id1: Long id key, id2: Long id key.[m
+[31mError: Class 'ExampleClass' may only have one id property. Found: id1: Long id key, id2: Long id key.[m
 
-Error at location. (MultipleIdPropertiesErrorTest.klass:3)
-[40m[40;37m1║ [40;35mpackage [40;97mexample
-[40;37m3║ [40;35mclass [40;97mExampleClass
-[40;37m ║       [40;91m^^^^^^^^^^^^
+At (MultipleIdPropertiesErrorTest.klass:3)
+
+[39m1║ [35mpackage [39mexample
+[39m3║ [35mclass [39mExampleClass
+[39m ║       [31m^^^^^^^^^^^^
 [m
 [36mLocation:  [mMultipleIdPropertiesErrorTest.klass:3[m
 [36mFile:      [mMultipleIdPropertiesErrorTest.klass[m
 [36mLine:      [m3[m
-[36mCharacter: [m7[m
+[36mCharacter: [m7
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadAssociationEndTarget'.[m
+[31mError: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadAssociationEndTarget'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:38)
-[40m[40;37m 1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m35║ [40;35massociation [40;97mbadAssociation
-[40;37m36║ [40;36m{
-[40;37m38║     [40;97mBadAssociationEndTarget[40;36m: [40;97mbadClass[40;36m[[40;94m0[40;36m..[40;94m1[40;36m][40;36m;
-[40;37m  ║     [40;91m^^^^^^^^^^^^^^^^^^^^^^^
-[40;37m41║ [40;36m}
+At (InvalidNamesErrorTest.klass:38)
+
+[39m 1║ [35mpackage [39mBADPACKAGE
+[39m35║ [35massociation [39mbadAssociation
+[39m36║ [36m{
+[39m38║     [39mBadAssociationEndTarget[36m: [39mbadClass[36m[[34m0[36m..[34m1[36m][36m;
+[39m  ║     [31m^^^^^^^^^^^^^^^^^^^^^^^
+[39m41║ [36m}
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:38[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
 [36mLine:      [m38[m
-[36mCharacter: [m5[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

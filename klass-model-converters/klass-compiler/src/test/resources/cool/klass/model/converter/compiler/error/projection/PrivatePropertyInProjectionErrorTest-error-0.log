@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRJ_PRV[m [33m════════════════════════════════════════[m
-[31mProjection includes private property 'ClassWithPrivateProperty.privateString'.[m
+[31mError: Projection includes private property 'ClassWithPrivateProperty.privateString'.[m
 
-Error at location. (PrivatePropertyInProjectionErrorTest.klass:12)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m 9║ [40;35mprojection [40;97mProjectionOnPrivateProperty [40;95mon [40;97mClassWithPrivateProperty
-[40;37m10║ [40;36m{
-[40;37m12║     [40;97mprivateString[40;36m: [40;94m"privateString"[40;36m,
-[40;37m  ║     [40;91m^^^^^^^^^^^^^
-[40;37m13║ [40;36m}
+At (PrivatePropertyInProjectionErrorTest.klass:12)
+
+[39m 1║ [35mpackage [39mdummy
+[39m 9║ [35mprojection [39mProjectionOnPrivateProperty [35mon [39mClassWithPrivateProperty
+[39m10║ [36m{
+[39m12║     [39mprivateString[36m: [34m"privateString"[36m,
+[39m  ║     [31m^^^^^^^^^^^^^
+[39m13║ [36m}
 [m
 [36mLocation:  [mPrivatePropertyInProjectionErrorTest.klass:12[m
 [36mFile:      [mPrivatePropertyInProjectionErrorTest.klass[m
 [36mLine:      [m12[m
-[36mCharacter: [m5[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

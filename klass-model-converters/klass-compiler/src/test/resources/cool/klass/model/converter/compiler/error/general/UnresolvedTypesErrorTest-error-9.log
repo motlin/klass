@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_PRP_TYP[m [33m════════════════════════════════════════[m
-[31mCannot find class 'UnresolvedClass'.[m
+[31mError: Cannot find class 'UnresolvedClass'.[m
 
-Error at location. (UnresolvedTypesErrorTest.klass:21)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m18║ [40;35massociation [40;97mAssociationWithUnresolved
-[40;37m19║ [40;36m{
-[40;37m21║     [40;97mchildren[40;36m: [40;97mUnresolvedClass[40;36m[[40;94m0[40;36m..[40;94m*[40;36m][40;36m;
-[40;37m  ║               [40;91m^^^^^^^^^^^^^^^
-[40;37m24║ [40;36m}
+At (UnresolvedTypesErrorTest.klass:21)
+
+[39m 1║ [35mpackage [39mdummy
+[39m18║ [35massociation [39mAssociationWithUnresolved
+[39m19║ [36m{
+[39m21║     [39mchildren[36m: [39mUnresolvedClass[36m[[34m0[36m..[34m*[36m][36m;
+[39m  ║               [31m^^^^^^^^^^^^^^^
+[39m24║ [36m}
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:21[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
 [36mLine:      [m21[m
-[36mCharacter: [m15[m
+[36mCharacter: [m15
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

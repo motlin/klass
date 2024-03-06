@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badProjection'.[m
+[31mError: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badProjection'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:43)
-[40m[40;37m 1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m43║ [40;35mprojection [40;97mbadProjection [40;95mon [40;97mbadClass
-[40;37m  ║            [40;91m^^^^^^^^^^^^^
+At (InvalidNamesErrorTest.klass:43)
+
+[39m 1║ [35mpackage [39mBADPACKAGE
+[39m43║ [35mprojection [39mbadProjection [35mon [39mbadClass
+[39m  ║            [31m^^^^^^^^^^^^^
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:43[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
 [36mLine:      [m43[m
-[36mCharacter: [m12[m
+[36mCharacter: [m12
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

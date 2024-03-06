@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_RED_INT[m [33m════════════════════════════════════════[m
-[31mRedundant interface 'RedundantLeftInterface'.[m
+[31mError: Redundant interface 'RedundantLeftInterface'.[m
 
-Error at location. (RedunantImplementsErrorTest.klass:53)
-[40m[40;37m 1║ [40;35mpackage [40;97mexample
-[40;37m53║     [40;95mimplements [40;97mRedundantTopInterface[40;36m, [40;97mRedundantLeftInterface[40;36m, [40;97mRedundantRightInterface
-[40;37m  ║                                       [40;91m^^^^^^^^^^^^^^^^^^^^^^
+At (RedunantImplementsErrorTest.klass:53)
+
+[39m 1║ [35mpackage [39mexample
+[39m53║     [35mimplements [39mRedundantTopInterface[36m, [39mRedundantLeftInterface[36m, [39mRedundantRightInterface
+[39m  ║                                       [31m^^^^^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mRedunantImplementsErrorTest.klass:53[m
 [36mFile:      [mRedunantImplementsErrorTest.klass[m
 [36mLine:      [m53[m
-[36mCharacter: [m39[m
+[36mCharacter: [m39
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

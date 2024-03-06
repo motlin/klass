@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadParameter'.[m
+[31mError: Name must match pattern ^[a-z][a-zA-Z0-9]*$ but was 'BadParameter'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:50)
-[40m[40;37m 1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m48║ [40;35mservice [40;97mbadClass
-[40;37m49║ [40;36m{
-[40;37m50║     [40;36m/[40;97mbad[40;36m/[40;36m{[40;97mBadParameter[40;36m: [40;95mString[40;36m[[40;94m1[40;36m..[40;94m1[40;36m][40;36m}
-[40;37m  ║           [40;91m^^^^^^^^^^^^
-[40;37m55║ [40;36m}
+At (InvalidNamesErrorTest.klass:50)
+
+[39m 1║ [35mpackage [39mBADPACKAGE
+[39m48║ [35mservice [39mbadClass
+[39m49║ [36m{
+[39m50║     [36m/[39mbad[36m/[36m{[39mBadParameter[36m: [35mString[36m[[34m1[36m..[34m1[36m][36m}
+[39m  ║           [31m^^^^^^^^^^^^
+[39m55║ [36m}
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:50[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
 [36mLine:      [m50[m
-[36mCharacter: [m11[m
+[36mCharacter: [m11
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

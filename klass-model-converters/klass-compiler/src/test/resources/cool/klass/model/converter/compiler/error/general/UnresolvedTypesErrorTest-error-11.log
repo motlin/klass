@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
-[31mCannot find classifier 'UnresolvedClass'[m
+[31mError: Cannot find classifier 'UnresolvedClass'[m
 
-Error at location. (UnresolvedTypesErrorTest.klass:31)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m31║ [40;35mprojection [40;97mProjectionWithUnresolvedClass [40;95mon [40;97mUnresolvedClass
-[40;37m  ║                                             [40;91m^^^^^^^^^^^^^^^
+At (UnresolvedTypesErrorTest.klass:31)
+
+[39m 1║ [35mpackage [39mdummy
+[39m31║ [35mprojection [39mProjectionWithUnresolvedClass [35mon [39mUnresolvedClass
+[39m  ║                                             [31m^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mUnresolvedTypesErrorTest.klass:31[m
 [36mFile:      [mUnresolvedTypesErrorTest.klass[m
 [36mLine:      [m31[m
-[36mCharacter: [m45[m
+[36mCharacter: [m45
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_DUP_ENM[m [33m════════════════════════════════════════[m
-[31mDuplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.[m
+[31mError: Duplicate enumeration literal: 'DUPLICATE_ENUM_LITERAL'.[m
 
-Error at location. (DuplicateNamesErrorTest.klass:6)
-[40m[40;37m1║ [40;35mpackage [40;97mdummy
-[40;37m3║ [40;35menumeration [40;97mDuplicateTopLevelElement
-[40;37m4║ [40;36m{
-[40;37m6║     [40;97mDUPLICATE_ENUM_LITERAL[40;36m([40;94m"Duplicate pretty name"[40;36m)[40;36m,
-[40;37m ║     [40;91m^^^^^^^^^^^^^^^^^^^^^^
-[40;37m7║ [40;36m}
+At (DuplicateNamesErrorTest.klass:6)
+
+[39m1║ [35mpackage [39mdummy
+[39m3║ [35menumeration [39mDuplicateTopLevelElement
+[39m4║ [36m{
+[39m6║     [39mDUPLICATE_ENUM_LITERAL[36m([34m"Duplicate pretty name"[36m)[36m,
+[39m ║     [31m^^^^^^^^^^^^^^^^^^^^^^
+[39m7║ [36m}
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:6[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m
 [36mLine:      [m6[m
-[36mCharacter: [m5[m
+[36mCharacter: [m5
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

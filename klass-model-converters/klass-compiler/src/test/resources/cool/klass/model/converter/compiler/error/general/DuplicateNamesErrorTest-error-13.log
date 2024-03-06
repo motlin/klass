@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_REL_INF[m [33m════════════════════════════════════════[m
-[31mRelationship inference not yet supported. 'DuplicateTopLevelElement' must declare a relationship.[m
+[31mError: Relationship inference not yet supported. 'DuplicateTopLevelElement' must declare a relationship.[m
 
-Error at location. (DuplicateNamesErrorTest.klass:26)
-[40m[40;37m 1║ [40;35mpackage [40;97mdummy
-[40;37m26║ [40;35massociation [40;97mDuplicateTopLevelElement
-[40;37m  ║             [40;91m^^^^^^^^^^^^^^^^^^^^^^^^
+At (DuplicateNamesErrorTest.klass:26)
+
+[39m 1║ [35mpackage [39mdummy
+[39m26║ [35massociation [39mDuplicateTopLevelElement
+[39m  ║             [31m^^^^^^^^^^^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mDuplicateNamesErrorTest.klass:26[m
 [36mFile:      [mDuplicateNamesErrorTest.klass[m
 [36mLine:      [m26[m
-[36mCharacter: [m13[m
+[36mCharacter: [m13
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

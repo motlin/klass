@@ -1,11 +1,13 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[a-z]+(\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.[m
+[31mError: Name must match pattern ^[a-z]+(\.[a-z][a-z0-9]*)*$ but was 'BADPACKAGE'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:1)
-[40m[40;37m1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m ║         [40;91m^^^^^^^^^^
+At (InvalidNamesErrorTest.klass:1)
+
+[39m1║ [35mpackage [39mBADPACKAGE
+[39m ║         [31m^^^^^^^^^^
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:1[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
 [36mLine:      [m1[m
-[36mCharacter: [m9[m
+[36mCharacter: [m9
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

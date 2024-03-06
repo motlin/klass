@@ -1,15 +1,17 @@
 [33m════════════════════════════════════════[m [35mERR_VER_END[m [33m════════════════════════════════════════[m
-[31mMultiple version properties on 'ExampleClass'.[m
+[31mError: Multiple version properties on 'ExampleClass'.[m
 
-Error at location. (DuplicateVersionAssociationErrorTest.klass:11)
-[40m[40;37m 1║ [40;35mpackage [40;97mcom[40;36m.[40;97merrors
-[40;37m 8║ [40;35massociation [40;97mExampleClassVersionAgain
-[40;37m 9║ [40;36m{
-[40;37m11║     [40;97mduplicateExampleClassVersion[40;36m: [40;97mExampleClassVersion[40;36m[[40;94m1[40;36m..[40;94m1[40;36m] [40;93mowned [40;33mversion[40;36m;
-[40;37m  ║                                                                   [40;91m^^^^^^^
-[40;37m14║ [40;36m}
+At (DuplicateVersionAssociationErrorTest.klass:11)
+
+[39m 1║ [35mpackage [39mcom[36m.[39merrors
+[39m 8║ [35massociation [39mExampleClassVersionAgain
+[39m 9║ [36m{
+[39m11║     [39mduplicateExampleClassVersion[36m: [39mExampleClassVersion[36m[[34m1[36m..[34m1[36m] [33mowned [33mversion[36m;
+[39m  ║                                                                   [31m^^^^^^^
+[39m14║ [36m}
 [m
 [36mLocation:  [mDuplicateVersionAssociationErrorTest.klass:11[m
 [36mFile:      [mDuplicateVersionAssociationErrorTest.klass[m
 [36mLine:      [m11[m
-[36mCharacter: [m67[m
+[36mCharacter: [m67
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m

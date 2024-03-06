@@ -1,12 +1,14 @@
 [33m════════════════════════════════════════[m [35mERR_NME_PAT[m [33m════════════════════════════════════════[m
-[31mName must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badAssociation'.[m
+[31mError: Name must match pattern ^[A-Z][a-zA-Z0-9]*$ but was 'badAssociation'.[m
 
-Error at location. (InvalidNamesErrorTest.klass:35)
-[40m[40;37m 1║ [40;35mpackage [40;97mBADPACKAGE
-[40;37m35║ [40;35massociation [40;97mbadAssociation
-[40;37m  ║             [40;91m^^^^^^^^^^^^^^
+At (InvalidNamesErrorTest.klass:35)
+
+[39m 1║ [35mpackage [39mBADPACKAGE
+[39m35║ [35massociation [39mbadAssociation
+[39m  ║             [31m^^^^^^^^^^^^^^
 [m
 [36mLocation:  [mInvalidNamesErrorTest.klass:35[m
 [36mFile:      [mInvalidNamesErrorTest.klass[m
 [36mLine:      [m35[m
-[36mCharacter: [m13[m
+[36mCharacter: [m13
+[33m═════════════════════════════════════════════════════════════════════════════════════════════[m
