@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.annotation.AnnotationSeverity;
 import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -126,7 +127,8 @@ public class AntlrRelationship
                     "ERR_REL_INF",
                     "Relationship in association '%s' is inferred and can be removed.".formatted(this.association.getName()),
                     this.criteria,
-                    criteriaExpressionContext);
+                    criteriaExpressionContext,
+                    AnnotationSeverity.WARNING);
         }
     }
     //</editor-fold>
