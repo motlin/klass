@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
     <changeSet author="Klass" id="object-sequence-1">
-        <createTable catalogName="KLASS-BOOTSTRAPPED-H2" schemaName="PUBLIC" tableName="OBJECT_SEQUENCE">
+        <createTable tableName="OBJECT_SEQUENCE">
             <column name="SEQUENCE_NAME" type="VARCHAR(256)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="OBJECT_SEQUENCE_PK" />
             </column>

@@ -15,10 +15,10 @@
     "loggers"  : {
       "com.gs.fw.common.mithra.batch.sqllogs"    : "INFO",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
-      "com.gs.fw.common.mithra.sqllogs"          : "DEBUG",
+      "com.gs.fw.common.mithra.sqllogs":           "INFO",
       "com.smoketurner.dropwizard.graphql":        "INFO",
       "graphql.execution":                         "INFO",
-      "io.liftwizard":                             "DEBUG",
+      "io.liftwizard"                            : "DEBUG",
       "io.liftwizard.logging.p6spy":               "INFO",
       "klass.model.meta.domain"                  : "DEBUG",
       "liquibase.changelog":                       "WARN",
