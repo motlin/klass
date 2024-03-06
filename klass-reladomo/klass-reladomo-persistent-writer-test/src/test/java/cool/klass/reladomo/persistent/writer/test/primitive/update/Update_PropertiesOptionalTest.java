@@ -108,7 +108,7 @@ public class Update_PropertiesOptionalTest
                 + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"systemTo\": null,\n"
                 + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"lastUpdatedById\": \"test user 1\",\n"
                 + "  \"version\": {\n"
                 + "    \"propertiesOptionalId\": 1,\n"
@@ -117,7 +117,7 @@ public class Update_PropertiesOptionalTest
                 + "    \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "    \"systemTo\": null,\n"
                 + "    \"createdById\": \"test user 1\",\n"
-                + "    \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "    \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "    \"lastUpdatedById\": \"test user 1\",\n"
                 + "  },\n"
                 + "}\n";
@@ -131,7 +131,7 @@ public class Update_PropertiesOptionalTest
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemFrom: TemporalInstant?' but value was string: \"1999-12-31T23:59:59.999Z\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for temporal property 'PropertiesOptional.systemTo: TemporalInstant?' but value was null.",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdById: String' but value was string: \"test user 1\".",
-                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"2000-01-01T04:59:59.999Z\".",
+                "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.createdOn: Instant' but value was string: \"1999-12-31T23:59:59.999Z\".",
                 "Warning at PropertiesOptional. Didn't expect to receive value for audit property 'PropertiesOptional.lastUpdatedById: String' but value was string: \"test user 1\".");
 
         this.validate(incomingJson, this.persistentInstance, expectedErrors, expectedWarnings);

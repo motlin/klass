@@ -57,7 +57,7 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
                 + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"systemTo\": null,\n"
                 + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"lastUpdatedById\": \"test user 1\",\n"
                 + "  \"version\": {\n"
                 + "    \"propertiesRequiredId\": 1,\n"
@@ -66,7 +66,7 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
                 + "    \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "    \"systemTo\": null,\n"
                 + "    \"createdById\": \"test user 1\",\n"
-                + "    \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "    \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "    \"lastUpdatedById\": \"test user 1\",\n"
                 + "  },\n"
                 + "}\n";
@@ -78,9 +78,9 @@ public class PropertiesRequiredTest extends AbstractPrimitiveValidatorTest
                 "Warning at PropertiesRequired. Didn't expect to receive value for temporal property 'PropertiesRequired.systemFrom: TemporalInstant?' but value was string: \"1999-12-31T23:59:59.999Z\".",
                 "Warning at PropertiesRequired. Didn't expect to receive value for temporal property 'PropertiesRequired.systemTo: TemporalInstant?' but value was null.",
                 "Warning at PropertiesRequired. Didn't expect to receive value for audit property 'PropertiesRequired.createdById: String' but value was string: \"test user 1\".",
-                "Warning at PropertiesRequired. Didn't expect to receive value for audit property 'PropertiesRequired.createdOn: Instant' but value was string: \"2000-01-01T04:59:59.999Z\".",
+                "Warning at PropertiesRequired. Didn't expect to receive value for audit property 'PropertiesRequired.createdOn: Instant' but value was string: \"1999-12-31T23:59:59.999Z\".",
                 "Warning at PropertiesRequired. Didn't expect to receive value for audit property 'PropertiesRequired.lastUpdatedById: String' but value was string: \"test user 1\".",
-                "Warning at PropertiesRequired. Didn't expect to receive value for version association end 'PropertiesRequired.version: PropertiesRequiredVersion[1..1]' but value was object: {\"propertiesRequiredId\":1,\"number\":1,\"system\":\"1999-12-31T23:59:59.999Z\",\"systemFrom\":\"1999-12-31T23:59:59.999Z\",\"systemTo\":null,\"createdById\":\"test user 1\",\"createdOn\":\"2000-01-01T04:59:59.999Z\",\"lastUpdatedById\":\"test user 1\"}.");
+                "Warning at PropertiesRequired. Didn't expect to receive value for version association end 'PropertiesRequired.version: PropertiesRequiredVersion[1..1]' but value was object: {\"propertiesRequiredId\":1,\"number\":1,\"system\":\"1999-12-31T23:59:59.999Z\",\"systemFrom\":\"1999-12-31T23:59:59.999Z\",\"systemTo\":null,\"createdById\":\"test user 1\",\"createdOn\":\"1999-12-31T23:59:59.999Z\",\"lastUpdatedById\":\"test user 1\"}.");
 
         this.validate(incomingJson, expectedErrors, expectedWarnings);
     }

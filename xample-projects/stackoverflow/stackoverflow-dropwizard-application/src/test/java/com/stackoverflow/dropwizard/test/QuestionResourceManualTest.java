@@ -287,7 +287,7 @@ public class QuestionResourceManualTest
                 + "  \"systemFrom\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"systemTo\": null,\n"
                 + "  \"createdById\": \"test user 1\",\n"
-                + "  \"createdOn\": \"2000-01-01T04:59:59.999Z\",\n"
+                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
                 + "  \"lastUpdatedById\": \"test user 1\",\n"
                 + "  \"answers\": [],\n"
                 + "  \"tags\": [\n"
