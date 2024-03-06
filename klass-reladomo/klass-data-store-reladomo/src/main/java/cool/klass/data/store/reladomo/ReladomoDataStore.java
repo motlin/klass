@@ -472,7 +472,8 @@ public class ReladomoDataStore
             if (dataTypeProperty.isRequired())
             {
                 String message = String.format(
-                        "May not set required property to null: '%s'",
+                        "May not set required property to null: '%s.%s'",
+                        dataTypeProperty.getOwningClassifier().getName(),
                         dataTypeProperty);
                 throw new IllegalStateException(message);
             }
