@@ -2,7 +2,6 @@ package com.stackoverflow.dropwizard.application;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.data.store.DataStore;
 import com.smoketurner.dropwizard.graphql.GraphQLBundle;
 import com.smoketurner.dropwizard.graphql.GraphQLFactory;
 import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
@@ -12,13 +11,6 @@ import io.dropwizard.setup.Bootstrap;
 
 public class StackOverflowGraphQLBundle extends GraphQLBundle<StackOverflowConfiguration>
 {
-    private final DataStore dataStore;
-
-    public StackOverflowGraphQLBundle(DataStore dataStore)
-    {
-        this.dataStore = dataStore;
-    }
-
     @Override
     public void initialize(@Nonnull Bootstrap<?> bootstrap)
     {
