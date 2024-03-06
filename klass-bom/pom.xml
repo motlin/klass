@@ -358,11 +358,11 @@
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.0.0</version>
                     <configuration>
-                        <configLocation>checkstyle-configuration.xml</configLocation>
                         <logViolationsToConsole>true</logViolationsToConsole>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <cacheFile>${basedir}/target/checkstyleCache</cacheFile>
-                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                        <configLocation>${checkstyle.configuration}</configLocation>
+                        <suppressionsLocation>${checkstyle.suppressions}</suppressionsLocation>
+                        <cacheFile>${checkstyle.cache}</cacheFile>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -371,6 +371,14 @@
                             <version>8.19</version>
                         </dependency>
                     </dependencies>
+                    <executions>
+                        <execution>
+                            <id>check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
