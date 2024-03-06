@@ -1,6 +1,5 @@
 package cool.klass.model.converter.compiler;
 
-import cool.klass.model.converter.compiler.error.RecognitionExceptionUtil;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -34,7 +33,6 @@ public class ThrowingErrorListener extends BaseErrorListener
                 charPositionInLine,
                 msg,
                 sourceLine);
-        String s          = RecognitionExceptionUtil.formatVerbose(e);
         throw new ParseCancellationException(error);
     }
 }

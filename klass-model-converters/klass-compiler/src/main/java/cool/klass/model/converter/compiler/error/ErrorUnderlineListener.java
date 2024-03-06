@@ -103,77 +103,77 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterCompilationUnit(CompilationUnitContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCompilationUnit() not implemented yet");
+                + ".enterCompilationUnit() not implemented yet");
     }
 
     @Override
     public void enterPackageDeclaration(PackageDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPackageDeclaration() not implemented yet");
+                + ".enterPackageDeclaration() not implemented yet");
     }
 
     @Override
     public void enterPackageName(PackageNameContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPackageName() not implemented yet");
+                + ".enterPackageName() not implemented yet");
     }
 
     @Override
     public void enterTopLevelDeclaration(TopLevelDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTopLevelDeclaration() not implemented yet");
+                + ".enterTopLevelDeclaration() not implemented yet");
     }
 
     @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassDeclaration() not implemented yet");
+                + ".enterClassDeclaration() not implemented yet");
     }
 
     @Override
     public void enterClassOrUser(ClassOrUserContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassOrUser() not implemented yet");
+                + ".enterClassOrUser() not implemented yet");
     }
 
     @Override
     public void enterClassServiceModifier(ClassServiceModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassServiceModifier() not implemented yet");
+                + ".enterClassServiceModifier() not implemented yet");
     }
 
     @Override
     public void enterServiceCategoryModifier(ServiceCategoryModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCategoryModifier() not implemented yet");
+                + ".enterServiceCategoryModifier() not implemented yet");
     }
 
     @Override
     public void enterClassBody(ClassBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassBody() not implemented yet");
+                + ".enterClassBody() not implemented yet");
     }
 
     @Override
     public void enterEnumerationDeclaration(EnumerationDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationDeclaration() not implemented yet");
+                + ".enterEnumerationDeclaration() not implemented yet");
     }
 
     @Override
     public void enterEnumerationBody(EnumerationBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEnumerationBody() not implemented yet");
+                + ".enterEnumerationBody() not implemented yet");
     }
 
     @Override
@@ -192,63 +192,63 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationDeclaration() not implemented yet");
+                + ".enterAssociationDeclaration() not implemented yet");
     }
 
     @Override
     public void enterAssociationBody(AssociationBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationBody() not implemented yet");
+                + ".enterAssociationBody() not implemented yet");
     }
 
     @Override
     public void enterAssociationEnd(AssociationEndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationEnd() not implemented yet");
+                + ".enterAssociationEnd() not implemented yet");
     }
 
     @Override
     public void enterRelationship(RelationshipContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterRelationship() not implemented yet");
+                + ".enterRelationship() not implemented yet");
     }
 
     @Override
     public void enterProjectionDeclaration(ProjectionDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionDeclaration() not implemented yet");
+                + ".enterProjectionDeclaration() not implemented yet");
     }
 
     @Override
     public void enterProjectionBody(ProjectionBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionBody() not implemented yet");
+                + ".enterProjectionBody() not implemented yet");
     }
 
     @Override
     public void enterProjectionMember(ProjectionMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionMember() not implemented yet");
+                + ".enterProjectionMember() not implemented yet");
     }
 
     @Override
     public void enterProjectionMemberWithBody(ProjectionMemberWithBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionMemberWithBody() not implemented yet");
+                + ".enterProjectionMemberWithBody() not implemented yet");
     }
 
     @Override
     public void enterProjectionPrimitiveMember(ProjectionPrimitiveMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterProjectionPrimitiveMember() not implemented yet");
+                + ".enterProjectionPrimitiveMember() not implemented yet");
     }
 
     @Override
@@ -261,14 +261,14 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterServiceGroupDeclaration(ServiceGroupDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceGroupDeclaration() not implemented yet");
+                + ".enterServiceGroupDeclaration() not implemented yet");
     }
 
     @Override
     public void enterUrlDeclaration(UrlDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlDeclaration() not implemented yet");
+                + ".enterUrlDeclaration() not implemented yet");
     }
 
     @Override
@@ -281,63 +281,63 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterUrlPathSegment(UrlPathSegmentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlPathSegment() not implemented yet");
+                + ".enterUrlPathSegment() not implemented yet");
     }
 
     @Override
     public void enterQueryParameterList(QueryParameterListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterQueryParameterList() not implemented yet");
+                + ".enterQueryParameterList() not implemented yet");
     }
 
     @Override
     public void enterUrlParameterDeclaration(UrlParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterUrlParameterDeclaration() not implemented yet");
+                + ".enterUrlParameterDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceDeclaration(ServiceDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceDeclaration() not implemented yet");
+                + ".enterServiceDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceMultiplicityDeclaration(ServiceMultiplicityDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceMultiplicityDeclaration() not implemented yet");
+                + ".enterServiceMultiplicityDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceMultiplicity(ServiceMultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceMultiplicity() not implemented yet");
+                + ".enterServiceMultiplicity() not implemented yet");
     }
 
     @Override
     public void enterServiceCriteriaDeclaration(ServiceCriteriaDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCriteriaDeclaration() not implemented yet");
+                + ".enterServiceCriteriaDeclaration() not implemented yet");
     }
 
     @Override
     public void enterServiceCriteriaKeyword(ServiceCriteriaKeywordContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceCriteriaKeyword() not implemented yet");
+                + ".enterServiceCriteriaKeyword() not implemented yet");
     }
 
     @Override
     public void enterServiceProjectionDispatch(ServiceProjectionDispatchContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterServiceProjectionDispatch() not implemented yet");
+                + ".enterServiceProjectionDispatch() not implemented yet");
     }
 
     @Override
@@ -350,14 +350,14 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterClassMember(ClassMemberContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassMember() not implemented yet");
+                + ".enterClassMember() not implemented yet");
     }
 
     @Override
     public void enterDataTypeProperty(DataTypePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataTypeProperty() not implemented yet");
+                + ".enterDataTypeProperty() not implemented yet");
     }
 
     @Override
@@ -376,70 +376,70 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterParameterizedProperty(ParameterizedPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterizedProperty() not implemented yet");
+                + ".enterParameterizedProperty() not implemented yet");
     }
 
     @Override
     public void enterOptionalMarker(OptionalMarkerContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOptionalMarker() not implemented yet");
+                + ".enterOptionalMarker() not implemented yet");
     }
 
     @Override
     public void enterParameterDeclaration(ParameterDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterDeclaration() not implemented yet");
+                + ".enterParameterDeclaration() not implemented yet");
     }
 
     @Override
     public void enterDataTypeDeclaration(DataTypeDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataTypeDeclaration() not implemented yet");
+                + ".enterDataTypeDeclaration() not implemented yet");
     }
 
     @Override
     public void enterParameterDeclarationList(ParameterDeclarationListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterParameterDeclarationList() not implemented yet");
+                + ".enterParameterDeclarationList() not implemented yet");
     }
 
     @Override
     public void enterArgumentList(ArgumentListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterArgumentList() not implemented yet");
+                + ".enterArgumentList() not implemented yet");
     }
 
     @Override
     public void enterArgument(ArgumentContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterArgument() not implemented yet");
+                + ".enterArgument() not implemented yet");
     }
 
     @Override
     public void enterMultiplicity(MultiplicityContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMultiplicity() not implemented yet");
+                + ".enterMultiplicity() not implemented yet");
     }
 
     @Override
     public void enterMultiplicityBody(MultiplicityBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMultiplicityBody() not implemented yet");
+                + ".enterMultiplicityBody() not implemented yet");
     }
 
     @Override
     public void enterPrimitiveType(PrimitiveTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterPrimitiveType() not implemented yet");
+                + ".enterPrimitiveType() not implemented yet");
     }
 
     @Override
@@ -464,8 +464,8 @@ public class ErrorUnderlineListener extends BaseErrorListener
             if (i == offendingLine)
             {
                 String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(
-                        offendingToken,
-                        errorLine);
+                        offendingToken
+                );
                 this.contextualStrings.add(errorStringUnderlined);
             }
         }
@@ -481,112 +481,112 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterAssociationEndModifier(AssociationEndModifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterAssociationEndModifier() not implemented yet");
+                + ".enterAssociationEndModifier() not implemented yet");
     }
 
     @Override
     public void enterOrderByDeclaration(OrderByDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByDeclaration() not implemented yet");
+                + ".enterOrderByDeclaration() not implemented yet");
     }
 
     @Override
     public void enterOrderByList(OrderByListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByList() not implemented yet");
+                + ".enterOrderByList() not implemented yet");
     }
 
     @Override
     public void enterOrderByProperty(OrderByPropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByProperty() not implemented yet");
+                + ".enterOrderByProperty() not implemented yet");
     }
 
     @Override
     public void enterOrderByDirection(OrderByDirectionContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOrderByDirection() not implemented yet");
+                + ".enterOrderByDirection() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionAnd(CriteriaExpressionAndContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionAnd() not implemented yet");
+                + ".enterCriteriaExpressionAnd() not implemented yet");
     }
 
     @Override
     public void enterCriteriaNative(CriteriaNativeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaNative() not implemented yet");
+                + ".enterCriteriaNative() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionGroup(CriteriaExpressionGroupContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionGroup() not implemented yet");
+                + ".enterCriteriaExpressionGroup() not implemented yet");
     }
 
     @Override
     public void enterCriteriaOperator(CriteriaOperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaOperator() not implemented yet");
+                + ".enterCriteriaOperator() not implemented yet");
     }
 
     @Override
     public void enterCriteriaExpressionOr(CriteriaExpressionOrContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterCriteriaExpressionOr() not implemented yet");
+                + ".enterCriteriaExpressionOr() not implemented yet");
     }
 
     @Override
     public void enterExpressionValue(ExpressionValueContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterExpressionValue() not implemented yet");
+                + ".enterExpressionValue() not implemented yet");
     }
 
     @Override
     public void enterLiteralList(LiteralListContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterLiteralList() not implemented yet");
+                + ".enterLiteralList() not implemented yet");
     }
 
     @Override
     public void enterNativeLiteral(NativeLiteralContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterNativeLiteral() not implemented yet");
+                + ".enterNativeLiteral() not implemented yet");
     }
 
     @Override
     public void enterOperator(OperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterOperator() not implemented yet");
+                + ".enterOperator() not implemented yet");
     }
 
     @Override
     public void enterClassType(ClassTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterClassType() not implemented yet");
+                + ".enterClassType() not implemented yet");
     }
 
     @Override
     public void enterDataType(DataTypeContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterDataType() not implemented yet");
+                + ".enterDataType() not implemented yet");
     }
 
     @Override
@@ -611,35 +611,35 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterMemberReference(MemberReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterMemberReference() not implemented yet");
+                + ".enterMemberReference() not implemented yet");
     }
 
     @Override
     public void enterVariableReference(VariableReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterVariableReference() not implemented yet");
+                + ".enterVariableReference() not implemented yet");
     }
 
     @Override
     public void enterThisMemberReference(ThisMemberReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterThisMemberReference() not implemented yet");
+                + ".enterThisMemberReference() not implemented yet");
     }
 
     @Override
     public void enterTypeMemberReference(TypeMemberReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTypeMemberReference() not implemented yet");
+                + ".enterTypeMemberReference() not implemented yet");
     }
 
     @Override
     public void enterTypeReference(TypeReferenceContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTypeReference() not implemented yet");
+                + ".enterTypeReference() not implemented yet");
     }
 
     @Override
@@ -652,42 +652,42 @@ public class ErrorUnderlineListener extends BaseErrorListener
     public void enterEscapedIdentifier(EscapedIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEscapedIdentifier() not implemented yet");
+                + ".enterEscapedIdentifier() not implemented yet");
     }
 
     @Override
     public void enterKeywordValidAsIdentifier(KeywordValidAsIdentifierContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterKeywordValidAsIdentifier() not implemented yet");
+                + ".enterKeywordValidAsIdentifier() not implemented yet");
     }
 
     @Override
     public void enterLiteral(LiteralContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterLiteral() not implemented yet");
+                + ".enterLiteral() not implemented yet");
     }
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterEveryRule() not implemented yet");
+                + ".enterEveryRule() not implemented yet");
     }
 
     @Override
     public void visitTerminal(TerminalNode node)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".visitTerminal() not implemented yet");
+                + ".visitTerminal() not implemented yet");
     }
 
     @Override
     public void visitErrorNode(ErrorNode node)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".visitErrorNode() not implemented yet");
+                + ".visitErrorNode() not implemented yet");
     }
 
     protected void handleEscapedIdentifier(EscapedIdentifierContext escapedIdentifierContext)
@@ -713,27 +713,27 @@ public class ErrorUnderlineListener extends BaseErrorListener
         int    line      = offendingToken.getLine();
         String errorLine = this.compilationUnit.getLines()[line - 1];
 
-        String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(offendingToken, errorLine);
+        String errorStringUnderlined = ErrorUnderlineListener.getErrorLineStringUnderlined(offendingToken);
         this.contextualStrings.add(errorLine);
         this.contextualStrings.add(errorStringUnderlined);
     }
 
-    public static String getErrorLineStringUnderlined(Token offendingToken, String errorLine)
+    public static String getErrorLineStringUnderlined(Token offendingToken)
     {
-        // replace tabs with single space so that charPositionInLine gives us the column to start underlining.
-        String        errorLineWithoutTabs = TAB_PATTERN.matcher(errorLine).replaceAll(" ");
-        String        formatString         = "%" + errorLineWithoutTabs.length() + 's';
-        StringBuilder underLine            = new StringBuilder(String.format(formatString, ""));
-        int           start                = offendingToken.getStartIndex();
-        int           stop                 = offendingToken.getStopIndex();
-        if (start >= 0 && stop >= 0)
+        int start              = offendingToken.getStartIndex();
+        int stop               = offendingToken.getStopIndex();
+        int charPositionInLine = offendingToken.getCharPositionInLine();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < charPositionInLine; i++)
         {
-            for (int i = 0; i <= (stop - start); i++)
-            {
-                underLine.setCharAt(offendingToken.getCharPositionInLine() + i, '^');
-            }
+            stringBuilder.append(' ');
         }
-        return underLine.toString();
+        for (int i = start; i <= stop; i++)
+        {
+            stringBuilder.append('^');
+        }
+        return stringBuilder.toString();
     }
 
     @Override

@@ -23,7 +23,9 @@ public class CompilerErrorHolder
 
     public ImmutableList<CompilerError> getCompilerErrors()
     {
-        return this.compilerErrors.toImmutable();
+        return this.compilerErrors
+                .toSortedList()
+                .toImmutable();
     }
 
     public boolean hasCompilerErrors()
