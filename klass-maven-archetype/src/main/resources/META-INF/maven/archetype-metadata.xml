@@ -9,6 +9,9 @@
         <requiredProperty key="description">
             <defaultValue>null</defaultValue>
         </requiredProperty>
+        <requiredProperty key="git">
+            <defaultValue>.git</defaultValue>
+        </requiredProperty>
     </requiredProperties>
 
     <fileSets>

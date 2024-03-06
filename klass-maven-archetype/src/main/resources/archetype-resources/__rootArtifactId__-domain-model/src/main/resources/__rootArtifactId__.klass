@@ -6,10 +6,10 @@ user User
     read
     systemTemporal
 {
-    userId    : String key userId;
-    firstName : String?;
-    lastName  : String?;
-    email     : String?;
+    userId   : String key userId;
+    firstName: String?;
+    lastName : String?;
+    email    : String?;
 }
 
 projection UserReadProjection on User
@@ -27,6 +27,13 @@ service User
         {
             multiplicity: one;
             criteria    : this.userId == userId;
+            projection  : UserReadProjection;
+        }
+    /user
+        GET
+        {
+            multiplicity: many;
+            criteria    : all;
             projection  : UserReadProjection;
         }
 }
