@@ -312,4 +312,10 @@ public enum PrimitiveType
     {
         return Optional.empty();
     }
+
+    @Override
+    public String getName()
+    {
+        return this.getPrettyName();
+    }
 }
