@@ -431,6 +431,7 @@
                                                 cool.klass:klass-generator-graphql-runtime-wiring-plugin,
                                                 cool.klass:klass-generator-graphql-schema-plugin,
                                                 cool.klass:klass-generator-json-view-plugin,
+                                                cool.klass:klass-generator-klass-with-inference-plugin,
                                                 cool.klass:klass-generator-meta-constants-plugin,
                                                 cool.klass:klass-generator-reladomo-code-plugin,
                                                 cool.klass:klass-generator-reladomo-database-plugin,
