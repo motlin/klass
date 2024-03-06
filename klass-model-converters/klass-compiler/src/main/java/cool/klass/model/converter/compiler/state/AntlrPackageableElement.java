@@ -26,9 +26,9 @@ public abstract class AntlrPackageableElement
         super(elementContext, compilationUnit, ordinal, nameContext);
         this.compilationUnitState = Objects.requireNonNull(compilationUnitState);
 
-        if (this.compilationUnitState.getElementContext() != this.compilationUnitState.getElementContext())
+        if (!compilationUnit.equals(this.compilationUnitState.getCompilationUnit()))
         {
-            throw new AssertionError();
+            throw new AssertionError("Compilation unit: " + compilationUnit + " does not match: " + this.compilationUnitState);
         }
     }
 
