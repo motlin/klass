@@ -30,5 +30,9 @@
     </dependencyManagement>
 
     <modules>
+        <module>klass-dropwizard-bundle-cors</module>
+        <module>klass-dropwizard-bundle-ddl-executor</module>
+        <module>klass-dropwizard-bundle-h2</module>
+        <module>klass-dropwizard-bundle-prioritized-api</module>
     </modules>
 </project>
