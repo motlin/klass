@@ -281,6 +281,10 @@
         <module name="InnerAssignment" />
         <module name="MissingSwitchDefault" />
         <module name="ModifiedControlVariable" />
+        <module name="MultipleStringLiterals">
+            <property name="ignoreStringsRegexp" value="^.{0,4}$" />
+            <property name="severity" value="warning" />
+        </module>
         <module name="MultipleVariableDeclarations" />
         <module name="NestedForDepth">
             <property name="max" value="2" />
@@ -306,6 +310,9 @@
         <module name="UnnecessarySemicolonAfterTypeMemberDeclaration" />
         <module name="UnnecessarySemicolonInEnumeration" />
         <module name="UnnecessarySemicolonInTryWithResources" />
+        <module name="VariableDeclarationUsageDistance">
+            <property name="severity" value="warning" />
+        </module>
 
         <!-- Filters-->
         <!-- Tone down the checking for test code -->
