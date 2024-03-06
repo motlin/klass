@@ -87,11 +87,12 @@ public class ClassTemporalPropertyInferencePhase extends AbstractCompilerPhase
     {
         return new AntlrPrimitiveProperty(
                 ctx,
-                ctx,
+                this.currentCompilationUnit,
                 name,
+                ctx,
                 false,
                 Lists.immutable.empty(),
-                new PrimitiveTypeBuilder(ctx, primitiveType),
-                classState);
+                classState,
+                new PrimitiveTypeBuilder(ctx, primitiveType));
     }
 }

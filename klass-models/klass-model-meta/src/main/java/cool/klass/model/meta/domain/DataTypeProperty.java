@@ -60,6 +60,6 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
         }
 
         @Override
-        public abstract DataTypeProperty<T> build(Klass owningKlass);
+        public abstract DataTypeProperty<T> build();
     }
 }

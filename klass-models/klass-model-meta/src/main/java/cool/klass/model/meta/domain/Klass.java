@@ -78,7 +78,7 @@ public final class Klass extends Type
                     this.packageName);
 
             ImmutableList<DataTypeProperty<?>> dataTypeProperties = this.dataTypePropertyBuilders
-                    .<DataTypeProperty<?>>collect(dataTypePropertyBuilder -> dataTypePropertyBuilder.build(this.klass))
+                    .<DataTypeProperty<?>>collect(DataTypePropertyBuilder::build)
                     .toImmutable();
 
             this.klass.setDataTypeProperties(dataTypeProperties);
@@ -93,7 +93,7 @@ public final class Klass extends Type
             }
 
             ImmutableList<AssociationEnd> associationEnds = this.associationEndBuilders
-                    .collectWith(AssociationEndBuilder::build, this.klass)
+                    .collect(AssociationEndBuilder::build)
                     .toImmutable();
 
             this.klass.setAssociationEnds(associationEnds);

@@ -54,7 +54,7 @@ public final class AssociationEnd extends Property<Klass>
         }
 
         @Override
-        public AssociationEnd build(Klass owningKlass)
+        public AssociationEnd build()
         {
             if (this.associationEnd != null)
             {

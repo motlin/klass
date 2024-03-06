@@ -42,7 +42,12 @@ public class ClassPhase extends AbstractCompilerPhase
     @Override
     public void enterClassDeclaration(ClassDeclarationContext ctx)
     {
-        this.classState = new AntlrClass(this.packageName, ctx, ctx.identifier().getText());
+        this.classState = new AntlrClass(
+                ctx,
+                this.currentCompilationUnit,
+                ctx.identifier(),
+                ctx.identifier().getText(),
+                this.packageName);
         this.domainModelState.enterClassDeclaration(this.classState);
     }
 
@@ -71,12 +76,13 @@ public class ClassPhase extends AbstractCompilerPhase
 
         AntlrPrimitiveProperty primitivePropertyState = new AntlrPrimitiveProperty(
                 ctx,
-                nameContext,
+                this.currentCompilationUnit,
                 propertyName,
+                nameContext,
                 isOptional,
                 propertyModifiers,
-                primitiveTypeBuilder,
-                this.classState);
+                this.classState,
+                primitiveTypeBuilder);
 
         this.classState.enterDataTypeProperty(primitivePropertyState);
     }
@@ -100,6 +106,7 @@ public class ClassPhase extends AbstractCompilerPhase
 
         AntlrEnumerationProperty primitivePropertyState = new AntlrEnumerationProperty(
                 ctx,
+                this.currentCompilationUnit,
                 nameContext,
                 propertyName,
                 isOptional,

@@ -1,5 +1,6 @@
 package cool.klass.model.meta.domain;
 
+import cool.klass.model.meta.domain.Enumeration.EnumerationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class EnumerationLiteral extends TypedElement<Enumeration>
@@ -10,7 +11,6 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
             ParserRuleContext elementContext,
             ParserRuleContext nameContext,
             String name,
-            ParserRuleContext enumerationContext,
             Enumeration enumeration,
             String prettyName)
     {
@@ -25,13 +25,8 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
 
     public static class EnumerationLiteralBuilder extends NamedElementBuilder
     {
-        public static final EnumerationLiteralBuilder AMBIGUOUS = new EnumerationLiteralBuilder(
-                NO_CONTEXT,
-                NO_CONTEXT,
-                "ambiguous enumeration literal",
-                null);
-
-        private final String prettyName;
+        private final String             prettyName;
+        private final EnumerationBuilder enumerationBuilder;
 
         private EnumerationLiteral enumerationLiteral;
 
@@ -39,10 +34,12 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                String prettyName)
+                String prettyName,
+                EnumerationBuilder enumerationBuilder)
         {
             super(elementContext, nameContext, name);
             this.prettyName = prettyName;
+            this.enumerationBuilder = enumerationBuilder;
         }
 
         public String getPrettyName()
@@ -50,7 +47,7 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
             return this.prettyName;
         }
 
-        public EnumerationLiteral build(ParserRuleContext enumerationContext, Enumeration enumeration)
+        public EnumerationLiteral build()
         {
             if (this.enumerationLiteral != null)
             {
@@ -61,8 +58,7 @@ public final class EnumerationLiteral extends TypedElement<Enumeration>
                     this.elementContext,
                     this.nameContext,
                     this.name,
-                    enumerationContext,
-                    enumeration,
+                    this.enumerationBuilder.getEnumeration(),
                     this.prettyName);
             return this.enumerationLiteral;
         }

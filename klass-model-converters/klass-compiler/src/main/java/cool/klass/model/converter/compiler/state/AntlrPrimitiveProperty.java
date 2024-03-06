@@ -1,5 +1,6 @@
 package cool.klass.model.converter.compiler.state;
 
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
 import cool.klass.model.meta.domain.PrimitiveType;
@@ -13,8 +14,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
 {
     public static final AntlrPrimitiveProperty AMBIGUOUS = new AntlrPrimitiveProperty(
             new PrimitivePropertyContext(null, -1),
-            Element.NO_CONTEXT,
-            "ambiguous primitive property name",
+            null, "ambiguous primitive property name", Element.NO_CONTEXT,
             false,
             Lists.immutable.empty(),
             null,
@@ -25,15 +25,16 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
     private PrimitivePropertyBuilder primitivePropertyBuilder;
 
     public AntlrPrimitiveProperty(
-            ParserRuleContext context,
-            ParserRuleContext nameContext,
+            ParserRuleContext elementContext,
+            CompilationUnit compilationUnit,
             String name,
+            ParserRuleContext nameContext,
             boolean isOptional,
             ImmutableList<AntlrPropertyModifier> modifiers,
-            PrimitiveTypeBuilder primitiveTypeBuilder,
-            AntlrClass owningClassState)
+            AntlrClass owningClassState,
+            PrimitiveTypeBuilder primitiveTypeBuilder)
     {
-        super(context, nameContext, name, isOptional, modifiers, owningClassState);
+        super(elementContext, compilationUnit, name, nameContext, isOptional, modifiers, owningClassState);
         this.primitiveTypeBuilder = primitiveTypeBuilder;
     }
 
@@ -52,7 +53,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
         }
 
         this.primitivePropertyBuilder = new PrimitivePropertyBuilder(
-                this.context,
+                this.elementContext,
                 this.nameContext,
                 this.name,
                 this.primitiveTypeBuilder,

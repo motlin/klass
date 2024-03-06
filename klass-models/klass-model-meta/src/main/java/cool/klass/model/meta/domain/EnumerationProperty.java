@@ -67,7 +67,7 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
         }
 
         @Override
-        public EnumerationProperty build(Klass owningKlass)
+        public EnumerationProperty build()
         {
             if (this.enumerationProperty != null)
             {

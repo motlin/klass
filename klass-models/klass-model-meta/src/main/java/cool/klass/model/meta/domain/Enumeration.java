@@ -31,18 +31,16 @@ public final class Enumeration extends DataType
 
     public static class EnumerationBuilder extends DataTypeBuilder<Enumeration>
     {
-        private final ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
-        private       Enumeration                              enumeration;
+        private ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
+        private Enumeration                              enumeration;
 
         public EnumerationBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
                 String name,
-                String packageName,
-                ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
+                String packageName)
         {
             super(elementContext, nameContext, name, packageName);
-            this.enumerationLiteralBuilders = enumerationLiteralBuilders;
         }
 
         public Enumeration build()
@@ -59,7 +57,7 @@ public final class Enumeration extends DataType
                     this.packageName);
 
             ImmutableList<EnumerationLiteral> enumerationLiterals = this.enumerationLiteralBuilders.collect(
-                    each -> each.build(this.getElementContext(), this.enumeration));
+                    EnumerationLiteralBuilder::build);
 
             this.enumeration.setEnumerationLiterals(enumerationLiterals);
             return this.enumeration;
@@ -68,6 +66,11 @@ public final class Enumeration extends DataType
         public Enumeration getEnumeration()
         {
             return Objects.requireNonNull(this.enumeration);
+        }
+
+        public void setEnumerationLiteralBuilders(ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders)
+        {
+            this.enumerationLiteralBuilders = enumerationLiteralBuilders;
         }
     }
 }

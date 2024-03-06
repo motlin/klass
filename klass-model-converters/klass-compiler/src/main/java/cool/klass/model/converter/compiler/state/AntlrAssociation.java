@@ -1,40 +1,36 @@
 package cool.klass.model.converter.compiler.state;
 
-import java.util.Objects;
-
-import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
+import cool.klass.model.converter.compiler.CompilationUnit;
+import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrAssociation
+public class AntlrAssociation extends AntlrPackageableElement
 {
     public static final AntlrAssociation AMBIGUOUS = new AntlrAssociation(
+            new AssociationDeclarationContext(null, -1),
             null,
-            new AssociationDeclarationContext(null, -1));
-
-    private final String packageName;
-
-    private final AssociationDeclarationContext context;
-    private final String                        name;
+            new ParserRuleContext(),
+            "ambiguous association",
+            null);
 
     private final MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
 
     private AssociationBuilder associationBuilder;
 
-    public AntlrAssociation(String packageName, AssociationDeclarationContext context)
+    public AntlrAssociation(
+            AssociationDeclarationContext elementContext,
+            CompilationUnit compilationUnit,
+            ParserRuleContext nameContext,
+            String name,
+            String packageName)
     {
-        this.packageName = packageName;
-        this.context = Objects.requireNonNull(context);
-        this.name = Objects.requireNonNull(context.getText());
-    }
-
-    public String getName()
-    {
-        return this.name;
+        super(elementContext, compilationUnit, nameContext, name, packageName);
     }
 
     public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
@@ -42,17 +38,17 @@ public class AntlrAssociation
         this.associationEndStates.add(antlrAssociationEnd);
     }
 
-    public void exitAssociationDeclaration(AbstractCompilerPhase compilerPhase)
+    public AssociationBuilder build()
     {
+        if (this.associationBuilder != null)
+        {
+            throw new IllegalStateException();
+        }
+
         int numAssociationEnds = this.associationEndStates.size();
         if (numAssociationEnds != 2)
         {
-            String message = String.format(
-                    "Association '%s' should have 2 ends. Found %d",
-                    this.name,
-                    numAssociationEnds);
-            compilerPhase.error(message, this.context);
-            return;
+            throw new AssertionError(numAssociationEnds);
         }
 
         AntlrAssociationEnd sourceAntlrAssociationEnd = this.associationEndStates.get(0);
@@ -66,18 +62,10 @@ public class AntlrAssociation
 
         sourceAntlrAssociationEnd.getType().enterAssociationEnd(targetAntlrAssociationEnd);
         targetAntlrAssociationEnd.getType().enterAssociationEnd(sourceAntlrAssociationEnd);
-    }
-
-    public AssociationBuilder build()
-    {
-        if (this.associationBuilder != null)
-        {
-            throw new IllegalStateException();
-        }
 
         this.associationBuilder = new AssociationBuilder(
-                this.context,
-                this.context.identifier(),
+                this.elementContext,
+                this.nameContext,
                 this.name,
                 this.packageName);
 
@@ -89,8 +77,35 @@ public class AntlrAssociation
         return this.associationBuilder;
     }
 
-    public AssociationDeclarationContext getContext()
+    @Override
+    public AssociationDeclarationContext getElementContext()
     {
-        return this.context;
+        return (AssociationDeclarationContext) this.elementContext;
+    }
+
+    public void reportDuplicateTopLevelName(CompilerErrorHolder compilerErrorHolder)
+    {
+        String message = String.format("ERR_DUP_TOP: Duplicate top level item name: '%s'.", this.name);
+        compilerErrorHolder.add(this.compilationUnit, message, this.nameContext);
+    }
+
+    public void reportErrors(CompilerErrorHolder compilerErrorHolder)
+    {
+        int numAssociationEnds = this.associationEndStates.size();
+        if (numAssociationEnds != 2)
+        {
+            String message = String.format(
+                    "Association '%s' should have 2 ends. Found %d",
+                    this.name,
+                    numAssociationEnds);
+            compilerErrorHolder.add(this.compilationUnit, message, this.elementContext);
+        }
+
+        // TODO: Check that both ends aren't owned
+
+        for (AntlrAssociationEnd associationEndState : this.associationEndStates)
+        {
+            associationEndState.reportErrors2(compilerErrorHolder);
+        }
     }
 }

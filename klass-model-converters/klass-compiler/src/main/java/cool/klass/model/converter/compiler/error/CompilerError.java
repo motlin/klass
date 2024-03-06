@@ -66,7 +66,6 @@ public class CompilerError
         }
 
         this.offendingParserRuleContext.enterRule(errorUnderlineListener);
-        this.offendingParserRuleContext.exitRule(errorUnderlineListener);
 
         for (ParserRuleContext ruleContext : this.parserRuleContexts)
         {

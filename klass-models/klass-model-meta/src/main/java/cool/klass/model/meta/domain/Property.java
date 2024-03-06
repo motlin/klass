@@ -41,6 +41,6 @@ public abstract class Property<T extends Type> extends TypedElement<T>
             this.owningKlassBuilder = Objects.requireNonNull(owningKlassBuilder);
         }
 
-        public abstract Property<T> build(Klass owningKlass);
+        public abstract Property<T> build();
     }
 }

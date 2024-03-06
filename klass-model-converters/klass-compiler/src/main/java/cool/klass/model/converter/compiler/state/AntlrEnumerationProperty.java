@@ -1,5 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Objects;
+
+import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.EnumerationProperty.EnumerationPropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
@@ -14,7 +17,8 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
     private EnumerationPropertyBuilder enumerationPropertyBuilder;
 
     public AntlrEnumerationProperty(
-            EnumerationPropertyContext context,
+            EnumerationPropertyContext elementContext,
+            CompilationUnit compilationUnit,
             ParserRuleContext nameContext,
             String name,
             boolean isOptional,
@@ -22,8 +26,9 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
             AntlrClass owningClassState,
             AntlrEnumeration antlrEnumeration)
     {
-        super(context, nameContext, name, isOptional, modifiers, owningClassState);
-        this.antlrEnumeration = antlrEnumeration;
+        super(elementContext, compilationUnit, name, nameContext, isOptional, modifiers, owningClassState);
+        // TODO: is this nullable?
+        this.antlrEnumeration = Objects.requireNonNull(antlrEnumeration);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
         }
 
         this.enumerationPropertyBuilder = new EnumerationPropertyBuilder(
-                this.context,
+                this.elementContext,
                 this.nameContext,
                 this.name,
                 this.antlrEnumeration.getEnumerationBuilder(),

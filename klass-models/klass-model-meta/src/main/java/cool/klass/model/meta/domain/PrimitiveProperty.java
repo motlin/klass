@@ -58,7 +58,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         }
 
         @Override
-        public PrimitiveProperty build(Klass owningKlass)
+        public PrimitiveProperty build()
         {
             return new PrimitiveProperty(
                     this.elementContext,

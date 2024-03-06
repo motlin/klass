@@ -37,14 +37,19 @@ public class AssociationPhase extends AbstractCompilerPhase
     @Override
     public void enterAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.associationState = new AntlrAssociation(this.packageName, ctx);
+        IdentifierContext identifier = ctx.identifier();
+        this.associationState = new AntlrAssociation(
+                ctx,
+                this.currentCompilationUnit,
+                identifier,
+                identifier.getText(),
+                this.packageName);
         this.domainModelState.enterAssociationDeclaration(this.associationState);
     }
 
     @Override
     public void exitAssociationDeclaration(AssociationDeclarationContext ctx)
     {
-        this.associationState.exitAssociationDeclaration(this);
         this.associationState = null;
     }
 
@@ -66,8 +71,9 @@ public class AssociationPhase extends AbstractCompilerPhase
 
         AntlrAssociationEnd antlrAssociationEnd = new AntlrAssociationEnd(
                 ctx,
-                ctx.identifier(),
+                this.currentCompilationUnit,
                 associationEndName,
+                ctx.identifier(),
                 antlrClass,
                 antlrMultiplicity,
                 associationEndModifiers);

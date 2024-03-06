@@ -57,7 +57,7 @@ public class KlassCompiler
                 compilationUnitsByContext,
                 phase5);
 
-        AntlrDomainModel domainModelState = new AntlrDomainModel(this.compilerErrorHolder);
+        AntlrDomainModel domainModelState = new AntlrDomainModel();
 
         KlassListener phase7 = new EnumerationsPhase(
                 this.compilerErrorHolder,
@@ -100,7 +100,7 @@ public class KlassCompiler
         this.executeCompilerPhase(compilationUnits, phase9);
         this.executeCompilerPhase(compilationUnits, phase10);
 
-        domainModelState.reportErrors();
+        domainModelState.reportErrors(this.compilerErrorHolder);
 
         if (!this.compilerErrorHolder.hasCompilerErrors())
         {
