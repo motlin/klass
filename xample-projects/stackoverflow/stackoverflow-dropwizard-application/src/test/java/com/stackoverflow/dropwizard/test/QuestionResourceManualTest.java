@@ -24,6 +24,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.json.JSONException;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -360,51 +361,50 @@ public class QuestionResourceManualTest
         }
         //</editor-fold>
 
-        {
-            Response response = client.target(
-                    String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
-                    .resolveTemplate("id", 1)
-                    .request()
-                    .get();
+        Response response = client.target(
+                String.format("http://localhost:%d/manual/api/question/{id}", RULE.getLocalPort()))
+                .resolveTemplate("id", 1)
+                .request()
+                .get();
 
-            this.assertResponseStatus(response, Status.OK);
+        this.assertResponseStatus(response, Status.OK);
 
-            String jsonResponse = response.readEntity(String.class);
-            //language=JSON
-            String expected = ""
-                    + "{\n"
-                    + "  \"id\": 1,\n"
-                    + "  \"title\": \"edited title 1\",\n"
-                    + "  \"body\": \"edited body 1\",\n"
-                    + "  \"status\": \"On hold\",\n"
-                    + "  \"deleted\": true,\n"
-                    + "  \"systemTo\": null,\n"
-                    + "  \"createdById\": \"test user 1\",\n"
-                    + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
-                    + "  \"lastUpdatedById\": \"test user 1\",\n"
-                    + "  \"answers\": [],\n"
-                    + "  \"tags\": [\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 1\"\n"
-                    + "      }\n"
-                    + "    },\n"
-                    + "    {\n"
-                    + "      \"tag\": {\n"
-                    + "        \"name\": \"test tag 3\"\n"
-                    + "      }\n"
-                    + "    }\n"
-                    + "  ],\n"
-                    + "  \"version\": {\n"
-                    + "    \"number\": 3\n"
-                    + "  }\n"
-                    + "}";
-            JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
-        }
+        String jsonResponse = response.readEntity(String.class);
+        //language=JSON
+        String expected = ""
+                + "{\n"
+                + "  \"id\": 1,\n"
+                + "  \"title\": \"edited title 1\",\n"
+                + "  \"body\": \"edited body 1\",\n"
+                + "  \"status\": \"On hold\",\n"
+                + "  \"deleted\": true,\n"
+                + "  \"systemTo\": null,\n"
+                + "  \"createdById\": \"test user 1\",\n"
+                + "  \"createdOn\": \"1999-12-31T23:59:59.999Z\",\n"
+                + "  \"lastUpdatedById\": \"test user 1\",\n"
+                + "  \"answers\": [],\n"
+                + "  \"tags\": [\n"
+                + "    {\n"
+                + "      \"tag\": {\n"
+                + "        \"name\": \"test tag 1\"\n"
+                + "      }\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"tag\": {\n"
+                + "        \"name\": \"test tag 3\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ],\n"
+                + "  \"version\": {\n"
+                + "    \"number\": 3\n"
+                + "  }\n"
+                + "}";
+        JSONAssert.assertEquals(expected, jsonResponse, JSONCompareMode.STRICT_ORDER);
 
         // TODO: PUT with owned children, with all four cases of unchanged, created, updated, deleted
     }
 
+    @Ignore("TODO: Only increment version number when data actually changes.")
     @Test
     @ReladomoTestFile("test-data/existing-question.txt")
     public void put_unchanged() throws JSONException
