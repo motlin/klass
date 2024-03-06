@@ -6,13 +6,13 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
-import io.dropwizard.Bundle;
 import io.dropwizard.Configuration;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-@AutoService(Bundle.class)
-public class CorsBundle implements Bundle
+@AutoService(PrioritizedBundle.class)
+public class CorsBundle implements PrioritizedBundle
 {
     @Override
     public void run(Configuration configuration, Environment environment)

@@ -11,6 +11,8 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
+        <module>klass-dropwizard-bundle-prioritized-api</module>
+        <module>klass-dropwizard-bundle-data-api</module>
         <module>klass-dropwizard-bundle-object-mapper</module>
         <module>klass-dropwizard-bundle-cors</module>
         <module>klass-dropwizard-bundle-http-logging</module>
@@ -19,7 +21,6 @@
         <module>klass-dropwizard-bundle-ddl-executor</module>
         <module>klass-dropwizard-bundle-sample-data</module>
         <module>klass-dropwizard-bundle-bootstrap-writer</module>
-        <module>klass-dropwizard-bundle-api</module>
     </modules>
 
     <artifactId>klass-dropwizard-bundles</artifactId>

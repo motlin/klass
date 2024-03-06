@@ -6,9 +6,11 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
+import ch.qos.logback.classic.Level;
 import cool.klass.data.store.DataStore;
 import cool.klass.data.store.reladomo.ReladomoDataStore;
-import cool.klass.dropwizard.bundle.api.KlassBundle;
+import cool.klass.dropwizard.bundle.api.DataBundle;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import com.typesafe.config.Config;
@@ -36,6 +38,12 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     protected AbstractKlassApplication(String name)
     {
         this.name = Objects.requireNonNull(name);
+    }
+
+    @Override
+    protected Level bootstrapLogLevel()
+    {
+        return Level.DEBUG;
     }
 
     @Nonnull
@@ -70,7 +78,6 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
         this.dataStore = new ReladomoDataStore();
 
         this.initializeDynamicBundles(bootstrap);
-        this.initializeDynamicKlassBundles(bootstrap);
     }
 
     private void logConfig(Config klassConfig)
@@ -87,29 +94,31 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
 
     private void initializeDynamicBundles(@Nonnull Bootstrap<T> bootstrap)
     {
-        ServiceLoader<Bundle> bundleServiceLoader = ServiceLoader.load(Bundle.class);
-        ImmutableList<Bundle> bundles             = Lists.immutable.withAll(bundleServiceLoader);
-        LOGGER.info("Found Bundles: {}", bundles.makeString());
-        for (Bundle bundle : bundles)
+        ServiceLoader<PrioritizedBundle> serviceLoader = ServiceLoader.load(PrioritizedBundle.class);
+        ImmutableList<PrioritizedBundle> prioritizedBundles = Lists.immutable.withAll(serviceLoader)
+                .toSortedListBy(PrioritizedBundle::getPriority)
+                .toImmutable();
+
+        if (LOGGER.isInfoEnabled())
         {
-            if (bundle instanceof KlassBundle)
+            LOGGER.info(
+                    "Found PrioritizedBundles using ServiceLoader:\n{}",
+                    prioritizedBundles
+                            .collect(Object::getClass)
+                            .collect(Class::getSimpleName)
+                            .collect("    "::concat)
+                            .makeString("\n"));
+        }
+
+        for (Bundle bundle : prioritizedBundles)
+        {
+            if (bundle instanceof DataBundle)
             {
-                throw new AssertionError();
+                DataBundle dataBundle = (DataBundle) bundle;
+                dataBundle.initialize(this.domainModel, this.dataStore);
             }
 
             bootstrap.addBundle(bundle);
-        }
-    }
-
-    private void initializeDynamicKlassBundles(@Nonnull Bootstrap<T> bootstrap)
-    {
-        ServiceLoader<KlassBundle> klassBundleServiceLoader = ServiceLoader.load(KlassBundle.class);
-        ImmutableList<KlassBundle> klassBundles             = Lists.immutable.withAll(klassBundleServiceLoader);
-        LOGGER.info("Found KlassBundles: {}", klassBundles.makeString());
-        for (KlassBundle klassBundle : klassBundleServiceLoader)
-        {
-            klassBundle.initialize(this.domainModel, this.dataStore);
-            bootstrap.addBundle(klassBundle);
         }
     }
 
@@ -123,12 +132,5 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
     @Override
     public void run(T configuration, Environment environment) throws Exception
     {
-        Config config      = ConfigFactory.load();
-        Config klassConfig = config.getConfig("klass");
-        ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
-                .setJson(false)
-                .setOriginComments(false);
-        String render = klassConfig.root().render(configRenderOptions);
-        LOGGER.info("Klass HOCON configuration:\n{}", render);
     }
 }

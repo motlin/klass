@@ -6,18 +6,18 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
-import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.logging.LoggingFeature.Verbosity;
 import org.slf4j.LoggerFactory;
 
-@AutoService(Bundle.class)
-public class HttpLoggingBundle implements Bundle
+@AutoService(PrioritizedBundle.class)
+public class HttpLoggingBundle implements PrioritizedBundle
 {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HttpLoggingBundle.class);
 

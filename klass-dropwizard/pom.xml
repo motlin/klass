@@ -61,7 +61,13 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-dropwizard-bundle-api</artifactId>
+            <artifactId>klass-dropwizard-bundle-prioritized-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-data-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -158,6 +164,13 @@
         <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
+        <!--Unusual to have a dependency on logback, but this is used to set the bootstrap logging level-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

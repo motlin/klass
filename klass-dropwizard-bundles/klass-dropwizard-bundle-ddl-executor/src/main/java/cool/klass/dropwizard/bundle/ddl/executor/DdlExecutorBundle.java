@@ -6,20 +6,26 @@ import javax.annotation.Nonnull;
 
 import com.google.auto.service.AutoService;
 import com.gs.fw.common.mithra.connectionmanager.SourcelessConnectionManager;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.reladomo.ddl.executor.DatabaseDdlExecutor;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
-import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AutoService(Bundle.class)
-public class DdlExecutorBundle implements Bundle
+@AutoService(PrioritizedBundle.class)
+public class DdlExecutorBundle implements PrioritizedBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(DdlExecutorBundle.class);
+
+    @Override
+    public int getPriority()
+    {
+        return -3;
+    }
 
     @Override
     public void initialize(Bootstrap<?> bootstrap)

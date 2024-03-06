@@ -6,10 +6,10 @@ import javax.annotation.Nonnull;
 import javax.servlet.ServletRegistration.Dynamic;
 
 import com.google.auto.service.AutoService;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
-import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.h2.server.web.WebServlet;
@@ -20,10 +20,16 @@ import org.slf4j.LoggerFactory;
 /**
  * Inspired by {@link io.github.jhipster.config.h2.H2ConfigurationHelper}
  */
-@AutoService(Bundle.class)
-public class H2Bundle implements Bundle
+@AutoService(PrioritizedBundle.class)
+public class H2Bundle implements PrioritizedBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(H2Bundle.class);
+
+    @Override
+    public int getPriority()
+    {
+        return -4;
+    }
 
     @Override
     public void initialize(Bootstrap<?> bootstrap)

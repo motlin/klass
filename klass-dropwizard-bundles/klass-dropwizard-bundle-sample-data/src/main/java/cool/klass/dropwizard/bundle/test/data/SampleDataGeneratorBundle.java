@@ -5,7 +5,8 @@ import java.util.Objects;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.api.KlassBundle;
+import cool.klass.dropwizard.bundle.api.DataBundle;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.sample.data.SampleDataGenerator;
 import com.typesafe.config.Config;
@@ -18,13 +19,19 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AutoService(KlassBundle.class)
-public class SampleDataGeneratorBundle implements KlassBundle
+@AutoService(PrioritizedBundle.class)
+public class SampleDataGeneratorBundle implements DataBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleDataGeneratorBundle.class);
 
     private DomainModel domainModel;
     private DataStore   dataStore;
+
+    @Override
+    public int getPriority()
+    {
+        return -1;
+    }
 
     @Override
     public void initialize(DomainModel domainModel, DataStore dataStore)

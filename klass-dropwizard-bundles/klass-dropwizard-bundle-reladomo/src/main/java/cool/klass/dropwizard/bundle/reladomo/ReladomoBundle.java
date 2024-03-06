@@ -4,18 +4,25 @@ import java.util.Objects;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.api.KlassBundle;
+import cool.klass.dropwizard.bundle.api.DataBundle;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.reladomo.configuration.ReladomoConfig;
 import cool.klass.serializer.json.ReladomoJsonSerializer;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-@AutoService(KlassBundle.class)
-public class ReladomoBundle implements KlassBundle
+@AutoService(PrioritizedBundle.class)
+public class ReladomoBundle implements DataBundle
 {
     private DomainModel domainModel;
     private DataStore   dataStore;
+
+    @Override
+    public int getPriority()
+    {
+        return -3;
+    }
 
     @Override
     public void initialize(DomainModel domainModel, DataStore dataStore)

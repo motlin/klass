@@ -4,7 +4,8 @@ import java.util.Objects;
 
 import com.google.auto.service.AutoService;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.bundle.api.KlassBundle;
+import cool.klass.dropwizard.bundle.api.DataBundle;
+import cool.klass.dropwizard.bundle.prioritized.PrioritizedBundle;
 import cool.klass.model.converter.bootstrap.writer.KlassBootstrapWriter;
 import cool.klass.model.meta.domain.api.DomainModel;
 import com.typesafe.config.Config;
@@ -15,13 +16,19 @@ import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AutoService(KlassBundle.class)
-public class BootstrapWriterBundle implements KlassBundle
+@AutoService(PrioritizedBundle.class)
+public class BootstrapWriterBundle implements DataBundle
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapWriterBundle.class);
 
     private DomainModel domainModel;
     private DataStore   dataStore;
+
+    @Override
+    public int getPriority()
+    {
+        return -2;
+    }
 
     @Override
     public void initialize(DomainModel domainModel, DataStore dataStore)
