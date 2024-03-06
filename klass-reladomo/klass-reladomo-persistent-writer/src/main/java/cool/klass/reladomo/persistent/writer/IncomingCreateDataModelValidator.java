@@ -3,7 +3,6 @@ package cool.klass.reladomo.persistent.writer;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,14 +22,12 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.api.map.MutableMap;
-import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 import org.eclipse.collections.impl.map.mutable.MapAdapter;
-import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
 public class IncomingCreateDataModelValidator
 {
@@ -700,44 +697,7 @@ public class IncomingCreateDataModelValidator
                         associationEnd);
     }
 
-    private boolean needsTermination(
-            Object persistentChildInstance,
-            @Nonnull Klass klass,
-            @Nonnull MapIterable<ImmutableList<Object>, JsonNode> incomingChildInstancesByKey)
-    {
-        ImmutableList<Object> keys = this.getKeysFromPersistentInstance(persistentChildInstance, klass);
-        return !incomingChildInstancesByKey.containsKey(keys);
-    }
-
-    protected ImmutableList<Object> getKeysFromPersistentInstance(Object persistentInstance, @Nonnull Klass klass)
-    {
-        return klass
-                .getKeyProperties()
-                .collect(keyProperty -> this.dataStore.getDataTypeProperty(persistentInstance, keyProperty));
-    }
-
     //endregion
-
-    @Nonnull
-    private MapIterable<ImmutableList<Object>, Object> indexPersistentInstances(
-            @Nonnull List<Object> persistentInstances,
-            @Nonnull Klass klass)
-    {
-        // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
-
-        MutableOrderedMap<ImmutableList<Object>, Object> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-        for (Object persistentInstance : persistentInstances)
-        {
-            ImmutableList<Object> keysFromPersistentInstance = this.getKeysFromPersistentInstance(
-                    persistentInstance,
-                    klass);
-            result.put(keysFromPersistentInstance, persistentInstance);
-        }
-
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
-    }
 
     private boolean jsonNodeNeedsIdInferredOnInsert(
             JsonNode jsonNode,
