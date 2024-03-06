@@ -238,16 +238,17 @@ public class ReladomoTreeObjectToDTOSerializerListener
         Object nextPersistentInstance = this.dataStore.get(persistentInstance, referenceProperty);
         this.persistentInstanceStack.push(nextPersistentInstance);
 
+        if (nextPersistentInstance == null)
+        {
+            this.resultNodeStack.push(null);
+
+            // Returning 0 children is a way to say stop recursing through the Projection
+            return Optional.of(0);
+        }
+
         Multiplicity multiplicity = referenceProperty.getMultiplicity();
         if (multiplicity.isToOne())
         {
-            if (nextPersistentInstance == null)
-            {
-                this.resultNodeStack.push(null);
-
-                // Returning 0 children is a way to say stop recursing through the Projection
-                return Optional.of(0);
-            }
             Classifier classifierFromContext = this.getClassifierFromPersistentInstance(nextPersistentInstance);
             Object     nextResultNode        = this.instantiateDTO(classifierFromContext);
             this.resultNodeStack.push(nextResultNode);
