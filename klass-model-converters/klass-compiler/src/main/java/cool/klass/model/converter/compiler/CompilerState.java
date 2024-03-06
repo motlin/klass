@@ -315,20 +315,23 @@ public class CompilerState
 
     public void withCompilationUnit(CompilationUnit compilationUnit, @Nonnull Runnable runnable)
     {
+        this.compilerWalkState.assertEmpty();
+
         CompilerWalkState compilerWalkState = this.macroCompilerWalkStates.get(compilationUnit);
 
         if (compilerWalkState == null)
         {
             runnable.run();
+            this.compilerWalkState.assertEmpty();
             return;
         }
 
-        this.compilerWalkState.assertEmpty();
-
         try
         {
-            this.compilerWalkState = compilerWalkState;
+            CompilerWalkState copy = compilerWalkState.withCompilationUnit(compilationUnit);
+            this.compilerWalkState = copy;
             runnable.run();
+            this.compilerWalkState.assertEquals(copy);
         }
         finally
         {

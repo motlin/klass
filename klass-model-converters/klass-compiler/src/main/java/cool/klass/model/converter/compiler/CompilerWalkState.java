@@ -285,6 +285,86 @@ public class CompilerWalkState
         }
     }
 
+    public void assertEquals(CompilerWalkState other)
+    {
+        if (!Objects.equals(this.domainModelState, other.domainModelState))
+        {
+            throw new AssertionError();
+        }
+        if (this.currentCompilationUnit != other.currentCompilationUnit)
+        {
+            throw new AssertionError();
+        }
+        if (!Objects.equals(this.packageName, other.packageName))
+        {
+            throw new AssertionError();
+        }
+        if (this.topLevelDeclarationState != other.topLevelDeclarationState)
+        {
+            throw new AssertionError();
+        }
+        if (this.enumerationState != other.enumerationState)
+        {
+            throw new AssertionError();
+        }
+        if (this.classifierState != other.classifierState)
+        {
+            throw new AssertionError();
+        }
+        if (this.interfaceState != other.interfaceState)
+        {
+            throw new AssertionError();
+        }
+        if (this.classState != other.classState)
+        {
+            throw new AssertionError();
+        }
+        if (this.associationState != other.associationState)
+        {
+            throw new AssertionError();
+        }
+        if (this.associationEndState != other.associationEndState)
+        {
+            throw new AssertionError();
+        }
+        if (this.associationEndSignatureState != other.associationEndSignatureState)
+        {
+            throw new AssertionError();
+        }
+        if (this.parameterizedPropertyState != other.parameterizedPropertyState)
+        {
+            throw new AssertionError();
+        }
+        if (this.projectionState != other.projectionState)
+        {
+            throw new AssertionError();
+        }
+        if (this.serviceGroupState != other.serviceGroupState)
+        {
+            throw new AssertionError();
+        }
+        if (this.urlState != other.urlState)
+        {
+            throw new AssertionError();
+        }
+        if (this.serviceState != other.serviceState)
+        {
+            throw new AssertionError();
+        }
+        if (this.thisReference != other.thisReference)
+        {
+            throw new AssertionError();
+        }
+        if (this.orderByOwnerState != other.orderByOwnerState)
+        {
+            throw new AssertionError();
+        }
+        if (this.classModifierState != other.classModifierState)
+        {
+            throw new AssertionError();
+        }
+    }
+
     public KlassListener asListener()
     {
         return new ListenerView();
