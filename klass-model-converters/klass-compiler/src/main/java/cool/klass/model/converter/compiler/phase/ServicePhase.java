@@ -9,22 +9,17 @@ import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrService;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
-import cool.klass.model.converter.compiler.state.service.AntlrServiceMultiplicity;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceProjectionDispatch;
 import cool.klass.model.converter.compiler.state.service.AntlrVerb;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
-import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
-import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 public class ServicePhase extends AbstractCompilerPhase
 {
@@ -94,48 +89,12 @@ public class ServicePhase extends AbstractCompilerPhase
                 verb,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 Verb.valueOf(verb.getText()));
-        AntlrServiceMultiplicity serviceMultiplicity =
-                this.getServiceMultiplicity(ctx.serviceDeclarationBody().serviceMultiplicityDeclaration());
 
         this.serviceState = new AntlrService(
                 ctx,
                 Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
                 this.urlState,
-                antlrVerb,
-                serviceMultiplicity);
-    }
-
-    @Nonnull
-    private AntlrServiceMultiplicity getServiceMultiplicity(@Nullable ServiceMultiplicityDeclarationContext serviceMultiplicityDeclarationContext)
-    {
-        if (serviceMultiplicityDeclarationContext == null)
-        {
-            return new AntlrServiceMultiplicity(
-                    new ParserRuleContext(),
-                    Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                    ServiceMultiplicity.ONE);
-        }
-
-        ServiceMultiplicityContext serviceMultiplicityContext = serviceMultiplicityDeclarationContext.serviceMultiplicity();
-
-        return new AntlrServiceMultiplicity(
-                serviceMultiplicityContext,
-                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
-                this.getServiceMultiplicity(serviceMultiplicityContext));
-    }
-
-    @Nonnull
-    private ServiceMultiplicity getServiceMultiplicity(@Nonnull ServiceMultiplicityContext serviceMultiplicityContext)
-    {
-        if (serviceMultiplicityContext.one != null)
-        {
-            return ServiceMultiplicity.ONE;
-        }
-        if (serviceMultiplicityContext.many != null)
-        {
-            return ServiceMultiplicity.MANY;
-        }
-        throw new AssertionError();
+                antlrVerb);
     }
 
     @Override

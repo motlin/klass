@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
@@ -44,8 +45,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             new ParserRuleContext(),
             Optional.empty(),
             AntlrUrl.AMBIGUOUS,
-            AntlrVerb.AMBIGUOUS,
-            AntlrServiceMultiplicity.AMBIGUOUS);
+            AntlrVerb.AMBIGUOUS);
 
     private static final ImmutableMap<Verb, ImmutableList<String>> ALLOWED_CRITERIA_TYPES =
             Maps.immutable.<Verb, ImmutableList<String>>empty()
@@ -56,16 +56,17 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
                     .newWithKeyValue(Verb.DELETE, Lists.immutable.with("authorize", "criteria", "conflict"));
 
     @Nonnull
-    private final AntlrUrl                 urlState;
+    private final AntlrUrl  urlState;
     @Nonnull
-    private final AntlrVerb                verbState;
-    @Nonnull
-    private final AntlrServiceMultiplicity serviceMultiplicityState;
+    private final AntlrVerb verbState;
 
     private final MutableList<AntlrServiceCriteria> serviceCriteriaStates = Lists.mutable.empty();
 
     private final MutableOrderedMap<ServiceCriteriaDeclarationContext, AntlrServiceCriteria> serviceCriteriaByContext =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    @Nullable
+    private AntlrServiceMultiplicity serviceMultiplicityState;
 
     private Optional<AntlrServiceProjectionDispatch> serviceProjectionDispatchState;
     @Nonnull
@@ -76,13 +77,11 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             @Nonnull AntlrUrl urlState,
-            @Nonnull AntlrVerb verbState,
-            @Nonnull AntlrServiceMultiplicity serviceMultiplicityState)
+            @Nonnull AntlrVerb verbState)
     {
         super(elementContext, compilationUnit);
-        this.urlState = Objects.requireNonNull(urlState);
+        this.urlState  = Objects.requireNonNull(urlState);
         this.verbState = Objects.requireNonNull(verbState);
-        this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
     }
 
     @Override
@@ -104,7 +103,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return this.urlState;
     }
 
-    @Nonnull
+    @Nullable
     public AntlrServiceMultiplicity getServiceMultiplicityState()
     {
         return this.serviceMultiplicityState;
@@ -206,7 +205,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             // Include version associationEnds iff the service is optimistically locked
             MutableList<AntlrAssociationEnd> associationEndStates = projection.getKlass().getAssociationEndStates();
 
-            PartitionMutableList<AntlrAssociationEnd> partition = associationEndStates.partition(AntlrAssociationEnd::isOwned);
+            PartitionMutableList<AntlrAssociationEnd> partition =
+                    associationEndStates.partition(AntlrAssociationEnd::isOwned);
 
             MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
             MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
@@ -217,6 +217,11 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     public AntlrVerb getVerbState()
     {
         return this.verbState;
+    }
+
+    public void enterServiceMultiplicityDeclaration(@Nonnull AntlrServiceMultiplicity serviceMultiplicityState)
+    {
+        this.serviceMultiplicityState = Objects.requireNonNull(serviceMultiplicityState);
     }
 
     @Override

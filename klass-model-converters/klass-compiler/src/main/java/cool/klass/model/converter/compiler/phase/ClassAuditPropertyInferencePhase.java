@@ -14,7 +14,8 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Only put audit properties onto version types
-public class ClassAuditPropertyInferencePhase extends AbstractCompilerPhase
+public class ClassAuditPropertyInferencePhase
+        extends AbstractCompilerPhase
 {
     public ClassAuditPropertyInferencePhase(@Nonnull CompilerState compilerState)
     {

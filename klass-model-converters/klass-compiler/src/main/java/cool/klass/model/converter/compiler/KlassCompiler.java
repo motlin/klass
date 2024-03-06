@@ -16,7 +16,10 @@ import cool.klass.model.converter.compiler.phase.ProjectionDeclarationPhase;
 import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.PropertyPhase;
 import cool.klass.model.converter.compiler.phase.RelationshipPhase;
+import cool.klass.model.converter.compiler.phase.ServiceCriteraInferencePhase;
 import cool.klass.model.converter.compiler.phase.ServiceCriteriaPhase;
+import cool.klass.model.converter.compiler.phase.ServiceMultiplicityInferencePhase;
+import cool.klass.model.converter.compiler.phase.ServiceMultiplicityPhase;
 import cool.klass.model.converter.compiler.phase.ServicePhase;
 import cool.klass.model.converter.compiler.phase.TopLevelElementsPhase;
 import cool.klass.model.converter.compiler.phase.UrlParameterPhase;
@@ -47,8 +50,11 @@ public class KlassCompiler
             ProjectionDeclarationPhase::new,
             ProjectionPhase::new,
             ServicePhase::new,
+            ServiceMultiplicityPhase::new,
+            ServiceMultiplicityInferencePhase::new,
             UrlParameterPhase::new,
             ServiceCriteriaPhase::new,
+            ServiceCriteraInferencePhase::new,
             VariableResolutionPhase::new,
             OrderByPhase::new);
 
