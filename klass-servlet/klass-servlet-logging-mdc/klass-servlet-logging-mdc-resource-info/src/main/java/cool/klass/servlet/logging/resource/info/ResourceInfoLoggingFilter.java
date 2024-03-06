@@ -14,8 +14,9 @@ import cool.klass.logging.context.MDCCloseable;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.glassfish.jersey.server.ContainerRequest;
 
+// Priority must be less than the priority of StructuredArgumentLoggingFilter
 @Provider
-@Priority(Priorities.USER)
+@Priority(Priorities.USER - 20)
 public class ResourceInfoLoggingFilter implements ContainerRequestFilter
 {
     @Context

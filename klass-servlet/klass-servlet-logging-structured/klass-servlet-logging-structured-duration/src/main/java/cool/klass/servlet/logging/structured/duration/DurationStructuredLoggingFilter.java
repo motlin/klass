@@ -19,8 +19,9 @@ import javax.servlet.ServletResponse;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
 
+// Priority must be less than the priority of StructuredArgumentLoggingFilter
 @Provider
-@Priority(Priorities.USER - 1)
+@Priority(Priorities.USER - 30)
 public class DurationStructuredLoggingFilter implements Filter
 {
     private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d[HMS])(?!$)");

@@ -14,7 +14,7 @@
 
     <artifactId>klass-servlet-logging-structured</artifactId>
 
-    <name>Klass Servlet Structured Logging</name>
+    <name>Klass Servlet Filter: Structured (Module Group)</name>
 
     <modules>
         <module>klass-servlet-logging-structured-duration</module>

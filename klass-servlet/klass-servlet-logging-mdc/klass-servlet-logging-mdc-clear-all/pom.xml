@@ -10,17 +10,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-servlet-logging-mdc-correlation-id</artifactId>
+    <artifactId>klass-servlet-logging-mdc-clear-all</artifactId>
 
-    <name>Klass Servlet Filter: Correlation ID Logging</name>
+    <name>Klass Servlet Filter: Clear All MDC</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-logging-context</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -33,14 +27,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.collections</groupId>
-            <artifactId>eclipse-collections</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
     </dependencies>
+
 </project>

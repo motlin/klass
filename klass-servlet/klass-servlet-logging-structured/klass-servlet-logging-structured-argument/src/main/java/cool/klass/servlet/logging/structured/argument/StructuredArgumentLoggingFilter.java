@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Provider
-@Priority(Priorities.USER - 2)
+@Priority(Priorities.USER - 40)
 public class StructuredArgumentLoggingFilter implements Filter
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructuredArgumentLoggingFilter.class);

@@ -14,10 +14,11 @@
 
     <artifactId>klass-servlet-logging-mdc</artifactId>
 
-    <name>Klass Servlet MDC Logging</name>
+    <name>Klass Servlet Filter: MDC Logging (Module Group)</name>
 
     <modules>
         <module>klass-servlet-logging-mdc-clear-keys</module>
+        <module>klass-servlet-logging-mdc-clear-all</module>
         <module>klass-servlet-logging-mdc-correlation-id</module>
         <module>klass-servlet-logging-mdc-jsonview</module>
         <module>klass-servlet-logging-mdc-resource-info</module>

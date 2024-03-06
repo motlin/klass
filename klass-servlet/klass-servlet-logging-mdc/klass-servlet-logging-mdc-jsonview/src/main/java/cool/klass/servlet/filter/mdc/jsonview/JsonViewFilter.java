@@ -11,8 +11,9 @@ import javax.ws.rs.ext.Provider;
 import cool.klass.logging.context.MDCCloseable;
 import cool.klass.model.meta.domain.api.projection.Projection;
 
+// Priority must be greater than the priority of StructuredArgumentLoggingFilter
 @Provider
-@Priority(Priorities.USER + 1)
+@Priority(Priorities.USER - 10)
 public class JsonViewFilter implements ContainerRequestFilter
 {
     private final Projection projection;

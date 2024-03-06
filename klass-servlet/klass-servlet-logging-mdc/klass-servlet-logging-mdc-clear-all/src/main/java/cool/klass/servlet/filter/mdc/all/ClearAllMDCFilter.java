@@ -1,7 +1,6 @@
-package cool.klass.servlet.filter.mdc;
+package cool.klass.servlet.filter.mdc.all;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javax.annotation.Priority;
 import javax.servlet.Filter;
@@ -13,22 +12,15 @@ import javax.servlet.ServletResponse;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
 
-import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.MDC;
 
+// Priority must be less than the priority of StructuredArgumentLoggingFilter
 @Provider
-@Priority(Priorities.USER - 3)
-public class ClearMDCFilter implements Filter
+@Priority(Priorities.USER - 60)
+public class ClearAllMDCFilter implements Filter
 {
-    private final ImmutableList<String> mdcKeys;
-
-    public ClearMDCFilter(ImmutableList<String> mdcKeys)
-    {
-        this.mdcKeys = Objects.requireNonNull(mdcKeys);
-    }
-
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException
+    public void init(FilterConfig filterConfig)
     {
     }
 
@@ -47,10 +39,7 @@ public class ClearMDCFilter implements Filter
         }
         finally
         {
-            for (String mdcKey : this.mdcKeys)
-            {
-                MDC.remove(mdcKey);
-            }
+            MDC.clear();
         }
     }
 }
