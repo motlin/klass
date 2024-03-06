@@ -15,7 +15,7 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.reladomo.tree.RootReladomoTreeNode;
 import cool.klass.model.reladomo.tree.converter.graphql.ReladomoTreeGraphqlConverter;
 import cool.klass.reladomo.tree.deep.fetcher.ReladomoTreeNodeDeepFetcherListener;
-import cool.klass.reladomo.tree.serializer.ReladomoTreeObjectToMapSerializerListener;
+import cool.klass.reladomo.tree.serializer.ReladomoTreeObjectToDTOSerializerListener;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingFieldSelectionSet;
@@ -68,7 +68,7 @@ public class ByFinderDataFetcher
                 this.klass);
         rootReladomoTreeNode.walk(deepFetcherListener);
 
-        var serializerVisitor = new ReladomoTreeObjectToMapSerializerListener(
+        var serializerVisitor = new ReladomoTreeObjectToDTOSerializerListener(
                 this.dataStore,
                 result,
                 this.klass);

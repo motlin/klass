@@ -72,7 +72,7 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-tree-serializer</artifactId>
+            <artifactId>klass-reladomo-tree-serializer-dto</artifactId>
             <version>${project.version}</version>
         </dependency>
 

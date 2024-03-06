@@ -9,10 +9,11 @@ import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.reladomo.tree.RootReladomoTreeNode;
 import cool.klass.model.reladomo.tree.converter.graphql.ReladomoTreeGraphqlConverter;
 import cool.klass.reladomo.tree.deep.fetcher.ReladomoTreeNodeDeepFetcherListener;
-import cool.klass.reladomo.tree.serializer.ReladomoTreeObjectToMapSerializerListener;
+import cool.klass.reladomo.tree.serializer.ReladomoTreeObjectToDTOSerializerListener;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingFieldSelectionSet;
+import org.eclipse.collections.api.list.MutableList;
 
 public class AllDataFetcher
         implements DataFetcher<Object>
@@ -35,7 +36,7 @@ public class AllDataFetcher
     public Object get(DataFetchingEnvironment environment)
             throws Exception
     {
-        List<Object> result = this.dataStore.findAll(this.klass);
+        List<Object> data = this.dataStore.findAll(this.klass);
 
         DataFetchingFieldSelectionSet selectionSet = environment.getSelectionSet();
         RootReladomoTreeNode rootReladomoTreeNode = this.reladomoTreeGraphqlConverter.convert(
@@ -44,16 +45,17 @@ public class AllDataFetcher
 
         var deepFetcherListener = new ReladomoTreeNodeDeepFetcherListener(
                 this.dataStore,
-                (DomainList) result,
+                (DomainList) data,
                 this.klass);
         rootReladomoTreeNode.walk(deepFetcherListener);
 
-        var serializerVisitor = new ReladomoTreeObjectToMapSerializerListener(
+        var serializerVisitor = new ReladomoTreeObjectToDTOSerializerListener(
                 this.dataStore,
-                (DomainList) result,
+                (DomainList) data,
                 this.klass);
         rootReladomoTreeNode.toManyAwareWalk(serializerVisitor);
 
-        return serializerVisitor.getResult();
+        MutableList<Object> result = serializerVisitor.getResult();
+        return result;
     }
 }

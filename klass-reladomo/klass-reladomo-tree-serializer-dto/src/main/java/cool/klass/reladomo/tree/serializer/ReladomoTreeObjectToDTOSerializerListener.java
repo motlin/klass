@@ -1,19 +1,22 @@
 package cool.klass.reladomo.tree.serializer;
 
-import java.util.LinkedHashMap;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.gs.fw.common.mithra.MithraObject;
+import com.gs.fw.common.mithra.finder.AbstractRelatedFinder;
 import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.finder.DomainList;
 import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.model.meta.domain.api.Classifier;
-import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.reladomo.tree.DataTypePropertyReladomoTreeNode;
@@ -24,27 +27,26 @@ import cool.klass.model.reladomo.tree.RootReladomoTreeNode;
 import cool.klass.model.reladomo.tree.SubClassReladomoTreeNode;
 import cool.klass.model.reladomo.tree.SuperClassReladomoTreeNode;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.stack.ImmutableStack;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.map.mutable.MapAdapter;
 import org.eclipse.collections.impl.stack.mutable.ArrayStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ReladomoTreeObjectToDTOSerializerListener
         implements ReladomoTreeNodeToManyAwareListener
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoTreeObjectToDTOSerializerListener.class);
+    private static final Converter<String, String> LOWER_TO_UPPER_CAMEL =
+            CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL);
 
     private static final Converter<String, String> UPPER_TO_LOWER_CAMEL =
             CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL);
 
-    private final MutableStack<Object>           contextStack            = new ArrayStack<>();
-    private final MutableStack<RelatedFinder<?>> finderStack             = new ArrayStack<>();
-    private final MutableStack<Object>           persistentInstanceStack = new ArrayStack<>();
-    private final MutableStack<Object>           resultNodeStack         = new ArrayStack<>();
+    private final ReflectionCache reflectionCache = new ReflectionCache();
+
+    private final MutableStack<Object>                contextStack            = new ArrayStack<>();
+    private final MutableStack<AbstractRelatedFinder> finderStack             = new ArrayStack<>();
+    private final MutableStack<Object>                persistentInstanceStack = new ArrayStack<>();
+    private final MutableStack<Object>                resultNodeStack         = new ArrayStack<>();
 
     private final ReladomoDataStore dataStore;
     private final DomainList        domainList;
@@ -57,9 +59,9 @@ public class ReladomoTreeObjectToDTOSerializerListener
             DomainList domainList,
             Klass klass)
     {
-        this.dataStore   = Objects.requireNonNull(dataStore);
-        this.domainList  = Objects.requireNonNull(domainList);
-        this.klass       = Objects.requireNonNull(klass);
+        this.dataStore  = Objects.requireNonNull(dataStore);
+        this.domainList = Objects.requireNonNull(domainList);
+        this.klass      = Objects.requireNonNull(klass);
     }
 
     public MutableList<Object> getResult()
@@ -80,31 +82,20 @@ public class ReladomoTreeObjectToDTOSerializerListener
     @Override
     public void enterListIndex(int index)
     {
-        MutableList<Object>        resultNode     = (MutableList<Object>) this.resultNodeStack.peek();
-        MutableMap<String, Object> nextResultNode = MapAdapter.adapt(new LinkedHashMap<>());
-        Object                     context        = this.contextStack.peek();
-        if (context instanceof ReferenceProperty referenceProperty)
+        Object persistentInstance = this.persistentInstanceStack.peek();
+        if (!(persistentInstance instanceof List))
         {
-            if (referenceProperty.getType().isAbstract())
-            {
-                nextResultNode.put("__typeName", referenceProperty.getType().getName());
-            }
+            String detailMessage = "Expected List but found: " + persistentInstance.getClass().getCanonicalName();
+            throw new AssertionError(detailMessage);
         }
-        else if (context instanceof Classifier classifier)
-        {
-            if (classifier.isAbstract())
-            {
-                nextResultNode.put("__typeName", ((Classifier) context).getName());
-            }
-        }
-        else
-        {
-            throw new AssertionError("Unknown context: " + context);
-        }
-        resultNode.add(nextResultNode);
 
-        List<Object> persistentInstance     = (List<Object>) this.persistentInstanceStack.peek();
-        Object       nextPersistentInstance = persistentInstance.get(index);
+        List<Object> persistentList         = (List<Object>) persistentInstance;
+        Object       nextPersistentInstance = persistentList.get(index);
+        Classifier   classifierFromContext  = this.getClassifierFromPersistentInstance(nextPersistentInstance);
+        Object       nextResultNode         = this.instantiateDTO(classifierFromContext);
+
+        MutableList<Object> resultNode = (MutableList<Object>) this.resultNodeStack.peek();
+        resultNode.add(nextResultNode);
 
         this.contextStack.push(index);
         this.persistentInstanceStack.push(nextPersistentInstance);
@@ -127,7 +118,7 @@ public class ReladomoTreeObjectToDTOSerializerListener
             String detailMessage = "Expected " + this.klass + " but got " + rootReladomoTreeNode.getOwningClassifier();
             throw new AssertionError(detailMessage);
         }
-        RelatedFinder<?> relatedFinder = this.dataStore.getRelatedFinder(rootReladomoTreeNode.getOwningClassifier());
+        AbstractRelatedFinder relatedFinder = this.dataStore.getRelatedFinder(rootReladomoTreeNode.getOwningClassifier());
 
         this.contextStack.push(rootReladomoTreeNode.getOwningClassifier());
         this.finderStack.push(relatedFinder);
@@ -158,13 +149,19 @@ public class ReladomoTreeObjectToDTOSerializerListener
             return;
         }
 
-        MutableMap<String, Object> resultNode = (MutableMap<String, Object>) this.resultNodeStack.peek();
+        Object resultNode = this.resultNodeStack.peek();
 
         Object data = this.dataStore.getDataTypeProperty(persistentInstance, dataTypeProperty);
-        Object value = data instanceof EnumerationLiteral enumerationLiteral
-                ? enumerationLiteral.getName()
-                : data;
-        resultNode.put(dataTypeProperty.getName(), value);
+        if (data == null)
+        {
+            return;
+        }
+
+        var dataTypePropertyVisitor = new ReflectionSetterDataTypePropertyVisitor(
+                this.reflectionCache,
+                resultNode,
+                data);
+        dataTypeProperty.visit(dataTypePropertyVisitor);
     }
 
     @Override
@@ -176,12 +173,12 @@ public class ReladomoTreeObjectToDTOSerializerListener
     @Override
     public void enterSuperClass(SuperClassReladomoTreeNode superClassReladomoTreeNode)
     {
-        Klass            owningClassifier   = superClassReladomoTreeNode.getOwningClassifier();
-        Klass            superClass         = superClassReladomoTreeNode.getType();
-        String           relationshipName   = UPPER_TO_LOWER_CAMEL.convert(superClass.getName()) + "SuperClass";
-        RelatedFinder<?> relatedFinder      = this.finderStack.peek();
-        RelatedFinder<?> nextFinder         = relatedFinder.getRelationshipFinderByName(relationshipName);
-        Object           persistentInstance = this.persistentInstanceStack.peek();
+        Klass                 owningClassifier   = superClassReladomoTreeNode.getOwningClassifier();
+        Klass                 superClass         = superClassReladomoTreeNode.getType();
+        String                relationshipName   = UPPER_TO_LOWER_CAMEL.convert(superClass.getName()) + "SuperClass";
+        RelatedFinder<?>      relatedFinder      = this.finderStack.peek();
+        AbstractRelatedFinder nextFinder         = (AbstractRelatedFinder) relatedFinder.getRelationshipFinderByName(relationshipName);
+        Object                persistentInstance = this.persistentInstanceStack.peek();
 
         Object superClassPersistentInstance = this.dataStore.getSuperClass(persistentInstance, owningClassifier);
 
@@ -201,23 +198,17 @@ public class ReladomoTreeObjectToDTOSerializerListener
     @Override
     public void enterSubClass(SubClassReladomoTreeNode subClassReladomoTreeNode)
     {
-        Klass            owningClassifier   = subClassReladomoTreeNode.getOwningClassifier();
-        Klass            subClass           = subClassReladomoTreeNode.getType();
-        String           relationshipName   = UPPER_TO_LOWER_CAMEL.convert(subClass.getName()) + "SubClass";
-        RelatedFinder<?> relatedFinder      = this.finderStack.peek();
-        RelatedFinder<?> nextFinder         = relatedFinder.getRelationshipFinderByName(relationshipName);
-        Object           persistentInstance = this.persistentInstanceStack.peek();
+        Klass                 owningClassifier   = subClassReladomoTreeNode.getOwningClassifier();
+        Klass                 subClass           = subClassReladomoTreeNode.getType();
+        String                relationshipName   = UPPER_TO_LOWER_CAMEL.convert(subClass.getName()) + "SubClass";
+        RelatedFinder<?>      relatedFinder      = this.finderStack.peek();
+        AbstractRelatedFinder nextFinder         = (AbstractRelatedFinder) relatedFinder.getRelationshipFinderByName(relationshipName);
+        Object                persistentInstance = this.persistentInstanceStack.peek();
 
         Object subClassPersistentInstance = this.dataStore.getSubClassPersistentInstance(
                 owningClassifier,
                 subClass,
                 (MithraObject) persistentInstance);
-
-        if (subClassPersistentInstance != null)
-        {
-            MutableMap<String, Object> resultNode = (MutableMap<String, Object>) this.resultNodeStack.peek();
-            resultNode.put("__typeName", subClass.getName());
-        }
 
         this.contextStack.push(subClass);
         this.finderStack.push(nextFinder);
@@ -238,40 +229,42 @@ public class ReladomoTreeObjectToDTOSerializerListener
         ReferenceProperty referenceProperty = referencePropertyReladomoTreeNode.getReferenceProperty();
         this.contextStack.push(referenceProperty);
 
-        String           propertyName  = referenceProperty.getName();
-        RelatedFinder<?> relatedFinder = this.finderStack.peek();
-        RelatedFinder<?> nextFinder    = relatedFinder.getRelationshipFinderByName(propertyName);
+        String                propertyName  = referenceProperty.getName();
+        RelatedFinder<?>      relatedFinder = this.finderStack.peek();
+        AbstractRelatedFinder nextFinder    = (AbstractRelatedFinder) relatedFinder.getRelationshipFinderByName(propertyName);
         this.finderStack.push(nextFinder);
-        Object persistentInstance = this.persistentInstanceStack.peek();
+        Object persistentInstance     = this.persistentInstanceStack.peek();
+        Object resultNode             = this.resultNodeStack.peek();
+        Object nextPersistentInstance = this.dataStore.get(persistentInstance, referenceProperty);
+        this.persistentInstanceStack.push(nextPersistentInstance);
 
-        if (referenceProperty.getMultiplicity().isToOne())
+        Multiplicity multiplicity = referenceProperty.getMultiplicity();
+        if (multiplicity.isToOne())
         {
-            Object toOne = this.dataStore.getToOne(persistentInstance, referenceProperty);
-            this.persistentInstanceStack.push(toOne);
-            MutableMap<String, Object> resultNode     = (MutableMap<String, Object>) this.resultNodeStack.peek();
-            MutableMap<String, Object> nextResultNode = MapAdapter.adapt(new LinkedHashMap<>());
-            Classifier                 type           = referenceProperty.getType();
-            if (type.isAbstract())
+            if (nextPersistentInstance == null)
             {
-                nextResultNode.put("__typeName", type.getName());
+                this.resultNodeStack.push(null);
+
+                // Returning 0 children is a way to say stop recursing through the Projection
+                return Optional.of(0);
             }
-            resultNode.put(referenceProperty.getName(), nextResultNode);
+            Classifier classifierFromContext = this.getClassifierFromPersistentInstance(nextPersistentInstance);
+            Object     nextResultNode        = this.instantiateDTO(classifierFromContext);
             this.resultNodeStack.push(nextResultNode);
+            this.setChildProperty(referenceProperty, resultNode, nextResultNode);
             return Optional.empty();
         }
 
-        if (referenceProperty.getMultiplicity().isToMany())
+        if (multiplicity.isToMany())
         {
-            List<Object> toMany = this.dataStore.getToMany(persistentInstance, referenceProperty);
-            this.persistentInstanceStack.push(toMany);
-            MutableMap<String, Object> resultNode     = (MutableMap<String, Object>) this.resultNodeStack.peek();
-            MutableList<Object>        nextResultNode = Lists.mutable.empty();
-            resultNode.put(referenceProperty.getName(), nextResultNode);
+            MutableList<Object> nextResultNode = Lists.mutable.empty();
+            this.setChildProperty(referenceProperty, resultNode, nextResultNode);
             this.resultNodeStack.push(nextResultNode);
+            List<Object> toMany = (List<Object>) nextPersistentInstance;
             return Optional.of(toMany.size());
         }
 
-        throw new AssertionError("Unknown multiplicity: " + referenceProperty.getMultiplicity());
+        throw new AssertionError("Unknown multiplicity: " + multiplicity);
     }
 
     @Override
@@ -286,19 +279,106 @@ public class ReladomoTreeObjectToDTOSerializerListener
     @Override
     public Optional<Integer> enterReference(ReferenceReladomoTreeNode referenceReladomoTreeNode)
     {
-        LOGGER.info("referenceReladomoTreeNode = " + referenceReladomoTreeNode);
-        return Optional.empty();
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".enterReference() not implemented yet");
     }
 
     @Override
     public void exitReference(ReferenceReladomoTreeNode referenceReladomoTreeNode)
     {
-        LOGGER.info("referenceReladomoTreeNode = " + referenceReladomoTreeNode);
+        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".exitReference() not implemented yet");
+    }
+
+    @Nonnull
+    private Classifier getClassifierFromPersistentInstance(Object nextPersistentInstance)
+    {
+        Klass klassFromContext = this.getKlassFromContext();
+        Klass mostSpecificSubclass = this.dataStore.getMostSpecificSubclass(
+                nextPersistentInstance,
+                klassFromContext);
+        if (mostSpecificSubclass.isAbstract())
+        {
+            String detailMessage = "Cannot instantiate abstract class: " + mostSpecificSubclass;
+            throw new AssertionError(detailMessage);
+        }
+        return mostSpecificSubclass;
+    }
+
+    @Nonnull
+    private Klass getKlassFromContext()
+    {
+        Object context = this.contextStack.peek();
+
+        if (context instanceof ReferenceProperty referenceProperty)
+        {
+            return (Klass) referenceProperty.getType();
+        }
+
+        if (context instanceof Classifier classifier)
+        {
+            return (Klass) classifier;
+        }
+
+        throw new AssertionError("Unknown context: " + context);
+    }
+
+    private void setChildProperty(ReferenceProperty referenceProperty, Object resultNode, Object nextResultNode)
+    {
+        String   methodName      = "set" + LOWER_TO_UPPER_CAMEL.convert(referenceProperty.getName());
+        Class<?> resultNodeClass = resultNode.getClass();
+
+        Class<?> nextResultNodeClass = this.getNextResultNodeClass(referenceProperty);
+        try
+        {
+            Method method = this.reflectionCache.getMethod(resultNodeClass, methodName, nextResultNodeClass);
+            method.invoke(resultNode, nextResultNode);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Nonnull
+    private Class<?> getNextResultNodeClass(ReferenceProperty referenceProperty)
+    {
+        Multiplicity multiplicity = referenceProperty.getMultiplicity();
+        if (multiplicity.isToOne())
+        {
+            Classifier classifier = referenceProperty.getType();
+            String     dtoFQCN    = classifier.getPackageName() + ".dto." + classifier.getName() + "DTO";
+            return this.reflectionCache.classForName(dtoFQCN);
+        }
+        if (multiplicity.isToMany())
+        {
+            return List.class;
+        }
+        throw new AssertionError("Unknown multiplicity: " + multiplicity);
+    }
+
+    @Nonnull
+    private Object instantiateDTO(Classifier classifier)
+    {
+        if (classifier.isAbstract())
+        {
+            String detailMessage = "Cannot instantiate abstract class: " + classifier;
+            throw new AssertionError(detailMessage);
+        }
+
+        String dtoFQCN = classifier.getPackageName() + ".dto." + classifier.getName() + "DTO";
+        try
+        {
+            Class<?> aClass = this.reflectionCache.classForName(dtoFQCN);
+            return aClass.getConstructor().newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            throw new RuntimeException("Could not construct " + dtoFQCN, e);
+        }
     }
 
     private record State(
             ImmutableStack<Object> contextStack,
-            ImmutableStack<RelatedFinder<?>> finderStack,
+            ImmutableStack<AbstractRelatedFinder> finderStack,
             ImmutableStack<Object> persistentInstanceStack,
             ImmutableStack<Object> resultNodeStack) {}
 }

@@ -1,13 +1,10 @@
 package cool.klass.dropwizard.bundle.graphql;
 
-import java.util.Map;
 import java.util.Objects;
 
 import cool.klass.model.meta.domain.api.Klass;
 import graphql.TypeResolutionEnvironment;
-import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLObjectType;
-import graphql.schema.GraphQLType;
 import graphql.schema.TypeResolver;
 
 public class KlassTypeResolver
@@ -23,35 +20,14 @@ public class KlassTypeResolver
     @Override
     public GraphQLObjectType getType(TypeResolutionEnvironment env)
     {
-        if (!(env.getObject() instanceof Map))
+        // TODO: Assert that the resolved type is a subclass of this.klass
+        String simpleName = env.getObject().getClass().getSimpleName();
+        if (simpleName.endsWith("DTO"))
         {
-            throw new AssertionError("Expected Map but got " + env.getObject());
+            // Chop off "DTO" from the end
+            String truncated = simpleName.substring(0, simpleName.length() - 3);
+            return env.getSchema().getObjectType(truncated);
         }
-
-        Map<String, Object> map = env.getObject();
-        if (map.containsKey("__typeName"))
-        {
-            String            typeName = (String) map.get("__typeName");
-            GraphQLType       graphQLType = env.getSchema().getTypeAs(typeName);
-            if (graphQLType instanceof GraphQLObjectType objectType)
-            {
-                return objectType;
-            }
-            if (graphQLType instanceof GraphQLInterfaceType)
-            {
-                Klass detect = this.klass
-                        .getSubClassChain()
-                        .detect(subClass -> subClass.getSubClasses().isEmpty());
-                String subClassName = detect.getName();
-                GraphQLObjectType result = env.getSchema().getObjectType(subClassName);
-                return result;
-            }
-
-            throw new AssertionError("Expected GraphQLObjectType or GraphQLInterfaceType but got " + graphQLType);
-        }
-
-        String            klassName = this.klass.getName();
-        GraphQLObjectType result    = env.getSchema().getObjectType(klassName);
-        return result;
+        throw new AssertionError("Expected DTO but got " + simpleName);
     }
 }

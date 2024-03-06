@@ -6,10 +6,6 @@ public interface ReladomoTreeNodeToManyAwareListener
 {
     Object getStateToAssertInvariants();
 
-    default void assertInvariants()
-    {
-    }
-
     void enterListIndex(int index);
 
     void exitListIndex(int index);

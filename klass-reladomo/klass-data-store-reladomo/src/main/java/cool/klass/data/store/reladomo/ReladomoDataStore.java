@@ -78,7 +78,7 @@ public class ReladomoDataStore
     private final Supplier<UUID> uuidSupplier;
     private final int            retryCount;
 
-    private final MutableOrderedMap<Classifier, RelatedFinder<?>>              memoizedRelatedFinders          = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    private final MutableOrderedMap<Classifier, AbstractRelatedFinder>              memoizedRelatedFinders          = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<Pair<Class<?>, PrimitiveProperty>, Method> memoizedGenerateAndSetIdMethods = OrderedMapAdapter.adapt(new LinkedHashMap<>());
     private final MutableOrderedMap<Property, Method>                          memoizedGetters                 = OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
@@ -896,7 +896,7 @@ public class ReladomoDataStore
     }
 
     @Nonnull
-    public RelatedFinder<?> getRelatedFinder(@Nonnull Classifier classifier)
+    public AbstractRelatedFinder getRelatedFinder(@Nonnull Classifier classifier)
     {
         if (this.memoizedRelatedFinders.containsKey(classifier))
         {
@@ -905,10 +905,10 @@ public class ReladomoDataStore
 
         try
         {
-            String           finderName      = classifier.getFullyQualifiedName() + "Finder";
-            Class<?>         finderClass     = Class.forName(finderName);
-            Method           getFinderMethod = finderClass.getMethod("getFinderInstance");
-            RelatedFinder<?> result          = (RelatedFinder<?>) getFinderMethod.invoke(null);
+            String                finderName      = classifier.getFullyQualifiedName() + "Finder";
+            Class<?>              finderClass     = Class.forName(finderName);
+            Method                getFinderMethod = finderClass.getMethod("getFinderInstance");
+            AbstractRelatedFinder result          = (AbstractRelatedFinder) getFinderMethod.invoke(null);
             this.memoizedRelatedFinders.put(classifier, result);
             return result;
         }

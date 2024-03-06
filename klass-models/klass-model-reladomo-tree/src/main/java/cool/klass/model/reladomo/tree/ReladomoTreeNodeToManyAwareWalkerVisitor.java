@@ -18,11 +18,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object            before           = this.listener.getStateToAssertInvariants();
         Optional<Integer> maybeNumChildren = this.listener.enterRoot(node);
-        this.listener.assertInvariants();
         this.visitChildren(node, maybeNumChildren);
         this.listener.exitRoot(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
 
         if (!Objects.equals(before, after))
         {
@@ -35,11 +33,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object before = this.listener.getStateToAssertInvariants();
         this.listener.enterDataTypeProperty(node);
-        this.listener.assertInvariants();
         node.getChildren().forEachKeyValue((name, child) -> child.visit(this));
         this.listener.exitDataTypeProperty(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
 
         if (!Objects.equals(before, after))
         {
@@ -52,11 +48,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object before = this.listener.getStateToAssertInvariants();
         this.listener.enterSuperClass(node);
-        this.listener.assertInvariants();
         node.getChildren().forEachKeyValue((name, child) -> child.visit(this));
         this.listener.exitSuperClass(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
 
         if (!Objects.equals(before, after))
         {
@@ -69,11 +63,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object before = this.listener.getStateToAssertInvariants();
         this.listener.enterSubClass(node);
-        this.listener.assertInvariants();
         node.getChildren().forEachKeyValue((name, child) -> child.visit(this));
         this.listener.exitSubClass(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
 
         if (!Objects.equals(before, after))
         {
@@ -86,11 +78,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object            before           = this.listener.getStateToAssertInvariants();
         Optional<Integer> maybeNumChildren = this.listener.enterReferenceProperty(node);
-        this.listener.assertInvariants();
         this.visitChildren(node, maybeNumChildren);
         this.listener.exitReferenceProperty(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
 
         if (!Objects.equals(before, after))
         {
@@ -103,11 +93,9 @@ public class ReladomoTreeNodeToManyAwareWalkerVisitor
     {
         Object            before           = this.listener.getStateToAssertInvariants();
         Optional<Integer> maybeNumChildren = this.listener.enterReference(node);
-        this.listener.assertInvariants();
         this.visitChildren(node, maybeNumChildren);
         this.listener.exitReference(node);
         Object after = this.listener.getStateToAssertInvariants();
-        this.listener.assertInvariants();
         if (!Objects.equals(before, after))
         {
             throw new IllegalStateException("State changed during visit");
