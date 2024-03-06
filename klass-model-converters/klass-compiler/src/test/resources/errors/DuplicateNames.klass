@@ -1,0 +1,37 @@
+package dummy
+
+enumeration DuplicateTopLevelItem
+{
+    DUPLICATE_ENUM_LITERAL,
+    DUPLICATE_ENUM_LITERAL,
+}
+
+class DuplicateTopLevelItem
+{
+    duplicateMember: String
+    duplicateMember     : DuplicateTopLevelItem
+
+    duplicateMember(duplicateParameter: String[1..1],
+    duplicateParameter: String[1..1]): DuplicateTopLevelItem[1..1]
+    {
+        this.duplicateMember == duplicateParameter
+    }
+}
+
+association DuplicateTopLevelItem
+{
+    duplicateMember: DuplicateTopLevelItem[1..1]
+    duplicateMember: DuplicateTopLevelItem[1..1]
+}
+
+association DuplicateAssociationEnd
+{
+    duplicateAssociationEnd: DuplicateTopLevelItem[1..1]
+    duplicateAssociationEnd: DuplicateTopLevelItem[1..1]
+}
+
+projection DuplicateTopLevelItem on DuplicateTopLevelItem
+{
+    duplicateMember: "Duplicate Header",
+    duplicateMember: "Duplicate Header",
+}

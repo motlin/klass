@@ -1,0 +1,111 @@
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cool.klass</groupId>
+        <artifactId>stackoverflow</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>stackoverflow-reladomo-domain</artifactId>
+
+    <name>StackOverflow Reladomo Domain</name>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>cool.klass</groupId>
+                <artifactId>klass-generator-reladomo-plugin</artifactId>
+                <version>${project.version}</version>
+                <configuration>
+                    <rootPackageName>cool.klass</rootPackageName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-reladomo-object-files</goal>
+                            <goal>generate-reladomo-class-list</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>cool.klass</groupId>
+                        <artifactId>stackoverflow-domain-model</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/reladomo/</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generateMithra</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
+
+                                <taskdef
+                                        name="gen-reladomo"
+                                        classpath="plugin_classpath"
+                                        classname="com.gs.fw.common.mithra.generator.MithraGenerator" />
+
+                                <!--TODO: -->
+
+                                <gen-reladomo
+                                        xml="${project.build.directory}/generated-resources/reladomo/DomainModelReladomoClassList.xml"
+                                        generateEcListMethod="true"
+                                        generatedDir="${project.build.directory}/generated-sources/reladomo"
+                                        nonGeneratedDir="${project.build.sourceDirectory}"
+                                        generateConcreteClasses="true"
+                                />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.goldmansachs.reladomo</groupId>
+                        <artifactId>reladomogen</artifactId>
+                        <version>17.0.2</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>com.goldmansachs.reladomo</groupId>
+                        <artifactId>reladomo-gen-util</artifactId>
+                        <version>17.0.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

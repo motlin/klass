@@ -1,0 +1,28 @@
+package BADPACKAGE
+
+enumeration badEnumeration
+{
+    badEnumerationLiteral,
+}
+
+class badClass
+{
+    BadPrimitiveProperty: String
+    BadEnumerationProperty: badEnumeration
+
+    BadParameterizedProperty(BadParameter: String[1..1]): badClass[1..1]
+    {
+        this.BadPrimitiveProperty == BadParameter
+    }
+}
+
+association badAssociation
+{
+    BadAssociationEndSource: badClass[1..1]
+    BadAssociationEndTarget: badClass[1..1]
+}
+
+projection badProjection on badClass
+{
+    BadPrimitiveProperty: "Header",
+}

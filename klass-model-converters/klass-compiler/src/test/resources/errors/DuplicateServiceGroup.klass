@@ -1,0 +1,13 @@
+package dummy
+
+class DuplicateServiceGroup
+{
+}
+
+service DuplicateServiceGroup
+{
+}
+
+service DuplicateServiceGroup
+{
+}

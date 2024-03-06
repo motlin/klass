@@ -1,0 +1,167 @@
+package com.errors
+
+// TODO: Error annotators for all these errors
+class DuplicateTopLevelDeclarationName
+{
+}
+
+class DuplicateTopLevelDeclarationName
+{
+}
+
+enumeration DuplicateTopLevelDeclarationName
+{
+    EXAMPLE_LITERAL,
+}
+
+enumeration DuplicateTopLevelDeclarationName
+{
+    EXAMPLE_LITERAL,
+}
+
+enumeration EmptyEnumeration
+{
+}
+
+enumeration ExampleEnumeration
+{
+    EXAMPLE_LITERAL,
+}
+
+enumeration DuplicateEnumerationLiteral
+{
+    DUPLICATE_LITERAL,
+    DUPLICATE_LITERAL,
+}
+
+class DuplicateMemberNames
+{
+    duplicateMemberName: String
+    duplicateMemberName: String
+    duplicateMemberName: ExampleEnumeration
+
+    duplicateMemberName(): DuplicateMemberNames[1..1]
+    {
+        this.duplicateMemberName == DuplicateMemberNames.duplicateMemberName
+    }
+}
+
+class ExampleClassWithDuplicateAssociationEnd
+{
+}
+
+association ExampleAssociationWithDuplicateAssociationEnd
+{
+    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]
+    exampleClassWithDuplicateAssociationEnd: ExampleClassWithDuplicateAssociationEnd[1..1]
+}
+
+class ExampleClass
+{
+    integerProperty    : Integer
+    longProperty       : Long
+    stringProperty     : String
+
+    invalidParameterType(stringParameter: String[1..1]): ExampleClass[1..1]
+    {
+        this.integerProperty == ExampleClass.stringProperty
+            && ExampleClass.integerProperty == stringParameter
+    }
+
+    idParameterType(idParameter: ID[1..1]): ExampleClass[1..1]
+    {
+        this.longProperty == idParameter
+    }
+
+    invalidConstantType(): ExampleClass[1..1]
+    {
+        this.integerProperty == ExampleClass.integerProperty
+            && ExampleClass.stringProperty == 1
+    }
+}
+
+projection ProjectionWithInvalidParameterType(invalidParameter: Integer[1..1]) on ExampleClass
+{
+    invalidParameterType(invalidParameter):
+    {
+        // Also this is empty which doesn't make a lot of sense
+    },
+}
+
+service ExampleClass
+{
+    /api/example/{invalidParameter: Boolean[1..1]}
+        GET
+        {
+            // Better error messages for missing multiplicity, criteria, projection
+            multiplicity: one
+            criteria    : this.stringProperty == invalidParameter
+            projection  : ProjectionWithInvalidParameterType(invalidParameter)
+        }
+    /api/example/singleParameterInClause?{id: String[1..1]}
+        GET
+        {
+            multiplicity: one
+            criteria    : this.stringProperty in id
+
+            // Also missing projection parameter
+            projection  : ProjectionWithInvalidParameterType
+        }
+
+    // Duplicate urls
+    /api/example/singleParameterInClause?{id: String[0..*]}
+        GET
+        {
+            multiplicity: one
+            criteria    : this.stringProperty == id
+            projection  : ProjectionWithInvalidParameterType
+        }
+    /api/example/{validParameter: Integer[1..1]}
+        GET
+        {
+            // Better error messages for missing multiplicity, criteria, projection
+            multiplicity: one
+            criteria    : this.stringProperty == invalidParameter
+            projection  : ProjectionWithInvalidParameterType(validParameter,
+            validParameter)
+        }
+    /api/example/{validParameter: Integer[1..1]}
+        GET
+        {
+            // Better error messages for missing multiplicity, criteria, projection
+            multiplicity: one
+            criteria    : this.stringProperty == invalidParameter
+            projection  : ProjectionWithInvalidParameterType(invalidParameter)
+        }
+}
+
+projection EmptyProjection on ExampleClass
+{
+}
+
+service ExampleClass
+{
+    // empty
+}
+
+enumeration String
+{
+    DUMMY,
+}
+
+enumeration ID
+{
+    DUMMY,
+}
+
+class style
+{
+    Style              : String
+}
+
+enumeration styleenum
+{
+    style,
+}
+
+// TODO many owns one

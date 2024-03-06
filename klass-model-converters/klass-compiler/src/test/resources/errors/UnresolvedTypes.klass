@@ -1,0 +1,17 @@
+package dummy
+
+class ClassWithUnresolved
+{
+    unresolvedEnumerationProperty: UnresolvedEnumeration
+
+    unresolvedParameterizedProperty(): UnresolvedClass[1..1]
+    {
+        this.unresolvedEnumerationProperty == UnresolvedEnumeration.unresolvedEnumerationLiteral
+    }
+}
+
+association AssociationWithUnresolved
+{
+    parent: UnresolvedClass[0..1]
+    children: UnresolvedClass[0..*]
+}
