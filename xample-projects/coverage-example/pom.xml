@@ -119,6 +119,7 @@
         <module>coverage-example-uml-nomnoml</module>
         <module>klass-generator-klass-html-test</module>
         <module>klass-reladomo-operation-compiler-test</module>
+        <module>liftwizard-reladomo-graphql-operation-test</module>
         <module>liftwizard-reladomo-test-resource-writer-tests</module>
     </modules>
 
