@@ -128,6 +128,12 @@
             <artifactId>liftwizard-junit-rule-liquibase-migrations</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-jackson-config</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!--</editor-fold>-->
 
         <!--<editor-fold desc="Klass">-->
@@ -190,6 +196,12 @@
         <dependency>
             <groupId>org.eclipse.collections</groupId>
             <artifactId>eclipse-collections</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jackson</artifactId>
             <scope>test</scope>
         </dependency>
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,9 +14,11 @@ import cool.klass.deserializer.json.RequiredPropertiesValidator;
 import cool.klass.dropwizard.configuration.domain.model.loader.compiler.DomainModelCompilerFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
+import io.dropwizard.jackson.Jackson;
 import io.liftwizard.junit.rule.log.marker.LogMarkerTestRule;
 import io.liftwizard.junit.rule.match.file.FileMatchRule;
 import io.liftwizard.junit.rule.match.json.JsonMatchRule;
+import io.liftwizard.serialization.jackson.config.ObjectMapperConfig;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.Rule;
@@ -68,11 +69,8 @@ public abstract class AbstractValidatorTest
     @Nonnull
     private static ObjectMapper getObjectMapper()
     {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(Feature.ALLOW_COMMENTS, true);
-        objectMapper.configure(Feature.ALLOW_YAML_COMMENTS, true);
-        objectMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-        objectMapper.configure(Feature.ALLOW_TRAILING_COMMA, true);
+        ObjectMapper objectMapper = Jackson.newObjectMapper();
+        ObjectMapperConfig.configure(objectMapper);
         return objectMapper;
     }
 
