@@ -2,12 +2,14 @@ package cool.klass.model.converter.compiler.phase;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.AntlrAssociationEndModifier;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -15,6 +17,8 @@ import cool.klass.model.meta.grammar.KlassParser.ClassTypeContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
+import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
+import cool.klass.model.meta.grammar.KlassVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.MapIterable;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
@@ -81,5 +85,16 @@ public class AssociationPhase extends AbstractCompilerPhase
                 associationEndModifiers);
 
         this.associationState.enterAssociationEnd(antlrAssociationEnd);
+    }
+
+    @Override
+    public void enterRelationship(RelationshipContext ctx)
+    {
+        KlassVisitor<AntlrCriteria> visitor = new CriteriaVisitor(
+                this.currentCompilationUnit,
+                this.associationState,
+                this.domainModelState);
+        AntlrCriteria antlrCriteria = visitor.visit(ctx.criteriaExpression());
+        this.associationState.enterRelationship(antlrCriteria);
     }
 }

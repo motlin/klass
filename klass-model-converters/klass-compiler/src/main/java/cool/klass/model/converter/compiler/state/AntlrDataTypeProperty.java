@@ -41,6 +41,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType> extends AntlrPro
     @Override
     public abstract DataTypePropertyBuilder<T, ?> build();
 
+    public abstract DataTypePropertyBuilder<T, ?> getPropertyBuilder();
+
     @Override
     protected AntlrClass getOwningClassState()
     {

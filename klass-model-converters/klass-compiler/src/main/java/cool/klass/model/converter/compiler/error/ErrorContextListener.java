@@ -30,10 +30,13 @@ import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPrettyNameContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.EscapedIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ExpressionValueContext;
 import cool.klass.model.meta.grammar.KlassParser.HeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
+import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
+import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.KeywordValidAsIdentifierContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.LiteralListContext;
@@ -71,10 +74,10 @@ import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
+import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.TopLevelDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.TypeMemberReferenceContext;
-import cool.klass.model.meta.grammar.KlassParser.TypeReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlParameterDeclarationContext;
@@ -1122,17 +1125,59 @@ public class ErrorContextListener extends BaseErrorListener
     }
 
     @Override
-    public void enterTypeReference(TypeReferenceContext ctx)
+    public void enterEqualityOperator(EqualityOperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".enterTypeReference() not implemented yet");
+                + ".enterEqualityOperator() not implemented yet");
     }
 
     @Override
-    public void exitTypeReference(TypeReferenceContext ctx)
+    public void exitEqualityOperator(EqualityOperatorContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                                                + ".exitTypeReference() not implemented yet");
+                + ".exitEqualityOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterInequalityOperator(InequalityOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInequalityOperator() not implemented yet");
+    }
+
+    @Override
+    public void exitInequalityOperator(InequalityOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInequalityOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterInOperator(InOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInOperator() not implemented yet");
+    }
+
+    @Override
+    public void exitInOperator(InOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInOperator() not implemented yet");
+    }
+
+    @Override
+    public void enterStringOperator(StringOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterStringOperator() not implemented yet");
+    }
+
+    @Override
+    public void exitStringOperator(StringOperatorContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitStringOperator() not implemented yet");
     }
 
     @Override

@@ -11,11 +11,12 @@ user User
 {
     // `read` keyword with no projection means create read services with the default read projection
     // The default read projection includes just this class and all its properties
-    key userId                 : String
+    key userId        : String
+
     // TODO: String max lengths
-    firstName                  : String?
-    lastName                   : String?
-    email                      : String?
+    firstName         : String?
+    lastName          : String?
+    email             : String?
 }
 
 enumeration Status
@@ -34,13 +35,13 @@ class Question
     audited
     optimisticallyLocked
 {
-    key id                     : ID
-    title                      : String
-    body                       : String
+    key id            : ID
+    title             : String
+    body              : String
 
     // TODO: Statemachine
-    status                     : Status
-    deleted                    : Boolean
+    status            : Status
+    deleted           : Boolean
 
     // TODO: Consider type inference on paramterized property parameters based on usage in relationship
     // orderBy natural key ascending is the default
@@ -58,19 +59,19 @@ class Question
     }
 
     // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}
-    system             : TemporalRange
+    system            : TemporalRange
 
     // These two properties are implied by systemTemporal, and are not supposed to actually be declared
-    systemFrom         : TemporalInstant
-    systemTo           : TemporalInstant
+    systemFrom        : TemporalInstant
+    systemTo          : TemporalInstant
 
     // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared
     // They could automatically be part of read projections and not write projections
-    createdById        : String
+    createdById       : String
 
     // createdOn, or createdDate?
-    createdOn          : Instant
-    lastUpdatedById    : String
+    createdOn         : Instant
+    lastUpdatedById   : String
 
     createdBy(): User[1..1]
     {
@@ -88,12 +89,22 @@ class QuestionVersion
     systemTemporal
 {
     // Key properties copied from Question
-    key id                     : ID
+    key id            : ID
 
     // The version number
     // It gets incremented automatically when anything in the version project (QuestionWriteProjection) gets edited
     // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64
-    number                     : Integer
+    number            : Integer
+}
+
+association QuestionHasAnswer
+{
+    question: Question[1..1]
+    answers: Answer[0..*]
+        orderBy: this.id ascending
+
+    // ordering by primary key ascending is the default
+    relationship this.id == Answer.questionId
 }
 
 // The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared
@@ -104,18 +115,8 @@ association QuestionHasVersion
     version: QuestionVersion[1..1]
 
     // implied
-    relationship Question.id == QuestionVersion.id
-            && Question.system == QuestionVersion.system
-}
-
-association QuestionHasAnswer
-{
-    question: Question[1..1]
-    answers: Answer[0..*]
-        orderBy: this.id ascending
-
-    // ordering by primary key ascending is the default
-    relationship Question.id == Answer.questionId
+    relationship this.id == QuestionVersion.id
+            && this.system == QuestionVersion.system
 }
 
 class Answer
@@ -124,10 +125,10 @@ class Answer
     audited
     optimisticallyLocked
 {
-    key id                     : ID
-    body                       : String
-    deleted                    : Boolean
-    private questionId         : Long
+    key id            : ID
+    body              : String
+    deleted           : Boolean
+    private questionId: Long
 }
 
 // TODO Model AnswerVote
@@ -138,9 +139,9 @@ class QuestionVote
     systemTemporal
     audited
 {
-    key questionId             : Long
-    key createdById            : String
-    direction                  : VoteDirection
+    key questionId    : Long
+    key createdById   : String
+    direction         : VoteDirection
 }
 
 enumeration VoteDirection
@@ -226,7 +227,7 @@ service Question
 
             // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409
             // Consider 412 Precondition Failed or 417 Expectation Failed instead of 400, and leave bad request for problems like invalid json, or mismatches with the meta model
-        conflict    : this.id == QuestionVersion.id
+            conflict    : this.id == QuestionVersion.id
                 && QuestionVersion.number == version
             projection  : QuestionWriteProjection
         }

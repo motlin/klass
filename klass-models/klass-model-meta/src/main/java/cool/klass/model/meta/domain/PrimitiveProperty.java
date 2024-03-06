@@ -45,6 +45,8 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
 
     public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveTypeBuilder>
     {
+        private PrimitiveProperty primitiveProperty;
+
         public PrimitivePropertyBuilder(
                 ParserRuleContext elementContext,
                 ParserRuleContext nameContext,
@@ -60,7 +62,11 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         @Override
         public PrimitiveProperty build()
         {
-            return new PrimitiveProperty(
+            if (this.primitiveProperty != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.primitiveProperty = new PrimitiveProperty(
                     this.elementContext,
                     this.nameContext,
                     this.name,
@@ -68,6 +74,13 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.owningKlassBuilder.getKlass(),
                     this.isKey,
                     this.isOptional);
+            return this.primitiveProperty;
+        }
+
+        @Override
+        public PrimitiveProperty getProperty()
+        {
+            return this.primitiveProperty;
         }
     }
 }

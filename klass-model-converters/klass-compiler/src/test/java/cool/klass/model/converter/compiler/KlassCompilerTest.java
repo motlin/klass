@@ -13,8 +13,6 @@ import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -23,28 +21,10 @@ import static org.junit.Assert.assertThat;
 
 public class KlassCompilerTest
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KlassCompilerTest.class);
-
     private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
 
     private final CompilerErrorHolder compilerErrorHolder = new CompilerErrorHolder();
     private final KlassCompiler       compiler            = new KlassCompiler(this.compilerErrorHolder);
-
-    @Test
-    public void compile()
-    {
-        // TODO: Just create the error holder inside the constructor?
-
-        Set<String> klassLocations = this.getResourceNames("com.test");
-
-        DomainModel domainModel = this.compiler.compile(klassLocations);
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
-    }
 
     protected Set<String> getResourceNames(String packageName)
     {
@@ -56,17 +36,652 @@ public class KlassCompilerTest
     }
 
     @Test
-    public void errors()
+    public void stackOverflow()
     {
-        Set<String> klassLocations = this.getResourceNames("errors");
-        this.compiler.compile(klassLocations);
+        //language=Klass
+        String sourceCodeText = "/*\n"
+                + " * Simplified StackOverflow domain model. One question has many answers.\n"
+                + " */\n"
+                + "package com.stackoverflow\n"
+                + "\n"
+                + "// 'user' is just a special class that represents logged in users\n"
+                + "// There must only be a single user class in the model, it must have a single key, and the key must be of type String. Other properties must be nullable\n"
+                + "user User\n"
+                + "    read\n"
+                + "    systemTemporal\n"
+                + "{\n"
+                + "    // `read` keyword with no projection means create read services with the default read projection\n"
+                + "    // The default read projection includes just this class and all its properties\n"
+                + "    key userId        : String\n"
+                + "\n"
+                + "    // TODO: String max lengths\n"
+                + "    firstName         : String?\n"
+                + "    lastName          : String?\n"
+                + "    email             : String?\n"
+                + "}\n"
+                + "\n"
+                + "enumeration Status\n"
+                + "{\n"
+                + "    OPEN(\"Open\"),\n"
+                + "    ON_HOLD(\"On hold\"),\n"
+                + "    CLOSED(\"Closed\"),\n"
+                + "}\n"
+                + "\n"
+                + "class Question\n"
+                + "    read(QuestionReadProjection)\n"
+                + "    create(QuestionWriteProjection)\n"
+                + "    update(QuestionWriteProjection)\n"
+                + "    systemTemporal\n"
+                + "    versioned\n"
+                + "    audited\n"
+                + "    optimisticallyLocked\n"
+                + "{\n"
+                + "    key id            : ID\n"
+                + "    title             : String\n"
+                + "    body              : String\n"
+                + "\n"
+                + "    // TODO: Statemachine\n"
+                + "    status            : Status\n"
+                + "    deleted           : Boolean\n"
+                + "\n"
+                + "    // TODO: Consider type inference on paramterized property parameters based on usage in relationship\n"
+                + "    // orderBy natural key ascending is the default\n"
+                + "    answersWithSubstring(substring: String[1..1]): Answer[0..*]\n"
+                + "        orderBy: this.id ascending\n"
+                + "    {\n"
+                + "        this.id == Answer.questionId\n"
+                + "            && Answer.body contains substring\n"
+                + "    }\n"
+                + "\n"
+                + "    activeAnswers(): Answer[0..*]\n"
+                + "    {\n"
+                + "        this.id == Answer.questionId\n"
+                + "            && Answer.deleted == false\n"
+                + "    }\n"
+                + "\n"
+                + "    // This isn't even a real property. It's referenced in criteria as a shorthand. For example Question.system == {time} is shorthand for Question.systemFrom <= {time} && Question.systemTo > {time}\n"
+                + "    system            : TemporalRange\n"
+                + "\n"
+                + "    // These two properties are implied by systemTemporal, and are not supposed to actually be declared\n"
+                + "    systemFrom        : TemporalInstant\n"
+                + "    systemTo          : TemporalInstant\n"
+                + "\n"
+                + "    // These three properties and two parameterized properties are implied by audited, and are not supposed to actually be declared\n"
+                + "    // They could automatically be part of read projections and not write projections\n"
+                + "    createdById       : String\n"
+                + "\n"
+                + "    // createdOn, or createdDate?\n"
+                + "    createdOn         : Instant\n"
+                + "    lastUpdatedById   : String\n"
+                + "\n"
+                + "    createdBy(): User[1..1]\n"
+                + "    {\n"
+                + "        this.createdById == User.userId\n"
+                + "    }\n"
+                + "\n"
+                + "    lastUpdatedBy(): User[1..1]\n"
+                + "    {\n"
+                + "        this.lastUpdatedById == User.userId\n"
+                + "    }\n"
+                + "}\n"
+                + "\n"
+                + "// The _Version class is implied by the versioned annotation, and not supposed to actually be declared\n"
+                + "class QuestionVersion\n"
+                + "    systemTemporal\n"
+                + "{\n"
+                + "    // Key properties copied from Question\n"
+                + "    key id            : ID\n"
+                + "\n"
+                + "    // The version number\n"
+                + "    // It gets incremented automatically when anything in the version project (QuestionWriteProjection) gets edited\n"
+                + "    // TODO: Consider changing the primitive names to int32, int64, float32, float64, id32, id64\n"
+                + "    number            : Integer\n"
+                + "}\n"
+                + "\n"
+                + "association QuestionHasAnswer\n"
+                + "{\n"
+                + "    question: Question[1..1]\n"
+                + "    answers: Answer[0..*]\n"
+                + "        orderBy: this.id ascending\n"
+                + "\n"
+                + "    // ordering by primary key ascending is the default\n"
+                + "    relationship this.id == Answer.questionId\n"
+                + "}\n"
+                + "\n"
+                + "// The _HasVersion association is implied by the versioned annotation, and not supposed to actually be declared\n"
+                + "// It could automatically be part of read projections and not write projections\n"
+                + "association QuestionHasVersion\n"
+                + "{\n"
+                + "    question: Question[1..1]\n"
+                + "    version: QuestionVersion[1..1]\n"
+                + "\n"
+                + "    // implied\n"
+                + "    relationship this.id == QuestionVersion.id\n"
+                + "            && this.system == QuestionVersion.system\n"
+                + "}\n"
+                + "\n"
+                + "class Answer\n"
+                + "    systemTemporal\n"
+                + "    versioned\n"
+                + "    audited\n"
+                + "    optimisticallyLocked\n"
+                + "{\n"
+                + "    key id            : ID\n"
+                + "    body              : String\n"
+                + "    deleted           : Boolean\n"
+                + "    private questionId: Long\n"
+                + "}\n"
+                + "\n"
+                + "// TODO Model AnswerVote\n"
+                + "// TODO Interface Vote\n"
+                + "// TODO superclass AbstractVote\n"
+                + "// TODO Aggregation for number of upvotes and downvotes\n"
+                + "class QuestionVote\n"
+                + "    systemTemporal\n"
+                + "    audited\n"
+                + "{\n"
+                + "    key questionId    : Long\n"
+                + "    key createdById   : String\n"
+                + "    direction         : VoteDirection\n"
+                + "}\n"
+                + "\n"
+                + "enumeration VoteDirection\n"
+                + "{\n"
+                + "    UP(\"up\"),\n"
+                + "    DOWN(\"down\"),\n"
+                + "}\n"
+                + "\n"
+                + "// TODO: Projection inheritance? QuestionReadProjection extends QuestionWriteProjection\n"
+                + "projection QuestionReadProjection on Question\n"
+                + "{\n"
+                + "    // field names are \"includes\", field values are column headers when serializing to a tabular format\n"
+                + "    title  : \"Question title\",\n"
+                + "    body   : \"Question body\",\n"
+                + "    answers:\n"
+                + "    {\n"
+                + "        body: \"Answer body\",\n"
+                + "    },\n"
+                + "}\n"
+                + "\n"
+                + "projection QuestionWriteProjection on Question\n"
+                + "{\n"
+                + "    title: \"Question title\",\n"
+                + "    body : \"Question body\",\n"
+                + "}\n"
+                + "\n"
+                + "// TODO: Type inference on projection paramters\n"
+                + "projection FilteredAnswersProjection(substring: String[1..1]) on Question\n"
+                + "{\n"
+                + "    title                          : \"Question title\",\n"
+                + "    body                           : \"Question body\",\n"
+                + "    answersWithSubstring(substring):\n"
+                + "    {\n"
+                + "        body: \"Answer body\",\n"
+                + "    },\n"
+                + "}\n"
+                + "\n"
+                + "// Just embed inside the Question class?\n"
+                + "service Question\n"
+                + "{\n"
+                + "    // TODO: matrix url params\n"
+                + "    /api/question/{id: Long[1..1]}/{substring: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: many\n"
+                + "            criteria    : this.id == id\n"
+                + "            projection  : FilteredAnswersProjection(substring)\n"
+                + "        }\n"
+                + "    /api/question/{titleSubstring: String[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: many\n"
+                + "            criteria    : this.title startsWith titleSubstring\n"
+                + "            projection  : QuestionReadProjection\n"
+                + "        }\n"
+                + "    /api/question/{id: Long[1..1]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id == id\n"
+                + "            projection  : QuestionReadProjection\n"
+                + "        }\n"
+                + "    /api/question/in/{id: Long[0..*]}\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id in id\n"
+                + "            projection  : QuestionReadProjection\n"
+                + "        }\n"
+                + "    /api/question/firstTwo\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id in (1, 2)\n"
+                + "            projection  : QuestionReadProjection\n"
+                + "        }\n"
+                + "    /api/question/{id: Long[1..1]}?{version: Integer[1..1]}\n"
+                + "        PUT\n"
+                + "        {\n"
+                + "            // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id == id\n"
+                + "\n"
+                + "            // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409\n"
+                + "            // Consider 412 Precondition Failed or 417 Expectation Failed instead of 400, and leave bad request for problems like invalid json, or mismatches with the meta model\n"
+                + "            conflict    : this.id == QuestionVersion.id\n"
+                + "                && QuestionVersion.number == version\n"
+                + "            projection  : QuestionWriteProjection\n"
+                + "        }\n"
+                + "        DELETE\n"
+                + "        {\n"
+                + "            // PUT, PATCH, and DELETE should implicitly get ?version={version} due to optimistic locking\n"
+                + "            multiplicity: one\n"
+                + "            criteria    : this.id == id\n"
+                + "\n"
+                + "            // 'authorize' is like 'validate' but should give 401 Unauthorized or 403 forbidden instead of 400\n"
+                + "            // TODO: conditions implemented in code, like `|| native(UserIsModeratorClass)`\n"
+                + "            authorize   : this.createdById == user\n"
+                + "\n"
+                + "            // TODO: Should differentiate between 'validate' 400 error and something like 'conflict' 409\n"
+                + "            validate    : this.id == QuestionVersion.id\n"
+                + "                    && QuestionVersion.number == version\n"
+                + "            projection  : QuestionWriteProjection\n"
+                + "        }\n"
+                + "    /api/question\n"
+                + "        POST\n"
+                + "        {\n"
+                + "            multiplicity: one\n"
+                + "            projection  : QuestionWriteProjection\n"
+                + "        }\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: many\n"
+                + "            criteria    : this.title startsWith \"Why do\"\n"
+                + "            projection  : QuestionReadProjection\n"
+                + "        }\n"
+                + "\n"
+                + "    // TODO: Type inference on url parameters\n"
+                + "    /api/user/{userId: String[1..1]}/questions\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            //?page=1&pageSize=25\n"
+                + "            multiplicity: many\n"
+                + "            criteria    : this.createdById == userId\n"
+                + "            projection  : QuestionWriteProjection\n"
+                + "\n"
+                + "            // Deliberately shallow\n"
+                + "            orderBy     : this.createdOn\n"
+                + "\n"
+                + "            // pageSize: ???\n"
+                + "            // page: ???\n"
+                + "        }\n"
+                + "}\n";
+
+        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
+        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
+        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
+        assertThat(domainModel, notNullValue());
+    }
+
+    @Test
+    public void meta()
+    {
+        //language=Klass
+        String sourceCodeText = "package klass.meta\n"
+                + "\n"
+                + "class Class\n"
+                + "{\n"
+                + "    key name: String\n"
+                + "}\n"
+                + "\n"
+                + "enumeration DataType\n"
+                + "{\n"
+                + "    ID,\n"
+                + "    Boolean,\n"
+                + "    Integer,\n"
+                + "    Double,\n"
+                + "    Float,\n"
+                + "    Long,\n"
+                + "    String,\n"
+                + "    Instant,\n"
+                + "    LocalDate,\n"
+                + "}\n"
+                + "\n"
+                + "enumeration Multiplicity\n"
+                + "{\n"
+                + "    ZERO_TO_ONE,\n"
+                + "    ONE_TO_ONE,\n"
+                + "    ZERO_TO_MANY,\n"
+                + "    ONE_TO_MANY,\n"
+                + "}\n"
+                + "\n"
+                + "class DataTypeProperty\n"
+                + "{\n"
+                + "    key className: String\n"
+                + "    key name: String\n"
+                + "    dataType: DataType\n"
+                + "    optional: Boolean\n"
+                + "\n"
+                + "    // key is a keyword, needs backticks to use as identifier\n"
+                + "    `key`: Boolean\n"
+                + "}\n"
+                + "\n"
+                + "association ClassHasDataTypeProperties\n"
+                + "{\n"
+                + "    class: Class[1..1]\n"
+                + "    dataTypeProperties: DataTypeProperty[0..*]\n"
+                + "\n"
+                + "    relationship this.name == DataTypeProperty.className\n"
+                + "}\n"
+                + "\n"
+                + "class Enumeration\n"
+                + "{\n"
+                + "    key name: String\n"
+                + "}\n"
+                + "\n"
+                + "class EnumerationLiteral\n"
+                + "{\n"
+                + "    key enumerationName: String\n"
+                + "    key name: String\n"
+                + "}\n"
+                + "\n"
+                + "association EnumerationHasLiterals\n"
+                + "{\n"
+                + "    enumeration: Enumeration[1..1]\n"
+                + "    enumerationLiterals: EnumerationLiteral[1..*]\n"
+                + "\n"
+                + "    relationship Enumeration.name == EnumerationLiteral.enumerationName\n"
+                + "}\n"
+                + "\n"
+                + "class EnumerationProperty\n"
+                + "{\n"
+                + "    key className: String\n"
+                + "    key name: String\n"
+                + "    optional: Boolean\n"
+                + "    `key`: Boolean\n"
+                + "    private enumerationName: String\n"
+                + "}\n"
+                + "\n"
+                + "association EnumerationPropertyHasEnumeration\n"
+                + "{\n"
+                + "    enumerationProperty: EnumerationProperty[0..*]\n"
+                + "    enumeration: Enumeration[1..1]\n"
+                + "\n"
+                + "    relationship EnumerationProperty.enumerationName == Enumeration.name\n"
+                + "}\n"
+                + "\n"
+                + "association ClassHasEnumerationProperties\n"
+                + "{\n"
+                + "    class: Class[1..1]\n"
+                + "    enumerationProperties: EnumerationProperty[0..*]\n"
+                + "\n"
+                + "    relationship Class.name == EnumerationProperty.className\n"
+                + "}\n"
+                + "\n"
+                + "enumeration AssociationEndDirection\n"
+                + "{\n"
+                + "    SOURCE(\"source\"),\n"
+                + "    TARGET(\"target\"),\n"
+                + "}\n"
+                + "\n"
+                + "class Association\n"
+                + "{\n"
+                + "    key name: String\n"
+                + "\n"
+                + "    source(): AssociationEnd[1..1]\n"
+                + "    {\n"
+                + "        this.name == AssociationEnd.associationName\n"
+                + "            && AssociationEnd.direction == AssociationEndDirection.SOURCE\n"
+                + "    }\n"
+                + "\n"
+                + "    target(): AssociationEnd[1..1]\n"
+                + "    {\n"
+                + "        this.name == AssociationEnd.associationName\n"
+                + "            && AssociationEnd.direction == AssociationEndDirection.TARGET\n"
+                + "    }\n"
+                + "}\n"
+                + "\n"
+                + "class AssociationEnd\n"
+                + "{\n"
+                + "    name: String\n"
+                + "    key associationName: String\n"
+                + "    key direction: AssociationEndDirection\n"
+                + "    multiplicity: Multiplicity\n"
+                + "}\n"
+                + "\n"
+                + "// simplification, ideally we'd model an association as having exactly two ends\n"
+                + "association AssociationHasEnds\n"
+                + "{\n"
+                + "    association: Association[1..1]\n"
+                + "    owned associationEnds: AssociationEnd[0..*]\n"
+                + "\n"
+                + "    relationship Association.name == AssociationEnd.associationName\n"
+                + "}\n"
+                + "\n"
+                + "association AssociationEndHasResultTypeClass\n"
+                + "{\n"
+                + "    associationEndsResultTypeOf: AssociationEnd[0..*]\n"
+                + "    resultType: Class[1..1]\n"
+                + "}\n"
+                + "\n"
+                + "association ClassHasAssociationEnds\n"
+                + "{\n"
+                + "    owningType: Class[1..1]\n"
+                + "    associationEnds: AssociationEnd[0..*]\n"
+                + "}\n"
+                + "\n"
+                + "class ParameterizedProperty\n"
+                + "{\n"
+                + "    key owningClassName: String\n"
+                + "    key name: String\n"
+                + "    optional: Boolean\n"
+                + "    `key`: Boolean\n"
+                + "    private resultTypeName: String\n"
+                + "}\n"
+                + "\n"
+                + "association ClassHasParameterizedProperties\n"
+                + "{\n"
+                + "    owningType: Class[1..1]\n"
+                + "    owned parameterizedProperties: ParameterizedProperty[0..*]\n"
+                + "\n"
+                + "    relationship Class.name == ParameterizedProperty.owningClassName\n"
+                + "}\n"
+                + "\n"
+                + "association ParameterizedPropertyHasResultType\n"
+                + "{\n"
+                + "    parameterizedProperty: ParameterizedProperty[0..*]\n"
+                + "    resultType: Class[1..1]\n"
+                + "\n"
+                + "    relationship ParameterizedProperty.resultTypeName == Class.name\n"
+                + "}\n"
+                + "\n"
+                + "class AssociationEndOrderBy\n"
+                + "{\n"
+                + "    private key associationName: String\n"
+                + "    name: String\n"
+                + "    multiplicity: Multiplicity\n"
+                + "    key direction: AssociationEndDirection\n"
+                + "    private orderById: Long\n"
+                + "}\n"
+                + "\n"
+                + "class ParameterizedPropertyOrderBy\n"
+                + "{\n"
+                + "    private key owningClassName: String\n"
+                + "    key name: String\n"
+                + "    private orderById: Long\n"
+                + "}\n"
+                + "\n"
+                + "association AssociationEndHasOrderBy\n"
+                + "{\n"
+                + "    associationEnd: AssociationEnd[1..1]\n"
+                + "    associationEndOrderBy: AssociationEndOrderBy[0..1]\n"
+                + "\n"
+                + "    relationship AssociationEnd.associationName == AssociationEndOrderBy.associationName\n"
+                + "            && AssociationEnd.direction == AssociationEndOrderBy.direction\n"
+                + "}\n"
+                + "\n"
+                + "association ParameterizedPropertyHasOrderBy\n"
+                + "{\n"
+                + "    parameterizedProperty: ParameterizedProperty[1..1]\n"
+                + "    parameterizedPropertyOrderBy: ParameterizedPropertyOrderBy[0..1]\n"
+                + "\n"
+                + "    relationship ParameterizedProperty.owningClassName == ParameterizedPropertyOrderBy.owningClassName\n"
+                + "            && ParameterizedProperty.name == ParameterizedPropertyOrderBy.name\n"
+                + "}\n"
+                + "\n"
+                + "association AssociationEndOrderByHasParts\n"
+                + "{\n"
+                + "    associationEndOrderBy: AssociationEndOrderBy[1..1]\n"
+                + "    orderBy: OrderBy[1..*]\n"
+                + "\n"
+                + "    relationship AssociationEndOrderBy.orderById == OrderBy.id\n"
+                + "}\n"
+                + "\n"
+                + "association ParameterizedPropertyOrderByHasParts\n"
+                + "{\n"
+                + "    parameterizedPropertyOrderBy: ParameterizedPropertyOrderBy[1..1]\n"
+                + "    orderBy: OrderBy[1..*]\n"
+                + "\n"
+                + "    relationship ParameterizedPropertyOrderBy.orderById == OrderBy.id\n"
+                + "}\n"
+                + "\n"
+                + "class OrderBy\n"
+                + "{\n"
+                + "    key id: ID\n"
+                + "}\n"
+                + "\n"
+                + "// Split into data type / enum type order bys?\n"
+                + "class OrderByPart\n"
+                + "{\n"
+                + "    key orderById: Long\n"
+                + "\n"
+                + "    // TODO: order keyword for properties meant for sorting?\n"
+                + "    key ordinal: Integer\n"
+                + "    private className: String\n"
+                + "    private propertyName: String\n"
+                + "    direction: OrderByDirection\n"
+                + "}\n"
+                + "\n"
+                + "association OrderByHasParts\n"
+                + "{\n"
+                + "    orderBy: OrderBy[1..1]\n"
+                + "    orderByParts: OrderByPart[1..*]\n"
+                + "        orderBy: this.ordinal\n"
+                + "\n"
+                + "    relationship OrderBy.id == OrderByPart.orderById\n"
+                + "}\n"
+                + "\n"
+                + "enumeration OrderByDirection\n"
+                + "{\n"
+                + "    ASCENDING(\"ascending\"),\n"
+                + "    DESCENDING(\"descending\"),\n"
+                + "}\n"
+                + "\n"
+                + "association OrderByPartHasDataTypeProperty\n"
+                + "{\n"
+                + "    orderByPart: OrderByPart[0..*]\n"
+                + "    dataTypeProperty: DataTypeProperty[1..1]\n"
+                + "\n"
+                + "    relationship OrderByPart.className == DataTypeProperty.className\n"
+                + "            && OrderByPart.propertyName == DataTypeProperty.name\n"
+                + "}\n"
+                + "\n"
+                + "association OrderByPartHasEnumerationProperty\n"
+                + "{\n"
+                + "    orderByPart: OrderByPart[0..*]\n"
+                + "    enumerationProperty: EnumerationProperty[1..1]\n"
+                + "\n"
+                + "    relationship OrderByPart.className == EnumerationProperty.className\n"
+                + "            && OrderByPart.propertyName == EnumerationProperty.name\n"
+                + "}\n"
+                + "\n"
+                + "association ParameterizedPropertyHasParameters\n"
+                + "{\n"
+                + "    parameterizedProperty: ParameterizedProperty[1..1]\n"
+                + "    parameters: Parameter[0..*]\n"
+                + "}\n"
+                + "\n"
+                + "class Parameter\n"
+                + "{\n"
+                + "}\n"
+                + "\n"
+                + "/*\n"
+                + "association ParameterizedPropertyHasCriteria\n"
+                + "{\n"
+                + "\n"
+                + "}\n"
+                + "*/\n"
+                + "\n"
+                + "class Package\n"
+                + "{\n"
+                + "    key id: ID\n"
+                + "    name: String\n"
+                + "    private parentId: Long?\n"
+                + "}\n"
+                + "\n"
+                + "association PackageHasChildPackages\n"
+                + "{\n"
+                + "    package: Package[0..1]\n"
+                + "    childPackages: Package[0..*]\n"
+                + "\n"
+                + "    relationship this.id == Package.parentId\n"
+                + "}\n"
+                + "\n"
+                + "association PackageHasClasses\n"
+                + "{\n"
+                + "    package: Package[1..1]\n"
+                + "    classes: Class[0..*]\n"
+                + "}\n"
+                + "\n"
+                + "association PackageHasEnumerations\n"
+                + "{\n"
+                + "    package: Package[1..1]\n"
+                + "    enumerations: Enumeration[0..*]\n"
+                + "}\n"
+                + "\n"
+                + "association PackageHasAssociations\n"
+                + "{\n"
+                + "    package: Package[1..1]\n"
+                + "    associations: Association[0..*]\n"
+                + "}\n";
+
+        String error1 = ""
+                + "File: example.klass Line: 132 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'AssociationEndHasResultTypeClass' must declare a relationship.\n"
+                + "association AssociationEndHasResultTypeClass\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        String error2 = ""
+                + "File: example.klass Line: 138 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'ClassHasAssociationEnds' must declare a relationship.\n"
+                + "association ClassHasAssociationEnds\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^^\n";
+        String error3 = ""
+                + "File: example.klass Line: 269 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'ParameterizedPropertyHasParameters' must declare a relationship.\n"
+                + "association ParameterizedPropertyHasParameters\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        String error4 = ""
+                + "File: example.klass Line: 301 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'PackageHasClasses' must declare a relationship.\n"
+                + "association PackageHasClasses\n"
+                + "            ^^^^^^^^^^^^^^^^^\n";
+        String error5 = ""
+                + "File: example.klass Line: 307 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'PackageHasEnumerations' must declare a relationship.\n"
+                + "association PackageHasEnumerations\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^\n";
+        String error6 = ""
+                + "File: example.klass Line: 313 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'PackageHasAssociations' must declare a relationship.\n"
+                + "association PackageHasAssociations\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^\n";
+
+        this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4, error5, error6);
+    }
+
+    public void assertCompilerErrors(String sourceCodeText, String... expectedErrors)
+    {
+        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
+        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
+        assertThat(domainModel, nullValue());
         assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
-        // TODO assertions
+        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
+
+        assertThat(compilerErrors, is(Lists.immutable.with(expectedErrors)));
     }
 
     @Test
@@ -85,25 +700,12 @@ public class KlassCompilerTest
                 + "{\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
-    }
+        String error = ""
+                + "File: example.klass Line: 3 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DoubleOwnedAssociation' must declare a relationship.\n"
+                + "association DoubleOwnedAssociation\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^\n";
 
-    public void assertCompilerErrors(String sourceCodeText, String... expectedErrors)
-    {
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        assertThat(domainModel, nullValue());
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(true));
-        ImmutableList<String> compilerErrors = this.compilerErrorHolder.getCompilerErrors().collect(CompilerError::toString);
-
-        assertThat(compilerErrors, is(Lists.immutable.with(expectedErrors)));
+        this.assertCompilerErrors(sourceCodeText, error);
     }
 
     @Test
@@ -205,6 +807,14 @@ public class KlassCompilerTest
                 + "File: example.klass Line: 20 Char: 13 Error: ERR_DUP_TOP: Duplicate top level item name: 'DuplicateTopLevelItem'.\n"
                 + "association DuplicateTopLevelItem\n"
                 + "            ^^^^^^^^^^^^^^^^^^^^^\n";
+        String error10 = ""
+                + "File: example.klass Line: 20 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateTopLevelItem' must declare a relationship.\n"
+                + "association DuplicateTopLevelItem\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^\n";
+        String error11 = ""
+                + "File: example.klass Line: 26 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DuplicateAssociationEnd' must declare a relationship.\n"
+                + "association DuplicateAssociationEnd\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^^\n";
 
         this.assertCompilerErrors(
                 sourceCodeText,
@@ -216,7 +826,9 @@ public class KlassCompilerTest
                 error6,
                 error7,
                 error8,
-                error9);
+                error9,
+                error10,
+                error11);
     }
 
     @Test
@@ -233,10 +845,6 @@ public class KlassCompilerTest
 
         CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
         DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
         assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
         assertThat(domainModel, notNullValue());
     }
@@ -285,14 +893,12 @@ public class KlassCompilerTest
                 + "    BadPrimitiveProperty: \"Header\",\n"
                 + "}\n";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
+        String error = ""
+                + "File: example.klass Line: 29 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'badAssociation' must declare a relationship.\n"
+                + "association badAssociation\n"
+                + "            ^^^^^^^^^^^^^^\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
     }
 
     @Test
@@ -335,6 +941,10 @@ public class KlassCompilerTest
                 + "                                       ^^^^^^^^^^^^^^^\n"
                 + "}\n";
         String error3 = ""
+                + "File: example.klass Line: 13 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'AssociationWithUnresolved' must declare a relationship.\n"
+                + "association AssociationWithUnresolved\n"
+                + "            ^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        String error4 = ""
                 + "File: example.klass Line: 15 Char: 13 Error: Cannot find class 'UnresolvedClass'\n"
                 + "package dummy\n"
                 + "association AssociationWithUnresolved\n"
@@ -342,7 +952,7 @@ public class KlassCompilerTest
                 + "    parent: UnresolvedClass[0..1]\n"
                 + "            ^^^^^^^^^^^^^^^\n"
                 + "}\n";
-        String error4 = ""
+        String error5 = ""
                 + "File: example.klass Line: 16 Char: 15 Error: Cannot find class 'UnresolvedClass'\n"
                 + "package dummy\n"
                 + "association AssociationWithUnresolved\n"
@@ -351,7 +961,7 @@ public class KlassCompilerTest
                 + "              ^^^^^^^^^^^^^^^\n"
                 + "}\n";
 
-        this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4);
+        this.assertCompilerErrors(sourceCodeText, error1, error2, error3, error4, error5);
     }
 
     @Test
@@ -371,13 +981,36 @@ public class KlassCompilerTest
                 + "    owned owned children: Dummy[0..*]\n"
                 + "}";
 
-        CompilationUnit compilationUnit = CompilationUnit.createFromText("example.klass", sourceCodeText);
-        DomainModel     domainModel     = this.compiler.compile(compilationUnit);
-        for (CompilerError compilerError : this.compilerErrorHolder.getCompilerErrors())
-        {
-            LOGGER.warn("{}", compilerError);
-        }
-        assertThat(this.compilerErrorHolder.hasCompilerErrors(), is(false));
-        assertThat(domainModel, notNullValue());
+        String error = ""
+                + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"
+                + "association DummyAssociation\n"
+                + "            ^^^^^^^^^^^^^^^^\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
+    }
+
+    @Test
+    public void manyOwnsOne()
+    {
+        //language=Klass
+        String sourceCodeText = "package dummy\n"
+                + "\n"
+                + "class Dummy\n"
+                + "{\n"
+                + "    key id: ID\n"
+                + "}\n"
+                + "\n"
+                + "association DummyAssociation\n"
+                + "{\n"
+                + "    owned parent: Dummy[0..1]\n"
+                + "    children: Dummy[0..*]\n"
+                + "}";
+
+        String error = ""
+                + "File: example.klass Line: 8 Char: 13 Error: ERR_REL_INF: Relationship inference not yet supported. 'DummyAssociation' must declare a relationship.\n"
+                + "association DummyAssociation\n"
+                + "            ^^^^^^^^^^^^^^^^\n";
+
+        this.assertCompilerErrors(sourceCodeText, error);
     }
 }

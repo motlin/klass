@@ -1,5 +1,7 @@
 package cool.klass.model.converter.compiler.state;
 
+import java.util.Objects;
+
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.meta.domain.Element;
 import cool.klass.model.meta.domain.PrimitiveProperty.PrimitivePropertyBuilder;
@@ -20,7 +22,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
             Element.NO_CONTEXT,
             false,
             Lists.immutable.empty(),
-            null,
+            AntlrClass.AMBIGUOUS,
             null);
 
     private final PrimitiveTypeBuilder primitiveTypeBuilder;
@@ -65,5 +67,10 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.isKey(),
                 this.isOptional);
         return this.primitivePropertyBuilder;
+    }
+
+    public PrimitivePropertyBuilder getPropertyBuilder()
+    {
+        return Objects.requireNonNull(this.primitivePropertyBuilder);
     }
 }

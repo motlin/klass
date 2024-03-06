@@ -8,9 +8,21 @@ import cool.klass.model.meta.domain.EnumerationProperty.EnumerationPropertyBuild
 import cool.klass.model.meta.grammar.KlassParser.EnumerationPropertyContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
 {
+    public static final AntlrEnumerationProperty NOT_FOUND = new AntlrEnumerationProperty(
+            new EnumerationPropertyContext(null, -1),
+            null,
+            true,
+            new ParserRuleContext(),
+            "not found enumeration property",
+            false,
+            Lists.immutable.empty(),
+            AntlrClass.NOT_FOUND,
+            AntlrEnumeration.NOT_FOUND);
+
     // TODO: Check that it's not NOT_FOUND
     private final AntlrEnumeration antlrEnumeration;
 
@@ -55,5 +67,10 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<Enumeration>
                 this.isKey(),
                 this.isOptional);
         return this.enumerationPropertyBuilder;
+    }
+
+    public EnumerationPropertyBuilder getPropertyBuilder()
+    {
+        return Objects.requireNonNull(this.enumerationPropertyBuilder);
     }
 }

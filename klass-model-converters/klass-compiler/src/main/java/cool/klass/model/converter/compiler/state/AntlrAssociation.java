@@ -2,8 +2,10 @@ package cool.klass.model.converter.compiler.state;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorHolder;
+import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.meta.domain.Association.AssociationBuilder;
 import cool.klass.model.meta.domain.AssociationEnd.AssociationEndBuilder;
+import cool.klass.model.meta.domain.criteria.Criteria.CriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationDeclarationContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -21,6 +23,7 @@ public class AntlrAssociation extends AntlrPackageableElement
             null);
 
     private final MutableList<AntlrAssociationEnd> associationEndStates = Lists.mutable.empty();
+    private       AntlrCriteria                    antlrCriteria;
 
     private AssociationBuilder associationBuilder;
 
@@ -35,9 +38,19 @@ public class AntlrAssociation extends AntlrPackageableElement
         super(elementContext, compilationUnit, inferred, nameContext, name, packageName);
     }
 
+    public MutableList<AntlrAssociationEnd> getAssociationEndStates()
+    {
+        return this.associationEndStates;
+    }
+
     public void enterAssociationEnd(AntlrAssociationEnd antlrAssociationEnd)
     {
         this.associationEndStates.add(antlrAssociationEnd);
+    }
+
+    public void enterRelationship(AntlrCriteria antlrCriteria)
+    {
+        this.antlrCriteria = antlrCriteria;
     }
 
     public AssociationBuilder build()
@@ -65,11 +78,14 @@ public class AntlrAssociation extends AntlrPackageableElement
         sourceAntlrAssociationEnd.getType().enterAssociationEnd(targetAntlrAssociationEnd);
         targetAntlrAssociationEnd.getType().enterAssociationEnd(sourceAntlrAssociationEnd);
 
+        CriteriaBuilder criteriaBuilder = this.antlrCriteria.build();
+
         this.associationBuilder = new AssociationBuilder(
                 this.elementContext,
                 this.nameContext,
                 this.name,
-                this.packageName);
+                this.packageName,
+                criteriaBuilder);
 
         ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
                 .collect(AntlrAssociationEnd::build)
@@ -100,7 +116,15 @@ public class AntlrAssociation extends AntlrPackageableElement
                     "Association '%s' should have 2 ends. Found %d",
                     this.name,
                     numAssociationEnds);
-            compilerErrorHolder.add(this.compilationUnit, message, this.elementContext);
+            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().identifier());
+        }
+
+        if (this.antlrCriteria == null)
+        {
+            String message = String.format(
+                    "ERR_REL_INF: Relationship inference not yet supported. '%s' must declare a relationship.",
+                    this.name);
+            compilerErrorHolder.add(this.compilationUnit, message, this.getElementContext().identifier());
         }
 
         // TODO: Check that both ends aren't owned

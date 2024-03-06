@@ -15,8 +15,8 @@ public abstract class NamedElement extends Element
             String name)
     {
         super(elementContext);
-        this.nameContext = nameContext;
-        this.name = name;
+        this.nameContext = Objects.requireNonNull(nameContext);
+        this.name = Objects.requireNonNull(name);
     }
 
     public ParserRuleContext getNameContext()

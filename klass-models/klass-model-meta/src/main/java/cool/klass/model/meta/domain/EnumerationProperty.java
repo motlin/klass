@@ -83,5 +83,11 @@ public final class EnumerationProperty extends DataTypeProperty<Enumeration>
                     this.isOptional);
             return this.enumerationProperty;
         }
+
+        @Override
+        public EnumerationProperty getProperty()
+        {
+            return this.enumerationProperty;
+        }
     }
 }

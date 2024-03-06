@@ -175,4 +175,9 @@ public class AntlrClass extends AntlrPackageableElement
     {
         return (ClassDeclarationContext) super.getElementContext();
     }
+
+    public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
+    {
+        return this.dataTypePropertiesByName.getIfAbsentValue(name, AntlrEnumerationProperty.NOT_FOUND);
+    }
 }

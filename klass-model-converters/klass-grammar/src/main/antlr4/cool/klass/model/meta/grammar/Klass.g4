@@ -103,8 +103,8 @@ orderByDirection: 'ascending' | 'descending';
 
 // criteria
 criteriaExpression
-    : criteriaExpression '&&' criteriaExpression             #CriteriaExpressionAnd
-    | criteriaExpression '||' criteriaExpression             #CriteriaExpressionOr
+    : left=criteriaExpression '&&' right=criteriaExpression  #CriteriaExpressionAnd
+    | left=criteriaExpression '||' right=criteriaExpression  #CriteriaExpressionOr
     | '(' criteriaExpression ')'                             #CriteriaExpressionGroup
     | source=expressionValue operator target=expressionValue #CriteriaOperator
     | 'native' '(' identifier ')'                            #CriteriaNative
@@ -112,13 +112,23 @@ criteriaExpression
 expressionValue
     : literal
     | literalList
+    | thisMemberReference
     | typeMemberReference
     | nativeLiteral
     | variableReference
     ;
 literalList: '(' literal (',' literal)* ')';
 nativeLiteral: 'user';
-operator: '==' | '!=' | '<' | '>' | '<=' | '>=' | 'in' | 'contains' | 'startsWith' | 'endsWith';
+operator
+    : equalityOperator
+    | inequalityOperator
+    | inOperator
+    | stringOperator
+    ;
+equalityOperator: '==' | '!=';
+inequalityOperator: '<' | '>' | '<=' | '>=';
+inOperator: 'in';
+stringOperator: 'contains' | 'startsWith' | 'endsWith';
 
 // Type references
 classType: classReference multiplicity;
@@ -132,8 +142,7 @@ memberReference: identifier;
 variableReference: identifier;
 
 thisMemberReference: 'this' '.' memberReference;
-typeMemberReference: typeReference '.' memberReference;
-typeReference: 'this' | classReference;
+typeMemberReference: classReference '.' memberReference;
 
 identifier
     : keywordValidAsIdentifier

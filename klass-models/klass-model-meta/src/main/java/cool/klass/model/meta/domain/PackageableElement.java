@@ -15,7 +15,7 @@ public abstract class PackageableElement extends NamedElement
             String packageName)
     {
         super(elementContext, nameContext, name);
-        this.packageName = packageName;
+        this.packageName = Objects.requireNonNull(packageName);
     }
 
     public final String getPackageName()
