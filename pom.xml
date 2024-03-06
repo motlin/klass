@@ -131,7 +131,17 @@
                                     <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-bootstrap-writer:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-cors:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-ddl-executor:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-http-logging:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-object-mapper:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-reladomo:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-sample-data:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-meta:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls-workaround:jar</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-model-bootstrapped-reladomo-ddls:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence-ddls:jar</ignoredUnusedDeclaredDependency>
                                     <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence:jar</ignoredUnusedDeclaredDependency>
                                 </ignoredUnusedDeclaredDependencies>
