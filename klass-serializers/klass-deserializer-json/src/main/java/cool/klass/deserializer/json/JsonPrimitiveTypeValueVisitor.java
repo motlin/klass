@@ -123,11 +123,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
         String text = this.jsonDataTypeValue.textValue();
         if (text.equals("now"))
         {
-            throw new RuntimeException("TODO: Support now as a value for dates.");
+            throw new RuntimeException("TODO: Support 'now' as a value for dates.");
         }
         if (text.equals("infinity"))
         {
-            throw new RuntimeException("TODO: Support infinity as a value for dates.");
+            throw new RuntimeException("TODO: Support 'infinity' as a value for dates.");
         }
 
         this.result = LocalDate.parse(text);
@@ -155,11 +155,11 @@ public class JsonPrimitiveTypeValueVisitor implements PrimitiveTypeVisitor
         String text = this.jsonDataTypeValue.textValue();
         if (text.equals("now"))
         {
-            throw new RuntimeException("TODO: Support now as a value for dates.");
+            throw new RuntimeException("TODO: Support 'now' as a value for dates.");
         }
         if (text.equals("infinity"))
         {
-            throw new RuntimeException("TODO: Support infinity as a value for dates.");
+            throw new RuntimeException("TODO: Support 'infinity' as a value for dates.");
         }
 
         try
