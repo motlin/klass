@@ -14,7 +14,6 @@ import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
-import org.eclipse.collections.api.list.ImmutableList;
 
 public class GraphQLElementToSchemaSourceVisitor
         implements TopLevelElementVisitor
@@ -30,7 +29,7 @@ public class GraphQLElementToSchemaSourceVisitor
     @Override
     public void visitInterface(Interface anInterface)
     {
-        this.sourceCode = this.getInterfaceSourceCode(anInterface);
+        this.sourceCode = "";
     }
 
     @Override
@@ -99,9 +98,9 @@ public class GraphQLElementToSchemaSourceVisitor
                 .collect(name -> String.format("    %s\n", name))
                 .makeString("");
 
-        ImmutableList<String> interfaces = klass.getInterfaces().collect(NamedElement::getName);
-
-        String implementsSourceCode = interfaces.isEmpty() ? "" : " implements " + interfaces.makeString();
+        String implementsSourceCode = "";
+        // ImmutableList<String> interfaces = klass.getInterfaces().collect(NamedElement::getName);
+        // String implementsSourceCode = interfaces.isEmpty() ? "" : " implements " + interfaces.makeString();
 
         return ""
                 + "type " + klass.getName() + implementsSourceCode + " {\n"
