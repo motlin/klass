@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilerState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.literal.AbstractAntlrLiteralValue;
+import cool.klass.model.converter.compiler.state.value.literal.AntlrBooleanLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrIntegerLiteralValue;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrNullLiteral;
 import cool.klass.model.converter.compiler.state.value.literal.AntlrStringLiteralValue;
@@ -58,8 +59,12 @@ public class LiteralValueVisitor extends KlassBaseVisitor<AbstractAntlrLiteralVa
     @Override
     public AbstractAntlrLiteralValue visitBooleanLiteral(BooleanLiteralContext ctx)
     {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".visitBooleanLiteral() not implemented yet");
+        boolean value     = Boolean.parseBoolean(ctx.getText());
+        return new AntlrBooleanLiteralValue(
+                ctx,
+                Optional.of(this.compilerState.getCompilerWalkState().getCurrentCompilationUnit()),
+                value,
+                this.expressionValueOwner);
     }
 
     @Nonnull

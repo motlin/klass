@@ -16,6 +16,7 @@ import cool.klass.model.meta.domain.api.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.VariableReference;
+import cool.klass.model.meta.domain.api.value.literal.BooleanLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
@@ -93,6 +94,12 @@ public class DomainModelReferencesExpressionValueVisitor
     public void visitVariableReference(@Nonnull VariableReference variableReference)
     {
         // TODO: Implement more references
+    }
+
+    @Override
+    public void visitBooleanLiteral(@Nonnull BooleanLiteralValue booleanLiteralValue)
+    {
+        // Deliberately empty
     }
 
     @Override

@@ -13,6 +13,7 @@ import cool.klass.model.meta.domain.api.value.MemberReferencePath;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.TypeMemberReferencePath;
 import cool.klass.model.meta.domain.api.value.VariableReference;
+import cool.klass.model.meta.domain.api.value.literal.BooleanLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.IntegerLiteralValue;
 import cool.klass.model.meta.domain.api.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.api.value.literal.NullLiteral;
@@ -93,6 +94,13 @@ public class BootstrapExpressionValueVisitor implements ExpressionValueVisitor
         bootstrappedVariableReference.insert();
 
         this.bootstrappedExpressionValue = bootstrappedVariableReference;
+    }
+
+    @Override
+    public void visitBooleanLiteral(@Nonnull BooleanLiteralValue booleanLiteralValue)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitBooleanLiteral() not implemented yet");
     }
 
     @Override
