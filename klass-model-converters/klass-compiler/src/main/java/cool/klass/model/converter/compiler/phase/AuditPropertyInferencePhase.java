@@ -155,7 +155,7 @@ public class AuditPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classBody,
+                KlassParser::classBodyDeclaration,
                 compilerPhase);
     }
 }

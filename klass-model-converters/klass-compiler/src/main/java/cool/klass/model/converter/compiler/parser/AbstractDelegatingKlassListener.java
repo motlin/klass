@@ -15,6 +15,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.CharacterLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
@@ -54,6 +55,7 @@ import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerValidationParameterContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
@@ -233,6 +235,18 @@ public abstract class AbstractDelegatingKlassListener
     }
 
     @Override
+    public void enterInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    {
+        this.getDelegate().enterInterfaceBodyDeclaration(ctx);
+    }
+
+    @Override
+    public void exitInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    {
+        this.getDelegate().exitInterfaceBodyDeclaration(ctx);
+    }
+
+    @Override
     @OverridingMethodsMustInvokeSuper
     public void enterInterfaceBody(InterfaceBodyContext ctx)
     {
@@ -314,6 +328,18 @@ public abstract class AbstractDelegatingKlassListener
     public void exitServiceCategoryModifier(ServiceCategoryModifierContext ctx)
     {
         this.getDelegate().exitServiceCategoryModifier(ctx);
+    }
+
+    @Override
+    public void enterClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    {
+        this.getDelegate().enterClassBodyDeclaration(ctx);
+    }
+
+    @Override
+    public void exitClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    {
+        this.getDelegate().exitClassBodyDeclaration(ctx);
     }
 
     @Override

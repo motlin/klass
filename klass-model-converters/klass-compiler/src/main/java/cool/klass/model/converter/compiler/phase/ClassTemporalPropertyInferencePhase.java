@@ -70,11 +70,10 @@ public class ClassTemporalPropertyInferencePhase
             {
                 stringBuilder.append("    systemTo  : TemporalInstant? system to;\n");
             }
-
-            stringBuilder.append("}\n");
-
-            this.runCompilerMacro(stringBuilder.toString());
         }
+
+        stringBuilder.append("}\n");
+        this.runCompilerMacro(stringBuilder.toString());
     }
 
     private void runCompilerMacro(@Nonnull String sourceCodeText)
@@ -91,7 +90,7 @@ public class ClassTemporalPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classBody,
+                KlassParser::classBodyDeclaration,
                 compilerPhase);
     }
 }

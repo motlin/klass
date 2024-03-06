@@ -19,7 +19,7 @@ import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.Associa
 import cool.klass.model.meta.domain.property.ModifierImpl.ModifierBuilder;
 import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
-import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -335,9 +335,9 @@ public class AntlrInterface
     }
 
     @Override
-    public InterfaceBodyContext getBodyContext()
+    public InterfaceBodyDeclarationContext getBodyContext()
     {
-        return this.getElementContext().interfaceBody();
+        return this.getElementContext().interfaceBodyDeclaration();
     }
 
     @Nonnull

@@ -23,17 +23,19 @@ topLevelDeclaration
 
 // TODO: Consider splitting separate interfaceModifiers from classifierModifiers
 // interface
-interfaceDeclaration: interfaceHeader interfaceBody;
+interfaceDeclaration: interfaceHeader interfaceBodyDeclaration;
 interfaceHeader : 'interface' identifier implementsDeclaration? classifierModifier* ;
-interfaceBody: '{' interfaceMember* '}';
+interfaceBodyDeclaration: '{' interfaceBody '}';
+interfaceBody : interfaceMember* ;
 
 // class
-classDeclaration: classHeader classBody;
+classDeclaration: classHeader classBodyDeclaration;
 classHeader : classOrUser identifier abstractDeclaration? extendsDeclaration? implementsDeclaration? classServiceModifier* classifierModifier* ;
 classOrUser: 'class' | 'user';
 classServiceModifier: serviceCategoryModifier ('(' projectionReference ')')?;
 serviceCategoryModifier: 'read' | 'write' | 'create' | 'update' | 'delete';
-classBody: '{' classMember* '}';
+classBodyDeclaration: '{' classBody '}';
+classBody : classMember* ;
 
 // inheritance
 abstractDeclaration: 'abstract';

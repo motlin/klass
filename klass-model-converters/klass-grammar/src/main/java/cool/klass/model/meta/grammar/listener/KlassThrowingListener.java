@@ -15,6 +15,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.BooleanLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.CharacterLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassMemberContext;
@@ -54,6 +55,7 @@ import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IntegerValidationParameterContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyContext;
+import cool.klass.model.meta.grammar.KlassParser.InterfaceBodyDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceMemberContext;
@@ -131,7 +133,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 // Deliberately not abstract
 // Implements every method of KlassListener by throwing
-public class KlassThrowingListener implements KlassListener
+public class KlassThrowingListener
+        implements KlassListener
 {
     @Override
     public void enterCompilationUnit(@Nonnull CompilationUnitContext ctx)
@@ -232,6 +235,20 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterInterfaceBodyDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitInterfaceBodyDeclaration(InterfaceBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitInterfaceBodyDeclaration() not implemented yet");
+    }
+
+    @Override
     public void enterInterfaceBody(@Nonnull InterfaceBodyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -260,6 +277,20 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
+    public void enterClassHeader(@Nonnull ClassHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassHeader() not implemented yet");
+    }
+
+    @Override
+    public void exitClassHeader(@Nonnull ClassHeaderContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassHeader() not implemented yet");
+    }
+
+    @Override
     public void enterClassOrUser(@Nonnull ClassOrUserContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
@@ -271,48 +302,6 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassOrUser() not implemented yet");
-    }
-
-    @Override
-    public void enterExtendsDeclaration(@Nonnull ExtendsDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterExtendsDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitExtendsDeclaration(@Nonnull ExtendsDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitExtendsDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterAbstractDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitAbstractDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void enterImplementsDeclaration(@Nonnull ImplementsDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterImplementsDeclaration() not implemented yet");
-    }
-
-    @Override
-    public void exitImplementsDeclaration(@Nonnull ImplementsDeclarationContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitImplementsDeclaration() not implemented yet");
     }
 
     @Override
@@ -344,17 +333,17 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
-    public void enterClassHeader(@Nonnull ClassHeaderContext ctx)
+    public void enterAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterClassHeader() not implemented yet");
+                + ".enterAbstractDeclaration() not implemented yet");
     }
 
     @Override
-    public void exitClassHeader(@Nonnull ClassHeaderContext ctx)
+    public void exitAbstractDeclaration(@Nonnull AbstractDeclarationContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitClassHeader() not implemented yet");
+                + ".exitAbstractDeclaration() not implemented yet");
     }
 
     @Override
@@ -369,6 +358,48 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitClassBody() not implemented yet");
+    }
+
+    @Override
+    public void enterExtendsDeclaration(@Nonnull ExtendsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterExtendsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitExtendsDeclaration(@Nonnull ExtendsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitExtendsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterImplementsDeclaration(@Nonnull ImplementsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterImplementsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitImplementsDeclaration(@Nonnull ImplementsDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitImplementsDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void enterParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterParameterizedPropertySignature() not implemented yet");
+    }
+
+    @Override
+    public void exitParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitParameterizedPropertySignature() not implemented yet");
     }
 
     @Override
@@ -593,20 +624,6 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitProjectionParameterizedProperty() not implemented yet");
-    }
-
-    @Override
-    public void enterParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterParameterizedPropertySignature() not implemented yet");
-    }
-
-    @Override
-    public void exitParameterizedPropertySignature(@Nonnull ParameterizedPropertySignatureContext ctx)
-    {
-        throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitParameterizedPropertySignature() not implemented yet");
     }
 
     @Override
@@ -937,6 +954,20 @@ public class KlassThrowingListener implements KlassListener
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".exitParameterizedProperty() not implemented yet");
+    }
+
+    @Override
+    public void enterClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".enterClassBodyDeclaration() not implemented yet");
+    }
+
+    @Override
+    public void exitClassBodyDeclaration(ClassBodyDeclarationContext ctx)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".exitClassBodyDeclaration() not implemented yet");
     }
 
     @Override
