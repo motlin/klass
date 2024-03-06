@@ -62,9 +62,10 @@ public class AuthFilterBundle
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new Binder<>(Principal.class));
 
-        environment.getApplicationContext().addFilter(new FilterHolder(this.getClearMDCContainerResponseFilter(
-                authFilterFactories)), "/*", EnumSet.of(
-                DispatcherType.REQUEST));
+        Filter                  clearMDCFilter  = this.getClearMDCFilter(authFilterFactories);
+        FilterHolder            filterHolder    = new FilterHolder(clearMDCFilter);
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
+        environment.getApplicationContext().addFilter(filterHolder, "/*", dispatcherTypes);
 
         LOGGER.info("Completing {}.", AuthFilterBundle.class.getSimpleName());
     }
@@ -86,7 +87,7 @@ public class AuthFilterBundle
     }
 
     @Nonnull
-    private Filter getClearMDCContainerResponseFilter(List<AuthFilterFactory> authFilterFactories)
+    private Filter getClearMDCFilter(List<AuthFilterFactory> authFilterFactories)
     {
         ImmutableList<String> mdcKeys = ListAdapter.adapt(authFilterFactories)
                 .flatCollect(AuthFilterFactory::getMDCKeys)

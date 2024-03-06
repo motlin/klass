@@ -11,7 +11,7 @@ import org.slf4j.MDC;
 
 public class ImpersonationAuthenticator implements Authenticator<String, ImpersonatedPrincipal>
 {
-    private static final String IMPERSONATION_PRINCIPAL_NAME = "impersonationPrincipalName";
+    private static final String IMPERSONATION_PRINCIPAL_NAME = "klass.auth.impersonation.principalName";
 
     private static final ImmutableList<String> MDC_KEYS = Lists.immutable.with(IMPERSONATION_PRINCIPAL_NAME);
 
