@@ -301,11 +301,13 @@ public class IncomingCreateDataModelValidator
                     && associationEnd.isRequired())
             {
                 // TODO: Check for non-private foreign key properties
+                // TODO: Can we remove this?
                 return;
             }
 
             if (childJsonNode.isMissingNode() && !associationEnd.isRequired())
             {
+                // TODO: Can we remove this?
                 return;
             }
 

@@ -29,6 +29,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
+import org.eclipse.collections.impl.utility.ListIterate;
 
 public class IncomingUpdateDataModelValidator
 {
@@ -505,20 +506,11 @@ public class IncomingUpdateDataModelValidator
             @Nonnull List<Object> persistentInstances,
             @Nonnull Klass klass)
     {
-        // TODO: Change to use groupByUniqueKey after EC 10.0 is released.
-
-        MutableOrderedMap<ImmutableList<Object>, Object> result = OrderedMapAdapter.adapt(new LinkedHashMap<>());
-        for (Object persistentInstance : persistentInstances)
-        {
-            ImmutableList<Object> keysFromPersistentInstance = this.getKeysFromPersistentInstance(
-                    persistentInstance,
-                    klass);
-            result.put(keysFromPersistentInstance, persistentInstance);
-        }
-
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
+        MutableOrderedMap<ImmutableList<Object>, Object> result = ListIterate.groupByUniqueKey(
+                persistentInstances,
+                persistentInstance -> this.getKeysFromPersistentInstance(persistentInstance, klass),
+                OrderedMapAdapter.adapt(new LinkedHashMap<>()));
+        return result.asUnmodifiable();
     }
 
     @Nonnull
@@ -539,9 +531,7 @@ public class IncomingUpdateDataModelValidator
                 throw new AssertionError("TODO: Test an array of owned children with duplicates with the same key.");
             }
         }
-        return result;
-        // TODO: Change to use asUnmodifiable after EC 10.0 is released.
-        // return result.asUnmodifiable();
+        return result.asUnmodifiable();
     }
 
     private boolean jsonNodeNeedsIdInferredOnInsert(

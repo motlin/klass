@@ -166,7 +166,6 @@ public class PersistentCreator extends PersistentSynchronizer
         Object versionInstance = this.dataStore.instantiate(versionType, keys);
 
         // TODO: Test where version association end and version property are not named "version"
-        // TODO: Enforce that version association ends are either always or never part of the write projection. Probably always included. Or always infer that they are included.
 
         // Set version: 1
         DataTypeProperty versionProperty = versionType.getVersionNumberProperty().get();
