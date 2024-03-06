@@ -144,6 +144,17 @@
         </module>
 
         <module
+                id="${rootArtifactId}-graphql-fragment"
+                dir="__rootArtifactId__-graphql-fragment"
+                name="${rootArtifactId}-graphql-fragment">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
                 id="${rootArtifactId}-graphql-schema"
                 dir="__rootArtifactId__-graphql-schema"
                 name="${rootArtifactId}-graphql-schema">
