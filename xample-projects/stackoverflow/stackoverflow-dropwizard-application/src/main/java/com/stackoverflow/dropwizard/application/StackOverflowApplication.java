@@ -6,20 +6,26 @@ import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cool.klass.data.store.DataStore;
-import cool.klass.dropwizard.command.model.json.GenerateJsonModelCommand;
 import cool.klass.dropwizard.configuration.KlassFactory;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
+import cool.klass.service.klass.html.KlassHtmlResource;
+import com.stackoverflow.graphql.runtime.wiring.StackOverflowRuntimeWiringBuilder;
 import com.stackoverflow.service.resource.QuestionResourceManual;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
 import io.liftwizard.dropwizard.bundle.httplogging.JerseyHttpLoggingBundle;
 import io.liftwizard.servlet.logging.mdc.StructuredArgumentsMDCLogger;
 
 public class StackOverflowApplication
         extends AbstractStackOverflowApplication
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
+            throws Exception
     {
         new StackOverflowApplication().run(args);
     }
@@ -33,7 +39,7 @@ public class StackOverflowApplication
     @Override
     protected void initializeCommands(@Nonnull Bootstrap<StackOverflowConfiguration> bootstrap)
     {
-        bootstrap.addCommand(new GenerateJsonModelCommand<>(this));
+        super.initializeCommands(bootstrap);
     }
 
     @Override
@@ -44,9 +50,16 @@ public class StackOverflowApplication
         var structuredLogger = new StructuredArgumentsMDCLogger(bootstrap.getObjectMapper());
         bootstrap.addBundle(new JerseyHttpLoggingBundle(structuredLogger));
 
-        // TODO: Implement TypeResolvers for Interfaces
-        // https://stackoverflow.com/questions/54251935/graphql-no-resolver-definied-for-interface-union-java
-        // bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new StackOverflowRuntimeWiringBuilder()));
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new StackOverflowRuntimeWiringBuilder()));
+
+        bootstrap.addBundle(new MigrationsBundle<>()
+        {
+            @Override
+            public DataSourceFactory getDataSourceFactory(StackOverflowConfiguration configuration)
+            {
+                return configuration.getNamedDataSourcesFactory().getNamedDataSourceFactoryByName("h2-tcp");
+            }
+        });
     }
 
     @Override
@@ -69,6 +82,12 @@ public class StackOverflowApplication
         DataStore    dataStore    = klassFactory.getDataStoreFactory().createDataStore();
         Clock        clock        = klassFactory.getClockFactory().createClock();
         DomainModel  domainModel  = klassFactory.getDomainModelFactory().createDomainModel(objectMapper);
+
+        // TODO: Move up to generated abstract class?
+        if (domainModel instanceof DomainModelWithSourceCode)
+        {
+            environment.jersey().register(new KlassHtmlResource((DomainModelWithSourceCode) domainModel));
+        }
 
         environment.jersey().register(new QuestionResourceManual(domainModel, dataStore, clock));
     }

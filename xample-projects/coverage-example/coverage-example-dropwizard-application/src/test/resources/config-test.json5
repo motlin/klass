@@ -40,10 +40,10 @@
   "logging": {
     "level": "INFO",
     "loggers": {
+      "cool.klass.xample.coverage":                 "DEBUG",
       "com.gs.fw.common.mithra.batch.sqllogs":     "INFO",
       "com.gs.fw.common.mithra.connectionmanager": "INFO",
       "com.gs.fw.common.mithra.sqllogs":           "DEBUG",
-      "cool.klass.xample.coverage":                 "DEBUG",
       "io.liftwizard":                             "DEBUG",
       "klass.model.meta.domain":                   "DEBUG",
       "liquibase.resource":                        "INFO",
