@@ -65,28 +65,36 @@ public class GraphQLSchemaQueryGenerator
 
     private String getAllSourceCode(Classifier classifier)
     {
-        String              classifierName  = classifier.getName();
+        return "    " + this.getPropertyName(classifier) + ": [" + classifier.getName() + "!]!\n";
+    }
+
+    private String getPropertyName(Classifier classifier)
+    {
+        String classifierName = classifier.getName();
+
         String              lowerUnderscore = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, classifierName);
         MutableList<String> splits          = ArrayAdapter.adapt(lowerUnderscore.split("_"));
 
-        String propertyName = splits
+        return splits
                 .collectWithIndex((eachSplit, index) -> this.capitalizeSplit(eachSplit, index, splits.size()))
                 .makeString("");
-
-        return "    " + propertyName + ": [" + classifierName + "!]!\n";
     }
 
     private String capitalizeSplit(String eachSplit, int index, int splitsSize)
     {
-        if (index == splitsSize - 1)
-        {
-            return English.plural(eachSplit);
-        }
-        if (index == 0)
-        {
-            return eachSplit;
-        }
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, eachSplit);
+        return this.getCapitalized(index, this.getPluralized(index, splitsSize, eachSplit));
+    }
+
+    private String getPluralized(int index, int splitsSize, String eachSplit)
+    {
+        return index == splitsSize - 1 ? English.plural(eachSplit) : eachSplit;
+    }
+
+    private String getCapitalized(int index, String eachSplit)
+    {
+        return index != 0
+                ? CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, eachSplit)
+                : eachSplit;
     }
 
     private String getByKeySourceCode(Classifier classifier)

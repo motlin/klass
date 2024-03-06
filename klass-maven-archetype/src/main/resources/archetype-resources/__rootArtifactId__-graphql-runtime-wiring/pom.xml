@@ -63,6 +63,7 @@
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
+                    <applicationName>${app.name}</applicationName>
                     <klassSourcePackages>
                         <!--<klassSourcePackage>klass.model.meta.domain</klassSourcePackage>-->
                         <klassSourcePackage>${app.rootPackageName}</klassSourcePackage>
@@ -73,6 +74,7 @@
                     <execution>
                         <goals>
                             <goal>generate-graphql-runtime-wiring</goal>
+                            <goal>generate-graphql-runtime-wiring-builder</goal>
                         </goals>
                     </execution>
                 </executions>
