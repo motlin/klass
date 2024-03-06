@@ -25,9 +25,13 @@ import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.block.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class CompilationUnit
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompilationUnit.class);
+
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
     private final int                               ordinal;
@@ -225,6 +229,7 @@ public final class CompilationUnit
             @Nonnull String sourceCodeText,
             @Nonnull Function<KlassParser, ? extends ParserRuleContext> parserRule)
     {
+        LOGGER.debug(sourceCodeText);
         String sourceName = macroExpansionCompilerPhase.getName() + " macro";
         return CompilationUnit.createFromText(
                 ordinal,
