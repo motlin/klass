@@ -18,6 +18,7 @@
 
     <modules>
         <module>klass-servlet-filter-mdc</module>
+        <module>klass-servlet-filter-mdc-response</module>
     </modules>
 
     <dependencyManagement>
