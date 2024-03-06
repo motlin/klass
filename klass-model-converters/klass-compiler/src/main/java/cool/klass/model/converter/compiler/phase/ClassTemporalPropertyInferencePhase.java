@@ -37,19 +37,22 @@ public class ClassTemporalPropertyInferencePhase
                 .getClassState()
                 .getDataTypeProperties();
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{\n");
+
         if ("validTemporal".equals(modifierText) || "bitemporal".equals(modifierText))
         {
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidRange))
             {
-                this.runCompilerMacro("valid    : TemporalRange?   valid;");
+                stringBuilder.append("    valid    : TemporalRange?   valid;\n");
             }
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidFrom))
             {
-                this.runCompilerMacro("validFrom: TemporalInstant? valid from;");
+                stringBuilder.append("    validFrom: TemporalInstant? valid from;\n");
             }
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isValidTo))
             {
-                this.runCompilerMacro("validTo  : TemporalInstant? valid to;");
+                stringBuilder.append("    validTo  : TemporalInstant? valid to;\n");
             }
         }
 
@@ -57,16 +60,20 @@ public class ClassTemporalPropertyInferencePhase
         {
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemRange))
             {
-                this.runCompilerMacro("system    : TemporalRange?   system;");
+                stringBuilder.append("    system    : TemporalRange?   system;\n");
             }
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemFrom))
             {
-                this.runCompilerMacro("systemFrom: TemporalInstant? system from;");
+                stringBuilder.append("    systemFrom: TemporalInstant? system from;\n");
             }
             if (dataTypeProperties.noneSatisfy(AntlrDataTypeProperty::isSystemTo))
             {
-                this.runCompilerMacro("systemTo  : TemporalInstant? system to;");
+                stringBuilder.append("    systemTo  : TemporalInstant? system to;\n");
             }
+
+            stringBuilder.append("}\n");
+
+            this.runCompilerMacro(stringBuilder.toString());
         }
     }
 
@@ -80,7 +87,7 @@ public class ClassTemporalPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classMember,
+                KlassParser::classBody,
                 compilerPhase);
     }
 }

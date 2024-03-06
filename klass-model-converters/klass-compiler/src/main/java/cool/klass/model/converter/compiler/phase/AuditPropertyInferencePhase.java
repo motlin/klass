@@ -93,19 +93,25 @@ public class AuditPropertyInferencePhase
         ListIterable<AbstractAntlrPropertyValidation> validationStates = userIdProperty.getValidationStates();
         String validationSourceCode = validationStates.isEmpty() ? "" : validationStates.makeString(" ", " ", "");
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{\n");
+
         // TODO: Add validation that any userId is joined to another property that's also userId
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedBy))
         {
-            this.runCompilerMacro("    createdById    : String createdBy userId final"  + validationSourceCode + ";\n");
+            stringBuilder.append("    createdById    : String createdBy userId final"  + validationSourceCode + ";\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isCreatedOn))
         {
-            this.runCompilerMacro("    createdOn      : Instant createdOn final;\n");
+            stringBuilder.append("    createdOn      : Instant createdOn final;\n");
         }
         if (!this.hasAuditProperty(AntlrDataTypeProperty::isLastUpdatedBy))
         {
-            this.runCompilerMacro("    lastUpdatedById: String lastUpdatedBy userId"  + validationSourceCode + ";\n");
+            stringBuilder.append("    lastUpdatedById: String lastUpdatedBy userId"  + validationSourceCode + ";\n");
         }
+
+        stringBuilder.append("}\n");
+        this.runCompilerMacro(stringBuilder.toString());
 
         /*
         if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy))
@@ -143,7 +149,7 @@ public class AuditPropertyInferencePhase
                 classifierModifierState,
                 this,
                 sourceCodeText,
-                KlassParser::classMember,
+                KlassParser::classBody,
                 compilerPhase);
     }
 }
