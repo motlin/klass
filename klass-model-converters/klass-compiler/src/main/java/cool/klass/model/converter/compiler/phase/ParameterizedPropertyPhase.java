@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.CompilerWalkState;
 import cool.klass.model.converter.compiler.phase.criteria.CriteriaVisitor;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
@@ -76,12 +77,13 @@ public class ParameterizedPropertyPhase
 
         // TODO: Parameterized Property modifiers
 
-        AntlrClass thisReference = (AntlrClass) this.compilerState.getCompilerWalk().getThisReference();
+        CompilerWalkState compilerWalk  = this.compilerState.getCompilerWalk();
+        AntlrClass        thisReference = (AntlrClass) compilerWalk.getThisReference();
 
         this.parameterizedProperty = new AntlrParameterizedProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
-                thisReference.getNumMembers() + 1,
+                Optional.of(compilerWalk.getCurrentCompilationUnit()),
+                compilerWalk.getNumClassifierMembers(),
                 ctx.identifier(),
                 thisReference);
 

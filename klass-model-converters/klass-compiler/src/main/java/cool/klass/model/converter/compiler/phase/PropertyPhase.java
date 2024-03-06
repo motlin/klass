@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilerState;
+import cool.klass.model.converter.compiler.CompilerWalkState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
@@ -56,6 +57,44 @@ public class PropertyPhase
     }
 
     @Override
+    public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
+    {
+        super.enterAssociationEndSignature(ctx);
+
+        if (this.associationEndSignature != null)
+        {
+            throw new IllegalStateException();
+        }
+        if (this.classifierReferenceOwner != null)
+        {
+            throw new IllegalStateException();
+        }
+        if (this.multiplicityOwner != null)
+        {
+            throw new IllegalStateException();
+        }
+
+        CompilerWalkState compilerWalk = this.compilerState.getCompilerWalk();
+        this.associationEndSignature  = new AntlrAssociationEndSignature(
+                ctx,
+                Optional.of(compilerWalk.getCurrentCompilationUnit()),
+                compilerWalk.getNumClassifierMembers(),
+                ctx.identifier(),
+                this.getClassifier());
+        this.classifierReferenceOwner = this.associationEndSignature;
+        this.multiplicityOwner        = this.associationEndSignature;
+        this.getClassifier().enterAssociationEndSignature(this.associationEndSignature);
+    }
+
+    @Override
+    public void exitPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
+    {
+        Objects.requireNonNull(this.dataTypeProperty);
+        this.dataTypeProperty = null;
+        super.exitPrimitiveProperty(ctx);
+    }
+
+    @Override
     public void enterPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
     {
         super.enterPrimitiveProperty(ctx);
@@ -69,48 +108,16 @@ public class PropertyPhase
         {
             throw new IllegalStateException();
         }
+
+        CompilerWalkState compilerWalk = this.compilerState.getCompilerWalk();
         this.dataTypeProperty = new AntlrPrimitiveProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
-                this.getClassifier().getNumMembers() + 1,
+                Optional.of(compilerWalk.getCurrentCompilationUnit()),
+                compilerWalk.getNumClassifierMembers(),
                 ctx.identifier(),
                 this.getClassifier(),
                 isOptional,
                 primitiveTypeState);
-
-        this.getClassifier().enterDataTypeProperty(this.dataTypeProperty);
-    }
-
-    @Override
-    public void exitPrimitiveProperty(@Nonnull PrimitivePropertyContext ctx)
-    {
-        Objects.requireNonNull(this.dataTypeProperty);
-        this.dataTypeProperty = null;
-        super.exitPrimitiveProperty(ctx);
-    }
-
-    @Override
-    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
-    {
-        super.enterEnumerationProperty(ctx);
-
-        boolean          isOptional      = ctx.optionalMarker() != null;
-        AntlrDomainModel domainModel     = this.compilerState.getDomainModel();
-        String           enumerationName = ctx.enumerationReference().getText();
-        AntlrEnumeration enumeration     = domainModel.getEnumerationByName(enumerationName);
-
-        if (this.dataTypeProperty != null)
-        {
-            throw new IllegalStateException();
-        }
-        this.dataTypeProperty = new AntlrEnumerationProperty(
-                ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
-                this.getClassifier().getNumMembers() + 1,
-                ctx.identifier(),
-                this.getClassifier(),
-                isOptional,
-                enumeration);
 
         this.getClassifier().enterDataTypeProperty(this.dataTypeProperty);
     }
@@ -203,32 +210,30 @@ public class PropertyPhase
     }
 
     @Override
-    public void enterAssociationEndSignature(@Nonnull AssociationEndSignatureContext ctx)
+    public void enterEnumerationProperty(@Nonnull EnumerationPropertyContext ctx)
     {
-        super.enterAssociationEndSignature(ctx);
+        super.enterEnumerationProperty(ctx);
 
-        if (this.associationEndSignature != null)
-        {
-            throw new IllegalStateException();
-        }
-        if (this.classifierReferenceOwner != null)
-        {
-            throw new IllegalStateException();
-        }
-        if (this.multiplicityOwner != null)
-        {
-            throw new IllegalStateException();
-        }
+        boolean          isOptional      = ctx.optionalMarker() != null;
+        AntlrDomainModel domainModel     = this.compilerState.getDomainModel();
+        String           enumerationName = ctx.enumerationReference().getText();
+        AntlrEnumeration enumeration     = domainModel.getEnumerationByName(enumerationName);
 
-        this.associationEndSignature  = new AntlrAssociationEndSignature(
+        if (this.dataTypeProperty != null)
+        {
+            throw new IllegalStateException();
+        }
+        CompilerWalkState compilerWalk = this.compilerState.getCompilerWalk();
+        this.dataTypeProperty = new AntlrEnumerationProperty(
                 ctx,
-                Optional.of(this.compilerState.getCompilerWalk().getCurrentCompilationUnit()),
-                this.getClassifier().getNumMembers() + 1,
+                Optional.of(compilerWalk.getCurrentCompilationUnit()),
+                compilerWalk.getNumClassifierMembers(),
                 ctx.identifier(),
-                this.getClassifier());
-        this.classifierReferenceOwner = this.associationEndSignature;
-        this.multiplicityOwner        = this.associationEndSignature;
-        this.getClassifier().enterAssociationEndSignature(this.associationEndSignature);
+                this.getClassifier(),
+                isOptional,
+                enumeration);
+
+        this.getClassifier().enterDataTypeProperty(this.dataTypeProperty);
     }
 
     @Override
