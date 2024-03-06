@@ -26,14 +26,9 @@ public class GenerateGraphQLReladomoFinderMojo
             defaultValue = "${project.build.directory}/generated-resources/graphql-reladomo-finder")
     private File outputDirectory;
 
-    @Parameter(property = "applicationName", required = true)
-    private String applicationName;
-
-    @Parameter(property = "rootPackageName", required = true)
-    private String rootPackageName;
-
     @Override
-    public void execute() throws MojoExecutionException
+    public void execute()
+            throws MojoExecutionException
     {
         if (!this.outputDirectory.exists())
         {
@@ -42,17 +37,12 @@ public class GenerateGraphQLReladomoFinderMojo
 
         DomainModel domainModel = this.getDomainModel();
 
+        var generator = new GraphQLReladomoFinderGenerator(domainModel);
         Path outputPath = this.outputDirectory.toPath();
-
-        GraphQLReladomoFinderGenerator generator = new GraphQLReladomoFinderGenerator(
-                domainModel,
-                this.rootPackageName,
-                this.applicationName);
-        generator.writeFinderFiles(outputPath);
+        generator.writeFiles(outputPath);
 
         Resource resource = new Resource();
         resource.setDirectory(this.outputDirectory.getAbsolutePath());
-        // TODO: Should be based on the output path
         this.mavenProject.addResource(resource);
     }
 }

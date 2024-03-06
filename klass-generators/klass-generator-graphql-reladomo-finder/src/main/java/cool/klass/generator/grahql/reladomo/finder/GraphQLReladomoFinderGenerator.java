@@ -1,47 +1,46 @@
 package cool.klass.generator.grahql.reladomo.finder;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.generator.perpackage.AbstractPerPackageGenerator;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
-import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
-import cool.klass.model.meta.domain.api.property.EnumerationProperty;
-import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
-import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
-import cool.klass.model.meta.domain.api.property.PropertyVisitor;
-import cool.klass.model.meta.domain.api.property.ReferenceProperty;
-import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 
 public class GraphQLReladomoFinderGenerator
+        extends AbstractPerPackageGenerator
 {
-    @Nonnull
-    private final DomainModel domainModel;
-    @Nonnull
-    private final String      rootPackageName;
-    @Nonnull
-    private final String      applicationName;
-
-    public GraphQLReladomoFinderGenerator(
-            @Nonnull DomainModel domainModel,
-            @Nonnull String rootPackageName,
-            @Nonnull String applicationName)
+    public GraphQLReladomoFinderGenerator(@Nonnull DomainModel domainModel)
     {
-        this.domainModel     = Objects.requireNonNull(domainModel);
-        this.rootPackageName = Objects.requireNonNull(rootPackageName);
-        this.applicationName = Objects.requireNonNull(applicationName);
+        super(domainModel);
     }
 
-    public void writeFinderFiles(@Nonnull Path outputPath)
+    @Nonnull
+    @Override
+    protected Path getPluginRelativePath(Path path)
     {
-        String topLevelElementsCode = this.domainModel.getClassifiers()
+        return path
+                .resolve("graphql")
+                .resolve("schema")
+                .resolve("finder");
+    }
+
+    @Nonnull
+    @Override
+    protected String getFileName()
+    {
+        return "GraphQLFinders.graphqls";
+    }
+
+    @Nonnull
+    @Override
+    protected String getPackageSourceCode(@Nonnull String fullyQualifiedPackage)
+    {
+        String topLevelElementsCode = this.domainModel
+                .getClassifiers()
+                .select(each -> each.getPackageName().equals(fullyQualifiedPackage))
                 .collect(this::getSourceCode)
                 .makeString("");
 
@@ -50,21 +49,7 @@ public class GraphQLReladomoFinderGenerator
                 + "\n"
                 + topLevelElementsCode;
 
-        Path fragmentsOutputPath = this.getOutputPath(outputPath);
-        this.printStringToFile(fragmentsOutputPath, sourceCode);
-    }
-
-    @Nonnull
-    private Path getOutputPath(@Nonnull Path outputPath)
-    {
-        String packageRelativePath = this.rootPackageName.replaceAll("\\.", "/");
-        Path outputDirectory = outputPath
-                .resolve(packageRelativePath)
-                .resolve("graphql")
-                .resolve("schema");
-        outputDirectory.toFile().mkdirs();
-        String fileName = this.applicationName + "Finders.graphqls";
-        return outputDirectory.resolve(fileName);
+        return sourceCode;
     }
 
     private String getSourceCode(@Nonnull Classifier classifier)
@@ -87,142 +72,5 @@ public class GraphQLReladomoFinderGenerator
         var visitor = new PropertySourceCodeVisitor();
         property.visit(visitor);
         return visitor.getSourceCode();
-    }
-
-    private void printStringToFile(@Nonnull Path path, String contents)
-    {
-        try (var printStream = new PrintStream(new FileOutputStream(path.toFile())))
-        {
-            printStream.print(contents);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static final class PropertySourceCodeVisitor implements PropertyVisitor
-    {
-        private String sourceCode;
-
-        public String getSourceCode()
-        {
-            return this.sourceCode;
-        }
-
-        @Override
-        public void visitPrimitiveProperty(PrimitiveProperty primitiveProperty)
-        {
-            var visitor = new PrimitiveTypeSourceCodeVisitor();
-            primitiveProperty.getType().visit(visitor);
-            this.sourceCode = String.format(
-                    "    %s: _%sAttribute\n",
-                    primitiveProperty.getName(),
-                    visitor.getSourceCode());
-        }
-
-        @Override
-        public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
-        {
-            this.sourceCode = String.format(
-                    "    %s: _StringAttribute\n",
-                    enumerationProperty.getName());
-        }
-
-        @Override
-        public void visitAssociationEnd(AssociationEnd associationEnd)
-        {
-            this.visitReferenceProperty(associationEnd);
-        }
-
-        @Override
-        public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
-        {
-            this.visitReferenceProperty(associationEndSignature);
-        }
-
-        @Override
-        public void visitParameterizedProperty(ParameterizedProperty parameterizedProperty)
-        {
-            this.visitReferenceProperty(parameterizedProperty);
-        }
-
-        public void visitReferenceProperty(ReferenceProperty referenceProperty)
-        {
-            this.sourceCode = String.format(
-                    "    %s: _%sFinder\n",
-                    referenceProperty.getName(),
-                    referenceProperty.getType().getName());
-        }
-    }
-
-    private static final class PrimitiveTypeSourceCodeVisitor implements PrimitiveTypeVisitor
-    {
-        private String sourceCode;
-
-        public String getSourceCode()
-        {
-            return this.sourceCode;
-        }
-
-        @Override
-        public void visitString()
-        {
-            this.sourceCode = "String";
-        }
-
-        @Override
-        public void visitInteger()
-        {
-            this.sourceCode = "Integer";
-        }
-
-        @Override
-        public void visitLong()
-        {
-            this.sourceCode = "Long";
-        }
-
-        @Override
-        public void visitDouble()
-        {
-            this.sourceCode = "Double";
-        }
-
-        @Override
-        public void visitFloat()
-        {
-            this.sourceCode = "Float";
-        }
-
-        @Override
-        public void visitBoolean()
-        {
-            this.sourceCode = "Boolean";
-        }
-
-        @Override
-        public void visitInstant()
-        {
-            this.sourceCode = "Timestamp";
-        }
-
-        @Override
-        public void visitLocalDate()
-        {
-            this.sourceCode = "Date";
-        }
-
-        @Override
-        public void visitTemporalInstant()
-        {
-            this.sourceCode = "Timestamp";
-        }
-
-        @Override
-        public void visitTemporalRange()
-        {
-            this.sourceCode = "AsOf";
-        }
     }
 }

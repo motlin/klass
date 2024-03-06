@@ -119,7 +119,7 @@
     "queryCache"   : "maximumSize=10000",
     "schemaFiles"  : [
       "cool/klass/xample/coverage/graphql/schema/query/CoverageExampleQuery.graphqls",
-      "cool/klass/xample/coverage/graphql/schema/CoverageExampleFinders.graphqls",
+      "cool/klass/xample/coverage/graphql/schema/finder/GraphQLFinders.graphqls",
       "cool/klass/xample/coverage/graphql/schema/CoverageExample.graphqls",
       "io/liftwizard/graphql/schema/attribute/ReladomoAttribute.graphqls"
     ]
