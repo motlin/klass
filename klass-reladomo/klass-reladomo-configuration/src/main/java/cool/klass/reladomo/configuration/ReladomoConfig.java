@@ -26,9 +26,6 @@ public final class ReladomoConfig
         Config config         = ConfigFactory.load();
         Config reladomoConfig = config.getConfig("klass.data.reladomo");
 
-        int          transactionTimeoutSeconds = reladomoConfig.getInt("transactionTimeoutSeconds");
-        List<String> reladomoRuntimeConfigurationPaths = reladomoConfig.getStringList("reladomoRuntimeConfigurationPaths");
-
         if (LOGGER.isDebugEnabled())
         {
             ConfigRenderOptions configRenderOptions = ConfigRenderOptions.defaults()
@@ -37,6 +34,17 @@ public final class ReladomoConfig
             String render = reladomoConfig.root().render(configRenderOptions);
             LOGGER.debug("Reladomo configuration:\n{}", render);
         }
+
+        boolean enabled = reladomoConfig.getBoolean("enabled");
+        if (!enabled)
+        {
+            return;
+        }
+
+        int transactionTimeoutSeconds =
+                reladomoConfig.getInt("transactionTimeoutSeconds");
+        List<String> reladomoRuntimeConfigurationPaths =
+                reladomoConfig.getStringList("reladomoRuntimeConfigurationPaths");
 
         MithraManager mithraManager = MithraManagerProvider.getMithraManager();
         mithraManager.setTransactionTimeout(transactionTimeoutSeconds);
