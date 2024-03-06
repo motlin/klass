@@ -180,6 +180,11 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
     public void enterParameterModifier(@Nonnull ParameterModifierContext ctx)
     {
         super.enterParameterModifier(ctx);
+        if (this.parameterizedPropertyState == null && this.parameterState == null)
+        {
+            return;
+        }
+
         int ordinal = this.parameterState.getNumModifiers();
         AntlrParameterModifier parameterModifierState = new AntlrParameterModifier(
                 ctx,
