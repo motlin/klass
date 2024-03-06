@@ -17,14 +17,15 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_good() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"value\": \"value\",\n"
-                + "  \"target\": {\n"
-                + "    \"key\": \"key\",\n"
-                + "    \"value\": \"value\",\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "value": "value",
+                  "target": {
+                    "key": "key",
+                    "value": "value",
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
@@ -35,20 +36,21 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_backwards_association_end() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"value\": \"value\",\n"
-                + "  \"target\": {\n"
-                + "    \"key\": \"key\",\n"
-                + "    \"value\": \"value\",\n"
-                + "    \"source\": [\n"
-                + "      {\n"
-                + "        \"key\": \"key\",\n"
-                + "        \"value\": \"value\",\n"
-                + "      },\n"
-                + "    ],\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "value": "value",
+                  "target": {
+                    "key": "key",
+                    "value": "value",
+                    "sources": [
+                      {
+                        "key": "key",
+                        "value": "value",
+                      },
+                    ],
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.empty();
 
@@ -59,20 +61,21 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_extra_properties() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"key\": \"key\",\n"
-                + "  \"targetKey\": \"key\",\n"
-                + "  \"value\": \"value\",\n"
-                + "  \"target\": {\n"
-                + "    \"key\": \"key\",\n"
-                + "    \"sourceKey\": \"key\",\n"
-                + "    \"value\": \"value\",\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "key": "key",
+                  "targetKey": "key",
+                  "value": "value",
+                  "target": {
+                    "key": "key",
+                    "sourceKey": "key",
+                    "value": "value",
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
-                "Error at SharedNaturalManyToOneSource.target.sourceKey. No such property 'SharedNaturalManyToOneTarget.sourceKey' but got \"key\". Expected properties: key, value, source.");
+                "Error at SharedNaturalManyToOneSource.target.sourceKey. No such property 'SharedNaturalManyToOneTarget.sourceKey' but got \"key\". Expected properties: key, value, sources.");
         ImmutableList<String> expectedWarnings = Lists.immutable.with(
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for root key property 'SharedNaturalManyToOneSource.key: String' but value was string: \"key\".",
                 "Warning at SharedNaturalManyToOneSource. Didn't expect to receive value for foreign key property 'SharedNaturalManyToOneSource.targetKey: String' but value was string: \"key\".");
@@ -84,10 +87,10 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_expected_actual_missing() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"target\": {}\n"
-                + "}";
+        String incomingJson = """
+                {
+                  "target": {}
+                }""";
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at SharedNaturalManyToOneSource. Expected value for required property 'SharedNaturalManyToOneSource.value: String' but value was missing.");
@@ -99,16 +102,17 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_expected_actual_array() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"key\": [],\n"
-                + "  \"targetKey\": [],\n"
-                + "  \"value\": [],\n"
-                + "  \"target\": {\n"
-                + "    \"key\": [],\n"
-                + "    \"value\": [],\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "key": [],
+                  "targetKey": [],
+                  "value": [],
+                  "target": {
+                    "key": [],
+                    "value": [],
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at SharedNaturalManyToOneSource.key. Expected property with type 'SharedNaturalManyToOneSource.key: String' but got '[]' with type 'array'.",
@@ -127,16 +131,17 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_expected_actual_object() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"key\": {},\n"
-                + "  \"targetKey\": {},\n"
-                + "  \"value\": {},\n"
-                + "  \"target\": {\n"
-                + "    \"key\": {},\n"
-                + "    \"value\": {},\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "key": {},
+                  "targetKey": {},
+                  "value": {},
+                  "target": {
+                    "key": {},
+                    "value": {},
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at SharedNaturalManyToOneSource.key. Expected property with type 'SharedNaturalManyToOneSource.key: String' but got '{}' with type 'object'.",
@@ -155,16 +160,17 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_expected_actual_null() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"key\": null,\n"
-                + "  \"targetKey\": null,\n"
-                + "  \"value\": null,\n"
-                + "  \"target\": {\n"
-                + "    \"key\": null,\n"
-                + "    \"value\": null,\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "key": null,
+                  "targetKey": null,
+                  "value": null,
+                  "target": {
+                    "key": null,
+                    "value": null,
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at SharedNaturalManyToOneSource. Expected value for required property 'SharedNaturalManyToOneSource.value: String' but value was null.");
@@ -179,16 +185,17 @@ public class SharedNaturalManyToOneTest extends AbstractValidatorTest
     public void validate_expected_actual_boolean() throws IOException
     {
         //language=JSON5
-        String incomingJson = ""
-                + "{\n"
-                + "  \"key\": true,\n"
-                + "  \"targetKey\": true,\n"
-                + "  \"value\": true,\n"
-                + "  \"target\": {\n"
-                + "    \"key\": true,\n"
-                + "    \"value\": true,\n"
-                + "  },\n"
-                + "}\n";
+        String incomingJson = """
+                {
+                  "key": true,
+                  "targetKey": true,
+                  "value": true,
+                  "target": {
+                    "key": true,
+                    "value": true,
+                  },
+                }
+                """;
 
         ImmutableList<String> expectedErrors = Lists.immutable.with(
                 "Error at SharedNaturalManyToOneSource.key. Expected property with type 'SharedNaturalManyToOneSource.key: String' but got 'true' with type 'boolean'.",

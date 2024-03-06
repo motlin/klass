@@ -142,7 +142,7 @@ class EnumerationProperty
 
 association EnumerationPropertyHasEnumeration
 {
-    enumerationProperty           : EnumerationProperty[0..*];
+    enumerationProperties         : EnumerationProperty[0..*];
     enumeration                   : Enumeration[1..1];
 
     relationship this.enumerationName == Enumeration.name
@@ -487,7 +487,7 @@ class VariableReference
 
 association VariableReferenceHasParameter
 {
-    variableReference: VariableReference[0..*];
+    variableReferences: VariableReference[0..*];
     parameter: Parameter[1..1];
 
     relationship this.parameterId == Parameter.id
@@ -519,7 +519,7 @@ class PrimitiveParameter
 
 association EnumerationParameterHasEnumeration
 {
-    enumerationParameter: EnumerationParameter[0..*];
+    enumerationParameters: EnumerationParameter[0..*];
     enumeration: Enumeration[1..1];
 
     relationship this.enumerationName == Enumeration.name
@@ -672,7 +672,7 @@ class ParameterizedPropertyOrdering
 association ParameterizedPropertyHasOrdering
 {
     parameterizedProperty: ParameterizedProperty[1..1];
-    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[0..*];
+    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*];
 
     relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
             && this.name == ParameterizedPropertyOrdering.name
@@ -764,7 +764,7 @@ association ProjectionElementHasChildren
 
 association ProjectionWithAssociationEndHasAssociationEnd
 {
-    projectionWithAssociationEnd  : ProjectionWithAssociationEnd[0..*];
+    projectionsWithAssociationEnd : ProjectionWithAssociationEnd[0..*];
     associationEnd                : AssociationEnd[1..1];
 
     relationship this.associationEndClass == AssociationEnd.owningClassName
@@ -773,7 +773,7 @@ association ProjectionWithAssociationEndHasAssociationEnd
 
 association ProjectionDataTypePropertyHasDataTypeProperty
 {
-    projectionDataTypeProperty    : ProjectionDataTypeProperty[0..*];
+    projectionDataTypeProperties  : ProjectionDataTypeProperty[0..*];
     dataTypeProperty              : DataTypeProperty[1..1];
 
     relationship this.propertyClassifierName == DataTypeProperty.classifierName
@@ -782,7 +782,7 @@ association ProjectionDataTypePropertyHasDataTypeProperty
 
 association ProjectionHasClass
 {
-    projection                    : ServiceProjection[0..*];
+    projections                   : ServiceProjection[0..*];
     klass                         : Klass[1..1];
 
     relationship this.className == Klass.name
@@ -790,7 +790,7 @@ association ProjectionHasClass
 
 association ProjectionProjectionReferenceHasProjection
 {
-    projectionProjectionReference : ProjectionProjectionReference[0..*];
+    projectionProjectionReferences: ProjectionProjectionReference[0..*];
     projection                    : ServiceProjection[1..1];
 
     relationship this.projectionName == ServiceProjection.name

@@ -140,7 +140,7 @@ service PropertiesOptional
         }
 }
 
-class AllKeyProperties
+class EveryTypeKeyProperty
     systemTemporal
     versioned
     audited
@@ -155,7 +155,7 @@ class AllKeyProperties
     keyLocalDate        : LocalDate key;
 }
 
-class AllForeignKeyProperties
+class EveryTypeForeignKeyProperty
     systemTemporal
 {
     id                  : Long id key;
@@ -170,23 +170,23 @@ class AllForeignKeyProperties
     data                : String;
 }
 
-association AllKeyPropertiesHasAllForeignKeyProperties
+association EveryTypeKeyPropertyHasEveryTypeForeignKeyProperty
 {
-    allKeyProperties: AllKeyProperties[1..1];
-    allForeignKeyProperties: AllForeignKeyProperties[0..*] owned;
+    everyTypeKeyProperty: EveryTypeKeyProperty[1..1];
+    everyTypeForeignKeyProperties: EveryTypeForeignKeyProperty[0..*] owned;
 
-    relationship this.keyString == AllForeignKeyProperties.foreignKeyString
-            && this.keyInteger == AllForeignKeyProperties.foreignKeyInteger
-            && this.keyLong == AllForeignKeyProperties.foreignKeyLong
-            && this.keyDouble == AllForeignKeyProperties.foreignKeyDouble
-            && this.keyFloat == AllForeignKeyProperties.foreignKeyFloat
-            && this.keyBoolean == AllForeignKeyProperties.foreignKeyBoolean
-            && this.keyInstant == AllForeignKeyProperties.foreignKeyInstant
-            && this.keyLocalDate == AllForeignKeyProperties.foreignKeyLocalDate
+    relationship this.keyString == EveryTypeForeignKeyProperty.foreignKeyString
+            && this.keyInteger == EveryTypeForeignKeyProperty.foreignKeyInteger
+            && this.keyLong == EveryTypeForeignKeyProperty.foreignKeyLong
+            && this.keyDouble == EveryTypeForeignKeyProperty.foreignKeyDouble
+            && this.keyFloat == EveryTypeForeignKeyProperty.foreignKeyFloat
+            && this.keyBoolean == EveryTypeForeignKeyProperty.foreignKeyBoolean
+            && this.keyInstant == EveryTypeForeignKeyProperty.foreignKeyInstant
+            && this.keyLocalDate == EveryTypeForeignKeyProperty.foreignKeyLocalDate
 }
 
 // TODO: Reject types that have all auto-generated ids, foreign keys and no data.
-projection AllKeyPropertiesProjection on AllKeyProperties
+projection EveryTypeKeyPropertyProjection on EveryTypeKeyProperty
 {
     keyString              : "keyString",
     keyInteger             : "keyInteger",
@@ -196,7 +196,7 @@ projection AllKeyPropertiesProjection on AllKeyProperties
     keyBoolean             : "keyBoolean",
     keyInstant             : "keyInstant",
     keyLocalDate           : "keyLocalDate",
-    allForeignKeyProperties:
+    everyTypeForeignKeyProperties:
     {
         id                 : "id",
         foreignKeyString   : "foreignKeyString",
@@ -215,16 +215,16 @@ projection AllKeyPropertiesProjection on AllKeyProperties
     },
 }
 
-service AllKeyProperties
+service EveryTypeKeyProperty
 {
-    /allKeyProperties
+    /everyTypeKeyProperty
         GET
         {
             multiplicity: many;
             criteria    : all;
-            projection  : AllKeyPropertiesProjection;
+            projection  : EveryTypeKeyPropertyProjection;
         }
-    /allKeyProperties
+    /everyTypeKeyProperty
         /{keyString   : String[1..1]}
         /{keyInteger  : Integer[1..1]}
         /{keyLong     : Long[1..1]}
@@ -245,7 +245,7 @@ service AllKeyProperties
                        && this.keyBoolean == keyBoolean
                        && this.keyInstant == keyInstant
                        && this.keyLocalDate == keyLocalDate;
-            projection  : AllKeyPropertiesProjection;
+            projection  : EveryTypeKeyPropertyProjection;
         }
         POST
         {
@@ -322,7 +322,7 @@ class OwnedNaturalOneToManyTarget
 association OwnedNaturalOneToMany
 {
     source: OwnedNaturalOneToManySource[1..1];
-    target: OwnedNaturalOneToManyTarget[1..*] owned;
+    targets: OwnedNaturalOneToManyTarget[1..*] owned;
 
     relationship this.key == OwnedNaturalOneToManyTarget.sourceKey
 }
@@ -379,7 +379,7 @@ class OwnedSyntheticOneToManyTarget
 association OwnedSyntheticOneToMany
 {
     source: OwnedSyntheticOneToManySource[1..1];
-    target: OwnedSyntheticOneToManyTarget[1..*] owned;
+    targets: OwnedSyntheticOneToManyTarget[1..*] owned;
 
     relationship this.id == OwnedSyntheticOneToManyTarget.sourceId
 }
@@ -437,7 +437,7 @@ class SharedNaturalManyToOneTarget
 
 association SharedNaturalManyToOne
 {
-    source: SharedNaturalManyToOneSource[0..*];
+    sources: SharedNaturalManyToOneSource[0..*];
     target: SharedNaturalManyToOneTarget[1..1];
 
     relationship this.targetKey == SharedNaturalManyToOneTarget.key
@@ -459,7 +459,7 @@ class SharedNaturalOneToManyTarget
 association SharedNaturalOneToMany
 {
     source: SharedNaturalOneToManySource[1..1];
-    target: SharedNaturalOneToManyTarget[1..*];
+    targets: SharedNaturalOneToManyTarget[1..*];
 
     relationship this.key == SharedNaturalOneToManyTarget.sourceKey
 }
@@ -516,7 +516,7 @@ class SharedSyntheticOneToManyTarget
 association SharedSyntheticOneToMany
 {
     source: SharedSyntheticOneToManySource[1..1];
-    target: SharedSyntheticOneToManyTarget[1..*];
+    targets: SharedSyntheticOneToManyTarget[1..*];
 
     relationship this.id == SharedSyntheticOneToManyTarget.sourceId
 }

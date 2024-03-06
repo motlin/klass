@@ -27,1736 +27,1743 @@ public class KlassCompilerTest
     {
         //<editor-fold desc="source code">
         //language=Klass
-        String sourceCodeText = ""
-                + "package klass.model.meta.domain\n"
-                + "\n"
-                + "interface Element\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "interface NamedElement\n"
-                + "    implements Element\n"
-                + "{\n"
-                + "    name: String key maximumLength(256);\n"
-                + "    ordinal: Integer;\n"
-                + "}\n"
-                + "\n"
-                + "interface PackageableElement implements NamedElement\n"
-                + "{\n"
-                + "    packageName: String maximumLength(100000);\n"
-                + "\n"
-                + "    // fullyQualifiedName: String = packageName + \".\" + name;\n"
-                + "}\n"
-                + "\n"
-                + "class Enumeration implements PackageableElement\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class EnumerationLiteral implements NamedElement\n"
-                + "{\n"
-                + "    enumerationName               : String key maximumLength(256);\n"
-                + "    prettyName                    : String? maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association EnumerationHasLiterals\n"
-                + "{\n"
-                + "    enumeration: Enumeration[1..1];\n"
-                + "    enumerationLiterals: EnumerationLiteral[1..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.name == EnumerationLiteral.enumerationName\n"
-                + "}\n"
-                + "\n"
-                + "enumeration InheritanceType\n"
-                + "{\n"
-                + "    TABLE_PER_SUBCLASS(\"table-per-subclass\"),\n"
-                + "    TABLE_FOR_ALL_SUBCLASSES(\"table-for-all-subclasses\"),\n"
-                + "    TABLE_PER_CLASS(\"table-per-class\"),\n"
-                + "    NONE(\"none\"),\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass\n"
-                + "// TODO: Ordinals should have a syntax and be inferred using macros\n"
-                + "class Classifier\n"
-                + "    abstract(table-per-class)\n"
-                + "    implements PackageableElement\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Error when transient extends non-transient\n"
-                + "class Interface\n"
-                + "    extends Classifier\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class ClassifierInterfaceMapping\n"
-                + "{\n"
-                + "    classifierName: String key private maximumLength(256);\n"
-                + "    interfaceName: String key private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association ClassifierHasClassifierInterfaceMapping\n"
-                + "{\n"
-                + "    subClassifier: Classifier[1..1];\n"
-                + "    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n"
-                + "\n"
-                + "    relationship this.name == ClassifierInterfaceMapping.classifierName\n"
-                + "}\n"
-                + "\n"
-                + "association ClassifierInterfaceMappingHasInterface\n"
-                + "{\n"
-                + "    superInterface                : Interface[1..1];\n"
-                + "    subClassifiers                : ClassifierInterfaceMapping[0..*];\n"
-                + "\n"
-                + "    relationship this.name == ClassifierInterfaceMapping.interfaceName\n"
-                + "}\n"
-                + "\n"
-                + "class Klass\n"
-                + "    extends Classifier\n"
-                + "{\n"
-                + "    superClassName: String? private maximumLength(256);\n"
-                + "    inheritanceType: InheritanceType maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Why isn't subClasses showing up in generated code? Reladomo bug?\n"
-                + "association ClassHasSuperClass\n"
-                + "{\n"
-                + "    subClasses                    : Klass[0..*];\n"
-                + "    superClass                    : Klass[0..1];\n"
-                + "\n"
-                + "    // TODO: When this was backwards, I got a confusing error. How can I detect and prevent?\n"
-                + "    relationship this.superClassName == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "enumeration PrimitiveType\n"
-                + "{\n"
-                + "    INTEGER(\"Integer\"),\n"
-                + "    LONG(\"Long\"),\n"
-                + "    DOUBLE(\"Double\"),\n"
-                + "    FLOAT(\"Float\"),\n"
-                + "    BOOLEAN(\"Boolean\"),\n"
-                + "    STRING(\"String\"),\n"
-                + "    INSTANT(\"Instant\"),\n"
-                + "    LOCAL_DATE(\"LocalDate\"),\n"
-                + "    TEMPORAL_INSTANT(\"TemporalInstant\"),\n"
-                + "    TEMPORAL_RANGE(\"TemporalRange\"),\n"
-                + "}\n"
-                + "\n"
-                + "enumeration Multiplicity\n"
-                + "{\n"
-                + "    ZERO_TO_ONE(\"0..1\"),\n"
-                + "    ONE_TO_ONE(\"1..1\"),\n"
-                + "    ZERO_TO_MANY(\"0..*\"),\n"
-                + "    ONE_TO_MANY(\"1..*\"),\n"
-                + "}\n"
-                + "\n"
-                + "class DataTypeProperty\n"
-                + "    abstract(table-per-class)\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    classifierName                : String key maximumLength(256);\n"
-                + "    optional                      : Boolean;\n"
-                + "}\n"
-                + "\n"
-                + "class PrimitiveProperty\n"
-                + "    extends DataTypeProperty\n"
-                + "{\n"
-                + "    primitiveType                 : PrimitiveType maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class EnumerationProperty\n"
-                + "    extends DataTypeProperty\n"
-                + "{\n"
-                + "    enumerationName               : String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association EnumerationPropertyHasEnumeration\n"
-                + "{\n"
-                + "    enumerationProperty           : EnumerationProperty[0..*];\n"
-                + "    enumeration                   : Enumeration[1..1];\n"
-                + "\n"
-                + "    relationship this.enumerationName == Enumeration.name\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Change the orderBy syntax to orderBy(this.ordinal)\n"
-                + "/*\n"
-                + "association ClassifierHasDataTypeTypeProperties\n"
-                + "{\n"
-                + "    owningClassifier              : Classifier[1..1];\n"
-                + "    dataTypeProperties            : DataTypeProperty[0..*] owned\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.name == DataTypeProperty.classifierName\n"
-                + "}\n"
-                + "*/\n"
-                + "\n"
-                + "// TODO: Owned\n"
-                + "association ClassifierHasPrimitiveProperties\n"
-                + "{\n"
-                + "    owningClassifier: Classifier[1..1];\n"
-                + "    primitiveProperties: PrimitiveProperty[0..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.name == PrimitiveProperty.classifierName\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Owned\n"
-                + "association ClassifierHasEnumerationProperties\n"
-                + "{\n"
-                + "    owningClassifier: Classifier[1..1];\n"
-                + "    enumerationProperties: EnumerationProperty[0..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.name == EnumerationProperty.classifierName\n"
-                + "}\n"
-                + "\n"
-                + "interface PropertyValidation implements Element\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class NumericPropertyValidation\n"
-                + "    abstract(table-per-subclass)\n"
-                + "    implements PropertyValidation\n"
-                + "{\n"
-                + "    classifierName                : String key maximumLength(256);\n"
-                + "    propertyName                  : String key maximumLength(256);\n"
-                + "    number: Integer;\n"
-                + "}\n"
-                + "\n"
-                + "class MinLengthPropertyValidation\n"
-                + "    extends NumericPropertyValidation\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class MaxLengthPropertyValidation\n"
-                + "    extends NumericPropertyValidation\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class MinPropertyValidation\n"
-                + "    extends NumericPropertyValidation\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "class MaxPropertyValidation\n"
-                + "    extends NumericPropertyValidation\n"
-                + "{\n"
-                + "}\n"
-                + "\n"
-                + "association DataTypePropertyHasMinLengthPropertyValidation\n"
-                + "{\n"
-                + "    dataTypeProperty              : DataTypeProperty[1..1];\n"
-                + "    minLengthValidation           : MinLengthPropertyValidation[0..1];\n"
-                + "\n"
-                + "    relationship this.classifierName == MinLengthPropertyValidation.classifierName\n"
-                + "            && this.name == MinLengthPropertyValidation.propertyName\n"
-                + "}\n"
-                + "\n"
-                + "association DataTypePropertyHasMaxLengthPropertyValidation\n"
-                + "{\n"
-                + "    dataTypeProperty              : DataTypeProperty[1..1];\n"
-                + "    maxLengthValidation           : MaxLengthPropertyValidation[0..1];\n"
-                + "\n"
-                + "    relationship this.classifierName == MaxLengthPropertyValidation.classifierName\n"
-                + "            && this.name == MaxLengthPropertyValidation.propertyName\n"
-                + "}\n"
-                + "\n"
-                + "association PrimitivePropertyHasMinPropertyValidation\n"
-                + "{\n"
-                + "    primitiveProperty             : PrimitiveProperty[1..1];\n"
-                + "    minValidation                 : MinPropertyValidation[0..1];\n"
-                + "\n"
-                + "    relationship this.classifierName == MinPropertyValidation.classifierName\n"
-                + "            && this.name == MinPropertyValidation.propertyName\n"
-                + "}\n"
-                + "\n"
-                + "association PrimitivePropertyHasMaxPropertyValidation\n"
-                + "{\n"
-                + "    primitiveProperty             : PrimitiveProperty[1..1];\n"
-                + "    maxValidation                 : MaxPropertyValidation[0..1];\n"
-                + "\n"
-                + "    relationship this.classifierName == MaxPropertyValidation.classifierName\n"
-                + "            && this.name == MaxPropertyValidation.propertyName\n"
-                + "}\n"
-                + "\n"
-                + "class PropertyModifier\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    classifierName                : String key maximumLength(256);\n"
-                + "    propertyName                  : String key maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association DataTypePropertyHasModifiers\n"
-                + "{\n"
-                + "    dataTypeProperty              : DataTypeProperty[1..1];\n"
-                + "    propertyModifiers             : PropertyModifier[0..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.classifierName == PropertyModifier.classifierName\n"
-                + "            && this.name == PropertyModifier.propertyName\n"
-                + "}\n"
-                + "\n"
-                + "class ClassifierModifier\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    classifierName: String key maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association ClassifierHasModifiers\n"
-                + "{\n"
-                + "    owningClassifier: Classifier[1..1];\n"
-                + "    classifierModifiers: ClassifierModifier[0..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.name == ClassifierModifier.classifierName\n"
-                + "}\n"
-                + "\n"
-                + "enumeration AssociationEndDirection\n"
-                + "{\n"
-                + "    SOURCE(\"source\"),\n"
-                + "    TARGET(\"target\"),\n"
-                + "}\n"
-                + "\n"
-                + "class Association implements PackageableElement\n"
-                + "{\n"
-                + "    criteriaId: Long private;\n"
-                + "\n"
-                + "    source(): AssociationEnd[1..1]\n"
-                + "    {\n"
-                + "        this.name == AssociationEnd.associationName\n"
-                + "            && AssociationEnd.direction == AssociationEndDirection.SOURCE\n"
-                + "    }\n"
-                + "\n"
-                + "    target(): AssociationEnd[1..1]\n"
-                + "    {\n"
-                + "        this.name == AssociationEnd.associationName\n"
-                + "            && AssociationEnd.direction == AssociationEndDirection.TARGET\n"
-                + "    }\n"
-                + "}\n"
-                + "\n"
-                + "class AssociationEnd implements NamedElement\n"
-                + "{\n"
-                + "    owningClassName               : String key private maximumLength(256);\n"
-                + "    associationName               : String maximumLength(256);\n"
-                + "    direction                     : AssociationEndDirection maximumLength(256);\n"
-                + "    multiplicity                  : Multiplicity maximumLength(256);\n"
-                + "    resultTypeName                : String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)\n"
-                + "// simplification, ideally we'd model an association as having exactly two ends\n"
-                + "association AssociationHasEnds\n"
-                + "{\n"
-                + "    owningAssociation: Association[1..1];\n"
-                + "    associationEnds: AssociationEnd[0..*]\n"
-                + "        orderBy: this.direction;\n"
-                + "\n"
-                + "    relationship this.name == AssociationEnd.associationName\n"
-                + "}\n"
-                + "\n"
-                + "association ClassHasAssociationEnds\n"
-                + "{\n"
-                + "    owningClass: Klass[1..1];\n"
-                + "    associationEnds: AssociationEnd[0..*];\n"
-                + "    // TODO: Order by this.owningAssociation.ordinal\n"
-                + "\n"
-                + "    relationship this.name == AssociationEnd.owningClassName\n"
-                + "}\n"
-                + "\n"
-                + "association AssociationEndHasResultType\n"
-                + "{\n"
-                + "    associationEndsResultTypeOf: AssociationEnd[0..*];\n"
-                + "    resultType: Klass[1..1];\n"
-                + "\n"
-                + "    relationship this.resultTypeName == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "class AssociationEndModifier\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    owningClassName               : String key maximumLength(256);\n"
-                + "    associationEndName            : String key maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association AssociationEndHasModifiers\n"
-                + "{\n"
-                + "    associationEnd: AssociationEnd[1..1];\n"
-                + "    associationEndModifiers: AssociationEndModifier[0..*]\n"
-                + "        orderBy: this.ordinal;\n"
-                + "\n"
-                + "    relationship this.owningClassName == AssociationEndModifier.owningClassName\n"
-                + "            && this.name == AssociationEndModifier.associationEndName\n"
-                + "}\n"
-                + "\n"
-                + "association AssociationHasCriteria\n"
-                + "{\n"
-                + "    association: Association[0..1];\n"
-                + "    criteria: Criteria[1..1];\n"
-                + "\n"
-                + "    relationship this.criteriaId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "enumeration Operator\n"
-                + "{\n"
-                + "    EQUALS(\"==\"),\n"
-                + "    NOT_EQUALS(\"!=\"),\n"
-                + "    LESS_THAN(\"<\"),\n"
-                + "    GREATER_THAN(\">\"),\n"
-                + "    LESS_THAN_EQUAL(\"<=\"),\n"
-                + "    GREATER_THAN_EQUAL(\">=\"),\n"
-                + "    IN(\"in\"),\n"
-                + "    CONTAINS(\"contains\"),\n"
-                + "    STARTS_WITH(\"startsWith\"),\n"
-                + "    ENDS_WITH(\"endsWith\"),\n"
-                + "}\n"
-                + "\n"
-                + "class Criteria\n"
-                + "    abstract(table-per-class)\n"
-                + "    implements Element\n"
-                + "{\n"
-                + "    id: Long id key;\n"
-                + "}\n"
-                + "\n"
-                + "class AllCriteria\n"
-                + "    extends Criteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class BinaryCriteria\n"
-                + "    abstract(table-per-class)\n"
-                + "    extends Criteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    leftId        : Long private;\n"
-                + "    rightId       : Long private;\n"
-                + "}\n"
-                + "\n"
-                + "class AndCriteria\n"
-                + "    extends BinaryCriteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class OrCriteria\n"
-                + "    extends BinaryCriteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class OperatorCriteria\n"
-                + "    extends Criteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    operator: Operator maximumLength(256);\n"
-                + "    sourceExpressionId: Long private;\n"
-                + "    targetExpressionId: Long private;\n"
-                + "}\n"
-                + "\n"
-                + "class EdgePointCriteria\n"
-                + "    extends Criteria\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    memberReferencePathId: Long private;\n"
-                + "}\n"
-                + "\n"
-                + "association OperatorCriteriaHasSourceExpressionValue\n"
-                + "{\n"
-                + "    operatorCriteriaSourceOf: OperatorCriteria[0..1];\n"
-                + "    sourceExpressionValue: ExpressionValue[1..1];\n"
-                + "\n"
-                + "    relationship this.sourceExpressionId == ExpressionValue.id\n"
-                + "}\n"
-                + "\n"
-                + "association OperatorCriteriaHasTargetExpressionValue\n"
-                + "{\n"
-                + "    operatorCriteriaTargetOf: OperatorCriteria[0..1];\n"
-                + "    targetExpressionValue: ExpressionValue[1..1];\n"
-                + "\n"
-                + "    relationship this.targetExpressionId == ExpressionValue.id\n"
-                + "}\n"
-                + "\n"
-                + "association MemberReferencePathHasEdgePointCriteria\n"
-                + "{\n"
-                + "    memberReferencePath: MemberReferencePath[1..1];\n"
-                + "    edgePointCriteria: EdgePointCriteria[1..1] owned;\n"
-                + "\n"
-                + "    relationship this.id == EdgePointCriteria.memberReferencePathId\n"
-                + "}\n"
-                + "\n"
-                + "class ExpressionValue\n"
-                + "    abstract(table-per-class)\n"
-                + "{\n"
-                + "    id      : Long key id;\n"
-                + "}\n"
-                + "\n"
-                + "class UserLiteral\n"
-                + "    extends ExpressionValue\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class NullLiteral\n"
-                + "    extends ExpressionValue\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class VariableReference\n"
-                + "    extends ExpressionValue\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    parameterId: Long private;\n"
-                + "}\n"
-                + "\n"
-                + "association VariableReferenceHasParameter\n"
-                + "{\n"
-                + "    variableReference: VariableReference[0..*];\n"
-                + "    parameter: Parameter[1..1];\n"
-                + "\n"
-                + "    relationship this.parameterId == Parameter.id\n"
-                + "}\n"
-                + "\n"
-                + "class Parameter\n"
-                + "    abstract(table-per-class)\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    // name isn't key\n"
-                + "    name: String maximumLength(256);\n"
-                + "    id: Long key id;\n"
-                + "    multiplicity: Multiplicity maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class EnumerationParameter\n"
-                + "    extends Parameter\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    enumerationName: String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class PrimitiveParameter\n"
-                + "    extends Parameter\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    primitiveType: PrimitiveType maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association EnumerationParameterHasEnumeration\n"
-                + "{\n"
-                + "    enumerationParameter: EnumerationParameter[0..*];\n"
-                + "    enumeration: Enumeration[1..1];\n"
-                + "\n"
-                + "    relationship this.enumerationName == Enumeration.name\n"
-                + "}\n"
-                + "\n"
-                + "class MemberReferencePath\n"
-                + "    abstract(table-per-class)\n"
-                + "    extends ExpressionValue\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    className: String private maximumLength(256);\n"
-                + "    propertyClassName: String private maximumLength(256);\n"
-                + "    propertyName: String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association MemberReferencePathHasClass\n"
-                + "{\n"
-                + "    memberReferencePaths: MemberReferencePath[0..*];\n"
-                + "    klass: Klass[1..1];\n"
-                + "\n"
-                + "    relationship this.className == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "class MemberReferencePathAssociationEndMapping\n"
-                + "{\n"
-                + "    memberReferencePathId: Long key private;\n"
-                + "    associationOwningClassName: String key private maximumLength(256);\n"
-                + "    associationEndName: String key private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association MemberReferencePathHasMemberReferencePathAssociationEndMapping\n"
-                + "{\n"
-                + "    memberReferencePath: MemberReferencePath[1..1];\n"
-                + "    associationEnds: MemberReferencePathAssociationEndMapping[0..*];\n"
-                + "\n"
-                + "    relationship this.id == MemberReferencePathAssociationEndMapping.memberReferencePathId\n"
-                + "}\n"
-                + "\n"
-                + "association MemberReferencePathAssociationEndMappingHasAssociationEnd\n"
-                + "{\n"
-                + "    memberReferencePaths: MemberReferencePathAssociationEndMapping[0..*];\n"
-                + "    associationEnd: AssociationEnd[1..1];\n"
-                + "\n"
-                + "    relationship this.associationOwningClassName == AssociationEnd.owningClassName\n"
-                + "            && this.associationEndName == AssociationEnd.name\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: These associations only work in one direction\n"
-                + "association DataTypePropertyHasMemberReferencePaths\n"
-                + "{\n"
-                + "    memberReferencePaths: MemberReferencePath[0..*];\n"
-                + "    dataTypeProperty: DataTypeProperty[1..1];\n"
-                + "\n"
-                + "    relationship this.propertyClassName == DataTypeProperty.classifierName\n"
-                + "            && this.propertyName == DataTypeProperty.name\n"
-                + "}\n"
-                + "\n"
-                + "class ThisMemberReferencePath\n"
-                + "    extends MemberReferencePath\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "class TypeMemberReferencePath\n"
-                + "    extends MemberReferencePath\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "}\n"
-                + "\n"
-                + "association BinaryCriteriaHasLeft\n"
-                + "{\n"
-                + "    ownerOfLeftCriteria : BinaryCriteria[0..1];\n"
-                + "    left                : Criteria[1..1];\n"
-                + "\n"
-                + "    relationship this.leftId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "association BinaryCriteriaHasRight\n"
-                + "{\n"
-                + "    ownerOfRightCriteria: BinaryCriteria[0..1];\n"
-                + "    right               : Criteria[1..1];\n"
-                + "\n"
-                + "    relationship this.rightId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "class ParameterizedProperty\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    owningClassName               : String key private maximumLength(256);\n"
-                + "    multiplicity                  : Multiplicity private maximumLength(256);\n"
-                + "    resultTypeName                : String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association ClassHasParameterizedProperties\n"
-                + "{\n"
-                + "    owningClass: Klass[1..1];\n"
-                + "    parameterizedProperties: ParameterizedProperty[0..*] owned\n"
-                + "        // TODO: Sorting by the same property ascending and descending is an interesting test, move it out of the meta model\n"
-                + "        orderBy: this.ordinal ascending, this.ordinal descending;\n"
-                + "\n"
-                + "    relationship this.name == ParameterizedProperty.owningClassName\n"
-                + "}\n"
-                + "\n"
-                + "enumeration OrderByDirection\n"
-                + "{\n"
-                + "    ASCENDING(\"ascending\"),\n"
-                + "    DESCENDING(\"descending\"),\n"
-                + " }\n"
-                + "\n"
-                + "class AssociationEndOrderBy\n"
-                + "{\n"
-                + "    associationEndClassName: String key private maximumLength(256);\n"
-                + "    associationEndName: String key private maximumLength(256);\n"
-                + "    thisMemberReferencePathId: Long key private;\n"
-                + "    orderByDirection: OrderByDirection maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association AssociationEndHasOrderBy\n"
-                + "{\n"
-                + "    associationEnd: AssociationEnd[1..1];\n"
-                + "    orderBys: AssociationEndOrderBy[0..*];\n"
-                + "\n"
-                + "    relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName\n"
-                + "            && this.name == AssociationEndOrderBy.associationEndName\n"
-                + "}\n"
-                + "\n"
-                + "association AssociationEndOrderByHasMemberReferencePath\n"
-                + "{\n"
-                + "    associationEndOrderBy: AssociationEndOrderBy[0..1];\n"
-                + "    thisMemberReferencePath: ThisMemberReferencePath[1..1];\n"
-                + "\n"
-                + "    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id\n"
-                + "}\n"
-                + "\n"
-                + "association ParameterizedPropertyHasResultType\n"
-                + "{\n"
-                + "    parameterizedPropertiesResultTypeOf: ParameterizedProperty[0..*];\n"
-                + "    resultType: Klass[1..1];\n"
-                + "\n"
-                + "    relationship this.resultTypeName == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "class ParameterizedPropertyOrdering\n"
-                + "{\n"
-                + "    owningClassName               : String private key maximumLength(256);\n"
-                + "    name                          : String key maximumLength(256);\n"
-                + "    orderingId                    : Long private;\n"
-                + "}\n"
-                + "\n"
-                + "association ParameterizedPropertyHasOrdering\n"
-                + "{\n"
-                + "    parameterizedProperty: ParameterizedProperty[1..1];\n"
-                + "    parameterizedPropertyOrdering: ParameterizedPropertyOrdering[0..*];\n"
-                + "\n"
-                + "    relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName\n"
-                + "            && this.name == ParameterizedPropertyOrdering.name\n"
-                + "}\n"
-                + "\n"
-                + "association ParameterizedPropertyHasParameters\n"
-                + "{\n"
-                + "    parameterizedProperty         : ParameterizedProperty[1..1];\n"
-                + "    parameters                    : ParameterizedPropertyParameter[0..*];\n"
-                + "\n"
-                + "    relationship this.owningClassName == ParameterizedPropertyParameter.classifierName\n"
-                + "            && this.name == ParameterizedPropertyParameter.parameterizedPropertyName\n"
-                + "}\n"
-                + "\n"
-                + "class ParameterizedPropertyParameter implements NamedElement\n"
-                + "{\n"
-                + "    classifierName                : String key private maximumLength(256);\n"
-                + "    parameterizedPropertyName     : String key maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class ProjectionElement\n"
-                + "    abstract(table-per-class)\n"
-                + "    implements NamedElement\n"
-                + "{\n"
-                + "    // TODO: Write a test that fails if name is a key\n"
-                + "    // name isn't key\n"
-                + "    name: String maximumLength(256);\n"
-                + "    id  : Long key id;\n"
-                + "    parentId: Long? private;\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: Rename to Projection, but clashes with names in generated code.\n"
-                + "class ServiceProjection\n"
-                + "    extends ProjectionElement\n"
-                + "    implements PackageableElement\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    // TODO: unique constraint on name\n"
-                + "    className                     : String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "// TODO: When abstract class extends abstract class, validate that they have compatible inheritance types\n"
-                + "class ProjectionWithAssociationEnd\n"
-                + "    abstract(table-per-class)\n"
-                + "    extends ProjectionElement\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    parentId                      : Long private;\n"
-                + "    associationEndClass           : String private maximumLength(256);\n"
-                + "    associationEndName: String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class ProjectionReferenceProperty\n"
-                + "    extends ProjectionWithAssociationEnd\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    parentId                      : Long private;\n"
-                + "    associationEndClass           : String private maximumLength(256);\n"
-                + "    associationEndName: String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class ProjectionProjectionReference\n"
-                + "    extends ProjectionWithAssociationEnd\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    parentId                      : Long private;\n"
-                + "    associationEndClass           : String private maximumLength(256);\n"
-                + "    associationEndName: String private maximumLength(256);\n"
-                + "    projectionName                  : String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "class ProjectionDataTypeProperty\n"
-                + "    extends ProjectionElement\n"
-                + "{\n"
-                + "    id  : Long key private;\n"
-                + "    parentId                      : Long private;\n"
-                + "    propertyClassifierName        : String private maximumLength(256);\n"
-                + "    propertyName: String private maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association ProjectionElementHasChildren\n"
-                + "{\n"
-                + "    // TODO: Validate that foreign key is optional if association end is optional and vice versa\n"
-                + "    parent                        : ProjectionElement[0..1];\n"
-                + "    children                      : ProjectionElement[0..*];\n"
-                + "\n"
-                + "    relationship this.id == ProjectionElement.parentId\n"
-                + "}\n"
-                + "\n"
-                + "association ProjectionWithAssociationEndHasAssociationEnd\n"
-                + "{\n"
-                + "    projectionWithAssociationEnd  : ProjectionWithAssociationEnd[0..*];\n"
-                + "    associationEnd                : AssociationEnd[1..1];\n"
-                + "\n"
-                + "    relationship this.associationEndClass == AssociationEnd.owningClassName\n"
-                + "            && this.associationEndName == AssociationEnd.name\n"
-                + "}\n"
-                + "\n"
-                + "association ProjectionDataTypePropertyHasDataTypeProperty\n"
-                + "{\n"
-                + "    projectionDataTypeProperty    : ProjectionDataTypeProperty[0..*];\n"
-                + "    dataTypeProperty              : DataTypeProperty[1..1];\n"
-                + "\n"
-                + "    relationship this.propertyClassifierName == DataTypeProperty.classifierName\n"
-                + "            && this.propertyName == DataTypeProperty.name\n"
-                + "}\n"
-                + "\n"
-                + "association ProjectionHasClass\n"
-                + "{\n"
-                + "    projection                    : ServiceProjection[0..*];\n"
-                + "    klass                         : Klass[1..1];\n"
-                + "\n"
-                + "    relationship this.className == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "association ProjectionProjectionReferenceHasProjection\n"
-                + "{\n"
-                + "    projectionProjectionReference : ProjectionProjectionReference[0..*];\n"
-                + "    projection                    : ServiceProjection[1..1];\n"
-                + "\n"
-                + "    relationship this.projectionName == ServiceProjection.name\n"
-                + "}\n"
-                + "\n"
-                + "class ServiceGroup\n"
-                + "    implements PackageableElement\n"
-                + "{\n"
-                + "    className                     : String key maximumLength(256);\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceGroupHasClass\n"
-                + "{\n"
-                + "    serviceGroup                  : ServiceGroup[0..1];\n"
-                + "    owningClass                   : Klass[1..1];\n"
-                + "\n"
-                + "    relationship this.className == Klass.name\n"
-                + "}\n"
-                + "\n"
-                + "class Url\n"
-                + "    implements Element\n"
-                + "{\n"
-                + "    className                     : String key maximumLength(256);\n"
-                + "    url                           : String key maximumLength(8192);\n"
-                + "}\n"
-                + "\n"
-                + "enumeration UrlParameterType\n"
-                + "{\n"
-                + "    QUERY(\"query\"),\n"
-                + "    PATH(\"path\"),\n"
-                + "}\n"
-                + "\n"
-                + "class UrlParameter\n"
-                + "    implements Element\n"
-                + "{\n"
-                + "    urlClassName                  : String key private maximumLength(256);\n"
-                + "    urlString                     : String key private maximumLength(8192);\n"
-                + "    parameterId                   : Long key private;\n"
-                + "    type                          : UrlParameterType;\n"
-                + "}\n"
-                + "\n"
-                + "association UrlHasUrlParameters\n"
-                + "{\n"
-                + "    url: Url[1..1];\n"
-                + "    parameters                    : UrlParameter[0..*];\n"
-                + "\n"
-                + "    relationship this.className == UrlParameter.urlClassName\n"
-                + "            && this.url == UrlParameter.urlString\n"
-                + "}\n"
-                + "\n"
-                + "association UrlParameterHasParameter\n"
-                + "{\n"
-                + "    urlParameter                  : UrlParameter[0..1];\n"
-                + "    parameter                     : Parameter[1..1];\n"
-                + "\n"
-                + "    relationship this.parameterId == Parameter.id\n"
-                + " }\n"
-                + "\n"
-                + "association ServiceGroupHasUrls\n"
-                + "{\n"
-                + "    serviceGroup                  : ServiceGroup[1..1];\n"
-                + "    urls                          : Url[1..*];\n"
-                + "\n"
-                + "    relationship this.className == Url.className\n"
-                + "}\n"
-                + "\n"
-                + "enumeration ServiceMultiplicity\n"
-                + "{\n"
-                + "    ONE(\"one\"),\n"
-                + "    MANY(\"many\"),\n"
-                + "}\n"
-                + "\n"
-                + "enumeration Verb\n"
-                + "{\n"
-                + "    GET,\n"
-                + "    POST,\n"
-                + "    PUT,\n"
-                + "    PATCH,\n"
-                + "    DELETE,\n"
-                + "}\n"
-                + "\n"
-                + "class Service\n"
-                + "    implements Element\n"
-                + "{\n"
-                + "    className                     : String key maximumLength(256);\n"
-                + "    urlString                     : String key maximumLength(8192);\n"
-                + "    verb                          : Verb key maximumLength(256);\n"
-                + "    serviceMultiplicity           : ServiceMultiplicity maximumLength(256);\n"
-                + "    projectionName                : String? private maximumLength(256);\n"
-                + "    queryCriteriaId               : Long? private;\n"
-                + "    authorizeCriteriaId           : Long? private;\n"
-                + "    validateCriteriaId            : Long? private;\n"
-                + "    conflictCriteriaId            : Long? private;\n"
-                + "}\n"
-                + "\n"
-                + "association UrlHasServices\n"
-                + "{\n"
-                + "    url: Url[1..1];\n"
-                + "    services                      : Service[1..*];\n"
-                + "\n"
-                + "    relationship this.className == Service.className\n"
-                + "            && this.url == Service.urlString\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasProjection\n"
-                + "{\n"
-                + "    services: Service[0..*];\n"
-                + "    projection                    : ServiceProjection[0..1];\n"
-                + "\n"
-                + "    relationship this.projectionName == ServiceProjection.name\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasQueryCriteria\n"
-                + "{\n"
-                + "    queryService                  : Service[0..1];\n"
-                + "    queryCriteria                 : Criteria[0..1] owned;\n"
-                + "\n"
-                + "    relationship this.queryCriteriaId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasAuthorizeCriteria\n"
-                + "{\n"
-                + "    authorizeService                  : Service[0..1];\n"
-                + "    authorizeCriteria                 : Criteria[0..1] owned;\n"
-                + "\n"
-                + "    relationship this.authorizeCriteriaId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasValidateCriteria\n"
-                + "{\n"
-                + "    validateService                  : Service[0..1];\n"
-                + "    validateCriteria                 : Criteria[0..1] owned;\n"
-                + "\n"
-                + "    relationship this.validateCriteriaId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasConflictCriteria\n"
-                + "{\n"
-                + "    conflictService                  : Service[0..1];\n"
-                + "    conflictCriteria                 : Criteria[0..1] owned;\n"
-                + "\n"
-                + "    relationship this.conflictCriteriaId == Criteria.id\n"
-                + "}\n"
-                + "\n"
-                + "class ServiceOrderBy\n"
-                + "{\n"
-                + "    serviceClassName: String key private maximumLength(256);\n"
-                + "    serviceUrlString: String key private maximumLength(8192);\n"
-                + "    serviceVerb: Verb key private;\n"
-                + "    thisMemberReferencePathId     : Long key private;\n"
-                + "    orderByDirection: OrderByDirection;\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceHasOrderBy\n"
-                + "{\n"
-                + "    service                       : Service[1..1];\n"
-                + "    orderBys                      : ServiceOrderBy[0..*];\n"
-                + "\n"
-                + "    relationship this.className == ServiceOrderBy.serviceClassName\n"
-                + "            && this.urlString == ServiceOrderBy.serviceUrlString\n"
-                + "            && this.verb == ServiceOrderBy.serviceVerb\n"
-                + "}\n"
-                + "\n"
-                + "association ServiceOrderByHasMemberReferencePath\n"
-                + "{\n"
-                + "    serviceOrderBy                : ServiceOrderBy[0..1];\n"
-                + "    thisMemberReferencePath       : ThisMemberReferencePath[1..1];\n"
-                + "\n"
-                + "    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id\n"
-                + "}\n"
-                + "\n"
-                + "projection EnumerationLiteralProjection on EnumerationLiteral\n"
-                + "{\n"
-                + "    name                   : \"Enumeration literal name\",\n"
-                + "    prettyName             : \"Enumeration literal pretty name\",\n"
-                + "    ordinal                : \"Enumeration literal ordinal\",\n"
-                + "}\n"
-                + "\n"
-                + "projection EnumerationProjection on Enumeration\n"
-                + "{\n"
-                + "    name                   : \"Enumeration name\",\n"
-                + "    packageName            : \"Enumeration package name\",\n"
-                + "    ordinal                : \"Enumeration ordinal\",\n"
-                + "    enumerationLiterals: EnumerationLiteralProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection EnumerationSummaryProjection on Enumeration\n"
-                + "{\n"
-                + "    name               : \"Enumeration name\",\n"
-                + "    packageName        : \"Enumeration package name\",\n"
-                + "    enumerationLiterals:\n"
-                + "    {\n"
-                + "        name      : \"Enumeration literal name\",\n"
-                + "        prettyName: \"Enumeration literal pretty name\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "service Enumeration\n"
-                + "{\n"
-                + "    /meta/enumeration/{enumerationName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == enumerationName;\n"
-                + "            projection  : EnumerationProjection;\n"
-                + "        }\n"
-                + "    /meta/enumeration/{enumerationName: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == enumerationName;\n"
-                + "            projection  : EnumerationSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/enumeration\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : EnumerationSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection InterfaceProjection on Interface\n"
-                + "{\n"
-                + "    name                   : \"Interface name\",\n"
-                + "    packageName            : \"Interface package name\",\n"
-                + "    ordinal                : \"Interface ordinal\",\n"
-                + "\n"
-                + "    // TODO: flat many-to-many, or parameterized property\n"
-                + "    superInterfaces        :\n"
-                + "    {\n"
-                + "        superInterface:\n"
-                + "        {\n"
-                + "            name           : \"Super interface name\",\n"
-                + "            packageName    : \"Super interface package name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    classifierModifiers    :\n"
-                + "    {\n"
-                + "        name    : \"Interface modifier name\",\n"
-                + "        ordinal : \"Interface modifier ordinal\",\n"
-                + "    },\n"
-                + "    primitiveProperties    :\n"
-                + "    {\n"
-                + "        name               : \"Primitive property name\",\n"
-                + "        primitiveType      : \"Primitive property type\",\n"
-                + "        optional           : \"Primitive property is optional\",\n"
-                + "        ordinal            : \"Primitive property ordinal\",\n"
-                + "        propertyModifiers  :\n"
-                + "        {\n"
-                + "            name    : \"Primitive property modifier name\",\n"
-                + "            ordinal : \"Primitive property modifier ordinal\",\n"
-                + "        },\n"
-                + "        minLengthValidation:\n"
-                + "        {\n"
-                + "            number: \"Min length validation number\",\n"
-                + "        },\n"
-                + "        maxLengthValidation:\n"
-                + "        {\n"
-                + "            number: \"Max length validation number\",\n"
-                + "        },\n"
-                + "        minValidation      :\n"
-                + "        {\n"
-                + "            number: \"Min validation number\",\n"
-                + "        },\n"
-                + "        maxValidation      :\n"
-                + "        {\n"
-                + "            number: \"Max validation number\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    enumerationProperties  :\n"
-                + "    {\n"
-                + "        name               : \"Enumeration property name\",\n"
-                + "        optional           : \"Enumeration property is optional\",\n"
-                + "        ordinal            : \"Enumeration property ordinal\",\n"
-                + "        enumeration        :\n"
-                + "        {\n"
-                + "            name    : \"Enumeration name\",\n"
-                + "        },\n"
-                + "        propertyModifiers  :\n"
-                + "        {\n"
-                + "            name    : \"Enumeration property modifier name\",\n"
-                + "            ordinal : \"Enumeration property modifier ordinal\",\n"
-                + "        },\n"
-                + "        minLengthValidation:\n"
-                + "        {\n"
-                + "            number: \"Min length validation number\",\n"
-                + "        },\n"
-                + "        maxLengthValidation:\n"
-                + "        {\n"
-                + "            number: \"Max length validation number\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection InterfaceSummaryProjection on Interface\n"
-                + "{\n"
-                + "    name                   : \"Interface name\",\n"
-                + "    packageName            : \"Interface package name\",\n"
-                + "    superInterfaces        :\n"
-                + "    {\n"
-                + "        superInterface:\n"
-                + "        {\n"
-                + "            name           : \"Super interface name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    classifierModifiers    :\n"
-                + "    {\n"
-                + "        name    : \"Interface modifier name\",\n"
-                + "    },\n"
-                + "    primitiveProperties    : PrimitivePropertySummaryProjection,\n"
-                + "    enumerationProperties  : EnumerationPropertySummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "service Interface\n"
-                + "{\n"
-                + "    /meta/interface/{interfaceName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == interfaceName;\n"
-                + "            projection  : InterfaceProjection;\n"
-                + "        }\n"
-                + "    /meta/interface/{interfaceName: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == interfaceName;\n"
-                + "            projection  : InterfaceSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/interface\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : InterfaceSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection DataTypePropertyProjection on DataTypeProperty\n"
-                + "{\n"
-                + "    name                           : \"Property name\",\n"
-                + "    PrimitiveProperty.primitiveType: \"Property primitive type\",\n"
-                + "    optional                       : \"Property is optional\",\n"
-                + "    ordinal                        : \"Property ordinal\",\n"
-                + "    EnumerationProperty.enumeration:\n"
-                + "    {\n"
-                + "        name    : \"Property Enumeration name\",\n"
-                + "    },\n"
-                + "    propertyModifiers              :\n"
-                + "    {\n"
-                + "        name    : \"Property modifier name\",\n"
-                + "        ordinal : \"Property modifier ordinal\",\n"
-                + "    },\n"
-                + "    minLengthValidation            :\n"
-                + "    {\n"
-                + "        number: \"Property min length validation number\",\n"
-                + "    },\n"
-                + "    maxLengthValidation            :\n"
-                + "    {\n"
-                + "        number: \"Property max length validation number\",\n"
-                + "    },\n"
-                + "    PrimitiveProperty.minValidation:\n"
-                + "    {\n"
-                + "        number: \"Property min validation number\",\n"
-                + "    },\n"
-                + "    PrimitiveProperty.maxValidation:\n"
-                + "    {\n"
-                + "        number: \"Property max validation number\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection PrimitivePropertyProjection on PrimitiveProperty\n"
-                + "{\n"
-                + "    name               : \"Primitive property name\",\n"
-                + "    primitiveType      : \"Primitive property type\",\n"
-                + "    optional           : \"Primitive property is optional\",\n"
-                + "    ordinal            : \"Primitive property ordinal\",\n"
-                + "    propertyModifiers  :\n"
-                + "    {\n"
-                + "        name    : \"Primitive property modifier name\",\n"
-                + "        ordinal : \"Primitive property modifier ordinal\",\n"
-                + "    },\n"
-                + "    minLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Min length validation number\",\n"
-                + "    },\n"
-                + "    maxLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Max length validation number\",\n"
-                + "    },\n"
-                + "    minValidation      :\n"
-                + "    {\n"
-                + "        number: \"Min validation number\",\n"
-                + "    },\n"
-                + "    maxValidation      :\n"
-                + "    {\n"
-                + "        number: \"Max validation number\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection PrimitivePropertySummaryProjection on PrimitiveProperty\n"
-                + "{\n"
-                + "    name               : \"Primitive property name\",\n"
-                + "    primitiveType      : \"Primitive property type\",\n"
-                + "    optional           : \"Primitive property is optional\",\n"
-                + "    propertyModifiers  :\n"
-                + "    {\n"
-                + "        name    : \"Primitive property modifier name\",\n"
-                + "    },\n"
-                + "    minLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Min length validation number\",\n"
-                + "    },\n"
-                + "    maxLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Max length validation number\",\n"
-                + "    },\n"
-                + "    minValidation      :\n"
-                + "    {\n"
-                + "        number: \"Min validation number\",\n"
-                + "    },\n"
-                + "    maxValidation      :\n"
-                + "    {\n"
-                + "        number: \"Max validation number\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection EnumerationPropertyProjection on EnumerationProperty\n"
-                + "{\n"
-                + "    name               : \"Enumeration property name\",\n"
-                + "    optional           : \"Enumeration property is optional\",\n"
-                + "    ordinal            : \"Enumeration property ordinal\",\n"
-                + "    enumeration        :\n"
-                + "    {\n"
-                + "        name    : \"Enumeration name\",\n"
-                + "    },\n"
-                + "    propertyModifiers  :\n"
-                + "    {\n"
-                + "        name    : \"Enumeration property modifier name\",\n"
-                + "        ordinal : \"Enumeration property modifier ordinal\",\n"
-                + "    },\n"
-                + "    minLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Min length validation number\",\n"
-                + "    },\n"
-                + "    maxLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Max length validation number\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection EnumerationPropertySummaryProjection on EnumerationProperty\n"
-                + "{\n"
-                + "    name               : \"Enumeration property name\",\n"
-                + "    optional           : \"Enumeration property is optional\",\n"
-                + "    enumeration        :\n"
-                + "    {\n"
-                + "        name    : \"Enumeration name\",\n"
-                + "    },\n"
-                + "    propertyModifiers  :\n"
-                + "    {\n"
-                + "        name    : \"Enumeration property modifier name\",\n"
-                + "    },\n"
-                + "    minLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Min length validation number\",\n"
-                + "    },\n"
-                + "    maxLengthValidation:\n"
-                + "    {\n"
-                + "        number: \"Max length validation number\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection ClassProjection on Klass\n"
-                + "{\n"
-                + "    name                   : \"Class name\",\n"
-                + "    packageName            : \"Class package name\",\n"
-                + "    inheritanceType        : \"Class inheritanceType\",\n"
-                + "    ordinal                : \"Class ordinal\",\n"
-                + "    superClass             :\n"
-                + "    {\n"
-                + "        name           : \"Super Class name\",\n"
-                + "        packageName    : \"Super Class package name\",\n"
-                + "        superClass     :\n"
-                + "        {\n"
-                + "            name       : \"Super Super Class name\",\n"
-                + "            packageName: \"Super Super Class package name\",\n"
-                + "        },\n"
-                + "\n"
-                + "        // TODO: flat many-to-many, or parameterized property\n"
-                + "        superInterfaces:\n"
-                + "        {\n"
-                + "            superInterface:\n"
-                + "            {\n"
-                + "                name       : \"Super Class Super Interface name\",\n"
-                + "                packageName: \"Super Class Super Interface package name\",\n"
-                + "            },\n"
-                + "        },\n"
-                + "    },\n"
-                + "\n"
-                + "    // TODO: flat many-to-many, or parameterized property\n"
-                + "    superInterfaces        :\n"
-                + "    {\n"
-                + "        superInterface:\n"
-                + "        {\n"
-                + "            name           : \"Super interface name\",\n"
-                + "            packageName    : \"Super interface package name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    classifierModifiers    :\n"
-                + "    {\n"
-                + "        name    : \"Classifier modifier name\",\n"
-                + "        ordinal : \"Classifier modifier ordinal\",\n"
-                + "    },\n"
-                + "    primitiveProperties    : PrimitivePropertyProjection,\n"
-                + "    enumerationProperties  : EnumerationPropertyProjection,\n"
-                + "    associationEnds        : AssociationEndProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection ClassSummaryProjection on Klass\n"
-                + "{\n"
-                + "    name                   : \"Class name\",\n"
-                + "    packageName            : \"Class package name\",\n"
-                + "    inheritanceType        : \"Class inheritanceType\",\n"
-                + "    ordinal                : \"Class ordinal\",\n"
-                + "    superClass             :\n"
-                + "    {\n"
-                + "        name           : \"Super Class name\",\n"
-                + "    },\n"
-                + "\n"
-                + "    // TODO: flat many-to-many, or parameterized property\n"
-                + "    superInterfaces        :\n"
-                + "    {\n"
-                + "        superInterface:\n"
-                + "        {\n"
-                + "            name           : \"Super interface name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    classifierModifiers    :\n"
-                + "    {\n"
-                + "        name    : \"Classifier modifier name\",\n"
-                + "    },\n"
-                + "    primitiveProperties    : PrimitivePropertySummaryProjection,\n"
-                + "    enumerationProperties  : EnumerationPropertySummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "service Klass\n"
-                + "{\n"
-                + "    /meta/class/{className: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == className;\n"
-                + "            projection  : ClassProjection;\n"
-                + "        }\n"
-                + "    /meta/class/{className: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == className;\n"
-                + "            projection  : ClassSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/class\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : ClassSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection ClassifierSummaryProjection on Classifier\n"
-                + "{\n"
-                + "    name                   : \"Classifier name\",\n"
-                + "    packageName            : \"Classifier package name\",\n"
-                + "    Klass.superClass             :\n"
-                + "    {\n"
-                + "        name           : \"Super Class name\",\n"
-                + "    },\n"
-                + "\n"
-                + "    // TODO: flat many-to-many, or parameterized property\n"
-                + "    superInterfaces        :\n"
-                + "    {\n"
-                + "        superInterface:\n"
-                + "        {\n"
-                + "            name           : \"Super interface name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    classifierModifiers    :\n"
-                + "    {\n"
-                + "        name    : \"Classifier modifier name\",\n"
-                + "    },\n"
-                + "    primitiveProperties    : PrimitivePropertySummaryProjection,\n"
-                + "    enumerationProperties  : EnumerationPropertySummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "service Classifier\n"
-                + "{\n"
-                + "    /meta/classifier/{classifierName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == classifierName;\n"
-                + "            projection  : ClassifierSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/classifier\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : ClassifierSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection AssociationEndProjection on AssociationEnd\n"
-                + "{\n"
-                + "    name                   : \"Association end name\",\n"
-                + "    ordinal                : \"Association end ordinal\",\n"
-                + "    direction              : \"Association end direction\",\n"
-                + "    multiplicity           : \"Association end multiplicity\",\n"
-                + "    owningClass            :\n"
-                + "    {\n"
-                + "        name       : \"Association end owning class name\",\n"
-                + "        packageName: \"Association end owning class package name\",\n"
-                + "    },\n"
-                + "    resultType             :\n"
-                + "    {\n"
-                + "        name       : \"Association end result class name\",\n"
-                + "        packageName: \"Association end result class package name\",\n"
-                + "    },\n"
-                + "    owningAssociation      :\n"
-                + "    {\n"
-                + "        name: \"Association end owning association name\",\n"
-                + "    },\n"
-                + "    associationEndModifiers:\n"
-                + "    {\n"
-                + "        name    : \"Association end modifier name\",\n"
-                + "        ordinal : \"Association end modifier ordinal\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection AssociationEndSummaryProjection on AssociationEnd\n"
-                + "{\n"
-                + "    name                   : \"Association end name\",\n"
-                + "    multiplicity           : \"Association end multiplicity\",\n"
-                + "    resultType             :\n"
-                + "    {\n"
-                + "        name: \"Association end result class name\",\n"
-                + "    },\n"
-                + "    associationEndModifiers:\n"
-                + "    {\n"
-                + "        name: \"Association end modifier name\",\n"
-                + "    },\n"
-                + "    orderBys               :\n"
-                + "    {\n"
-                + "        thisMemberReferencePath: MemberReferencePathSummaryProjection,\n"
-                + "        orderByDirection       : \"Association end order by direction\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection AssociationProjection on Association\n"
-                + "{\n"
-                + "    name                   : \"Association name\",\n"
-                + "    packageName            : \"Association package name\",\n"
-                + "    ordinal                : \"Association ordinal\",\n"
-                + "    associationEnds        : AssociationEndProjection,\n"
-                + "    criteria               : CriteriaProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection AssociationSummaryProjection on Association\n"
-                + "{\n"
-                + "    name                   : \"Association name\",\n"
-                + "    packageName            : \"Association package name\",\n"
-                + "    associationEnds        : AssociationEndSummaryProjection,\n"
-                + "    criteria               : CriteriaSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection MemberReferencePathProjection on MemberReferencePath\n"
-                + "{\n"
-                + "    klass           :\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Class name\",\n"
-                + "    },\n"
-                + "    associationEnds :\n"
-                + "    {\n"
-                + "        associationEnd:\n"
-                + "        {\n"
-                + "            name: \"MemberReferencePath Association end name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    dataTypeProperty:\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Property name\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection MemberReferencePathSummaryProjection on MemberReferencePath\n"
-                + "{\n"
-                + "    klass           :\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Class name\",\n"
-                + "    },\n"
-                + "    associationEnds :\n"
-                + "    {\n"
-                + "        associationEnd:\n"
-                + "        {\n"
-                + "            name: \"MemberReferencePath Association end name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    dataTypeProperty:\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Property name\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection ExpressionValueProjection on ExpressionValue\n"
-                + "{\n"
-                + "    MemberReferencePath.klass           :\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Class name\",\n"
-                + "    },\n"
-                + "    MemberReferencePath.associationEnds :\n"
-                + "    {\n"
-                + "        associationEnd:\n"
-                + "        {\n"
-                + "            name: \"MemberReferencePath Association end name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    MemberReferencePath.dataTypeProperty:\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Property name\",\n"
-                + "    },\n"
-                + "    VariableReference.parameter         :\n"
-                + "    {\n"
-                + "        name                            : \"VariableReference parameter name\",\n"
-                + "        EnumerationParameter.enumeration:\n"
-                + "        {\n"
-                + "            name: \"VariableReference parameter enumeration name\",\n"
-                + "        },\n"
-                + "        PrimitiveParameter.primitiveType: \"VariableReference parameter primitive type\",\n"
-                + "        multiplicity                    : \"VariableReference parameter multiplicity\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection ExpressionValueSummaryProjection on ExpressionValue\n"
-                + "{\n"
-                + "    MemberReferencePath.klass           :\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Class name\",\n"
-                + "    },\n"
-                + "    MemberReferencePath.associationEnds :\n"
-                + "    {\n"
-                + "        associationEnd:\n"
-                + "        {\n"
-                + "            name: \"MemberReferencePath Association end name\",\n"
-                + "        },\n"
-                + "    },\n"
-                + "    MemberReferencePath.dataTypeProperty:\n"
-                + "    {\n"
-                + "        name: \"MemberReferencePath Property name\",\n"
-                + "    },\n"
-                + "    VariableReference.parameter         :\n"
-                + "    {\n"
-                + "        name: \"VariableReference parameter name\",\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection CriteriaProjection on Criteria\n"
-                + "{\n"
-                + "    BinaryCriteria.left                   : CriteriaProjection,\n"
-                + "    BinaryCriteria.right                  : CriteriaProjection,\n"
-                + "    OperatorCriteria.operator             : \"Criteria operator\",\n"
-                + "    OperatorCriteria.sourceExpressionValue: ExpressionValueProjection,\n"
-                + "    OperatorCriteria.targetExpressionValue: ExpressionValueProjection,\n"
-                + "    EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection CriteriaSummaryProjection on Criteria\n"
-                + "{\n"
-                + "    BinaryCriteria.left                   : CriteriaSummaryProjection,\n"
-                + "    BinaryCriteria.right                  : CriteriaSummaryProjection,\n"
-                + "    OperatorCriteria.operator             : \"Criteria operator\",\n"
-                + "    OperatorCriteria.sourceExpressionValue: ExpressionValueSummaryProjection,\n"
-                + "    OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,\n"
-                + "    EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "service Association\n"
-                + "{\n"
-                + "    /meta/association/{associationName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == associationName;\n"
-                + "            projection  : AssociationProjection;\n"
-                + "        }\n"
-                + "    /meta/association/{associationName: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == associationName;\n"
-                + "            projection  : AssociationSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/association\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : AssociationSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection ProjectionElementProjection on ProjectionElement\n"
-                + "{\n"
-                + "    name                                       : \"Projection name\",\n"
-                + "    ServiceProjection.packageName              : \"Projection package name\",\n"
-                + "    ServiceProjection.klass                    :\n"
-                + "    {\n"
-                + "        name: \"Projection klass name\",\n"
-                + "    },\n"
-                + "    ProjectionProjectionReference.projection   :\n"
-                + "    {\n"
-                + "        name: \"Projection reference name\",\n"
-                + "    },\n"
-                + "    children                                   : ProjectionElementSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "projection ProjectionElementSummaryProjection on ProjectionElement\n"
-                + "{\n"
-                + "    name                                       : \"Projection name\",\n"
-                + "    ServiceProjection.packageName              : \"Projection package name\",\n"
-                + "    ServiceProjection.klass                    :\n"
-                + "    {\n"
-                + "        name: \"Projection klass name\",\n"
-                + "    },\n"
-                + "    ProjectionProjectionReference.projection   :\n"
-                + "    {\n"
-                + "        name: \"Projection reference name\",\n"
-                + "    },\n"
-                + "    children                                   : ProjectionElementSummaryProjection,\n"
-                + "}\n"
-                + "\n"
-                + "service ServiceProjection\n"
-                + "{\n"
-                + "    /meta/projection/{projectionName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == projectionName;\n"
-                + "            projection  : ProjectionElementProjection;\n"
-                + "        }\n"
-                + "    /meta/projection/{projectionName: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == projectionName;\n"
-                + "            projection  : ProjectionElementSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/projection\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : ProjectionElementSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n"
-                + "\n"
-                + "projection ServiceGroupProjection on ServiceGroup\n"
-                + "{\n"
-                + "    name       : \"ServiceGroup name\",\n"
-                + "    packageName: \"ServiceGroup package name\",\n"
-                + "    urls       :\n"
-                + "    {\n"
-                + "        url     : \"ServiceGroup url\",\n"
-                + "        services:\n"
-                + "        {\n"
-                + "            verb               : \"ServiceGroup Url Service verb\",\n"
-                + "            serviceMultiplicity: \"ServiceGroup Url Service multiplicity\",\n"
-                + "            projection         :\n"
-                + "            {\n"
-                + "                name: \"ServiceGroup Url Service Projection name\",\n"
-                + "            },\n"
-                + "            queryCriteria      : CriteriaSummaryProjection,\n"
-                + "            authorizeCriteria  : CriteriaSummaryProjection,\n"
-                + "            validateCriteria   : CriteriaSummaryProjection,\n"
-                + "            conflictCriteria   : CriteriaSummaryProjection,\n"
-                + "        },\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "projection ServiceGroupSummaryProjection on ServiceGroup\n"
-                + "{\n"
-                + "    name       : \"ServiceGroup name\",\n"
-                + "    packageName: \"ServiceGroup package name\",\n"
-                + "    urls       :\n"
-                + "    {\n"
-                + "        url     : \"ServiceGroup url\",\n"
-                + "        services:\n"
-                + "        {\n"
-                + "            verb               : \"ServiceGroup Url Service verb\",\n"
-                + "            serviceMultiplicity: \"ServiceGroup Url Service multiplicity\",\n"
-                + "            projection         :\n"
-                + "            {\n"
-                + "                name: \"ServiceGroup Url Service Projection name\",\n"
-                + "            },\n"
-                + "            queryCriteria      : CriteriaSummaryProjection,\n"
-                + "        },\n"
-                + "    },\n"
-                + "}\n"
-                + "\n"
-                + "service ServiceGroup\n"
-                + "{\n"
-                + "    /meta/serviceGroup/{serviceGroupName: String[1..1]}\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == serviceGroupName;\n"
-                + "            projection  : ServiceGroupProjection;\n"
-                + "        }\n"
-                + "    /meta/serviceGroup/{serviceGroupName: String[1..1]}/summary\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: one;\n"
-                + "            criteria    : this.name == serviceGroupName;\n"
-                + "            projection  : ServiceGroupSummaryProjection;\n"
-                + "        }\n"
-                + "    /meta/serviceGroup\n"
-                + "        GET\n"
-                + "        {\n"
-                + "            multiplicity: many;\n"
-                + "            criteria    : all;\n"
-                + "            projection  : ServiceGroupSummaryProjection;\n"
-                + "            orderBy     : this.ordinal;\n"
-                + "        }\n"
-                + "}\n";
+        String sourceCodeText = """
+                package klass.model.meta.domain
+
+                interface Element
+                {
+                }
+
+                interface NamedElement
+                    implements Element
+                {
+                    name: String key maximumLength(256);
+                    ordinal: Integer;
+                }
+
+                interface PackageableElement implements NamedElement
+                {
+                    packageName: String maximumLength(100000);
+
+                    // fullyQualifiedName: String = packageName + "." + name;
+                }
+
+                class Enumeration implements PackageableElement
+                {
+                }
+
+                class EnumerationLiteral implements NamedElement
+                {
+                    enumerationName               : String key maximumLength(256);
+                    prettyName                    : String? maximumLength(256);
+                }
+
+                association EnumerationHasLiterals
+                {
+                    enumeration: Enumeration[1..1];
+                    enumerationLiterals: EnumerationLiteral[1..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.name == EnumerationLiteral.enumerationName
+                }
+
+                enumeration InheritanceType
+                {
+                    TABLE_PER_SUBCLASS("table-per-subclass"),
+                    TABLE_FOR_ALL_SUBCLASSES("table-for-all-subclasses"),
+                    TABLE_PER_CLASS("table-per-class"),
+                    NONE("none"),
+                }
+
+                // TODO: If key properties are present, may be table-per-class, otherwise table-per-subclass
+                // TODO: Ordinals should have a syntax and be inferred using macros
+                class Classifier
+                    abstract(table-per-class)
+                    implements PackageableElement
+                {
+                }
+
+                // TODO: Error when transient extends non-transient
+                class Interface
+                    extends Classifier
+                {
+                }
+
+                class ClassifierInterfaceMapping
+                {
+                    classifierName: String key private maximumLength(256);
+                    interfaceName: String key private maximumLength(256);
+                }
+
+                association ClassifierHasClassifierInterfaceMapping
+                {
+                    subClassifier: Classifier[1..1];
+                    superInterfaces               : ClassifierInterfaceMapping[0..*] owned;
+
+                    relationship this.name == ClassifierInterfaceMapping.classifierName
+                }
+
+                association ClassifierInterfaceMappingHasInterface
+                {
+                    superInterface                : Interface[1..1];
+                    subClassifiers                : ClassifierInterfaceMapping[0..*];
+
+                    relationship this.name == ClassifierInterfaceMapping.interfaceName
+                }
+
+                class Klass
+                    extends Classifier
+                {
+                    superClassName: String? private maximumLength(256);
+                    inheritanceType: InheritanceType maximumLength(256);
+                }
+
+                // TODO: Why isn't subClasses showing up in generated code? Reladomo bug?
+                association ClassHasSuperClass
+                {
+                    subClasses                    : Klass[0..*];
+                    superClass                    : Klass[0..1];
+
+                    // TODO: When this was backwards, I got a confusing error. How can I detect and prevent?
+                    relationship this.superClassName == Klass.name
+                }
+
+                enumeration PrimitiveType
+                {
+                    INTEGER("Integer"),
+                    LONG("Long"),
+                    DOUBLE("Double"),
+                    FLOAT("Float"),
+                    BOOLEAN("Boolean"),
+                    STRING("String"),
+                    INSTANT("Instant"),
+                    LOCAL_DATE("LocalDate"),
+                    TEMPORAL_INSTANT("TemporalInstant"),
+                    TEMPORAL_RANGE("TemporalRange"),
+                }
+
+                enumeration Multiplicity
+                {
+                    ZERO_TO_ONE("0..1"),
+                    ONE_TO_ONE("1..1"),
+                    ZERO_TO_MANY("0..*"),
+                    ONE_TO_MANY("1..*"),
+                }
+
+                class DataTypeProperty
+                    abstract(table-per-class)
+                    implements NamedElement
+                {
+                    classifierName                : String key maximumLength(256);
+                    optional                      : Boolean;
+                }
+
+                class PrimitiveProperty
+                    extends DataTypeProperty
+                {
+                    primitiveType                 : PrimitiveType maximumLength(256);
+                }
+
+                class EnumerationProperty
+                    extends DataTypeProperty
+                {
+                    enumerationName               : String private maximumLength(256);
+                }
+
+                association EnumerationPropertyHasEnumeration
+                {
+                    enumerationProperties         : EnumerationProperty[0..*];
+                    enumeration                   : Enumeration[1..1];
+
+                    relationship this.enumerationName == Enumeration.name
+                }
+
+                // TODO: Change the orderBy syntax to orderBy(this.ordinal)
+                                /*
+                association ClassifierHasDataTypeTypeProperties
+                {
+                    owningClassifier              : Classifier[1..1];
+                    dataTypeProperties            : DataTypeProperty[0..*] owned
+                        orderBy: this.ordinal;
+
+                    relationship this.name == DataTypeProperty.classifierName
+                }
+                */
+
+                // TODO: Owned
+                association ClassifierHasPrimitiveProperties
+                {
+                    owningClassifier: Classifier[1..1];
+                    primitiveProperties: PrimitiveProperty[0..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.name == PrimitiveProperty.classifierName
+                }
+
+                // TODO: Owned
+                association ClassifierHasEnumerationProperties
+                {
+                    owningClassifier: Classifier[1..1];
+                    enumerationProperties: EnumerationProperty[0..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.name == EnumerationProperty.classifierName
+                }
+
+                interface PropertyValidation implements Element
+                {
+                }
+
+                class NumericPropertyValidation
+                    abstract(table-per-subclass)
+                    implements PropertyValidation
+                {
+                    classifierName                : String key maximumLength(256);
+                    propertyName                  : String key maximumLength(256);
+                    number: Integer;
+                }
+
+                class MinLengthPropertyValidation
+                    extends NumericPropertyValidation
+                {
+                }
+
+                class MaxLengthPropertyValidation
+                    extends NumericPropertyValidation
+                {
+                }
+
+                class MinPropertyValidation
+                    extends NumericPropertyValidation
+                {
+                }
+
+                class MaxPropertyValidation
+                    extends NumericPropertyValidation
+                {
+                }
+
+                association DataTypePropertyHasMinLengthPropertyValidation
+                {
+                    dataTypeProperty              : DataTypeProperty[1..1];
+                    minLengthValidation           : MinLengthPropertyValidation[0..1];
+
+                    relationship this.classifierName == MinLengthPropertyValidation.classifierName
+                            && this.name == MinLengthPropertyValidation.propertyName
+                }
+
+                association DataTypePropertyHasMaxLengthPropertyValidation
+                {
+                    dataTypeProperty              : DataTypeProperty[1..1];
+                    maxLengthValidation           : MaxLengthPropertyValidation[0..1];
+
+                    relationship this.classifierName == MaxLengthPropertyValidation.classifierName
+                            && this.name == MaxLengthPropertyValidation.propertyName
+                }
+
+                association PrimitivePropertyHasMinPropertyValidation
+                {
+                    primitiveProperty             : PrimitiveProperty[1..1];
+                    minValidation                 : MinPropertyValidation[0..1];
+
+                    relationship this.classifierName == MinPropertyValidation.classifierName
+                            && this.name == MinPropertyValidation.propertyName
+                }
+
+                association PrimitivePropertyHasMaxPropertyValidation
+                {
+                    primitiveProperty             : PrimitiveProperty[1..1];
+                    maxValidation                 : MaxPropertyValidation[0..1];
+
+                    relationship this.classifierName == MaxPropertyValidation.classifierName
+                            && this.name == MaxPropertyValidation.propertyName
+                }
+
+                class PropertyModifier
+                    implements Element
+                {
+                    keyword: String key maximumLength(256);
+                    ordinal: Integer;
+                    classifierName: String key maximumLength(256);
+                    propertyName: String key maximumLength(256);
+                }
+
+                association DataTypePropertyHasModifiers
+                {
+                    dataTypeProperty              : DataTypeProperty[1..1];
+                    propertyModifiers             : PropertyModifier[0..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.classifierName == PropertyModifier.classifierName
+                            && this.name == PropertyModifier.propertyName
+                }
+
+                class ClassifierModifier
+                    implements Element
+                {
+                    keyword: String key maximumLength(256);
+                    ordinal: Integer;
+                    classifierName: String key maximumLength(256);
+                }
+
+                association ClassifierHasModifiers
+                {
+                    owningClassifier: Classifier[1..1];
+                    classifierModifiers: ClassifierModifier[0..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.name == ClassifierModifier.classifierName
+                }
+
+                enumeration AssociationEndDirection
+                {
+                    SOURCE("source"),
+                    TARGET("target"),
+                }
+
+                class Association implements PackageableElement
+                {
+                    criteriaId: Long private;
+
+                    source(): AssociationEnd[1..1]
+                    {
+                        this.name == AssociationEnd.associationName
+                            && AssociationEnd.direction == AssociationEndDirection.SOURCE
+                    }
+
+                    target(): AssociationEnd[1..1]
+                    {
+                        this.name == AssociationEnd.associationName
+                            && AssociationEnd.direction == AssociationEndDirection.TARGET
+                    }
+                }
+
+                class AssociationEnd implements NamedElement
+                {
+                    owningClassName               : String key private maximumLength(256);
+                    associationName               : String maximumLength(256);
+                    direction                     : AssociationEndDirection maximumLength(256);
+                    multiplicity                  : Multiplicity maximumLength(256);
+                    resultTypeName                : String private maximumLength(256);
+                }
+
+                // TODO: Consider moving the foreign keys onto Association (sourceClassName, sourceName, targetClassName, targetClass)
+                // simplification, ideally we'd model an association as having exactly two ends
+                association AssociationHasEnds
+                {
+                    owningAssociation: Association[1..1];
+                    associationEnds: AssociationEnd[0..*]
+                        orderBy: this.direction;
+
+                    relationship this.name == AssociationEnd.associationName
+                }
+
+                association ClassHasAssociationEnds
+                {
+                    owningClass: Klass[1..1];
+                    associationEnds: AssociationEnd[0..*];
+                    // TODO: Order by this.owningAssociation.ordinal
+
+                    relationship this.name == AssociationEnd.owningClassName
+                }
+
+                association AssociationEndHasResultType
+                {
+                    associationEndsResultTypeOf: AssociationEnd[0..*];
+                    resultType: Klass[1..1];
+
+                    relationship this.resultTypeName == Klass.name
+                }
+
+                class AssociationEndModifier
+                    implements Element
+                {
+                    keyword           : String key maximumLength(256);
+                    ordinal           : Integer;
+                    owningClassName   : String key maximumLength(256);
+                    associationEndName: String key maximumLength(256);
+                }
+
+                association AssociationEndHasModifiers
+                {
+                    associationEnd: AssociationEnd[1..1];
+                    associationEndModifiers: AssociationEndModifier[0..*]
+                        orderBy: this.ordinal;
+
+                    relationship this.owningClassName == AssociationEndModifier.owningClassName
+                            && this.name == AssociationEndModifier.associationEndName
+                }
+
+                association AssociationHasCriteria
+                {
+                    association: Association[0..1];
+                    criteria: Criteria[1..1];
+
+                    relationship this.criteriaId == Criteria.id
+                }
+
+                enumeration Operator
+                {
+                    EQUALS("=="),
+                    NOT_EQUALS("!="),
+                    LESS_THAN("<"),
+                    GREATER_THAN(">"),
+                    LESS_THAN_EQUAL("<="),
+                    GREATER_THAN_EQUAL(">="),
+                    IN("in"),
+                    CONTAINS("contains"),
+                    STARTS_WITH("startsWith"),
+                    ENDS_WITH("endsWith"),
+                }
+
+                class Criteria
+                    abstract(table-per-class)
+                    implements Element
+                {
+                    id: Long id key;
+                }
+
+                class AllCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                }
+
+                class BinaryCriteria
+                    abstract(table-per-class)
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    leftId        : Long private;
+                    rightId       : Long private;
+                }
+
+                class AndCriteria
+                    extends BinaryCriteria
+                {
+                    id  : Long key private;
+                }
+
+                class OrCriteria
+                    extends BinaryCriteria
+                {
+                    id  : Long key private;
+                }
+
+                class OperatorCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    operator: Operator maximumLength(256);
+                    sourceExpressionId: Long private;
+                    targetExpressionId: Long private;
+                }
+
+                class EdgePointCriteria
+                    extends Criteria
+                {
+                    id  : Long key private;
+                    memberReferencePathId: Long private;
+                }
+
+                association OperatorCriteriaHasSourceExpressionValue
+                {
+                    operatorCriteriaSourceOf: OperatorCriteria[0..1];
+                    sourceExpressionValue: ExpressionValue[1..1];
+
+                    relationship this.sourceExpressionId == ExpressionValue.id
+                }
+
+                association OperatorCriteriaHasTargetExpressionValue
+                {
+                    operatorCriteriaTargetOf: OperatorCriteria[0..1];
+                    targetExpressionValue: ExpressionValue[1..1];
+
+                    relationship this.targetExpressionId == ExpressionValue.id
+                }
+
+                association MemberReferencePathHasEdgePointCriteria
+                {
+                    memberReferencePath: MemberReferencePath[1..1];
+                    edgePointCriteria: EdgePointCriteria[1..1] owned;
+
+                    relationship this.id == EdgePointCriteria.memberReferencePathId
+                }
+
+                class ExpressionValue
+                    abstract(table-per-class)
+                {
+                    id      : Long key id;
+                }
+
+                class UserLiteral
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                }
+
+                class NullLiteral
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                }
+
+                class VariableReference
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                    parameterId: Long private;
+                }
+
+                association VariableReferenceHasParameter
+                {
+                    variableReferences: VariableReference[0..*];
+                    parameter: Parameter[1..1];
+
+                    relationship this.parameterId == Parameter.id
+                }
+
+                class Parameter
+                    abstract(table-per-class)
+                    implements NamedElement
+                {
+                    // name isn't key
+                    name: String maximumLength(256);
+                    id: Long key id;
+                    multiplicity: Multiplicity maximumLength(256);
+                }
+
+                class EnumerationParameter
+                    extends Parameter
+                {
+                    id  : Long key private;
+                    enumerationName: String private maximumLength(256);
+                }
+
+                class PrimitiveParameter
+                    extends Parameter
+                {
+                    id  : Long key private;
+                    primitiveType: PrimitiveType maximumLength(256);
+                }
+
+                association EnumerationParameterHasEnumeration
+                {
+                    enumerationParameters: EnumerationParameter[0..*];
+                    enumeration: Enumeration[1..1];
+
+                    relationship this.enumerationName == Enumeration.name
+                }
+
+                class MemberReferencePath
+                    abstract(table-per-class)
+                    extends ExpressionValue
+                {
+                    id  : Long key private;
+                    className: String private maximumLength(256);
+                    propertyClassName: String private maximumLength(256);
+                    propertyName: String private maximumLength(256);
+                }
+
+                association MemberReferencePathHasClass
+                {
+                    memberReferencePaths: MemberReferencePath[0..*];
+                    klass: Klass[1..1];
+
+                    relationship this.className == Klass.name
+                }
+
+                class MemberReferencePathAssociationEndMapping
+                {
+                    memberReferencePathId: Long key private;
+                    associationOwningClassName: String key private maximumLength(256);
+                    associationEndName: String key private maximumLength(256);
+                }
+
+                association MemberReferencePathHasMemberReferencePathAssociationEndMapping
+                {
+                    memberReferencePath: MemberReferencePath[1..1];
+                    associationEnds: MemberReferencePathAssociationEndMapping[0..*];
+
+                    relationship this.id == MemberReferencePathAssociationEndMapping.memberReferencePathId
+                }
+
+                association MemberReferencePathAssociationEndMappingHasAssociationEnd
+                {
+                    memberReferencePaths: MemberReferencePathAssociationEndMapping[0..*];
+                    associationEnd: AssociationEnd[1..1];
+
+                    relationship this.associationOwningClassName == AssociationEnd.owningClassName
+                            && this.associationEndName == AssociationEnd.name
+                }
+
+                // TODO: These associations only work in one direction
+                association DataTypePropertyHasMemberReferencePaths
+                {
+                    memberReferencePaths: MemberReferencePath[0..*];
+                    dataTypeProperty: DataTypeProperty[1..1];
+
+                    relationship this.propertyClassName == DataTypeProperty.classifierName
+                            && this.propertyName == DataTypeProperty.name
+                }
+
+                class ThisMemberReferencePath
+                    extends MemberReferencePath
+                {
+                    id  : Long key private;
+                }
+
+                class TypeMemberReferencePath
+                    extends MemberReferencePath
+                {
+                    id  : Long key private;
+                }
+
+                association BinaryCriteriaHasLeft
+                {
+                    ownerOfLeftCriteria : BinaryCriteria[0..1];
+                    left                : Criteria[1..1];
+
+                    relationship this.leftId == Criteria.id
+                }
+
+                association BinaryCriteriaHasRight
+                {
+                    ownerOfRightCriteria: BinaryCriteria[0..1];
+                    right               : Criteria[1..1];
+
+                    relationship this.rightId == Criteria.id
+                }
+
+                class ParameterizedProperty
+                    implements NamedElement
+                {
+                    owningClassName               : String key private maximumLength(256);
+                    multiplicity                  : Multiplicity private maximumLength(256);
+                    resultTypeName                : String private maximumLength(256);
+                }
+
+                association ClassHasParameterizedProperties
+                {
+                    owningClass: Klass[1..1];
+                    parameterizedProperties: ParameterizedProperty[0..*] owned
+                        // TODO: Sorting by the same property ascending and descending is an interesting test, move it out of the meta model
+                        orderBy: this.ordinal ascending, this.ordinal descending;
+
+                    relationship this.name == ParameterizedProperty.owningClassName
+                }
+
+                enumeration OrderByDirection
+                {
+                    ASCENDING("ascending"),
+                    DESCENDING("descending"),
+                 }
+
+                class AssociationEndOrderBy
+                {
+                    associationEndClassName: String key private maximumLength(256);
+                    associationEndName: String key private maximumLength(256);
+                    thisMemberReferencePathId: Long key private;
+                    orderByDirection: OrderByDirection maximumLength(256);
+                }
+
+                association AssociationEndHasOrderBy
+                {
+                    associationEnd: AssociationEnd[1..1];
+                    orderBys: AssociationEndOrderBy[0..*];
+
+                    relationship this.owningClassName == AssociationEndOrderBy.associationEndClassName
+                            && this.name == AssociationEndOrderBy.associationEndName
+                }
+
+                association AssociationEndOrderByHasMemberReferencePath
+                {
+                    associationEndOrderBy: AssociationEndOrderBy[0..1];
+                    thisMemberReferencePath: ThisMemberReferencePath[1..1];
+
+                    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
+                }
+
+                association ParameterizedPropertyHasResultType
+                {
+                    parameterizedPropertiesResultTypeOf: ParameterizedProperty[0..*];
+                    resultType: Klass[1..1];
+
+                    relationship this.resultTypeName == Klass.name
+                }
+
+                class ParameterizedPropertyOrdering
+                {
+                    owningClassName               : String private key maximumLength(256);
+                    name                          : String key maximumLength(256);
+                    orderingId                    : Long private;
+                }
+
+                association ParameterizedPropertyHasOrdering
+                {
+                    parameterizedProperty: ParameterizedProperty[1..1];
+                    parameterizedPropertyOrderings: ParameterizedPropertyOrdering[0..*];
+
+                    relationship this.owningClassName == ParameterizedPropertyOrdering.owningClassName
+                            && this.name == ParameterizedPropertyOrdering.name
+                }
+
+                association ParameterizedPropertyHasParameters
+                {
+                    parameterizedProperty         : ParameterizedProperty[1..1];
+                    parameters                    : ParameterizedPropertyParameter[0..*];
+
+                    relationship this.owningClassName == ParameterizedPropertyParameter.classifierName
+                            && this.name == ParameterizedPropertyParameter.parameterizedPropertyName
+                }
+
+                class ParameterizedPropertyParameter implements NamedElement
+                {
+                    classifierName                : String key private maximumLength(256);
+                    parameterizedPropertyName     : String key maximumLength(256);
+                }
+
+                class ProjectionElement
+                    abstract(table-per-class)
+                    implements NamedElement
+                {
+                    // TODO: Write a test that fails if name is a key
+                    // name isn't key
+                    name: String maximumLength(256);
+                    id  : Long key id;
+                    parentId: Long? private;
+                }
+
+                // TODO: Rename to Projection, but clashes with names in generated code.
+                class ServiceProjection
+                    extends ProjectionElement
+                    implements PackageableElement
+                {
+                    id  : Long key private;
+                    // TODO: unique constraint on name
+                    className                     : String private maximumLength(256);
+                }
+
+                // TODO: When abstract class extends abstract class, validate that they have compatible inheritance types
+                class ProjectionWithAssociationEnd
+                    abstract(table-per-class)
+                    extends ProjectionElement
+                {
+                    id  : Long key private;
+                    parentId                      : Long private;
+                    associationEndClass           : String private maximumLength(256);
+                    associationEndName: String private maximumLength(256);
+                }
+
+                class ProjectionReferenceProperty
+                    extends ProjectionWithAssociationEnd
+                {
+                    id  : Long key private;
+                    parentId                      : Long private;
+                    associationEndClass           : String private maximumLength(256);
+                    associationEndName: String private maximumLength(256);
+                }
+
+                class ProjectionProjectionReference
+                    extends ProjectionWithAssociationEnd
+                {
+                    id  : Long key private;
+                    parentId                      : Long private;
+                    associationEndClass           : String private maximumLength(256);
+                    associationEndName: String private maximumLength(256);
+                    projectionName                  : String private maximumLength(256);
+                }
+
+                class ProjectionDataTypeProperty
+                    extends ProjectionElement
+                {
+                    id  : Long key private;
+                    parentId                      : Long private;
+                    propertyClassifierName        : String private maximumLength(256);
+                    propertyName: String private maximumLength(256);
+                }
+
+                association ProjectionElementHasChildren
+                {
+                    // TODO: Validate that foreign key is optional if association end is optional and vice versa
+                    parent                        : ProjectionElement[0..1];
+                    children                      : ProjectionElement[0..*];
+
+                    relationship this.id == ProjectionElement.parentId
+                }
+
+                association ProjectionWithAssociationEndHasAssociationEnd
+                {
+                    projectionsWithAssociationEnd : ProjectionWithAssociationEnd[0..*];
+                    associationEnd                : AssociationEnd[1..1];
+
+                    relationship this.associationEndClass == AssociationEnd.owningClassName
+                            && this.associationEndName == AssociationEnd.name
+                }
+
+                association ProjectionDataTypePropertyHasDataTypeProperty
+                {
+                    projectionDataTypeProperties  : ProjectionDataTypeProperty[0..*];
+                    dataTypeProperty              : DataTypeProperty[1..1];
+
+                    relationship this.propertyClassifierName == DataTypeProperty.classifierName
+                            && this.propertyName == DataTypeProperty.name
+                }
+
+                association ProjectionHasClass
+                {
+                    projections                   : ServiceProjection[0..*];
+                    klass                         : Klass[1..1];
+
+                    relationship this.className == Klass.name
+                }
+
+                association ProjectionProjectionReferenceHasProjection
+                {
+                    projectionProjectionReferences: ProjectionProjectionReference[0..*];
+                    projection                    : ServiceProjection[1..1];
+
+                    relationship this.projectionName == ServiceProjection.name
+                }
+
+                class ServiceGroup
+                    implements PackageableElement
+                {
+                    className                     : String key maximumLength(256);
+                }
+
+                association ServiceGroupHasClass
+                {
+                    serviceGroup                  : ServiceGroup[0..1];
+                    owningClass                   : Klass[1..1];
+
+                    relationship this.className == Klass.name
+                }
+
+                class Url
+                    implements Element
+                {
+                    className                     : String key maximumLength(256);
+                    url                           : String key maximumLength(8192);
+                }
+
+                enumeration UrlParameterType
+                {
+                    QUERY("query"),
+                    PATH("path"),
+                }
+
+                class UrlParameter
+                    implements Element
+                {
+                    urlClassName                  : String key private maximumLength(256);
+                    urlString                     : String key private maximumLength(8192);
+                    parameterId                   : Long key private;
+                    type                          : UrlParameterType;
+                }
+
+                association UrlHasUrlParameters
+                {
+                    url: Url[1..1];
+                    parameters                    : UrlParameter[0..*];
+
+                    relationship this.className == UrlParameter.urlClassName
+                            && this.url == UrlParameter.urlString
+                }
+
+                association UrlParameterHasParameter
+                {
+                    urlParameter                  : UrlParameter[0..1];
+                    parameter                     : Parameter[1..1];
+
+                    relationship this.parameterId == Parameter.id
+                 }
+
+                association ServiceGroupHasUrls
+                {
+                    serviceGroup                  : ServiceGroup[1..1];
+                    urls                          : Url[1..*];
+
+                    relationship this.className == Url.className
+                }
+
+                enumeration ServiceMultiplicity
+                {
+                    ONE("one"),
+                    MANY("many"),
+                }
+
+                enumeration Verb
+                {
+                    GET,
+                    POST,
+                    PUT,
+                    PATCH,
+                    DELETE,
+                }
+
+                class Service
+                    implements Element
+                {
+                    className                     : String key maximumLength(256);
+                    urlString                     : String key maximumLength(8192);
+                    verb                          : Verb key maximumLength(256);
+                    serviceMultiplicity           : ServiceMultiplicity maximumLength(256);
+                    projectionName                : String? private maximumLength(256);
+                    queryCriteriaId               : Long? private;
+                    authorizeCriteriaId           : Long? private;
+                    validateCriteriaId            : Long? private;
+                    conflictCriteriaId            : Long? private;
+                }
+
+                association UrlHasServices
+                {
+                    url: Url[1..1];
+                    services                      : Service[1..*];
+
+                    relationship this.className == Service.className
+                            && this.url == Service.urlString
+                }
+
+                association ServiceHasProjection
+                {
+                    services: Service[0..*];
+                    projection                    : ServiceProjection[0..1];
+
+                    relationship this.projectionName == ServiceProjection.name
+                }
+
+                association ServiceHasQueryCriteria
+                {
+                    queryService                  : Service[0..1];
+                    queryCriteria                 : Criteria[0..1] owned;
+
+                    relationship this.queryCriteriaId == Criteria.id
+                }
+
+                association ServiceHasAuthorizeCriteria
+                {
+                    authorizeService                  : Service[0..1];
+                    authorizeCriteria                 : Criteria[0..1] owned;
+
+                    relationship this.authorizeCriteriaId == Criteria.id
+                }
+
+                association ServiceHasValidateCriteria
+                {
+                    validateService                  : Service[0..1];
+                    validateCriteria                 : Criteria[0..1] owned;
+
+                    relationship this.validateCriteriaId == Criteria.id
+                }
+
+                association ServiceHasConflictCriteria
+                {
+                    conflictService                  : Service[0..1];
+                    conflictCriteria                 : Criteria[0..1] owned;
+
+                    relationship this.conflictCriteriaId == Criteria.id
+                }
+
+                class ServiceOrderBy
+                {
+                    serviceClassName: String key private maximumLength(256);
+                    serviceUrlString: String key private maximumLength(8192);
+                    serviceVerb: Verb key private;
+                    thisMemberReferencePathId     : Long key private;
+                    orderByDirection: OrderByDirection;
+                }
+
+                association ServiceHasOrderBy
+                {
+                    service                       : Service[1..1];
+                    orderBys                      : ServiceOrderBy[0..*];
+
+                    relationship this.className == ServiceOrderBy.serviceClassName
+                            && this.urlString == ServiceOrderBy.serviceUrlString
+                            && this.verb == ServiceOrderBy.serviceVerb
+                }
+
+                association ServiceOrderByHasMemberReferencePath
+                {
+                    serviceOrderBy                : ServiceOrderBy[0..1];
+                    thisMemberReferencePath       : ThisMemberReferencePath[1..1];
+
+                    relationship this.thisMemberReferencePathId == ThisMemberReferencePath.id
+                }
+
+                projection EnumerationLiteralProjection on EnumerationLiteral
+                {
+                    name                   : "Enumeration literal name",
+                    prettyName             : "Enumeration literal pretty name",
+                    ordinal                : "Enumeration literal ordinal",
+                }
+
+                projection EnumerationProjection on Enumeration
+                {
+                    name                   : "Enumeration name",
+                    packageName            : "Enumeration package name",
+                    ordinal                : "Enumeration ordinal",
+                    enumerationLiterals: EnumerationLiteralProjection,
+                }
+
+                projection EnumerationSummaryProjection on Enumeration
+                {
+                    name               : "Enumeration name",
+                    packageName        : "Enumeration package name",
+                    enumerationLiterals:
+                    {
+                        name      : "Enumeration literal name",
+                        prettyName: "Enumeration literal pretty name",
+                    },
+                }
+
+                service Enumeration
+                {
+                    /meta/enumeration/{enumerationName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == enumerationName;
+                            projection  : EnumerationProjection;
+                        }
+                    /meta/enumeration/{enumerationName: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == enumerationName;
+                            projection  : EnumerationSummaryProjection;
+                        }
+                    /meta/enumeration
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : EnumerationSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection InterfaceProjection on Interface
+                {
+                    name                   : "Interface name",
+                    packageName            : "Interface package name",
+                    ordinal                : "Interface ordinal",
+
+                    // TODO: flat many-to-many, or parameterized property
+                    superInterfaces        :
+                    {
+                        superInterface:
+                        {
+                            name           : "Super interface name",
+                            packageName    : "Super interface package name",
+                        },
+                    },
+                    classifierModifiers    :
+                    {
+                        keyword: "Interface modifier keyword",
+                        ordinal: "Interface modifier ordinal",
+                    },
+                    primitiveProperties    :
+                    {
+                        name               : "Primitive property name",
+                        primitiveType      : "Primitive property type",
+                        optional           : "Primitive property is optional",
+                        ordinal            : "Primitive property ordinal",
+                        propertyModifiers  :
+                        {
+                            keyword: "Primitive property modifier keyword",
+                            ordinal: "Primitive property modifier ordinal",
+                        },
+                        minLengthValidation:
+                        {
+                            number: "Min length validation number",
+                        },
+                        maxLengthValidation:
+                        {
+                            number: "Max length validation number",
+                        },
+                        minValidation      :
+                        {
+                            number: "Min validation number",
+                        },
+                        maxValidation      :
+                        {
+                            number: "Max validation number",
+                        },
+                    },
+                    enumerationProperties  :
+                    {
+                        name               : "Enumeration property name",
+                        optional           : "Enumeration property is optional",
+                        ordinal            : "Enumeration property ordinal",
+                        enumeration        :
+                        {
+                            name    : "Enumeration name",
+                        },
+                        propertyModifiers  :
+                        {
+                            keyword: "Enumeration property modifier keyword",
+                            ordinal: "Enumeration property modifier ordinal",
+                        },
+                        minLengthValidation:
+                        {
+                            number: "Min length validation number",
+                        },
+                        maxLengthValidation:
+                        {
+                            number: "Max length validation number",
+                        },
+                    },
+                }
+
+                projection InterfaceSummaryProjection on Interface
+                {
+                    name                   : "Interface name",
+                    packageName            : "Interface package name",
+                    superInterfaces        :
+                    {
+                        superInterface:
+                        {
+                            name           : "Super interface name",
+                        },
+                    },
+                    classifierModifiers    :
+                    {
+                        keyword: "Interface modifier keyword",
+                    },
+                    primitiveProperties    : PrimitivePropertySummaryProjection,
+                    enumerationProperties  : EnumerationPropertySummaryProjection,
+                }
+
+                service Interface
+                {
+                    /meta/interface/{interfaceName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == interfaceName;
+                            projection  : InterfaceProjection;
+                        }
+                    /meta/interface/{interfaceName: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == interfaceName;
+                            projection  : InterfaceSummaryProjection;
+                        }
+                    /meta/interface
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : InterfaceSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection DataTypePropertyProjection on DataTypeProperty
+                {
+                    name                           : "Property name",
+                    PrimitiveProperty.primitiveType: "Property primitive type",
+                    optional                       : "Property is optional",
+                    ordinal                        : "Property ordinal",
+                    EnumerationProperty.enumeration:
+                    {
+                        name    : "Property Enumeration name",
+                    },
+                    propertyModifiers              :
+                    {
+                        keyword: "Property modifier keyword",
+                        ordinal: "Property modifier ordinal",
+                    },
+                    minLengthValidation            :
+                    {
+                        number: "Property min length validation number",
+                    },
+                    maxLengthValidation            :
+                    {
+                        number: "Property max length validation number",
+                    },
+                    PrimitiveProperty.minValidation:
+                    {
+                        number: "Property min validation number",
+                    },
+                    PrimitiveProperty.maxValidation:
+                    {
+                        number: "Property max validation number",
+                    },
+                }
+
+                projection PrimitivePropertyProjection on PrimitiveProperty
+                {
+                    name               : "Primitive property name",
+                    primitiveType      : "Primitive property type",
+                    optional           : "Primitive property is optional",
+                    ordinal            : "Primitive property ordinal",
+                    propertyModifiers  :
+                    {
+                        keyword: "Primitive property modifier keyword",
+                        ordinal: "Primitive property modifier ordinal",
+                    },
+                    minLengthValidation:
+                    {
+                        number: "Min length validation number",
+                    },
+                    maxLengthValidation:
+                    {
+                        number: "Max length validation number",
+                    },
+                    minValidation      :
+                    {
+                        number: "Min validation number",
+                    },
+                    maxValidation      :
+                    {
+                        number: "Max validation number",
+                    },
+                }
+
+                projection PrimitivePropertySummaryProjection on PrimitiveProperty
+                {
+                    name               : "Primitive property name",
+                    primitiveType      : "Primitive property type",
+                    optional           : "Primitive property is optional",
+                    propertyModifiers  :
+                    {
+                        keyword: "Primitive property modifier keyword",
+                    },
+                    minLengthValidation:
+                    {
+                        number: "Min length validation number",
+                    },
+                    maxLengthValidation:
+                    {
+                        number: "Max length validation number",
+                    },
+                    minValidation      :
+                    {
+                        number: "Min validation number",
+                    },
+                    maxValidation      :
+                    {
+                        number: "Max validation number",
+                    },
+                }
+
+                projection EnumerationPropertyProjection on EnumerationProperty
+                {
+                    name               : "Enumeration property name",
+                    optional           : "Enumeration property is optional",
+                    ordinal            : "Enumeration property ordinal",
+                    enumeration        :
+                    {
+                        name    : "Enumeration name",
+                    },
+                    propertyModifiers  :
+                    {
+                        keyword: "Enumeration property modifier keyword",
+                        ordinal: "Enumeration property modifier ordinal",
+                    },
+                    minLengthValidation:
+                    {
+                        number: "Min length validation number",
+                    },
+                    maxLengthValidation:
+                    {
+                        number: "Max length validation number",
+                    },
+                }
+
+                projection EnumerationPropertySummaryProjection on EnumerationProperty
+                {
+                    name               : "Enumeration property name",
+                    optional           : "Enumeration property is optional",
+                    enumeration        :
+                    {
+                        name    : "Enumeration name",
+                    },
+                    propertyModifiers  :
+                    {
+                        keyword: "Enumeration property modifier keyword",
+                    },
+                    minLengthValidation:
+                    {
+                        number: "Min length validation number",
+                    },
+                    maxLengthValidation:
+                    {
+                        number: "Max length validation number",
+                    },
+                }
+
+                projection ClassProjection on Klass
+                {
+                    name                   : "Class name",
+                    packageName            : "Class package name",
+                    inheritanceType        : "Class inheritanceType",
+                    ordinal                : "Class ordinal",
+                    superClass             :
+                    {
+                        name           : "Super Class name",
+                        packageName    : "Super Class package name",
+                        superClass     :
+                        {
+                            name       : "Super Super Class name",
+                            packageName: "Super Super Class package name",
+                        },
+
+                        // TODO: flat many-to-many, or parameterized property
+                        superInterfaces:
+                        {
+                            superInterface:
+                            {
+                                name       : "Super Class Super Interface name",
+                                packageName: "Super Class Super Interface package name",
+                            },
+                        },
+                    },
+
+                    // TODO: flat many-to-many, or parameterized property
+                    superInterfaces        :
+                    {
+                        superInterface:
+                        {
+                            name           : "Super interface name",
+                            packageName    : "Super interface package name",
+                        },
+                    },
+                    classifierModifiers    :
+                    {
+                        keyword: "Classifier modifier keyword",
+                        ordinal: "Classifier modifier ordinal",
+                    },
+                    primitiveProperties    : PrimitivePropertyProjection,
+                    enumerationProperties  : EnumerationPropertyProjection,
+                    associationEnds        : AssociationEndProjection,
+                }
+
+                projection ClassSummaryProjection on Klass
+                {
+                    name                   : "Class name",
+                    packageName            : "Class package name",
+                    inheritanceType        : "Class inheritanceType",
+                    ordinal                : "Class ordinal",
+                    superClass             :
+                    {
+                        name           : "Super Class name",
+                    },
+
+                    // TODO: flat many-to-many, or parameterized property
+                    superInterfaces        :
+                    {
+                        superInterface:
+                        {
+                            name           : "Super interface name",
+                        },
+                    },
+                    classifierModifiers    :
+                    {
+                        keyword: "Classifier modifier keyword",
+                    },
+                    primitiveProperties    : PrimitivePropertySummaryProjection,
+                    enumerationProperties  : EnumerationPropertySummaryProjection,
+                }
+
+                service Klass
+                {
+                    /meta/class/{className: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == className;
+                            projection  : ClassProjection;
+                        }
+                    /meta/class/{className: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == className;
+                            projection  : ClassSummaryProjection;
+                        }
+                    /meta/class
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : ClassSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection ClassifierSummaryProjection on Classifier
+                {
+                    name                   : "Classifier name",
+                    packageName            : "Classifier package name",
+                    Klass.superClass             :
+                    {
+                        name           : "Super Class name",
+                    },
+
+                    // TODO: flat many-to-many, or parameterized property
+                    superInterfaces        :
+                    {
+                        superInterface:
+                        {
+                            name           : "Super interface name",
+                        },
+                    },
+                    classifierModifiers    :
+                    {
+                        keyword: "Classifier modifier keyword",
+                    },
+                    primitiveProperties    : PrimitivePropertySummaryProjection,
+                    enumerationProperties  : EnumerationPropertySummaryProjection,
+                }
+
+                service Classifier
+                {
+                    /meta/classifier/{classifierName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == classifierName;
+                            projection  : ClassifierSummaryProjection;
+                        }
+                    /meta/classifier
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : ClassifierSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection AssociationEndProjection on AssociationEnd
+                {
+                    name                   : "Association end name",
+                    ordinal                : "Association end ordinal",
+                    direction              : "Association end direction",
+                    multiplicity           : "Association end multiplicity",
+                    owningClass            :
+                    {
+                        name       : "Association end owning class name",
+                        packageName: "Association end owning class package name",
+                    },
+                    resultType             :
+                    {
+                        name       : "Association end result class name",
+                        packageName: "Association end result class package name",
+                    },
+                    owningAssociation      :
+                    {
+                        name: "Association end owning association name",
+                    },
+                    associationEndModifiers:
+                    {
+                        keyword: "Association end modifier keyword",
+                        ordinal: "Association end modifier ordinal",
+                    },
+                }
+
+                projection AssociationEndSummaryProjection on AssociationEnd
+                {
+                    name                   : "Association end name",
+                    multiplicity           : "Association end multiplicity",
+                    resultType             :
+                    {
+                        name: "Association end result class name",
+                    },
+                    associationEndModifiers:
+                    {
+                        keyword: "Association end modifier keyword",
+                    },
+                    orderBys               :
+                    {
+                        thisMemberReferencePath: MemberReferencePathSummaryProjection,
+                        orderByDirection       : "Association end order by direction",
+                    },
+                }
+
+                projection AssociationProjection on Association
+                {
+                    name                   : "Association name",
+                    packageName            : "Association package name",
+                    ordinal                : "Association ordinal",
+                    associationEnds        : AssociationEndProjection,
+                    criteria               : CriteriaProjection,
+                }
+
+                projection AssociationSummaryProjection on Association
+                {
+                    name                   : "Association name",
+                    packageName            : "Association package name",
+                    associationEnds        : AssociationEndSummaryProjection,
+                    criteria               : CriteriaSummaryProjection,
+                }
+
+                projection MemberReferencePathProjection on MemberReferencePath
+                {
+                    klass           :
+                    {
+                        name: "MemberReferencePath Class name",
+                    },
+                    associationEnds :
+                    {
+                        associationEnd:
+                        {
+                            name: "MemberReferencePath Association end name",
+                        },
+                    },
+                    dataTypeProperty:
+                    {
+                        name: "MemberReferencePath Property name",
+                    },
+                }
+
+                projection MemberReferencePathSummaryProjection on MemberReferencePath
+                {
+                    klass           :
+                    {
+                        name: "MemberReferencePath Class name",
+                    },
+                    associationEnds :
+                    {
+                        associationEnd:
+                        {
+                            name: "MemberReferencePath Association end name",
+                        },
+                    },
+                    dataTypeProperty:
+                    {
+                        name: "MemberReferencePath Property name",
+                    },
+                }
+
+                projection ExpressionValueProjection on ExpressionValue
+                {
+                    MemberReferencePath.klass           :
+                    {
+                        name: "MemberReferencePath Class name",
+                    },
+                    MemberReferencePath.associationEnds :
+                    {
+                        associationEnd:
+                        {
+                            name: "MemberReferencePath Association end name",
+                        },
+                    },
+                    MemberReferencePath.dataTypeProperty:
+                    {
+                        name: "MemberReferencePath Property name",
+                    },
+                    VariableReference.parameter         :
+                    {
+                        name                            : "VariableReference parameter name",
+                        EnumerationParameter.enumeration:
+                        {
+                            name: "VariableReference parameter enumeration name",
+                        },
+                        PrimitiveParameter.primitiveType: "VariableReference parameter primitive type",
+                        multiplicity                    : "VariableReference parameter multiplicity",
+                    },
+                }
+
+                projection ExpressionValueSummaryProjection on ExpressionValue
+                {
+                    MemberReferencePath.klass           :
+                    {
+                        name: "MemberReferencePath Class name",
+                    },
+                    MemberReferencePath.associationEnds :
+                    {
+                        associationEnd:
+                        {
+                            name: "MemberReferencePath Association end name",
+                        },
+                    },
+                    MemberReferencePath.dataTypeProperty:
+                    {
+                        name: "MemberReferencePath Property name",
+                    },
+                    VariableReference.parameter         :
+                    {
+                        name: "VariableReference parameter name",
+                    },
+                }
+
+                projection CriteriaProjection on Criteria
+                {
+                    BinaryCriteria.left                   : CriteriaProjection,
+                    BinaryCriteria.right                  : CriteriaProjection,
+                    OperatorCriteria.operator             : "Criteria operator",
+                    OperatorCriteria.sourceExpressionValue: ExpressionValueProjection,
+                    OperatorCriteria.targetExpressionValue: ExpressionValueProjection,
+                    EdgePointCriteria.memberReferencePath : MemberReferencePathProjection,
+                }
+
+                projection CriteriaSummaryProjection on Criteria
+                {
+                    BinaryCriteria.left                   : CriteriaSummaryProjection,
+                    BinaryCriteria.right                  : CriteriaSummaryProjection,
+                    OperatorCriteria.operator             : "Criteria operator",
+                    OperatorCriteria.sourceExpressionValue: ExpressionValueSummaryProjection,
+                    OperatorCriteria.targetExpressionValue: ExpressionValueSummaryProjection,
+                    EdgePointCriteria.memberReferencePath : MemberReferencePathSummaryProjection,
+                }
+
+                service Association
+                {
+                    /meta/association/{associationName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == associationName;
+                            projection  : AssociationProjection;
+                        }
+                    /meta/association/{associationName: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == associationName;
+                            projection  : AssociationSummaryProjection;
+                        }
+                    /meta/association
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : AssociationSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection ProjectionElementProjection on ProjectionElement
+                {
+                    name                                       : "Projection name",
+                    ServiceProjection.packageName              : "Projection package name",
+                    ServiceProjection.klass                    :
+                    {
+                        name: "Projection klass name",
+                    },
+                    ProjectionProjectionReference.projection   :
+                    {
+                        name: "Projection reference name",
+                    },
+                    children                                   : ProjectionElementSummaryProjection,
+                }
+
+                projection ProjectionElementSummaryProjection on ProjectionElement
+                {
+                    name                                       : "Projection name",
+                    ServiceProjection.packageName              : "Projection package name",
+                    ServiceProjection.klass                    :
+                    {
+                        name: "Projection klass name",
+                    },
+                    ProjectionProjectionReference.projection   :
+                    {
+                        name: "Projection reference name",
+                    },
+                    children                                   : ProjectionElementSummaryProjection,
+                }
+
+                service ServiceProjection
+                {
+                    /meta/projection/{projectionName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == projectionName;
+                            projection  : ProjectionElementProjection;
+                        }
+                    /meta/projection/{projectionName: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == projectionName;
+                            projection  : ProjectionElementSummaryProjection;
+                        }
+                    /meta/projection
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : ProjectionElementSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+
+                projection ServiceGroupProjection on ServiceGroup
+                {
+                    name       : "ServiceGroup name",
+                    packageName: "ServiceGroup package name",
+                    urls       :
+                    {
+                        url     : "ServiceGroup url",
+                        services:
+                        {
+                            verb               : "ServiceGroup Url Service verb",
+                            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
+                            projection         :
+                            {
+                                name: "ServiceGroup Url Service Projection name",
+                            },
+                            queryCriteria      : CriteriaSummaryProjection,
+                            authorizeCriteria  : CriteriaSummaryProjection,
+                            validateCriteria   : CriteriaSummaryProjection,
+                            conflictCriteria   : CriteriaSummaryProjection,
+                        },
+                    },
+                }
+
+                projection ServiceGroupSummaryProjection on ServiceGroup
+                {
+                    name       : "ServiceGroup name",
+                    packageName: "ServiceGroup package name",
+                    urls       :
+                    {
+                        url     : "ServiceGroup url",
+                        services:
+                        {
+                            verb               : "ServiceGroup Url Service verb",
+                            serviceMultiplicity: "ServiceGroup Url Service multiplicity",
+                            projection         :
+                            {
+                                name: "ServiceGroup Url Service Projection name",
+                            },
+                            queryCriteria      : CriteriaSummaryProjection,
+                        },
+                    },
+                }
+
+                service ServiceGroup
+                {
+                    /meta/serviceGroup/{serviceGroupName: String[1..1]}
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == serviceGroupName;
+                            projection  : ServiceGroupProjection;
+                        }
+                    /meta/serviceGroup/{serviceGroupName: String[1..1]}/summary
+                        GET
+                        {
+                            multiplicity: one;
+                            criteria    : this.name == serviceGroupName;
+                            projection  : ServiceGroupSummaryProjection;
+                        }
+                    /meta/serviceGroup
+                        GET
+                        {
+                            multiplicity: many;
+                            criteria    : all;
+                            projection  : ServiceGroupSummaryProjection;
+                            orderBy     : this.ordinal;
+                        }
+                }
+                """;
         //</editor-fold>
 
         this.assertNoCompilerErrors(sourceCodeText);
@@ -1920,7 +1927,7 @@ public class KlassCompilerTest
         {
             DomainModelCompilationResult domainModelCompilationResult =
                     (DomainModelCompilationResult) compilationResult;
-            DomainModel                  domainModel                  = domainModelCompilationResult.getDomainModel();
+            DomainModel domainModel = domainModelCompilationResult.getDomainModel();
             assertThat(domainModel, notNullValue());
         }
         else

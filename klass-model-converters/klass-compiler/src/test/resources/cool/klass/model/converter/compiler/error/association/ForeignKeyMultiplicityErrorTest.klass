@@ -13,8 +13,8 @@ class DummyOwned
 
 association OwnedHasOwner
 {
-    owner: DummyOwner[1..1];
-    owned: DummyOwned[0..*] owned;
+    ownerDummy: DummyOwner[1..1];
+    ownedDummies: DummyOwned[0..*] owned;
 
     relationship this.id == DummyOwned.ownerId
  }

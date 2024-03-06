@@ -118,7 +118,7 @@ public class ReladomoOperationCompilerTest
         {
             assertThat(
                     e.getMessage(),
-                    is("Could not find relationship 'invalidRelationshipName' on type 'OwnedNaturalOneToManySource' in OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\". Valid relationships: [target]"));
+                    is("Could not find relationship 'invalidRelationshipName' on type 'OwnedNaturalOneToManySource' in OwnedNaturalOneToManySource.invalidRelationshipName.value = \"value\". Valid relationships: [targets]"));
         }
     }
 
@@ -366,14 +366,14 @@ public class ReladomoOperationCompilerTest
     {
         RelatedFinder finder = OwnedNaturalOneToManySourceFinder.getFinderInstance();
 
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target.value = \"value\"", OwnedNaturalOneToManySourceFinder.target().value().eq("value"));
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target exists", OwnedNaturalOneToManySourceFinder.target().exists());
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target not exists", OwnedNaturalOneToManySourceFinder.target().notExists());
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target not exists", OwnedNaturalOneToManySourceFinder.target().recursiveNotExists());
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets.value = \"value\"", OwnedNaturalOneToManySourceFinder.targets().value().eq("value"));
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets exists", OwnedNaturalOneToManySourceFinder.targets().exists());
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets not exists", OwnedNaturalOneToManySourceFinder.targets().notExists());
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets not exists", OwnedNaturalOneToManySourceFinder.targets().recursiveNotExists());
 
         Operation innerOperation = OwnedNaturalOneToManyTargetFinder.source().value().eq("value");
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target { OwnedNaturalOneToManyTarget.source.value = \"value\" } not exists", OwnedNaturalOneToManySourceFinder.target().notExists(innerOperation));
-        this.assertCompiles(finder, "OwnedNaturalOneToManySource.target { OwnedNaturalOneToManyTarget.source.value = \"value\" } not exists", OwnedNaturalOneToManySourceFinder.target().recursiveNotExists(innerOperation));
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets { OwnedNaturalOneToManyTarget.source.value = \"value\" } not exists", OwnedNaturalOneToManySourceFinder.targets().notExists(innerOperation));
+        this.assertCompiles(finder, "OwnedNaturalOneToManySource.targets { OwnedNaturalOneToManyTarget.source.value = \"value\" } not exists", OwnedNaturalOneToManySourceFinder.targets().recursiveNotExists(innerOperation));
     }
 
     @Test

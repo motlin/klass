@@ -7,8 +7,8 @@
         <MithraObjectConfiguration className="cool.klass.xample.coverage.User" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequired" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptional" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.AllKeyProperties" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.AllForeignKeyProperties" cacheType="partial" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyProperty" cacheType="partial" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeForeignKeyProperty" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.FinalProperties" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManySource" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.OwnedNaturalOneToManyTarget" cacheType="partial" />
@@ -34,7 +34,7 @@
         <MithraObjectConfiguration className="cool.klass.xample.coverage.SharedSyntheticOneToManySelf" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesRequiredVersion" cacheType="partial" />
         <MithraObjectConfiguration className="cool.klass.xample.coverage.PropertiesOptionalVersion" cacheType="partial" />
-        <MithraObjectConfiguration className="cool.klass.xample.coverage.AllKeyPropertiesVersion" cacheType="partial" />
+        <MithraObjectConfiguration className="cool.klass.xample.coverage.EveryTypeKeyPropertyVersion" cacheType="partial" />
     </ConnectionManager>
     <PureObjects notificationIdentifier="cool.klass.xample.coverage" />
 </MithraRuntime>

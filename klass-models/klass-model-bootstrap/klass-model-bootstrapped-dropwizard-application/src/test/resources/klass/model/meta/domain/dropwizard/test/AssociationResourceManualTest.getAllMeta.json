@@ -213,7 +213,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "enumerationProperty",
+        "name": "enumerationProperties",
         "multiplicity": "0..*",
         "resultType": {
           "name": "EnumerationProperty"
@@ -1273,7 +1273,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "variableReference",
+        "name": "variableReferences",
         "multiplicity": "0..*",
         "resultType": {
           "name": "VariableReference"
@@ -1321,7 +1321,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "enumerationParameter",
+        "name": "enumerationParameters",
         "multiplicity": "0..*",
         "resultType": {
           "name": "EnumerationParameter"
@@ -1968,7 +1968,7 @@
         "orderBys": []
       },
       {
-        "name": "parameterizedPropertyOrdering",
+        "name": "parameterizedPropertyOrderings",
         "multiplicity": "0..*",
         "resultType": {
           "name": "ParameterizedPropertyOrdering"
@@ -2157,7 +2157,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "projectionWithAssociationEnd",
+        "name": "projectionsWithAssociationEnd",
         "multiplicity": "0..*",
         "resultType": {
           "name": "ProjectionWithAssociationEnd"
@@ -2232,7 +2232,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "projectionDataTypeProperty",
+        "name": "projectionDataTypeProperties",
         "multiplicity": "0..*",
         "resultType": {
           "name": "ProjectionDataTypeProperty"
@@ -2307,7 +2307,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "projection",
+        "name": "projections",
         "multiplicity": "0..*",
         "resultType": {
           "name": "ServiceProjection"
@@ -2355,7 +2355,7 @@
     "packageName": "klass.model.meta.domain",
     "associationEnds": [
       {
-        "name": "projectionProjectionReference",
+        "name": "projectionProjectionReferences",
         "multiplicity": "0..*",
         "resultType": {
           "name": "ProjectionProjectionReference"

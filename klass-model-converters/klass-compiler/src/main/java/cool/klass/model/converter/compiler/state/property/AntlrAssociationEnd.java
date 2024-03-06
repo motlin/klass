@@ -237,9 +237,9 @@ public class AntlrAssociationEnd
     {
         if (this.multiplicityState.isToMany())
         {
-            if (this.getName().equals(this.classReferenceState.getElementContext().identifier().getText().toLowerCase()))
+            if (this.classReferenceState.getElementContext().identifier().getText().toLowerCase().endsWith(this.getName().toLowerCase()))
             {
-                String message = "Expected to-many association end '%s.%s' to have plural name, but name exactly matched type association end type '%s'.".formatted(
+                String message = "Expected to-many association end '%s.%s' to have a plural name, but name exactly matched type association end type '%s'.".formatted(
                         this.getOwningClassifierState().getName(),
                         this.getName(),
                         this.classReferenceState.getElementContext().identifier().getText());

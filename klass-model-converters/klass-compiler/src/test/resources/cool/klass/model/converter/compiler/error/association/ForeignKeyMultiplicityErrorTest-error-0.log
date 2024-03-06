@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_FOR_MUL[m [33m════════════════════════════════════════[m
-[31mError: Association end 'DummyOwned.owner' has multiplicity [1..1] so foreign key 'DummyOwned.ownerId' ought to be required.[m
+[31mError: Association end 'DummyOwned.ownerDummy' has multiplicity [1..1] so foreign key 'DummyOwned.ownerId' ought to be required.[m
 
 At (ForeignKeyMultiplicityErrorTest.klass:11)
 

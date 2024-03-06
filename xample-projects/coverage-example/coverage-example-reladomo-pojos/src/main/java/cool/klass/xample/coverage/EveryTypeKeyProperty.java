@@ -4,16 +4,16 @@ import java.sql.Timestamp;
 
 import com.gs.fw.common.mithra.util.DefaultInfinityTimestamp;
 
-public class AllKeyPropertiesVersion extends AllKeyPropertiesVersionAbstract
+public class EveryTypeKeyProperty extends EveryTypeKeyPropertyAbstract
 {
-    public AllKeyPropertiesVersion(Timestamp system)
+    public EveryTypeKeyProperty(Timestamp system)
     {
         super(system);
         // You must not modify this constructor. Mithra calls this internally.
         // You can call this constructor. You can also add new constructors.
     }
 
-    public AllKeyPropertiesVersion()
+    public EveryTypeKeyProperty()
     {
         this(DefaultInfinityTimestamp.getDefaultInfinity());
     }

@@ -335,16 +335,16 @@ public class GraphQLQueryToOperationConverterTest
         RelatedFinder<OwnedNaturalOneToManySource> finder = OwnedNaturalOneToManySourceFinder.getFinderInstance();
 
         this.assertCompiles(
-                "{ ownedNaturalOneToManySourceByFinder(operation: { target: { exists: {} } }) { value } }");
+                "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { exists: {} } }) { value } }");
         this.assertCompiles(
-                "{ ownedNaturalOneToManySourceByFinder(operation: { target: { notExists: {} } }) { value } }");
+                "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { notExists: {} } }) { value } }");
         this.assertCompiles(
-                "{ ownedNaturalOneToManySourceByFinder(operation: { target: { recursiveNotExists: {} } }) { value } }");
+                "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { recursiveNotExists: {} } }) { value } }");
 
         this.assertCompiles(
-                "{ ownedNaturalOneToManySourceByFinder(operation: { target: { notExists: { source: { value: { eq: \"Value\" } } } } }) { value } }");
+                "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { notExists: { source: { value: { eq: \"Value\" } } } } }) { value } }");
         this.assertCompiles(
-                "{ ownedNaturalOneToManySourceByFinder(operation: { target: { recursiveNotExists: { source: { value: { eq: \"Value\" } } } } }) { value } }");
+                "{ ownedNaturalOneToManySourceByFinder(operation: { targets: { recursiveNotExists: { source: { value: { eq: \"Value\" } } } } }) { value } }");
     }
 
     @Test
