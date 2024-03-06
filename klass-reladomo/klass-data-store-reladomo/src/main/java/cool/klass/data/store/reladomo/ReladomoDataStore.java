@@ -83,14 +83,6 @@ public class ReladomoDataStore implements DataStore
         return newInstance;
     }
 
-    @Override
-    public Object instantiate(Klass klass, ImmutableList<Object> keys, Instant validTime)
-    {
-        Object newInstance = this.instantiateNewInstance(klass, validTime);
-        this.setKeys(klass, newInstance, keys);
-        return newInstance;
-    }
-
     private Object instantiateNewInstance(Klass klass)
     {
         try
