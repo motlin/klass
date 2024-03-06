@@ -9,10 +9,10 @@ import cool.klass.model.meta.grammar.KlassParser;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
-public class ServiceCriteraInferencePhase
+public class ServiceCriteriaInferencePhase
         extends AbstractCompilerPhase
 {
-    public ServiceCriteraInferencePhase(@Nonnull CompilerState compilerState)
+    public ServiceCriteriaInferencePhase(@Nonnull CompilerState compilerState)
     {
         super(compilerState);
     }

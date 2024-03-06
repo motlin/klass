@@ -26,7 +26,7 @@ import cool.klass.model.converter.compiler.phase.ProjectionPhase;
 import cool.klass.model.converter.compiler.phase.PropertyPhase;
 import cool.klass.model.converter.compiler.phase.RelationshipInferencePhase;
 import cool.klass.model.converter.compiler.phase.RelationshipPhase;
-import cool.klass.model.converter.compiler.phase.ServiceCriteraInferencePhase;
+import cool.klass.model.converter.compiler.phase.ServiceCriteriaInferencePhase;
 import cool.klass.model.converter.compiler.phase.ServiceCriteriaPhase;
 import cool.klass.model.converter.compiler.phase.ServiceMultiplicityInferencePhase;
 import cool.klass.model.converter.compiler.phase.ServiceMultiplicityPhase;
@@ -78,7 +78,7 @@ public class KlassCompiler
                     ServiceMultiplicityInferencePhase::new,
                     UrlParameterPhase::new,
                     ServiceCriteriaPhase::new,
-                    ServiceCriteraInferencePhase::new,
+                    ServiceCriteriaInferencePhase::new,
                     VariableResolutionPhase::new,
                     OrderByPhase::new,
                     OrderByDirectionPhase::new,
