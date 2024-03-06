@@ -213,6 +213,10 @@ projection AllKeyPropertiesProjection on AllKeyProperties
         foreignKeyLocalDate: "foreignKeyLocalDate",
         data               : "data",
     },
+    version:
+    {
+        number: "number",
+    },
 }
 
 service AllKeyProperties

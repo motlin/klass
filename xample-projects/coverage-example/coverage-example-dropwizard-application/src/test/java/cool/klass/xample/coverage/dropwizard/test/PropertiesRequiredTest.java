@@ -131,7 +131,8 @@ public class PropertiesRequiredTest extends AbstractCoverageTest
                 + "  \"requiredFloat\": 1.0123457,\n"
                 + "  \"requiredBoolean\": true,\n"
                 + "  \"requiredInstant\": \"1999-12-31T23:59:00Z\",\n"
-                + "  \"requiredLocalDate\": \"1999-12-31\"\n"
+                + "  \"requiredLocalDate\": \"1999-12-31\",\n"
+                + "  \"requiredDerived\": \"cool.klass.xample.coverage.PropertiesRequired.getRequiredDerived\"\n"
                 + "}\n";
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }

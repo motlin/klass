@@ -54,7 +54,10 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "        \"foreignKeyLocalDate\": \"1999-12-31\",\n"
                 + "        \"data\": \"AllForeignKeyProperties data 1 ☝\"\n"
                 + "      }\n"
-                + "    ]\n"
+                + "    ],\n"
+                + "    \"version\": {\n"
+                + "      \"number\": 1\n"
+                + "    }\n"
                 + "  },\n"
                 + "  {\n"
                 + "    \"keyString\": \"AllKeyProperties keyString 2 ✌\",\n"
@@ -78,9 +81,12 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                 + "        \"foreignKeyLocalDate\": \"2000-01-01\",\n"
                 + "        \"data\": \"AllForeignKeyProperties data 2 ✌\"\n"
                 + "      }\n"
-                + "    ]\n"
+                + "    ],\n"
+                + "    \"version\": {\n"
+                + "      \"number\": 1\n"
+                + "    }\n"
                 + "  }\n"
-                + "]\n";
+                + "]";
 
         JSONAssert.assertEquals(jsonResponse, expected, jsonResponse, JSONCompareMode.STRICT);
     }
@@ -201,7 +207,10 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                     + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
                     + "      \"data\": \"AllForeignKeyProperties data 1 ☝\"\n"
                     + "    }\n"
-                    + "  ]\n"
+                    + "  ],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 1\n"
+                    + "  }\n"
                     + "}\n";
 
             JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);
@@ -211,14 +220,6 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
             //language=JSON
             String json = ""
                     + "{\n"
-                    + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
-                    + "  \"keyInteger\": 1,\n"
-                    + "  \"keyLong\": 100000000000,\n"
-                    + "  \"keyDouble\": 1.0123456789,\n"
-                    + "  \"keyFloat\": 1.0123457,\n"
-                    + "  \"keyBoolean\": true,\n"
-                    + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
-                    + "  \"keyLocalDate\": \"1999-12-31\",\n"
                     + "  \"allForeignKeyProperties\": [\n"
                     + "    {\n"
                     + "      \"id\": 1,\n"
@@ -227,7 +228,10 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                     + "    {\n"
                     + "      \"data\": \"new\"\n"
                     + "    }\n"
-                    + "  ]\n"
+                    + "  ],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 1\n"
+                    + "  }\n"
                     + "}\n";
 
             Response response = client.target(
@@ -289,7 +293,10 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
                     + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
                     + "      \"data\": \"new\"\n"
                     + "    }\n"
-                    + "  ]\n"
+                    + "  ],\n"
+                    + "  \"version\": {\n"
+                    + "    \"number\": 2\n"
+                    + "  }\n"
                     + "}";
 
             JSONAssert.assertEquals(jsonResponse, expectedJson, jsonResponse, JSONCompareMode.STRICT);

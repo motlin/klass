@@ -27,8 +27,10 @@ logging:
 
 klass:
   clock:
-    type: system
+    type: fixed
+    instant: "2000-12-31T23:59:59Z"
   dataStore:
     type: reladomo
     uuid:
-      type: system
+      type: seed
+      seed: "test seed"
