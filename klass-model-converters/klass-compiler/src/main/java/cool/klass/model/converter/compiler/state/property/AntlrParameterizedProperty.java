@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -159,23 +159,23 @@ public class AntlrParameterizedProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationState)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationState);
 
         if (this.orderByState != null)
         {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+            this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationState));
         }
 
-        this.reportTypeNotFound(compilerErrorHolder);
+        this.reportTypeNotFound(compilerAnnotationState);
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportNameErrors(compilerErrorHolder);
-        this.parameterHolder.reportNameErrors(compilerErrorHolder);
+        super.reportNameErrors(compilerAnnotationHolder);
+        this.parameterHolder.reportNameErrors(compilerAnnotationHolder);
     }
     //</editor-fold>
 }

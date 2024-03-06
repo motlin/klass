@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -106,9 +106,9 @@ public abstract class AntlrNamedElement
     }
 
     // TODO: 💡 Some name errors should really just be warnings. Rename CompilerError to CompilerAnnotation and implement severity.
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportKeywordCollision(compilerErrorHolder);
+        this.reportKeywordCollision(compilerAnnotationHolder);
 
         if (!this.getNamePattern().matcher(this.getName()).matches())
         {
@@ -116,31 +116,31 @@ public abstract class AntlrNamedElement
                     "Name must match pattern %s but was '%s'.",
                     this.getNamePattern(),
                     this.getName());
-            compilerErrorHolder.add("ERR_NME_PAT", message, this);
+            compilerAnnotationHolder.add("ERR_NME_PAT", message, this);
         }
     }
 
     protected abstract Pattern getNamePattern();
 
     // TODO: ⬇ Potentially refine a smaller list of keywords that clash with associations/projections/services and a separate name pattern
-    protected void reportKeywordCollision(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportKeywordCollision(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (JAVA_KEYWORDS.contains(this.getName()))
         {
             String message = String.format("'%s' is a reserved Java keyword.", this.getName());
-            compilerErrorHolder.add("ERR_NME_KEY", message, this);
+            compilerAnnotationHolder.add("ERR_NME_KEY", message, this);
         }
 
         if (JAVA_LITERALS.contains(this.getName()))
         {
             String message = String.format("'%s' is a reserved Java literal.", this.getName());
-            compilerErrorHolder.add("ERR_NME_LIT", message, this);
+            compilerAnnotationHolder.add("ERR_NME_LIT", message, this);
         }
 
         if (SQL_KEYWORDS.contains(this.getName()))
         {
             String message = String.format("'%s' is a reserved SQL keyword.", this.getName());
-            compilerErrorHolder.add("ERR_SQL_KEY", message, this);
+            compilerAnnotationHolder.add("ERR_SQL_KEY", message, this);
         }
     }
 

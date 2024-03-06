@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
@@ -147,9 +147,9 @@ public class AntlrProjection
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
         // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
         if (this.classifier == AntlrClassifier.NOT_FOUND
@@ -157,7 +157,7 @@ public class AntlrProjection
                 || this.classifier == AntlrInterface.NOT_FOUND)
         {
             String message = "Projection type not found " + this.getElementContext().classifierReference().getText();
-            compilerErrorHolder.add("ERR_PRJ_NFD", message, this, this.getElementContext().classifierReference());
+            compilerAnnotationHolder.add("ERR_PRJ_NFD", message, this, this.getElementContext().classifierReference());
             return;
         }
 
@@ -168,15 +168,15 @@ public class AntlrProjection
             return;
         }
 
-        this.reportForwardReference(compilerErrorHolder);
+        this.reportForwardReference(compilerAnnotationHolder);
 
         for (AntlrProjectionChild child : this.children)
         {
-            child.reportErrors(compilerErrorHolder);
+            child.reportErrors(compilerAnnotationHolder);
         }
     }
 
-    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    protected void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isForwardReference(this.classifier))
         {
@@ -187,7 +187,7 @@ public class AntlrProjection
                     this.classifier.getName(),
                     this.getCompilationUnit().get().getSourceName(),
                     this.classifier.getElementContext().getStart().getLine());
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_FWD_REF",
                     message,
                     this,

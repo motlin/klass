@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.meta.domain.criteria.AbstractBinaryCriteria.AbstractBinaryCriteriaBuilder;
@@ -53,13 +53,13 @@ public abstract class AntlrBinaryCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // TODO: Error if both clauses are identical, or if any left true subclause is a subclause of the right
         // Java | Probable bugs | Constant conditions & exceptions
 
-        this.left.reportErrors(compilerErrorHolder);
-        this.right.reportErrors(compilerErrorHolder);
+        this.left.reportErrors(compilerAnnotationHolder);
+        this.right.reportErrors(compilerAnnotationHolder);
     }
 
     @Override

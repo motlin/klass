@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
 
@@ -28,7 +28,7 @@ public interface AntlrProjectionElement extends IAntlrElement
     @Nonnull
     String getName();
 
-    void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder);
+    void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder);
 
-    void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder);
+    void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder);
 }

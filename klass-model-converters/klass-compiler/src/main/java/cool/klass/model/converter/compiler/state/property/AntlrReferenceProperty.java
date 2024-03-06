@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
@@ -210,7 +210,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.getModifiers().anySatisfy(AntlrModifier::isOwned);
     }
 
-    protected void reportInvalidMultiplicity(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidMultiplicity(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.multiplicityState.getMultiplicity() == null)
         {
@@ -227,7 +227,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
                     this.multiplicityState.getUpperBoundText(),
                     multiplicityChoices);
 
-            compilerErrorHolder.add("ERR_ASO_MUL", message, this.multiplicityState);
+            compilerAnnotationHolder.add("ERR_ASO_MUL", message, this.multiplicityState);
         }
     }
 
@@ -263,7 +263,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         return this.orderByState;
     }
 
-    public void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.getType() != AntlrClass.NOT_FOUND)
         {
@@ -274,7 +274,7 @@ public abstract class AntlrReferenceProperty<Type extends AntlrClassifier>
         String message = String.format(
                 "Cannot find class '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add("ERR_REF_TYP", message, this, offendingToken);
+        compilerAnnotationHolder.add("ERR_REF_TYP", message, this, offendingToken);
     }
 
     protected abstract IdentifierContext getTypeIdentifier();

@@ -8,7 +8,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.test.constants.KlassTestConstants;
@@ -35,9 +35,9 @@ public class DataTransferObjectGeneratorTest
 
         if (compilationResult instanceof ErrorsCompilationResult)
         {
-            ErrorsCompilationResult          errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
-            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
-            String                           message                 = compilerErrors.makeString("\n");
+            ErrorsCompilationResult               errorsCompilationResult = (ErrorsCompilationResult) compilationResult;
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations     = errorsCompilationResult.getCompilerAnnotations();
+            String                                message                 = compilerAnnotations.makeString("\n");
             fail(message);
         }
         else if (compilationResult instanceof DomainModelCompilationResult)

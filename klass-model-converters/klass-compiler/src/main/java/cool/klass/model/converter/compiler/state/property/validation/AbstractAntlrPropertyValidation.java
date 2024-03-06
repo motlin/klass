@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
@@ -43,7 +43,7 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
     public abstract PropertyValidationBuilder<?> getElementBuilder();
 
     public void reportInvalidType(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull PrimitiveType primitiveType)
     {
         ParserRuleContext offendingToken = this.getKeywordToken();
@@ -51,7 +51,7 @@ public abstract class AbstractAntlrPropertyValidation extends AntlrElement
                 "Invalid validation '%s' for type %s.",
                 offendingToken.getText(),
                 primitiveType.getPrettyName());
-        compilerErrorHolder.add("ERR_VLD_TYP", message, this, offendingToken);
+        compilerAnnotationHolder.add("ERR_VLD_TYP", message, this, offendingToken);
     }
 
     public abstract ParserRuleContext getKeywordToken();

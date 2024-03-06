@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -93,11 +93,11 @@ public class AntlrOrderBy extends AntlrElement
         return this.orderByMemberReferencePathsByContext.get(ctx);
     }
 
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
         this.orderByMemberReferencePathStates.forEachWith(
                 AntlrOrderByMemberReferencePath::reportErrors,
-                compilerErrorHolder);
+                compilerAnnotationHolder);
     }
 
     public OrderByBuilder build()

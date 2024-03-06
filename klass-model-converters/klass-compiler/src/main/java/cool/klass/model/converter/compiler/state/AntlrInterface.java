@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
@@ -170,33 +170,33 @@ public class AntlrInterface extends AntlrClassifier
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportNameErrors(compilerErrorHolder);
-        this.reportKeywordCollision(compilerErrorHolder);
+        super.reportNameErrors(compilerAnnotationHolder);
+        this.reportKeywordCollision(compilerAnnotationHolder);
 
         if (RELADOMO_TYPES.contains(this.getName()))
         {
             String message = String.format("'%s' is a Reladomo type.", this.getName());
-            compilerErrorHolder.add("ERR_REL_NME", message, this);
+            compilerAnnotationHolder.add("ERR_REL_NME", message, this);
         }
 
-        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
-        this.reportTransientModifier(compilerErrorHolder);
+        this.reportTransientModifier(compilerAnnotationHolder);
 
-        // this.reportDuplicateParameterizedPropertyNames(compilerErrorHolder);
-        // this.reportDuplicateAssociationEndNames(compilerErrorHolder);
+        // this.reportDuplicateParameterizedPropertyNames(compilerAnnotationHolder);
+        // this.reportDuplicateAssociationEndNames(compilerAnnotationHolder);
     }
 
     /*
-    private void reportDuplicateParameterizedPropertyNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateParameterizedPropertyNames(@Nonnull CompilerErrorState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
@@ -204,13 +204,13 @@ public class AntlrInterface extends AntlrClassifier
         {
             if (duplicateMemberNames.contains(parameterizedPropertyState.getName()))
             {
-                parameterizedPropertyState.reportDuplicateMemberName(compilerErrorHolder);
+                parameterizedPropertyState.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            parameterizedPropertyState.reportErrors(compilerErrorHolder);
+            parameterizedPropertyState.reportErrors(compilerAnnotationHolder);
         }
     }
 
-    private void reportDuplicateAssociationEndNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateAssociationEndNames(@Nonnull CompilerErrorState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
@@ -218,14 +218,14 @@ public class AntlrInterface extends AntlrClassifier
         {
             if (duplicateMemberNames.contains(associationEndState.getName()))
             {
-                associationEndState.reportDuplicateMemberName(compilerErrorHolder);
+                associationEndState.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            associationEndState.reportErrors(compilerErrorHolder);
+            associationEndState.reportErrors(compilerAnnotationHolder);
         }
     }
     */
 
-    private void reportTransientModifier(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTransientModifier(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // Only need to check declared modifiers
         Optional<AntlrModifier> maybeTransientModifier = this.modifierStates.detectOptional(AntlrModifier::isTransient);
@@ -239,11 +239,11 @@ public class AntlrInterface extends AntlrClassifier
         String message = String.format(
                 "'%s' keyword not applicable to interfaces.",
                 transientModifier.getKeyword());
-        compilerErrorHolder.add("ERR_INT_TRN", message, transientModifier);
+        compilerAnnotationHolder.add("ERR_INT_TRN", message, transientModifier);
     }
 
     @Override
-    protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         boolean noCircularInheritance = true;
         for (int i = 0; i < this.interfaceStates.size(); i++)
@@ -257,13 +257,13 @@ public class AntlrInterface extends AntlrClassifier
             String message = String.format(
                     "Circular inheritance '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add("ERR_IMP_SLF", message, this, offendingToken);
+            compilerAnnotationHolder.add("ERR_IMP_SLF", message, this, offendingToken);
             noCircularInheritance = false;
         }
 
         if (noCircularInheritance)
         {
-            this.reportForwardReference(compilerErrorHolder);
+            this.reportForwardReference(compilerAnnotationHolder);
         }
     }
     //</editor-fold>

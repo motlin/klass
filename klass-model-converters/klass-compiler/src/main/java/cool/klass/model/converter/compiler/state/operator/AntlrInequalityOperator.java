@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InequalityOperatorImpl.InequalityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
@@ -50,7 +50,7 @@ public class AntlrInequalityOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {
@@ -76,6 +76,6 @@ public class AntlrInequalityOperator extends AntlrOperator
         // Cast is a deliberate assertion
         CriteriaOperatorContext criteriaOperatorContext =
                 (CriteriaOperatorContext) this.elementContext.getParent().getParent();
-        compilerErrorHolder.add("ERR_OPR_NEQ", message, this, criteriaOperatorContext);
+        compilerAnnotationHolder.add("ERR_OPR_NEQ", message, this, criteriaOperatorContext);
     }
 }

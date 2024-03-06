@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.AntlrUtils;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
 import cool.klass.model.converter.compiler.state.service.AntlrServiceGroup;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
@@ -402,13 +402,13 @@ public class AntlrDomainModel
         return this.serviceGroupsByContext.get(context);
     }
 
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         for (AntlrClass userClassState : this.userClassStates)
         {
             if (this.userClassStates.size() > 1)
             {
-                userClassState.reportDuplicateUserClass(compilerErrorHolder);
+                userClassState.reportDuplicateUserClass(compilerAnnotationHolder);
             }
         }
 
@@ -422,39 +422,39 @@ public class AntlrDomainModel
         this.topLevelElementsByContext
                 .toSortedListBy(AntlrTopLevelElement::getOrdinal)
                 .select(topLevelElementState -> duplicateTopLevelNames.contains(topLevelElementState.getName()))
-                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerErrorHolder);
+                .forEachWith(AntlrTopLevelElement::reportDuplicateTopLevelName, compilerAnnotationHolder);
 
         for (AntlrCompilationUnit compilationUnitState : this.compilationUnitStates)
         {
-            compilationUnitState.reportNameErrors(compilerErrorHolder);
+            compilationUnitState.reportNameErrors(compilerAnnotationHolder);
         }
 
         for (AntlrEnumeration enumerationState : this.enumerationStates)
         {
-            enumerationState.reportNameErrors(compilerErrorHolder);
-            enumerationState.reportErrors(compilerErrorHolder);
+            enumerationState.reportNameErrors(compilerAnnotationHolder);
+            enumerationState.reportErrors(compilerAnnotationHolder);
         }
 
         for (AntlrClassifier classifierState : this.classifierStates)
         {
-            classifierState.reportNameErrors(compilerErrorHolder);
-            classifierState.reportErrors(compilerErrorHolder);
+            classifierState.reportNameErrors(compilerAnnotationHolder);
+            classifierState.reportErrors(compilerAnnotationHolder);
             if (this.userClassStates.isEmpty())
             {
-                classifierState.reportAuditErrors(compilerErrorHolder);
+                classifierState.reportAuditErrors(compilerAnnotationHolder);
             }
         }
 
         for (AntlrAssociation associationState : this.associationStates)
         {
-            associationState.reportNameErrors(compilerErrorHolder);
-            associationState.reportErrors(compilerErrorHolder);
+            associationState.reportNameErrors(compilerAnnotationHolder);
+            associationState.reportErrors(compilerAnnotationHolder);
         }
 
         for (AntlrProjection projectionState : this.projectionStates)
         {
-            projectionState.reportNameErrors(compilerErrorHolder);
-            projectionState.reportErrors(compilerErrorHolder);
+            projectionState.reportNameErrors(compilerAnnotationHolder);
+            projectionState.reportErrors(compilerAnnotationHolder);
         }
 
         ImmutableBag<AntlrClass> duplicateServiceGroupKlasses = this.getDuplicateServiceGroupClasses();
@@ -462,10 +462,10 @@ public class AntlrDomainModel
         {
             if (duplicateServiceGroupKlasses.contains(serviceGroupState.getKlass()))
             {
-                serviceGroupState.reportDuplicateServiceGroupClass(compilerErrorHolder);
+                serviceGroupState.reportDuplicateServiceGroupClass(compilerAnnotationHolder);
             }
-            serviceGroupState.reportNameErrors(compilerErrorHolder);
-            serviceGroupState.reportErrors(compilerErrorHolder);
+            serviceGroupState.reportNameErrors(compilerAnnotationHolder);
+            serviceGroupState.reportErrors(compilerAnnotationHolder);
         }
     }
 

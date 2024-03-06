@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
+import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.converter.compiler.phase.AbstractCompilerPhase;
 import cool.klass.model.converter.compiler.state.AntlrDomainModel;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -49,10 +49,10 @@ import org.eclipse.collections.impl.factory.OrderedMaps;
 public class CompilerState
 {
     @Nonnull
-    private final CompilerInputState compilerInputState;
-    private final CompilerErrorState compilerErrorHolder = new CompilerErrorState();
-    private final AntlrDomainModel   domainModelState    = new AntlrDomainModel();
-    private       CompilerWalkState  compilerWalkState   = new CompilerWalkState(this.domainModelState);
+    private final CompilerInputState      compilerInputState;
+    private final CompilerAnnotationState compilerAnnotationHolder = new CompilerAnnotationState();
+    private final AntlrDomainModel        domainModelState         = new AntlrDomainModel();
+    private       CompilerWalkState       compilerWalkState        = new CompilerWalkState(this.domainModelState);
 
     private final MutableOrderedMap<CompilationUnit, CompilerWalkState> macroCompilerWalkStates =
             OrderedMaps.adapt(new LinkedHashMap<>());
@@ -129,21 +129,21 @@ public class CompilerState
 
     public void reportErrors()
     {
-        this.domainModelState.reportErrors(this.compilerErrorHolder);
+        this.domainModelState.reportErrors(this.compilerAnnotationHolder);
     }
 
     @Nonnull
     public CompilationResult getCompilationResult()
     {
-        ImmutableList<RootCompilerError> compilerErrors = this.compilerErrorHolder.getCompilerErrors();
-        if (compilerErrors.notEmpty())
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = this.compilerAnnotationHolder.getCompilerAnnotations();
+        if (compilerAnnotations.notEmpty())
         {
             ImmutableList<SourceCodeBuilder> sourceCodeBuilders = this.compilerInputState
                     .getCompilationUnits()
                     .collect(CompilationUnit::build)
                     .toImmutable();
             ImmutableList<SourceCode> sourceCodes = sourceCodeBuilders.collect(SourceCodeBuilder::build);
-            return new ErrorsCompilationResult(sourceCodes, compilerErrors);
+            return new ErrorsCompilationResult(sourceCodes, compilerAnnotations);
         }
         return new DomainModelCompilationResult(this.buildDomainModel());
     }
@@ -151,9 +151,9 @@ public class CompilerState
     @Nonnull
     private DomainModelWithSourceCode buildDomainModel()
     {
-        if (this.compilerErrorHolder.hasCompilerErrors())
+        if (this.compilerAnnotationHolder.hasCompilerAnnotations())
         {
-            throw new AssertionError(this.compilerErrorHolder.getCompilerErrors().makeString());
+            throw new AssertionError(this.compilerAnnotationHolder.getCompilerAnnotations().makeString());
         }
 
         ImmutableList<CompilationUnit> compilationUnits   = this.compilerInputState.getCompilationUnits().toImmutable();

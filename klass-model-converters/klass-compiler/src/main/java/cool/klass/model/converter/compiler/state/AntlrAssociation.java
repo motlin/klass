@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
@@ -191,7 +191,7 @@ public class AntlrAssociation
         return this.associationBuilder;
     }
 
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         int numAssociationEnds = this.associationEndStates.size();
         if (numAssociationEnds != 2)
@@ -200,7 +200,7 @@ public class AntlrAssociation
                     "Association '%s' should have 2 ends. Found %d",
                     this.getName(),
                     numAssociationEnds);
-            compilerErrorHolder.add("ERR_ASO_END", message, this);
+            compilerAnnotationHolder.add("ERR_ASO_END", message, this);
             return;
         }
 
@@ -212,7 +212,7 @@ public class AntlrAssociation
             AntlrModifier sourceOwnedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
             AntlrModifier targetOwnedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
 
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_ASO_OWN",
                     message,
                     this,
@@ -231,7 +231,7 @@ public class AntlrAssociation
                     this.getTargetEnd().getOwningClassifierState().getName(),
                     this.getTargetEnd().getName());
             AntlrModifier ownedModifier = this.getTargetEnd().getModifiers().detect(AntlrModifier::isOwned);
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_OWN_ONE",
                     message,
                     ownedModifier,
@@ -246,7 +246,7 @@ public class AntlrAssociation
                     this.getSourceEnd().getOwningClassifierState().getName(),
                     this.getSourceEnd().getName());
             AntlrModifier ownedModifier = this.getSourceEnd().getModifiers().detect(AntlrModifier::isOwned);
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_OWN_ONE",
                     message,
                     ownedModifier,
@@ -263,7 +263,7 @@ public class AntlrAssociation
             String message = String.format(
                     "Association '%s' is perfectly symmetrical, so foreign keys cannot be inferred. To break the symmetry, make one end owned, or make one end required and the other end optional.",
                     this.getName());
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_ASO_SYM",
                     message,
                     this,
@@ -279,8 +279,8 @@ public class AntlrAssociation
         if (this.getSourceEnd().getType() == AntlrClass.NOT_FOUND
                 || this.getTargetEnd().getType() == AntlrClass.NOT_FOUND)
         {
-            this.getSourceEnd().reportTypeNotFound(compilerErrorHolder);
-            this.getTargetEnd().reportTypeNotFound(compilerErrorHolder);
+            this.getSourceEnd().reportTypeNotFound(compilerAnnotationHolder);
+            this.getTargetEnd().reportTypeNotFound(compilerAnnotationHolder);
 
             return;
         }
@@ -297,11 +297,11 @@ public class AntlrAssociation
             String message = String.format(
                     "Relationship inference not yet supported. '%s' must declare a relationship.",
                     this.getName());
-            compilerErrorHolder.add("ERR_REL_INF", message, this);
+            compilerAnnotationHolder.add("ERR_REL_INF", message, this);
         }
         else
         {
-            this.relationship.reportErrors(compilerErrorHolder);
+            this.relationship.reportErrors(compilerAnnotationHolder);
         }
     }
 

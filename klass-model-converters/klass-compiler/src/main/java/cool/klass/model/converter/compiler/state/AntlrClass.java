@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrClassReferenceProperty;
@@ -408,49 +408,49 @@ public class AntlrClass
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportNameErrors(compilerErrorHolder);
-        this.reportKeywordCollision(compilerErrorHolder);
+        super.reportNameErrors(compilerAnnotationHolder);
+        this.reportKeywordCollision(compilerAnnotationHolder);
 
         if (RELADOMO_TYPES.contains(this.getName()))
         {
             String message = String.format("'%s' is a Reladomo type.", this.getName());
-            compilerErrorHolder.add("ERR_REL_NME", message, this);
+            compilerAnnotationHolder.add("ERR_REL_NME", message, this);
         }
 
-        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
-        this.parameterizedPropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
-        this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
-        this.associationEndSignatureStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.dataTypePropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.parameterizedPropertyStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.associationEndStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
+        this.associationEndSignatureStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
         if (this.isUser)
         {
             this.reportMultiplePropertiesWithModifiers(
-                    compilerErrorHolder,
+                    compilerAnnotationHolder,
                     this.dataTypePropertyStates,
                     "key",
                     "userId");
         }
-        this.reportMissingKeyProperty(compilerErrorHolder);
-        this.reportSuperClassNotFound(compilerErrorHolder);
-        this.reportExtendsConcrete(compilerErrorHolder);
-        this.reportMultipleOppositesWithModifier(compilerErrorHolder, "version");
-        this.reportOwnedByMultipleTypes(compilerErrorHolder);
-        this.reportVersionErrors(compilerErrorHolder);
-        this.reportTransientInheritance(compilerErrorHolder);
-        this.reportTransientIdProperties(compilerErrorHolder);
+        this.reportMissingKeyProperty(compilerAnnotationHolder);
+        this.reportSuperClassNotFound(compilerAnnotationHolder);
+        this.reportExtendsConcrete(compilerAnnotationHolder);
+        this.reportMultipleOppositesWithModifier(compilerAnnotationHolder, "version");
+        this.reportOwnedByMultipleTypes(compilerAnnotationHolder);
+        this.reportVersionErrors(compilerAnnotationHolder);
+        this.reportTransientInheritance(compilerAnnotationHolder);
+        this.reportTransientIdProperties(compilerAnnotationHolder);
 
         // TODO: parameterized properties
     }
 
-    private void reportMultipleOppositesWithModifier(@Nonnull CompilerErrorState compilerErrorHolder, String modifier)
+    private void reportMultipleOppositesWithModifier(@Nonnull CompilerAnnotationState compilerAnnotationHolder, String modifier)
     {
         MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
                 .select(associationEnd -> associationEnd
@@ -464,11 +464,11 @@ public class AntlrClass
 
         for (AntlrAssociationEnd associationEnd : associationEnds)
         {
-            associationEnd.getOpposite().reportDuplicateOppositeWithModifier(compilerErrorHolder, this, modifier);
+            associationEnd.getOpposite().reportDuplicateOppositeWithModifier(compilerAnnotationHolder, this, modifier);
         }
     }
 
-    private void reportOwnedByMultipleTypes(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportOwnedByMultipleTypes(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableList<AntlrAssociationEnd> associationEnds = this.associationEndStates
                 .select(associationEnd -> associationEnd
@@ -483,21 +483,21 @@ public class AntlrClass
 
         for (AntlrAssociationEnd associationEnd : associationEnds)
         {
-            associationEnd.reportDuplicateOppositeWithModifier(compilerErrorHolder, this, "owned");
+            associationEnd.reportDuplicateOppositeWithModifier(compilerAnnotationHolder, this, "owned");
         }
     }
 
-    private void reportVersionErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportVersionErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.referencePropertyStates.anySatisfy(AntlrReferenceProperty::isVersion)
                 && this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersioned))
         {
             String message = String.format("Class '%s' is a version and has a version.", this.getName());
-            compilerErrorHolder.add("ERR_VER_VER", message, this);
+            compilerAnnotationHolder.add("ERR_VER_VER", message, this);
         }
     }
 
-    private void reportMissingKeyProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportMissingKeyProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.hasKeyProperty()
                 && !this.hasIDProperty()
@@ -505,19 +505,19 @@ public class AntlrClass
                 && !this.superClassShouldHaveKey())
         {
             String message = String.format("Class '%s' must have at least one key property.", this.getName());
-            compilerErrorHolder.add("ERR_CLS_KEY", message, this);
+            compilerAnnotationHolder.add("ERR_CLS_KEY", message, this);
         }
     }
 
-    public void reportDuplicateUserClass(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateUserClass(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format(
                 "Only one 'user' class is allowed. Found '%s'.",
                 this.getName());
-        compilerErrorHolder.add("ERR_DUP_USR", message, this, this.nameContext);
+        compilerAnnotationHolder.add("ERR_DUP_USR", message, this, this.nameContext);
     }
 
-    private void reportSuperClassNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportSuperClassNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.superClassState.equals(Optional.of(AntlrClass.NOT_FOUND)))
         {
@@ -529,11 +529,11 @@ public class AntlrClass
             String message = String.format(
                     "Cannot find class '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add("ERR_EXT_CLS", message, this, offendingToken);
+            compilerAnnotationHolder.add("ERR_EXT_CLS", message, this, offendingToken);
         }
     }
 
-    private void reportExtendsConcrete(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportExtendsConcrete(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.superClassState.isEmpty()
                 || this.superClassState.equals(Optional.of(NOT_FOUND))
@@ -552,11 +552,11 @@ public class AntlrClass
             String message = String.format(
                     "Superclass must be abstract '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add("ERR_EXT_CCT", message, this, offendingToken);
+            compilerAnnotationHolder.add("ERR_EXT_CCT", message, this, offendingToken);
         }
     }
 
-    private void reportTransientInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTransientInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isTransient()
                 || this.superClassState.isEmpty()
@@ -573,10 +573,10 @@ public class AntlrClass
         String message = String.format(
                 "Must be transient to inherit from transient superclass '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add("ERR_EXT_TNS", message, this, offendingToken);
+        compilerAnnotationHolder.add("ERR_EXT_TNS", message, this, offendingToken);
     }
 
-    private void reportTransientIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTransientIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isTransient())
         {
@@ -585,11 +585,11 @@ public class AntlrClass
 
         this.dataTypePropertyStates
                 .select(AntlrDataTypeProperty::isId)
-                .forEachWith(AntlrDataTypeProperty::reportTransientIdProperties, compilerErrorHolder);
+                .forEachWith(AntlrDataTypeProperty::reportTransientIdProperties, compilerAnnotationHolder);
     }
 
     @Override
-    protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportCircularInheritance(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.hasCircularInheritance())
         {
@@ -601,18 +601,18 @@ public class AntlrClass
             String message = String.format(
                     "Circular inheritance '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add("ERR_EXT_SLF", message, this, offendingToken);
+            compilerAnnotationHolder.add("ERR_EXT_SLF", message, this, offendingToken);
         }
         else
         {
-            this.reportForwardReference(compilerErrorHolder);
+            this.reportForwardReference(compilerAnnotationHolder);
         }
     }
 
     @Override
-    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    protected void reportForwardReference(CompilerAnnotationState compilerAnnotationState)
     {
-        super.reportForwardReference(compilerErrorHolder);
+        super.reportForwardReference(compilerAnnotationState);
         if (this.superClassState.isEmpty())
         {
             return;
@@ -628,7 +628,7 @@ public class AntlrClass
                     klassState.getName(),
                     this.getCompilationUnit().get().getSourceName(),
                     klassState.getElementContext().getStart().getLine());
-            compilerErrorHolder.add(
+            compilerAnnotationState.add(
                     "ERR_FWD_REF",
                     message,
                     this,

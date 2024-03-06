@@ -15,7 +15,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.DomainModel;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
@@ -149,11 +149,11 @@ public abstract class AbstractGenerateMojo
     {
         if (compilationResult instanceof ErrorsCompilationResult errorsCompilationResult)
         {
-            ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
-            for (RootCompilerError compilerError : compilerErrors)
+            ImmutableList<RootCompilerAnnotation> compilerAnnotations = errorsCompilationResult.getCompilerAnnotations();
+            for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
             {
-                this.getLog().info(compilerError.toGitHubAnnotation());
-                this.getLog().warn(compilerError.toString());
+                this.getLog().info(compilerAnnotation.toGitHubAnnotation());
+                this.getLog().warn(compilerAnnotation.toString());
             }
             throw new MojoExecutionException("There were compiler errors.");
         }

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -104,16 +104,16 @@ public class AntlrEnumerationLiteral
         return this.elementBuilder;
     }
 
-    public void reportDuplicateName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate enumeration literal: '%s'.", this.getName());
-        compilerErrorHolder.add("ERR_DUP_ENM", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_ENM", message, this);
     }
 
-    public void reportDuplicatePrettyName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicatePrettyName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate enumeration pretty name: '%s'.", this.prettyName.get());
-        compilerErrorHolder.add("ERR_DUP_LIT", message, this, this.getElementContext().enumerationPrettyName());
+        compilerAnnotationHolder.add("ERR_DUP_LIT", message, this, this.getElementContext().enumerationPrettyName());
     }
 
     @Override

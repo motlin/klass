@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.meta.domain.api.TopLevelElement.TopLevelElementBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -50,10 +50,10 @@ public interface AntlrTopLevelElement
         return true;
     }
 
-    default void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
+    default void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate top level item name: '%s'.", this.getName());
-        compilerErrorHolder.add("ERR_DUP_TOP", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_TOP", message, this);
     }
 
     @Nonnull

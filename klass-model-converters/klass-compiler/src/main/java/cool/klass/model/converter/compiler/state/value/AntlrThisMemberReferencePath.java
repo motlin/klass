@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -73,12 +73,12 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         List<AssociationEndReferenceContext> associationEndReferenceContexts =
                 this.getElementContext().associationEndReference();
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(
-                compilerErrorHolder,
+                compilerAnnotationHolder,
                 associationEndReferenceContexts);
         if (currentClassState == null || currentClassState == AntlrClass.AMBIGUOUS)
         {
@@ -93,7 +93,7 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
                     "Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add("ERR_THS_MEM", message, this, identifier);
+            compilerAnnotationHolder.add("ERR_THS_MEM", message, this, identifier);
         }
     }
 

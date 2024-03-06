@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.EqualityOperatorImpl.EqualityOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EqualityOperatorContext;
@@ -50,7 +50,7 @@ public class AntlrEqualityOperator
 
     @Override
     public void checkTypes(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {
@@ -75,7 +75,7 @@ public class AntlrEqualityOperator
                 "Incompatible types: '%s' and '%s'.",
                 sourceTypes.getFirst(),
                 targetTypes.getFirst());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_OPR_EQL",
                 message,
                 this,

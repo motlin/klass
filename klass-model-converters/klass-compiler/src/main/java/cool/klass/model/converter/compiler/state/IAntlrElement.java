@@ -5,7 +5,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrModifier;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -80,7 +80,7 @@ public interface IAntlrElement
     }
 
     default void reportAuditErrors(
-            CompilerErrorState compilerErrorHolder,
+            CompilerAnnotationState compilerAnnotationHolder,
             ListIterable<AntlrModifier> modifierStates,
             IAntlrElement element)
     {
@@ -95,7 +95,7 @@ public interface IAntlrElement
         String message = String.format(
                 "Modifiers %s require one 'user' class in the domain model.",
                 offendingModifiers.collect(AntlrModifier::getKeyword));
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_ADT_MOD",
                 message,
                 element,

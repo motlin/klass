@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.InOperatorImpl.InOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.InOperatorContext;
@@ -49,7 +49,7 @@ public class AntlrInOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             @Nonnull ListIterable<AntlrType> targetTypes)
     {
@@ -72,6 +72,6 @@ public class AntlrInOperator extends AntlrOperator
                 "Incompatible types: '%s' and '%s'.",
                 sourceTypes.getFirst(),
                 targetTypes.getFirst());
-        compilerErrorHolder.add("ERR_OPR_IN", message, this);
+        compilerAnnotationHolder.add("ERR_OPR_IN", message, this);
     }
 }

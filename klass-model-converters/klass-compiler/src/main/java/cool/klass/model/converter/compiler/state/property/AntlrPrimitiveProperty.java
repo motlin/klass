@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.api.PrimitiveType;
@@ -118,30 +118,30 @@ public class AntlrPrimitiveProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
-        this.reportInvalidTemporalMultiplicity(compilerErrorHolder);
-        this.reportInvalidStringValidations(compilerErrorHolder);
-        this.reportInvalidNumericValidations(compilerErrorHolder);
+        this.reportInvalidTemporalMultiplicity(compilerAnnotationHolder);
+        this.reportInvalidStringValidations(compilerAnnotationHolder);
+        this.reportInvalidNumericValidations(compilerAnnotationHolder);
     }
 
     @Override
-    protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType.isId())
         {
-            this.reportNonKeyIdProperty(compilerErrorHolder);
+            this.reportNonKeyIdProperty(compilerAnnotationHolder);
         }
         else
         {
-            this.reportInvalidTypeIdProperty(compilerErrorHolder);
+            this.reportInvalidTypeIdProperty(compilerAnnotationHolder);
         }
     }
 
-    private void reportNonKeyIdProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportNonKeyIdProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isKey())
         {
@@ -152,11 +152,11 @@ public class AntlrPrimitiveProperty
         for (AntlrModifier idModifier : idModifiers)
         {
             String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
-            compilerErrorHolder.add("ERR_NKY_IDP", message, idModifier);
+            compilerAnnotationHolder.add("ERR_NKY_IDP", message, idModifier);
         }
     }
 
-    private void reportInvalidTypeIdProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportInvalidTypeIdProperty(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
 
@@ -167,11 +167,11 @@ public class AntlrPrimitiveProperty
                     "Primitive properties with type %s may not be auto-generated ids. Only types %s may be id properties.",
                     primitiveType.getPrettyName(),
                     PrimitiveType.ID_PRIMITIVE_TYPES);
-            compilerErrorHolder.add("ERR_PRP_IDP", message, idModifier);
+            compilerAnnotationHolder.add("ERR_PRP_IDP", message, idModifier);
         }
     }
 
-    private void reportInvalidTemporalMultiplicity(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidTemporalMultiplicity(CompilerAnnotationState compilerAnnotationHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (!primitiveType.isTemporal())
@@ -187,10 +187,10 @@ public class AntlrPrimitiveProperty
         String message = String.format(
                 "Primitive properties with type %s may not be required.",
                 primitiveType.getPrettyName());
-        compilerErrorHolder.add("ERR_REQ_TMP", message, this, this.nameContext);
+        compilerAnnotationHolder.add("ERR_REQ_TMP", message, this, this.nameContext);
     }
 
-    private void reportInvalidStringValidations(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportInvalidStringValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType == PrimitiveType.STRING)
@@ -198,11 +198,11 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        this.minLengthValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
-        this.maxLengthValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
+        this.minLengthValidationStates.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
+        this.maxLengthValidationStates.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
     }
 
-    private void reportInvalidNumericValidations(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportInvalidNumericValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         PrimitiveType primitiveType = this.antlrPrimitiveType.getPrimitiveType();
         if (primitiveType.isNumeric())
@@ -210,8 +210,8 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        this.minValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
-        this.maxValidationStates.each(each -> each.reportInvalidType(compilerErrorHolder, primitiveType));
+        this.minValidationStates.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
+        this.maxValidationStates.each(each -> each.reportInvalidType(compilerAnnotationHolder, primitiveType));
     }
     //</editor-fold>
 }

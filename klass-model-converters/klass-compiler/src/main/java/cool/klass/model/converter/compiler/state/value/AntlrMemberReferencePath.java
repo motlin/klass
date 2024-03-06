@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
@@ -60,7 +60,7 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
 
     @Nullable
     protected AntlrClass reportErrorsAssociationEnds(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull List<AssociationEndReferenceContext> associationEndReferenceContexts)
     {
         AntlrClass currentClassState = this.classState;
@@ -74,7 +74,7 @@ public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
                         "Cannot find member '%s.%s'.",
                         currentClassState.getName(),
                         identifier.getText());
-                compilerErrorHolder.add("ERR_MEM_EXP", message, this, identifier);
+                compilerAnnotationHolder.add("ERR_MEM_EXP", message, this, identifier);
                 return null;
             }
             currentClassState = associationEndState.getType();

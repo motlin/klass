@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.meta.domain.operator.StringOperatorImpl.StringOperatorBuilder;
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
@@ -50,7 +50,7 @@ public class AntlrStringOperator extends AntlrOperator
 
     @Override
     public void checkTypes(
-            CompilerErrorState compilerErrorHolder,
+            CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ListIterable<AntlrType> sourceTypes,
             ListIterable<AntlrType> targetTypes)
     {

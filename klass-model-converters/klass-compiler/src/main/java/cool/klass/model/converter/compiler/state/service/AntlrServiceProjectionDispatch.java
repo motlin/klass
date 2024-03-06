@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
@@ -64,13 +64,13 @@ public class AntlrServiceProjectionDispatch
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.projection == AntlrProjection.NOT_FOUND)
         {
             ProjectionReferenceContext reference = this.getElementContext().projectionReference();
 
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_SER_PRJ",
                     String.format("Cannot find projection '%s'", reference.getText()),
                     this,
@@ -106,13 +106,13 @@ public class AntlrServiceProjectionDispatch
                     serviceGroupKlass.getName(),
                     this.projection.getName(),
                     projectionClassifier.getName());
-            compilerErrorHolder.add("ERR_SRV_PRJ", error, this, this.getElementContext().projectionReference());
+            compilerAnnotationHolder.add("ERR_SRV_PRJ", error, this, this.getElementContext().projectionReference());
         }
 
-        this.reportForwardReference(compilerErrorHolder);
+        this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.projection))
         {
@@ -126,7 +126,7 @@ public class AntlrServiceProjectionDispatch
                 this.projection.getName(),
                 this.getCompilationUnit().get().getSourceName(),
                 this.projection.getElementContext().getStart().getLine());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
                 this,

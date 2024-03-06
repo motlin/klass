@@ -13,7 +13,7 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.DomainModelCompilationResult;
 import cool.klass.model.converter.compiler.ErrorsCompilationResult;
 import cool.klass.model.converter.compiler.KlassCompiler;
-import cool.klass.model.converter.compiler.error.RootCompilerError;
+import cool.klass.model.converter.compiler.annotation.RootCompilerAnnotation;
 import cool.klass.model.meta.domain.api.source.DomainModelWithSourceCode;
 import cool.klass.model.meta.loader.DomainModelLoader;
 import org.eclipse.collections.api.collection.ImmutableCollection;
@@ -55,7 +55,7 @@ public class DomainModelCompilerLoader
     public DomainModelWithSourceCode load()
     {
         LOGGER.info("Scanning source packages: {}", this.klassSourcePackages);
-        Instant  start      = Instant.now();
+        Instant start = Instant.now();
 
         ImmutableCollection<CompilationUnit> compilationUnits = this.getCompilationUnits();
 
@@ -120,10 +120,10 @@ public class DomainModelCompilerLoader
     @Nonnull
     private DomainModelWithSourceCode handleFailure(@Nonnull ErrorsCompilationResult compilationResult)
     {
-        ImmutableList<RootCompilerError> compilerErrors = compilationResult.getCompilerErrors();
-        for (RootCompilerError compilerError : compilerErrors)
+        ImmutableList<RootCompilerAnnotation> compilerAnnotations = compilationResult.getCompilerAnnotations();
+        for (RootCompilerAnnotation compilerAnnotation : compilerAnnotations)
         {
-            LOGGER.warn(compilerError.toString());
+            LOGGER.warn(compilerAnnotation.toString());
         }
         throw new RuntimeException("There were compiler errors.");
     }

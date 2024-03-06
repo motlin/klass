@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
@@ -124,14 +124,14 @@ public abstract class AntlrProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportDuplicateModifiers(compilerErrorHolder);
-        this.reportDuplicateAuditModifiers(compilerErrorHolder);
-        this.reportInvalidAuditProperties(compilerErrorHolder);
+        this.reportDuplicateModifiers(compilerAnnotationHolder);
+        this.reportDuplicateAuditModifiers(compilerAnnotationHolder);
+        this.reportInvalidAuditProperties(compilerAnnotationHolder);
     }
 
-    private void reportDuplicateModifiers(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateModifiers(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableBag<String> duplicateModifiers = this.getModifiers()
                 .asLazy()
@@ -146,12 +146,12 @@ public abstract class AntlrProperty
                 String message = String.format(
                         "Duplicate modifier '%s'.",
                         modifier.getKeyword());
-                compilerErrorHolder.add("ERR_DUP_MOD", message, modifier);
+                compilerAnnotationHolder.add("ERR_DUP_MOD", message, modifier);
             }
         }
     }
 
-    protected void reportDuplicateAuditModifiers(CompilerErrorState compilerErrorHolder)
+    protected void reportDuplicateAuditModifiers(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && this.isLastUpdatedBy())
         {
@@ -162,7 +162,7 @@ public abstract class AntlrProperty
             ImmutableList<ParserRuleContext> modifierContexts = modifiers
                     .collect(AntlrElement::getElementContext);
             String message = "Property may not have both 'createdBy' and lastUpdatedBy' modifiers.";
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_CBY_LBY",
                     message,
                     this,
@@ -171,7 +171,7 @@ public abstract class AntlrProperty
     }
 
     @OverridingMethodsMustInvokeSuper
-    protected void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidAuditProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && this.isLastUpdatedBy())
         {
@@ -187,7 +187,7 @@ public abstract class AntlrProperty
             String message = String.format(
                     "Expected createdBy property '%s' to be final.",
                     this);
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_CRT_FIN",
                     message,
                     this,
@@ -204,7 +204,7 @@ public abstract class AntlrProperty
             String message = String.format(
                     "Expected lastUpdatedBy property '%s' to not be final.",
                     this);
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_LUB_NFI",
                     message,
                     this,
@@ -212,24 +212,24 @@ public abstract class AntlrProperty
         }
     }
 
-    public final void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public final void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format(
                 "Duplicate member: '%s.%s'.",
                 this.getOwningClassifierState().getName(),
                 this.getName());
 
-        compilerErrorHolder.add("ERR_DUP_PRP", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_PRP", message, this);
     }
 
     @OverridingMethodsMustInvokeSuper
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportAuditErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
+        this.reportAuditErrors(compilerAnnotationHolder, this.modifierStates, this);
     }
 
     public void reportDuplicatePropertyWithModifiers(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             ImmutableList<String> modifierStrings)
     {
         ImmutableList<AntlrModifier> modifierStates = modifierStrings.flatCollect(this::getModifiersByName);
@@ -239,7 +239,7 @@ public abstract class AntlrProperty
                 this.getOwningClassifierState().getName(),
                 modifierStrings);
 
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_PRP_MOD",
                 message,
                 this,

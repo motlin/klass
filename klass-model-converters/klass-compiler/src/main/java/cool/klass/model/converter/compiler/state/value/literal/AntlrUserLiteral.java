@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -36,7 +36,7 @@ public class AntlrUserLiteral
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.userClassState.isPresent())
         {
@@ -44,7 +44,7 @@ public class AntlrUserLiteral
         }
 
         String message = "'user' literal requires one 'user' class in the domain model.";
-        compilerErrorHolder.add("ERR_USR_LIT", message, this);
+        compilerAnnotationHolder.add("ERR_USR_LIT", message, this);
     }
 
     @Nonnull

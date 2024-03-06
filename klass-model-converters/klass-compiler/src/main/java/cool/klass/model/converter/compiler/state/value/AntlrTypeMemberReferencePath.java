@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -75,7 +75,7 @@ public class AntlrTypeMemberReferencePath
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.classState == AntlrClass.AMBIGUOUS)
         {
@@ -91,14 +91,14 @@ public class AntlrTypeMemberReferencePath
                     "Cannot find class '%s'.",
                     offendingToken.getText());
 
-            compilerErrorHolder.add("ERR_MEM_TYP", message, this, offendingToken);
+            compilerAnnotationHolder.add("ERR_MEM_TYP", message, this, offendingToken);
             return;
         }
 
         List<AssociationEndReferenceContext> associationEndReferenceContexts =
                 this.getElementContext().associationEndReference();
         AntlrClass currentClassState = this.reportErrorsAssociationEnds(
-                compilerErrorHolder,
+                compilerAnnotationHolder,
                 associationEndReferenceContexts);
         if (currentClassState == null)
         {
@@ -112,7 +112,7 @@ public class AntlrTypeMemberReferencePath
                     "Cannot find member '%s.%s'.",
                     currentClassState.getName(),
                     identifier.getText());
-            compilerErrorHolder.add("ERR_TYP_MEM", message, this, identifier);
+            compilerAnnotationHolder.add("ERR_TYP_MEM", message, this, identifier);
         }
     }
 

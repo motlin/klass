@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -150,17 +150,17 @@ public class AntlrUrl extends AntlrElement
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportDuplicateParameterErrors(compilerErrorHolder);
-        this.reportDuplicateVerbErrors(compilerErrorHolder);
-        this.reportNoVerbs(compilerErrorHolder);
+        this.reportDuplicateParameterErrors(compilerAnnotationHolder);
+        this.reportDuplicateVerbErrors(compilerAnnotationHolder);
+        this.reportNoVerbs(compilerAnnotationHolder);
 
-        this.urlParameters.getParameterStates().forEachWith(AntlrParameter::reportErrors, compilerErrorHolder);
-        this.serviceStates.forEachWith(AntlrService::reportErrors, compilerErrorHolder);
+        this.urlParameters.getParameterStates().forEachWith(AntlrParameter::reportErrors, compilerAnnotationHolder);
+        this.serviceStates.forEachWith(AntlrService::reportErrors, compilerAnnotationHolder);
     }
 
-    private void reportDuplicateParameterErrors(CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateParameterErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateNames = this.urlParameters.getParameterStates()
                 .collect(AntlrNamedElement::getName)
@@ -170,10 +170,10 @@ public class AntlrUrl extends AntlrElement
 
         this.urlParameters.getParameterStates()
                 .select(each -> duplicateNames.contains(each.getName()))
-                .forEachWith(AntlrParameter::reportDuplicateParameterName, compilerErrorHolder);
+                .forEachWith(AntlrParameter::reportDuplicateParameterName, compilerAnnotationHolder);
     }
 
-    private void reportDuplicateVerbErrors(CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateVerbErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableBag<Verb> duplicateVerbs = this.serviceStates
                 .collect(AntlrService::getVerbState)
@@ -184,10 +184,10 @@ public class AntlrUrl extends AntlrElement
 
         this.serviceStates
                 .select(each -> duplicateVerbs.contains(each.getVerbState().getVerb()))
-                .forEachWith(AntlrService::reportDuplicateVerb, compilerErrorHolder);
+                .forEachWith(AntlrService::reportDuplicateVerb, compilerAnnotationHolder);
     }
 
-    private void reportNoVerbs(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportNoVerbs(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.serviceStates.isEmpty())
         {
@@ -195,7 +195,7 @@ public class AntlrUrl extends AntlrElement
                     "Service url should declare at least one verb: '%s'.",
                     this.getElementContext().url().getText());
 
-            compilerErrorHolder.add("ERR_URL_EMP", message, this);
+            compilerAnnotationHolder.add("ERR_URL_EMP", message, this);
         }
     }
     //</editor-fold>

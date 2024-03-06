@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
@@ -136,22 +136,22 @@ public class AntlrAssociationEnd
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
-        this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+        this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
 
-        this.reportInvalidMultiplicity(compilerErrorHolder);
-        this.reportVersionEndUnowned(compilerErrorHolder);
-        this.reportNonVersionEnd(compilerErrorHolder);
-        this.reportNonUserAuditEnd(compilerErrorHolder);
-        this.reportPluralName(compilerErrorHolder);
-        this.reportDeclarationOrderTypes(compilerErrorHolder);
-        this.reportForwardReference(compilerErrorHolder);
+        this.reportInvalidMultiplicity(compilerAnnotationHolder);
+        this.reportVersionEndUnowned(compilerAnnotationHolder);
+        this.reportNonVersionEnd(compilerAnnotationHolder);
+        this.reportNonUserAuditEnd(compilerAnnotationHolder);
+        this.reportPluralName(compilerAnnotationHolder);
+        this.reportDeclarationOrderTypes(compilerAnnotationHolder);
+        this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportVersionEndUnowned(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isVersion() && !this.isOwned())
         {
@@ -159,11 +159,11 @@ public class AntlrAssociationEnd
                     "Expected version association end '%s.%s' to be owned.",
                     this.getOwningClassifierState().getName(),
                     this.getName());
-            compilerErrorHolder.add("ERR_VER_OWN", message, this, this.nameContext);
+            compilerAnnotationHolder.add("ERR_VER_OWN", message, this, this.nameContext);
         }
     }
 
-    private void reportNonVersionEnd(CompilerErrorState compilerErrorHolder)
+    private void reportNonVersionEnd(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isVersion() && !this.getType().isVersion())
         {
@@ -172,7 +172,7 @@ public class AntlrAssociationEnd
                     this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.getType().getName());
-            compilerErrorHolder.add("ERR_VER_END", message, this, this.nameContext);
+            compilerAnnotationHolder.add("ERR_VER_END", message, this, this.nameContext);
         }
         if (!this.getOwningClassifierState().isUser()
                 && !this.isVersion() && this.getType().isVersion()
@@ -184,7 +184,7 @@ public class AntlrAssociationEnd
                     this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.getType().getName());
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_VER_TYP",
                     message,
                     this,
@@ -192,7 +192,7 @@ public class AntlrAssociationEnd
         }
     }
 
-    private void reportNonUserAuditEnd(CompilerErrorState compilerErrorHolder)
+    private void reportNonUserAuditEnd(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isCreatedBy() && !this.getType().isUser())
         {
@@ -202,7 +202,7 @@ public class AntlrAssociationEnd
                     this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.getType().getName());
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_AUD_END",
                     message,
                     modifier,
@@ -218,7 +218,7 @@ public class AntlrAssociationEnd
                     this.getName(),
                     this.getType().getName());
 
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_AUD_END",
                     message,
                     modifier,
@@ -228,7 +228,7 @@ public class AntlrAssociationEnd
     }
 
     public void reportDuplicateOppositeWithModifier(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull AntlrClassifier classifier,
             String modifier)
     {
@@ -237,10 +237,10 @@ public class AntlrAssociationEnd
                 "Multiple %s association ends point at '%s'.",
                 modifier,
                 classifier.getName());
-        compilerErrorHolder.add("ERR_DUP_END", message, modifierState);
+        compilerAnnotationHolder.add("ERR_DUP_END", message, modifierState);
     }
 
-    private void reportPluralName(CompilerErrorState compilerErrorHolder)
+    private void reportPluralName(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.multiplicityState.isToMany())
         {
@@ -250,12 +250,12 @@ public class AntlrAssociationEnd
                         this.getOwningClassifierState().getName(),
                         this.getName(),
                         this.classReferenceState.getElementContext().identifier().getText());
-                compilerErrorHolder.add("ERR_ASS_PLU", message, this, this.nameContext);
+                compilerAnnotationHolder.add("ERR_ASS_PLU", message, this, this.nameContext);
             }
         }
     }
 
-    private void reportDeclarationOrderTypes(CompilerErrorState compilerErrorHolder)
+    private void reportDeclarationOrderTypes(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isToOneRequired())
         {
@@ -286,7 +286,7 @@ public class AntlrAssociationEnd
                     this.getType().getName(),
                     this.getType().getElementContext().getStart().getLine(),
                     this.getCompilationUnit().get().getSourceName());
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_ASO_ORD",
                     message,
                     this,
@@ -294,7 +294,7 @@ public class AntlrAssociationEnd
         }
     }
 
-    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.owningAssociationState.isForwardReference(this.getType()))
         {
@@ -308,7 +308,7 @@ public class AntlrAssociationEnd
                 this.getType().getName(),
                 this.getCompilationUnit().get().getSourceName(),
                 this.getType().getElementContext().getStart().getLine());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_ASO_ORD",
                 message,
                 this,

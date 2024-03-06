@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -65,11 +65,11 @@ public class AntlrServiceCriteria extends AntlrElement
         this.antlrCriteria = Objects.requireNonNull(antlrCriteria);
     }
 
-    public void reportDuplicateKeyword(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateKeyword(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // TODO: Test coverage of duplicate service criteria
         String message = String.format("Duplicate service criteria: '%s'.", this.serviceCriteriaKeyword);
-        compilerErrorHolder.add("ERR_DUP_CRI", message, this.antlrCriteria, this.getElementContext());
+        compilerAnnotationHolder.add("ERR_DUP_CRI", message, this.antlrCriteria, this.getElementContext());
     }
 
     @Nonnull
@@ -86,7 +86,7 @@ public class AntlrServiceCriteria extends AntlrElement
     }
 
     public void reportAllowedCriteriaTypes(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ImmutableList<String> allowedCriteriaTypes)
     {
         if (!allowedCriteriaTypes.contains(this.serviceCriteriaKeyword))
@@ -96,7 +96,7 @@ public class AntlrServiceCriteria extends AntlrElement
                     this.serviceCriteriaKeyword,
                     this.serviceState.getVerbState().getVerb(),
                     allowedCriteriaTypes);
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_VRB_CRT",
                     error,
                     this,

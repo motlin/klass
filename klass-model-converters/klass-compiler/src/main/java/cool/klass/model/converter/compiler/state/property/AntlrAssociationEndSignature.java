@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReference;
 import cool.klass.model.converter.compiler.state.AntlrClassifierReferenceOwner;
@@ -88,16 +88,16 @@ public class AntlrAssociationEndSignature
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
         if (this.orderByState != null)
         {
-            this.orderByState.ifPresent(o -> o.reportErrors(compilerErrorHolder));
+            this.orderByState.ifPresent(o -> o.reportErrors(compilerAnnotationHolder));
         }
 
-        this.reportInvalidMultiplicity(compilerErrorHolder);
+        this.reportInvalidMultiplicity(compilerAnnotationHolder);
     }
 
     @Nonnull

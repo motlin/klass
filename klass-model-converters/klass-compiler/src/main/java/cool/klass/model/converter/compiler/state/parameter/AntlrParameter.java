@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
@@ -116,13 +116,13 @@ public final class AntlrParameter
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportNameErrors(compilerErrorHolder);
-        this.reportTypeErrors(compilerErrorHolder);
+        this.reportNameErrors(compilerAnnotationHolder);
+        this.reportTypeErrors(compilerAnnotationHolder);
     }
 
-    private void reportTypeErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTypeErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.typeState != AntlrEnumeration.NOT_FOUND)
         {
@@ -134,13 +134,13 @@ public final class AntlrParameter
         String message = String.format(
                 "Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add("ERR_ENM_PAR", message, this, offendingToken);
+        compilerAnnotationHolder.add("ERR_ENM_PAR", message, this, offendingToken);
     }
 
-    public void reportDuplicateParameterName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateParameterName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate parameter: '%s'.", this.getName());
-        compilerErrorHolder.add("ERR_DUP_PAR", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_PAR", message, this);
     }
     //</editor-fold>
 

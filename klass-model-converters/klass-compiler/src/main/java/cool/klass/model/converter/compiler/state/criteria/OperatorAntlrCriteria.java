@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrAssociation;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrType;
@@ -109,13 +109,13 @@ public class OperatorAntlrCriteria extends AntlrCriteria
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.sourceValue.reportErrors(compilerErrorHolder);
-        this.targetValue.reportErrors(compilerErrorHolder);
+        this.sourceValue.reportErrors(compilerAnnotationHolder);
+        this.targetValue.reportErrors(compilerAnnotationHolder);
         ListIterable<AntlrType> sourceTypes = this.sourceValue.getPossibleTypes();
         ListIterable<AntlrType> targetTypes = this.targetValue.getPossibleTypes();
-        this.operator.checkTypes(compilerErrorHolder, sourceTypes, targetTypes);
+        this.operator.checkTypes(compilerAnnotationHolder, sourceTypes, targetTypes);
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.meta.domain.EnumerationImpl.EnumerationBuilder;
 import cool.klass.model.meta.domain.EnumerationLiteralImpl.EnumerationLiteralBuilder;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationBodyContext;
@@ -133,20 +133,20 @@ public class AntlrEnumeration
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportNameErrors(compilerErrorHolder);
-        this.enumerationLiteralStates.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerErrorHolder);
+        super.reportNameErrors(compilerAnnotationHolder);
+        this.enumerationLiteralStates.forEachWith(AntlrEnumerationLiteral::reportNameErrors, compilerAnnotationHolder);
     }
 
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.logDuplicateLiteralNames(compilerErrorHolder);
-        this.logDuplicatePrettyNames(compilerErrorHolder);
+        this.logDuplicateLiteralNames(compilerAnnotationHolder);
+        this.logDuplicatePrettyNames(compilerAnnotationHolder);
     }
     //</editor-fold>
 
-    public void logDuplicateLiteralNames(CompilerErrorState compilerErrorHolder)
+    public void logDuplicateLiteralNames(CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableBag<String> duplicateNames = this.enumerationLiteralStates
                 .collect(AntlrNamedElement::getName)
@@ -156,10 +156,10 @@ public class AntlrEnumeration
         this.enumerationLiteralStates
                 .asLazy()
                 .select(enumerationLiteral -> duplicateNames.contains(enumerationLiteral.getName()))
-                .forEachWith(AntlrEnumerationLiteral::reportDuplicateName, compilerErrorHolder);
+                .forEachWith(AntlrEnumerationLiteral::reportDuplicateName, compilerAnnotationHolder);
     }
 
-    public void logDuplicatePrettyNames(CompilerErrorState compilerErrorHolder)
+    public void logDuplicatePrettyNames(CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableBag<String> duplicatePrettyNames = this.enumerationLiteralStates
                 .collect(AntlrEnumerationLiteral::getPrettyName)
@@ -172,7 +172,7 @@ public class AntlrEnumeration
                 .asLazy()
                 .select(each -> each.getPrettyName().isPresent())
                 .select(each -> duplicatePrettyNames.contains(each.getPrettyName().get()))
-                .forEachWith(AntlrEnumerationLiteral::reportDuplicatePrettyName, compilerErrorHolder);
+                .forEachWith(AntlrEnumerationLiteral::reportDuplicatePrettyName, compilerAnnotationHolder);
     }
 
     @Override

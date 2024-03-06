@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrThisMemberReferencePath;
@@ -65,10 +65,10 @@ public class AntlrOrderByMemberReferencePath extends AntlrElement
         return this.orderByDirectionState;
     }
 
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // TODO: ❗️ Redo context stack for error reporting
-        this.thisMemberReferencePathState.reportErrors(compilerErrorHolder);
+        this.thisMemberReferencePathState.reportErrors(compilerAnnotationHolder);
     }
 
     @Nonnull

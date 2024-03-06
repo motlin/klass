@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionContext;
@@ -80,7 +80,7 @@ public class AntlrRelationship
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(CompilerErrorState compilerErrorHolder)
+    public void reportErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
         AntlrAssociationEnd sourceEnd = this.association.getSourceEnd();
         AntlrAssociationEnd targetEnd = this.association.getTargetEnd();
@@ -88,23 +88,23 @@ public class AntlrRelationship
         if (targetEnd.isToOne() && sourceEnd.isToMany() || sourceEnd.isToOne() && sourceEnd.isOwned())
         {
             this.reportInferredEnd(
-                    compilerErrorHolder,
+                    compilerAnnotationHolder,
                     sourceEnd,
                     AntlrRelationship::getSourceInferredRelationshipText);
         }
         else if (sourceEnd.isToOne() && targetEnd.isToMany() || targetEnd.isToOne() && targetEnd.isOwned())
         {
             this.reportInferredEnd(
-                    compilerErrorHolder,
+                    compilerAnnotationHolder,
                     targetEnd,
                     AntlrRelationship::getTargetInferredRelationshipText);
         }
 
-        this.criteria.reportErrors(compilerErrorHolder);
+        this.criteria.reportErrors(compilerAnnotationHolder);
     }
 
     private void reportInferredEnd(
-            CompilerErrorState compilerErrorHolder,
+            CompilerAnnotationState compilerAnnotationHolder,
             AntlrAssociationEnd associationEnd,
             Function<AntlrAssociationEnd, String> sourceCodeTextFunction)
     {
@@ -122,7 +122,7 @@ public class AntlrRelationship
 
         if (sourceCodeText.equals(sourceWithoutSpaceText))
         {
-            compilerErrorHolder.add(
+            compilerAnnotationHolder.add(
                     "ERR_REL_INF",
                     "Relationship in association '%s' is inferred and can be removed.".formatted(this.association.getName()),
                     this.criteria,

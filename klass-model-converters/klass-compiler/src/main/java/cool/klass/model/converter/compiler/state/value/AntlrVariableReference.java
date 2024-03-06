@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
@@ -61,7 +61,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.antlrParameter == AntlrParameter.AMBIGUOUS)
         {
@@ -71,7 +71,7 @@ public class AntlrVariableReference extends AntlrExpressionValue
         if (this.antlrParameter == AntlrParameter.NOT_FOUND)
         {
             String message = String.format("Cannot find parameter '%s'.", this.elementContext.getText());
-            compilerErrorHolder.add("ERR_VAR_REF", message, this);
+            compilerAnnotationHolder.add("ERR_VAR_REF", message, this);
         }
     }
 

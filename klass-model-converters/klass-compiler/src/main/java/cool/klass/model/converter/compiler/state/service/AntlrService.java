@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
@@ -131,11 +131,11 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         return this.serviceCriteriaByContext.get(ctx);
     }
 
-    public void reportDuplicateVerb(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateVerb(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate verb: '%s'.", this.verbState.getVerb());
 
-        compilerErrorHolder.add("ERR_DUP_VRB", message, this, this.verbState.getElementContext());
+        compilerAnnotationHolder.add("ERR_DUP_VRB", message, this, this.verbState.getElementContext());
     }
 
     public void enterServiceCriteriaDeclaration(@Nonnull AntlrServiceCriteria serviceCriteriaState)
@@ -156,13 +156,13 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportDuplicateKeywords(compilerErrorHolder);
+        this.reportDuplicateKeywords(compilerAnnotationHolder);
 
         // TODO: ☑ reportErrors: Find url parameters which are unused by any criteria
 
-        this.reportInvalidProjection(compilerErrorHolder);
+        this.reportInvalidProjection(compilerAnnotationHolder);
 
         Verb                  verb                 = this.verbState.getVerb();
         ImmutableList<String> allowedCriteriaTypes = ALLOWED_CRITERIA_TYPES.get(verb);
@@ -173,14 +173,14 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             {
                 throw new AssertionError(verb);
             }
-            serviceCriteriaState.reportAllowedCriteriaTypes(compilerErrorHolder, allowedCriteriaTypes);
-            serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder);
+            serviceCriteriaState.reportAllowedCriteriaTypes(compilerAnnotationHolder, allowedCriteriaTypes);
+            serviceCriteriaState.getCriteria().reportErrors(compilerAnnotationHolder);
         }
 
-        this.orderByState.ifPresent(orderBy -> orderBy.reportErrors(compilerErrorHolder));
+        this.orderByState.ifPresent(orderBy -> orderBy.reportErrors(compilerAnnotationHolder));
     }
 
-    protected void reportDuplicateKeywords(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportDuplicateKeywords(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateKeywords = this.serviceCriteriaStates
                 .collect(AntlrServiceCriteria::getServiceCriteriaKeyword)
@@ -190,42 +190,42 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
 
         this.serviceCriteriaStates
                 .select(each -> duplicateKeywords.contains(each.getServiceCriteriaKeyword()))
-                .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerErrorHolder);
+                .forEachWith(AntlrServiceCriteria::reportDuplicateKeyword, compilerAnnotationHolder);
     }
 
-    private void reportInvalidProjection(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportInvalidProjection(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         Verb verb = this.verbState.getVerb();
 
         if (verb == Verb.GET)
         {
             this.serviceProjectionDispatchState.ifPresentOrElse(
-                    projectionDispatch -> projectionDispatch.reportErrors(compilerErrorHolder),
-                    () -> this.reportMissingProjection(compilerErrorHolder));
+                    projectionDispatch -> projectionDispatch.reportErrors(compilerAnnotationHolder),
+                    () -> this.reportMissingProjection(compilerAnnotationHolder));
         }
         else
         {
             this.serviceProjectionDispatchState
                     .ifPresent(projectionDispatch -> this.reportPresentProjection(
                             projectionDispatch,
-                            compilerErrorHolder));
+                            compilerAnnotationHolder));
         }
     }
 
-    private void reportMissingProjection(CompilerErrorState compilerErrorHolder)
+    private void reportMissingProjection(CompilerAnnotationState compilerAnnotationHolder)
     {
         ParserRuleContext verbContext = this.verbState.getElementContext();
 
-        compilerErrorHolder.add("ERR_GET_PRJ", "GET services require a projection.", this, verbContext);
+        compilerAnnotationHolder.add("ERR_GET_PRJ", "GET services require a projection.", this, verbContext);
     }
 
     private void reportPresentProjection(
             AntlrServiceProjectionDispatch projectionDispatch,
-            CompilerErrorState compilerErrorHolder)
+            CompilerAnnotationState compilerAnnotationHolder)
     {
         ServiceProjectionDispatchContext elementContext = projectionDispatch.getElementContext();
 
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_GET_PRJ",
                 String.format("%s services must not have a projection.", this.verbState.getVerb().name()),
                 projectionDispatch,

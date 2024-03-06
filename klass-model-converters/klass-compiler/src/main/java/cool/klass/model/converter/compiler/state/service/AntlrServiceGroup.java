@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrCompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrPackageableElement;
@@ -96,26 +96,26 @@ public class AntlrServiceGroup
     }
 
     //<editor-fold desc="Report Compiler Errors">
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportNoUrls(compilerErrorHolder);
-        this.reportDuplicateUrls(compilerErrorHolder);
-        this.reportForwardReference(compilerErrorHolder);
+        this.reportNoUrls(compilerAnnotationHolder);
+        this.reportDuplicateUrls(compilerAnnotationHolder);
+        this.reportForwardReference(compilerAnnotationHolder);
 
         for (AntlrUrl urlState : this.urlStates)
         {
-            urlState.reportErrors(compilerErrorHolder);
+            urlState.reportErrors(compilerAnnotationHolder);
         }
 
         // TODO: Not here, but report if there are more than one service group for a class.
 
         if (this.klass == AntlrClass.NOT_FOUND)
         {
-            this.reportTypeNotFound(compilerErrorHolder);
+            this.reportTypeNotFound(compilerAnnotationHolder);
         }
     }
 
-    private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.klass != AntlrClass.NOT_FOUND)
         {
@@ -123,14 +123,14 @@ public class AntlrServiceGroup
         }
 
         ClassReferenceContext reference = this.getElementContext().classReference();
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_SRG_TYP",
                 String.format("Cannot find class '%s'", reference.getText()),
                 this,
                 reference);
     }
 
-    private void reportDuplicateUrls(CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateUrls(CompilerAnnotationState compilerAnnotationHolder)
     {
         // TODO: reportDuplicateUrls
         HashBagWithHashingStrategy<AntlrUrl> antlrUrls =
@@ -143,7 +143,7 @@ public class AntlrServiceGroup
         }
     }
 
-    private void reportNoUrls(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportNoUrls(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.urlStates.isEmpty())
         {
@@ -151,20 +151,20 @@ public class AntlrServiceGroup
                     "Service group should declare at least one url: '%s'.",
                     this.getElementContext().classReference().getText());
 
-            compilerErrorHolder.add("ERR_SER_EMP", message, this);
+            compilerAnnotationHolder.add("ERR_SER_EMP", message, this);
         }
     }
 
-    public void reportDuplicateServiceGroupClass(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateServiceGroupClass(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format(
                 "Multiple service groups for class: '%s.%s'.",
                 this.klass.getPackageName(),
                 this.klass.getName());
-        compilerErrorHolder.add("ERR_DUP_SVC", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_SVC", message, this);
     }
 
-    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.klass))
         {
@@ -178,7 +178,7 @@ public class AntlrServiceGroup
                 this.klass.getName(),
                 this.getCompilationUnit().get().getSourceName(),
                 this.klass.getElementContext().getStart().getLine());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
                 this,
@@ -186,7 +186,7 @@ public class AntlrServiceGroup
     }
 
     @Override
-    public void reportDuplicateTopLevelName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateTopLevelName(@Nonnull CompilerAnnotationState compilerAnnotationState)
     {
         // Deliberately empty
     }

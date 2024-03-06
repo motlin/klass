@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.value.AntlrExpressionValue;
@@ -68,13 +68,13 @@ public class AntlrLiteralListValue
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.getPossibleTypes().isEmpty())
         {
             // TODO: Cover this with a test
 
-            compilerErrorHolder.add("ERR_LIT_LST", "Literal list with heterogeneous values.", this);
+            compilerAnnotationHolder.add("ERR_LIT_LST", "Literal list with heterogeneous values.", this);
         }
     }
 

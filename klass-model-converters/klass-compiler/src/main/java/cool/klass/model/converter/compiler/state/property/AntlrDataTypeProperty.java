@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
@@ -89,7 +89,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         @Override
-        protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".reportInvalidIdProperties() not implemented yet");
@@ -143,7 +143,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
 
         @Override
-        protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+        protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
         {
             throw new UnsupportedOperationException(this.getClass().getSimpleName()
                     + ".reportInvalidIdProperties() not implemented yet");
@@ -399,30 +399,30 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
-        this.reportDuplicateValidations(compilerErrorHolder);
-        this.reportInvalidIdProperties(compilerErrorHolder);
-        this.reportInvalidForeignKeyProperties(compilerErrorHolder);
-        this.reportInvalidUserIdProperties(compilerErrorHolder);
-        this.reportInvalidVersionProperties(compilerErrorHolder);
-        this.reportInvalidTemporalProperties(compilerErrorHolder);
+        this.reportDuplicateValidations(compilerAnnotationHolder);
+        this.reportInvalidIdProperties(compilerAnnotationHolder);
+        this.reportInvalidForeignKeyProperties(compilerAnnotationHolder);
+        this.reportInvalidUserIdProperties(compilerAnnotationHolder);
+        this.reportInvalidVersionProperties(compilerAnnotationHolder);
+        this.reportInvalidTemporalProperties(compilerAnnotationHolder);
 
         // TODO: ☑ Check for nullable key properties
     }
 
-    private void reportDuplicateValidations(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateValidations(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportDuplicateValidations(compilerErrorHolder, this.minLengthValidationStates);
-        this.reportDuplicateValidations(compilerErrorHolder, this.maxLengthValidationStates);
-        this.reportDuplicateValidations(compilerErrorHolder, this.minValidationStates);
-        this.reportDuplicateValidations(compilerErrorHolder, this.maxValidationStates);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.minLengthValidationStates);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxLengthValidationStates);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.minValidationStates);
+        this.reportDuplicateValidations(compilerAnnotationHolder, this.maxValidationStates);
     }
 
     private void reportDuplicateValidations(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             @Nonnull ListIterable<? extends AbstractAntlrPropertyValidation> validationStates)
     {
         if (validationStates.size() <= 1)
@@ -436,22 +436,22 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             String message = String.format(
                     "Duplicate validation '%s'.",
                     offendingToken.getText());
-            compilerErrorHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
+            compilerAnnotationHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
         }
     }
 
-    protected abstract void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder);
+    protected abstract void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder);
 
-    private void reportInvalidForeignKeyProperties(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidForeignKeyProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         this.keyBuildersMatchingThisForeignKey.forEach((associationEnd, keyBuilders) -> this.reportInvalidForeignKeyProperties(
-                compilerErrorHolder,
+                compilerAnnotationHolder,
                 associationEnd,
                 keyBuilders));
     }
 
     private void reportInvalidForeignKeyProperties(
-            CompilerErrorState compilerErrorHolder,
+            CompilerAnnotationState compilerAnnotationHolder,
             AntlrAssociationEnd associationEnd,
             ListIterable<AntlrDataTypeProperty<?>> keyBuilders)
     {
@@ -474,8 +474,8 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     associationEnd.getMultiplicity().getMultiplicity().getPrettyName(),
                     this.getOwningClassifierState().getName(),
                     this.getName());
-            compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
-            compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+            compilerAnnotationHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
+            compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
         }
 
         if (!this.isOptional() && associationEnd.isToOneOptional())
@@ -489,12 +489,12 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                     this.getOwningClassifierState().getName(),
                     this.getName(),
                     this.isOptional ? "not " : "");
-            // compilerErrorHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
-            // compilerErrorHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
+            // compilerAnnotationHolder.add("ERR_FOR_MUL", message, this, this.getTypeParserRuleContext());
+            // compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
         }
     }
 
-    private void reportInvalidUserIdProperties(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidUserIdProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isUserId() || this.isCreatedBy() || this.isLastUpdatedBy())
         {
@@ -515,14 +515,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 antlrType.getName(),
                 modifier.getKeyword(),
                 this);
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_USR_DTP",
                 message,
                 this,
                 Lists.immutable.with(modifier.getElementContext(), this.getTypeParserRuleContext()));
     }
 
-    private void reportInvalidVersionProperties(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidVersionProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.getModifiers().noneSatisfy(AntlrModifier::isVersion))
         {
@@ -544,14 +544,14 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 antlrType.getName(),
                 modifier.getKeyword(),
                 this);
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_VER_DTP",
                 message,
                 modifier,
                 Lists.immutable.with(offendingToken, modifier.getElementContext()));
     }
 
-    private void reportInvalidTemporalProperties(CompilerErrorState compilerErrorHolder)
+    private void reportInvalidTemporalProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.isValidRange() || this.isSystemRange())
         {
@@ -567,7 +567,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         .select(antlrModifier -> antlrModifier.isSystem() || antlrModifier.isVersion());
                 ListIterable<ParserRuleContext> modifierContexts = modifiers
                         .collect(AntlrElement::getElementContext);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_TMP_RNG",
                         message,
                         this,
@@ -588,7 +588,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         "Property '%s' with temporal modifier(s) %s must be marked as 'system' or 'valid'.",
                         this,
                         modifiers);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_TMP_SYS",
                         message,
                         this,
@@ -606,7 +606,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         .select(modifier -> modifier.isSystem() || modifier.isVersion() || modifier.isFrom() || modifier.isTo());
                 ListIterable<ParserRuleContext> modifierContexts = modifiers
                         .collect(AntlrElement::getElementContext);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_TMP_INS",
                         message,
                         this,
@@ -623,7 +623,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 ImmutableList<ParserRuleContext> modifierContexts = modifiers
                         .collect(AntlrElement::getElementContext);
                 String message = "Property may not have both 'from' and to' modifiers.";
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_TMP_FTO",
                         message,
                         this,
@@ -632,9 +632,9 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    protected void reportInvalidAuditProperties(CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidAuditProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportInvalidAuditProperties(compilerErrorHolder);
+        super.reportInvalidAuditProperties(compilerAnnotationHolder);
 
         if (this.isCreatedBy() || this.isLastUpdatedBy())
         {
@@ -651,7 +651,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         antlrType.getName(),
                         modifier.getKeyword(),
                         this);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_AUD_DTP",
                         message,
                         this,
@@ -666,7 +666,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         "Expected property '%s' with modifier '%s' to also have the userId modifier.",
                         this,
                         modifier.getKeyword());
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_AUD_UID",
                         message,
                         this,
@@ -689,7 +689,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                         antlrType.getName(),
                         modifier.getKeyword(),
                         this);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_AUD_DTP",
                         message,
                         this,
@@ -704,7 +704,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 String message = String.format(
                         "Expected createdOn property '%s' to be final.",
                         this);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_CON_FIN",
                         message,
                         this,
@@ -723,7 +723,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 String message = String.format(
                         "Expected createdBy property '%s' to be named 'createdById'.",
                         this);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_CRT_NAM",
                         message,
                         this,
@@ -741,7 +741,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
                 String message = String.format(
                         "Expected lastUpdatedBy property '%s' to be named 'lastUpdatedById'.",
                         this);
-                compilerErrorHolder.add(
+                compilerAnnotationHolder.add(
                         "ERR_LUB_NAM",
                         message,
                         this,
@@ -750,25 +750,25 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         }
     }
 
-    public void reportIdPropertyWithKeyProperties(CompilerErrorState compilerErrorHolder)
+    public void reportIdPropertyWithKeyProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found id property: %s.",
                 this.getOwningClassifierState().getName(),
                 this);
-        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+        compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
 
-    public void reportKeyPropertyWithIdProperties(CompilerErrorState compilerErrorHolder)
+    public void reportKeyPropertyWithIdProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format(
                 "Class '%s' may have id properties or non-id key properties, but not both. Found non-id key property: %s.",
                 this.getOwningClassifierState().getName(),
                 this);
-        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+        compilerAnnotationHolder.add("ERR_KEY_IDS", message, this);
     }
 
-    public void reportTransientIdProperties(CompilerErrorState compilerErrorHolder)
+    public void reportTransientIdProperties(CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableList<AntlrModifier> idModifiers = this.getModifiersByName("id");
         if (idModifiers.isEmpty())
@@ -779,7 +779,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
         String message = String.format(
                 "Transient class '%s' may not have id properties.",
                 this.getOwningClassifierState().getName());
-        compilerErrorHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
+        compilerAnnotationHolder.add("ERR_TNS_IDP", message, this, idModifiers.collect(AntlrElement::getElementContext));
     }
     //</editor-fold>
 

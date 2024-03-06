@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
@@ -140,15 +140,15 @@ public class AntlrEnumerationProperty
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        super.reportErrors(compilerErrorHolder);
+        super.reportErrors(compilerAnnotationHolder);
 
-        this.reportTypeNotFound(compilerErrorHolder);
-        this.reportForwardReference(compilerErrorHolder);
+        this.reportTypeNotFound(compilerAnnotationHolder);
+        this.reportForwardReference(compilerAnnotationHolder);
     }
 
-    private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTypeNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.enumerationState != AntlrEnumeration.NOT_FOUND)
         {
@@ -159,10 +159,10 @@ public class AntlrEnumerationProperty
         String message = String.format(
                 "Cannot find enumeration '%s'.",
                 offendingToken.getText());
-        compilerErrorHolder.add("ERR_ENM_PRP", message, this, offendingToken);
+        compilerAnnotationHolder.add("ERR_ENM_PRP", message, this, offendingToken);
     }
 
-    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.isForwardReference(this.enumerationState))
         {
@@ -176,7 +176,7 @@ public class AntlrEnumerationProperty
                 this.enumerationState.getName(),
                 this.getCompilationUnit().get().getSourceName(),
                 this.enumerationState.getElementContext().getStart().getLine());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
                 this,
@@ -184,13 +184,13 @@ public class AntlrEnumerationProperty
     }
 
     @Override
-    protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    protected void reportInvalidIdProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)
         {
             String message = "Enumeration properties may not be auto-generated ids.";
-            compilerErrorHolder.add("ERR_ENM_IDP", message, this, idModifier.getElementContext());
+            compilerAnnotationHolder.add("ERR_ENM_IDP", message, this, idModifier.getElementContext());
         }
     }
     //</editor-fold>

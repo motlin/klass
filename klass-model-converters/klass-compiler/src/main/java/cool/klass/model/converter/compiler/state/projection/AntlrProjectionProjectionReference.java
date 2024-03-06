@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
@@ -110,14 +110,14 @@ public class AntlrProjectionProjectionReference
 
     //<editor-fold desc="Report Compiler Errors">
     @Override
-    public void reportDuplicateMemberName(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportDuplicateMemberName(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         String message = String.format("Duplicate member: '%s'.", this.getName());
-        compilerErrorHolder.add("ERR_DUP_PRJ", message, this);
+        compilerAnnotationHolder.add("ERR_DUP_PRJ", message, this);
     }
 
     @Override
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         AntlrClassifier parentClassifier = this.antlrProjectionParent.getClassifier();
         if (parentClassifier == AntlrClass.NOT_FOUND
@@ -143,7 +143,7 @@ public class AntlrProjectionProjectionReference
                         "Cannot find member '%s.%s'.",
                         parentClassifier.getName(),
                         this.getName());
-                compilerErrorHolder.add("ERR_PPR_NFD", message, this);
+                compilerAnnotationHolder.add("ERR_PPR_NFD", message, this);
             }
             else
             {
@@ -154,30 +154,30 @@ public class AntlrProjectionProjectionReference
                         this.getName(),
                         dataTypeProperty.getTypeName());
 
-                compilerErrorHolder.add("ERR_PPR_TYP", message, this);
+                compilerAnnotationHolder.add("ERR_PPR_TYP", message, this);
             }
         }
         else if (this.referenceProperty == AntlrReferenceProperty.AMBIGUOUS
                 || this.referenceProperty == AntlrAssociationEnd.AMBIGUOUS)
         {
             String message = String.format("Ambiguous: '%s'.", this);
-            compilerErrorHolder.add("ERR_PPR_AMB", message, this);
+            compilerAnnotationHolder.add("ERR_PPR_AMB", message, this);
         }
         else if (this.referencedProjectionState == AntlrProjection.NOT_FOUND)
         {
             String message = String.format(
                     "Not found: '%s'.",
                     this.getElementContext().projectionReference().getText());
-            compilerErrorHolder.add("ERR_PPR_NFD", message, this, this.getElementContext().projectionReference());
+            compilerAnnotationHolder.add("ERR_PPR_NFD", message, this, this.getElementContext().projectionReference());
         }
         else
         {
-            this.reportTypeMismatch(compilerErrorHolder);
-            this.reportForwardReference(compilerErrorHolder);
+            this.reportTypeMismatch(compilerAnnotationHolder);
+            this.reportForwardReference(compilerAnnotationHolder);
         }
     }
 
-    private void reportTypeMismatch(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportTypeMismatch(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         if (this.classifier == this.referencedProjectionState.getClassifier()
                 || this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
@@ -191,10 +191,10 @@ public class AntlrProjectionProjectionReference
                 this.classifier.getName(),
                 this.referencedProjectionState.getName(),
                 this.referencedProjectionState.getClassifier().getName());
-        compilerErrorHolder.add("ERR_PRR_KLS", message, this);
+        compilerAnnotationHolder.add("ERR_PRR_KLS", message, this);
     }
 
-    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    private void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         if (!this.referenceProperty.isToOneRequired()
                 || !this.isForwardReference(this.referencedProjectionState))
@@ -215,7 +215,7 @@ public class AntlrProjectionProjectionReference
                 this.referencedProjectionState.getName(),
                 this.getCompilationUnit().get().getSourceName(),
                 this.referencedProjectionState.getElementContext().getStart().getLine());
-        compilerErrorHolder.add(
+        compilerAnnotationHolder.add(
                 "ERR_FWD_REF",
                 message,
                 this,
@@ -223,7 +223,7 @@ public class AntlrProjectionProjectionReference
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // Intentionally blank. Reference to a named element that gets its name checked.
     }

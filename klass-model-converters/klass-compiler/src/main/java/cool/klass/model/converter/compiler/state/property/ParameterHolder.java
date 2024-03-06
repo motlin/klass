@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameter;
 import cool.klass.model.converter.compiler.state.parameter.AntlrParameterOwner;
@@ -65,8 +65,8 @@ public final class ParameterHolder implements AntlrParameterOwner
         return this.parameterStatesByName;
     }
 
-    public void reportNameErrors(CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.parameterStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerErrorHolder);
+        this.parameterStates.forEachWith(AntlrNamedElement::reportNameErrors, compilerAnnotationHolder);
     }
 }

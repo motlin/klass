@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.PackageDeclarationContext;
 import org.antlr.v4.runtime.Token;
@@ -74,9 +74,9 @@ public class AntlrCompilationUnit
         return this.packageState;
     }
 
-    public void reportNameErrors(CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.packageState.reportNameErrors(compilerErrorHolder);
+        this.packageState.reportNameErrors(compilerAnnotationHolder);
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.AntlrIdentifierElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.service.url.UrlConstantImpl.UrlConstantBuilder;
@@ -68,7 +68,7 @@ public class AntlrUrlConstant
     }
 
     @Override
-    public void reportNameErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportNameErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         // TODO: URLs can contain almost anything. The parser is probably already more strict than any error checking that needs to happen here.
         // https://stackoverflow.com/questions/7109143/what-characters-are-valid-in-a-url

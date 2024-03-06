@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
-import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -349,21 +349,21 @@ public abstract class AntlrClassifier
 
     //<editor-fold desc="Report Compiler Errors">
     @OverridingMethodsMustInvokeSuper
-    public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportDuplicatePropertyNames(compilerErrorHolder);
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "id");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "version");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "createdBy");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.dataTypePropertyStates, "lastUpdatedBy");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "version");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "createdBy");
-        this.reportMultiplePropertiesWithModifiers(compilerErrorHolder, this.referencePropertyStates, "lastUpdatedBy");
-        this.reportIdAndKeyProperties(compilerErrorHolder);
-        this.reportInterfaceNotFound(compilerErrorHolder);
-        this.reportRedundantInterface(compilerErrorHolder);
-        this.reportCircularInheritance(compilerErrorHolder);
-        this.reportDuplicateAssociationEndSignatureNames(compilerErrorHolder);
+        this.reportDuplicatePropertyNames(compilerAnnotationHolder);
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.dataTypePropertyStates, "id");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.dataTypePropertyStates, "version");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.dataTypePropertyStates, "createdBy");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.dataTypePropertyStates, "lastUpdatedBy");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.referencePropertyStates, "version");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.referencePropertyStates, "createdBy");
+        this.reportMultiplePropertiesWithModifiers(compilerAnnotationHolder, this.referencePropertyStates, "lastUpdatedBy");
+        this.reportIdAndKeyProperties(compilerAnnotationHolder);
+        this.reportInterfaceNotFound(compilerAnnotationHolder);
+        this.reportRedundantInterface(compilerAnnotationHolder);
+        this.reportCircularInheritance(compilerAnnotationHolder);
+        this.reportDuplicateAssociationEndSignatureNames(compilerAnnotationHolder);
 
         // TODO: Warn if class is owned by multiple
         // TODO: Detect ownership cycles
@@ -371,21 +371,21 @@ public abstract class AntlrClassifier
         // TODO: duplicate modifiers
     }
 
-    private void reportDuplicatePropertyNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicatePropertyNames(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
         for (AntlrProperty property : this.propertyStates)
         {
             if (duplicateMemberNames.contains(property.getName()))
             {
-                property.reportDuplicateMemberName(compilerErrorHolder);
+                property.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            property.reportErrors(compilerErrorHolder);
+            property.reportErrors(compilerAnnotationHolder);
         }
     }
 
     protected <T extends AntlrProperty> void reportMultiplePropertiesWithModifiers(
-            @Nonnull CompilerErrorState compilerErrorHolder,
+            @Nonnull CompilerAnnotationState compilerAnnotationHolder,
             MutableList<T> propertyStates,
             String... modifiersArray)
     {
@@ -401,11 +401,11 @@ public abstract class AntlrClassifier
 
         for (AntlrProperty property : properties)
         {
-            property.reportDuplicatePropertyWithModifiers(compilerErrorHolder, modifiers);
+            property.reportDuplicatePropertyWithModifiers(compilerAnnotationHolder, modifiers);
         }
     }
 
-    private void reportIdAndKeyProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportIdAndKeyProperties(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableList<AntlrDataTypeProperty<?>> idProperties = this.dataTypePropertyStates
                 .select(AntlrDataTypeProperty::isId);
@@ -423,16 +423,16 @@ public abstract class AntlrClassifier
 
         for (AntlrDataTypeProperty<?> idProperty : idProperties)
         {
-            idProperty.reportIdPropertyWithKeyProperties(compilerErrorHolder);
+            idProperty.reportIdPropertyWithKeyProperties(compilerAnnotationHolder);
         }
 
         for (AntlrDataTypeProperty<?> nonIdKeyProperty : nonIdKeyProperties)
         {
-            nonIdKeyProperty.reportKeyPropertyWithIdProperties(compilerErrorHolder);
+            nonIdKeyProperty.reportKeyPropertyWithIdProperties(compilerAnnotationHolder);
         }
     }
 
-    private void reportInterfaceNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportInterfaceNotFound(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         for (int i = 0; i < this.interfaceStates.size(); i++)
         {
@@ -443,12 +443,12 @@ public abstract class AntlrClassifier
                 String message = String.format(
                         "Cannot find interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add("ERR_IMP_INT", message, this, offendingToken);
+                compilerAnnotationHolder.add("ERR_IMP_INT", message, this, offendingToken);
             }
         }
     }
 
-    private void reportRedundantInterface(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportRedundantInterface(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         MutableSet<AntlrInterface> visitedInterfaceStates = Sets.mutable.empty();
 
@@ -466,7 +466,7 @@ public abstract class AntlrClassifier
                 String message = String.format(
                         "Duplicate interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add("ERR_DUP_INT", message, this, offendingToken);
+                compilerAnnotationHolder.add("ERR_DUP_INT", message, this, offendingToken);
             }
 
             if (this.isInterfaceRedundant(i, interfaceState))
@@ -475,14 +475,14 @@ public abstract class AntlrClassifier
                 String message = String.format(
                         "Redundant interface '%s'.",
                         offendingToken.getText());
-                compilerErrorHolder.add("ERR_RED_INT", message, this, offendingToken);
+                compilerAnnotationHolder.add("ERR_RED_INT", message, this, offendingToken);
             }
 
             visitedInterfaceStates.add(interfaceState);
         }
     }
 
-    private void reportDuplicateAssociationEndSignatureNames(@Nonnull CompilerErrorState compilerErrorHolder)
+    private void reportDuplicateAssociationEndSignatureNames(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
 
@@ -490,26 +490,26 @@ public abstract class AntlrClassifier
         {
             if (duplicateMemberNames.contains(associationEndSignatureState.getName()))
             {
-                associationEndSignatureState.reportDuplicateMemberName(compilerErrorHolder);
+                associationEndSignatureState.reportDuplicateMemberName(compilerAnnotationHolder);
             }
-            associationEndSignatureState.reportErrors(compilerErrorHolder);
+            associationEndSignatureState.reportErrors(compilerAnnotationHolder);
         }
     }
 
-    protected void reportCircularInheritance(CompilerErrorState compilerErrorHolder)
+    protected void reportCircularInheritance(CompilerAnnotationState compilerAnnotationHolder)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".reportCircularInheritance() not implemented yet");
     }
 
     @OverridingMethodsMustInvokeSuper
-    public void reportAuditErrors(@Nonnull CompilerErrorState compilerErrorHolder)
+    public void reportAuditErrors(@Nonnull CompilerAnnotationState compilerAnnotationHolder)
     {
-        this.reportAuditErrors(compilerErrorHolder, this.modifierStates, this);
-        this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
+        this.reportAuditErrors(compilerAnnotationHolder, this.modifierStates, this);
+        this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerAnnotationHolder));
     }
 
-    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    protected void reportForwardReference(CompilerAnnotationState compilerAnnotationHolder)
     {
         for (int i = 0; i < this.interfaceStates.size(); i++)
         {
@@ -523,7 +523,7 @@ public abstract class AntlrClassifier
                         interfaceState.getName(),
                         this.getCompilationUnit().get().getSourceName(),
                         interfaceState.getElementContext().getStart().getLine());
-                compilerErrorHolder.add("ERR_FWD_REF", message, this, this.getOffendingInterfaceReference(i));
+                compilerAnnotationHolder.add("ERR_FWD_REF", message, this, this.getOffendingInterfaceReference(i));
             }
         }
     }
