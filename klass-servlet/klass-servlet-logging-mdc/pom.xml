@@ -17,7 +17,7 @@
     <name>Klass Servlet MDC Logging</name>
 
     <modules>
-        <module>klass-servlet-logging-mdc-clear</module>
+        <module>klass-servlet-logging-mdc-clear-keys</module>
         <module>klass-servlet-logging-mdc-correlation-id</module>
         <module>klass-servlet-logging-mdc-jsonview</module>
         <module>klass-servlet-logging-mdc-resource-info</module>

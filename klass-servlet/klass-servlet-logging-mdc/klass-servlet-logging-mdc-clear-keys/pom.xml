@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-servlet-logging-mdc-clear</artifactId>
+    <artifactId>klass-servlet-logging-mdc-clear-keys</artifactId>
 
     <name>Klass Servlet Filter: Clear MDC Keys</name>
 
