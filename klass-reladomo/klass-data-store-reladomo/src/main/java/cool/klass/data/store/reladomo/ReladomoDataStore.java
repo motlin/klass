@@ -520,9 +520,18 @@ public class ReladomoDataStore
 
     public Object get(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty)
     {
-        RelatedFinder<?> finder = this.getRelatedFinder(referenceProperty.getOwningClassifier());
+        RelatedFinder<?> finder                = this.getRelatedFinder(referenceProperty.getOwningClassifier());
+        String           referencePropertyName = referenceProperty.getName();
         AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder
-                .getRelationshipFinderByName(referenceProperty.getName());
+                .getRelationshipFinderByName(referencePropertyName);
+
+        if (relationshipFinder == null)
+        {
+            String error =
+                    "Domain model and generated code are out of sync. Try rerunning a full clean build. Could not find relationship for property "
+                    + referenceProperty;
+            throw new AssertionError(error);
+        }
 
         return relationshipFinder.valueOf(persistentSourceInstance);
     }
