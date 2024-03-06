@@ -15,6 +15,7 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
+import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
 import cool.klass.model.meta.domain.value.TypeMemberReferencePathImpl.TypeMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
@@ -52,11 +53,14 @@ public class AntlrTypeMemberReferencePath extends AntlrMemberReferencePath
         {
             throw new IllegalStateException();
         }
+        ImmutableList<AssociationEndBuilder> associationEndBuilders = this.associationEndStates
+                .collect(AntlrAssociationEnd::getElementBuilder);
+
         this.elementBuilder = new TypeMemberReferencePathBuilder(
                 this.elementContext,
                 this.getMacroElementBuilder(),
                 this.classState.getElementBuilder(),
-                this.associationEndStates.collect(AntlrAssociationEnd::getElementBuilder),
+                associationEndBuilders,
                 this.dataTypePropertyState.getElementBuilder());
         return this.elementBuilder;
     }

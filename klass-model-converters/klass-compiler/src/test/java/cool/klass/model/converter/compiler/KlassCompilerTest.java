@@ -2582,6 +2582,7 @@ public class KlassCompilerTest
         this.assertCompilerErrors(sourceCodeText, errors);
     }
 
+    // TODO: Should be a bunch more errors here
     @Test
     public void serviceErrors()
     {
@@ -2631,6 +2632,34 @@ public class KlassCompilerTest
                 + "            multiplicity: one;\n"
                 + "            criteria    : this.id in id;\n"
                 + "            projection  : DummyProjection;\n"
+                + "        }\n"
+                + "    /api/dummies\n"
+                + "        GET\n"
+                + "        {\n"
+                + "            multiplicity: many;\n"
+                + "            criteria    : all;\n"
+                + "            projection  : DummyProjection;\n"
+                + "            orderBy: this.invalidMember descending;\n"
+                + "        }\n"
+                + "}\n"
+                + "\n"
+                + "class StringKeyClass\n"
+                + "{\n"
+                + "    key: String key;\n"
+                + "}\n"
+                + "\n"
+                + "projection StringKeyProjection on StringKeyClass\n"
+                + "{\n"
+                + "    key: \"Key\",\n"
+                + "}\n"
+                + "\n"
+                + "service StringKeyClass\n"
+                + "{\n"
+                + "    /api/stringKey\n"
+                + "        PUT\n"
+                + "        {\n"
+                + "            multiplicity: one;\n"
+                + "            projection  : StringKeyProjection;\n"
                 + "        }\n"
                 + "}\n";
         //</editor-fold>

@@ -164,6 +164,8 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
             serviceCriteriaState.reportAllowedCriteriaTypes(compilerErrorHolder, allowedCriteriaTypes);
             serviceCriteriaState.getCriteria().reportErrors(compilerErrorHolder);
         }
+
+        this.orderByState.ifPresent(orderBy -> orderBy.reportErrors(compilerErrorHolder));
     }
 
     protected void reportDuplicateKeywords(@Nonnull CompilerErrorState compilerErrorHolder)

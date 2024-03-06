@@ -96,12 +96,6 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
 
     @Nonnull
     @Override
-    public ThisMemberReferencePathContext getElementContext()
-    {
-        return (ThisMemberReferencePathContext) super.getElementContext();
-    }
-
-    @Override
     public ImmutableList<AntlrType> getPossibleTypes()
     {
         AntlrType type = this.dataTypePropertyState.getType();
@@ -110,5 +104,12 @@ public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
             return Lists.immutable.empty();
         }
         return Lists.immutable.with(type);
+    }
+
+    @Nonnull
+    @Override
+    public ThisMemberReferencePathContext getElementContext()
+    {
+        return (ThisMemberReferencePathContext) super.getElementContext();
     }
 }
