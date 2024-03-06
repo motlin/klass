@@ -141,7 +141,7 @@ public class AntlrDomainModel
                 interfaceState.getName(),
                 (name, builder) -> builder == null
                         ? interfaceState
-                        : AntlrInterface.AMBIGUOUS);
+                        : AntlrClassifier.AMBIGUOUS);
         this.interfacesByName.compute(
                 interfaceState.getName(),
                 (name, builder) -> builder == null
@@ -190,7 +190,7 @@ public class AntlrDomainModel
                 classState.getName(),
                 (name, builder) -> builder == null
                         ? classState
-                        : AntlrInterface.AMBIGUOUS);
+                        : AntlrClassifier.AMBIGUOUS);
         this.classesByName.compute(
                 classState.getName(),
                 (name, builder) -> builder == null
@@ -315,7 +315,7 @@ public class AntlrDomainModel
 
     public AntlrClassifier getClassifierByName(String classifierName)
     {
-        return this.classifiersByName.getIfAbsentValue(classifierName, AntlrClass.NOT_FOUND);
+        return this.classifiersByName.getIfAbsentValue(classifierName, AntlrClassifier.NOT_FOUND);
     }
 
     public AntlrInterface getInterfaceByName(String interfaceName)

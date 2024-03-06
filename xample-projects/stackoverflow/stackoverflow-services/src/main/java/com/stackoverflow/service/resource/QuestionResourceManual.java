@@ -42,7 +42,6 @@ import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
-import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.MutationContext;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
@@ -347,7 +346,7 @@ public class QuestionResourceManual
         MutableList<String> warnings = Lists.mutable.empty();
         JsonTypeCheckingValidator.validate(incomingInstance, StackOverflowDomainModel.Question, errors);
         RequiredPropertiesValidator.validate(
-                StackOverflowDomainModel.QuestionWriteProjection.getKlass(),
+                StackOverflowDomainModel.Question,
                 incomingInstance,
                 OperationMode.CREATE,
                 errors,
@@ -369,12 +368,11 @@ public class QuestionResourceManual
             question.setLastUpdatedById("TODO");
             question.setCreatedOn(Timestamp.valueOf(LocalDateTime.ofInstant(now, ZoneOffset.UTC)));
             question.generateAndSetId();
-            Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
 
             Instant           transactionInstant = Instant.now(this.clock);
             MutationContext   mutationContext    = new MutationContext(Optional.empty(), transactionInstant);
             PersistentCreator creator            = new PersistentCreator(mutationContext, this.dataStore);
-            creator.synchronize(projection.getKlass(), question, incomingInstance);
+            creator.synchronize(StackOverflowDomainModel.Question, question, incomingInstance);
             question.insert();
             return question;
         });

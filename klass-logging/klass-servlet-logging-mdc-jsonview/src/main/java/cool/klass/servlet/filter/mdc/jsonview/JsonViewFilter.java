@@ -14,7 +14,8 @@ import io.liftwizard.logging.slf4j.mdc.MultiMDCCloseable;
 // Priority must be greater than the priority of StructuredArgumentLoggingFilter
 @Provider
 @Priority(Priorities.USER - 10)
-public class JsonViewFilter implements ContainerRequestFilter
+public class JsonViewFilter
+        implements ContainerRequestFilter
 {
     private final Projection projection;
 
@@ -29,6 +30,6 @@ public class JsonViewFilter implements ContainerRequestFilter
         MultiMDCCloseable mdc = (MultiMDCCloseable) requestContext.getProperty("mdc");
 
         mdc.put("klass.jsonView.projectionName", String.valueOf(this.projection));
-        mdc.put("klass.jsonView.projectionClass", this.projection.getKlass().getFullyQualifiedName());
+        mdc.put("klass.jsonView.projectionClassifier", this.projection.getClassifier().getFullyQualifiedName());
     }
 }

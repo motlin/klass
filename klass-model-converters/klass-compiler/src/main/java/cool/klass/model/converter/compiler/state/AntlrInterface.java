@@ -7,11 +7,14 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceReferenceContext;
@@ -132,6 +135,20 @@ public class AntlrInterface extends AntlrClassifier
         return Objects.requireNonNull(this.interfaceBuilder);
     }
 
+    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+    {
+        AntlrReferenceTypeProperty<?> declaredProperty = this.referenceTypePropertiesByName.get(name);
+        if (declaredProperty != null)
+        {
+            return declaredProperty;
+        }
+
+        return this.interfaceStates
+                .asLazy()
+                .collectWith(AntlrInterface::getReferenceTypePropertyByName, name)
+                .detect(Objects::nonNull);
+    }
+
     public void build2()
     {
         if (this.interfaceBuilder == null)
@@ -140,6 +157,12 @@ public class AntlrInterface extends AntlrClassifier
         }
 
         this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
+
+        ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
+                .collect(AntlrAssociationEndSignature::build)
+                .toImmutable();
+
+        this.interfaceBuilder.setAssociationEndSignatureBuilders(associationEndSignatureBuilders);
 
         ImmutableList<InterfaceBuilder> interfaceBuilders = this.interfaceStates
                 .collect(AntlrInterface::getElementBuilder)
@@ -289,6 +312,11 @@ public class AntlrInterface extends AntlrClassifier
         return topLevelNames.toImmutable();
     }
 
+    public boolean isSubClassOf(AntlrClassifier classifier)
+    {
+        return false;
+    }
+
     @Nonnull
     @Override
     public InterfaceDeclarationContext getElementContext()
@@ -304,7 +332,6 @@ public class AntlrInterface extends AntlrClassifier
                 + ".getTypeBuilder() not implemented yet");
     }
 
-    @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
         if (this.dataTypePropertiesByName.containsKey(name))

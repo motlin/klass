@@ -9,15 +9,19 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionProjectionReferenceImpl.ProjectionProjectionReferenceBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjectionProjectionReference extends AntlrNamedElement implements AntlrProjectionChild
+public class AntlrProjectionProjectionReference
+        extends AntlrNamedElement
+        implements AntlrProjectionChild
 {
     @Nonnull
     public static final AntlrProjectionProjectionReference AMBIGUOUS = new AntlrProjectionProjectionReference(
@@ -44,13 +48,13 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
             AntlrProjection.AMBIGUOUS);
 
     @Nonnull
-    private final AntlrClass            klass;
+    private final AntlrClassifier               classifier;
     @Nonnull
-    private final AntlrProjectionParent antlrProjectionParent;
+    private final AntlrProjectionParent         antlrProjectionParent;
     @Nonnull
-    private final AntlrAssociationEnd   associationEnd;
+    private final AntlrReferenceTypeProperty<?> referenceProperty;
     @Nonnull
-    private final AntlrProjection       referencedProjectionState;
+    private final AntlrProjection               referencedProjectionState;
 
     private ProjectionProjectionReferenceBuilder projectionProjectionReferenceBuilder;
 
@@ -60,15 +64,15 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrClass klass,
+            @Nonnull AntlrClassifier classifier,
             @Nonnull AntlrProjectionParent antlrProjectionParent,
-            @Nonnull AntlrAssociationEnd associationEnd,
+            @Nonnull AntlrReferenceTypeProperty<?> referenceProperty,
             @Nonnull AntlrProjection referencedProjectionState)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.klass                     = Objects.requireNonNull(klass);
+        this.classifier                = Objects.requireNonNull(classifier);
         this.antlrProjectionParent     = Objects.requireNonNull(antlrProjectionParent);
-        this.associationEnd            = Objects.requireNonNull(associationEnd);
+        this.referenceProperty         = Objects.requireNonNull(referenceProperty);
         this.referencedProjectionState = Objects.requireNonNull(referencedProjectionState);
     }
 
@@ -89,7 +93,7 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
                 this.name,
                 this.ordinal,
                 this.antlrProjectionParent.getElementBuilder(),
-                this.associationEnd.getElementBuilder());
+                this.referenceProperty.getElementBuilder());
 
         return this.projectionProjectionReferenceBuilder;
     }
@@ -118,26 +122,26 @@ public class AntlrProjectionProjectionReference extends AntlrNamedElement implem
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.antlrProjectionParent.getKlass() == AntlrClass.NOT_FOUND)
+        if (this.antlrProjectionParent.getClassifier() == AntlrClass.NOT_FOUND)
         {
             return;
         }
 
-        if (this.associationEnd == AntlrAssociationEnd.NOT_FOUND)
+        if (this.referenceProperty == AntlrAssociationEnd.NOT_FOUND)
         {
             String message = String.format("Not found: '%s'.", this.name);
             compilerErrorHolder.add("ERR_PAE_NFD", message, this);
         }
 
-        if (this.klass != this.referencedProjectionState.getKlass()
-                && !this.klass.isSubTypeOf(this.referencedProjectionState.getKlass()))
+        if (this.classifier != this.referencedProjectionState.getClassifier()
+                && !this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
         {
             String message = String.format(
                     "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
                     this.name,
-                    this.klass.getName(),
+                    this.classifier.getName(),
                     this.referencedProjectionState.getName(),
-                    this.referencedProjectionState.getKlass().getName());
+                    this.referencedProjectionState.getClassifier().getName());
             compilerErrorHolder.add("ERR_PRR_KLS", message, this);
         }
     }

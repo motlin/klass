@@ -10,12 +10,14 @@ import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
+import cool.klass.model.converter.compiler.state.AntlrType;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.property.validation.AbstractAntlrPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxLengthPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMaxPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinLengthPropertyValidation;
 import cool.klass.model.converter.compiler.state.property.validation.AntlrMinPropertyValidation;
+import cool.klass.model.meta.domain.AbstractElement;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
@@ -35,8 +37,128 @@ import org.eclipse.collections.impl.factory.Multimaps;
 import org.eclipse.collections.impl.utility.Iterate;
 
 public abstract class AntlrDataTypeProperty<T extends DataType>
-        extends AntlrProperty<T>
+        extends AntlrProperty
 {
+    @Nonnull
+    public static final AntlrDataTypeProperty AMBIGUOUS = new AntlrDataTypeProperty(
+            new ParserRuleContext(null, -1),
+            Optional.empty(),
+            AbstractElement.NO_CONTEXT,
+            "ambiguous data type property name",
+            -1,
+            AntlrClassifier.AMBIGUOUS,
+            false)
+    {
+        @Override
+        public boolean isSystem()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isSystem() not implemented yet");
+        }
+
+        @Override
+        public boolean isValid()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
+        }
+
+        @Override
+        public boolean isTemporal()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isTemporal() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public AntlrType getType()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public DataTypePropertyBuilder build()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public DataTypePropertyBuilder getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".reportInvalidIdProperties() not implemented yet");
+        }
+    };
+
+    @Nonnull
+    public static final AntlrDataTypeProperty NOT_FOUND = new AntlrDataTypeProperty(
+            new ParserRuleContext(null, -1),
+            Optional.empty(),
+            AbstractElement.NO_CONTEXT,
+            "not found data type property name",
+            -1,
+            AntlrClassifier.NOT_FOUND,
+            false)
+    {
+        @Override
+        public boolean isSystem()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isSystem() not implemented yet");
+        }
+
+        @Override
+        public boolean isValid()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isValid() not implemented yet");
+        }
+
+        @Override
+        public boolean isTemporal()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".isTemporal() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public AntlrType getType()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public DataTypePropertyBuilder build()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public DataTypePropertyBuilder getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        protected void reportInvalidIdProperties(@Nonnull CompilerErrorState compilerErrorHolder)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".reportInvalidIdProperties() not implemented yet");
+        }
+    };
+
     protected final boolean isOptional;
 
     @Nonnull

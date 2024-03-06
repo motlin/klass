@@ -9,6 +9,7 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public interface DataStore
@@ -19,10 +20,10 @@ public interface DataStore
 
     Object findByKey(Klass klass, ImmutableList<Object> keys);
 
-    Object getToOne(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd);
+    Object getToOne(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty);
 
     @Nonnull
-    List<Object> getToMany(Object persistentSourceInstance, AssociationEnd associationEnd);
+    List<Object> getToMany(Object persistentSourceInstance, ReferenceProperty referenceProperty);
 
     @Nullable
     Object getDataTypeProperty(Object persistentInstance, DataTypeProperty dataTypeProperty);

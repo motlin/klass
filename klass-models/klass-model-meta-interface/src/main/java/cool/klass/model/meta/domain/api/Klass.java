@@ -97,11 +97,6 @@ public interface Klass extends Classifier
         return Optional.of(associationEnds.getOnly());
     }
 
-    default ImmutableList<DataTypeProperty> getKeyProperties()
-    {
-        return this.getDataTypeProperties().select(DataTypeProperty::isKey);
-    }
-
     @Nonnull
     Optional<AssociationEnd> getVersionProperty();
 

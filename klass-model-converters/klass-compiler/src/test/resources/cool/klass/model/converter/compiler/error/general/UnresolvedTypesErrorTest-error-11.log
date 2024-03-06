@@ -1,5 +1,5 @@
 [33m════════════════════════════════════════[m [35mERR_PRJ_TYP[m [33m════════════════════════════════════════[m
-[31mCannot find class 'UnresolvedClass'[m
+[31mCannot find classifier 'UnresolvedClass'[m
 
 Error at location. (UnresolvedTypesErrorTest.klass:31)
 [40m[40;37m 1║ [40;35mpackage [40;97mdummy

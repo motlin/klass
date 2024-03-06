@@ -19,6 +19,6 @@ public interface Element
     @Nonnull
     default String getSourceCodeWithInference()
     {
-        return this.getSourceCode();
+        return this.getSourceCode() + "\n";
     }
 }

@@ -1,7 +1,0 @@
-package dummy
-
-class DummyClass
-{
-    id: Long id key;
-    associationEndSignature: DummyClass[0..1];
-}

@@ -16,7 +16,6 @@ import cool.klass.model.converter.compiler.state.criteria.AntlrCriteria;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
-import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrl;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.domain.api.service.Verb;
@@ -33,7 +32,6 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableOrderedMap;
-import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
@@ -191,7 +189,7 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         AntlrProjection                projection         = projectionDispatch.getProjection();
         projectionDispatch.reportErrors(compilerErrorHolder);
 
-        if (projection == AntlrProjection.NOT_FOUND || projection.getKlass() == AntlrClass.NOT_FOUND)
+        if (projection == AntlrProjection.NOT_FOUND || projection.getClassifier() == AntlrClass.NOT_FOUND)
         {
             return;
         }
@@ -202,14 +200,6 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
         {
             // TODO: ☑ Check that [1..*] association ends are non-empty
             // TODO: Recurse, differently on owned/unowned required/nonEmpty associationEnds
-            // Include version associationEnds iff the service is optimistically locked
-            MutableList<AntlrAssociationEnd> associationEndStates = projection.getKlass().getAssociationEndStates();
-
-            PartitionMutableList<AntlrAssociationEnd> partition =
-                    associationEndStates.partition(AntlrAssociationEnd::isOwned);
-
-            MutableList<AntlrAssociationEnd> ownedAssociationEnds   = partition.getSelected();
-            MutableList<AntlrAssociationEnd> unownedAssociationEnds = partition.getRejected();
         }
     }
 

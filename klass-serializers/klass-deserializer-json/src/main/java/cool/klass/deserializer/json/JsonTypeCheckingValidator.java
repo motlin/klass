@@ -14,6 +14,7 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.NamedElement;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -206,6 +207,13 @@ public final class JsonTypeCheckingValidator
                         quotedPrettyNames.makeString());
                 JsonTypeCheckingValidator.this.errors.add(error);
             }
+        }
+
+        @Override
+        public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitAssociationEndSignature() not implemented yet");
         }
 
         @Override

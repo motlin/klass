@@ -6,19 +6,20 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionListener;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 
-public class GatherProjectionSelfReferencesVisitor implements ProjectionListener
+public class GatherProjectionSelfReferencesVisitor
+        implements ProjectionListener
 {
     private final MutableStack<String> context = Stacks.mutable.empty();
     private final MutableList<String>  result  = Lists.mutable.empty();
@@ -49,14 +50,14 @@ public class GatherProjectionSelfReferencesVisitor implements ProjectionListener
     }
 
     @Override
-    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    public void enterProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
     {
-        this.context.push(projectionAssociationEnd.getName());
-        projectionAssociationEnd.getChildren().forEachWith(ProjectionElement::visit, this);
+        this.context.push(projectionReferenceProperty.getName());
+        projectionReferenceProperty.getChildren().forEachWith(ProjectionElement::visit, this);
     }
 
     @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    public void exitProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty)
     {
         this.context.pop();
     }
@@ -70,10 +71,10 @@ public class GatherProjectionSelfReferencesVisitor implements ProjectionListener
             return;
         }
 
-        AssociationEnd associationEnd   = projectionProjectionReference.getProperty();
-        Multiplicity   multiplicity     = associationEnd.getMultiplicity();
-        String         isRequiredSuffix = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
-        String         toOnePropType    = this.originalProjection.getName() + isRequiredSuffix;
+        ReferenceProperty referenceProperty = projectionProjectionReference.getProperty();
+        Multiplicity      multiplicity      = referenceProperty.getMultiplicity();
+        String            isRequiredSuffix  = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
+        String            toOnePropType     = this.originalProjection.getName() + isRequiredSuffix;
         String propType = multiplicity.isToMany()
                 ? "PropTypes.arrayOf(" + toOnePropType + ").isRequired"
                 : toOnePropType;

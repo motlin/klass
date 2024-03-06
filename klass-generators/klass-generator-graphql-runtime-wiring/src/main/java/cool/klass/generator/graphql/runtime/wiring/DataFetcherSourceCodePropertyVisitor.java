@@ -8,6 +8,7 @@ import com.google.common.base.CaseFormat;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -97,6 +98,12 @@ public final class DataFetcherSourceCodePropertyVisitor
     public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
     {
         this.dataFetcherSourceCode = this.getSimplePropertyDataFetcherSourceCode();
+    }
+
+    @Override
+    public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+    {
+        this.dataFetcherSourceCode = this.getReferencePropertyDataFetcherSourceCode(associationEndSignature);
     }
 
     @Override

@@ -13,12 +13,12 @@ public class BaseProjectionListener implements ProjectionListener
     }
 
     @Override
-    public void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    public void enterProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty)
     {
     }
 
     @Override
-    public void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd)
+    public void exitProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty)
     {
     }
 

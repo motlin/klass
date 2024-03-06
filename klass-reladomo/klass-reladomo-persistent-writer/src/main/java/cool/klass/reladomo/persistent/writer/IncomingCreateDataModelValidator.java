@@ -260,11 +260,11 @@ public class IncomingCreateDataModelValidator
         }
         else
         {
-            this.handleOutsideProjectionAssociationEnd(associationEnd);
+            this.handleOutsideProjectionReferenceProperty(associationEnd);
         }
     }
 
-    private void handleOutsideProjectionAssociationEnd(@Nonnull AssociationEnd associationEnd)
+    private void handleOutsideProjectionReferenceProperty(@Nonnull AssociationEnd associationEnd)
     {
         Multiplicity multiplicity  = associationEnd.getMultiplicity();
         JsonNode     childJsonNode = this.objectNode.path(associationEnd.getName());

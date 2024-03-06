@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
+import cool.klass.model.converter.compiler.state.AntlrInterface;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
@@ -18,10 +20,11 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public abstract class AntlrProjectionParent extends AntlrNamedElement
+public abstract class AntlrProjectionParent
+        extends AntlrNamedElement
 {
     @Nonnull
-    protected final AntlrClass klass;
+    protected final AntlrClassifier classifier;
 
     protected final MutableList<AntlrProjectionChild> children = Lists.mutable.empty();
 
@@ -34,10 +37,17 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrClass klass)
+            @Nonnull AntlrClassifier classifier)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal);
-        this.klass = Objects.requireNonNull(klass);
+        this.classifier = Objects.requireNonNull(classifier);
+        if (classifier == AntlrClass.NOT_FOUND
+                || classifier == AntlrClass.AMBIGUOUS
+                || classifier == AntlrInterface.NOT_FOUND
+                || classifier == AntlrInterface.AMBIGUOUS)
+        {
+            throw new AssertionError(classifier);
+        }
     }
 
     @Override
@@ -50,9 +60,9 @@ public abstract class AntlrProjectionParent extends AntlrNamedElement
     }
 
     @Nonnull
-    public AntlrClass getKlass()
+    public AntlrClassifier getClassifier()
     {
-        return this.klass;
+        return this.classifier;
     }
 
     public int getNumChildren()

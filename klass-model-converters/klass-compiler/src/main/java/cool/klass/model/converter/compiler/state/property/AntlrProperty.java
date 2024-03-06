@@ -13,7 +13,6 @@ import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.AntlrType;
-import cool.klass.model.meta.domain.api.Type;
 import cool.klass.model.meta.domain.property.AbstractProperty.PropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.bag.MutableBag;
@@ -23,7 +22,8 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
+public abstract class AntlrProperty
+        extends AntlrNamedElement
 {
     @Nonnull
     private final MutableList<AntlrModifier>                          modifierStates     = Lists.mutable.empty();
@@ -52,11 +52,11 @@ public abstract class AntlrProperty<T extends Type> extends AntlrNamedElement
     public abstract AntlrType getType();
 
     @Nonnull
-    public abstract PropertyBuilder<T, ?, ?> build();
+    public abstract PropertyBuilder<?, ?, ?> build();
 
     @Override
     @Nonnull
-    public abstract PropertyBuilder<T, ?, ?> getElementBuilder();
+    public abstract PropertyBuilder<?, ?, ?> getElementBuilder();
 
     @Nonnull
     protected abstract AntlrClassifier getOwningClassifierState();

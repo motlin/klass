@@ -23,7 +23,7 @@
       "inferred": false,
       "ordinal": 2,
       "sourceCode": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;",
-      "sourceCodeWithInference": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;",
+      "sourceCodeWithInference": "superInterfaces               : ClassifierInterfaceMapping[0..*] owned;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -50,7 +50,7 @@
       "inferred": false,
       "ordinal": 2,
       "sourceCode": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "primitiveProperties: PrimitiveProperty[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -71,7 +71,7 @@
       "inferred": false,
       "ordinal": 2,
       "sourceCode": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "enumerationProperties: EnumerationProperty[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {
@@ -92,7 +92,7 @@
       "inferred": false,
       "ordinal": 2,
       "sourceCode": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;",
-      "sourceCodeWithInference": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;",
+      "sourceCodeWithInference": "classifierModifiers: ClassifierModifier[0..*]\n        orderBy: this.ordinal;\n",
       "direction": "target",
       "multiplicity": "0..*",
       "owningClass": {

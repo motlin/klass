@@ -45,6 +45,11 @@ public interface Classifier
 
     ImmutableList<Property> getDeclaredProperties();
 
+    default ImmutableList<DataTypeProperty> getKeyProperties()
+    {
+        return this.getDataTypeProperties().select(DataTypeProperty::isKey);
+    }
+
     @Nonnull
     default ImmutableList<DataTypeProperty> getDataTypeProperties()
     {
@@ -60,6 +65,8 @@ public interface Classifier
 
     default ImmutableList<DataTypeProperty> getInheritedDataTypeProperties()
     {
+        // TODO: Factor in depth of declaration
+
         return this.getInterfaces()
                 .flatCollect(Classifier::getDataTypeProperties)
                 .distinctBy(NamedElement::getName)

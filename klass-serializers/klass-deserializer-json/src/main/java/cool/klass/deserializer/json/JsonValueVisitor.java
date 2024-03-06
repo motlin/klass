@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
@@ -53,6 +54,13 @@ public class JsonValueVisitor implements PropertyVisitor
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".visitEnumerationProperty() not implemented yet");
+    }
+
+    @Override
+    public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitAssociationEndSignature() not implemented yet");
     }
 
     @Override

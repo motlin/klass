@@ -61,12 +61,12 @@ associationEndSignature: identifier ':' classifierType associationEndModifier* '
 relationship: 'relationship' criteriaExpression;
 
 // projection
-projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classReference projectionBody;
+projectionDeclaration: 'projection' identifier (parameterDeclarationList)? 'on' classifierReference projectionBody;
 projectionBody: '{' (projectionMember ',')* '}';
-projectionMember: projectionPrimitiveMember | projectionAssociationEnd | projectionParameterizedProperty | projectionProjectionReference;
+projectionMember: projectionPrimitiveMember | projectionReferenceProperty | projectionParameterizedProperty | projectionProjectionReference;
 // TODO: Rename projectionPrimitiveMember --> projectionDataTypeMember
 projectionPrimitiveMember: (classifierReference '.')? identifier ':' header;
-projectionAssociationEnd: (classifierReference '.')? identifier ':' projectionBody;
+projectionReferenceProperty: (classifierReference '.')? identifier ':' projectionBody;
 projectionProjectionReference: (classifierReference '.')? identifier ':' projectionReference;
 projectionParameterizedProperty: (classifierReference '.')? identifier argumentList ':' projectionBody;
 header: StringLiteral;

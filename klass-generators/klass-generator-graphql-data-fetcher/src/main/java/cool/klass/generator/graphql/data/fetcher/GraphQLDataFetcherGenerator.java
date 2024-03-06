@@ -12,6 +12,7 @@ import cool.klass.model.meta.domain.api.DomainModel;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
@@ -225,6 +226,13 @@ public class GraphQLDataFetcherGenerator
         public void visitEnumerationProperty(EnumerationProperty enumerationProperty)
         {
             this.sourceCode = "String";
+        }
+
+        @Override
+        public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".visitAssociationEndSignature() not implemented yet");
         }
 
         @Override

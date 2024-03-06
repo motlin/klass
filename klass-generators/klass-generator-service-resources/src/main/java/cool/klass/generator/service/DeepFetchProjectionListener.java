@@ -4,37 +4,38 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.projection.BaseProjectionListener;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
-import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
 
-public final class DeepFetchProjectionListener extends BaseProjectionListener
+public final class DeepFetchProjectionListener
+        extends BaseProjectionListener
 {
-    private final MutableStack<ProjectionWithAssociationEnd> associationEndStack = Stacks.mutable.empty();
+    private final MutableStack<ProjectionWithReferenceProperty> associationEndStack = Stacks.mutable.empty();
 
     private final MutableStack<String> stringStack = Stacks.mutable.empty();
     private final MutableList<String>  result      = Lists.mutable.empty();
-    private       Klass                owningClassifier;
+    private       Classifier           owningClassifier;
 
     // TODO: Figure out how to deep fetch polymorphic projection properties
 
     @Override
-    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    public void enterProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
     {
-        this.enterProjectionWithAssociationEnd(projectionAssociationEnd);
+        this.enterProjectionWithAssociationEnd(projectionReferenceProperty);
     }
 
     @Override
-    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    public void exitProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
     {
-        this.exitProjectionWithAssociationEnd(projectionAssociationEnd);
+        this.exitProjectionWithAssociationEnd(projectionReferenceProperty);
     }
 
     @Override
@@ -54,7 +55,7 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
         return this.result.toImmutable();
     }
 
-    private void enterProjectionWithAssociationEnd(@Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd)
+    private void enterProjectionWithAssociationEnd(@Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd)
     {
         if (this.stringStack.isEmpty())
         {
@@ -68,11 +69,11 @@ public final class DeepFetchProjectionListener extends BaseProjectionListener
         this.stringStack.push(projectionWithAssociationEnd.getProperty().getName());
     }
 
-    private void exitProjectionWithAssociationEnd(@Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd)
+    private void exitProjectionWithAssociationEnd(@Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd)
     {
         // TODO: Figure out how to deep fetch polymorphic projection properties
         if (projectionWithAssociationEnd.isLeaf()
-                && this.associationEndStack.noneSatisfy(ProjectionWithAssociationEnd::isPolymorphic))
+                && this.associationEndStack.noneSatisfy(ProjectionWithReferenceProperty::isPolymorphic))
         {
             String string = this.stringStack
                     .toList()

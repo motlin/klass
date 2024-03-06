@@ -47,12 +47,12 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertyModifierCo
 import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertySignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedPropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCriteriaKeywordContext;
@@ -410,7 +410,7 @@ public class ParserBasedTokenCategorizer
     }
 
     @Override
-    public void enterProjectionAssociationEnd(ProjectionAssociationEndContext ctx)
+    public void enterProjectionReferenceProperty(ProjectionReferencePropertyContext ctx)
     {
         this.put(
                 ctx.identifier().getStart(),

@@ -10,13 +10,13 @@ import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.AbstractProjectionParent.AbstractProjectionParentBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
-import cool.klass.model.meta.domain.property.AssociationEndImpl;
-import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public final class ProjectionProjectionReferenceImpl
@@ -24,9 +24,9 @@ public final class ProjectionProjectionReferenceImpl
         implements ProjectionProjectionReference
 {
     @Nonnull
-    private final ProjectionParent   parent;
+    private final ProjectionParent  parent;
     @Nonnull
-    private final AssociationEndImpl associationEnd;
+    private final ReferenceProperty referenceProperty;
 
     private ProjectionImpl referencedProjection;
 
@@ -38,11 +38,11 @@ public final class ProjectionProjectionReferenceImpl
             @Nonnull String name,
             int ordinal,
             @Nonnull ProjectionParent parent,
-            @Nonnull AssociationEndImpl associationEnd)
+            @Nonnull ReferenceProperty referenceProperty)
     {
         super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
-        this.parent         = Objects.requireNonNull(parent);
-        this.associationEnd = Objects.requireNonNull(associationEnd);
+        this.parent            = Objects.requireNonNull(parent);
+        this.referenceProperty = Objects.requireNonNull(referenceProperty);
     }
 
     @Override
@@ -60,9 +60,9 @@ public final class ProjectionProjectionReferenceImpl
 
     @Override
     @Nonnull
-    public AssociationEndImpl getProperty()
+    public ReferenceProperty getProperty()
     {
-        return this.associationEnd;
+        return this.referenceProperty;
     }
 
     private void setReferencedProjection(ProjectionImpl referencedProjection)
@@ -81,7 +81,7 @@ public final class ProjectionProjectionReferenceImpl
         @Nonnull
         private final AbstractProjectionParentBuilder<?> parentBuilder;
         @Nonnull
-        private final AssociationEndBuilder              associationEndBuilder;
+        private final ReferencePropertyBuilder<?, ?, ?>  referencePropertyBuilder;
         private       ProjectionBuilder                  referencedProjectionBuilder;
 
         public ProjectionProjectionReferenceBuilder(
@@ -92,11 +92,11 @@ public final class ProjectionProjectionReferenceImpl
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull AbstractProjectionParentBuilder<?> parentBuilder,
-                @Nonnull AssociationEndBuilder associationEndBuilder)
+                @Nonnull ReferencePropertyBuilder<?, ?, ?> referencePropertyBuilder)
         {
             super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
-            this.parentBuilder         = Objects.requireNonNull(parentBuilder);
-            this.associationEndBuilder = Objects.requireNonNull(associationEndBuilder);
+            this.parentBuilder            = Objects.requireNonNull(parentBuilder);
+            this.referencePropertyBuilder = Objects.requireNonNull(referencePropertyBuilder);
         }
 
         public void setReferencedProjectionBuilder(ProjectionBuilder referencedProjectionBuilder)
@@ -121,7 +121,7 @@ public final class ProjectionProjectionReferenceImpl
                     this.name,
                     this.ordinal,
                     this.parentBuilder.getElement(),
-                    this.associationEndBuilder.getElement());
+                    this.referencePropertyBuilder.getElement());
         }
 
         @Override

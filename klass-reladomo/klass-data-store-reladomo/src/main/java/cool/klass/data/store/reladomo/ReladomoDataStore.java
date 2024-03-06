@@ -45,6 +45,7 @@ import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.AssertObjectMatchesDataTypePropertyVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.multimap.list.ImmutableListMultimap;
@@ -55,7 +56,8 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 // TODO: Refactor this whole thing to use generated getters/setters instead of Reladomo Attribute
-public class ReladomoDataStore implements DataStore
+public class ReladomoDataStore
+        implements DataStore
 {
     private static final Marker MARKER = MarkerFactory.getMarker("reladomo transaction stats");
     private static final Logger LOGGER = LoggerFactory.getLogger(ReladomoDataStore.class);
@@ -497,14 +499,14 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Override
-    public Object getToOne(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
+    public Object getToOne(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty)
     {
-        if (!associationEnd.getMultiplicity().isToOne())
+        if (!referenceProperty.getMultiplicity().isToOne())
         {
             throw new AssertionError();
         }
 
-        Object result = this.get(persistentSourceInstance, associationEnd);
+        Object result = this.get(persistentSourceInstance, referenceProperty);
         if (result instanceof List)
         {
             List<?> list = (List<?>) result;
@@ -513,25 +515,25 @@ public class ReladomoDataStore implements DataStore
         return result;
     }
 
-    public Object get(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
+    public Object get(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty)
     {
-        RelatedFinder<?> finder = this.getRelatedFinder(associationEnd.getOwningClassifier());
+        RelatedFinder<?> finder = this.getRelatedFinder(referenceProperty.getOwningClassifier());
         AbstractRelatedFinder relationshipFinder = (AbstractRelatedFinder) finder
-                .getRelationshipFinderByName(associationEnd.getName());
+                .getRelationshipFinderByName(referenceProperty.getName());
 
         return relationshipFinder.valueOf(persistentSourceInstance);
     }
 
     @Nonnull
     @Override
-    public List<Object> getToMany(Object persistentSourceInstance, @Nonnull AssociationEnd associationEnd)
+    public List<Object> getToMany(Object persistentSourceInstance, @Nonnull ReferenceProperty referenceProperty)
     {
-        if (!associationEnd.getMultiplicity().isToMany())
+        if (!referenceProperty.getMultiplicity().isToMany())
         {
             throw new AssertionError();
         }
 
-        Object result = this.get(persistentSourceInstance, associationEnd);
+        Object result = this.get(persistentSourceInstance, referenceProperty);
         if (!(result instanceof List))
         {
             throw new AssertionError("Expected list but got " + result.getClass().getCanonicalName());
@@ -660,11 +662,11 @@ public class ReladomoDataStore implements DataStore
     }
 
     @Nonnull
-    private RelatedFinder<?> getRelatedFinder(@Nonnull Klass klass)
+    private RelatedFinder<?> getRelatedFinder(@Nonnull Classifier classifier)
     {
         try
         {
-            String   finderName      = klass.getFullyQualifiedName() + "Finder";
+            String   finderName      = classifier.getFullyQualifiedName() + "Finder";
             Class<?> finderClass     = Class.forName(finderName);
             Method   getFinderMethod = finderClass.getMethod("getFinderInstance");
             return (RelatedFinder<?>) getFinderMethod.invoke(null);

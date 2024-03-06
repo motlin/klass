@@ -2,27 +2,19 @@ package cool.klass.model.meta.domain.api.property;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.Association;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public interface AssociationEnd extends ReferenceProperty
+public interface AssociationEndSignature
+        extends ReferenceProperty
 {
-    @Nonnull
-    @Override
-    Klass getType();
-
-    @Nonnull
-    @Override
-    Klass getOwningClassifier();
-
     @Override
     default void visit(@Nonnull PropertyVisitor visitor)
     {
-        visitor.visitAssociationEnd(this);
+        visitor.visitAssociationEndSignature(this);
     }
 
+    // TODO: Pull these up to ReferenceProperty
     @Nonnull
     ImmutableList<AssociationEndModifier> getAssociationEndModifiers();
 
@@ -41,25 +33,4 @@ public interface AssociationEnd extends ReferenceProperty
     {
         return this.getAssociationEndModifiers().anySatisfy(AssociationEndModifier::isFinal);
     }
-
-    @Nonnull
-    default AssociationEnd getOpposite()
-    {
-        Association association = this.getOwningAssociation();
-
-        if (this == association.getSourceAssociationEnd())
-        {
-            return association.getTargetAssociationEnd();
-        }
-
-        if (this == association.getTargetAssociationEnd())
-        {
-            return association.getSourceAssociationEnd();
-        }
-
-        throw new AssertionError();
-    }
-
-    @Nonnull
-    Association getOwningAssociation();
 }

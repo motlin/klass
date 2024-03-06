@@ -3,16 +3,17 @@ package cool.klass.generator.react.prop.type;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Sets;
 
-public class GatherProjectionReferencesVisitor implements ProjectionVisitor
+public class GatherProjectionReferencesVisitor
+        implements ProjectionVisitor
 {
     private final Projection             originalProjection;
     private final MutableSet<Projection> referencedProjections = Sets.mutable.empty();
@@ -43,9 +44,9 @@ public class GatherProjectionReferencesVisitor implements ProjectionVisitor
     }
 
     @Override
-    public void visitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    public void visitProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
     {
-        projectionAssociationEnd.getChildren().forEachWith(ProjectionElement::visit, this);
+        projectionReferenceProperty.getChildren().forEachWith(ProjectionElement::visit, this);
     }
 
     @Override

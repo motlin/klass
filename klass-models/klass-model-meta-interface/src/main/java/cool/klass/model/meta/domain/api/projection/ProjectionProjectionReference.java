@@ -2,18 +2,19 @@ package cool.klass.model.meta.domain.api.projection;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.api.Klass;
+import cool.klass.model.meta.domain.api.Classifier;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public interface ProjectionProjectionReference extends ProjectionWithAssociationEnd
+public interface ProjectionProjectionReference
+        extends ProjectionWithReferenceProperty
 {
     Projection getProjection();
 
     @Nonnull
     @Override
-    default Klass getKlass()
+    default Classifier getClassifier()
     {
-        return this.getProjection().getKlass();
+        return this.getProjection().getClassifier();
     }
 
     @Override

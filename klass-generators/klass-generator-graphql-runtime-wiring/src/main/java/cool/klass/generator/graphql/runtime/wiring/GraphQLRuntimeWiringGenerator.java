@@ -80,13 +80,13 @@ public class GraphQLRuntimeWiringGenerator
                 .collectWith(this::getDataFetcherSourceCode, klass)
                 .makeString("");
 
-        ImmutableList<Klass> associatedTypes = klass
+        ImmutableList<Classifier> associatedTypes = klass
                 .getProperties()
                 .selectInstancesOf(ReferenceProperty.class)
                 .collect(ReferenceProperty::getType);
 
-        ImmutableList<Klass> importTypes = Lists.immutable.with(klass).newWithAll(associatedTypes);
-        ImmutableList<String> imports    = importTypes.collect(this::getImport);
+        ImmutableList<Classifier> importTypes = Lists.immutable.<Classifier>with(klass).newWithAll(associatedTypes);
+        ImmutableList<String>     imports     = importTypes.collect(this::getImport);
 
         // @formatter:off
         //language=JAVA
@@ -119,9 +119,9 @@ public class GraphQLRuntimeWiringGenerator
         return sourceCode;
     }
 
-    private String getImport(Klass klass)
+    private String getImport(Classifier classifier)
     {
-        String fullyQualifiedName = klass.getFullyQualifiedName();
+        String fullyQualifiedName = classifier.getFullyQualifiedName();
         return "import " + fullyQualifiedName + ";\n"
                 + "import " + fullyQualifiedName + "Finder;\n";
     }

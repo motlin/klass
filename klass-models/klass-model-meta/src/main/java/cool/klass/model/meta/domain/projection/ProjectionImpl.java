@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.TopLevelElement;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.projection.Projection;
@@ -20,9 +20,9 @@ public final class ProjectionImpl
         implements TopLevelElement, Projection
 {
     @Nonnull
-    private final String    packageName;
+    private final String             packageName;
     @Nonnull
-    private final KlassImpl klass;
+    private final AbstractClassifier classifier;
 
     private ProjectionImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -32,11 +32,11 @@ public final class ProjectionImpl
             @Nonnull String name,
             int ordinal,
             @Nonnull String packageName,
-            @Nonnull KlassImpl klass)
+            @Nonnull AbstractClassifier classifier)
     {
         super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
         this.packageName = Objects.requireNonNull(packageName);
-        this.klass       = Objects.requireNonNull(klass);
+        this.classifier  = Objects.requireNonNull(classifier);
     }
 
     @Override
@@ -47,9 +47,9 @@ public final class ProjectionImpl
 
     @Override
     @Nonnull
-    public KlassImpl getKlass()
+    public AbstractClassifier getClassifier()
     {
-        return this.klass;
+        return this.classifier;
     }
 
     @Nonnull
@@ -64,9 +64,9 @@ public final class ProjectionImpl
             implements TopLevelElementBuilder
     {
         @Nonnull
-        private final String       packageName;
+        private final String               packageName;
         @Nonnull
-        private final KlassBuilder klassBuilder;
+        private final ClassifierBuilder<?> classifierBuilder;
 
         public ProjectionBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -76,11 +76,11 @@ public final class ProjectionImpl
                 @Nonnull String name,
                 int ordinal,
                 @Nonnull String packageName,
-                @Nonnull KlassBuilder klassBuilder)
+                @Nonnull ClassifierBuilder<?> classifierBuilder)
         {
             super(elementContext, macroElement, sourceCode, nameContext, name, ordinal);
-            this.packageName  = Objects.requireNonNull(packageName);
-            this.klassBuilder = Objects.requireNonNull(klassBuilder);
+            this.packageName       = Objects.requireNonNull(packageName);
+            this.classifierBuilder = Objects.requireNonNull(classifierBuilder);
         }
 
         @Override
@@ -95,7 +95,7 @@ public final class ProjectionImpl
                     this.name,
                     this.ordinal,
                     this.packageName,
-                    this.klassBuilder.getElement());
+                    this.classifierBuilder.getElement());
         }
     }
 }

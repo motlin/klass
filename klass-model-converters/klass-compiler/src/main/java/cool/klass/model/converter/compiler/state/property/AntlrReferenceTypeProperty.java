@@ -3,22 +3,148 @@ package cool.klass.model.converter.compiler.state.property;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrMultiplicity;
+import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderBy;
 import cool.klass.model.converter.compiler.state.order.AntlrOrderByOwner;
-import cool.klass.model.meta.domain.KlassImpl;
+import cool.klass.model.meta.domain.AbstractElement;
+import cool.klass.model.meta.domain.property.ReferencePropertyImpl.ReferencePropertyBuilder;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
+// TODO: Rename "ReferenceType" to just "Reference"
 public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
-        extends AntlrProperty<KlassImpl>
+        extends AntlrProperty
         implements AntlrOrderByOwner
 {
+    @Nullable
+    public static final AntlrReferenceTypeProperty AMBIGUOUS = new AntlrReferenceTypeProperty(
+            new ParserRuleContext(null, -1),
+            Optional.empty(),
+            AbstractElement.NO_CONTEXT,
+            "ambiguous reference property",
+            -1)
+    {
+        @Nonnull
+        @Override
+        public AntlrClassifier getType()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+        }
+
+        @Override
+        public AntlrMultiplicity getMultiplicity()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getMultiplicity() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ReferencePropertyBuilder<?, ?, ?> build()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ReferencePropertyBuilder<?, ?, ?> getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Override
+        protected IdentifierContext getTypeIdentifier()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeIdentifier() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        protected AntlrClassifier getOwningClassifierState()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getOwningClassifierState() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public Optional<IAntlrElement> getSurroundingElement()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getSurroundingElement() not implemented yet");
+        }
+    };
+
+    @Nullable
+    public static final AntlrReferenceTypeProperty NOT_FOUND = new AntlrReferenceTypeProperty(
+            new ParserRuleContext(null, -1),
+            Optional.empty(),
+            AbstractElement.NO_CONTEXT,
+            "not found reference property",
+            -1)
+    {
+        @Nonnull
+        @Override
+        public Optional<IAntlrElement> getSurroundingElement()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getSurroundingElement() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public AntlrClassifier getType()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".getType() not implemented yet");
+        }
+
+        @Override
+        public AntlrMultiplicity getMultiplicity()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getMultiplicity() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ReferencePropertyBuilder<?, ?, ?> build()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".build() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        public ReferencePropertyBuilder<?, ?, ?> getElementBuilder()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getElementBuilder() not implemented yet");
+        }
+
+        @Nonnull
+        @Override
+        protected AntlrClassifier getOwningClassifierState()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getOwningClassifierState() not implemented yet");
+        }
+
+        @Override
+        protected IdentifierContext getTypeIdentifier()
+        {
+            throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                    + ".getTypeIdentifier() not implemented yet");
+        }
+    };
+
     @Nonnull
     protected Optional<AntlrOrderBy> orderByState = Optional.empty();
 
@@ -37,6 +163,14 @@ public abstract class AntlrReferenceTypeProperty<Type extends AntlrClassifier>
     public abstract Type getType();
 
     public abstract AntlrMultiplicity getMultiplicity();
+
+    @Nonnull
+    @Override
+    public abstract ReferencePropertyBuilder<?, ?, ?> build();
+
+    @Nonnull
+    @Override
+    public abstract ReferencePropertyBuilder<?, ?, ?> getElementBuilder();
 
     @Override
     public void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState)

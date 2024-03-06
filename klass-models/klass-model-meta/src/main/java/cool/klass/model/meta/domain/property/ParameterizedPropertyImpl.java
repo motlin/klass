@@ -1,6 +1,5 @@
 package cool.klass.model.meta.domain.property;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -10,25 +9,18 @@ import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
-import cool.klass.model.meta.domain.order.OrderByImpl.OrderByBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Super class for reference-type-property?
 public final class ParameterizedPropertyImpl
-        extends AbstractProperty<KlassImpl>
+        extends ReferencePropertyImpl<KlassImpl>
         implements ParameterizedProperty
 {
-    @Nonnull
-    private final Multiplicity multiplicity;
     // @Nonnull
     // private final ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers;
-
-    @Nonnull
-    private Optional<OrderBy> orderBy = Optional.empty();
 
     private ParameterizedPropertyImpl(
             @Nonnull ParserRuleContext elementContext,
@@ -41,8 +33,18 @@ public final class ParameterizedPropertyImpl
             @Nonnull KlassImpl owningKlass,
             @Nonnull Multiplicity multiplicity)
     {
-        super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlass);
-        this.multiplicity = Objects.requireNonNull(multiplicity);
+        // TODO: Push owned back down
+        super(
+                elementContext,
+                macroElement,
+                sourceCode,
+                nameContext,
+                name,
+                ordinal,
+                type,
+                owningKlass,
+                multiplicity,
+                false);
     }
 
     @Nonnull
@@ -52,34 +54,9 @@ public final class ParameterizedPropertyImpl
         return (Klass) super.getOwningClassifier();
     }
 
-    @Override
-    @Nonnull
-    public Multiplicity getMultiplicity()
-    {
-        return this.multiplicity;
-    }
-
-    @Override
-    @Nonnull
-    public Optional<OrderBy> getOrderBy()
-    {
-        return Objects.requireNonNull(this.orderBy);
-    }
-
-    private void setOrderBy(@Nonnull Optional<OrderBy> orderBy)
-    {
-        this.orderBy = Objects.requireNonNull(orderBy);
-    }
-
     public static final class ParameterizedPropertyBuilder
-            extends PropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
+            extends ReferencePropertyBuilder<KlassImpl, KlassBuilder, ParameterizedPropertyImpl>
     {
-        @Nonnull
-        private final Multiplicity multiplicity;
-
-        @Nonnull
-        private Optional<OrderByBuilder> orderByBuilder = Optional.empty();
-
         public ParameterizedPropertyBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
@@ -91,20 +68,24 @@ public final class ParameterizedPropertyImpl
                 @Nonnull KlassBuilder owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity)
         {
-            super(elementContext, macroElement, sourceCode, nameContext, name, ordinal, type, owningKlassBuilder);
-            this.multiplicity = Objects.requireNonNull(multiplicity);
-        }
-
-        public void setOrderByBuilder(@Nonnull Optional<OrderByBuilder> orderByBuilder)
-        {
-            this.orderByBuilder = Objects.requireNonNull(orderByBuilder);
+            super(
+                    elementContext,
+                    macroElement,
+                    sourceCode,
+                    nameContext,
+                    name,
+                    ordinal,
+                    type,
+                    owningKlassBuilder,
+                    multiplicity,
+                    false);
         }
 
         @Override
         @Nonnull
         protected ParameterizedPropertyImpl buildUnsafe()
         {
-            ParameterizedPropertyImpl parameterizedProperty = new ParameterizedPropertyImpl(
+            return new ParameterizedPropertyImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.map(SourceCodeBuilder::build),
@@ -114,15 +95,6 @@ public final class ParameterizedPropertyImpl
                     this.typeBuilder.getElement(),
                     (KlassImpl) this.owningClassifierBuilder.getElement(),
                     this.multiplicity);
-
-            Optional<OrderBy> orderBy = this.orderByBuilder.map(OrderByBuilder::build);
-            parameterizedProperty.setOrderBy(orderBy);
-
-            /*
-            ImmutableList<ParameterizedPropertyModifier> parameterizedPropertyModifiers =
-                    this.parameterizedPropertyModifierBuilders.collect(ParameterizedPropertyModifierBuilder::build);
-            */
-            return parameterizedProperty;
         }
     }
 }

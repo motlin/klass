@@ -15,7 +15,6 @@ import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DataType;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PrimitiveType;
 import cool.klass.model.meta.domain.api.projection.Projection;
@@ -23,16 +22,17 @@ import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
-import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProperty;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.visitor.PrimitiveTypeVisitor;
 import cool.klass.serialization.jackson.jsonview.KlassJsonView;
 import cool.klass.serialization.jackson.model.data.property.SerializeValueToJsonFieldPrimitiveTypeVisitor;
 import cool.klass.serialization.jackson.response.KlassResponseMetadata;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
+public class ReladomoContextJsonSerializer
+        extends JsonSerializer<MithraObject>
 {
     @Nonnull
     private final DataStore             dataStore;
@@ -92,12 +92,12 @@ public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
                             mithraObject,
                             (ProjectionDataTypeProperty) projectionElement);
                 }
-                else if (projectionElement instanceof ProjectionWithAssociationEnd)
+                else if (projectionElement instanceof ProjectionWithReferenceProperty)
                 {
                     this.handleProjectionWithAssociationEnd(
                             jsonGenerator,
                             mithraObject,
-                            (ProjectionWithAssociationEnd) projectionElement);
+                            (ProjectionWithReferenceProperty) projectionElement);
                 }
                 else
                 {
@@ -172,24 +172,24 @@ public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
     public void handleProjectionWithAssociationEnd(
             @Nonnull JsonGenerator jsonGenerator,
             MithraObject mithraObject,
-            @Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd) throws IOException
+            @Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd) throws IOException
     {
         if (projectionWithAssociationEnd.isPolymorphic())
         {
-            Klass klass = projectionWithAssociationEnd.getProperty().getOwningClassifier();
-            if (!this.dataStore.isInstanceOf(mithraObject, klass))
+            Classifier classifier = projectionWithAssociationEnd.getProperty().getOwningClassifier();
+            if (!this.dataStore.isInstanceOf(mithraObject, classifier))
             {
                 return;
             }
         }
 
-        AssociationEnd associationEnd     = projectionWithAssociationEnd.getProperty();
-        Multiplicity   multiplicity       = associationEnd.getMultiplicity();
-        String         associationEndName = associationEnd.getName();
+        ReferenceProperty referenceProperty  = projectionWithAssociationEnd.getProperty();
+        Multiplicity      multiplicity       = referenceProperty.getMultiplicity();
+        String            associationEndName = referenceProperty.getName();
 
         if (multiplicity.isToMany())
         {
-            Object                   value      = this.dataStore.getToMany(mithraObject, associationEnd);
+            Object                   value      = this.dataStore.getToMany(mithraObject, referenceProperty);
             MithraList<MithraObject> mithraList = (MithraList<MithraObject>) Objects.requireNonNull(value);
 
             // TODO: Add configuration to disable serialization of empty lists
@@ -206,7 +206,7 @@ public class ReladomoContextJsonSerializer extends JsonSerializer<MithraObject>
         }
         else
         {
-            Object value = this.dataStore.getToOne(mithraObject, associationEnd);
+            Object value = this.dataStore.getToOne(mithraObject, referenceProperty);
             // TODO: Add configuration to disable serialization of null values
             if (value == null)
             {

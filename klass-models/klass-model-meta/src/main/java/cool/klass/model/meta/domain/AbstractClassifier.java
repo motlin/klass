@@ -11,10 +11,12 @@ import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Interface;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
@@ -22,9 +24,10 @@ public abstract class AbstractClassifier
         extends AbstractPackageableElement
         implements TopLevelElement, Classifier
 {
-    private ImmutableList<DataTypeProperty> dataTypeProperties;
-    private ImmutableList<ClassModifier>    classModifiers;
-    private ImmutableList<Interface>        interfaces;
+    private ImmutableList<DataTypeProperty>        dataTypeProperties;
+    private ImmutableList<ClassModifier>           classModifiers;
+    private ImmutableList<Interface>               interfaces;
+    private ImmutableList<AssociationEndSignature> associationEndSignatures;
 
     protected AbstractClassifier(
             @Nonnull ParserRuleContext elementContext,
@@ -86,6 +89,15 @@ public abstract class AbstractClassifier
         this.interfaces = Objects.requireNonNull(interfaces);
     }
 
+    protected void setAssociationEndSignatures(ImmutableList<AssociationEndSignature> associationEndSignatures)
+    {
+        if (this.associationEndSignatures != null)
+        {
+            throw new IllegalStateException();
+        }
+        this.associationEndSignatures = Objects.requireNonNull(associationEndSignatures);
+    }
+
     public abstract static class ClassifierBuilder<BuiltElement extends AbstractClassifier>
             extends PackageableElementBuilder<BuiltElement>
             implements TypeGetter, TopLevelElementBuilder
@@ -93,6 +105,7 @@ public abstract class AbstractClassifier
         protected ImmutableList<DataTypePropertyBuilder<?, ?, ?>> dataTypePropertyBuilders;
         protected ImmutableList<ClassModifierBuilder>             classModifierBuilders;
         protected ImmutableList<InterfaceBuilder>                 interfaceBuilders;
+        protected ImmutableList<AssociationEndSignatureBuilder>   associationEndSignatureBuilders;
 
         protected ClassifierBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -124,6 +137,15 @@ public abstract class AbstractClassifier
             this.classModifierBuilders = Objects.requireNonNull(classModifierBuilders);
         }
 
+        public void setAssociationEndSignatureBuilders(@Nonnull ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders)
+        {
+            if (this.associationEndSignatureBuilders != null)
+            {
+                throw new IllegalStateException();
+            }
+            this.associationEndSignatureBuilders = Objects.requireNonNull(associationEndSignatureBuilders);
+        }
+
         @Override
         protected void buildChildren()
         {
@@ -152,6 +174,11 @@ public abstract class AbstractClassifier
             this.dataTypePropertyBuilders.each(DataTypePropertyBuilder::build2);
             ImmutableList<Interface> superInterfaces = this.interfaceBuilders.collect(InterfaceBuilder::getType);
             this.element.setInterfaces(superInterfaces);
+
+            ImmutableList<AssociationEndSignature> associationEndSignatures = this.associationEndSignatureBuilders
+                    .<AssociationEndSignature>collect(AssociationEndSignatureBuilder::build)
+                    .toImmutable();
+            this.element.setAssociationEndSignatures(associationEndSignatures);
         }
 
         @Override

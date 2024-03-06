@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrNamedElement;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
@@ -119,7 +119,13 @@ public class AntlrProjectionDataTypeProperty
     @Override
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.antlrProjectionParent.getKlass() == AntlrClass.AMBIGUOUS)
+        if (this.headerText.trim().isEmpty())
+        {
+            compilerErrorHolder.add("ERR_PRJ_HDR", "Empty header string.", this, this.headerContext);
+        }
+
+        if (this.antlrProjectionParent.getClassifier() == AntlrClassifier.AMBIGUOUS
+                || this.antlrProjectionParent.getClassifier() == AntlrClassifier.NOT_FOUND)
         {
             // Covered by ERR_DUP_TOP
             return;
@@ -129,14 +135,9 @@ public class AntlrProjectionDataTypeProperty
         {
             String message = String.format(
                     "Cannot find member '%s.%s'.",
-                    this.antlrProjectionParent.getKlass().getName(),
+                    this.antlrProjectionParent.getClassifier().getName(),
                     this.name);
             compilerErrorHolder.add("ERR_PRJ_DTP", message, this);
-        }
-
-        if (this.headerText.trim().isEmpty())
-        {
-            compilerErrorHolder.add("ERR_PRJ_HDR", "Empty header string.", this, this.headerContext);
         }
     }
 

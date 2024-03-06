@@ -4,7 +4,7 @@ public interface ProjectionVisitor
 {
     void visitProjection(Projection projection);
 
-    void visitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd);
+    void visitProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty);
 
     void visitProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference);
 

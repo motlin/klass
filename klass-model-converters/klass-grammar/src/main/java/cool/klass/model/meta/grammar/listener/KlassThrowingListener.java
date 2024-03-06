@@ -89,7 +89,6 @@ import cool.klass.model.meta.grammar.KlassParser.ParameterizedPropertySignatureC
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveParameterDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitivePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.PrimitiveTypeContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionBodyContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionMemberContext;
@@ -97,6 +96,7 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionParameterizedProperty
 import cool.klass.model.meta.grammar.KlassParser.ProjectionPrimitiveMemberContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.QueryParameterListContext;
 import cool.klass.model.meta.grammar.KlassParser.RelationshipContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceCategoryModifierContext;
@@ -565,17 +565,17 @@ public class KlassThrowingListener implements KlassListener
     }
 
     @Override
-    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
+    public void enterProjectionReferenceProperty(@Nonnull ProjectionReferencePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".enterProjectionAssociationEnd() not implemented yet");
+                + ".enterProjectionReferenceProperty() not implemented yet");
     }
 
     @Override
-    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
+    public void exitProjectionReferenceProperty(@Nonnull ProjectionReferencePropertyContext ctx)
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                + ".exitProjectionAssociationEnd() not implemented yet");
+                + ".exitProjectionReferenceProperty() not implemented yet");
     }
 
     @Override

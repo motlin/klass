@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrPrimitiveType;
 import cool.klass.model.meta.domain.AbstractElement;
@@ -29,7 +28,7 @@ public class AntlrPrimitiveProperty
             AbstractElement.NO_CONTEXT,
             "ambiguous primitive property name",
             -1,
-            AntlrClass.AMBIGUOUS,
+            AntlrClassifier.AMBIGUOUS,
             false,
             AntlrPrimitiveType.AMBIGUOUS);
 

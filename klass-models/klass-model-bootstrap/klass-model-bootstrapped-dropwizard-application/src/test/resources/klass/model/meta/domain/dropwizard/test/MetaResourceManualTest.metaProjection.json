@@ -14,7 +14,7 @@
       "children": []
     },
     {
-      "_type": "ProjectionAssociationEnd",
+      "_type": "ProjectionReferenceProperty",
       "name": "projection",
       "children": [
         {

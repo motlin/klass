@@ -4,7 +4,7 @@
   "packageName": "klass.model.meta.domain",
   "ordinal": 15,
   "sourceCode": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}",
-  "sourceCodeWithInference": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}",
+  "sourceCodeWithInference": "enumeration PrimitiveType\n{\n    INTEGER(\"Integer\"),\n    LONG(\"Long\"),\n    DOUBLE(\"Double\"),\n    FLOAT(\"Float\"),\n    BOOLEAN(\"Boolean\"),\n    STRING(\"String\"),\n    INSTANT(\"Instant\"),\n    LOCAL_DATE(\"LocalDate\"),\n    TEMPORAL_INSTANT(\"TemporalInstant\"),\n    TEMPORAL_RANGE(\"TemporalRange\"),\n}\n",
   "enumerationLiterals": [
     {
       "name": "INTEGER",
@@ -12,7 +12,7 @@
       "inferred": false,
       "ordinal": 1,
       "sourceCode": "INTEGER(\"Integer\")",
-      "sourceCodeWithInference": "INTEGER(\"Integer\")"
+      "sourceCodeWithInference": "INTEGER(\"Integer\")\n"
     },
     {
       "name": "LONG",
@@ -20,7 +20,7 @@
       "inferred": false,
       "ordinal": 2,
       "sourceCode": "LONG(\"Long\")",
-      "sourceCodeWithInference": "LONG(\"Long\")"
+      "sourceCodeWithInference": "LONG(\"Long\")\n"
     },
     {
       "name": "DOUBLE",
@@ -28,7 +28,7 @@
       "inferred": false,
       "ordinal": 3,
       "sourceCode": "DOUBLE(\"Double\")",
-      "sourceCodeWithInference": "DOUBLE(\"Double\")"
+      "sourceCodeWithInference": "DOUBLE(\"Double\")\n"
     },
     {
       "name": "FLOAT",
@@ -36,7 +36,7 @@
       "inferred": false,
       "ordinal": 4,
       "sourceCode": "FLOAT(\"Float\")",
-      "sourceCodeWithInference": "FLOAT(\"Float\")"
+      "sourceCodeWithInference": "FLOAT(\"Float\")\n"
     },
     {
       "name": "BOOLEAN",
@@ -44,7 +44,7 @@
       "inferred": false,
       "ordinal": 5,
       "sourceCode": "BOOLEAN(\"Boolean\")",
-      "sourceCodeWithInference": "BOOLEAN(\"Boolean\")"
+      "sourceCodeWithInference": "BOOLEAN(\"Boolean\")\n"
     },
     {
       "name": "STRING",
@@ -52,7 +52,7 @@
       "inferred": false,
       "ordinal": 6,
       "sourceCode": "STRING(\"String\")",
-      "sourceCodeWithInference": "STRING(\"String\")"
+      "sourceCodeWithInference": "STRING(\"String\")\n"
     },
     {
       "name": "INSTANT",
@@ -60,7 +60,7 @@
       "inferred": false,
       "ordinal": 7,
       "sourceCode": "INSTANT(\"Instant\")",
-      "sourceCodeWithInference": "INSTANT(\"Instant\")"
+      "sourceCodeWithInference": "INSTANT(\"Instant\")\n"
     },
     {
       "name": "LOCAL_DATE",
@@ -68,7 +68,7 @@
       "inferred": false,
       "ordinal": 8,
       "sourceCode": "LOCAL_DATE(\"LocalDate\")",
-      "sourceCodeWithInference": "LOCAL_DATE(\"LocalDate\")"
+      "sourceCodeWithInference": "LOCAL_DATE(\"LocalDate\")\n"
     },
     {
       "name": "TEMPORAL_INSTANT",
@@ -76,7 +76,7 @@
       "inferred": false,
       "ordinal": 9,
       "sourceCode": "TEMPORAL_INSTANT(\"TemporalInstant\")",
-      "sourceCodeWithInference": "TEMPORAL_INSTANT(\"TemporalInstant\")"
+      "sourceCodeWithInference": "TEMPORAL_INSTANT(\"TemporalInstant\")\n"
     },
     {
       "name": "TEMPORAL_RANGE",
@@ -84,7 +84,7 @@
       "inferred": false,
       "ordinal": 10,
       "sourceCode": "TEMPORAL_RANGE(\"TemporalRange\")",
-      "sourceCodeWithInference": "TEMPORAL_RANGE(\"TemporalRange\")"
+      "sourceCodeWithInference": "TEMPORAL_RANGE(\"TemporalRange\")\n"
     }
   ]
 }

@@ -725,7 +725,7 @@ class ProjectionWithAssociationEnd
     associationEndName: String private maximumLength(256);
 }
 
-class ProjectionAssociationEnd
+class ProjectionReferenceProperty
     extends ProjectionWithAssociationEnd
 {
     id  : Long key private;

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
 import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrEnumeration;
 import cool.klass.model.meta.domain.EnumerationImpl;
@@ -28,7 +27,7 @@ public class AntlrEnumerationProperty extends AntlrDataTypeProperty<EnumerationI
             new ParserRuleContext(),
             "not found enumeration property",
             -1,
-            AntlrClass.NOT_FOUND,
+            AntlrClassifier.NOT_FOUND,
             false,
             AntlrEnumeration.NOT_FOUND);
 

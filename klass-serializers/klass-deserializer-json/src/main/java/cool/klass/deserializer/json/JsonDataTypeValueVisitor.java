@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.ParameterizedProperty;
@@ -73,6 +74,13 @@ public class JsonDataTypeValueVisitor implements PropertyVisitor
                 .getEnumerationLiterals()
                 .detectOptional(each -> each.getPrettyName().equals(textValue));
         this.result = enumerationLiteral.get();
+    }
+
+    @Override
+    public void visitAssociationEndSignature(AssociationEndSignature associationEndSignature)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".visitAssociationEndSignature() not implemented yet");
     }
 
     @Override

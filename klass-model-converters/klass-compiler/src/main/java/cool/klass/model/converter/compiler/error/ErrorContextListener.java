@@ -8,8 +8,8 @@ import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.CompilationUnitContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.InterfaceDeclarationContext;
-import cool.klass.model.meta.grammar.KlassParser.ProjectionAssociationEndContext;
 import cool.klass.model.meta.grammar.KlassParser.ProjectionDeclarationContext;
+import cool.klass.model.meta.grammar.KlassParser.ProjectionReferencePropertyContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceGroupDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.UrlDeclarationContext;
@@ -18,9 +18,10 @@ import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 
-public class ErrorContextListener extends AbstractErrorListener
+public class ErrorContextListener
+        extends AbstractErrorListener
 {
-    private int numProjectionAssociationEnds;
+    private int numProjectionReferenceProperties;
 
     public ErrorContextListener(
             @Nonnull CompilationUnit compilationUnit,
@@ -102,11 +103,11 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void enterProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
+    public void enterProjectionReferenceProperty(@Nonnull ProjectionReferencePropertyContext ctx)
     {
-        this.numProjectionAssociationEnds++;
+        this.numProjectionReferenceProperties++;
 
-        String indent = this.getIndent(this.numProjectionAssociationEnds);
+        String indent = this.getIndent(this.numProjectionReferenceProperties);
         this.addTextInclusive(indent, ctx.getStart(), ctx.projectionBody().getStart());
     }
 
@@ -117,9 +118,9 @@ public class ErrorContextListener extends AbstractErrorListener
     }
 
     @Override
-    public void exitProjectionAssociationEnd(@Nonnull ProjectionAssociationEndContext ctx)
+    public void exitProjectionReferenceProperty(@Nonnull ProjectionReferencePropertyContext ctx)
     {
-        this.numProjectionAssociationEnds--;
+        this.numProjectionReferenceProperties--;
     }
 
     @Override

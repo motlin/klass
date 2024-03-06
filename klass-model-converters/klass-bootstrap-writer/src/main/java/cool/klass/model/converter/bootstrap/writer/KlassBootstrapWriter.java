@@ -31,14 +31,14 @@ import cool.klass.model.meta.domain.api.order.OrderBy;
 import cool.klass.model.meta.domain.api.order.OrderByMemberReferencePath;
 import cool.klass.model.meta.domain.api.parameter.Parameter;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionChild;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
-import cool.klass.model.meta.domain.api.projection.ProjectionWithAssociationEnd;
+import cool.klass.model.meta.domain.api.projection.ProjectionWithReferenceProperty;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
@@ -75,9 +75,9 @@ import klass.model.meta.domain.NamedElementAbstract;
 import klass.model.meta.domain.PackageableElementAbstract;
 import klass.model.meta.domain.PrimitiveParameter;
 import klass.model.meta.domain.PrimitivePropertyFinder;
-import klass.model.meta.domain.ProjectionAssociationEndFinder;
 import klass.model.meta.domain.ProjectionDataTypePropertyFinder;
 import klass.model.meta.domain.ProjectionProjectionReferenceFinder;
+import klass.model.meta.domain.ProjectionReferencePropertyFinder;
 import klass.model.meta.domain.ProjectionWithAssociationEndAbstract;
 import klass.model.meta.domain.PropertyModifierFinder;
 import klass.model.meta.domain.ServiceFinder;
@@ -103,7 +103,7 @@ public class KlassBootstrapWriter
             AssociationFinder.getFinderInstance(),
             ServiceProjectionFinder.getFinderInstance(),
             ServiceProjectionFinder.getFinderInstance(),
-            ProjectionAssociationEndFinder.getFinderInstance(),
+            ProjectionReferencePropertyFinder.getFinderInstance(),
             ProjectionProjectionReferenceFinder.getFinderInstance(),
             ProjectionDataTypePropertyFinder.getFinderInstance(),
             ServiceGroupFinder.getFinderInstance(),
@@ -128,7 +128,7 @@ public class KlassBootstrapWriter
     public KlassBootstrapWriter(DomainModel domainModel, DataStore dataStore)
     {
         this.domainModel = Objects.requireNonNull(domainModel);
-        this.dataStore = Objects.requireNonNull(dataStore);
+        this.dataStore   = Objects.requireNonNull(dataStore);
     }
 
     public void bootstrapMetaModel()
@@ -230,7 +230,7 @@ public class KlassBootstrapWriter
     {
         klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
         KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
-        bootstrappedProjection.setClassName(projection.getKlass().getName());
+        bootstrappedProjection.setClassName(projection.getClassifier().getName());
         bootstrappedProjection.insert();
 
         this.handleProjectionChildren(projection, bootstrappedProjection);
@@ -247,20 +247,20 @@ public class KlassBootstrapWriter
             {
                 klass.model.meta.domain.ServiceProjection bootstrappedProjection = new klass.model.meta.domain.ServiceProjection();
                 KlassBootstrapWriter.handlePackageableElement(bootstrappedProjection, projection);
-                bootstrappedProjection.setClassName(projection.getKlass().getName());
+                bootstrappedProjection.setClassName(projection.getClassifier().getName());
                 bootstrappedProjection.insert();
 
                 KlassBootstrapWriter.this.handleProjectionChildren(projection, bootstrappedProjection);
             }
 
             @Override
-            public void visitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+            public void visitProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
             {
-                klass.model.meta.domain.ProjectionAssociationEnd bootstrappedProjection = new klass.model.meta.domain.ProjectionAssociationEnd();
-                this.handleProjectionWithAssociationEnd(projectionAssociationEnd, bootstrappedProjection);
+                klass.model.meta.domain.ProjectionReferenceProperty bootstrappedProjection = new klass.model.meta.domain.ProjectionReferenceProperty();
+                this.handleProjectionWithAssociationEnd(projectionReferenceProperty, bootstrappedProjection);
                 bootstrappedProjection.insert();
 
-                KlassBootstrapWriter.this.handleProjectionChildren(projectionAssociationEnd, bootstrappedProjection);
+                KlassBootstrapWriter.this.handleProjectionChildren(projectionReferenceProperty, bootstrappedProjection);
             }
 
             @Override
@@ -273,7 +273,7 @@ public class KlassBootstrapWriter
             }
 
             private void handleProjectionWithAssociationEnd(
-                    @Nonnull ProjectionWithAssociationEnd projectionWithAssociationEnd,
+                    @Nonnull ProjectionWithReferenceProperty projectionWithAssociationEnd,
                     @Nonnull ProjectionWithAssociationEndAbstract bootstrappedProjectionWithAssociationEnd)
             {
                 KlassBootstrapWriter.handleNamedElement(

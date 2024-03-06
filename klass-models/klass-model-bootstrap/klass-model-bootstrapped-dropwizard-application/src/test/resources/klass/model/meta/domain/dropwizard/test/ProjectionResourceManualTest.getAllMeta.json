@@ -35,7 +35,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumerationLiterals",
         "children": [
           {
@@ -88,7 +88,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumerationLiterals",
         "children": [
           {
@@ -141,11 +141,11 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superInterfaces",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterface",
             "children": [
               {
@@ -163,7 +163,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "classifierModifiers",
         "children": [
           {
@@ -184,7 +184,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "primitiveProperties",
         "children": [
           {
@@ -223,7 +223,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "propertyModifiers",
             "children": [
               {
@@ -244,7 +244,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "minLengthValidation",
             "children": [
               {
@@ -255,7 +255,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "maxLengthValidation",
             "children": [
               {
@@ -266,7 +266,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "minValidation",
             "children": [
               {
@@ -277,7 +277,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "maxValidation",
             "children": [
               {
@@ -290,7 +290,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumerationProperties",
         "children": [
           {
@@ -319,7 +319,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "enumeration",
             "children": [
               {
@@ -335,7 +335,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "propertyModifiers",
             "children": [
               {
@@ -356,7 +356,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "minLengthValidation",
             "children": [
               {
@@ -367,7 +367,7 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "maxLengthValidation",
             "children": [
               {
@@ -397,11 +397,11 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superInterfaces",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterface",
             "children": [
               {
@@ -414,7 +414,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "classifierModifiers",
         "children": [
           {
@@ -483,7 +483,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumeration",
         "children": [
           {
@@ -499,7 +499,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
           {
@@ -520,7 +520,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minLengthValidation",
         "children": [
           {
@@ -531,7 +531,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxLengthValidation",
         "children": [
           {
@@ -542,7 +542,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minValidation",
         "children": [
           {
@@ -553,7 +553,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxValidation",
         "children": [
           {
@@ -606,7 +606,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
           {
@@ -627,7 +627,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minLengthValidation",
         "children": [
           {
@@ -638,7 +638,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxLengthValidation",
         "children": [
           {
@@ -649,7 +649,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minValidation",
         "children": [
           {
@@ -660,7 +660,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxValidation",
         "children": [
           {
@@ -703,7 +703,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
           {
@@ -714,7 +714,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minLengthValidation",
         "children": [
           {
@@ -725,7 +725,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxLengthValidation",
         "children": [
           {
@@ -736,7 +736,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minValidation",
         "children": [
           {
@@ -747,7 +747,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxValidation",
         "children": [
           {
@@ -790,7 +790,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumeration",
         "children": [
           {
@@ -806,7 +806,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
           {
@@ -827,7 +827,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minLengthValidation",
         "children": [
           {
@@ -838,7 +838,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxLengthValidation",
         "children": [
           {
@@ -871,7 +871,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "enumeration",
         "children": [
           {
@@ -882,7 +882,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "propertyModifiers",
         "children": [
           {
@@ -893,7 +893,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "minLengthValidation",
         "children": [
           {
@@ -904,7 +904,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "maxLengthValidation",
         "children": [
           {
@@ -952,7 +952,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superClass",
         "children": [
           {
@@ -966,7 +966,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superClass",
             "children": [
               {
@@ -982,11 +982,11 @@
             ]
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterfaces",
             "children": [
               {
-                "_type": "ProjectionAssociationEnd",
+                "_type": "ProjectionReferenceProperty",
                 "name": "superInterface",
                 "children": [
                   {
@@ -1006,11 +1006,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superInterfaces",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterface",
             "children": [
               {
@@ -1028,7 +1028,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "classifierModifiers",
         "children": [
           {
@@ -1090,7 +1090,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superClass",
         "children": [
           {
@@ -1101,11 +1101,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superInterfaces",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterface",
             "children": [
               {
@@ -1118,7 +1118,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "classifierModifiers",
         "children": [
           {
@@ -1162,7 +1162,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superClass",
         "children": [
           {
@@ -1173,11 +1173,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "superInterfaces",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "superInterface",
             "children": [
               {
@@ -1190,7 +1190,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "classifierModifiers",
         "children": [
           {
@@ -1259,7 +1259,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "owningClass",
         "children": [
           {
@@ -1275,7 +1275,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "resultType",
         "children": [
           {
@@ -1291,7 +1291,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "owningAssociation",
         "children": [
           {
@@ -1302,7 +1302,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEndModifiers",
         "children": [
           {
@@ -1340,7 +1340,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "resultType",
         "children": [
           {
@@ -1351,7 +1351,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEndModifiers",
         "children": [
           {
@@ -1362,7 +1362,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "orderBys",
         "children": [
           {
@@ -1474,7 +1474,7 @@
     "packageName": "klass.model.meta.domain",
     "children": [
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "klass",
         "children": [
           {
@@ -1485,11 +1485,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEnds",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "associationEnd",
             "children": [
               {
@@ -1502,7 +1502,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "dataTypeProperty",
         "children": [
           {
@@ -1520,7 +1520,7 @@
     "packageName": "klass.model.meta.domain",
     "children": [
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "klass",
         "children": [
           {
@@ -1531,11 +1531,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEnds",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "associationEnd",
             "children": [
               {
@@ -1548,7 +1548,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "dataTypeProperty",
         "children": [
           {
@@ -1566,7 +1566,7 @@
     "packageName": "klass.model.meta.domain",
     "children": [
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "klass",
         "children": [
           {
@@ -1577,11 +1577,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEnds",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "associationEnd",
             "children": [
               {
@@ -1594,7 +1594,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "dataTypeProperty",
         "children": [
           {
@@ -1605,7 +1605,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "parameter",
         "children": [
           {
@@ -1614,7 +1614,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "enumeration",
             "children": [
               {
@@ -1644,7 +1644,7 @@
     "packageName": "klass.model.meta.domain",
     "children": [
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "klass",
         "children": [
           {
@@ -1655,11 +1655,11 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "associationEnds",
         "children": [
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "associationEnd",
             "children": [
               {
@@ -1672,7 +1672,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "dataTypeProperty",
         "children": [
           {
@@ -1683,7 +1683,7 @@
         ]
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "parameter",
         "children": [
           {
@@ -1815,7 +1815,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "projection",
         "children": [
           {
@@ -1851,7 +1851,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "projection",
         "children": [
           {
@@ -1887,7 +1887,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "urls",
         "children": [
           {
@@ -1896,7 +1896,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "services",
             "children": [
               {
@@ -1910,7 +1910,7 @@
                 "children": []
               },
               {
-                "_type": "ProjectionAssociationEnd",
+                "_type": "ProjectionReferenceProperty",
                 "name": "projection",
                 "children": [
                   {
@@ -1974,7 +1974,7 @@
         "children": []
       },
       {
-        "_type": "ProjectionAssociationEnd",
+        "_type": "ProjectionReferenceProperty",
         "name": "urls",
         "children": [
           {
@@ -1983,7 +1983,7 @@
             "children": []
           },
           {
-            "_type": "ProjectionAssociationEnd",
+            "_type": "ProjectionReferenceProperty",
             "name": "services",
             "children": [
               {
@@ -1997,7 +1997,7 @@
                 "children": []
               },
               {
-                "_type": "ProjectionAssociationEnd",
+                "_type": "ProjectionReferenceProperty",
                 "name": "projection",
                 "children": [
                   {

@@ -1,1 +1,0 @@
-alter table PROJECTION_ASSOCIATION_END add constraint PROJECTION_ASSOCIATION_END_PK primary key (id);

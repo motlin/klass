@@ -7,17 +7,18 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionVisitor;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.ImmutableSet;
 
-public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
+public class PropTypeSourceCodeProjectionVisitor
+        implements ProjectionVisitor
 {
     private final Projection originalProjection;
     private final int        indentLevel;
@@ -87,17 +88,17 @@ public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
     }
 
     @Override
-    public void visitProjectionAssociationEnd(@Nonnull ProjectionAssociationEnd projectionAssociationEnd)
+    public void visitProjectionReferenceProperty(@Nonnull ProjectionReferenceProperty projectionReferenceProperty)
     {
-        String childrenSourceCode = projectionAssociationEnd
+        String childrenSourceCode = projectionReferenceProperty
                 .getChildren()
                 .collect(this::getPropTypeSourceCode)
                 .makeString("");
 
-        String         indent           = ReactPropTypeGenerator.getIndent(this.indentLevel);
-        AssociationEnd associationEnd   = projectionAssociationEnd.getProperty();
-        Multiplicity   multiplicity     = associationEnd.getMultiplicity();
-        String         isRequiredSuffix = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
+        String            indent            = ReactPropTypeGenerator.getIndent(this.indentLevel);
+        ReferenceProperty referenceProperty = projectionReferenceProperty.getProperty();
+        Multiplicity      multiplicity      = referenceProperty.getMultiplicity();
+        String            isRequiredSuffix  = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
         String toOnePropType = "PropTypes.shape(forbidExtraProps({\n"
                 + childrenSourceCode
                 + indent + "}))"
@@ -109,7 +110,7 @@ public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
         this.result = String.format(
                 "%s%s: %s,\n",
                 indent,
-                projectionAssociationEnd.getName(),
+                projectionReferenceProperty.getName(),
                 propType);
     }
 
@@ -122,11 +123,11 @@ public class PropTypeSourceCodeProjectionVisitor implements ProjectionVisitor
             return;
         }
 
-        String         indent           = ReactPropTypeGenerator.getIndent(this.indentLevel);
-        AssociationEnd associationEnd   = projectionProjectionReference.getProperty();
-        Multiplicity   multiplicity     = associationEnd.getMultiplicity();
-        String         isRequiredSuffix = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
-        String         toOnePropType    = projectionProjectionReference.getProjection().getName() + isRequiredSuffix;
+        String            indent            = ReactPropTypeGenerator.getIndent(this.indentLevel);
+        ReferenceProperty referenceProperty = projectionProjectionReference.getProperty();
+        Multiplicity      multiplicity      = referenceProperty.getMultiplicity();
+        String            isRequiredSuffix  = multiplicity.isRequired() || multiplicity.isToMany() ? ".isRequired" : "";
+        String            toOnePropType     = projectionProjectionReference.getProjection().getName() + isRequiredSuffix;
         String propType = multiplicity.isToMany()
                 ? "PropTypes.arrayOf(" + toOnePropType + ").isRequired"
                 : toOnePropType;

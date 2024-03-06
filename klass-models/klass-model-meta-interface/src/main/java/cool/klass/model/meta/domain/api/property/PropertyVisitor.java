@@ -8,5 +8,7 @@ public interface PropertyVisitor
 
     void visitAssociationEnd(AssociationEnd associationEnd);
 
+    void visitAssociationEndSignature(AssociationEndSignature associationEndSignature);
+
     void visitParameterizedProperty(ParameterizedProperty parameterizedProperty);
 }

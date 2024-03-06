@@ -8,6 +8,7 @@ import cool.klass.model.meta.grammar.KlassParser.AssociationEndModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassHeaderContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
+import cool.klass.model.meta.grammar.KlassParser.ClassifierReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.DataTypePropertyModifierContext;
 import cool.klass.model.meta.grammar.KlassParser.EnumerationLiteralContext;
@@ -41,7 +42,8 @@ import static org.fusesource.jansi.Ansi.Color.BLACK;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 
-public class ErrorUnderlineListener extends AbstractErrorListener
+public class ErrorUnderlineListener
+        extends AbstractErrorListener
 {
     public ErrorUnderlineListener(
             @Nonnull CompilationUnit compilationUnit,
@@ -172,6 +174,12 @@ public class ErrorUnderlineListener extends AbstractErrorListener
 
     @Override
     public void enterClassReference(@Nonnull ClassReferenceContext ctx)
+    {
+        this.addUnderlinedToken(ctx.getStart());
+    }
+
+    @Override
+    public void enterClassifierReference(@Nonnull ClassifierReferenceContext ctx)
     {
         this.addUnderlinedToken(ctx.getStart());
     }

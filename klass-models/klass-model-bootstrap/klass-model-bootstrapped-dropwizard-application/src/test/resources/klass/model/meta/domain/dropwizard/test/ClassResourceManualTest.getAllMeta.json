@@ -2038,7 +2038,7 @@
     "enumerationProperties": []
   },
   {
-    "name": "ProjectionAssociationEnd",
+    "name": "ProjectionReferenceProperty",
     "packageName": "klass.model.meta.domain",
     "superClass": {
       "name": "ProjectionWithAssociationEnd"

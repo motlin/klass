@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
-import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrTopLevelElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionChildBuilder;
 import cool.klass.model.meta.domain.projection.ProjectionImpl.ProjectionBuilder;
@@ -17,7 +17,9 @@ import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLevelElement
+public class AntlrProjection
+        extends AntlrProjectionParent
+        implements AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrProjection AMBIGUOUS = new AntlrProjection(
@@ -26,7 +28,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
             new ParserRuleContext(),
             "ambiguous projection",
             -1,
-            AntlrClass.AMBIGUOUS,
+            AntlrClassifier.AMBIGUOUS,
             null);
 
     @Nonnull
@@ -36,7 +38,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
             new ParserRuleContext(),
             "not found projection",
             -1,
-            AntlrClass.NOT_FOUND,
+            AntlrClassifier.NOT_FOUND,
             null);
 
     private final String packageName;
@@ -49,10 +51,10 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull AntlrClass klass,
+            @Nonnull AntlrClassifier classifier,
             String packageName)
     {
-        super(elementContext, compilationUnit, nameContext, name, ordinal, klass);
+        super(elementContext, compilationUnit, nameContext, name, ordinal, classifier);
         this.packageName = packageName;
     }
 
@@ -77,7 +79,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
                 this.name,
                 this.ordinal,
                 this.packageName,
-                this.klass.getElementBuilder());
+                this.classifier.getElementBuilder());
 
         ImmutableList<ProjectionChildBuilder> children = this.children
                 .collect(AntlrProjectionChild::build)
@@ -101,13 +103,15 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
 
     public void reportErrors(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.klass == AntlrClass.NOT_FOUND)
+        if (this.classifier == AntlrClassifier.NOT_FOUND)
         {
             compilerErrorHolder.add(
                     "ERR_PRJ_TYP",
-                    String.format("Cannot find class '%s'", this.getElementContext().classReference().getText()),
+                    String.format(
+                            "Cannot find classifier '%s'",
+                            this.getElementContext().classifierReference().getText()),
                     this,
-                    this.getElementContext().classReference());
+                    this.getElementContext().classifierReference());
         }
 
         ImmutableBag<String> duplicateMemberNames = this.getDuplicateMemberNames();
@@ -119,7 +123,7 @@ public class AntlrProjection extends AntlrProjectionParent implements AntlrTopLe
                 projectionMember.reportDuplicateMemberName(compilerErrorHolder);
             }
             // TODO: Move not-found and ambiguous error checking from compiler phase here for consistency
-            if (this.klass != AntlrClass.NOT_FOUND && this.klass != AntlrClass.AMBIGUOUS)
+            if (this.classifier != AntlrClassifier.NOT_FOUND && this.classifier != AntlrClassifier.AMBIGUOUS)
             {
                 projectionMember.reportErrors(compilerErrorHolder);
             }

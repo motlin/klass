@@ -6,9 +6,9 @@ public interface ProjectionListener
 
     void exitProjection(Projection projection);
 
-    void enterProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd);
+    void enterProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty);
 
-    void exitProjectionAssociationEnd(ProjectionAssociationEnd projectionAssociationEnd);
+    void exitProjectionReferenceProperty(ProjectionReferenceProperty projectionReferenceProperty);
 
     void enterProjectionProjectionReference(ProjectionProjectionReference projectionProjectionReference);
 

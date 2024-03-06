@@ -2,23 +2,24 @@ package cool.klass.model.meta.domain.api.projection;
 
 import javax.annotation.Nonnull;
 
-public interface ProjectionAssociationEnd extends ProjectionWithAssociationEnd
+public interface ProjectionReferenceProperty
+        extends ProjectionWithReferenceProperty
 {
     @Override
     default void visit(@Nonnull ProjectionVisitor visitor)
     {
-        visitor.visitProjectionAssociationEnd(this);
+        visitor.visitProjectionReferenceProperty(this);
     }
 
     @Override
     default void enter(@Nonnull ProjectionListener listener)
     {
-        listener.enterProjectionAssociationEnd(this);
+        listener.enterProjectionReferenceProperty(this);
     }
 
     @Override
     default void exit(@Nonnull ProjectionListener listener)
     {
-        listener.exitProjectionAssociationEnd(this);
+        listener.exitProjectionReferenceProperty(this);
     }
 }

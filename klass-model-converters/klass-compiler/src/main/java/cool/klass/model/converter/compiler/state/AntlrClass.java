@@ -10,16 +10,19 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrParameterizedProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
 import cool.klass.model.meta.domain.ClassModifierImpl.ClassModifierBuilder;
 import cool.klass.model.meta.domain.InterfaceImpl.InterfaceBuilder;
 import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
 import cool.klass.model.meta.domain.api.InheritanceType;
 import cool.klass.model.meta.domain.property.AbstractDataTypeProperty.DataTypePropertyBuilder;
 import cool.klass.model.meta.domain.property.AssociationEndImpl.AssociationEndBuilder;
+import cool.klass.model.meta.domain.property.AssociationEndSignatureImpl.AssociationEndSignatureBuilder;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
@@ -35,7 +38,8 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public class AntlrClass extends AntlrClassifier
+public class AntlrClass
+        extends AntlrClassifier
 {
     @Nonnull
     public static final AntlrClass AMBIGUOUS = new AntlrClass(
@@ -177,6 +181,27 @@ public class AntlrClass extends AntlrClassifier
                 + this.associationEndSignatureStates.size();
     }
 
+    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
+    {
+        AntlrReferenceTypeProperty<?> declaredProperty = this.referenceTypePropertiesByName.get(name);
+        if (declaredProperty != null)
+        {
+            return declaredProperty;
+        }
+
+        Optional<AntlrReferenceTypeProperty<?>> superClassProperty = this.superClassState
+                .map(superClass -> superClass.getReferenceTypePropertyByName(name));
+        if (superClassProperty.isPresent())
+        {
+            return superClassProperty.get();
+        }
+
+        return this.interfaceStates
+                .asLazy()
+                .collectWith(AntlrInterface::getReferenceTypePropertyByName, name)
+                .detect(Objects::nonNull);
+    }
+
     public void enterAssociationEnd(@Nonnull AntlrAssociationEnd antlrAssociationEnd)
     {
         this.associationEndStates.add(antlrAssociationEnd);
@@ -185,6 +210,20 @@ public class AntlrClass extends AntlrClassifier
                 (name, builder) -> builder == null
                         ? antlrAssociationEnd
                         : AntlrAssociationEnd.AMBIGUOUS);
+
+        this.referenceTypePropertyStates.add(antlrAssociationEnd);
+        this.referenceTypePropertiesByName.compute(
+                antlrAssociationEnd.getName(),
+                (name, builder) -> builder == null
+                        ? antlrAssociationEnd
+                        : AntlrAssociationEnd.AMBIGUOUS);
+        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+                antlrAssociationEnd.getElementContext(),
+                antlrAssociationEnd);
+        if (duplicate2 != null)
+        {
+            throw new AssertionError();
+        }
     }
 
     public void enterParameterizedProperty(@Nonnull AntlrParameterizedProperty parameterizedPropertyState)
@@ -196,10 +235,24 @@ public class AntlrClass extends AntlrClassifier
                         ? parameterizedPropertyState
                         : AntlrParameterizedProperty.AMBIGUOUS);
 
-        AntlrParameterizedProperty duplicate = this.parameterizedPropertiesByContext.put(
+        AntlrParameterizedProperty duplicate1 = this.parameterizedPropertiesByContext.put(
                 parameterizedPropertyState.getElementContext(),
                 parameterizedPropertyState);
-        if (duplicate != null)
+        if (duplicate1 != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.referenceTypePropertyStates.add(parameterizedPropertyState);
+        this.referenceTypePropertiesByName.compute(
+                parameterizedPropertyState.getName(),
+                (name, builder) -> builder == null
+                        ? parameterizedPropertyState
+                        : AntlrParameterizedProperty.AMBIGUOUS);
+        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+                parameterizedPropertyState.getElementContext(),
+                parameterizedPropertyState);
+        if (duplicate2 != null)
         {
             throw new AssertionError();
         }
@@ -300,13 +353,19 @@ public class AntlrClass extends AntlrClassifier
         Optional<AntlrAssociationEnd> versionedAssociationEnd =
                 this.associationEndStates.detectOptional(AntlrAssociationEnd::isVersioned);
 
-        Optional<AssociationEndBuilder> versionAssociationEndBuilder   =
+        Optional<AssociationEndBuilder> versionAssociationEndBuilder =
                 versionAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
         Optional<AssociationEndBuilder> versionedAssociationEndBuilder =
                 versionedAssociationEnd.map(AntlrAssociationEnd::getElementBuilder);
 
         this.klassBuilder.setVersionPropertyBuilder(versionAssociationEndBuilder);
         this.klassBuilder.setVersionedPropertyBuilder(versionedAssociationEndBuilder);
+
+        ImmutableList<AssociationEndSignatureBuilder> associationEndSignatureBuilders = this.associationEndSignatureStates
+                .collect(AntlrAssociationEndSignature::build)
+                .toImmutable();
+
+        this.klassBuilder.setAssociationEndSignatureBuilders(associationEndSignatureBuilders);
 
         this.dataTypePropertyStates.each(AntlrDataTypeProperty::build2);
 
@@ -625,6 +684,27 @@ public class AntlrClass extends AntlrClassifier
         this.parameterizedPropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
+    public boolean isSubClassOf(AntlrClassifier classifier)
+    {
+        if (this == classifier)
+        {
+            return false;
+        }
+
+        if (!this.superClassState.isPresent())
+        {
+            return false;
+        }
+
+        AntlrClass superClass = this.superClassState.get();
+        if (superClass == classifier)
+        {
+            return true;
+        }
+
+        return superClass.isSubClassOf(classifier);
+    }
+
     @Nonnull
     @Override
     public ClassDeclarationContext getElementContext()
@@ -632,7 +712,6 @@ public class AntlrClass extends AntlrClassifier
         return (ClassDeclarationContext) super.getElementContext();
     }
 
-    @Override
     public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
     {
         if (this.dataTypePropertiesByName.containsKey(name))
@@ -652,6 +731,7 @@ public class AntlrClass extends AntlrClassifier
         return this.getInterfaceDataTypePropertyByName(name);
     }
 
+    @Override
     public AntlrAssociationEnd getAssociationEndByName(String name)
     {
         if (this.associationEndsByName.containsKey(name))
@@ -700,26 +780,5 @@ public class AntlrClass extends AntlrClassifier
     public boolean hasVersion()
     {
         return this.associationEndStates.anySatisfy(AntlrAssociationEnd::isVersion);
-    }
-
-    public boolean isSubTypeOf(AntlrClass klass)
-    {
-        if (this == klass)
-        {
-            return false;
-        }
-
-        if (!this.superClassState.isPresent())
-        {
-            return false;
-        }
-
-        AntlrClass superClass = this.superClassState.get();
-        if (superClass == klass)
-        {
-            return true;
-        }
-
-        return superClass.isSubTypeOf(klass);
     }
 }

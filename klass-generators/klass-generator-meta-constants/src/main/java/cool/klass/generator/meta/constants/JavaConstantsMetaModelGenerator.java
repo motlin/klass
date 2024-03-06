@@ -26,16 +26,17 @@ import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.modifier.DataTypePropertyModifier;
 import cool.klass.model.meta.domain.api.projection.Projection;
-import cool.klass.model.meta.domain.api.projection.ProjectionAssociationEnd;
 import cool.klass.model.meta.domain.api.projection.ProjectionDataTypeProperty;
 import cool.klass.model.meta.domain.api.projection.ProjectionElement;
 import cool.klass.model.meta.domain.api.projection.ProjectionParent;
 import cool.klass.model.meta.domain.api.projection.ProjectionProjectionReference;
+import cool.klass.model.meta.domain.api.projection.ProjectionReferenceProperty;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
 import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.Property;
+import cool.klass.model.meta.domain.api.property.ReferenceProperty;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.collections.api.RichIterable;
@@ -314,9 +315,9 @@ public class JavaConstantsMetaModelGenerator
             return ProjectionDataTypeProperty.class.getSimpleName();
         }
 
-        if (element instanceof ProjectionAssociationEnd)
+        if (element instanceof ProjectionReferenceProperty)
         {
-            return ProjectionAssociationEnd.class.getSimpleName();
+            return ProjectionReferenceProperty.class.getSimpleName();
         }
 
         if (element instanceof ProjectionProjectionReference)
@@ -1081,7 +1082,7 @@ public class JavaConstantsMetaModelGenerator
     @Nonnull
     private String getDataTypePropertyModifierSourceCode(@Nonnull DataTypePropertyModifier dataTypePropertyModifier)
     {
-        String className = DataTypePropertyModifier.class.getSimpleName();
+        String           className     = DataTypePropertyModifier.class.getSimpleName();
         DataTypeProperty modifierOwner = dataTypePropertyModifier.getModifierOwner();
 
         // @formatter:off
@@ -1675,9 +1676,9 @@ public class JavaConstantsMetaModelGenerator
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
-                + "    public Klass getKlass()\n"
+                + "    public Classifier getClassifier()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + projection.getKlass().getName() + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + projection.getClassifier().getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1751,10 +1752,10 @@ public class JavaConstantsMetaModelGenerator
             ProjectionDataTypeProperty projectionDataTypeProperty = (ProjectionDataTypeProperty) projectionElement;
             return this.getProjectionDataTypePropertySourceCode(projectionDataTypeProperty, projectionParentName);
         }
-        if (projectionElement instanceof ProjectionAssociationEnd)
+        if (projectionElement instanceof ProjectionReferenceProperty)
         {
-            ProjectionAssociationEnd projectionAssociationEnd = (ProjectionAssociationEnd) projectionElement;
-            return this.getProjectionAssociationEndSourceCode(projectionAssociationEnd, projectionParentName);
+            ProjectionReferenceProperty projectionReferenceProperty = (ProjectionReferenceProperty) projectionElement;
+            return this.getProjectionReferencePropertySourceCode(projectionReferenceProperty, projectionParentName);
         }
         if (projectionElement instanceof ProjectionProjectionReference)
         {
@@ -1769,7 +1770,8 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull ProjectionDataTypeProperty projectionDataTypeProperty,
             String projectionParentName)
     {
-        String uppercaseName = this.getUppercaseName(projectionDataTypeProperty) + projectionDataTypeProperty.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionDataTypeProperty)
+                + projectionDataTypeProperty.getDepth();
 
         DataTypeProperty dataTypeProperty = projectionDataTypeProperty.getProperty();
 
@@ -1844,35 +1846,36 @@ public class JavaConstantsMetaModelGenerator
     }
 
     @Nonnull
-    private String getProjectionAssociationEndSourceCode(
-            @Nonnull ProjectionAssociationEnd projectionAssociationEnd,
+    private String getProjectionReferencePropertySourceCode(
+            @Nonnull ProjectionReferenceProperty projectionReferenceProperty,
             String projectionParentName)
     {
-        String uppercaseName = this.getUppercaseName(projectionAssociationEnd) + projectionAssociationEnd.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionReferenceProperty)
+                + projectionReferenceProperty.getDepth();
 
-        AssociationEnd associationEnd = projectionAssociationEnd.getProperty();
+        ReferenceProperty referenceProperty       = projectionReferenceProperty.getProperty();
 
         // @formatter:off
         //language=JAVA
         return ""
-                + "public static enum " + uppercaseName + "_ProjectionAssociationEnd implements ProjectionAssociationEnd\n"
+                + "public static enum " + uppercaseName + "_ProjectionReferenceProperty implements ProjectionReferenceProperty\n"
                 + "{\n"
                 + "    INSTANCE;\n"
                 + "\n"
-                + this.getProjectionChildrenConstantsSourceCode(projectionAssociationEnd)
+                + this.getProjectionChildrenConstantsSourceCode(projectionReferenceProperty)
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public String getName()\n"
                 + "    {\n"
                 + "        return \""
-                + StringEscapeUtils.escapeJava(projectionAssociationEnd.getName()) + "\";\n"
+                + StringEscapeUtils.escapeJava(projectionReferenceProperty.getName()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public int getOrdinal()\n"
                 + "    {\n"
-                + "        return " + projectionAssociationEnd.getOrdinal() + ";\n"
+                + "        return " + projectionReferenceProperty.getOrdinal() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
@@ -1896,30 +1899,30 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public ImmutableList<? extends ProjectionChild> getChildren()\n"
                 + "    {\n"
-                + "        return Lists.immutable.with(" + projectionAssociationEnd.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
+                + "        return Lists.immutable.with(" + projectionReferenceProperty.getChildren().collect(ProjectionElement::getName).makeString() + ");\n"
                 + "    }\n"
                 + "\n"
                 + "    @Nonnull\n"
                 + "    @Override\n"
                 + "    public AssociationEnd getProperty()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + referenceProperty.getOwningClassifier().getName() + "." + referenceProperty.getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public String toString()\n"
                 + "    {\n"
-                + "        return \"" + StringEscapeUtils.escapeJava(projectionAssociationEnd.toString()) + "\";\n"
+                + "        return \"" + StringEscapeUtils.escapeJava(projectionReferenceProperty.toString()) + "\";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"
                 + "    public String getSourceCode()\n"
                 + "    {\n"
                 + "        return \"\"\n"
-                + "                + \"" + this.wrapSourceCode(projectionAssociationEnd.getSourceCode()) + "\";\n"
+                + "                + \"" + this.wrapSourceCode(projectionReferenceProperty.getSourceCode()) + "\";\n"
                 + "    }\n"
                 + "\n"
-                + this.getProjectionChildrenSourceCode(projectionAssociationEnd, uppercaseName + "_ProjectionAssociationEnd")
+                + this.getProjectionChildrenSourceCode(projectionReferenceProperty, uppercaseName + "_ProjectionReferenceProperty")
                 + "}\n";
         // @formatter:on
     }
@@ -1929,9 +1932,10 @@ public class JavaConstantsMetaModelGenerator
             @Nonnull ProjectionProjectionReference projectionProjectionReference,
             String projectionParentName)
     {
-        String uppercaseName = this.getUppercaseName(projectionProjectionReference) + projectionProjectionReference.getDepth();
+        String uppercaseName = this.getUppercaseName(projectionProjectionReference)
+                + projectionProjectionReference.getDepth();
 
-        AssociationEnd associationEnd = projectionProjectionReference.getProperty();
+        ReferenceProperty referenceProperty = projectionProjectionReference.getProperty();
 
         // @formatter:off
         //language=JAVA
@@ -1975,7 +1979,7 @@ public class JavaConstantsMetaModelGenerator
                 + "    @Override\n"
                 + "    public AssociationEnd getProperty()\n"
                 + "    {\n"
-                + "        return " + this.applicationName + "DomainModel." + associationEnd.getOwningClassifier().getName() + "." + associationEnd.getName() + ";\n"
+                + "        return " + this.applicationName + "DomainModel." + referenceProperty.getOwningClassifier().getName() + "." + referenceProperty.getName() + ";\n"
                 + "    }\n"
                 + "\n"
                 + "    @Override\n"

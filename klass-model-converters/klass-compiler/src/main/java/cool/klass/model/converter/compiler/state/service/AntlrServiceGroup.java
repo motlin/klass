@@ -63,6 +63,8 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         this.klass = Objects.requireNonNull(klass);
     }
 
+    // TODO: Should this be a Classifier rather than a Class?
+    // TODO: If so, there should also be an error for PUT/POST on an interface
     @Nonnull
     public AntlrClass getKlass()
     {
@@ -99,17 +101,17 @@ public class AntlrServiceGroup extends AntlrPackageableElement implements AntlrT
         this.reportNoUrls(compilerErrorHolder);
         this.reportDuplicateUrls(compilerErrorHolder);
 
-        if (this.klass == AntlrClass.NOT_FOUND)
-        {
-            this.reportTypeNotFound(compilerErrorHolder);
-            return;
-        }
-
         for (AntlrUrl urlState : this.urlStates)
         {
             urlState.reportErrors(compilerErrorHolder);
         }
+
         // TODO: Not here, but report if there are more than one service group for a class.
+
+        if (this.klass == AntlrClass.NOT_FOUND)
+        {
+            this.reportTypeNotFound(compilerErrorHolder);
+        }
     }
 
     private void reportTypeNotFound(@Nonnull CompilerErrorState compilerErrorHolder)

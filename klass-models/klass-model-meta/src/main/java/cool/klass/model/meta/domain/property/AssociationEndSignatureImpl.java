@@ -1,40 +1,36 @@
 package cool.klass.model.meta.domain.property;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.AssociationImpl;
-import cool.klass.model.meta.domain.AssociationImpl.AssociationBuilder;
-import cool.klass.model.meta.domain.KlassImpl;
-import cool.klass.model.meta.domain.KlassImpl.KlassBuilder;
+import cool.klass.model.meta.domain.AbstractClassifier;
+import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.domain.api.Element;
-import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.Multiplicity;
-import cool.klass.model.meta.domain.api.property.AssociationEnd;
+import cool.klass.model.meta.domain.api.modifier.AssociationEndModifier;
+import cool.klass.model.meta.domain.api.property.AssociationEndSignature;
 import cool.klass.model.meta.domain.api.source.SourceCode;
 import cool.klass.model.meta.domain.api.source.SourceCode.SourceCodeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.eclipse.collections.api.list.ImmutableList;
 
 // TODO: Super class for reference-type-property?
-public final class AssociationEndImpl
-        extends ReferencePropertyImpl<KlassImpl>
-        implements AssociationEnd
+public final class AssociationEndSignatureImpl
+        extends ReferencePropertyImpl<AbstractClassifier>
+        implements AssociationEndSignature
 {
-    @Nonnull
-    private final AssociationImpl owningAssociation;
+    private ImmutableList<AssociationEndModifier> associationEndModifiers;
 
-    private AssociationEndImpl(
+    private AssociationEndSignatureImpl(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<Element> macroElement,
             @Nonnull Optional<SourceCode> sourceCode,
             @Nonnull ParserRuleContext nameContext,
             @Nonnull String name,
             int ordinal,
-            @Nonnull KlassImpl type,
-            @Nonnull KlassImpl owningKlass,
-            @Nonnull AssociationImpl owningAssociation,
+            @Nonnull AbstractClassifier type,
+            @Nonnull AbstractClassifier owningClassifier,
             @Nonnull Multiplicity multiplicity,
             boolean owned)
     {
@@ -46,24 +42,9 @@ public final class AssociationEndImpl
                 name,
                 ordinal,
                 type,
-                owningKlass,
+                owningClassifier,
                 multiplicity,
                 owned);
-        this.owningAssociation = Objects.requireNonNull(owningAssociation);
-    }
-
-    @Nonnull
-    @Override
-    public Klass getOwningClassifier()
-    {
-        return (Klass) super.getOwningClassifier();
-    }
-
-    @Override
-    @Nonnull
-    public AssociationImpl getOwningAssociation()
-    {
-        return this.owningAssociation;
     }
 
     @Override
@@ -77,22 +58,18 @@ public final class AssociationEndImpl
                 this.multiplicity.getPrettyName());
     }
 
-    public static final class AssociationEndBuilder
-            extends ReferencePropertyBuilder<KlassImpl, KlassBuilder, AssociationEndImpl>
+    public static final class AssociationEndSignatureBuilder
+            extends ReferencePropertyBuilder<AbstractClassifier, ClassifierBuilder<?>, AssociationEndSignatureImpl>
     {
-        @Nonnull
-        private final AssociationBuilder owningAssociation;
-
-        public AssociationEndBuilder(
+        public AssociationEndSignatureBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 @Nonnull Optional<ElementBuilder<?>> macroElement,
                 @Nonnull Optional<SourceCodeBuilder> sourceCode,
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull KlassBuilder type,
-                @Nonnull KlassBuilder owningKlassBuilder,
-                @Nonnull AssociationBuilder owningAssociation,
+                @Nonnull ClassifierBuilder<?> type,
+                @Nonnull ClassifierBuilder<?> owningKlassBuilder,
                 @Nonnull Multiplicity multiplicity,
                 boolean isOwned)
         {
@@ -107,14 +84,13 @@ public final class AssociationEndImpl
                     owningKlassBuilder,
                     multiplicity,
                     isOwned);
-            this.owningAssociation = Objects.requireNonNull(owningAssociation);
         }
 
         @Override
         @Nonnull
-        protected AssociationEndImpl buildUnsafe()
+        protected AssociationEndSignatureImpl buildUnsafe()
         {
-            return new AssociationEndImpl(
+            return new AssociationEndSignatureImpl(
                     this.elementContext,
                     this.macroElement.map(ElementBuilder::getElement),
                     this.sourceCode.map(SourceCodeBuilder::build),
@@ -122,8 +98,7 @@ public final class AssociationEndImpl
                     this.name,
                     this.ordinal,
                     this.typeBuilder.getElement(),
-                    (KlassImpl) this.owningClassifierBuilder.getElement(),
-                    this.owningAssociation.getElement(),
+                    this.owningClassifierBuilder.getElement(),
                     this.multiplicity,
                     this.isOwned);
         }

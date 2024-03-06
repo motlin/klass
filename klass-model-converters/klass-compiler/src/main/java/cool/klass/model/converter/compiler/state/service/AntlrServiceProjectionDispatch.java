@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
 import cool.klass.model.converter.compiler.state.AntlrClass;
+import cool.klass.model.converter.compiler.state.AntlrClassifier;
 import cool.klass.model.converter.compiler.state.AntlrElement;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.converter.compiler.state.projection.AntlrProjection;
@@ -16,7 +17,8 @@ import cool.klass.model.meta.grammar.KlassParser.ProjectionReferenceContext;
 import cool.klass.model.meta.grammar.KlassParser.ServiceProjectionDispatchContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrServiceProjectionDispatch extends AntlrElement
+public class AntlrServiceProjectionDispatch
+        extends AntlrElement
 {
     @Nonnull
     private final AntlrService                     serviceState;
@@ -65,22 +67,37 @@ public class AntlrServiceProjectionDispatch extends AntlrElement
                     String.format("Cannot find projection '%s'", reference.getText()),
                     this,
                     reference);
-            return;
         }
 
-        AntlrClass projectionKlass = this.projection.getKlass();
-        if (projectionKlass == AntlrClass.NOT_FOUND)
+        AntlrClassifier projectionClassifier = this.projection.getClassifier();
+        if (projectionClassifier == AntlrClass.NOT_FOUND || projectionClassifier == AntlrClass.AMBIGUOUS)
+        {
+            throw new AssertionError();
+        }
+
+        if (projectionClassifier == AntlrClassifier.NOT_FOUND || projectionClassifier == AntlrClassifier.AMBIGUOUS)
         {
             return;
         }
+
         AntlrClass serviceGroupKlass = this.serviceState.getUrlState().getServiceGroup().getKlass();
-        if (serviceGroupKlass != projectionKlass && !serviceGroupKlass.isSubTypeOf(projectionKlass))
+        if (serviceGroupKlass == AntlrClass.AMBIGUOUS || serviceGroupKlass == AntlrClass.NOT_FOUND)
+        {
+            return;
+        }
+
+        if (serviceGroupKlass == AntlrClassifier.NOT_FOUND || serviceGroupKlass == AntlrClassifier.AMBIGUOUS)
+        {
+            throw new AssertionError();
+        }
+
+        if (serviceGroupKlass != projectionClassifier && !serviceGroupKlass.isSubClassOf(projectionClassifier))
         {
             String error = String.format(
                     "Expected projection referencing '%s' but projection '%s' references '%s'.",
                     serviceGroupKlass.getName(),
                     this.projection.getName(),
-                    projectionKlass.getName());
+                    projectionClassifier.getName());
             compilerErrorHolder.add("ERR_SRV_PRJ", error, this, this.getElementContext().projectionReference());
         }
     }

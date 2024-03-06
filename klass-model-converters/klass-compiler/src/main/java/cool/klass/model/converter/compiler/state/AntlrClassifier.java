@@ -9,10 +9,12 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.error.CompilerErrorState;
+import cool.klass.model.converter.compiler.state.property.AntlrAssociationEnd;
 import cool.klass.model.converter.compiler.state.property.AntlrAssociationEndSignature;
 import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrEnumerationProperty;
 import cool.klass.model.converter.compiler.state.property.AntlrPrimitiveProperty;
+import cool.klass.model.converter.compiler.state.property.AntlrReferenceTypeProperty;
 import cool.klass.model.meta.domain.AbstractClassifier.ClassifierBuilder;
 import cool.klass.model.meta.grammar.KlassParser.AssociationEndSignatureContext;
 import cool.klass.model.meta.grammar.KlassParser.ClassDeclarationContext;
@@ -29,7 +31,9 @@ import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.Interval;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public abstract class AntlrClassifier extends AntlrPackageableElement implements AntlrType, AntlrTopLevelElement
+public abstract class AntlrClassifier
+        extends AntlrPackageableElement
+        implements AntlrType, AntlrTopLevelElement
 {
     @Nonnull
     public static final AntlrClassifier AMBIGUOUS = new AntlrClassifier(
@@ -42,42 +46,15 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             "klass.meta")
     {
         @Override
-        public int getNumMembers()
+        public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getNumMembers() not implemented yet");
+            return AntlrReferenceTypeProperty.AMBIGUOUS;
         }
 
-        @Nonnull
-        @Override
-        public ClassifierBuilder<?> getElementBuilder()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getElementBuilder() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public ClassifierBuilder<?> getTypeGetter()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getTypeGetter() not implemented yet");
-        }
-
-        @Nonnull
         @Override
         public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDataTypePropertyByName() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public AntlrClassModifier getClassModifierByName(String name)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getClassModifierByName() not implemented yet");
+            return AntlrDataTypeProperty.AMBIGUOUS;
         }
     };
 
@@ -92,42 +69,15 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             "klass.meta")
     {
         @Override
-        public int getNumMembers()
+        public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name)
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getNumMembers() not implemented yet");
+            return AntlrReferenceTypeProperty.NOT_FOUND;
         }
 
-        @Nonnull
-        @Override
-        public ClassifierBuilder<?> getElementBuilder()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getElementBuilder() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public ClassifierBuilder<?> getTypeGetter()
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getTypeGetter() not implemented yet");
-        }
-
-        @Nonnull
         @Override
         public AntlrDataTypeProperty<?> getDataTypePropertyByName(String name)
         {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getDataTypePropertyByName() not implemented yet");
-        }
-
-        @Nonnull
-        @Override
-        public AntlrClassModifier getClassModifierByName(String name)
-        {
-            throw new UnsupportedOperationException(this.getClass().getSimpleName()
-                    + ".getClassModifierByName() not implemented yet");
+            return AntlrDataTypeProperty.NOT_FOUND;
         }
     };
 
@@ -136,7 +86,16 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
     protected final MutableOrderedMap<String, AntlrAssociationEndSignature> associationEndSignaturesByName =
             OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
-    protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext = OrderedMapAdapter.adapt(new LinkedHashMap<>());
+    protected final MutableOrderedMap<AssociationEndSignatureContext, AntlrAssociationEndSignature> associationEndSignaturesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    protected final MutableList<AntlrReferenceTypeProperty<?>>               referenceTypePropertyStates   =
+            Lists.mutable.empty();
+    protected final MutableOrderedMap<String, AntlrReferenceTypeProperty<?>> referenceTypePropertiesByName =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
+
+    protected final MutableOrderedMap<ParserRuleContext, AntlrReferenceTypeProperty<?>> referenceTypePropertiesByContext =
+            OrderedMapAdapter.adapt(new LinkedHashMap<>());
 
     protected final MutableList<AntlrClassModifier>       classModifierStates    = Lists.mutable.empty();
     protected final MutableList<AntlrDataTypeProperty<?>> dataTypePropertyStates = Lists.mutable.empty();
@@ -159,6 +118,38 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
             @Nonnull String packageName)
     {
         super(elementContext, compilationUnit, nameContext, name, ordinal, packageContext, packageName);
+    }
+
+    public abstract AntlrReferenceTypeProperty<?> getReferenceTypePropertyByName(@Nonnull String name);
+
+    public abstract AntlrDataTypeProperty<?> getDataTypePropertyByName(String name);
+
+    public int getNumMembers()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getNumMembers() not implemented yet");
+    }
+
+    @Nonnull
+    @Override
+    public ClassifierBuilder<?> getElementBuilder()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getElementBuilder() not implemented yet");
+    }
+
+    @Nonnull
+    @Override
+    public ClassifierBuilder<?> getTypeGetter()
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getTypeGetter() not implemented yet");
+    }
+
+    public AntlrClassModifier getClassModifierByName(String name)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getClassModifierByName() not implemented yet");
     }
 
     public final ImmutableList<AntlrDataTypeProperty<?>> getDataTypeProperties()
@@ -224,7 +215,11 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.getClassModifiers().anySatisfy(AntlrClassModifier::isTransient);
     }
 
-    public abstract int getNumMembers();
+    public AntlrAssociationEnd getAssociationEndByName(String name)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".getAssociationEndByName() not implemented yet");
+    }
 
     public void enterDataTypeProperty(@Nonnull AntlrDataTypeProperty<?> antlrDataTypeProperty)
     {
@@ -243,6 +238,12 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         return this.associationEndSignaturesByContext.get(ctx);
     }
 
+    public AntlrReferenceTypeProperty<?> getReferenceTypePropertyByContext(@Nonnull ParserRuleContext ctx)
+    {
+        Objects.requireNonNull(ctx);
+        return this.referenceTypePropertiesByContext.get(ctx);
+    }
+
     public void enterAssociationEndSignature(@Nonnull AntlrAssociationEndSignature associationEndSignatureState)
     {
         Objects.requireNonNull(associationEndSignatureState);
@@ -252,10 +253,24 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 (name, builder) -> builder == null
                         ? associationEndSignatureState
                         : AntlrAssociationEndSignature.AMBIGUOUS);
-        AntlrAssociationEndSignature duplicate = this.associationEndSignaturesByContext.put(
+        AntlrAssociationEndSignature duplicate1 = this.associationEndSignaturesByContext.put(
                 associationEndSignatureState.getElementContext(),
                 associationEndSignatureState);
-        if (duplicate != null)
+        if (duplicate1 != null)
+        {
+            throw new AssertionError();
+        }
+
+        this.referenceTypePropertyStates.add(associationEndSignatureState);
+        this.referenceTypePropertiesByName.compute(
+                associationEndSignatureState.getName(),
+                (name, builder) -> builder == null
+                        ? associationEndSignatureState
+                        : AntlrAssociationEndSignature.AMBIGUOUS);
+        AntlrReferenceTypeProperty duplicate2 = this.referenceTypePropertiesByContext.put(
+                associationEndSignatureState.getElementContext(),
+                associationEndSignatureState);
+        if (duplicate2 != null)
         {
             throw new AssertionError();
         }
@@ -296,10 +311,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         Objects.requireNonNull(interfaceState);
         this.interfaceStates.add(interfaceState);
     }
-
-    @Nonnull
-    @Override
-    public abstract ClassifierBuilder<?> getElementBuilder();
 
     @OverridingMethodsMustInvokeSuper
     protected boolean implementsInterface(AntlrInterface interfaceState)
@@ -494,12 +505,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
         this.associationEndSignatureStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
-    @Nonnull
-    @Override
-    public abstract ClassifierBuilder<?> getTypeGetter();
-
-    public abstract AntlrDataTypeProperty<?> getDataTypePropertyByName(String name);
-
     protected AntlrDataTypeProperty<?> getInterfaceDataTypePropertyByName(String name)
     {
         return this.interfaceStates
@@ -509,8 +514,6 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 .orElse(AntlrEnumerationProperty.NOT_FOUND);
     }
 
-    public abstract AntlrClassModifier getClassModifierByName(String name);
-
     protected AntlrClassModifier getInterfaceClassModifierByName(String name)
     {
         return this.interfaceStates
@@ -518,5 +521,11 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
                 .collectWith(AntlrInterface::getClassModifierByName, name)
                 .detectOptional(interfaceModifier -> interfaceModifier != AntlrClassModifier.NOT_FOUND)
                 .orElse(AntlrClassModifier.NOT_FOUND);
+    }
+
+    public boolean isSubClassOf(AntlrClassifier classifier)
+    {
+        throw new UnsupportedOperationException(this.getClass().getSimpleName()
+                + ".isSubClassOf() not implemented yet");
     }
 }
