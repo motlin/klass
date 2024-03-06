@@ -12,7 +12,7 @@
 
     <artifactId>${artifactId}</artifactId>
 
-    <name>${app.name} GraphQL Fragments</name>
+    <name>${app.name} GraphQL Reladomo Finders</name>
 
     <build>
 
@@ -20,7 +20,7 @@
 
             <plugin>
                 <groupId>cool.klass</groupId>
-                <artifactId>klass-generator-graphql-fragment-plugin</artifactId>
+                <artifactId>klass-generator-graphql-reladomo-finder-plugin</artifactId>
                 <version>${klass.version}</version>
 
                 <configuration>
@@ -35,7 +35,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate-graphql-fragment</goal>
+                            <goal>generate-graphql-reladomo-finder</goal>
                         </goals>
                     </execution>
                 </executions>
