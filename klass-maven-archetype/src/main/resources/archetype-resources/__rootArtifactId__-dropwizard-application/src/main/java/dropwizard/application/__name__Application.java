@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 import cool.klass.serialization.jackson.module.meta.model.module.KlassMetaModelJacksonModule;
 import cool.klass.servlet.filter.mdc.jsonview.JsonViewDynamicFeature;
 import cool.klass.servlet.logging.structured.klass.response.KlassResponseStructuredLoggingFilter;
+import com.liftwizard.dropwizard.bundle.graphql.LiftwizardGraphQLBundle;
+import ${package}.graphql.runtime.wiring.${name}RuntimeWiringBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -22,6 +24,14 @@ public class ${name}Application
         super.initialize(bootstrap);
 
         // TODO: application initialization
+    }
+
+    @Override
+    protected void initializeBundles(@Nonnull Bootstrap<${name}Configuration> bootstrap)
+    {
+        super.initializeBundles(bootstrap);
+
+        bootstrap.addBundle(new LiftwizardGraphQLBundle<>(new ${name}RuntimeWiringBuilder()));
     }
 
     @Override

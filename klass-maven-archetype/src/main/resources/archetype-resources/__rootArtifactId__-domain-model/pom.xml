@@ -15,15 +15,6 @@
 
     <name>${app.name} Domain Model</name>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-
-    </dependencies>
-
     <build>
         <plugins>
 

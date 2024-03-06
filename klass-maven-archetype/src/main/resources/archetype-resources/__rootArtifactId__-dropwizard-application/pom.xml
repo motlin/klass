@@ -20,11 +20,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
                 <configuration>
                     <basedir>${project.basedir}</basedir>
                     <workingDirectory>${project.basedir}</workingDirectory>
                     <executable>java</executable>
-                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server config.yml</commandlineArgs>
+                    <commandlineArgs>-jar ${project.build.directory}/${project.artifactId}-${project.version}.jar server server-local-demo.json</commandlineArgs>
                 </configuration>
             </plugin>
 
@@ -165,6 +166,12 @@
             <artifactId>${app.artifactId}-services</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-runtime-wiring</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Project runtime dependencies -->
@@ -195,6 +202,13 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${app.artifactId}-graphql-schema</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard compile dependencies -->
@@ -206,6 +220,16 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-application</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-bundle-graphql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-graphql</artifactId>
         </dependency>
         <!--endregion-->
 
@@ -262,6 +286,26 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-bundle-connection-manager-holder</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!--endregion-->
+
+        <!--region Liftwizard config-->
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-logging-encoder</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-clock-system</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-config-uuid-system</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!--endregion-->
@@ -326,7 +370,21 @@
         <!--region Klass runtime dependencies -->
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-dropwizard-bundle-sample-data</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-dropwizard-configuration-data-store-reladomo</artifactId>
+            <version>${klass.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
+            <artifactId>klass-graphql-schema-scalar-temporal</artifactId>
             <version>${klass.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -344,6 +402,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.smoketurner.dropwizard</groupId>
+            <artifactId>graphql-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -355,6 +418,12 @@
         <!--endregion-->
 
         <!--region Runtime dependencies -->
+        <dependency>
+            <groupId>com.liftwizard</groupId>
+            <artifactId>liftwizard-logging-p6spy</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -383,12 +452,6 @@
         <!--region Test dependencies -->
         <dependency>
             <groupId>com.liftwizard</groupId>
-            <artifactId>liftwizard-connection-manager-holder</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-reladomo-test-rule</artifactId>
             <scope>test</scope>
         </dependency>
@@ -396,13 +459,6 @@
         <dependency>
             <groupId>com.liftwizard</groupId>
             <artifactId>liftwizard-config-auth-filter-impersonation</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
-            <artifactId>klass-reladomo-sample-data</artifactId>
-            <version>${klass.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -508,6 +564,7 @@
                         <plugin>
                             <groupId>org.codehaus.mojo</groupId>
                             <artifactId>exec-maven-plugin</artifactId>
+                            <version>1.6.0</version>
                             <executions>
                                 <execution>
                                     <phase>install</phase>

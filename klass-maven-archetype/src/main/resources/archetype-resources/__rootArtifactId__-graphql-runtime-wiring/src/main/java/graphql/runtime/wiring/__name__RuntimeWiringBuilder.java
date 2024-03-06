@@ -7,8 +7,10 @@ import ${package}.graphql.type.runtime.wiring.*;
 import graphql.schema.idl.RuntimeWiring;
 
 public class ${name}RuntimeWiringBuilder
+        implements Supplier<RuntimeWiring>
 {
-    public RuntimeWiring buildRuntimeWiring()
+    @Override
+    public RuntimeWiring get()
     {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(new GraphQLTemporalScalar("Instant"))
@@ -17,7 +19,11 @@ public class ${name}RuntimeWiringBuilder
                 .type(
                         "Query",
                         typeWiring -> typeWiring
+                               // TODO
+                               // .dataFetcher("something", new SomethingByKeyDataFetcher())
                 )
-                .build();
+                // TODO
+                // .type(new SomethingTypeRuntimeWiringProvider().get())
+        .build();
     }
 }

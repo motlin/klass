@@ -14,15 +14,6 @@
 
     <name>${app.name} GraphQL Schema</name>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
-    </dependencies>
-
     <build>
 
         <plugins>
