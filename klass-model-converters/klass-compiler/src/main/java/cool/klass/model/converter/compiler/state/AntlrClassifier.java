@@ -214,24 +214,31 @@ public abstract class AntlrClassifier extends AntlrPackageableElement implements
 
     private void reportIdAndKeyProperties(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        int numIdProperties  = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isID);
-        int numKeyProperties = this.dataTypePropertyStates.count(AntlrDataTypeProperty::isKey);
-        if (numIdProperties > 0 && numKeyProperties != numIdProperties)
+        MutableList<String> idProperties = this.dataTypePropertyStates
+                .select(AntlrDataTypeProperty::isID)
+                .collect(AntlrDataTypeProperty::getShortString);
+        if (idProperties.isEmpty())
         {
-            String message = String.format(
-                    "Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
-                    this.name,
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isID)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString(),
-                    this.dataTypePropertyStates
-                            .select(AntlrDataTypeProperty::isKey)
-                            .reject(AntlrDataTypeProperty::isID)
-                            .collect(AntlrDataTypeProperty::getShortString)
-                            .makeString());
-            compilerErrorHolder.add("ERR_KEY_IDS", message, this);
+            return;
         }
+
+        MutableList<String> nonIdKeyProperties = this.dataTypePropertyStates
+                .select(AntlrDataTypeProperty::isKey)
+                .reject(AntlrDataTypeProperty::isID)
+                .collect(AntlrDataTypeProperty::getShortString);
+        if (nonIdKeyProperties.isEmpty())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Class '%s' may have id properties or non-id key properties, but not both. Found id properties: %s. Found non-id key properties: %s.",
+                this.name,
+                idProperties
+                        .makeString(),
+                nonIdKeyProperties
+                        .makeString());
+        compilerErrorHolder.add("ERR_KEY_IDS", message, this);
     }
 
     private void reportInterfaceNotFound(@Nonnull CompilerErrorState compilerErrorHolder)
