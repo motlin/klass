@@ -2,7 +2,6 @@ package com.stackoverflow.service.resource;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
@@ -36,7 +35,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraManagerProvider;
-import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import cool.klass.data.store.DataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
@@ -46,12 +44,12 @@ import cool.klass.model.meta.domain.api.projection.Projection;
 import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
-import cool.klass.serializer.json.ReladomoJsonSerializable;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
 import com.stackoverflow.QuestionVersionFinder;
 import com.stackoverflow.json.view.QuestionReadProjection_JsonView;
+import com.stackoverflow.json.view.QuestionWriteProjection_JsonView;
 import com.stackoverflow.meta.constants.StackOverflowDomainModel;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
@@ -189,7 +187,8 @@ public class QuestionResourceManual
     @DELETE
     @Path("/api/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonSerializable method2(
+    @JsonView(QuestionWriteProjection_JsonView.class)
+    public Question method2(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -221,10 +220,8 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        MithraObject mithraObject = Iterate.getOnly(result);
 
-        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
+        return Iterate.getOnly(result);
     }
 
     @Nonnull
@@ -233,7 +230,8 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/in") // ?{ids}
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonSerializable> method3(@Nonnull @QueryParam("ids") Set<Long> ids)
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public QuestionList method3(@Nonnull @QueryParam("ids") Set<Long> ids)
     {
         // Question
 
@@ -247,7 +245,7 @@ public class QuestionResourceManual
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
 
-        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
+        return result;
     }
 
     @Nonnull
@@ -256,7 +254,8 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/firstTwo")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonSerializable> method4()
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public QuestionList method4()
     {
         // Question
 
@@ -267,8 +266,7 @@ public class QuestionResourceManual
         // Deep fetch using projection QuestionReadProjection
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
-
-        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
+        return result;
     }
 
     @Nonnull
@@ -277,7 +275,8 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question/{id}/version/{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonSerializable method3(
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public Question method3(
             @PathParam("id") Long id,
             @PathParam("version") Integer version)
     {
@@ -300,10 +299,7 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        MithraObject mithraObject = Iterate.getOnly(result);
-
-        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
+        return Iterate.getOnly(result);
     }
 
     @Nonnull
@@ -312,7 +308,8 @@ public class QuestionResourceManual
     @DELETE
     @Path("/api/question/{id}?{version}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonSerializable method4(
+    @JsonView(QuestionWriteProjection_JsonView.class)
+    public Question method4(
             @PathParam("id") Long id,
             @QueryParam("version") Integer version,
             @Nonnull @Context SecurityContext securityContext)
@@ -334,10 +331,7 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        MithraObject mithraObject = Iterate.getOnly(result);
-
-        Projection projection = StackOverflowDomainModel.QuestionWriteProjection;
-        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
+        return Iterate.getOnly(result);
     }
 
     @Timed
@@ -389,7 +383,8 @@ public class QuestionResourceManual
     @GET
     @Path("/api/question")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonSerializable> method6()
+    @JsonView(QuestionReadProjection_JsonView.class)
+    public QuestionList method6()
     {
         // Question
 
@@ -400,8 +395,7 @@ public class QuestionResourceManual
         // Deep fetch using projection QuestionReadProjection
         result.deepFetch(QuestionFinder.answers());
         result.deepFetch(QuestionFinder.version());
-
-        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionReadProjection);
+        return result;
     }
 
     @Timed
@@ -409,26 +403,14 @@ public class QuestionResourceManual
     @GET
     @Path("/api/user/{userId}/questions")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReladomoJsonSerializable> method7(@PathParam("userId") String userId)
+    @JsonView(QuestionWriteProjection_JsonView.class)
+    public QuestionList method7(@PathParam("userId") String userId)
     {
         // Question
 
         // this.createdById == userId
         Operation queryOperation = QuestionFinder.createdById().eq(userId);
 
-        QuestionList result = QuestionFinder.findMany(queryOperation);
-        // Deep fetch using projection QuestionWriteProjection
-
-        return this.applyProjection(result.asEcList(), StackOverflowDomainModel.QuestionWriteProjection);
-    }
-
-    private List<ReladomoJsonSerializable> applyProjection(
-            MutableList<? extends MithraObject> mithraObjects,
-            @Nonnull Projection projection)
-    {
-        return mithraObjects.collect(mithraObject -> new ReladomoJsonSerializable(
-                this.dataStore,
-                mithraObject,
-                projection));
+        return QuestionFinder.findMany(queryOperation);
     }
 }

@@ -139,6 +139,20 @@
         </module>
 
         <module
+                id="${rootArtifactId}-json-views"
+                dir="__rootArtifactId__-json-views"
+                name="${rootArtifactId}-json-views">
+            <fileSets>
+                <fileSet filtered="true">
+                    <directory></directory>
+                    <includes>
+                        <include>__rootArtifactId__-json-views.iml</include>
+                    </includes>
+                </fileSet>
+            </fileSets>
+        </module>
+
+        <module
                 id="${rootArtifactId}-dropwizard-application"
                 dir="__rootArtifactId__-dropwizard-application"
                 name="${rootArtifactId}-dropwizard-application">

@@ -31,5 +31,6 @@
         <module>klass-model-bootstrapped-dtos</module>
         <module>klass-model-bootstrapped-meta-model-constants</module>
         <module>klass-model-bootstrapped-dropwizard-application</module>
+        <module>klass-model-bootstrapped-json-views</module>
     </modules>
 </project>

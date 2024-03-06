@@ -52,12 +52,13 @@ public class JsonViewGenerator
     {
         String packageRelativePath = packageableElement.getPackageName()
                 .replaceAll("\\.", "/");
-        Path dtoDirectory = outputPath
+        Path outputDirectory = outputPath
                 .resolve(packageRelativePath)
-                .resolve("json.view");
-        dtoDirectory.toFile().mkdirs();
+                .resolve("json")
+                .resolve("view");
+        outputDirectory.toFile().mkdirs();
         String fileName = packageableElement.getName() + "_JsonView.java";
-        return dtoDirectory.resolve(fileName);
+        return outputDirectory.resolve(fileName);
     }
 
     private void printStringToFile(@Nonnull Path path, String contents) throws FileNotFoundException

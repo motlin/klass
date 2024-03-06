@@ -47,6 +47,8 @@ public class GenerateJsonViewsMojo extends AbstractGenerateMojo
             throw new MojoExecutionException(e.getMessage(), e);
         }
 
-        this.mavenProject.addCompileSourceRoot(this.outputDirectory.getPath());
+        String outputDirectoryPath = this.outputDirectory.getPath();
+        this.getLog().info("Adding compile source root: " + outputDirectoryPath);
+        this.mavenProject.addCompileSourceRoot(outputDirectoryPath);
     }
 }

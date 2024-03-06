@@ -44,12 +44,6 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-serializer-json</artifactId>
-            <version>${klass.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cool.klass</groupId>
             <artifactId>klass-deserializer-json</artifactId>
             <version>${klass.version}</version>
         </dependency>
@@ -93,12 +87,12 @@
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>

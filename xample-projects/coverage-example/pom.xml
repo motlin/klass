@@ -469,5 +469,6 @@
         <module>coverage-example-dtos</module>
         <module>coverage-example-dropwizard-application</module>
         <module>coverage-example-meta-model-constants</module>
+        <module>coverage-example-json-views</module>
     </modules>
 </project>

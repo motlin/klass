@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-    <artifactId>xample-projects</artifactId>
-    <groupId>cool.klass</groupId>
-    <version>0.1.0-SNAPSHOT</version>
-  </parent>
+        <artifactId>xample-projects</artifactId>
+        <groupId>cool.klass</groupId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <properties>
         <klass.version>0.1.0-SNAPSHOT</klass.version>
@@ -105,13 +108,20 @@
                                 <!--TODO Ignore non-compile or ignore unused, not both-->
                                 <ignoreNonCompile>true</ignoreNonCompile>
                                 <ignoredUnusedDeclaredDependencies>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.google.code.findbugs:jsr305:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.h2database:h2:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:jar</ignoredUnusedDeclaredDependency>
-                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-connection-manager-h2:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-reladomo-simulated-sequence:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>cool.klass:klass-dropwizard-bundle-h2:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.google.code.findbugs:jsr305:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.h2database:h2:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:jar
+                                    </ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>com.google.auto.service:auto-service
+                                    </ignoredUnusedDeclaredDependency>
                                 </ignoredUnusedDeclaredDependencies>
                             </configuration>
                         </execution>
@@ -182,7 +192,7 @@
                             <id>enforce</id>
                             <configuration>
                                 <rules>
-                                    <DependencyConvergence/>
+                                    <DependencyConvergence />
                                     <requireJavaVersion>
                                         <version>1.8.0</version>
                                     </requireJavaVersion>
@@ -443,14 +453,14 @@
 
         </dependencies>
     </dependencyManagement>
-  <modules>
-    <module>reladomo-abstract-owned-foreign-key-domain-model</module>
-    <module>reladomo-abstract-owned-foreign-key-reladomo-definitions</module>
-    <module>reladomo-abstract-owned-foreign-key-reladomo-pojos</module>
-    <module>reladomo-abstract-owned-foreign-key-reladomo-ddls</module>
-    <module>reladomo-abstract-owned-foreign-key-services</module>
-    <module>reladomo-abstract-owned-foreign-key-dtos</module>
-    <module>reladomo-abstract-owned-foreign-key-dropwizard-application</module>
-    <module>reladomo-abstract-owned-foreign-key-meta-model-constants</module>
-  </modules>
+    <modules>
+        <module>reladomo-abstract-owned-foreign-key-domain-model</module>
+        <module>reladomo-abstract-owned-foreign-key-reladomo-definitions</module>
+        <module>reladomo-abstract-owned-foreign-key-reladomo-pojos</module>
+        <module>reladomo-abstract-owned-foreign-key-reladomo-ddls</module>
+        <module>reladomo-abstract-owned-foreign-key-services</module>
+        <module>reladomo-abstract-owned-foreign-key-dtos</module>
+        <module>reladomo-abstract-owned-foreign-key-dropwizard-application</module>
+        <module>reladomo-abstract-owned-foreign-key-meta-model-constants</module>
+    </modules>
 </project>

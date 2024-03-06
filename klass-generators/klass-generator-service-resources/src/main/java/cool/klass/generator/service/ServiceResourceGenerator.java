@@ -29,7 +29,6 @@ import cool.klass.model.meta.domain.api.projection.ProjectionWalker;
 import cool.klass.model.meta.domain.api.service.Service;
 import cool.klass.model.meta.domain.api.service.ServiceGroup;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
-import cool.klass.model.meta.domain.api.service.ServiceProjectionDispatch;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.domain.api.service.url.Url;
 import cool.klass.model.meta.domain.api.value.ThisMemberReferencePath;
@@ -114,8 +113,8 @@ public class ServiceResourceGenerator
                 + "package " + packageName + ";\n"
                 + "\n"
                 + "import java.sql.Timestamp;\n"
-                + "import java.time.*;\n"
-                + "import java.util.*;\n"
+                + "import java.util.List;\n"
+                + "import java.util.Set;\n"
                 + "\n"
                 + "import javax.annotation.*;\n"
                 + "import javax.ws.rs.*;\n"
@@ -124,16 +123,13 @@ public class ServiceResourceGenerator
                 + "\n"
                 + "import " + klass.getPackageName() + ".*;\n"
                 + "import " + this.rootPackageName + ".meta.constants." + this.applicationName + "DomainModel;\n"
+                + "import " + this.rootPackageName + ".json.view.*;\n"
                 + "import com.codahale.metrics.annotation.*;\n"
-                + "import com.gs.fw.common.mithra.*;\n"
+                + "import com.fasterxml.jackson.annotation.JsonView;\n"
                 + "import com.gs.fw.common.mithra.finder.*;\n"
                 + "import cool.klass.data.store.*;\n"
-                + "import cool.klass.model.meta.domain.api.*;\n"
-                + "import cool.klass.model.meta.domain.api.projection.*;\n"
-                + "import cool.klass.serializer.json.*;\n"
-                + "import org.eclipse.collections.api.list.*;\n"
-                + "import org.eclipse.collections.impl.factory.primitive.*;\n"
                 + jsr310Import
+                + "import org.eclipse.collections.impl.factory.primitive.LongSets;\n"
                 + "import org.eclipse.collections.impl.set.mutable.*;\n"
                 + "import org.eclipse.collections.impl.utility.*;\n"
                 + "\n"
@@ -155,16 +151,6 @@ public class ServiceResourceGenerator
                 + "\n"
                 + ""
                 + serviceMethodsSourceCode
-                + "\n"
-                + "    private List<ReladomoJsonSerializable> applyProjection(\n"
-                + "            MutableList<? extends MithraObject> mithraObjects,\n"
-                + "            Projection projection)\n"
-                + "    {\n"
-                + "        return mithraObjects.<ReladomoJsonSerializable>collect(mithraObject -> new ReladomoJsonSerializable(\n"
-                + "                this.dataStore,\n"
-                + "                mithraObject,\n"
-                + "                projection));\n"
-                + "    }\n"
                 + "}\n";
         // @formatter:on
     }
@@ -199,9 +185,6 @@ public class ServiceResourceGenerator
             return "";
         }
 
-        ServiceMultiplicity       serviceMultiplicity = service.getServiceMultiplicity();
-        ServiceProjectionDispatch projectionDispatch  = service.getProjectionDispatch();
-
         ServiceGroup           serviceGroup    = url.getServiceGroup();
 
         ImmutableList<ObjectBooleanPair<Parameter>> pathParameters = url.getPathParameters()
@@ -209,11 +192,11 @@ public class ServiceResourceGenerator
         ImmutableList<ObjectBooleanPair<Parameter>> queryParameters = url.getQueryParameters()
                 .collectWith(PrimitiveTuples::pair, false);
 
-        Klass  klass           = serviceGroup.getKlass();
-        String klassName       = klass.getName();
-        String returnType      = this.getReturnType(serviceMultiplicity);
-        String projectionName  = projectionDispatch.getProjection().getName();
-        String returnStatement = this.getReturnStatement(serviceMultiplicity, projectionName);
+        String klassName       = serviceGroup.getKlass().getName();
+        String returnType      = service.getServiceMultiplicity() == ServiceMultiplicity.ONE
+                ? klassName
+                : "List<" + klassName + ">";
+        String returnStatement = this.getReturnStatement(service.getServiceMultiplicity());
 
         String queryParametersString = queryParameters.isEmpty()
                 ? ""
@@ -256,7 +239,7 @@ public class ServiceResourceGenerator
                 service.getVersionCriteria(),
                 klassName);
 
-        Projection projection = projectionDispatch.getProjection();
+        Projection projection = service.getProjectionDispatch().getProjection();
 
         // TODO: Fix deep fetching redundant stuff
         DeepFetchProjectionListener deepFetchProjectionListener = new DeepFetchProjectionListener();
@@ -276,6 +259,7 @@ public class ServiceResourceGenerator
                 + "    @" + verb.name() + "\n"
                 + "    @Path(\"" + url.getUrlString() + "\")" + queryParametersString + "\n"
                 + "    @Produces(MediaType.APPLICATION_JSON)\n"
+                + "    @JsonView(" + service.getProjectionDispatch().getProjection().getName() + "_JsonView.class)\n"
                 + "    public " + returnType + " method" + index + "(" + parameterPrefix + parametersSourceCode + ")\n"
                 + "    {\n"
                 + "        // " + klassName + "\n"
@@ -288,7 +272,7 @@ public class ServiceResourceGenerator
                 + versionOperationSourceCode
                 + "\n"
                 + executeOperationSourceCode
-                + "        // Deep fetch using projection " + projectionName + "\n"
+                + "        // Deep fetch using projection " + service.getProjectionDispatch().getProjection().getName() + "\n"
                 + deepFetchSourceCode
                 + orderBySourceCode
                 + "\n"
@@ -301,42 +285,22 @@ public class ServiceResourceGenerator
     }
 
     @Nonnull
-    private String getReturnType(ServiceMultiplicity serviceMultiplicity)
+    private String getReturnStatement(ServiceMultiplicity serviceMultiplicity)
     {
-        boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
-        return uniqueResult
-                ? "ReladomoJsonSerializable"
-                : "List<ReladomoJsonSerializable>";
-    }
-
-    @Nonnull
-    private String getReturnStatement(
-            ServiceMultiplicity serviceMultiplicity,
-            String projectionName)
-    {
-        boolean uniqueResult = serviceMultiplicity == ServiceMultiplicity.ONE;
-
-        if (uniqueResult)
+        if (serviceMultiplicity == ServiceMultiplicity.MANY)
         {
-            // @formatter:off
-            //language=JAVA
-            return ""
-                    + "        if (result.isEmpty())\n"
-                    + "        {\n"
-                    + "            throw new ClientErrorException(\"Url valid, data not found.\", Status.GONE);\n"
-                    + "        }\n"
-                    + "        MithraObject mithraObject = Iterate.getOnly(result);\n"
-                    + "\n"
-                    + "        Projection projection = " + this.applicationName + "DomainModel." + projectionName + ";\n"
-                    + "        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);\n";
-
-            // @formatter:on
+            return "        return result;\n";
         }
 
-        return String.format(
-                "        return this.applyProjection(result.asEcList(), %sDomainModel.%s);\n",
-                this.applicationName,
-                projectionName);
+        // @formatter:off
+        //language=JAVA
+        return ""
+                + "        if (result.isEmpty())\n"
+                + "        {\n"
+                + "            throw new ClientErrorException(\"Url valid, data not found.\", Status.GONE);\n"
+                + "        }\n"
+                + "        return Iterate.getOnly(result);\n";
+        // @formatter:on
     }
 
     private String getParameterSourceCode(@Nonnull ObjectBooleanPair<Parameter> pair, String indent)

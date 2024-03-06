@@ -36,7 +36,7 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
 
     public ReladomoJsonSerializer(DomainModel domainModel, DataStore dataStore)
     {
-        this.domainModel = domainModel;
+        this.domainModel = Objects.requireNonNull(domainModel);
         this.dataStore = Objects.requireNonNull(dataStore);
     }
 
@@ -53,7 +53,7 @@ public class ReladomoJsonSerializer extends JsonSerializer<MithraObject>
         {
             throw new IllegalStateException(activeViewClass.getCanonicalName());
         }
-        KlassJsonView klassJsonView = instantiate(activeViewClass);
+        KlassJsonView klassJsonView = this.instantiate(activeViewClass);
         Projection    projection   = klassJsonView.getProjection();
 
         // This would work if we consistently used the same DomainModel everywhere (instead of sometimes compiled and sometimes code generated).

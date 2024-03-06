@@ -4,13 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.stackoverflow</groupId>
-        <artifactId>stackoverflow</artifactId>
+        <groupId>cool.klass</groupId>
+        <artifactId>klass-model-bootstrap</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stackoverflow-json-views</artifactId>
+    <artifactId>klass-model-bootstrapped-json-views</artifactId>
 
     <name>${app.name} Json Views</name>
 
@@ -19,7 +19,7 @@
             <plugin>
                 <groupId>cool.klass</groupId>
                 <artifactId>klass-generator-json-view-plugin</artifactId>
-                <version>${klass.version}</version>
+                <version>${project.version}</version>
 
                 <configuration>
                     <rootPackageName>${app.rootPackageName}</rootPackageName>
@@ -44,7 +44,7 @@
 
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>${app.artifactId}-domain-model</artifactId>
+                        <artifactId>${app.artifactId}-meta</artifactId>
                         <version>${project.version}</version>
                     </dependency>
 
@@ -60,13 +60,13 @@
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-model-meta-interface</artifactId>
-            <version>${klass.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-jackson-jsonview</artifactId>
-            <version>${klass.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
