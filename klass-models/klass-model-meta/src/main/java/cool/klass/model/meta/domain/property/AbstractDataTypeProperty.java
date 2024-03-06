@@ -177,6 +177,17 @@ public abstract class AbstractDataTypeProperty<T extends DataType>
     }
 
     @Override
+    public boolean isForeignKeyToSelf()
+    {
+        if (!this.isForeignKey())
+        {
+            return false;
+        }
+
+        return this.keysMatchingThisForeignKey.allSatisfy(this::equals);
+    }
+
+    @Override
     public OrderedMap<AssociationEnd, DataTypeProperty> getKeysMatchingThisForeignKey()
     {
         return Objects.requireNonNull(this.keysMatchingThisForeignKey);

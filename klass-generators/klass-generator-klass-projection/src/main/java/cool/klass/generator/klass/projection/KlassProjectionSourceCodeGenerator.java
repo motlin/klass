@@ -38,7 +38,7 @@ public final class KlassProjectionSourceCodeGenerator
     {
         String dataTypePropertiesSourceCode = classifier
                 .getDataTypeProperties()
-                .reject(DataTypeProperty::isForeignKey)
+                .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
                 .reject(DataTypeProperty::isPrivate)
                 .reject(DataTypeProperty::isTemporalRange)
                 .collect(KlassProjectionSourceCodeGenerator::getSourceCode)

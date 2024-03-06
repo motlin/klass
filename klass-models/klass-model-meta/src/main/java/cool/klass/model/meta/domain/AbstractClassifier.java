@@ -379,6 +379,8 @@ public abstract class AbstractClassifier
 
             ImmutableList<DataTypeProperty> foreignKeys = dataTypeProperties.select(DataTypeProperty::isForeignKey);
             ImmutableList<DataTypeProperty> keysAndForeignKeys = foreignKeys.select(DataTypeProperty::isKey);
+            ImmutableList<DataTypeProperty> keysAndForeignKeysNotSelf = keysAndForeignKeys.reject(DataTypeProperty::isForeignKeyToSelf);
+            ImmutableList<DataTypeProperty> keysAndForeignKeysSelf = keysAndForeignKeys.select(DataTypeProperty::isForeignKeyToSelf);
             ImmutableList<DataTypeProperty> keys = dataTypeProperties.select(DataTypeProperty::isKey).reject(DataTypeProperty::isForeignKey);
             ImmutableList<DataTypeProperty> nonKeyForeignKeys = foreignKeys.reject(DataTypeProperty::isKey).reject(DataTypeProperty::isCreatedBy).reject(DataTypeProperty::isLastUpdatedBy);
             ImmutableList<DataTypeProperty> system = dataTypeProperties.select(DataTypeProperty::isSystemRange);
@@ -392,7 +394,8 @@ public abstract class AbstractClassifier
             ImmutableList<DataTypeProperty> lastUpdatedBy = dataTypeProperties.select(DataTypeProperty::isLastUpdatedBy).reject(DataTypeProperty::isKey);
 
             ImmutableList<DataTypeProperty> initialDataTypeProperties = Lists.immutable
-                    .withAll(keysAndForeignKeys)
+                    .withAll(keysAndForeignKeysNotSelf)
+                    .newWithAll(keysAndForeignKeysSelf)
                     .newWithAll(keys)
                     .newWithAll(nonKeyForeignKeys)
                     .newWithAll(system)

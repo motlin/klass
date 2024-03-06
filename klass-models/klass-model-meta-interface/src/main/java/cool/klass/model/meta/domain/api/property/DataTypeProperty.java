@@ -153,6 +153,8 @@ public interface DataTypeProperty
 
     boolean isForeignKey();
 
+    boolean isForeignKeyToSelf();
+
     boolean isVersion();
 
     @Override
