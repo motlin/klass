@@ -853,7 +853,8 @@ public class ServiceResourceGenerator
     {
         if (dataType instanceof Enumeration)
         {
-            return ((Enumeration) dataType).getName();
+            return "String";
+            // return ((Enumeration) dataType).getName();
         }
         if (dataType instanceof PrimitiveType)
         {
