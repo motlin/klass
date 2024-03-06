@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
-import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -63,7 +62,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
         return this.isID;
     }
 
-    public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveTypeBuilder>
+    public static class PrimitivePropertyBuilder extends DataTypePropertyBuilder<PrimitiveType, PrimitiveType>
     {
         private final boolean isID;
 
@@ -75,7 +74,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull PrimitiveTypeBuilder primitiveTypeBuilder,
+                @Nonnull PrimitiveType primitiveType,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isKey,
@@ -88,7 +87,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     nameContext,
                     name,
                     ordinal,
-                    primitiveTypeBuilder,
+                    primitiveType,
                     owningKlassBuilder,
                     propertyModifierBuilders,
                     isKey,
@@ -112,7 +111,7 @@ public final class PrimitiveProperty extends DataTypeProperty<PrimitiveType>
                     this.nameContext,
                     this.name,
                     this.ordinal,
-                    this.typeBuilder.getPrimitiveType(),
+                    this.typeBuilder,
                     this.owningKlassBuilder.getKlass(),
                     propertyModifiers,
                     this.isKey,

@@ -8,7 +8,7 @@ import cool.klass.model.meta.domain.EnumerationLiteral.EnumerationLiteralBuilder
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class Enumeration extends DataType
+public final class Enumeration extends PackageableElement implements DataType
 {
     private ImmutableList<EnumerationLiteral> enumerationLiterals;
 
@@ -33,7 +33,7 @@ public final class Enumeration extends DataType
         this.enumerationLiterals = enumerationLiterals;
     }
 
-    public static class EnumerationBuilder extends DataTypeBuilder
+    public static class EnumerationBuilder extends PackageableElementBuilder implements DataTypeGetter
     {
         private ImmutableList<EnumerationLiteralBuilder> enumerationLiteralBuilders;
         private Enumeration                              enumeration;

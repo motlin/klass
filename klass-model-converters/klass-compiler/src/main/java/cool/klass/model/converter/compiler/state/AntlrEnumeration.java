@@ -175,7 +175,7 @@ public class AntlrEnumeration extends AntlrPackageableElement implements AntlrTy
     }
 
     @Override
-    public EnumerationBuilder getTypeBuilder()
+    public EnumerationBuilder getTypeGetter()
     {
         return Objects.requireNonNull(this.enumerationBuilder);
     }

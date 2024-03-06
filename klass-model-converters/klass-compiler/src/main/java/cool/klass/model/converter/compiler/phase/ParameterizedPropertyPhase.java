@@ -148,7 +148,7 @@ public class ParameterizedPropertyPhase extends AbstractCompilerPhase
         PrimitiveTypeContext primitiveTypeContext = ctx.primitiveType();
         MultiplicityContext  multiplicityContext  = ctx.multiplicity();
 
-        PrimitiveType      primitiveType      = PrimitiveType.valueOf(primitiveTypeContext.getText());
+        PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeContext.getText());
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         AntlrMultiplicity multiplicityState = new AntlrMultiplicity(

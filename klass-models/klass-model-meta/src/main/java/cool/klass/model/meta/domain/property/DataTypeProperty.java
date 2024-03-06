@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.DataType;
-import cool.klass.model.meta.domain.DataType.DataTypeBuilder;
+import cool.klass.model.meta.domain.DataType.DataTypeGetter;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.property.PropertyModifier.PropertyModifierBuilder;
@@ -60,7 +60,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
 
     public abstract boolean isTemporal();
 
-    public abstract static class DataTypePropertyBuilder<T extends DataType, TB extends DataTypeBuilder> extends PropertyBuilder<T, TB>
+    public abstract static class DataTypePropertyBuilder<T extends DataType, TG extends DataTypeGetter> extends PropertyBuilder<T, TG>
     {
         protected final ImmutableList<PropertyModifierBuilder> propertyModifierBuilders;
         protected final boolean                                isKey;
@@ -72,7 +72,7 @@ public abstract class DataTypeProperty<T extends DataType> extends Property<T>
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull TB typeBuilder,
+                @Nonnull TG typeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder,
                 ImmutableList<PropertyModifierBuilder> propertyModifierBuilders,
                 boolean isKey,

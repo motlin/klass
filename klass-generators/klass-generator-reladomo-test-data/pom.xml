@@ -26,6 +26,16 @@
             <artifactId>reladomo</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

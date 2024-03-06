@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.Type;
-import cool.klass.model.meta.domain.Type.TypeBuilder;
+import cool.klass.model.meta.domain.Type.TypeGetter;
 import cool.klass.model.meta.domain.value.ExpressionValue;
 import cool.klass.model.meta.domain.value.ExpressionValueVisitor;
 import cool.klass.model.meta.domain.value.literal.LiteralValue.LiteralValueBuilder;
@@ -50,13 +50,13 @@ public final class LiteralListValue extends ExpressionValue
     {
         @Nonnull
         private final ImmutableList<LiteralValueBuilder> literalValueBuilders;
-        private final TypeBuilder                        typeBuilder;
+        private final TypeGetter                         typeBuilder;
 
         public LiteralListValueBuilder(
                 @Nonnull ParserRuleContext elementContext,
                 boolean inferred,
                 @Nonnull ImmutableList<LiteralValueBuilder> literalValueBuilders,
-                TypeBuilder typeBuilder)
+                TypeGetter typeBuilder)
         {
             super(elementContext, inferred);
             this.literalValueBuilders = Objects.requireNonNull(literalValueBuilders);

@@ -90,7 +90,7 @@ public class AntlrPrimitiveProperty extends AntlrDataTypeProperty<PrimitiveType>
                 this.nameContext,
                 this.name,
                 this.ordinal,
-                this.antlrPrimitiveType.build(),
+                this.antlrPrimitiveType.getPrimitiveType(),
                 this.owningClassState.getKlassBuilder(),
                 propertyModifierBuilders,
                 this.isKey(),

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import cool.klass.model.meta.domain.Type.TypeBuilder;
+import cool.klass.model.meta.domain.Type.TypeGetter;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public abstract class TypedElement<T extends Type> extends NamedElement
@@ -30,10 +30,10 @@ public abstract class TypedElement<T extends Type> extends NamedElement
         return this.type;
     }
 
-    public abstract static class TypedElementBuilder<T extends Type, TB extends TypeBuilder> extends NamedElementBuilder
+    public abstract static class TypedElementBuilder<TG extends TypeGetter> extends NamedElementBuilder
     {
         @Nonnull
-        protected final TB typeBuilder;
+        protected final TG typeBuilder;
 
         protected TypedElementBuilder(
                 @Nonnull ParserRuleContext elementContext,
@@ -41,7 +41,7 @@ public abstract class TypedElement<T extends Type> extends NamedElement
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull TB typeBuilder)
+                @Nonnull TG typeBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal);
             this.typeBuilder = Objects.requireNonNull(typeBuilder);

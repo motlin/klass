@@ -85,7 +85,7 @@ public class ClassPhase extends AbstractCompilerPhase
         String  propertyName = identifier.getText();
         boolean isOptional   = optionalMarkerContext != null;
 
-        PrimitiveType      primitiveType      = PrimitiveType.valueOf(primitiveTypeContext.getText());
+        PrimitiveType      primitiveType      = PrimitiveType.byPrettyName(primitiveTypeContext.getText());
         AntlrPrimitiveType primitiveTypeState = AntlrPrimitiveType.valueOf(primitiveType);
 
         ImmutableList<AntlrPropertyModifier> propertyModifiers = ListAdapter.adapt(ctx.propertyModifier())

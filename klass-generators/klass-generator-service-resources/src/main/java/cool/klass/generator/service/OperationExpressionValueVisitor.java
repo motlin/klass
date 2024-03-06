@@ -8,6 +8,7 @@ import cool.klass.model.meta.domain.DataType;
 import cool.klass.model.meta.domain.Enumeration;
 import cool.klass.model.meta.domain.Multiplicity;
 import cool.klass.model.meta.domain.NamedElement;
+import cool.klass.model.meta.domain.Type;
 import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.service.url.UrlParameter;
@@ -20,6 +21,7 @@ import cool.klass.model.meta.domain.value.literal.LiteralListValue;
 import cool.klass.model.meta.domain.value.literal.LiteralValue;
 import cool.klass.model.meta.domain.value.literal.StringLiteralValue;
 import cool.klass.model.meta.domain.value.literal.UserLiteral;
+import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class OperationExpressionValueVisitor implements ExpressionValueVisitor
@@ -112,10 +114,21 @@ public class OperationExpressionValueVisitor implements ExpressionValueVisitor
     @Override
     public void visitLiteralList(@Nonnull LiteralListValue literalListValue)
     {
-        this.stringBuilder.append(literalListValue.getType().getName());
+        Type type = literalListValue.getType();
+        this.stringBuilder.append(getType(type));
         this.stringBuilder.append("Sets.immutable.with(");
         this.stringBuilder.append(literalListValue.getLiteralValues().collect(this::getLiteralString).makeString());
         this.stringBuilder.append(")");
+    }
+
+    private String getType(Type type)
+    {
+        if (type instanceof PrimitiveType)
+        {
+            PrimitiveType primitiveType = (PrimitiveType) type;
+            return PrimitiveToJavaTypeVisitor.getJavaType(primitiveType);
+        }
+        throw new AssertionError();
     }
 
     @Override

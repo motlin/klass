@@ -46,7 +46,7 @@ public class AntlrLiteralListValue extends AbstractAntlrLiteralValue
                 this.elementContext,
                 this.inferred,
                 literalValueBuilders,
-                this.getInferredType().getTypeBuilder());
+                this.getInferredType().getTypeGetter());
     }
 
     @Override

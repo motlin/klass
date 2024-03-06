@@ -9,7 +9,7 @@ import cool.klass.model.converter.compiler.state.service.AntlrCriteriaOwner;
 import cool.klass.model.converter.compiler.state.service.url.AntlrUrlParameter;
 import cool.klass.model.converter.compiler.state.value.AntlrMemberExpressionValue;
 import cool.klass.model.meta.domain.criteria.EdgePointCriteria.EdgePointCriteriaBuilder;
-import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
+import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -62,7 +62,7 @@ public class EdgePointAntlrCriteria extends AntlrCriteria
     {
         this.memberExpressionValue.reportErrors(compilerErrorHolder, parserRuleContexts);
         ListIterable<AntlrType> possibleTypes = this.memberExpressionValue.getPossibleTypes();
-        if (possibleTypes.anySatisfy(each -> each.getTypeBuilder() == PrimitiveTypeBuilder.TEMPORAL_RANGE))
+        if (possibleTypes.anySatisfy(each -> each.getTypeGetter() == PrimitiveType.TEMPORAL_RANGE))
         {
             return;
         }

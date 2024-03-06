@@ -87,7 +87,7 @@ public class KlassBootstrapWriter
                     bootstrappedPrimitiveProperty.setName(primitiveProperty.getName());
                     bootstrappedPrimitiveProperty.setInferred(primitiveProperty.isInferred());
                     bootstrappedPrimitiveProperty.setOrdinal(primitiveProperty.getOrdinal());
-                    bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getName());
+                    bootstrappedPrimitiveProperty.setPrimitiveType(primitiveProperty.getType().getPrettyName());
                     bootstrappedPrimitiveProperty.setClassName(klass.getName());
                     bootstrappedPrimitiveProperty.setKey(primitiveProperty.isKey());
                     bootstrappedPrimitiveProperty.setId(primitiveProperty.isID());

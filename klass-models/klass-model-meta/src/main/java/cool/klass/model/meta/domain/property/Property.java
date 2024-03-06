@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import cool.klass.model.meta.domain.Klass;
 import cool.klass.model.meta.domain.Klass.KlassBuilder;
 import cool.klass.model.meta.domain.Type;
-import cool.klass.model.meta.domain.Type.TypeBuilder;
+import cool.klass.model.meta.domain.Type.TypeGetter;
 import cool.klass.model.meta.domain.TypedElement;
 import org.antlr.v4.runtime.ParserRuleContext;
 
@@ -35,7 +35,7 @@ public abstract class Property<T extends Type> extends TypedElement<T>
         return this.owningKlass;
     }
 
-    public abstract static class PropertyBuilder<T extends Type, TB extends TypeBuilder> extends TypedElementBuilder<T, TB>
+    public abstract static class PropertyBuilder<T extends Type, TG extends TypeGetter> extends TypedElementBuilder<TG>
     {
         @Nonnull
         protected final KlassBuilder owningKlassBuilder;
@@ -46,7 +46,7 @@ public abstract class Property<T extends Type> extends TypedElement<T>
                 @Nonnull ParserRuleContext nameContext,
                 @Nonnull String name,
                 int ordinal,
-                @Nonnull TB typeBuilder,
+                @Nonnull TG typeBuilder,
                 @Nonnull KlassBuilder owningKlassBuilder)
         {
             super(elementContext, inferred, nameContext, name, ordinal, typeBuilder);

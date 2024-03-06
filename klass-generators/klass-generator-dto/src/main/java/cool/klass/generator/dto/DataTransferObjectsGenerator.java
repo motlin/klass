@@ -22,6 +22,7 @@ import cool.klass.model.meta.domain.property.AssociationEnd;
 import cool.klass.model.meta.domain.property.DataTypeProperty;
 import cool.klass.model.meta.domain.property.PrimitiveType;
 import cool.klass.model.meta.domain.property.PropertyModifier;
+import cool.klass.model.meta.domain.visitor.PrimitiveToJavaTypeVisitor;
 import org.eclipse.collections.api.list.ImmutableList;
 
 public class DataTransferObjectsGenerator
@@ -191,13 +192,11 @@ public class DataTransferObjectsGenerator
     {
         if (dataType instanceof Enumeration)
         {
-            return dataType.getName() + "DTO";
+            return ((Enumeration) dataType).getName() + "DTO";
         }
         if (dataType instanceof PrimitiveType)
         {
-            PrimitiveToJavaTypeVisitor visitor = new PrimitiveToJavaTypeVisitor();
-            ((PrimitiveType) dataType).visit(visitor);
-            return visitor.getResult();
+            return PrimitiveToJavaTypeVisitor.getJavaType((PrimitiveType) dataType);
         }
         throw new AssertionError();
     }

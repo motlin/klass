@@ -1,8 +1,8 @@
 package cool.klass.model.converter.compiler.state;
 
-import cool.klass.model.meta.domain.Type.TypeBuilder;
+import cool.klass.model.meta.domain.Type.TypeGetter;
 
 public interface AntlrType
 {
-    TypeBuilder getTypeBuilder();
+    TypeGetter getTypeGetter();
 }

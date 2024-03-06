@@ -1,36 +1,12 @@
 package cool.klass.model.meta.domain;
 
-import javax.annotation.Nonnull;
-
-import org.antlr.v4.runtime.ParserRuleContext;
-
 /**
  * A DataType is a kind of Classifier. DataType differs from Class in that instances of a DataType are identified only by their value. All instances of a DataType with the same value are considered to be equal instances.
  */
-public abstract class DataType extends Type
+public interface DataType extends Type
 {
-    protected DataType(
-            @Nonnull ParserRuleContext elementContext,
-            boolean inferred,
-            @Nonnull ParserRuleContext nameContext,
-            @Nonnull String name,
-            int ordinal,
-            @Nonnull String packageName)
+    interface DataTypeGetter extends TypeGetter
     {
-        super(elementContext, inferred, nameContext, name, ordinal, packageName);
-    }
-
-    public abstract static class DataTypeBuilder extends TypeBuilder
-    {
-        protected DataTypeBuilder(
-                @Nonnull ParserRuleContext elementContext,
-                boolean inferred,
-                @Nonnull ParserRuleContext nameContext,
-                @Nonnull String name,
-                int ordinal,
-                @Nonnull String packageName)
-        {
-            super(elementContext, inferred, nameContext, name, ordinal, packageName);
-        }
+        DataType getType();
     }
 }

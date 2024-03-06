@@ -13,7 +13,7 @@ import cool.klass.model.meta.domain.property.DataTypeProperty.DataTypePropertyBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public final class Klass extends Type
+public final class Klass extends PackageableElement implements Type
 {
     @Nonnull
     private final ImmutableList<ClassModifier> classModifiers;
@@ -104,7 +104,7 @@ public final class Klass extends Type
         return this.isTransient;
     }
 
-    public static final class KlassBuilder extends TypeBuilder
+    public static final class KlassBuilder extends PackageableElementBuilder implements TypeGetter
     {
         @Nonnull
         private final ImmutableList<ClassModifierBuilder> classModifierBuilders;

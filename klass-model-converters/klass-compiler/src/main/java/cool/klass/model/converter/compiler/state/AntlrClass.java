@@ -409,7 +409,7 @@ public class AntlrClass extends AntlrPackageableElement implements AntlrType
 
     @Nonnull
     @Override
-    public KlassBuilder getTypeBuilder()
+    public KlassBuilder getTypeGetter()
     {
         throw new UnsupportedOperationException(this.getClass().getSimpleName()
                 + ".getTypeBuilder() not implemented yet");

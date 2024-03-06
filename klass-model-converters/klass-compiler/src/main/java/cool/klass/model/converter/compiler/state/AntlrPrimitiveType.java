@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import cool.klass.model.meta.domain.Type.TypeGetter;
 import cool.klass.model.meta.domain.property.PrimitiveType;
-import cool.klass.model.meta.domain.property.PrimitiveType.PrimitiveTypeBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
@@ -43,13 +43,11 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
             AntlrPrimitiveType::getPrimitiveType);
 
     private final PrimitiveType        primitiveType;
-    private final PrimitiveTypeBuilder primitiveTypeBuilder;
 
     private AntlrPrimitiveType(PrimitiveType primitiveType)
     {
         super(new ParserRuleContext(), null, true);
         this.primitiveType = primitiveType;
-        this.primitiveTypeBuilder = PrimitiveTypeBuilder.valueOf(this.primitiveType);
     }
 
     public static AntlrPrimitiveType valueOf(PrimitiveType type)
@@ -57,15 +55,10 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
         return Objects.requireNonNull(BY_TYPE.get(type));
     }
 
+    @Nonnull
     public PrimitiveType getPrimitiveType()
     {
-        return this.primitiveType;
-    }
-
-    @Nonnull
-    public PrimitiveTypeBuilder build()
-    {
-        return this.primitiveTypeBuilder;
+        return Objects.requireNonNull(this.primitiveType);
     }
 
     @Override
@@ -75,13 +68,8 @@ public final class AntlrPrimitiveType extends AntlrElement implements AntlrType
     }
 
     @Override
-    public PrimitiveTypeBuilder getTypeBuilder()
+    public TypeGetter getTypeGetter()
     {
-        return Objects.requireNonNull(this.primitiveTypeBuilder);
-    }
-
-    public boolean isTemporal()
-    {
-        return this.primitiveType.isTemporal();
+        return this.primitiveType;
     }
 }

@@ -1,10 +1,17 @@
-package cool.klass.generator.dto;
+package cool.klass.model.meta.domain.visitor;
 
-import cool.klass.model.meta.domain.visitor.PrimitiveTypeVisitor;
+import cool.klass.model.meta.domain.property.PrimitiveType;
 
 public class PrimitiveToJavaTypeVisitor implements PrimitiveTypeVisitor
 {
     private String result;
+
+    public static String getJavaType(PrimitiveType primitiveType)
+    {
+        PrimitiveToJavaTypeVisitor primitiveToJavaTypeVisitor = new PrimitiveToJavaTypeVisitor();
+        primitiveType.visit(primitiveToJavaTypeVisitor);
+        return primitiveToJavaTypeVisitor.getResult();
+    }
 
     public String getResult()
     {
