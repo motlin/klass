@@ -72,25 +72,47 @@ public class AuditAssociationInferencePhase
         {
             return;
         }
-        AntlrClass userClass        = maybeUserClass.get();
+        AntlrClass userClass = maybeUserClass.get();
         int        userIdProperties = userClass.getDataTypeProperties().count(AntlrDataTypeProperty::isUserId);
         if (userIdProperties != 1)
         {
             return;
         }
 
-        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isCreatedBy))
+        boolean needsCreatedBy = !this.hasAuditReferenceProperty(AntlrReferenceProperty::isCreatedBy)
+                && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isCreatedBy);
+        boolean needsLastUpdatedBy = !this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy)
+                && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isLastUpdatedBy);
+
+        if (!needsCreatedBy && !needsLastUpdatedBy)
         {
-            this.runCompilerMacro(this.getSourceCode(userClass, "createdBy", AntlrDataTypeProperty::isCreatedBy, true));
+            return;
         }
-        if (!this.hasAuditReferenceProperty(AntlrReferenceProperty::isLastUpdatedBy) && this.hasAuditDataTypeProperty(AntlrDataTypeProperty::isLastUpdatedBy))
+
+        StringBuilder stringBuilder = new StringBuilder();
+        AntlrClass    classState    = this.compilerState.getCompilerWalkState().getClassState();
+        stringBuilder.append("package " + classState.getPackageName() + "\n\n");
+
+        if (needsCreatedBy)
         {
-            this.runCompilerMacro(this.getSourceCode(
+            String sourceCode = this.getSourceCode(
+                    userClass,
+                    "createdBy",
+                    AntlrDataTypeProperty::isCreatedBy,
+                    true);
+            stringBuilder.append(sourceCode);
+        }
+        if (needsLastUpdatedBy)
+        {
+            String sourceCode = this.getSourceCode(
                     userClass,
                     "lastUpdatedBy",
                     AntlrDataTypeProperty::isLastUpdatedBy,
-                    false));
+                    false);
+            stringBuilder.append(sourceCode);
         }
+
+        this.runCompilerMacro(stringBuilder.toString());
     }
 
     private void runCompilerMacro(String sourceCode)
@@ -135,8 +157,6 @@ public class AuditAssociationInferencePhase
 
         //language=Klass
         return ""
-                + "package " + classState.getPackageName() + "\n"
-                + "\n"
                 + "association " + className + "Has" + suffix + "\n"
                 + "{\n"
                 + "    " + associationEndName + suffix + ": " + className + "[0..*];\n"
@@ -144,6 +164,7 @@ public class AuditAssociationInferencePhase
                 + "\n"
                 + "    relationship this." + auditProperty.getName() + " == " + userClass.getName() + "." + userIdPropertyName
                 + "\n"
-                + "}\n";
+                + "}\n"
+                + "\n";
     }
 }
