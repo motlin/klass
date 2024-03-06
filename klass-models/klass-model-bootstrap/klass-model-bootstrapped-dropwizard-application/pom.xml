@@ -231,12 +231,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.vaadin.external.google</groupId>
-            <artifactId>android-json</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>cool.klass</groupId>
             <artifactId>klass-junit-rule-match-json</artifactId>
             <version>${project.version}</version>
