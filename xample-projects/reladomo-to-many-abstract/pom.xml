@@ -67,13 +67,5 @@
 
     <modules>
         <module>reladomo-to-many-abstract-domain-model</module>
-        <module>reladomo-to-many-abstract-reladomo-definitions</module>
-        <module>reladomo-to-many-abstract-reladomo-pojos</module>
-        <module>reladomo-to-many-abstract-reladomo-ddls</module>
-        <module>reladomo-to-many-abstract-services</module>
-        <module>reladomo-to-many-abstract-dtos</module>
-        <module>reladomo-to-many-abstract-json-views</module>
-        <module>reladomo-to-many-abstract-dropwizard-application</module>
-        <module>reladomo-to-many-abstract-meta-model-constants</module>
     </modules>
 </project>

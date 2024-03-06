@@ -1,4 +1,0 @@
-package com.repro.reladomo.abstractimplementsinterface;
-public class MyAbstractClassDatabaseObject extends MyAbstractClassDatabaseObjectAbstract
-{
-}

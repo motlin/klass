@@ -81,12 +81,5 @@
 
     <modules>
         <module>reladomo-abstract-owned-foreign-key-domain-model</module>
-        <module>reladomo-abstract-owned-foreign-key-reladomo-definitions</module>
-        <module>reladomo-abstract-owned-foreign-key-reladomo-pojos</module>
-        <module>reladomo-abstract-owned-foreign-key-reladomo-ddls</module>
-        <module>reladomo-abstract-owned-foreign-key-services</module>
-        <module>reladomo-abstract-owned-foreign-key-dtos</module>
-        <module>reladomo-abstract-owned-foreign-key-dropwizard-application</module>
-        <module>reladomo-abstract-owned-foreign-key-meta-model-constants</module>
     </modules>
 </project>

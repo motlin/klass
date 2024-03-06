@@ -81,12 +81,5 @@
 
     <modules>
         <module>reladomo-abstract-implements-interface-domain-model</module>
-        <module>reladomo-abstract-implements-interface-reladomo-definitions</module>
-        <module>reladomo-abstract-implements-interface-reladomo-pojos</module>
-        <module>reladomo-abstract-implements-interface-reladomo-ddls</module>
-        <module>reladomo-abstract-implements-interface-services</module>
-        <module>reladomo-abstract-implements-interface-dtos</module>
-        <module>reladomo-abstract-implements-interface-dropwizard-application</module>
-        <module>reladomo-abstract-implements-interface-meta-model-constants</module>
     </modules>
 </project>
