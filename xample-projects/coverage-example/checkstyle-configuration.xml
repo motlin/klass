@@ -326,4 +326,10 @@
         <property name="format" value="\r" />
         <property name="message" value="Carriage return." />
     </module>
+
+    <module name="RegexpMultiline">
+        <property name="format" value="\n *\)" />
+        <property name="message" value="Closing parens shouldn't be on their own lines." />
+    </module>
+
 </module>
