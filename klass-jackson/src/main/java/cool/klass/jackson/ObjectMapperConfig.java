@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
@@ -59,5 +60,7 @@ public final class ObjectMapperConfig
 
         objectMapper.setDateFormat(new StdDateFormat());
         objectMapper.setSerializationInclusion(include);
+
+        objectMapper.registerModule(new EclipseCollectionsModule());
     }
 }

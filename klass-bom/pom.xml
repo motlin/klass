@@ -394,6 +394,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-eclipse-collections</artifactId>
+                <version>2.9.8</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.goldmansachs.reladomo</groupId>
                 <artifactId>reladomo</artifactId>
                 <version>17.0.2</version>
