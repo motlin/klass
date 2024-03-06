@@ -7,11 +7,13 @@ import cool.klass.model.meta.domain.api.Association;
 import cool.klass.model.meta.domain.api.ClassModifier;
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Element;
 import cool.klass.model.meta.domain.api.Enumeration;
 import cool.klass.model.meta.domain.api.EnumerationLiteral;
 import cool.klass.model.meta.domain.api.Interface;
 import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.NamedElement;
+import cool.klass.model.meta.domain.api.PackageableElement;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.AssociationEndModifier;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
@@ -19,6 +21,9 @@ import cool.klass.model.meta.domain.api.property.EnumerationProperty;
 import cool.klass.model.meta.domain.api.property.PrimitiveProperty;
 import cool.klass.model.meta.domain.api.property.PropertyModifier;
 import klass.model.meta.domain.ClassifierInterfaceMapping;
+import klass.model.meta.domain.ElementAbstract;
+import klass.model.meta.domain.NamedElementAbstract;
+import klass.model.meta.domain.PackageableElementAbstract;
 
 public class KlassBootstrapWriter
 {
@@ -41,24 +46,15 @@ public class KlassBootstrapWriter
         for (Enumeration enumeration : this.domainModel.getEnumerations())
         {
             klass.model.meta.domain.Enumeration bootstrappedEnumeration = new klass.model.meta.domain.Enumeration();
-            bootstrappedEnumeration.setName(enumeration.getName());
-            bootstrappedEnumeration.setInferred(enumeration.isInferred());
-            bootstrappedEnumeration.setOrdinal(enumeration.getOrdinal());
-            bootstrappedEnumeration.setPackageName(enumeration.getPackageName());
-            bootstrappedEnumeration.setSourceCode(enumeration.getSourceCode());
-            bootstrappedEnumeration.setSourceCodeWithInference(enumeration.getSourceCodeWithInference());
+            this.handlePackageableElement(bootstrappedEnumeration, enumeration);
             bootstrappedEnumeration.insert();
 
             for (EnumerationLiteral enumerationLiteral : enumeration.getEnumerationLiterals())
             {
                 klass.model.meta.domain.EnumerationLiteral bootstrappedEnumerationLiteral = new klass.model.meta.domain.EnumerationLiteral();
-                bootstrappedEnumerationLiteral.setName(enumerationLiteral.getName());
-                bootstrappedEnumerationLiteral.setInferred(enumerationLiteral.isInferred());
+                this.handleNamedElement(bootstrappedEnumerationLiteral, enumerationLiteral);
                 enumerationLiteral.getDeclaredPrettyName().ifPresent(bootstrappedEnumerationLiteral::setPrettyName);
-                bootstrappedEnumerationLiteral.setOrdinal(enumerationLiteral.getOrdinal());
                 bootstrappedEnumerationLiteral.setEnumeration(bootstrappedEnumeration);
-                bootstrappedEnumerationLiteral.setSourceCode(enumerationLiteral.getSourceCode());
-                bootstrappedEnumerationLiteral.setSourceCodeWithInference(enumerationLiteral.getSourceCodeWithInference());
                 bootstrappedEnumerationLiteral.insert();
             }
         }
@@ -66,7 +62,7 @@ public class KlassBootstrapWriter
         for (Interface anInterface : this.domainModel.getInterfaces())
         {
             klass.model.meta.domain.Interface bootstrappedInterface = new klass.model.meta.domain.Interface();
-            this.handleClassifier(bootstrappedInterface, anInterface);
+            this.handlePackageableElement(bootstrappedInterface, anInterface);
             // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
             bootstrappedInterface.insert();
 
@@ -78,7 +74,7 @@ public class KlassBootstrapWriter
         for (Klass klass : this.domainModel.getKlasses())
         {
             klass.model.meta.domain.Klass bootstrappedClass = new klass.model.meta.domain.Klass();
-            this.handleClassifier(bootstrappedClass, klass);
+            this.handlePackageableElement(bootstrappedClass, klass);
             // TODO: Report Reladomo bug. If any non-nullable properties are not set on a transient object, insert() ought to throw but doesn't
             bootstrappedClass.insert();
 
@@ -96,12 +92,7 @@ public class KlassBootstrapWriter
         for (Association association : this.domainModel.getAssociations())
         {
             klass.model.meta.domain.Association bootstrappedAssociation = new klass.model.meta.domain.Association();
-            bootstrappedAssociation.setName(association.getName());
-            bootstrappedAssociation.setInferred(association.isInferred());
-            bootstrappedAssociation.setOrdinal(association.getOrdinal());
-            bootstrappedAssociation.setPackageName(association.getPackageName());
-            bootstrappedAssociation.setSourceCode(association.getSourceCode());
-            bootstrappedAssociation.setSourceCodeWithInference(association.getSourceCodeWithInference());
+            this.handlePackageableElement(bootstrappedAssociation, association);
             bootstrappedAssociation.insert();
 
             AssociationEnd sourceAssociationEnd = association.getSourceAssociationEnd();
@@ -161,14 +152,10 @@ public class KlassBootstrapWriter
             DataTypeProperty dataTypeProperty,
             klass.model.meta.domain.DataTypeProperty bootstrappedDataTypeProperty)
     {
-        bootstrappedDataTypeProperty.setName(dataTypeProperty.getName());
-        bootstrappedDataTypeProperty.setInferred(dataTypeProperty.isInferred());
-        bootstrappedDataTypeProperty.setOrdinal(dataTypeProperty.getOrdinal());
+        this.handleNamedElement(bootstrappedDataTypeProperty, dataTypeProperty);
         bootstrappedDataTypeProperty.setClassifierName(classifier.getName());
         bootstrappedDataTypeProperty.setKey(dataTypeProperty.isKey());
         bootstrappedDataTypeProperty.setOptional(dataTypeProperty.isOptional());
-        bootstrappedDataTypeProperty.setSourceCode(dataTypeProperty.getSourceCode());
-        bootstrappedDataTypeProperty.setSourceCodeWithInference(dataTypeProperty.getSourceCodeWithInference());
     }
 
     private void handlePropertyModifiers(Classifier classifier, DataTypeProperty dataTypeProperty)
@@ -176,11 +163,9 @@ public class KlassBootstrapWriter
         for (PropertyModifier propertyModifier : dataTypeProperty.getPropertyModifiers())
         {
             klass.model.meta.domain.PropertyModifier bootstrappedPropertyModifier = new klass.model.meta.domain.PropertyModifier();
+            this.handleNamedElement(bootstrappedPropertyModifier, propertyModifier);
             bootstrappedPropertyModifier.setClassifierName(classifier.getName());
             bootstrappedPropertyModifier.setPropertyName(dataTypeProperty.getName());
-            bootstrappedPropertyModifier.setName(propertyModifier.getName());
-            bootstrappedPropertyModifier.setInferred(propertyModifier.isInferred());
-            bootstrappedPropertyModifier.setOrdinal(propertyModifier.getOrdinal());
             bootstrappedPropertyModifier.insert();
         }
     }
@@ -190,24 +175,10 @@ public class KlassBootstrapWriter
         for (ClassModifier classModifier : classifier.getClassModifiers())
         {
             klass.model.meta.domain.ClassifierModifier bootstrappedClassModifier = new klass.model.meta.domain.ClassifierModifier();
+            this.handleNamedElement(bootstrappedClassModifier, classModifier);
             bootstrappedClassModifier.setClassifierName(classifier.getName());
-            bootstrappedClassModifier.setInferred(classModifier.isInferred());
-            bootstrappedClassModifier.setName(classModifier.getName());
-            bootstrappedClassModifier.setOrdinal(classModifier.getOrdinal());
             bootstrappedClassModifier.insert();
         }
-    }
-
-    private void handleClassifier(
-            klass.model.meta.domain.Classifier bootstrappedClassifier,
-            Classifier classifier)
-    {
-        bootstrappedClassifier.setName(classifier.getName());
-        bootstrappedClassifier.setInferred(classifier.isInferred());
-        bootstrappedClassifier.setOrdinal(classifier.getOrdinal());
-        bootstrappedClassifier.setPackageName(classifier.getPackageName());
-        bootstrappedClassifier.setSourceCode(classifier.getSourceCode());
-        bootstrappedClassifier.setSourceCodeWithInference(classifier.getSourceCodeWithInference());
     }
 
     private void handleSuperInterfaces(Classifier classifier)
@@ -224,16 +195,12 @@ public class KlassBootstrapWriter
     private void bootstrapAssociationEnd(AssociationEnd associationEnd, String direction)
     {
         klass.model.meta.domain.AssociationEnd bootstrappedAssociationEnd = new klass.model.meta.domain.AssociationEnd();
+        this.handleNamedElement(bootstrappedAssociationEnd, associationEnd);
         bootstrappedAssociationEnd.setOwningClassName(associationEnd.getOwningClassifier().getName());
-        bootstrappedAssociationEnd.setName(associationEnd.getName());
-        bootstrappedAssociationEnd.setInferred(associationEnd.isInferred());
-        bootstrappedAssociationEnd.setOrdinal(associationEnd.getOrdinal());
         bootstrappedAssociationEnd.setAssociationName(associationEnd.getOwningAssociation().getName());
         bootstrappedAssociationEnd.setDirection(direction);
         bootstrappedAssociationEnd.setMultiplicity(associationEnd.getMultiplicity().getPrettyName());
         bootstrappedAssociationEnd.setResultTypeName(associationEnd.getType().getName());
-        bootstrappedAssociationEnd.setSourceCode(associationEnd.getSourceCode());
-        bootstrappedAssociationEnd.setSourceCodeWithInference(associationEnd.getSourceCodeWithInference());
         bootstrappedAssociationEnd.insert();
 
         for (AssociationEndModifier associationEndModifier : associationEnd.getAssociationEndModifiers())
@@ -241,10 +208,32 @@ public class KlassBootstrapWriter
             klass.model.meta.domain.AssociationEndModifier bootstrappedAssociationEndModifier = new klass.model.meta.domain.AssociationEndModifier();
             bootstrappedAssociationEndModifier.setOwningClassName(associationEnd.getOwningClassifier().getName());
             bootstrappedAssociationEndModifier.setAssociationEndName(associationEnd.getName());
-            bootstrappedAssociationEndModifier.setName(associationEndModifier.getName());
-            bootstrappedAssociationEndModifier.setInferred(associationEndModifier.isInferred());
-            bootstrappedAssociationEndModifier.setOrdinal(associationEndModifier.getOrdinal());
+            this.handleNamedElement(bootstrappedAssociationEndModifier, associationEndModifier);
             bootstrappedAssociationEndModifier.insert();
         }
+    }
+
+    private void handleElement(ElementAbstract bootstrappedNamedElement, Element namedElement)
+    {
+        bootstrappedNamedElement.setInferred(namedElement.isInferred());
+        bootstrappedNamedElement.setSourceCode(namedElement.getSourceCode());
+        bootstrappedNamedElement.setSourceCodeWithInference(namedElement.getSourceCodeWithInference());
+    }
+
+    private void handleNamedElement(
+            NamedElementAbstract bootstrappedNamedElement,
+            NamedElement namedElement)
+    {
+        this.handleElement(bootstrappedNamedElement, namedElement);
+        bootstrappedNamedElement.setName(namedElement.getName());
+        bootstrappedNamedElement.setOrdinal(namedElement.getOrdinal());
+    }
+
+    private void handlePackageableElement(
+            PackageableElementAbstract bootstrappedPackageableElement,
+            PackageableElement packageableElement)
+    {
+        this.handleNamedElement(bootstrappedPackageableElement, packageableElement);
+        bootstrappedPackageableElement.setPackageName(packageableElement.getPackageName());
     }
 }
