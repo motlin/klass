@@ -18,11 +18,37 @@
   "version": {
     "propertiesOptionalId": 1,
     "number": 1,
-    "system": "2000-01-01T00:00:00Z",
+    "createdBy": {
+      "userId": "different user",
+      "systemFrom": "2000-01-01T00:00:00Z",
+      "systemTo": null,
+      "firstName": "different user",
+      "lastName": "different user",
+      "email": "different user"
+    },
+    "lastUpdatedBy": {
+      "userId": "different user",
+      "systemFrom": "2000-01-01T00:00:00Z",
+      "systemTo": null,
+      "firstName": "different user",
+      "lastName": "different user",
+      "email": "different user"
+    }
+  },
+  "createdBy": {
+    "userId": "different user",
     "systemFrom": "2000-01-01T00:00:00Z",
     "systemTo": null,
-    "createdById": "different user",
-    "createdOn": "2000-01-01T00:00:00Z",
-    "lastUpdatedById": "different user",
+    "firstName": "different user",
+    "lastName": "different user",
+    "email": "different user"
   },
+  "lastUpdatedBy": {
+    "userId": "different user",
+    "systemFrom": "2000-01-01T00:00:00Z",
+    "systemTo": null,
+    "firstName": "different user",
+    "lastName": "different user",
+    "email": "different user"
+  }
 }
