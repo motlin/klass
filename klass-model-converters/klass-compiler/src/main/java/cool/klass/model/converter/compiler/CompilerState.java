@@ -235,6 +235,8 @@ public class CompilerState
         {
             super.enterCompilationUnit(ctx);
 
+            CompilerState.this.compilerWalkState.asListener().enterCompilationUnit(ctx);
+
             CompilationUnit currentCompilationUnit = CompilerState.this.compilerInputState.getCompilationUnitByContext(ctx);
             CompilerState.this.compilerWalkState.enterCompilationUnit(currentCompilationUnit);
         }
@@ -243,6 +245,8 @@ public class CompilerState
         public void exitCompilationUnit(@Nonnull CompilationUnitContext ctx)
         {
             super.exitCompilationUnit(ctx);
+
+            CompilerState.this.compilerWalkState.asListener().exitCompilationUnit(ctx);
 
             CompilerState.this.compilerWalkState.exitCompilationUnit();
         }
