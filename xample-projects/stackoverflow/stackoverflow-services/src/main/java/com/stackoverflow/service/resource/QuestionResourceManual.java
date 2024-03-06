@@ -33,11 +33,13 @@ import javax.ws.rs.core.UriInfo;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gs.fw.common.mithra.MithraManagerProvider;
 import com.gs.fw.common.mithra.MithraObject;
 import com.gs.fw.common.mithra.finder.Operation;
 import cool.klass.data.store.DataStore;
+import cool.klass.data.store.reladomo.ReladomoDataStore;
 import cool.klass.deserializer.json.JsonTypeCheckingValidator;
 import cool.klass.deserializer.json.OperationMode;
 import cool.klass.deserializer.json.RequiredPropertiesValidator;
@@ -46,6 +48,7 @@ import cool.klass.reladomo.persistent.writer.IncomingUpdateDataModelValidator;
 import cool.klass.reladomo.persistent.writer.PersistentCreator;
 import cool.klass.reladomo.persistent.writer.PersistentReplacer;
 import cool.klass.serializer.json.ReladomoJsonSerializable;
+import cool.klass.serializer.json.ReladomoJsonSerializer;
 import com.stackoverflow.Question;
 import com.stackoverflow.QuestionFinder;
 import com.stackoverflow.QuestionList;
@@ -67,13 +70,22 @@ public class QuestionResourceManual
         this.dataStore = dataStore;
     }
 
+    public static class QuestionReadProjectionJsonSerializer extends ReladomoJsonSerializer
+    {
+        public QuestionReadProjectionJsonSerializer()
+        {
+            super(new ReladomoDataStore(), StackOverflowDomainModel.QuestionReadProjection);
+        }
+    }
+
     @Nonnull
     @Timed
     @ExceptionMetered
     @GET
     @Path("/api/question/{id}") // ?{version}
     @Produces(MediaType.APPLICATION_JSON)
-    public ReladomoJsonSerializable method0(
+    @JsonSerialize(using = QuestionReadProjectionJsonSerializer.class)
+    public Question method0(
             @PathParam("id") Long id,
             @Nullable @QueryParam("version") Integer version)
     {
@@ -96,10 +108,7 @@ public class QuestionResourceManual
         {
             throw new ClientErrorException("Url valid, data not found.", Status.GONE);
         }
-        MithraObject mithraObject = Iterate.getOnly(result);
-
-        Projection projection = StackOverflowDomainModel.QuestionReadProjection;
-        return new ReladomoJsonSerializable(this.dataStore, mithraObject, projection);
+        return Iterate.getOnly(result);
     }
 
     @Timed
