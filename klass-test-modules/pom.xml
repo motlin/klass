@@ -18,6 +18,7 @@
     <modules>
         <module>klass-test-constants</module>
         <module>klass-tests</module>
+        <module>klass-file-match-rule</module>
     </modules>
 
 </project>
