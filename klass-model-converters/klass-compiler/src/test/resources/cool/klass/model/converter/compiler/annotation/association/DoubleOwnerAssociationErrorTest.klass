@@ -19,7 +19,7 @@ class OwnedClass
 association Owner1HasOwnedAssociation
 {
     owner1: OwnerClass1[1..1];
-    owned: OwnedClass[0..*];
+    owned : OwnedClass[0..*] owned;
 
     relationship this.id == OwnedClass.ownerId
 }
@@ -27,7 +27,7 @@ association Owner1HasOwnedAssociation
 association Owner2HasOwnedAssociation
 {
     owner2: OwnerClass2[1..1];
-    owned: OwnedClass[0..*];
+    owned : OwnedClass[0..*] owned;
 
     relationship this.id == OwnedClass.ownerId
 }
