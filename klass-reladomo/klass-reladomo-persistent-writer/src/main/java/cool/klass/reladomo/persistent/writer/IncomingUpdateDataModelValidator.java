@@ -359,6 +359,11 @@ public class IncomingUpdateDataModelValidator
                 Object childPersistentInstance = this.dataStore.getToOne(
                         this.persistentInstance,
                         associationEnd);
+                if (childPersistentInstance == null)
+                {
+                    // TODO: This is a workaround for a bug and should be revisited to see if it still applies in the happy path. The bug started with an association between Owner[1..1] and Details[1..1] owned. The database wound up corrupted with no row or Details. Here we're trying to validate the incoming Details json against the childPersistentInstance which is null. It's possible that this situation comes up with a nullable Details object as well.
+                    return;
+                }
                 this.handleAssociationEnd(associationEnd, (ObjectNode) jsonNode, childPersistentInstance);
             }
         }
