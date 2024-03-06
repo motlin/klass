@@ -37,6 +37,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,10 +87,13 @@ public class DomainModelCompilerLoader
         ImmutableList<URL> urls = this.klassSourcePackages.flatCollectWith(
                 ClasspathHelper::forPackage,
                 this.classLoader);
+        FilterBuilder filterBuilder = new FilterBuilder();
+        this.klassSourcePackages.forEach(filterBuilder::includePackage);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setScanners(new ResourcesScanner())
-                .setUrls(urls.castToList());
-        Reflections reflections    = new Reflections(configurationBuilder);
+                .setUrls(urls.castToList())
+                .filterInputsBy(filterBuilder);
+        Reflections reflections = new Reflections(configurationBuilder);
         ImmutableList<String> klassLocations = Lists.immutable.withAll(reflections.getResources(Pattern.compile(".*\\.klass")));
 
         LOGGER.debug("Found source files on classpath: {}", klassLocations);
