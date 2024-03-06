@@ -145,6 +145,8 @@ public class AntlrAssociationEnd
         this.reportNonVersionEnd(compilerErrorHolder);
         this.reportNonUserAuditEnd(compilerErrorHolder);
         this.reportPluralName(compilerErrorHolder);
+        this.reportDeclarationOrderTypes(compilerErrorHolder);
+        this.reportForwardReference(compilerErrorHolder);
     }
 
     private void reportVersionEndUnowned(@Nonnull CompilerErrorState compilerErrorHolder)
@@ -246,6 +248,62 @@ public class AntlrAssociationEnd
                 compilerErrorHolder.add("ERR_ASS_PLU", message, this, this.nameContext);
             }
         }
+    }
+
+    private void reportDeclarationOrderTypes(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isToOneRequired())
+        {
+            return;
+        }
+
+        if (this.getType().getCompilationUnit().isEmpty()
+                || this.opposite.getType().getCompilationUnit().isEmpty())
+        {
+            return;
+        }
+
+        CompilationUnit compilationUnit         = this.getType().getCompilationUnit().get();
+        CompilationUnit oppositeCompilationUnit = this.opposite.getType().getCompilationUnit().get();
+        if (!compilationUnit.equals(oppositeCompilationUnit))
+        {
+            return;
+        }
+
+        if (compilationUnit.getOrdinal() > oppositeCompilationUnit.getOrdinal())
+        {
+            String message = String.format(
+                    "Association '%s' establishes that type '%s' requires type '%s', but the declaration order is reversed.",
+                    this.owningAssociationState.getName(),
+                    this.getType().getName(),
+                    this.opposite.getType().getName());
+            compilerErrorHolder.add(
+                    "ERR_ASO_ORD",
+                    message,
+                    this,
+                    this.getElementContext().classReference());
+        }
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.owningAssociationState.isForwardReference(this.getType()))
+        {
+            return;
+        }
+        String message = String.format(
+                "Association end '%s.%s' is declared on line %d and has a forward reference to type '%s' which is declared later in the source file '%s' on line %d.",
+                this.getOwningClassifierState().getName(),
+                this.getName(),
+                this.getElementContext().getStart().getLine(),
+                this.getType().getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.getType().getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_ASO_ORD",
+                message,
+                this,
+                this.getElementContext().classReference());
     }
 
     @Nonnull

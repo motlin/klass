@@ -242,17 +242,25 @@ public class AntlrInterface extends AntlrClassifier
     @Override
     protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
+        boolean noCircularInheritance = true;
         for (int i = 0; i < this.interfaceStates.size(); i++)
         {
             AntlrInterface interfaceState = this.interfaceStates.get(i);
-            if (interfaceState.extendsInterface(this, Sets.mutable.empty()))
+            if (!interfaceState.extendsInterface(this, Sets.mutable.empty()))
             {
-                InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
-                String message = String.format(
-                        "Circular inheritance '%s'.",
-                        offendingToken.getText());
-                compilerErrorHolder.add("ERR_IMP_SLF", message, this, offendingToken);
+                continue;
             }
+            InterfaceReferenceContext offendingToken = this.getOffendingInterfaceReference(i);
+            String message = String.format(
+                    "Circular inheritance '%s'.",
+                    offendingToken.getText());
+            compilerErrorHolder.add("ERR_IMP_SLF", message, this, offendingToken);
+            noCircularInheritance = false;
+        }
+
+        if (noCircularInheritance)
+        {
+            this.reportForwardReference(compilerErrorHolder);
         }
     }
 

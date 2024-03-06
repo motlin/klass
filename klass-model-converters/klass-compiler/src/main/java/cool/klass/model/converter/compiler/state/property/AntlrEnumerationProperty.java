@@ -136,6 +136,7 @@ public class AntlrEnumerationProperty
         super.reportErrors(compilerErrorHolder);
 
         this.reportTypeNotFound(compilerErrorHolder);
+        this.reportForwardReference(compilerErrorHolder);
     }
 
     @Override
@@ -156,6 +157,27 @@ public class AntlrEnumerationProperty
                 "Cannot find enumeration '%s'.",
                 offendingToken.getText());
         compilerErrorHolder.add("ERR_ENM_PRP", message, this, offendingToken);
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isForwardReference(this.enumerationState))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Enumeration property '%s' is declared on line %d and has a forward reference to enumeration '%s' which is declared later in the source file '%s' on line %d.",
+                this.toString(),
+                this.getElementContext().getStart().getLine(),
+                this.enumerationState.getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.enumerationState.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().enumerationReference());
     }
 
     @Override

@@ -171,18 +171,54 @@ public class AntlrProjectionProjectionReference
         }
         else
         {
-            if (this.classifier != this.referencedProjectionState.getClassifier()
-                    && !this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
-            {
-                String message = String.format(
-                        "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
-                        this.getName(),
-                        this.classifier.getName(),
-                        this.referencedProjectionState.getName(),
-                        this.referencedProjectionState.getClassifier().getName());
-                compilerErrorHolder.add("ERR_PRR_KLS", message, this);
-            }
+            this.reportTypeMismatch(compilerErrorHolder);
+            this.reportForwardReference(compilerErrorHolder);
         }
+    }
+
+    private void reportTypeMismatch(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
+        if (this.classifier == this.referencedProjectionState.getClassifier()
+                || this.classifier.isSubClassOf(this.referencedProjectionState.getClassifier()))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Type mismatch: '%s' has type '%s' but '%s' has type '%s'.",
+                this.getName(),
+                this.classifier.getName(),
+                this.referencedProjectionState.getName(),
+                this.referencedProjectionState.getClassifier().getName());
+        compilerErrorHolder.add("ERR_PRR_KLS", message, this);
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.referenceProperty.isToOneRequired()
+                || !this.isForwardReference(this.referencedProjectionState))
+        {
+            return;
+        }
+
+        if (this.referenceProperty instanceof AntlrAssociationEnd associationEnd
+                && associationEnd.isOwned())
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Projection property '%s' is declared on line %d and has a forward reference to projection '%s' which is declared later in the source file '%s' on line %d.",
+                this.getName(),
+                this.getElementContext().getStart().getLine(),
+                this.referencedProjectionState.getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.referencedProjectionState.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().projectionReference());
     }
 
     @Override

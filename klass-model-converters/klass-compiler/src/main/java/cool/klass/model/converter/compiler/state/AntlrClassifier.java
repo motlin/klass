@@ -534,6 +534,25 @@ public abstract class AntlrClassifier
         this.dataTypePropertyStates.each(each -> each.reportAuditErrors(compilerErrorHolder));
     }
 
+    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        for (int i = 0; i < this.interfaceStates.size(); i++)
+        {
+            AntlrInterface interfaceState = this.interfaceStates.get(i);
+            if (this.isForwardReference(interfaceState))
+            {
+                String message = String.format(
+                        "Class '%s' is declared on line %d and has a forward reference to implemented interface '%s' which is declared later in the source file '%s' on line %d.",
+                        this.getName(),
+                        this.getElementContext().getStart().getLine(),
+                        interfaceState.getName(),
+                        this.getCompilationUnit().get().getSourceName(),
+                        interfaceState.getElementContext().getStart().getLine());
+                compilerErrorHolder.add("ERR_FWD_REF", message, this, this.getOffendingInterfaceReference(i));
+            }
+        }
+    }
+
     protected AntlrDataTypeProperty<?> getInterfaceDataTypePropertyByName(String name)
     {
         return this.interfaceStates

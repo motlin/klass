@@ -152,9 +152,30 @@ public class AntlrProjection
             return;
         }
 
+        this.reportForwardReference(compilerErrorHolder);
+
         for (AntlrProjectionChild child : this.children)
         {
             child.reportErrors(compilerErrorHolder);
+        }
+    }
+
+    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (this.isForwardReference(this.classifier))
+        {
+            String message = String.format(
+                    "Projection '%s' is declared on line %d and has a forward reference to classifier '%s' which is declared later in the source file '%s' on line %d.",
+                    this.getName(),
+                    this.getElementContext().getStart().getLine(),
+                    this.classifier.getName(),
+                    this.getCompilationUnit().get().getSourceName(),
+                    this.classifier.getElementContext().getStart().getLine());
+            compilerErrorHolder.add(
+                    "ERR_FWD_REF",
+                    message,
+                    this,
+                    this.getElementContext().classifierReference());
         }
     }
 

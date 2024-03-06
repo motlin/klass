@@ -82,4 +82,15 @@ public abstract class AntlrElement
     {
         return this.compilationUnit;
     }
+
+    public boolean isInSameCompilationUnit(AntlrElement other)
+    {
+        return this.compilationUnit.isPresent() && other.compilationUnit.isPresent() && this.compilationUnit.equals(other.compilationUnit);
+    }
+
+    public boolean isForwardReference(AntlrElement other)
+    {
+        return this.isInSameCompilationUnit(other)
+                && this.getElementContext().getStart().getStartIndex() < other.getElementContext().getStart().getStartIndex();
+    }
 }

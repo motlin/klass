@@ -610,11 +610,7 @@ public class AntlrClass
     @Override
     protected void reportCircularInheritance(@Nonnull CompilerErrorState compilerErrorHolder)
     {
-        if (this.superClassState.isEmpty())
-        {
-            return;
-        }
-        if (this.superClassState.get().extendsClass(this, Sets.mutable.empty()))
+        if (this.hasCircularInheritance())
         {
             ClassReferenceContext offendingToken = this
                     .getElementContext()
@@ -626,6 +622,16 @@ public class AntlrClass
                     offendingToken.getText());
             compilerErrorHolder.add("ERR_EXT_SLF", message, this, offendingToken);
         }
+        else
+        {
+            this.reportForwardReference(compilerErrorHolder);
+        }
+    }
+
+    private boolean hasCircularInheritance()
+    {
+        return this.superClassState.isPresent()
+                && this.superClassState.get().extendsClass(this, Sets.mutable.empty());
     }
 
     private boolean extendsClass(@Nonnull AntlrClass antlrClass, @Nonnull MutableSet<AntlrClass> visitedClasses)
@@ -669,6 +675,33 @@ public class AntlrClass
                 .toBag()
                 .selectByOccurrences(occurrences -> occurrences > 1)
                 .toImmutable();
+    }
+
+    @Override
+    protected void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        super.reportForwardReference(compilerErrorHolder);
+        if (this.superClassState.isEmpty())
+        {
+            return;
+        }
+
+        AntlrClass klassState = this.superClassState.get();
+        if (this.isForwardReference(klassState))
+        {
+            String message = String.format(
+                    "Class '%s' is declared on line %d and has a forward reference to super class '%s' which is declared later in the source file '%s' on line %d.",
+                    this.getName(),
+                    this.getElementContext().getStart().getLine(),
+                    klassState.getName(),
+                    this.getCompilationUnit().get().getSourceName(),
+                    klassState.getElementContext().getStart().getLine());
+            compilerErrorHolder.add(
+                    "ERR_FWD_REF",
+                    message,
+                    this,
+                    this.getElementContext().classHeader().extendsDeclaration().classReference());
+        }
     }
 
     private ImmutableList<String> getDeclaredMemberNames()

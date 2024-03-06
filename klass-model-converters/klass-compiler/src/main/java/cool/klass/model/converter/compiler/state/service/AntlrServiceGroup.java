@@ -100,6 +100,7 @@ public class AntlrServiceGroup
     {
         this.reportNoUrls(compilerErrorHolder);
         this.reportDuplicateUrls(compilerErrorHolder);
+        this.reportForwardReference(compilerErrorHolder);
 
         for (AntlrUrl urlState : this.urlStates)
         {
@@ -161,6 +162,27 @@ public class AntlrServiceGroup
                 this.klass.getPackageName(),
                 this.klass.getName());
         compilerErrorHolder.add("ERR_DUP_SVC", message, this);
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isForwardReference(this.klass))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Service group '%s' is declared on line %d and has a forward reference to class '%s' which is declared later in the source file '%s' on line %d.",
+                this.toString(),
+                this.getElementContext().getStart().getLine(),
+                this.klass.getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.klass.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().classReference());
     }
 
     public ServiceGroupBuilder build()

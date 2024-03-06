@@ -174,10 +174,33 @@ public class AntlrProjectionReferenceProperty
             return;
         }
 
+        this.reportForwardReference(compilerErrorHolder);
+
         for (AntlrProjectionChild child : this.children)
         {
             child.reportErrors(compilerErrorHolder);
         }
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isForwardReference(this.referenceProperty))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Projection property '%s' is declared on line %d and has a forward reference to property '%s' which is declared later in the source file '%s' on line %d.",
+                this.getName(),
+                this.getElementContext().getStart().getLine(),
+                this.referenceProperty.getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.referenceProperty.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().identifier());
     }
 
     @Override

@@ -100,6 +100,13 @@ public class AntlrProjectionDataTypeProperty
 
     @Override
     @Nonnull
+    public ProjectionPrimitiveMemberContext getElementContext()
+    {
+        return (ProjectionPrimitiveMemberContext) this.elementContext;
+    }
+
+    @Override
+    @Nonnull
     public ProjectionDataTypePropertyBuilder getElementBuilder()
     {
         return Objects.requireNonNull(this.projectionDataTypePropertyBuilder);
@@ -154,6 +161,12 @@ public class AntlrProjectionDataTypeProperty
             }
         }
 
+        reportPrivateProperty(compilerErrorHolder);
+        reportForwardReference(compilerErrorHolder);
+    }
+
+    private void reportPrivateProperty(@Nonnull CompilerErrorState compilerErrorHolder)
+    {
         if (this.dataTypeProperty.isPrivate())
         {
             String message = String.format(
@@ -162,6 +175,27 @@ public class AntlrProjectionDataTypeProperty
                     this.getName());
             compilerErrorHolder.add("ERR_PRJ_PRV", message, this);
         }
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isForwardReference(this.dataTypeProperty))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Projection property '%s' is declared on line %d and has a forward reference to property '%s' which is declared later in the source file '%s' on line %d.",
+                this.getName(),
+                this.getElementContext().getStart().getLine(),
+                this.dataTypeProperty.toString(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.dataTypeProperty.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().identifier());
     }
 
     @Override

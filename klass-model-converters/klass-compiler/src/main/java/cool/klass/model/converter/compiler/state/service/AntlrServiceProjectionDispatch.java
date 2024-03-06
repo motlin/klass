@@ -107,6 +107,29 @@ public class AntlrServiceProjectionDispatch
                     projectionClassifier.getName());
             compilerErrorHolder.add("ERR_SRV_PRJ", error, this, this.getElementContext().projectionReference());
         }
+
+        this.reportForwardReference(compilerErrorHolder);
+    }
+
+    private void reportForwardReference(CompilerErrorState compilerErrorHolder)
+    {
+        if (!this.isForwardReference(this.projection))
+        {
+            return;
+        }
+
+        String message = String.format(
+                "Service group '%s' is declared on line %d and has a forward reference to projection '%s' which is declared later in the source file '%s' on line %d.",
+                this.toString(),
+                this.getElementContext().getStart().getLine(),
+                this.projection.getName(),
+                this.getCompilationUnit().get().getSourceName(),
+                this.projection.getElementContext().getStart().getLine());
+        compilerErrorHolder.add(
+                "ERR_FWD_REF",
+                message,
+                this,
+                this.getElementContext().projectionReference());
     }
 
     @Nonnull
