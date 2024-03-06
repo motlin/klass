@@ -99,6 +99,11 @@ public abstract class AbstractKlassApplication<T extends Configuration> extends 
                 .toSortedListBy(PrioritizedBundle::getPriority)
                 .toImmutable();
 
+        if (prioritizedBundles.isEmpty())
+        {
+            LOGGER.warn("Didn't find any implementations of PrioritizedBundle using ServiceLoader.");
+        }
+
         if (LOGGER.isInfoEnabled())
         {
             LOGGER.info(
