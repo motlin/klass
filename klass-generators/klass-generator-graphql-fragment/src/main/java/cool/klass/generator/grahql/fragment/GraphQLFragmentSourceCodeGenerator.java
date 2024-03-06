@@ -4,9 +4,13 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.meta.domain.api.Classifier;
 import cool.klass.model.meta.domain.api.DomainModel;
+import cool.klass.model.meta.domain.api.Klass;
 import cool.klass.model.meta.domain.api.property.AssociationEnd;
 import cool.klass.model.meta.domain.api.property.DataTypeProperty;
+import cool.klass.model.meta.domain.api.property.Property;
 import cool.klass.model.meta.domain.api.property.ReferenceProperty;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 public final class GraphQLFragmentSourceCodeGenerator
 {
@@ -19,9 +23,9 @@ public final class GraphQLFragmentSourceCodeGenerator
     public static String getPackageSourceCode(DomainModel domainModel, String fullyQualifiedPackage)
     {
         String sourceCode = domainModel
-                .getClassifiers()
+                .getClasses()
                 .select(c -> c.getPackageName().equals(fullyQualifiedPackage))
-                .collect(GraphQLFragmentSourceCodeGenerator::getSourceCode)
+                .collect(GraphQLFragmentSourceCodeGenerator::getClassifierSourceCode)
                 .makeString("");
 
         return ""
@@ -30,54 +34,113 @@ public final class GraphQLFragmentSourceCodeGenerator
                + sourceCode;
     }
 
-    private static String getSourceCode(Classifier classifier)
+    private static String getClassifierSourceCode(Classifier classifier)
     {
-        String dataTypePropertiesSourceCode = classifier
-                .getDataTypeProperties()
-                .reject(DataTypeProperty::isDerived)
-                .reject(DataTypeProperty::isPrivate)
-                .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
-                .collect(GraphQLFragmentSourceCodeGenerator::getSourceCode)
+        String dataTypePropertiesSourceCode = getDataTypePropertiesSourceCode(classifier, false)
                 .makeString("");
 
-        String referencePropertiesSourceCode = classifier
-                .getProperties()
-                .selectInstancesOf(ReferenceProperty.class)
-                .select(GraphQLFragmentSourceCodeGenerator::includeInProjection)
-                .reject(ReferenceProperty::isPrivate)
-                .collect(GraphQLFragmentSourceCodeGenerator::getSourceCode)
+        String referencePropertiesSourceCode = getReferencePropertiesSourceCode(classifier, false)
                 .makeString("");
+
+        ImmutableList<Klass> subClasses = classifier instanceof Klass klass
+                ? klass.getSubClasses()
+                : Lists.immutable.empty();
+
+        String subClassesSourceCode = subClasses
+                .collect(GraphQLFragmentSourceCodeGenerator::getSubClassSourceCode)
+                .makeString("");
+
+        if (dataTypePropertiesSourceCode.isEmpty()
+                && referencePropertiesSourceCode.isEmpty()
+                && subClassesSourceCode.isEmpty())
+        {
+            return "";
+        }
+
+        String typeNameSourceCode = classifier.isAbstract() ? "  __typename\n" : "";
 
         return "fragment " + classifier.getName() + "Fragment on " + classifier.getName() + " {\n"
+               + typeNameSourceCode
                + dataTypePropertiesSourceCode
                + referencePropertiesSourceCode
+               + subClassesSourceCode
                + "}\n\n";
     }
 
-    private static String getSourceCode(DataTypeProperty dataTypeProperty)
+    @Nonnull
+    private static String getSubClassSourceCode(Klass subClass)
     {
-        return String.format("    %s\n", dataTypeProperty.getName());
+        String dataTypePropertiesSourceCode = getDataTypePropertiesSourceCode(subClass, true)
+                .makeString("");
+
+        String referencePropertiesSourceCode = getReferencePropertiesSourceCode(subClass, true)
+                .makeString("");
+
+        if (dataTypePropertiesSourceCode.isEmpty() && referencePropertiesSourceCode.isEmpty())
+        {
+            return "";
+        }
+
+        return "  ... on " + subClass.getName() + " {\n"
+               + dataTypePropertiesSourceCode
+               + referencePropertiesSourceCode
+               + "  }\n";
     }
 
-    private static String getSourceCode(ReferenceProperty referenceProperty)
+    private static ImmutableList<String> getDataTypePropertiesSourceCode(Classifier classifier, boolean subClassMode)
     {
-        return "    " + referenceProperty.getName() + " {\n"
-               + GraphQLFragmentSourceCodeGenerator.getReferencePropertyBody(referenceProperty)
-               + "    }\n";
+        ImmutableList<DataTypeProperty> dataTypeProperties = subClassMode
+                ? classifier.getDeclaredDataTypeProperties()
+                : classifier.getDataTypeProperties();
+
+        return dataTypeProperties
+                .reject(DataTypeProperty::isDerived)
+                .reject(DataTypeProperty::isPrivate)
+                .reject(property -> property.isForeignKey() && !property.isForeignKeyToSelf())
+                .collectWith(GraphQLFragmentSourceCodeGenerator::getDataTypePropertySourceCode, subClassMode);
+    }
+
+    private static ImmutableList<String> getReferencePropertiesSourceCode(Classifier classifier, boolean subClassMode)
+    {
+        // TODO: Implement getReferenceProperties() and getDeclaredReferenceProperties()
+        ImmutableList<Property> properties = subClassMode
+                ? classifier.getDeclaredProperties()
+                : classifier.getProperties();
+
+        return properties
+                .selectInstancesOf(ReferenceProperty.class)
+                .select(GraphQLFragmentSourceCodeGenerator::includeInProjection)
+                .reject(ReferenceProperty::isPrivate)
+                .collectWith(GraphQLFragmentSourceCodeGenerator::getReferencePropertySourceCode, subClassMode);
+    }
+
+    private static String getDataTypePropertySourceCode(DataTypeProperty dataTypeProperty, boolean subClassMode)
+    {
+        String indentation = subClassMode ? "  " : "";
+        return String.format("  %s%s\n", indentation, dataTypeProperty.getName());
+    }
+
+    private static String getReferencePropertySourceCode(ReferenceProperty referenceProperty, boolean subClassMode)
+    {
+        String indentation = subClassMode ? "  " : "";
+        return indentation + "  " + referenceProperty.getName() + " {\n"
+               + indentation + GraphQLFragmentSourceCodeGenerator.getReferencePropertyBody(referenceProperty)
+               + indentation + "  }\n";
     }
 
     private static String getReferencePropertyBody(ReferenceProperty referenceProperty)
     {
-        Classifier classifier = referenceProperty.getType();
-        if (referenceProperty.isOwned() || GraphQLFragmentSourceCodeGenerator.isOneRequiredToOneOptional(referenceProperty))
+        if (referenceProperty.isOwned() || GraphQLFragmentSourceCodeGenerator.isOneRequiredToOneOptional(
+                referenceProperty))
         {
-            return "        ..." + classifier.getName() + "Fragment\n";
+            return "    ..." + referenceProperty.getType().getName() + "Fragment\n";
         }
 
-        return classifier
+        return referenceProperty
+                .getType()
                 .getKeyProperties()
                 .reject(dataTypeProperty -> dataTypeProperty.isForeignKey() && !dataTypeProperty.isForeignKeyToSelf())
-                .collect(dataTypeProperty -> String.format("        %s\n", dataTypeProperty.getName()))
+                .collect(dataTypeProperty -> String.format("    %s\n", dataTypeProperty.getName()))
                 .makeString("");
     }
 
