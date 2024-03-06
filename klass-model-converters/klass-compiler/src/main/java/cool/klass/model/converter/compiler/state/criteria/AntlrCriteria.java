@@ -14,7 +14,8 @@ import cool.klass.model.meta.domain.criteria.AbstractCriteria.AbstractCriteriaBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public abstract class AntlrCriteria extends AntlrElement
+public abstract class AntlrCriteria
+        extends AntlrElement
 {
     @Nonnull
     private final IAntlrElement criteriaOwner;

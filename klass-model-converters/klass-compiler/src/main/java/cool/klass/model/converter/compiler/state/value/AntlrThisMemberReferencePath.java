@@ -23,7 +23,8 @@ import cool.klass.model.meta.grammar.KlassParser.ThisMemberReferencePathContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrThisMemberReferencePath extends AntlrMemberReferencePath
+public class AntlrThisMemberReferencePath
+        extends AntlrMemberReferencePath
 {
     private ThisMemberReferencePathBuilder elementBuilder;
 

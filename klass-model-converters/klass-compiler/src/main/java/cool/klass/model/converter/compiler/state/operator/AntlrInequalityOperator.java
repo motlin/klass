@@ -13,7 +13,8 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaOperatorContext;
 import cool.klass.model.meta.grammar.KlassParser.InequalityOperatorContext;
 import org.eclipse.collections.api.list.ListIterable;
 
-public class AntlrInequalityOperator extends AntlrOperator
+public class AntlrInequalityOperator
+        extends AntlrOperator
 {
     private InequalityOperatorBuilder elementBuilder;
 

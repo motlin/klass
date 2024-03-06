@@ -6,7 +6,8 @@ import javax.annotation.Nonnull;
 
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 
-public interface AntlrOrderByOwner extends IAntlrElement
+public interface AntlrOrderByOwner
+        extends IAntlrElement
 {
     void enterOrderByDeclaration(@Nonnull AntlrOrderBy orderByState);
 

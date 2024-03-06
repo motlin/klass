@@ -34,7 +34,8 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
 
-public class AntlrUrl extends AntlrElement
+public class AntlrUrl
+        extends AntlrElement
 {
     public static final AntlrUrl AMBIGUOUS = new AntlrUrl(
             new UrlDeclarationContext(null, -1),
@@ -225,9 +226,8 @@ public class AntlrUrl extends AntlrElement
         {
             return SENTINEL;
         }
-        if (element instanceof AntlrUrlConstant)
+        if (element instanceof AntlrUrlConstant urlConstant)
         {
-            AntlrUrlConstant urlConstant = (AntlrUrlConstant) element;
             return urlConstant.getName();
         }
         throw new AssertionError();
@@ -281,15 +281,13 @@ public class AntlrUrl extends AntlrElement
     @Nonnull
     private ElementBuilder<?> buildPathSegment(IAntlrElement element)
     {
-        if (element instanceof AntlrUrlConstant)
+        if (element instanceof AntlrUrlConstant antlrUrlConstant)
         {
-            AntlrUrlConstant antlrUrlConstant = (AntlrUrlConstant) element;
             return antlrUrlConstant.build();
         }
 
-        if (element instanceof AntlrParameter)
+        if (element instanceof AntlrParameter antlrParameter)
         {
-            AntlrParameter antlrParameter = (AntlrParameter) element;
             return antlrParameter.build();
         }
 

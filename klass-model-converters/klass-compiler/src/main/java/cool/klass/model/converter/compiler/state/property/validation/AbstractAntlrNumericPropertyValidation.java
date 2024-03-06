@@ -9,7 +9,8 @@ import cool.klass.model.converter.compiler.state.property.AntlrDataTypeProperty;
 import cool.klass.model.meta.domain.property.validation.AbstractNumericPropertyValidation.NumericPropertyValidationBuilder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public abstract class AbstractAntlrNumericPropertyValidation extends AbstractAntlrPropertyValidation
+public abstract class AbstractAntlrNumericPropertyValidation
+        extends AbstractAntlrPropertyValidation
 {
     protected final int number;
 

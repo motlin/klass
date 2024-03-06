@@ -15,7 +15,8 @@ import cool.klass.model.meta.domain.order.OrderByMemberReferencePathImpl.OrderBy
 import cool.klass.model.meta.domain.value.ThisMemberReferencePathImpl.ThisMemberReferencePathBuilder;
 import cool.klass.model.meta.grammar.KlassParser.OrderByMemberReferencePathContext;
 
-public class AntlrOrderByMemberReferencePath extends AntlrElement
+public class AntlrOrderByMemberReferencePath
+        extends AntlrElement
 {
     @Nonnull
     private final AntlrOrderBy                 orderByState;

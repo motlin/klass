@@ -18,7 +18,7 @@ public abstract class AntlrClassReferenceProperty
 {
     protected AntlrClassReference classReferenceState;
 
-    public AntlrClassReferenceProperty(
+    protected AntlrClassReferenceProperty(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal,

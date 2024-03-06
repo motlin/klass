@@ -19,7 +19,8 @@ import cool.klass.model.meta.grammar.KlassParser.IdentifierContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AntlrMemberReferencePath extends AntlrExpressionValue
+public abstract class AntlrMemberReferencePath
+        extends AntlrExpressionValue
 {
     @Nonnull
     protected final AntlrClass                         classState;

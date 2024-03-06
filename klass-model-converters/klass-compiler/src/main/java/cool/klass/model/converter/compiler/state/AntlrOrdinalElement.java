@@ -12,7 +12,7 @@ public abstract class AntlrOrdinalElement
 {
     protected final int ordinal;
 
-    public AntlrOrdinalElement(
+    protected AntlrOrdinalElement(
             @Nonnull ParserRuleContext elementContext,
             @Nonnull Optional<CompilationUnit> compilationUnit,
             int ordinal)

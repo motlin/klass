@@ -16,7 +16,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public abstract class AntlrExpressionValue extends AntlrElement
+public abstract class AntlrExpressionValue
+        extends AntlrElement
 {
     private final IAntlrElement expressionValueOwner;
 

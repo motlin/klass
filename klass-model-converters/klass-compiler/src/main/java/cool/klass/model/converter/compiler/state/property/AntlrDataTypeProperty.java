@@ -447,7 +447,11 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             String message = String.format(
                     "Duplicate validation '%s'.",
                     offendingToken.getText());
-            compilerAnnotationHolder.add("ERR_DUP_VAL", message, minLengthValidation, minLengthValidation.getKeywordToken());
+            compilerAnnotationHolder.add(
+                    "ERR_DUP_VAL",
+                    message,
+                    minLengthValidation,
+                    minLengthValidation.getKeywordToken());
         }
     }
 
@@ -477,7 +481,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             throw new AssertionError(associationEnd);
         }
 
-        if (this.isOptional() && associationEnd.isToOneRequired())
+        if (this.isOptional && associationEnd.isToOneRequired())
         {
             String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be required.",
@@ -490,7 +494,7 @@ public abstract class AntlrDataTypeProperty<T extends DataType>
             compilerAnnotationHolder.add("ERR_FOR_MUL", message, associationEnd.getMultiplicity());
         }
 
-        if (!this.isOptional() && associationEnd.isToOneOptional())
+        if (!this.isOptional && associationEnd.isToOneOptional())
         {
             String message = String.format(
                     "Association end '%s.%s' has multiplicity [%s] so foreign key '%s.%s' ought to be optional.",

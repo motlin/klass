@@ -10,7 +10,8 @@ import cool.klass.model.meta.domain.property.validation.MaxPropertyValidationImp
 import cool.klass.model.meta.grammar.KlassParser.MaxValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxValidationKeywordContext;
 
-public class AntlrMaxPropertyValidation extends AbstractAntlrNumericPropertyValidation
+public class AntlrMaxPropertyValidation
+        extends AbstractAntlrNumericPropertyValidation
 {
     private MaxPropertyValidationBuilder elementBuilder;
 

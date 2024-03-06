@@ -12,7 +12,8 @@ import cool.klass.model.meta.domain.api.order.OrderByDirection;
 import cool.klass.model.meta.domain.order.OrderByDirectionDeclarationImpl.OrderByDirectionDeclarationBuilder;
 import cool.klass.model.meta.grammar.KlassParser.OrderByDirectionContext;
 
-public class AntlrOrderByDirection extends AntlrElement
+public class AntlrOrderByDirection
+        extends AntlrElement
 {
     @Nonnull
     private final OrderByDirection orderByDirection;

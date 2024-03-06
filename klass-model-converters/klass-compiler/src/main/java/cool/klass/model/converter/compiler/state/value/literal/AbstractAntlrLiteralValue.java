@@ -13,7 +13,8 @@ import cool.klass.model.meta.domain.value.literal.AbstractLiteralValue.AbstractL
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public abstract class AbstractAntlrLiteralValue extends AntlrExpressionValue
+public abstract class AbstractAntlrLiteralValue
+        extends AntlrExpressionValue
 {
     private AntlrType inferredType;
 

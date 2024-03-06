@@ -11,7 +11,8 @@ import cool.klass.model.meta.domain.property.validation.MaxLengthPropertyValidat
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MaxLengthValidationKeywordContext;
 
-public class AntlrMaxLengthPropertyValidation extends AbstractAntlrNumericPropertyValidation
+public class AntlrMaxLengthPropertyValidation
+        extends AbstractAntlrNumericPropertyValidation
 {
     private MaxLengthPropertyValidationBuilder elementBuilder;
 

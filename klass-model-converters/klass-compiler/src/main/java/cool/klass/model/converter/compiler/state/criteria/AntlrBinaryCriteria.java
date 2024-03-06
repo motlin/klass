@@ -13,7 +13,8 @@ import cool.klass.model.meta.domain.criteria.AbstractBinaryCriteria.AbstractBina
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public abstract class AntlrBinaryCriteria extends AntlrCriteria
+public abstract class AntlrBinaryCriteria
+        extends AntlrCriteria
 {
     protected AntlrCriteria left;
     protected AntlrCriteria right;

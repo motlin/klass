@@ -8,7 +8,8 @@ import cool.klass.model.converter.compiler.annotation.CompilerAnnotationState;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.projection.AbstractProjectionElement.ProjectionElementBuilder;
 
-public interface AntlrProjectionElement extends IAntlrElement
+public interface AntlrProjectionElement
+        extends IAntlrElement
 {
     @Nonnull
     ProjectionElementBuilder build();

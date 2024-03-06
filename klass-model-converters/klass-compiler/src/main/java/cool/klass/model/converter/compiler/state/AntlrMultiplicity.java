@@ -11,7 +11,8 @@ import cool.klass.model.meta.domain.api.Multiplicity;
 import cool.klass.model.meta.grammar.KlassParser.MultiplicityContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class AntlrMultiplicity extends AntlrElement
+public class AntlrMultiplicity
+        extends AntlrElement
 {
     private String lowerBoundText;
     private String upperBoundText;

@@ -7,7 +7,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
 // All AntlrTypes are named elements, but the interface doesn't exist yet
-public interface AntlrType extends IAntlrElement
+public interface AntlrType
+        extends IAntlrElement
 {
     String getName();
 

@@ -16,7 +16,8 @@ import cool.klass.model.meta.grammar.KlassParser.StringLiteralContext;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
-public final class AntlrStringLiteralValue extends AbstractAntlrLiteralValue
+public final class AntlrStringLiteralValue
+        extends AbstractAntlrLiteralValue
 {
     private final String                    value;
     private       StringLiteralValueBuilder elementBuilder;

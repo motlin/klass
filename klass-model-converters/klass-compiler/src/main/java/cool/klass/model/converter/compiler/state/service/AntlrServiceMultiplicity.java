@@ -11,7 +11,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.service.ServiceMultiplicity;
 import cool.klass.model.meta.grammar.KlassParser.ServiceMultiplicityContext;
 
-public class AntlrServiceMultiplicity extends AntlrElement
+public class AntlrServiceMultiplicity
+        extends AntlrElement
 {
     @Nonnull
     private final ServiceMultiplicity serviceMultiplicity;

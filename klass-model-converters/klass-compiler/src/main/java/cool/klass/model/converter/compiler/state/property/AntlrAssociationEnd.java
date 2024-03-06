@@ -177,8 +177,8 @@ public class AntlrAssociationEnd
         }
         if (!this.getOwningClassifierState().isUser()
                 && !this.isVersion() && this.getType().isVersion()
-                && !this.getOpposite().isCreatedBy()
-                && !this.getOpposite().isLastUpdatedBy())
+                && !this.opposite.isCreatedBy()
+                && !this.opposite.isLastUpdatedBy())
         {
             String message = String.format(
                     "Association end '%s.%s' has version type %s, but is missing the version modifier.",

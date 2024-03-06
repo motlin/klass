@@ -12,7 +12,8 @@ import cool.klass.model.meta.domain.operator.StringOperatorImpl.StringOperatorBu
 import cool.klass.model.meta.grammar.KlassParser.StringOperatorContext;
 import org.eclipse.collections.api.list.ListIterable;
 
-public class AntlrStringOperator extends AntlrOperator
+public class AntlrStringOperator
+        extends AntlrOperator
 {
     private StringOperatorBuilder elementBuilder;
 

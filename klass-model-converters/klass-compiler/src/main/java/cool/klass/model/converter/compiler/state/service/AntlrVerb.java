@@ -11,7 +11,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.api.service.Verb;
 import cool.klass.model.meta.grammar.KlassParser.VerbContext;
 
-public class AntlrVerb extends AntlrElement
+public class AntlrVerb
+        extends AntlrElement
 {
     public static final AntlrVerb AMBIGUOUS = new AntlrVerb(
             new VerbContext(null, -1),

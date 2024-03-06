@@ -15,7 +15,8 @@ import org.eclipse.collections.api.map.MutableOrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 
-public final class ParameterHolder implements AntlrParameterOwner
+public final class ParameterHolder
+        implements AntlrParameterOwner
 {
     private final MutableList<AntlrParameter>                          parameterStates          = Lists.mutable.empty();
     private final MutableOrderedMap<String, AntlrParameter>            parameterStatesByName    =

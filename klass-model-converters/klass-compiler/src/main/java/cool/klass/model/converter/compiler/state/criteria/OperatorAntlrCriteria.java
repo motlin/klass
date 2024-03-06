@@ -26,7 +26,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public class OperatorAntlrCriteria extends AntlrCriteria
+public class OperatorAntlrCriteria
+        extends AntlrCriteria
 {
     @Nonnull
     private final AntlrOperator operator;
@@ -270,7 +271,7 @@ public class OperatorAntlrCriteria extends AntlrCriteria
             {
                 return targetEnd;
             }
-            else if (!sourceEnd.isOwned() && targetEnd.isOwned())
+            if (!sourceEnd.isOwned() && targetEnd.isOwned())
             {
                 return sourceEnd;
             }

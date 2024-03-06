@@ -18,7 +18,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.OrderedMap;
 import org.eclipse.collections.impl.factory.Lists;
 
-public class AntlrVariableReference extends AntlrExpressionValue
+public class AntlrVariableReference
+        extends AntlrExpressionValue
 {
     @Nonnull
     private final String variableName;
@@ -81,11 +82,9 @@ public class AntlrVariableReference extends AntlrExpressionValue
     {
         Objects.requireNonNull(this.antlrParameter);
         AntlrType type = this.antlrParameter.getType();
-        if (type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS)
-        {
-            return Lists.immutable.empty();
-        }
-        return type.getPotentialWiderTypes();
+        return type == AntlrEnumeration.NOT_FOUND || type == AntlrEnumeration.AMBIGUOUS
+                ? Lists.immutable.empty()
+                : type.getPotentialWiderTypes();
     }
 
     @Override

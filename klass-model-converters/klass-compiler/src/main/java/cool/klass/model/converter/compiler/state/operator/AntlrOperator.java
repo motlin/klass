@@ -15,7 +15,8 @@ import cool.klass.model.meta.domain.operator.AbstractOperator.AbstractOperatorBu
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.eclipse.collections.api.list.ListIterable;
 
-public abstract class AntlrOperator extends AntlrElement
+public abstract class AntlrOperator
+        extends AntlrElement
 {
     protected final String                operatorText;
     protected       OperatorAntlrCriteria owningOperatorAntlrCriteria;

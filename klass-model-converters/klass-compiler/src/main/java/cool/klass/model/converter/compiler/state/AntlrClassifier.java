@@ -688,7 +688,7 @@ public abstract class AntlrClassifier
     public ImmutableList<AntlrDataTypeProperty<?>> getOverriddenDataTypeProperties(String name)
     {
         MutableList<AntlrDataTypeProperty<?>> overriddenProperties = Lists.mutable.empty();
-        MutableSet<AntlrClassifier> visited = Sets.mutable.empty();
+        MutableSet<AntlrClassifier>           visited              = Sets.mutable.empty();
         this.getOverriddenDataTypeProperties(name, overriddenProperties, visited);
         return overriddenProperties.toImmutable();
     }

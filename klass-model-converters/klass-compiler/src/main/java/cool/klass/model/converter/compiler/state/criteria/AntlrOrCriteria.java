@@ -11,7 +11,8 @@ import cool.klass.model.converter.compiler.state.IAntlrElement;
 import cool.klass.model.meta.domain.criteria.OrCriteriaImpl.OrCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaExpressionOrContext;
 
-public class AntlrOrCriteria extends AntlrBinaryCriteria
+public class AntlrOrCriteria
+        extends AntlrBinaryCriteria
 {
     private OrCriteriaBuilder elementBuilder;
 

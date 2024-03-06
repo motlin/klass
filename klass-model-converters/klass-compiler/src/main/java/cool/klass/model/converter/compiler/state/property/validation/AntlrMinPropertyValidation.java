@@ -11,7 +11,8 @@ import cool.klass.model.meta.domain.property.validation.MinPropertyValidationImp
 import cool.klass.model.meta.grammar.KlassParser.MinValidationContext;
 import cool.klass.model.meta.grammar.KlassParser.MinValidationKeywordContext;
 
-public class AntlrMinPropertyValidation extends AbstractAntlrNumericPropertyValidation
+public class AntlrMinPropertyValidation
+        extends AbstractAntlrNumericPropertyValidation
 {
     private MinPropertyValidationBuilder elementBuilder;
 

@@ -15,7 +15,8 @@ import cool.klass.model.meta.domain.property.validation.AbstractPropertyValidati
 import org.antlr.v4.runtime.ParserRuleContext;
 
 // TODO: Property validations should have ordinal
-public abstract class AbstractAntlrPropertyValidation extends AntlrElement
+public abstract class AbstractAntlrPropertyValidation
+        extends AntlrElement
 {
     @Nonnull
     protected final AntlrDataTypeProperty<?> owningPropertyState;

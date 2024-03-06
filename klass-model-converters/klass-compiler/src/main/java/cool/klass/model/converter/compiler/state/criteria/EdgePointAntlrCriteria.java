@@ -18,7 +18,8 @@ import cool.klass.model.meta.grammar.KlassParser.CriteriaEdgePointContext;
 import org.eclipse.collections.api.list.ListIterable;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public class EdgePointAntlrCriteria extends AntlrCriteria
+public class EdgePointAntlrCriteria
+        extends AntlrCriteria
 {
     @Nullable
     private AntlrMemberReferencePath memberExpressionValue;

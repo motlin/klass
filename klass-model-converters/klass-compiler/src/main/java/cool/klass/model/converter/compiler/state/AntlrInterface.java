@@ -29,7 +29,8 @@ import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Sets;
 
-public class AntlrInterface extends AntlrClassifier
+public class AntlrInterface
+        extends AntlrClassifier
 {
     //<editor-fold desc="AMBIGUOUS">
     public static final AntlrInterface AMBIGUOUS = new AntlrInterface(

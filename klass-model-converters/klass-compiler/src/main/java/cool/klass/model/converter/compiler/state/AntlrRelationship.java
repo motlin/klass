@@ -116,7 +116,7 @@ public class AntlrRelationship
 
         CriteriaExpressionContext criteriaExpressionContext = this.getElementContext().criteriaExpression();
 
-        String sourceText             = getSourceText(criteriaExpressionContext);
+        String sourceText             = AntlrElement.getSourceText(criteriaExpressionContext);
         String sourceWithoutSpaceText = sourceText.replaceAll("\\s+", "");
 
         String sourceCodeText = sourceCodeTextFunction.apply(associationEnd);

@@ -13,7 +13,8 @@ import cool.klass.model.meta.domain.criteria.AllCriteriaImpl.AllCriteriaBuilder;
 import cool.klass.model.meta.grammar.KlassParser.CriteriaAllContext;
 import org.eclipse.collections.api.map.OrderedMap;
 
-public class AllAntlrCriteria extends AntlrCriteria
+public class AllAntlrCriteria
+        extends AntlrCriteria
 {
     private AllCriteriaBuilder elementBuilder;
 

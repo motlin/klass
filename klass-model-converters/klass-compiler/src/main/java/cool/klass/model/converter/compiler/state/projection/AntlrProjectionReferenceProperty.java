@@ -164,7 +164,7 @@ public class AntlrProjectionReferenceProperty
 
         if (this.referenceProperty == AntlrReferenceProperty.NOT_FOUND
                 || this.referenceProperty == AntlrAssociationEnd.NOT_FOUND
-                || this.referenceProperty == AntlrAssociationEndSignature.NOT_FOUND)
+                || this.referenceProperty == AntlrReferenceProperty.NOT_FOUND)
         {
             AntlrDataTypeProperty<?> dataTypeProperty = parentClassifier.getDataTypePropertyByName(this.getName());
 

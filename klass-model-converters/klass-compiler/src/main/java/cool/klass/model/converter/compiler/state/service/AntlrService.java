@@ -38,7 +38,9 @@ import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.map.ordered.mutable.OrderedMapAdapter;
 import org.eclipse.collections.impl.tuple.Tuples;
 
-public class AntlrService extends AntlrElement implements AntlrOrderByOwner
+public class AntlrService
+        extends AntlrElement
+        implements AntlrOrderByOwner
 {
     public static final AntlrService AMBIGUOUS = new AntlrService(
             new ServiceDeclarationContext(null, -1),
@@ -100,13 +102,17 @@ public class AntlrService extends AntlrElement implements AntlrOrderByOwner
     @Override
     public Pair<Token, Token> getContextBefore()
     {
-        return Tuples.pair(this.getElementContext().getStart(), this.getElementContext().serviceDeclarationBody().getStart());
+        return Tuples.pair(
+                this.getElementContext().getStart(),
+                this.getElementContext().serviceDeclarationBody().getStart());
     }
 
     @Override
     public Pair<Token, Token> getContextAfter()
     {
-        return Tuples.pair(this.getElementContext().serviceDeclarationBody().getStop(), this.getElementContext().serviceDeclarationBody().getStop());
+        return Tuples.pair(
+                this.getElementContext().serviceDeclarationBody().getStop(),
+                this.getElementContext().serviceDeclarationBody().getStop());
     }
 
     @Nonnull

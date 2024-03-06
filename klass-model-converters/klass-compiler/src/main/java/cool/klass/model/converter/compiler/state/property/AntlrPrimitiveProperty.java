@@ -154,7 +154,7 @@ public class AntlrPrimitiveProperty
         ListIterable<AntlrModifier> idModifiers = this.getModifiersByName("id");
         for (AntlrModifier idModifier : idModifiers)
         {
-            String            message        = "Properties with the 'id' modifier must also have the 'key' modifier.";
+            String message = "Properties with the 'id' modifier must also have the 'key' modifier.";
             compilerAnnotationHolder.add("ERR_NKY_IDP", message, idModifier);
         }
     }
@@ -186,7 +186,7 @@ public class AntlrPrimitiveProperty
             return;
         }
 
-        AntlrClass superClass = owningClass.getSuperClass().get();
+        AntlrClass               superClass         = owningClass.getSuperClass().get();
         AntlrDataTypeProperty<?> overriddenProperty = superClass.getDataTypePropertyByName(this.getName());
         if (overriddenProperty == AntlrEnumerationProperty.NOT_FOUND)
         {
