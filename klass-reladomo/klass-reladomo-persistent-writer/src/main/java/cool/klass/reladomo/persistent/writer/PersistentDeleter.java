@@ -5,11 +5,11 @@ import javax.annotation.Nonnull;
 import cool.klass.data.store.DataStore;
 import cool.klass.model.meta.domain.api.Klass;
 
-public class ReladomoPersistentDeleter
+public class PersistentDeleter
 {
     private final DataStore dataStore;
 
-    public ReladomoPersistentDeleter(DataStore dataStore)
+    public PersistentDeleter(DataStore dataStore)
     {
         this.dataStore = dataStore;
     }
