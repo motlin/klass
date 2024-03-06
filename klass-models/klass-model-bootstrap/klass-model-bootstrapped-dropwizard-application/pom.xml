@@ -214,6 +214,11 @@
             <groupId>io.liftwizard</groupId>
             <artifactId>liftwizard-named-data-source-factory</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.liftwizard</groupId>
+            <artifactId>liftwizard-config-spa-redirect-filter</artifactId>
+        </dependency>
         <!--endregion-->
 
         <!--region Liftwizard runtime dependencies -->

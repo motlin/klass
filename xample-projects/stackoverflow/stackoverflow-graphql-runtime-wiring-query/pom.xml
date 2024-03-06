@@ -48,6 +48,12 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
+            <artifactId>klass-reladomo-graphql-deep-fetcher</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cool.klass</groupId>
             <artifactId>klass-data-store-reladomo</artifactId>
             <version>${klass.version}</version>
         </dependency>
