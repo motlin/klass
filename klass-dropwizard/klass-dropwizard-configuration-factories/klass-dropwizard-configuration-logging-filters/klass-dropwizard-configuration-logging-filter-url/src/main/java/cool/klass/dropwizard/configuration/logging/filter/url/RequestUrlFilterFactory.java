@@ -1,6 +1,5 @@
 package cool.klass.dropwizard.configuration.logging.filter.url;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,10 +18,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @JsonTypeName("url")
 @AutoService(FilterFactory.class)
-public class UrlFilterFactory implements FilterFactory<IAccessEvent>
+public class RequestUrlFilterFactory implements FilterFactory<IAccessEvent>
 {
     @NotEmpty
-    private @Valid @NotNull List<String> bannedUrls = new ArrayList<>();
+    private @Valid @NotNull List<String> bannedUrls = Lists.mutable.empty();
 
     @Override
     public Filter<IAccessEvent> build()
