@@ -1,6 +1,7 @@
 package cool.klass.model.converter.compiler.error;
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -19,10 +20,12 @@ import org.antlr.v4.runtime.TokenStream;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.SetIterable;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.eclipse.collections.impl.set.mutable.SetAdapter;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.fusesource.jansi.Ansi.Color;
 
 import static org.fusesource.jansi.Ansi.Color.CYAN;
@@ -32,6 +35,10 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public abstract class AbstractCompilerError
 {
+    private static final Comparator<Token> TOKEN_COMPARATOR = Comparator
+            .comparing(Token::getLine)
+            .thenComparing(Token::getCharPositionInLine);
+
     @Nonnull
     protected final CompilationUnit                  compilationUnit;
     @Nonnull
@@ -86,7 +93,7 @@ public abstract class AbstractCompilerError
     }
 
     @Nonnull
-    private String getFilenameWithoutDirectory()
+    protected String getFilenameWithoutDirectory()
     {
         String sourceName = this.compilationUnit.getSourceName();
         return this.macroCause
@@ -115,22 +122,9 @@ public abstract class AbstractCompilerError
                 this.getLine());
     }
 
-    private ImmutableList<AbstractContextString> applyListenerToStack()
+    protected ImmutableList<AbstractContextString> applyListenerToStack()
     {
-        MutableSet<Token> contextTokens = SetAdapter.adapt(new LinkedHashSet<>());
-
-        this.sourceContexts
-                .asReversed()
-                .collect(IAntlrElement::getContextBefore)
-                .flatCollect(this::getTokenRange)
-                .into(contextTokens);
-
-        this.sourceContexts
-                .asLazy()
-                .collect(IAntlrElement::getContextAfter)
-                .reject(Objects::isNull)
-                .flatCollect(this::getTokenRange)
-                .into(contextTokens);
+        SetIterable<Token> contextTokens = this.getContextTokens();
 
         MutableSet<Token> underlinedTokens = this.offendingContexts
                 .asLazy()
@@ -184,7 +178,34 @@ public abstract class AbstractCompilerError
         return contextStrings.toImmutable();
     }
 
-    private ImmutableList<TokenLine> getTokenLines(MutableSet<Token> contextTokens)
+    protected Pair<Token, Token> getFirstAndLastToken()
+    {
+        SetIterable<Token> contextTokens = this.getContextTokens();
+
+        return Tuples.pair(contextTokens.min(TOKEN_COMPARATOR), contextTokens.max(TOKEN_COMPARATOR));
+    }
+
+    @Nonnull
+    private SetIterable<Token> getContextTokens()
+    {
+        MutableSet<Token> contextTokens = SetAdapter.adapt(new LinkedHashSet<>());
+
+        this.sourceContexts
+                .asReversed()
+                .collect(IAntlrElement::getContextBefore)
+                .flatCollect(this::getTokenRange)
+                .into(contextTokens);
+
+        this.sourceContexts
+                .asLazy()
+                .collect(IAntlrElement::getContextAfter)
+                .reject(Objects::isNull)
+                .flatCollect(this::getTokenRange)
+                .into(contextTokens);
+        return contextTokens;
+    }
+
+    private ImmutableList<TokenLine> getTokenLines(SetIterable<Token> contextTokens)
     {
         Iterator<Token>        contextTokenIterator = contextTokens.iterator();
         Deque<Token>           currentLine          = new ArrayDeque<>();
@@ -356,4 +377,6 @@ public abstract class AbstractCompilerError
                 .fg(CYAN).a("Character: ").reset().a(this.getCharPositionInLine() + 1)
                 .toString();
     }
+
+    public abstract String toGitHubAnnotation();
 }

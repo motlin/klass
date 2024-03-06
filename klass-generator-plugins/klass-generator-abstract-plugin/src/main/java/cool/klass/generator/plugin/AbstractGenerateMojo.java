@@ -152,6 +152,7 @@ public abstract class AbstractGenerateMojo
             ImmutableList<RootCompilerError> compilerErrors          = errorsCompilationResult.getCompilerErrors();
             for (RootCompilerError compilerError : compilerErrors)
             {
+                this.getLog().info(compilerError.toGitHubAnnotation());
                 this.getLog().warn(compilerError.toString());
             }
             throw new MojoExecutionException("There were compiler errors.");

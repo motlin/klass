@@ -9,7 +9,9 @@ import javax.annotation.Nonnull;
 import cool.klass.model.converter.compiler.CompilationUnit;
 import cool.klass.model.converter.compiler.state.IAntlrElement;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.tuple.Pair;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -71,5 +73,29 @@ public class RootCompilerError
                 causeString);
 
         return ansi().render(ansi).toString();
+    }
+
+    @Override
+    public String toGitHubAnnotation()
+    {
+        String contextString   = this.getContextString();
+        String locationMessage = this.getOptionalLocationMessage();
+        String causeString     = this.getCauseString();
+
+        ImmutableList<AbstractContextString> contextStrings = this.applyListenerToStack();
+
+        Pair<Token, Token> firstAndLastToken = this.getFirstAndLastToken();
+        Token startToken = firstAndLastToken.getOne();
+        Token endToken   = firstAndLastToken.getTwo();
+
+        String sourceName = this.compilationUnit.getSourceName();
+        return "::error file=%s,line=%d,endLine=%d,col=%d,endColumn=%d,title=%s::%s".formatted(
+                sourceName,
+                startToken.getLine(),
+                endToken.getLine(),
+                startToken.getCharPositionInLine(),
+                endToken.getCharPositionInLine(),
+                this.errorCode,
+                this.message);
     }
 }

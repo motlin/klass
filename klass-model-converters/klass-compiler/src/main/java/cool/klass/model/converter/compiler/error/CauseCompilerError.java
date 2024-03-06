@@ -34,4 +34,10 @@ public class CauseCompilerError extends AbstractCompilerError
                 + locationMessage
                 + causeString;
     }
+
+    @Override
+    public String toGitHubAnnotation()
+    {
+        return toString();
+    }
 }
