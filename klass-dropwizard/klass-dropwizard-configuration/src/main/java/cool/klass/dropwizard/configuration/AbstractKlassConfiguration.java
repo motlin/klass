@@ -22,6 +22,8 @@ import cool.klass.dropwizard.configuration.sample.data.SampleDataFactory;
 import cool.klass.dropwizard.configuration.sample.data.SampleDataFactoryProvider;
 import com.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactory;
 import com.liftwizard.dropwizard.configuration.auth.filter.AuthFilterFactoryProvider;
+import com.liftwizard.dropwizard.configuration.clock.ClockFactory;
+import com.liftwizard.dropwizard.configuration.clock.ClockFactoryProvider;
 import com.liftwizard.dropwizard.configuration.config.logging.ConfigLoggingFactoryProvider;
 import com.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerConfiguration;
 import com.liftwizard.dropwizard.configuration.connectionmanager.ConnectionManagerFactory;
@@ -82,6 +84,7 @@ public class AbstractKlassConfiguration
         DataStoreFactoryProvider,
         DomainModelFactoryProvider,
         UUIDSupplierFactoryProvider,
+        ClockFactoryProvider,
         NamedDataSourceProvider,
         ConnectionManagerFactoryProvider
 {
@@ -341,5 +344,12 @@ public class AbstractKlassConfiguration
     public UUIDSupplierFactory getUuidSupplierFactory()
     {
         return this.getDataStoreFactory().getUuidFactory();
+    }
+
+    @JsonIgnore
+    @Override
+    public ClockFactory getClockFactory()
+    {
+        return this.klassFactory.getClockFactory();
     }
 }
