@@ -196,6 +196,34 @@ public class AllKeyPropertiesTest extends AbstractCoverageTest
 
         String jsonResponse = response.readEntity(String.class);
 
-        JSONAssert.assertEquals("{}", jsonResponse, JSONCompareMode.STRICT);
+        // TODO: PUT shouldn't actually return anything
+        //language=JSON
+        String expectedJson = ""
+                + "{\n"
+                + "  \"keyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                + "  \"keyInteger\": 1,\n"
+                + "  \"keyLong\": 1,\n"
+                + "  \"keyDouble\": 1.0123456789,\n"
+                + "  \"keyFloat\": 1.0123457,\n"
+                + "  \"keyBoolean\": true,\n"
+                + "  \"keyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                + "  \"keyLocalDate\": \"1999-12-31\",\n"
+                + "  \"allForeignKeyProperties\": [\n"
+                + "    {\n"
+                + "      \"id\": 1,\n"
+                + "      \"foreignKeyString\": \"AllKeyProperties keyString 1 ☝\",\n"
+                + "      \"foreignKeyInteger\": 1,\n"
+                + "      \"foreignKeyLong\": 1,\n"
+                + "      \"foreignKeyDouble\": 1.0123456789,\n"
+                + "      \"foreignKeyFloat\": 1.0123457,\n"
+                + "      \"foreignKeyBoolean\": true,\n"
+                + "      \"foreignKeyInstant\": \"1999-12-31T23:59:00Z\",\n"
+                + "      \"foreignKeyLocalDate\": \"1999-12-31\",\n"
+                + "      \"data\": \"AllForeignKeyProperties data 1 ☝\"\n"
+                + "    }\n"
+                + "  ]\n"
+                + "}\n";
+
+        JSONAssert.assertEquals(expectedJson, jsonResponse, JSONCompareMode.STRICT);
     }
 }
