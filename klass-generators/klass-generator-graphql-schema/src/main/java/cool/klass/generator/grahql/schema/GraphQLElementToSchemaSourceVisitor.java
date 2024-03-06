@@ -129,7 +129,7 @@ public class GraphQLElementToSchemaSourceVisitor
         {
             return "String";
         }
-        if (type == PrimitiveType.INTEGER || type == PrimitiveType.LONG)
+        if (type == PrimitiveType.INTEGER)
         {
             return "Int";
         }
