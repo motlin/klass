@@ -11,7 +11,6 @@
 
     <!-- Miscellaneous -->
     <module name="NewlineAtEndOfFile" />
-    <module name="UniqueProperties" />
 
     <!-- Regexp -->
     <module name="RegexpMultiline" />
@@ -381,14 +380,10 @@
             <property name="validateThrows" value="true" />
         </module>
         <module name="JavadocParagraph" />
-        <module name="JavadocStyle">
-            <property name="scope" value="public" />
-        </module>
         <module name="JavadocTagContinuationIndentation" />
         <module name="MissingJavadocPackage" />
         <module name="NonEmptyAtclauseDescription" />
         <module name="SingleLineJavadoc" />
-        <module name="SummaryJavadoc" />
 
         <!-- Misc -->
         <module name="ArrayTypeStyle" />
