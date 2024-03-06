@@ -30,6 +30,8 @@
         <module>klass-firebase-principal</module>
         <module>xample-projects</module>
         <module>klass-maven-archetype</module>
+        <module>klass-jackson-response</module>
+        <module>klass-dropwizard-auth</module>
     </modules>
 
     <properties>

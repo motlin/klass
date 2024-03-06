@@ -9,24 +9,18 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>klass-dropwizard-auth</artifactId>
     <packaging>pom</packaging>
+
+    <name>Klass Dropwizard Auth (Module Group)</name>
+
     <modules>
-        <module>klass-dropwizard-bundle-prioritized-api</module>
-        <module>klass-dropwizard-bundle-data-api</module>
-        <module>klass-dropwizard-bundle-object-mapper</module>
-        <module>klass-dropwizard-bundle-cors</module>
-        <module>klass-dropwizard-bundle-http-logging</module>
-        <module>klass-dropwizard-bundle-reladomo</module>
-        <module>klass-dropwizard-bundle-h2</module>
-        <module>klass-dropwizard-bundle-ddl-executor</module>
-        <module>klass-dropwizard-bundle-sample-data</module>
-        <module>klass-dropwizard-bundle-bootstrap-writer</module>
-        <module>klass-dropwizard-bundle-auth-filter</module>
+
+        <module>klass-dropwizard-auth-filter-provider</module>
+        <module>klass-dropwizard-auth-filter-impersonation</module>
+        <module>klass-dropwizard-auth-filter-firebase</module>
     </modules>
-
-    <artifactId>klass-dropwizard-bundles</artifactId>
-
-    <name>Klass Dropwizard Bundles (Module Group)</name>
 
     <dependencyManagement>
         <dependencies>

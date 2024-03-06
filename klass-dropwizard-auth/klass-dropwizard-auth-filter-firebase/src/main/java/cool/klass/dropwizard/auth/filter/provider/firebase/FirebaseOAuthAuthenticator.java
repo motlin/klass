@@ -1,4 +1,4 @@
-package cool.klass.dropwizard.bundle.firebase;
+package cool.klass.dropwizard.auth.filter.provider.firebase;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;

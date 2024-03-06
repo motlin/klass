@@ -10,9 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>klass-dropwizard-bundle-firebase</artifactId>
+    <artifactId>klass-dropwizard-bundle-auth-filter</artifactId>
 
-    <name>Klass Dropwizard Bundle: Firebase</name>
+    <name>Klass Dropwizard Bundle: AuthFilter</name>
 
     <dependencies>
 
@@ -24,18 +24,8 @@
 
         <dependency>
             <groupId>cool.klass</groupId>
-            <artifactId>klass-firebase-principal</artifactId>
+            <artifactId>klass-dropwizard-auth-filter-provider</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-admin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.auth</groupId>
-            <artifactId>google-auth-library-oauth2-http</artifactId>
         </dependency>
 
         <dependency>
@@ -54,25 +44,24 @@
         </dependency>
 
         <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
         </dependency>
 
     </dependencies>
-
 </project>

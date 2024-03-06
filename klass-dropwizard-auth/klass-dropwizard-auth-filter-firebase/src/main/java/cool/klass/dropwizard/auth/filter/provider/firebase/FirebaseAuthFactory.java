@@ -1,4 +1,4 @@
-package cool.klass.dropwizard.bundle.firebase;
+package cool.klass.dropwizard.auth.filter.provider.firebase;
 
 import java.io.IOException;
 import java.io.InputStream;
