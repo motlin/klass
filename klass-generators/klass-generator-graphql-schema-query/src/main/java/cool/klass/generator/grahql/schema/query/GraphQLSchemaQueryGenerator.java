@@ -48,6 +48,8 @@ public class GraphQLSchemaQueryGenerator
 
         String byKeySourceCode = this.domainModel
                 .getClassifiers()
+                // TODO: Here we're skipping classifiers that have no key properties. This will still allow through Interfaces that do include key properties. Will those work?
+                .reject(each -> each.getKeyProperties().isEmpty())
                 .collect(this::getByKeySourceCode)
                 .makeString("");
 
@@ -118,8 +120,8 @@ public class GraphQLSchemaQueryGenerator
         String classifierName = classifier.getName();
         String lowerCaseName  = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, classifierName);
 
-        String parameters = classifier.getDataTypeProperties()
-                .select(DataTypeProperty::isKey)
+        String parameters = classifier
+                .getKeyProperties()
                 .collect(this::getParameterSourceCode)
                 .makeString();
         return "    " + lowerCaseName + "(" + parameters + "): " + classifierName + "\n";
